@@ -23,7 +23,7 @@ they disagree, the API design wins and the plan must be fixed to match.
 - Wider blast radius: **316 files (37%) touch SDK types** — most arrive via the
   public barrels, which re-export the SDKs wholesale
   (`lib/cometchat_chat_uikit.dart` re-exports all of `cometchat_sdk`)
-- 58 files call `CometChat.*` statics directly from widgets/blocs
+- 59 files call `CometChat.*` statics directly from widgets/blocs
 - Most-coupled files: `message_list_bloc.dart`, `conversations_bloc.dart`,
   `groups_bloc.dart`, `message_template_utils.dart`, the `CometChatUIKit` facade
 
