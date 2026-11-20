@@ -84,12 +84,12 @@ class EventHub {
   /// and connects if a user is signed in.
   void attach(ConvoKit kit) {
     if (_isDisposed) return;
+    _kit = kit;
+    _coordinator = MessageCoordinator(kit);
+    _lastUserId = kit.session.currentUser?.id;
     final gen = ++_generation;
     _lifecycleQueue = _lifecycleQueue.then((_) async {
       if (_isDisposed || gen != _generation) return;
-      _kit = kit;
-      _coordinator = MessageCoordinator(kit);
-      _lastUserId = kit.session.currentUser?.id;
       _subscribeSession(kit, gen);
 
       if (kit.session.currentUser != null) {
@@ -113,6 +113,10 @@ class EventHub {
     _reconnectTimer?.cancel();
     _clearAllStores();
 
+    _kit = newKit;
+    _coordinator = MessageCoordinator(newKit);
+    _lastUserId = newKit.session.currentUser?.id;
+
     _lifecycleQueue = _lifecycleQueue.then((_) async {
       // 1. Teardown old kit if present (bounded wait 5s)
       if (oldKit != null) {
@@ -132,9 +136,6 @@ class EventHub {
       // If generation changed while awaiting disconnect, skip connecting intermediate kit.
       if (_isDisposed || gen != _generation) return;
 
-      _kit = newKit;
-      _coordinator = MessageCoordinator(newKit);
-      _lastUserId = newKit.session.currentUser?.id;
       _subscribeSession(newKit, gen);
 
       if (newKit.session.currentUser != null) {
