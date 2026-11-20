@@ -3602,13 +3602,8 @@ class _CometChatMessageListState extends State<CometChatMessageList>
             return;
           }
 
-          // Handle edit message option
+          // Handle edit message option (deferred to v1.1 per decisions list)
           if (option.id == MessageOptionConstants.editMessage) {
-            // Fire the edit event with the message - composer listens to this
-            CometChatMessageEvents.ccMessageEdited(
-              message,
-              MessageEditStatus.inProgress,
-            );
             return;
           }
 
