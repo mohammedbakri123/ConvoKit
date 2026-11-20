@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../src/adapters/cometchat_sdk_adapter.dart';
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import '../../../../shared_ui/src/clean_architecture/core/utils/thread_toast.dart';
 import 'cometchat_flag_message_dialog.dart';
@@ -2922,9 +2923,9 @@ class _CometChatMessageListState extends State<CometChatMessageList>
     // filled bookmark while the logged-in user has saved it. Same caption
     // row as the Edited tag / timestamp so they inherit its color logic.
     final bool showsPin =
-        message.pinnedAt != null && CometChat.isPinMessageEnabled();
+        message.pinnedAt != null && CometChatSdkAdapter.isPinMessageEnabled();
     final bool showsSave =
-        message.savedAt != null && CometChat.isSaveMessageEnabled();
+        message.savedAt != null && CometChatSdkAdapter.isSaveMessageEnabled();
 
     // Each glyph is closed by its own bullet — "pin • save • time" — the
     // same caption the pinned and saved lists use. The LAST bullet is held
@@ -3481,16 +3482,16 @@ class _CometChatMessageListState extends State<CometChatMessageList>
                   true &&
               widget.hideThreadSubscriptionOption != true;
         case MessageOptionConstants.pinMessage:
-          return CometChat.isPinMessageEnabled() &&
+          return CometChatSdkAdapter.isPinMessageEnabled() &&
               widget.hidePinMessageOption != true;
         case MessageOptionConstants.unpinMessage:
-          return CometChat.isPinMessageEnabled() &&
+          return CometChatSdkAdapter.isPinMessageEnabled() &&
               widget.hideUnpinMessageOption != true;
         case MessageOptionConstants.saveMessage:
-          return CometChat.isSaveMessageEnabled() &&
+          return CometChatSdkAdapter.isSaveMessageEnabled() &&
               widget.hideSaveMessageOption != true;
         case MessageOptionConstants.unsaveMessage:
-          return CometChat.isSaveMessageEnabled() &&
+          return CometChatSdkAdapter.isSaveMessageEnabled() &&
               widget.hideUnsaveMessageOption != true;
         case MessageOptionConstants.replyMessage:
           return widget.hideReplyOption != true;
@@ -3695,8 +3696,8 @@ class _CometChatMessageListState extends State<CometChatMessageList>
         message,
       );
       final result = wasSubscribed
-          ? await CometChat.unsubscribeFromThread(threadId)
-          : await CometChat.subscribeToThread(threadId);
+          ? await CometChatSdkAdapter.unsubscribeFromThread(threadId)
+          : await CometChatSdkAdapter.subscribeToThread(threadId);
       if (result != null) {
         // The message object is the state (stateless redesign): stamp the
         // tapped message, then announce on the kit event bus so the bells,
@@ -3725,7 +3726,7 @@ class _CometChatMessageListState extends State<CometChatMessageList>
   /// Asks the SDK whether the `message-translation` extension is enabled,
   /// once per list, and remembers the answer for the option filter.
   void _checkTranslationExtension() {
-    CometChat.isExtensionEnabled(
+    CometChatSdkAdapter.isExtensionEnabled(
       ExtensionConstants.messageTranslation,
       onSuccess: (bool enabled) {
         if (mounted) _translationEnabled = enabled;
@@ -3756,7 +3757,7 @@ class _CometChatMessageListState extends State<CometChatMessageList>
         WidgetsBinding.instance.platformDispatcher.locale.languageCode;
     _translateInFlight.add(message.id);
     try {
-      await CometChat.callExtension(
+      await CometChatSdkAdapter.callExtension(
         ExtensionConstants.messageTranslation,
         'POST',
         ExtensionUrls.translate,
@@ -3811,11 +3812,11 @@ class _CometChatMessageListState extends State<CometChatMessageList>
     switch (error.code) {
       case 'ERR_PINNED_MESSAGES_LIMIT_EXCEEDED':
         return Translations.of(context).pinLimitReachedToast(
-          limit ?? CometChat.getPinnedMessagesLimit() ?? 100,
+          limit ?? CometChatSdkAdapter.getPinnedMessagesLimit() ?? 100,
         );
       case 'ERR_SAVED_MESSAGES_LIMIT_EXCEEDED':
         return Translations.of(context).saveLimitReachedToast(
-          limit ?? CometChat.getSavedMessagesLimit() ?? 100,
+          limit ?? CometChatSdkAdapter.getSavedMessagesLimit() ?? 100,
         );
       case 'ERR_UNAUTHORIZED':
       case 'ERR_FORBIDDEN':
@@ -3843,14 +3844,14 @@ class _CometChatMessageListState extends State<CometChatMessageList>
     _pinSaveInFlight.add(message.id);
     try {
       final updated = pin
-          ? await CometChat.pinMessage(
+          ? await CometChatSdkAdapter.pinMessage(
               message.id,
               onSuccess: null,
               onError: (error) {
                 if (mounted) _showThreadToast(_pinSaveErrorText(error));
               },
             )
-          : await CometChat.unpinMessage(
+          : await CometChatSdkAdapter.unpinMessage(
               message.id,
               onSuccess: null,
               onError: (error) {
@@ -3889,14 +3890,14 @@ class _CometChatMessageListState extends State<CometChatMessageList>
     _pinSaveInFlight.add(message.id);
     try {
       final updated = save
-          ? await CometChat.saveMessage(
+          ? await CometChatSdkAdapter.saveMessage(
               message.id,
               onSuccess: null,
               onError: (error) {
                 if (mounted) _showThreadToast(_pinSaveErrorText(error));
               },
             )
-          : await CometChat.unsaveMessage(
+          : await CometChatSdkAdapter.unsaveMessage(
               message.id,
               onSuccess: null,
               onError: (error) {
@@ -4038,7 +4039,7 @@ class _CometChatMessageListState extends State<CometChatMessageList>
       ),
       onConfirm: (dialogContext) {
         Navigator.of(dialogContext).pop();
-        CometChat.deleteMessage(
+        CometChatSdkAdapter.deleteMessage(
           message.id,
           onSuccess: (updatedMessage) {
             // The API returns an action message (different ID, category=action)

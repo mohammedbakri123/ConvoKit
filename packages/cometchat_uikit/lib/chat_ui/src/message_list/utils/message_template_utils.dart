@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../src/adapters/cometchat_sdk_adapter.dart';
 import 'package:intl/intl.dart';
 import '../../../../shared_ui/cometchat_uikit_shared.dart';
 import '../../../../shared_ui/cometchat_uikit_shared.dart' as cc;
@@ -623,7 +624,7 @@ class MessageTemplateUtils {
     // Pin & Save — gated on the server feature flags. The rendered state
     // (pin vs unpin, save vs unsave) comes from the message object; each
     // state has its own hide flag.
-    if (CometChat.isPinMessageEnabled() &&
+    if (CometChatSdkAdapter.isPinMessageEnabled() &&
         (isMessagePinned(messageObject)
             ? additionalConfigurations?.hideUnpinMessageOption != true
             : additionalConfigurations?.hidePinMessageOption != true) &&
@@ -641,7 +642,7 @@ class MessageTemplateUtils {
       );
     }
 
-    if (CometChat.isSaveMessageEnabled() &&
+    if (CometChatSdkAdapter.isSaveMessageEnabled() &&
         (isMessageSaved(messageObject)
             ? additionalConfigurations?.hideUnsaveMessageOption != true
             : additionalConfigurations?.hideSaveMessageOption != true) &&
@@ -1614,7 +1615,7 @@ class MessageTemplateUtils {
     // Pin & Save — gated on the server feature flags. The rendered state
     // (pin vs unpin, save vs unsave) comes from the message object; each
     // state has its own hide flag.
-    if (CometChat.isPinMessageEnabled() &&
+    if (CometChatSdkAdapter.isPinMessageEnabled() &&
         (isMessagePinned(messageObject)
             ? additionalConfigurations?.hideUnpinMessageOption != true
             : additionalConfigurations?.hidePinMessageOption != true) &&
@@ -1632,7 +1633,7 @@ class MessageTemplateUtils {
       );
     }
 
-    if (CometChat.isSaveMessageEnabled() &&
+    if (CometChatSdkAdapter.isSaveMessageEnabled() &&
         (isMessageSaved(messageObject)
             ? additionalConfigurations?.hideUnsaveMessageOption != true
             : additionalConfigurations?.hideSaveMessageOption != true) &&
@@ -2347,7 +2348,7 @@ class MessageTemplateUtils {
               style: additionalConfigurations?.pollsBubbleStyle,
               choosePoll: (String vote, String id) async {
                 try {
-                  await CometChat.callExtension(
+                  await CometChatSdkAdapter.callExtension(
                     ExtensionConstants.polls,
                     'POST',
                     ExtensionUrls.votePoll,

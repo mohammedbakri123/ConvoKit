@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cometchat_sdk/cometchat_sdk.dart' hide CardMessage;
+import '../../../../../src/adapters/cometchat_sdk_adapter.dart';
 import '../../../../../../shared_ui/src/clean_architecture/core/result.dart';
 import '../../domain/repositories/message_header_repository.dart';
 
@@ -10,7 +11,7 @@ class MessageHeaderRepositoryImpl implements MessageHeaderRepository {
     try {
       final completer = Completer<User>();
 
-      await CometChat.getUser(
+      await CometChatSdkAdapter.getUser(
         uid,
         onSuccess: (User user) {
           completer.complete(user);
@@ -34,7 +35,7 @@ class MessageHeaderRepositoryImpl implements MessageHeaderRepository {
     try {
       final completer = Completer<Group>();
 
-      await CometChat.getGroup(
+      await CometChatSdkAdapter.getGroup(
         guid,
         onSuccess: (Group group) {
           completer.complete(group);
@@ -56,7 +57,7 @@ class MessageHeaderRepositoryImpl implements MessageHeaderRepository {
   @override
   Future<Result<User?>> getLoggedInUser() async {
     try {
-      final user = await CometChat.getLoggedInUser();
+      final user = await CometChatSdkAdapter.getLoggedInUser();
       return Success(user);
     } on CometChatException catch (e) {
       return Failure(

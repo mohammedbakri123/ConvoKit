@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../src/adapters/cometchat_sdk_adapter.dart';
 import '../../../../shared_ui/cometchat_uikit_shared.dart';
 
 /// Style class for the Flag Message dialog.
@@ -304,7 +305,7 @@ class _CometChatFlagMessageDialogState
 
   void _fetchReasons() {
     setState(() => _isLoading = true);
-    CometChat.getFlagReasons(
+    CometChatSdkAdapter.getFlagReasons(
       onSuccess: (reasons) {
         if (mounted) {
           setState(() {
@@ -361,7 +362,7 @@ class _CometChatFlagMessageDialogState
       remark: _remarkController.text.isNotEmpty ? _remarkController.text : null,
     );
 
-    CometChat.flagMessage(
+    CometChatSdkAdapter.flagMessage(
       widget.message.id,
       detail,
       onSuccess: (result) {

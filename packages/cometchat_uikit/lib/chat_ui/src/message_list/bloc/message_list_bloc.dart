@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cometchat_sdk/cometchat_sdk.dart';
+import '../../../../src/adapters/cometchat_sdk_adapter.dart';
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart'
     show
         CometChatMessageEvents,
@@ -836,7 +837,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
   /// **Validates: Requirements 8.1**
   void _registerSDKListeners() {
     // Register message listener
-    CometChat.addMessageListener(
+    CometChatSdkAdapter.addMessageListener(
       _messageListenerId,
       _MessageListMessageListener(
         onTextMessageReceivedCallback: _handleMessageReceived,
@@ -860,7 +861,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
     );
 
     // Register group listener
-    CometChat.addGroupListener(
+    CometChatSdkAdapter.addGroupListener(
       _groupListenerId,
       _MessageListGroupListener(
         onGroupMemberJoinedCallback: _handleGroupMemberJoined,
@@ -883,7 +884,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
       CallActivityListener.add(_callListenerId, _handleCallActivity);
     } else {
       // ignore: deprecated_member_use
-      CometChat.addCallListener(
+      CometChatSdkAdapter.addCallListener(
         _callListenerId,
         _MessageListCallListener(
           onIncomingCallReceivedCallback: _handleIncomingCallReceived,
@@ -896,7 +897,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
     }
 
     // Register connection listener
-    CometChat.addConnectionListener(
+    CometChatSdkAdapter.addConnectionListener(
       _connectionListenerId,
       _MessageListConnectionListener(
         onConnectedCallback: _handleConnected,
@@ -906,7 +907,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
 
     // Register AI assistant event listener (for streaming/thinking bubbles)
     if (user?.role == 'ai' || user?.role == AIConstants.aiRole) {
-      CometChat.addAIAssistantListener(
+      CometChatSdkAdapter.addAIAssistantListener(
         _aiAssistantListenerId,
         _MessageListAIAssistantListener(
           onAIAssistantEventReceivedCallback: _handleAIAssistantEvent,
@@ -3168,10 +3169,10 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
       // refreshing the conversations list will show stale unread badges.
       final convWith = conversationWith;
       if (convWith != null) {
-        CometChat.markConversationAsRead(
+        CometChatSdkAdapter.markConversationAsRead(
           convWith,
           conversationType,
-          onSuccess: (String result) {},
+          onSuccess: (dynamic result) {},
           onError: (CometChatException e) {},
         );
       }
@@ -3202,7 +3203,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
       // Use Completer to wait for the SDK callback
       final completer = Completer<BaseMessage?>();
 
-      await CometChat.addReaction(
+      await CometChatSdkAdapter.addReaction(
         message.id,
         reaction,
         onSuccess: (BaseMessage updatedMessage) {
@@ -3240,7 +3241,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
       // Use Completer to wait for the SDK callback
       final completer = Completer<BaseMessage?>();
 
-      await CometChat.removeReaction(
+      await CometChatSdkAdapter.removeReaction(
         message.id,
         reaction,
         onSuccess: (BaseMessage updatedMessage) {
@@ -3811,16 +3812,16 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
   Future<void> close() {
     // Remove SDK listeners
     if (!disableSDKListeners) {
-      CometChat.removeMessageListener(_messageListenerId);
-      CometChat.removeGroupListener(_groupListenerId);
+      CometChatSdkAdapter.removeMessageListener(_messageListenerId);
+      CometChatSdkAdapter.removeGroupListener(_groupListenerId);
       if (kIsWeb) {
         // ignore: deprecated_member_use
-        CometChat.removeCallListener(_callListenerId);
+        CometChatSdkAdapter.removeCallListener(_callListenerId);
       } else {
         CallActivityListener.remove(_callListenerId);
       }
-      CometChat.removeConnectionListener(_connectionListenerId);
-      CometChat.removeAIAssistantListener(_aiAssistantListenerId);
+      CometChatSdkAdapter.removeConnectionListener(_connectionListenerId);
+      CometChatSdkAdapter.removeAIAssistantListener(_aiAssistantListenerId);
     }
 
     // Remove UI message events listener

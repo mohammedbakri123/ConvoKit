@@ -12,6 +12,7 @@ import '../core/models/conversation.dart';
 import '../core/models/group.dart';
 import '../core/models/message.dart';
 import '../core/models/user.dart';
+import 'cometchat_message_adapter.dart';
 
 class CometChatConversationAdapter implements ConversationRepository {
   @override
@@ -216,6 +217,45 @@ class CometChatConversationAdapter implements ConversationRepository {
       },
     );
     return completer.future;
+  }
+
+  /// Convert a ConvoKit ChatConversation to an SDK Conversation
+  static cc.Conversation toSdkConversation(ChatConversation conv) {
+    dynamic entity;
+    String convType;
+    if (conv.group != null) {
+      convType = 'group';
+      entity = cc.Group(
+        guid: conv.group!.id,
+        name: conv.group!.name,
+        type: conv.group!.type.name,
+        icon: conv.group!.avatarUrl,
+        description: conv.group!.description,
+        membersCount: conv.group!.memberCount,
+      );
+    } else {
+      convType = 'user';
+      final peer = conv.peer;
+      entity = peer != null
+          ? cc.User(
+              uid: peer.id,
+              name: peer.name,
+              avatar: peer.avatarUrl,
+              status: peer.presence.name,
+              blockedByMe: peer.isBlocked,
+            )
+          : cc.User(uid: conv.id, name: conv.id);
+    }
+    return cc.Conversation(
+      conversationId: conv.id,
+      conversationType: convType,
+      conversationWith: entity,
+      unreadMessageCount: conv.unreadCount,
+      updatedAt: conv.updatedAt,
+      lastMessage: conv.lastMessage != null
+          ? CometChatMessageAdapter.toSdkMessage(conv.lastMessage!)
+          : null,
+    );
   }
 
   static ChatConversation _fromSdkConversation(cc.Conversation conv) {

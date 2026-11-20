@@ -4,6 +4,7 @@ import '../../../cometchat_chat_uikit.dart';
 import '../../../cometchat_chat_uikit.dart' as cc;
 import '../../../shared_ui/src/clean_architecture/core/utils/thread_toast.dart';
 import '../../../call_ui/src/call_buttons/cometchat_call_buttons.dart';
+import '../../../src/adapters/cometchat_sdk_adapter.dart';
 import '../../../src/calling_configuration_resolver.dart';
 import 'package:intl/intl.dart';
 
@@ -137,7 +138,7 @@ class CometChatMessageHeader extends StatefulWidget
   /// header's overflow (⋯) menu, which opens the conversation's
   /// [CometChatPinnedMessages] as a pushed screen. Defaults to visible; the
   /// entry additionally requires the server Pin feature flag
-  /// ([CometChat.isPinMessageEnabled]) and renders only on a conversation
+  /// ([CometChatSdkAdapter.isPinMessageEnabled]) and renders only on a conversation
   /// header (never when [parentMessage] puts the header in thread mode).
   final bool? pinnedMessagesVisibility;
 
@@ -249,7 +250,7 @@ class _CometChatMessageHeaderState extends State<CometChatMessageHeader> {
   bool get _showPinnedMessagesButton =>
       widget.parentMessage == null &&
       widget.pinnedMessagesVisibility != false &&
-      CometChat.isPinMessageEnabled();
+      CometChatSdkAdapter.isPinMessageEnabled();
 
   void _openPinnedMessages() {
     // A host that owns its own layout (e.g. a desktop side panel) can take
@@ -1206,8 +1207,8 @@ class _ThreadNotificationBellState extends State<_ThreadNotificationBell>
     setState(() => _subscribed = target); // optimistic flip
     try {
       final result = target
-          ? await CometChat.subscribeToThread(message.id)
-          : await CometChat.unsubscribeFromThread(message.id);
+          ? await CometChatSdkAdapter.subscribeToThread(message.id)
+          : await CometChatSdkAdapter.unsubscribeFromThread(message.id);
       if (!mounted) return;
       if (result != null) {
         // The message object is the state (stateless redesign) — stamp it,

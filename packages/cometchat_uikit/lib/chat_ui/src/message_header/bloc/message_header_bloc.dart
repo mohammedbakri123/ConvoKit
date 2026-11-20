@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../src/adapters/cometchat_sdk_adapter.dart';
 import '../../../../shared_ui/cometchat_uikit_shared.dart';
 import '../di/message_header_service_locator.dart';
 import '../domain/usecases/get_user_usecase.dart';
@@ -112,7 +113,7 @@ class MessageHeaderBloc extends Bloc<MessageHeaderEvent, MessageHeaderState> {
   /// Register all CometChat SDK listeners
   void _registerSDKListeners() {
     // Message listener for typing indicators
-    CometChat.addMessageListener(
+    CometChatSdkAdapter.addMessageListener(
       _messageListenerKey,
       _MessageHeaderMessageListener(
         onTypingStartedCallback: _handleTypingStarted,
@@ -122,7 +123,7 @@ class MessageHeaderBloc extends Bloc<MessageHeaderEvent, MessageHeaderState> {
 
     // User listener for online/offline status
     if (usersStatusVisibility) {
-      CometChat.addUserListener(
+      CometChatSdkAdapter.addUserListener(
         _userListenerKey,
         _MessageHeaderUserListener(
           onUserOnlineCallback: _handleUserOnline,
@@ -132,7 +133,7 @@ class MessageHeaderBloc extends Bloc<MessageHeaderEvent, MessageHeaderState> {
     }
 
     // Group listener for member events
-    CometChat.addGroupListener(
+    CometChatSdkAdapter.addGroupListener(
       _groupListenerKey,
       _MessageHeaderGroupListener(
         onGroupMemberJoinedCallback: _handleGroupMemberJoined,
@@ -146,7 +147,7 @@ class MessageHeaderBloc extends Bloc<MessageHeaderEvent, MessageHeaderState> {
     );
 
     // Connection listener
-    CometChat.addConnectionListener(
+    CometChatSdkAdapter.addConnectionListener(
       _connectionListenerKey,
       _MessageHeaderConnectionListener(onConnectedCallback: _handleConnected),
     );
@@ -660,10 +661,10 @@ class MessageHeaderBloc extends Bloc<MessageHeaderEvent, MessageHeaderState> {
   @override
   Future<void> close() {
     // Remove SDK listeners
-    CometChat.removeMessageListener(_messageListenerKey);
-    CometChat.removeUserListener(_userListenerKey);
-    CometChat.removeGroupListener(_groupListenerKey);
-    CometChat.removeConnectionListener(_connectionListenerKey);
+    CometChatSdkAdapter.removeMessageListener(_messageListenerKey);
+    CometChatSdkAdapter.removeUserListener(_userListenerKey);
+    CometChatSdkAdapter.removeGroupListener(_groupListenerKey);
+    CometChatSdkAdapter.removeConnectionListener(_connectionListenerKey);
 
     // Remove CC Event listeners
     CometChatGroupEvents.removeGroupsListener(_ccGroupListenerKey);

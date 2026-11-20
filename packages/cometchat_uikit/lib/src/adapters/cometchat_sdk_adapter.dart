@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs
 /// Internal adapter keeping CometChat SDK static calls centralized behind adapters.
 library;
 
@@ -209,4 +210,383 @@ class CometChatSdkAdapter {
 
   static void removeConnectionListener(String id) =>
       cc.CometChat.removeConnectionListener(id);
+
+  static void addCallListener(String id, cc.CallListener listener) =>
+      cc.CometChat.addCallListener(id, listener);
+
+  static void removeCallListener(String id) =>
+      cc.CometChat.removeCallListener(id);
+
+  static void addAIAssistantListener(
+    String id,
+    cc.AIAssistantListener listener,
+  ) =>
+      cc.CometChat.addAIAssistantListener(id, listener);
+
+  static void removeAIAssistantListener(String id) =>
+      cc.CometChat.removeAIAssistantListener(id);
+
+  static Future<dynamic> markConversationAsRead(
+    String conversationWith,
+    String conversationType, {
+    Function? onSuccess,
+    Function? onError,
+  }) =>
+      cc.CometChat.markConversationAsRead(
+        conversationWith,
+        conversationType,
+        onSuccess: onSuccess != null ? (dynamic res) => onSuccess(res) : null,
+        onError: onError != null
+            ? (cc.CometChatException err) => onError(err)
+            : null,
+      );
+
+  static Future<cc.BaseMessage?> addReaction(
+    int messageId,
+    String reaction, {
+    void Function(cc.BaseMessage)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.addReaction(
+        messageId,
+        reaction,
+        onSuccess: onSuccess,
+        onError: onError,
+      );
+
+  static Future<cc.BaseMessage?> removeReaction(
+    int messageId,
+    String reaction, {
+    void Function(cc.BaseMessage)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.removeReaction(
+        messageId,
+        reaction,
+        onSuccess: onSuccess,
+        onError: onError,
+      );
+
+  static Future<cc.Conversation?> markMessageAsUnread(
+    cc.BaseMessage message, {
+    void Function(cc.Conversation)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.markMessageAsUnread(
+        message,
+        onSuccess: onSuccess,
+        onError: onError,
+      );
+
+  static bool isPinMessageEnabled() => cc.CometChat.isPinMessageEnabled();
+
+  static bool isSaveMessageEnabled() => cc.CometChat.isSaveMessageEnabled();
+
+  static int? getPinnedMessagesLimit() => cc.CometChat.getPinnedMessagesLimit();
+
+  static int? getSavedMessagesLimit() => cc.CometChat.getSavedMessagesLimit();
+
+  static Future<cc.BaseMessage?> pinMessage(
+    int messageId, {
+    void Function(cc.BaseMessage)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.pinMessage(messageId, onSuccess: onSuccess, onError: onError);
+
+  static Future<cc.BaseMessage?> unpinMessage(
+    int messageId, {
+    void Function(cc.BaseMessage)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.unpinMessage(
+        messageId,
+        onSuccess: onSuccess,
+        onError: onError,
+      );
+
+  static Future<cc.BaseMessage?> saveMessage(
+    int messageId, {
+    void Function(cc.BaseMessage)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.saveMessage(messageId, onSuccess: onSuccess, onError: onError);
+
+  static Future<cc.BaseMessage?> unsaveMessage(
+    int messageId, {
+    void Function(cc.BaseMessage)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.unsaveMessage(
+        messageId,
+        onSuccess: onSuccess,
+        onError: onError,
+      );
+
+  static Future<dynamic> subscribeToThread(
+    int messageId, {
+    Function? onSuccess,
+    Function? onError,
+  }) =>
+      cc.CometChat.subscribeToThread(
+        messageId,
+        onSuccess: onSuccess != null ? (dynamic res) => onSuccess(res) : null,
+        onError: onError != null
+            ? (cc.CometChatException err) => onError(err)
+            : null,
+      );
+
+  static Future<dynamic> unsubscribeFromThread(
+    int messageId, {
+    Function? onSuccess,
+    Function? onError,
+  }) =>
+      cc.CometChat.unsubscribeFromThread(
+        messageId,
+        onSuccess: onSuccess != null ? (dynamic res) => onSuccess(res) : null,
+        onError: onError != null
+            ? (cc.CometChatException err) => onError(err)
+            : null,
+      );
+
+  static Future<bool?> isExtensionEnabled(
+    String slug, {
+    void Function(bool)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.isExtensionEnabled(
+        slug,
+        onSuccess: onSuccess,
+        onError: onError,
+      );
+
+  static Future<dynamic> callExtension(
+    String slug,
+    String requestType,
+    String url,
+    dynamic body, {
+    Function? onSuccess,
+    Function? onError,
+  }) =>
+      cc.CometChat.callExtension(
+        slug,
+        requestType,
+        url,
+        body,
+        onSuccess: onSuccess != null ? (dynamic res) => onSuccess(res) : null,
+        onError: onError != null
+            ? (cc.CometChatException err) => onError(err)
+            : null,
+      );
+
+  static Future<List<cc.FlagReason>?> getFlagReasons({
+    void Function(List<cc.FlagReason>)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.getFlagReasons(onSuccess: onSuccess, onError: onError);
+
+  static Future<dynamic> flagMessage(
+    int messageId,
+    cc.FlagDetail detail, {
+    Function? onSuccess,
+    Function? onError,
+  }) =>
+      cc.CometChat.flagMessage(
+        messageId,
+        detail,
+        onSuccess: onSuccess != null ? (dynamic res) => onSuccess(res) : null,
+        onError: onError != null
+            ? (cc.CometChatException err) => onError(err)
+            : null,
+      );
+
+  static Future<void> deleteMessage(
+    int messageId, {
+    Function? onSuccess,
+    Function? onError,
+  }) =>
+      cc.CometChat.deleteMessage(
+        messageId,
+        onSuccess: onSuccess != null ? (dynamic res) => onSuccess(res) : null,
+        onError: onError != null
+            ? (cc.CometChatException err) => onError(err)
+            : null,
+      );
+
+  static Future<cc.TextMessage?> sendMessage(
+    cc.TextMessage message, {
+    void Function(cc.TextMessage)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.sendMessage(message, onSuccess: onSuccess, onError: onError);
+
+  static Future<cc.MediaMessage?> sendMediaMessage(
+    cc.MediaMessage message, {
+    void Function(cc.MediaMessage)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.sendMediaMessage(
+        message,
+        onSuccess: onSuccess,
+        onError: onError,
+      );
+
+  static Future<cc.CustomMessage?> sendCustomMessage(
+    cc.CustomMessage message, {
+    void Function(cc.CustomMessage)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.sendCustomMessage(
+        message,
+        onSuccess: onSuccess,
+        onError: onError,
+      );
+
+  static Future<cc.BaseMessage?> editMessage(
+    cc.BaseMessage message, {
+    void Function(cc.BaseMessage)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.editMessage(message, onSuccess: onSuccess, onError: onError);
+
+  static void startTyping({
+    required String receiverUid,
+    required String receiverType,
+  }) =>
+      cc.CometChat.startTyping(
+        receiverUid: receiverUid,
+        receiverType: receiverType,
+      );
+
+  static void endTyping({
+    required String receiverUid,
+    required String receiverType,
+  }) =>
+      cc.CometChat.endTyping(
+        receiverUid: receiverUid,
+        receiverType: receiverType,
+      );
+
+  static cc.UploadFileRequest createUploadFileRequest(
+    String receiverId,
+    String receiverType,
+  ) =>
+      cc.CometChat.createUploadFileRequest(receiverId, receiverType);
+
+  static int getMaxAttachmentCount() => cc.CometChat.getMaxAttachmentCount();
+
+  static int getMaxAttachmentSize() => cc.CometChat.getMaxAttachmentSize();
+
+  static Future<dynamic> markAsInteracted(
+    int messageId,
+    String interactionGoal, {
+    void Function(dynamic)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.markAsInteracted(
+        messageId,
+        interactionGoal,
+        onSuccess: onSuccess,
+        onError: onError,
+      );
+
+  static Future<cc.InteractiveMessage?> sendInteractiveMessage(
+    cc.InteractiveMessage message, {
+    void Function(cc.InteractiveMessage)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.sendInteractiveMessage(
+        message,
+        onSuccess: onSuccess,
+        onError: onError,
+      );
+
+  static Future<void> setSource(
+    String version,
+    String platform,
+    String type,
+  ) =>
+      cc.CometChat.setSource(version, platform, type);
+
+  static void setIntegrationSource(String source) =>
+      cc.CometChat.setIntegrationSource(source);
+
+  static Future<cc.User?> createUser(
+    cc.User user,
+    String apiKey, {
+    void Function(cc.User)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.createUser(
+        user,
+        apiKey,
+        onSuccess: onSuccess,
+        onError: onError,
+      );
+
+  static Future<cc.User?> updateUser(
+    cc.User user,
+    String apiKey, {
+    void Function(cc.User)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.updateUser(
+        user,
+        apiKey,
+        onSuccess: onSuccess,
+        onError: onError,
+      );
+
+  static Future<cc.ConversationUpdateSettings?> getConversationUpdateSettings({
+    void Function(cc.ConversationUpdateSettings)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.getConversationUpdateSettings(
+        onSuccess: onSuccess,
+        onError: onError,
+      );
+
+  static Future<void> getConversationStarter(
+    String conversationWith,
+    String conversationType, {
+    dynamic configuration,
+    void Function(List<String>)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.getConversationStarter(
+        conversationWith,
+        conversationType,
+        configuration: configuration,
+        onSuccess: onSuccess != null ? (res) => onSuccess(res) : (res) {},
+        onError: onError != null ? (err) => onError(err) : (err) {},
+      );
+
+  static Future<void> getConversationSummary(
+    String conversationWith,
+    String conversationType, {
+    dynamic configuration,
+    void Function(String)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.getConversationSummary(
+        conversationWith,
+        conversationType,
+        configuration: configuration,
+        onSuccess: onSuccess != null ? (res) => onSuccess(res) : (res) {},
+        onError: onError != null ? (err) => onError(err) : (err) {},
+      );
+
+  static Future<void> getSmartReplies(
+    String conversationWith,
+    String conversationType, {
+    dynamic configuration,
+    void Function(Map<String, String>)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.getSmartReplies(
+        conversationWith,
+        conversationType,
+        configuration: configuration,
+        onSuccess: onSuccess != null ? (res) => onSuccess(res) : (res) {},
+        onError: onError != null ? (err) => onError(err) : (err) {},
+      );
 }

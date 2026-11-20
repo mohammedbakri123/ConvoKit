@@ -1,5 +1,11 @@
 import 'dart:async';
+import 'package:cometchat_chat_uikit/convokit.dart' as ck;
 import 'package:cometchat_sdk/cometchat_sdk.dart' hide CardMessage;
+
+import '../../../../../shared_ui/src/cometchat_ui_kit/cometchat_ui_kit.dart';
+import '../../../../../src/adapters/cometchat_conversation_adapter.dart';
+import '../../../../../src/adapters/cometchat_message_adapter.dart';
+import '../../../../../src/adapters/cometchat_sdk_adapter.dart';
 
 /// Exception thrown when remote data source operations fail.
 class MessageListRemoteDataSourceException implements Exception {
@@ -59,8 +65,21 @@ abstract class MessageListRemoteDataSource {
   Future<Conversation> markMessageAsUnread(BaseMessage message);
 }
 
-/// Implementation of [MessageListRemoteDataSource] using CometChat SDK.
+/// Implementation of [MessageListRemoteDataSource] using ConvoKit contracts with SDK fallback.
 class MessageListRemoteDataSourceImpl implements MessageListRemoteDataSource {
+  final ck.MessageRepository? _repository;
+
+  MessageListRemoteDataSourceImpl({ck.MessageRepository? repository})
+      : _repository = repository;
+
+  ck.MessageRepository? get _convoKitRepository =>
+      _repository ??
+      CometChatUIKit.messageRepository ??
+      CometChatUIKit.kit?.messages;
+
+  static final CometChatMessageAdapter _messageAdapter =
+      CometChatMessageAdapter();
+
   @override
   Future<GetMessagesResult> getMessages({
     required String conversationWith,
@@ -97,6 +116,26 @@ class MessageListRemoteDataSourceImpl implements MessageListRemoteDataSource {
       requestBuilder.hideReplies = hideReplies;
 
       final request = requestBuilder.build();
+
+      if (_convoKitRepository != null) {
+        final convId = conversationType == 'group'
+            ? 'group_$conversationWith'
+            : conversationWith;
+        final res = await _convoKitRepository!.fetchMessages(
+          convId,
+          ck.MessagePageRequest(
+            limit: limit,
+            direction: ck.MessagePageDirection.older,
+          ),
+        );
+        final messages = res.fold(
+          onFailure: (err) => <BaseMessage>[],
+          onSuccess: (page) =>
+              page.items.map(CometChatMessageAdapter.toSdkMessage).toList(),
+        );
+        return GetMessagesResult(request: request, messages: messages);
+      }
+
       final messages = await _fetchPrevious(request);
 
       return GetMessagesResult(request: request, messages: messages);
@@ -120,7 +159,29 @@ class MessageListRemoteDataSourceImpl implements MessageListRemoteDataSource {
     required MessagesRequest request,
   }) async {
     try {
-      return await _fetchPrevious(request);
+      if (_convoKitRepository != null) {
+        final isGroup = request.guid != null && request.guid!.isNotEmpty;
+        final convId =
+            isGroup ? 'group_${request.guid}' : (request.uid ?? '');
+        final res = await _convoKitRepository!.fetchMessages(
+          convId,
+          ck.MessagePageRequest(
+            limit: request.limit ?? 30,
+            cursor: (request.messageId != null && request.messageId! > 0)
+                ? request.messageId.toString()
+                : null,
+            direction: ck.MessagePageDirection.older,
+          ),
+        );
+        final messages = res.fold(
+          onFailure: (err) => <BaseMessage>[],
+          onSuccess: (page) =>
+              page.items.map(CometChatMessageAdapter.toSdkMessage).toList(),
+        );
+        return messages;
+      }
+      final prev = await _fetchPrevious(request);
+      return prev;
     } on CometChatException catch (e) {
       throw MessageListRemoteDataSourceException(
         message: e.message ?? 'Failed to fetch previous messages',
@@ -142,7 +203,29 @@ class MessageListRemoteDataSourceImpl implements MessageListRemoteDataSource {
     required MessagesRequest request,
   }) async {
     try {
-      return await _fetchNext(request);
+      if (_convoKitRepository != null) {
+        final isGroup = request.guid != null && request.guid!.isNotEmpty;
+        final convId =
+            isGroup ? 'group_${request.guid}' : (request.uid ?? '');
+        final res = await _convoKitRepository!.fetchMessages(
+          convId,
+          ck.MessagePageRequest(
+            limit: request.limit ?? 30,
+            cursor: (request.messageId != null && request.messageId! > 0)
+                ? request.messageId.toString()
+                : null,
+            direction: ck.MessagePageDirection.newer,
+          ),
+        );
+        final messages = res.fold(
+          onFailure: (err) => <BaseMessage>[],
+          onSuccess: (page) =>
+              page.items.map(CometChatMessageAdapter.toSdkMessage).toList(),
+        );
+        return messages;
+      }
+      final next = await _fetchNext(request);
+      return next;
     } on CometChatException catch (e) {
       throw MessageListRemoteDataSourceException(
         message: e.message ?? 'Failed to fetch next messages',
@@ -162,25 +245,19 @@ class MessageListRemoteDataSourceImpl implements MessageListRemoteDataSource {
   @override
   Future<void> markAsRead(BaseMessage message) async {
     try {
-      final completer = Completer<void>();
-      await CometChat.markAsRead(
-        message,
-        onSuccess: (dynamic result) {
-          if (!completer.isCompleted) completer.complete();
-        },
-        onError: (CometChatException exception) {
-          if (!completer.isCompleted) {
-            completer.completeError(
-              MessageListRemoteDataSourceException(
-                message: exception.message ?? 'Failed to mark message as read',
-                code: exception.code,
-                originalException: exception,
-              ),
-            );
-          }
-        },
-      );
-      return await completer.future;
+      if (_convoKitRepository != null) {
+        final res =
+            await _convoKitRepository!.markAsRead(message.id.toString());
+        res.fold(
+          onFailure: (err) => throw MessageListRemoteDataSourceException(
+            message: err.message,
+            code: err.code.name,
+          ),
+          onSuccess: (_) {},
+        );
+        return;
+      }
+      return await _messageAdapter.markSdkAsRead(message);
     } on CometChatException catch (e) {
       throw MessageListRemoteDataSourceException(
         message: e.message ?? 'Failed to mark message as read',
@@ -200,26 +277,19 @@ class MessageListRemoteDataSourceImpl implements MessageListRemoteDataSource {
   @override
   Future<void> markAsDelivered(BaseMessage message) async {
     try {
-      final completer = Completer<void>();
-      await CometChat.markAsDelivered(
-        message,
-        onSuccess: (String result) {
-          if (!completer.isCompleted) completer.complete();
-        },
-        onError: (CometChatException exception) {
-          if (!completer.isCompleted) {
-            completer.completeError(
-              MessageListRemoteDataSourceException(
-                message:
-                    exception.message ?? 'Failed to mark message as delivered',
-                code: exception.code,
-                originalException: exception,
-              ),
-            );
-          }
-        },
-      );
-      return await completer.future;
+      if (_convoKitRepository != null) {
+        final res =
+            await _convoKitRepository!.markAsDelivered(message.id.toString());
+        res.fold(
+          onFailure: (err) => throw MessageListRemoteDataSourceException(
+            message: err.message,
+            code: err.code.name,
+          ),
+          onSuccess: (_) {},
+        );
+        return;
+      }
+      return await _messageAdapter.markSdkAsDelivered(message);
     } on CometChatException catch (e) {
       throw MessageListRemoteDataSourceException(
         message: e.message ?? 'Failed to mark message as delivered',
@@ -239,7 +309,18 @@ class MessageListRemoteDataSourceImpl implements MessageListRemoteDataSource {
   @override
   Future<User?> getLoggedInUser() async {
     try {
-      return await CometChat.getLoggedInUser();
+      final session = CometChatUIKit.session ?? CometChatUIKit.kit?.session;
+      if (session != null) {
+        final u = session.currentUser;
+        if (u != null) {
+          return User(
+            uid: u.id,
+            name: u.name,
+            avatar: u.avatarUrl,
+          );
+        }
+      }
+      return await CometChatSdkAdapter.getLoggedInUser();
     } on CometChatException catch (e) {
       throw MessageListRemoteDataSourceException(
         message: e.message ?? 'Failed to get logged in user',
@@ -261,8 +342,22 @@ class MessageListRemoteDataSourceImpl implements MessageListRemoteDataSource {
     required String conversationType,
   }) async {
     try {
+      final convRepo =
+          CometChatUIKit.conversationRepository ??
+          CometChatUIKit.kit?.conversations;
+      if (convRepo != null) {
+        final convId = conversationType == 'group'
+            ? 'group_$conversationWith'
+            : conversationWith;
+        final res = await convRepo.getConversation(convId);
+        final sdkConv = res.fold(
+          onFailure: (err) => null,
+          onSuccess: (c) => CometChatConversationAdapter.toSdkConversation(c),
+        );
+        if (sdkConv != null) return sdkConv;
+      }
       final completer = Completer<Conversation>();
-      await CometChat.getConversation(
+      await CometChatSdkAdapter.getConversation(
         conversationWith,
         conversationType,
         onSuccess: (Conversation conversation) {
@@ -299,26 +394,7 @@ class MessageListRemoteDataSourceImpl implements MessageListRemoteDataSource {
   @override
   Future<Conversation> markMessageAsUnread(BaseMessage message) async {
     try {
-      final completer = Completer<Conversation>();
-      await CometChat.markMessageAsUnread(
-        message,
-        onSuccess: (Conversation conversation) {
-          if (!completer.isCompleted) completer.complete(conversation);
-        },
-        onError: (CometChatException exception) {
-          if (!completer.isCompleted) {
-            completer.completeError(
-              MessageListRemoteDataSourceException(
-                message:
-                    exception.message ?? 'Failed to mark message as unread',
-                code: exception.code,
-                originalException: exception,
-              ),
-            );
-          }
-        },
-      );
-      return await completer.future;
+      return await _messageAdapter.markSdkMessageAsUnread(message);
     } on CometChatException catch (e) {
       throw MessageListRemoteDataSourceException(
         message: e.message ?? 'Failed to mark message as unread',
@@ -336,49 +412,10 @@ class MessageListRemoteDataSourceImpl implements MessageListRemoteDataSource {
   }
 
   Future<List<BaseMessage>> _fetchPrevious(MessagesRequest request) async {
-    final completer = Completer<List<BaseMessage>>();
-    unawaited(
-      request.fetchPrevious(
-        onSuccess: (List<BaseMessage> messages) {
-          if (!completer.isCompleted) completer.complete(messages);
-        },
-        onError: (CometChatException exception) {
-          if (!completer.isCompleted) {
-            completer.completeError(
-              MessageListRemoteDataSourceException(
-                message:
-                    exception.message ?? 'Failed to fetch previous messages',
-                code: exception.code,
-                originalException: exception,
-              ),
-            );
-          }
-        },
-      ),
-    );
-    return await completer.future;
+    return _messageAdapter.fetchSdkPrevious(request);
   }
 
   Future<List<BaseMessage>> _fetchNext(MessagesRequest request) async {
-    final completer = Completer<List<BaseMessage>>();
-    unawaited(
-      request.fetchNext(
-        onSuccess: (List<BaseMessage> messages) {
-          if (!completer.isCompleted) completer.complete(messages);
-        },
-        onError: (CometChatException exception) {
-          if (!completer.isCompleted) {
-            completer.completeError(
-              MessageListRemoteDataSourceException(
-                message: exception.message ?? 'Failed to fetch next messages',
-                code: exception.code,
-                originalException: exception,
-              ),
-            );
-          }
-        },
-      ),
-    );
-    return await completer.future;
+    return _messageAdapter.fetchSdkNext(request);
   }
 }
