@@ -534,12 +534,12 @@ void main() {
               'tapping the result must push MessagesScreen targeted at '
               'message #$seededTextId',
         );
-        // Scoped to the pushed screen's CometChatMessageList: the same text is
+        // Scoped to the pushed screen's ConvoKitMessageList: the same text is
         // also in the search row and the Chats-tab subtitle mounted underneath.
         final inList = find.descendant(
           of: find.descendant(
             of: target,
-            matching: find.byType(CometChatMessageList),
+            matching: find.byType(ConvoKitMessageList),
           ),
           matching: KitFinders.richTextContaining(
             seededText,

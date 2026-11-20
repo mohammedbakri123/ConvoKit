@@ -4,7 +4,7 @@
 /// Fourteen properties are read by [CometChatPollsBubble] itself; the seven
 /// message-bubble chrome properties are read by `MessageUtils.getBubbleStyle`
 /// off the incoming/outgoing aggregates, so those cases go through
-/// [CometChatMessageList] with a poll message.
+/// [ConvoKitMessageList] with a poll message.
 ///
 ///   flutter test test/chat_ui/extensions/polls/polls_bubble_style_props_test.dart
 library;
@@ -117,10 +117,10 @@ MockMessageListBloc _listBloc(BaseMessage message) {
 Widget _list(CometChatPollsBubbleStyle style, {bool byMe = false}) =>
     MaterialApp(
       home: Scaffold(
-        body: CometChatMessageList(
+        body: ConvoKitMessageList(
           user: _them,
           messageListBloc: _listBloc(_poll(byMe: byMe)),
-          style: CometChatMessageListStyle(
+          style: ConvoKitMessageListStyle(
             incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
               pollsBubbleStyle: style,
             ),

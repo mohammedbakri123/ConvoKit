@@ -4,7 +4,7 @@
 /// Two units share one rendered surface, the message action sheet the list
 /// pushes on long-press:
 ///
-/// * [CometChatMessageList]: `controller` plus five `hide*` flags
+/// * [ConvoKitMessageList]: `controller` plus five `hide*` flags
 ///   (hidePinMessageOption, hideUnpinMessageOption, hideSaveMessageOption,
 ///   hideUnsaveMessageOption, hideThreadSubscriptionOption).
 /// * [AdditionalConfigurations]: the same five flags, which the list's
@@ -153,7 +153,7 @@ class _Fixture {
 
   final _RecordingMessageListBloc bloc;
   final _Type type;
-  final controller = CometChatMessageListController();
+  final controller = ConvoKitMessageListController();
 
   /// What a user long-presses to open the sheet: the text body (painted as a
   /// RichText, not a Text), or for a file message the bubble itself, which
@@ -227,7 +227,7 @@ Future<Object?> _optionTitles(WidgetTester tester, _Fixture fx) async {
 /// shimmers went up over the list.
 Future<List<Object>> _jump(
   WidgetTester tester,
-  CometChatMessageListController controller,
+  ConvoKitMessageListController controller,
   _RecordingMessageListBloc bloc,
 ) async {
   bloc.events.clear();
@@ -341,7 +341,7 @@ _Case<P> _hideCase<P>({
   variants: variants,
 );
 
-/// The CometChatMessageList props a case can set. Defaults mirror the
+/// The ConvoKitMessageList props a case can set. Defaults mirror the
 /// widget's own, so a default instance is the same as passing nothing.
 class _ListProps {
   const _ListProps({
@@ -353,7 +353,7 @@ class _ListProps {
     this.hideThreadSubscriptionOption = false,
   });
 
-  final CometChatMessageListController? controller;
+  final ConvoKitMessageListController? controller;
   final bool hidePinMessageOption;
   final bool hideUnpinMessageOption;
   final bool hideSaveMessageOption;
@@ -476,7 +476,7 @@ void main() {
     registerFallbackValue(_message(_Kind.plain));
   });
 
-  group('CometChatMessageList 6.1.1 props', () {
+  group('ConvoKitMessageList 6.1.1 props', () {
     test('the matrix covers exactly the props new in 6.1.1', () {
       expect(_listMatrix.map((c) => c.prop), [
         'controller',
@@ -507,7 +507,7 @@ void main() {
             await mockNetworkImagesFor(
               () => tester.pumpWidget(
                 _wrap(
-                  CometChatMessageList(
+                  ConvoKitMessageList(
                     user: _bob,
                     messageListBloc: fx.bloc,
                     additionalConfigurations: v.appConfig
@@ -559,12 +559,12 @@ void main() {
 
       final fx = _Fixture(_Kind.plain, _Type.text);
       final first = fx.controller;
-      final second = CometChatMessageListController();
+      final second = ConvoKitMessageListController();
 
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatMessageList(
+            ConvoKitMessageList(
               user: _bob,
               messageListBloc: fx.bloc,
               controller: first,
@@ -578,7 +578,7 @@ void main() {
       // this reaches didUpdateWidget rather than a fresh initState.
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageList(
+          ConvoKitMessageList(
             user: _bob,
             messageListBloc: fx.bloc,
             controller: second,
@@ -642,7 +642,7 @@ void main() {
             await mockNetworkImagesFor(
               () => tester.pumpWidget(
                 _wrap(
-                  CometChatMessageList(
+                  ConvoKitMessageList(
                     user: _bob,
                     messageListBloc: fx.bloc,
                     additionalConfigurations: AdditionalConfigurations(

@@ -16,7 +16,7 @@ import 'package:convokit/chat_ui/src/message_list/domain/usecases/get_logged_in_
 import 'package:convokit/shared_ui/src/clean_architecture/core/result.dart';
 
 // ===========================================================================
-// CometChatMessageListCallbackPropertyTest — Flutter equivalent
+// ConvoKitMessageListCallbackPropertyTest — Flutter equivalent
 // Tests callback invocations: onError, onLoad, onEmpty are triggered with
 // correct parameters based on BLoC state transitions.
 // ===========================================================================

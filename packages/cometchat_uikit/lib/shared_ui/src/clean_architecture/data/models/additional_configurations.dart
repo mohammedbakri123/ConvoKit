@@ -12,7 +12,7 @@ import '../../../../cometchat_uikit_shared.dart'
         CometChatVoiceNoteBubbleStyle,
         CometChatFileBubbleStyle,
         CometChatAttachmentOptionSheetStyle,
-        CometChatMessageOptionSheetStyle,
+        ConvoKitMessageOptionSheetStyle,
         CometChatActionBubbleStyle,
         CometChatDeletedBubbleStyle,
         CometChatLinkPreviewBubbleStyle,
@@ -76,7 +76,7 @@ class AdditionalConfigurations {
 
   /// Whether the reaction option is hidden.
   @Deprecated(
-    'Has no effect. Use CometChatMessageList.hideReactionOption. Will be removed in 7.0.0.',
+    'Has no effect. Use ConvoKitMessageList.hideReactionOption. Will be removed in 7.0.0.',
   )
   final bool? hideReactionOption;
 
@@ -279,8 +279,8 @@ class AdditionalConfigurations {
   ///[attachmentOptionSheetStyle] is a [CometChatAttachmentOptionSheetStyle] that can be used to style attachment option sheet
   final CometChatAttachmentOptionSheetStyle? attachmentOptionSheetStyle;
 
-  ///[messageOptionSheetStyle] is a [CometChatMessageOptionSheetStyle] that can be used to style message option sheet
-  final CometChatMessageOptionSheetStyle? messageOptionSheetStyle;
+  ///[messageOptionSheetStyle] is a [ConvoKitMessageOptionSheetStyle] that can be used to style message option sheet
+  final ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle;
 
   ///[actionBubbleStyle] is a [CometChatActionBubbleStyle] that can be used to style action bubble
   final CometChatActionBubbleStyle? actionBubbleStyle;

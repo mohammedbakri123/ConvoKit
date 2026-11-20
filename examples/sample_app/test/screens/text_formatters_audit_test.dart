@@ -161,7 +161,7 @@ void main() {
       final blocks = _extractFormatterBlocks(source);
       final widgetNames =
           blocks.map((b) => _findWidgetName(source, b.offset)).toList();
-      expect(widgetNames, contains('CometChatMessageList'));
+      expect(widgetNames, contains('ConvoKitMessageList'));
       expect(widgetNames, contains('CometChatMessageComposer'));
     });
 
@@ -172,7 +172,7 @@ void main() {
       final blocks = _extractFormatterBlocks(source);
       final widgetNames =
           blocks.map((b) => _findWidgetName(source, b.offset)).toList();
-      expect(widgetNames, contains('CometChatMessageList'));
+      expect(widgetNames, contains('ConvoKitMessageList'));
       expect(widgetNames, contains('CometChatMessageComposer'));
       expect(widgetNames, contains('CometChatThreadedHeader'));
     });

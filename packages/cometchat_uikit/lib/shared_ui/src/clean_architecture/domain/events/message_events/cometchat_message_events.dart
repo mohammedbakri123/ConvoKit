@@ -6,7 +6,7 @@ import '../../../data/models/interactive_message/scheduler_message.dart';
 import '../../../data/models/interactive_message/custom_interactive_message.dart';
 import 'cometchat_message_event_listener.dart';
 
-///Event emitting class for [CometChatMessageList]
+///Event emitting class for [ConvoKitMessageList]
 class CometChatMessageEvents {
   static Map<String, CometChatMessageEventListener> messagesListener = {};
 

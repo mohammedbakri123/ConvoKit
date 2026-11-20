@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
 import '../../../../cometchat_uikit_shared.dart'
     show
-        CometChatMessageListControllerProtocol,
-        CometChatMessageOptionSheetStyle,
+        ConvoKitMessageListControllerProtocol,
+        ConvoKitMessageOptionSheetStyle,
         CometChatAttachmentOptionSheetStyle;
 import 'action_item.dart';
 
@@ -14,11 +14,11 @@ import 'action_item.dart';
 ///  id: 'id',
 ///  title: 'title',
 ///  icon: Icon(Icons.favorite),
-///  messageOptionSheetStyle: CometChatMessageOptionSheetStyle(
+///  messageOptionSheetStyle: ConvoKitMessageOptionSheetStyle(
 ///  backgroundColor: Colors.white,
 ///  ),
 ///  onClick: (BaseMessage baseMessage,
-///      CometChatMessageListController state) {}
+///      ConvoKitMessageListController state) {}
 ///  )
 /// ```
 
@@ -42,11 +42,11 @@ class CometChatMessageOption {
   Widget? icon;
 
   ///[onItemClick] of the option
-  Function(BaseMessage message, CometChatMessageListControllerProtocol state)?
+  Function(BaseMessage message, ConvoKitMessageListControllerProtocol state)?
   onItemClick;
 
-  ///[messageOptionSheetStyle] is a [CometChatMessageOptionSheetStyle] that can be used to style message option sheet
-  final CometChatMessageOptionSheetStyle? messageOptionSheetStyle;
+  ///[messageOptionSheetStyle] is a [ConvoKitMessageOptionSheetStyle] that can be used to style message option sheet
+  final ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle;
 
   ///[toActionItem] converts [CometChatMessageOption] to [ActionItem]
   ActionItem toActionItem() {
@@ -68,7 +68,7 @@ class CometChatMessageOption {
 
   ///[toActionItemFromFunction] takes a function as parameter and converts [CometChatMessageOption] to [ActionItem] with the function `onClick` as onItemClick
   ActionItem toActionItemFromFunction(
-    Function(BaseMessage message, CometChatMessageListControllerProtocol state)?
+    Function(BaseMessage message, ConvoKitMessageListControllerProtocol state)?
     passedFunction,
   ) {
     return ActionItem(

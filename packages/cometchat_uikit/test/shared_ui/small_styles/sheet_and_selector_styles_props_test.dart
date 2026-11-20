@@ -133,7 +133,7 @@ void main() {
   });
 
   // ===========================================================================
-  group('CometChatMessageOptionSheetStyle', () {
+  group('ConvoKitMessageOptionSheetStyle', () {
     testWidgets('border reaches the sheet', (tester) async {
       await tester.pumpWidget(
         _wrap(
@@ -147,7 +147,7 @@ void main() {
                 icon: const Icon(Icons.copy),
               ),
             ],
-            messageOptionStyle: const CometChatMessageOptionSheetStyle(
+            messageOptionStyle: const ConvoKitMessageOptionSheetStyle(
               backgroundColor: _c1,
               border: Border.fromBorderSide(BorderSide(color: _c2, width: 2)),
             ),

@@ -258,7 +258,7 @@ void main() {
   });
 
   // ───────────────────────────────────────────────────────────────────────────
-  // Realtime member events + admin actions (CometChatMessageList / Header).
+  // Realtime member events + admin actions (ConvoKitMessageList / Header).
   // A views the freshly-created admin group; B is driven via REST.
   // Each test resets B's membership for isolation.
   // ───────────────────────────────────────────────────────────────────────────

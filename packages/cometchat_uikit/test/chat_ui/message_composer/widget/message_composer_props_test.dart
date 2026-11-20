@@ -2331,7 +2331,7 @@ void main() {
       );
       await tester.pump();
 
-      // What CometChatMessageList does for loadLastAgentConversation: tell the
+      // What ConvoKitMessageList does for loadLastAgentConversation: tell the
       // composer the agent conversation's thread once it is known.
       final bloc = BlocProvider.of<MessageComposerBloc>(
         tester.element(find.byType(StickerAuxiliaryButton)),

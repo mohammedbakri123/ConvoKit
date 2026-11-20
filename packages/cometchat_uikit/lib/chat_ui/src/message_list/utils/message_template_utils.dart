@@ -22,7 +22,7 @@ class MessageTemplateUtils {
     BuildContext context,
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
-    CometChatMessageOptionSheetStyle? messageOptionSheetStyle,
+    ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     return CometChatMessageOption(
       id: MessageOptionConstants.editMessage,
@@ -32,7 +32,7 @@ class MessageTemplateUtils {
         color: messageOptionSheetStyle?.iconColor ?? colorPalette.iconSecondary,
         size: 24,
       ),
-      messageOptionSheetStyle: CometChatMessageOptionSheetStyle(
+      messageOptionSheetStyle: ConvoKitMessageOptionSheetStyle(
         titleTextStyle: TextStyle(
           color: messageOptionSheetStyle?.titleColor,
           fontFamily: typography.body?.regular?.fontFamily,
@@ -52,7 +52,7 @@ class MessageTemplateUtils {
     BuildContext context,
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
-    CometChatMessageOptionSheetStyle? messageOptionSheetStyle,
+    ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     return CometChatMessageOption(
       id: MessageOptionConstants.deleteMessage,
@@ -64,7 +64,7 @@ class MessageTemplateUtils {
         width: 24,
         color: messageOptionSheetStyle?.iconColor ?? colorPalette.error,
       ),
-      messageOptionSheetStyle: CometChatMessageOptionSheetStyle(
+      messageOptionSheetStyle: ConvoKitMessageOptionSheetStyle(
         titleTextStyle: TextStyle(
           color: messageOptionSheetStyle?.titleColor ?? colorPalette.error,
           fontFamily: typography.body?.regular?.fontFamily,
@@ -84,7 +84,7 @@ class MessageTemplateUtils {
     BuildContext context,
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
-    CometChatMessageOptionSheetStyle? messageOptionSheetStyle,
+    ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     return CometChatMessageOption(
       id: MessageOptionConstants.replyMessage,
@@ -94,7 +94,7 @@ class MessageTemplateUtils {
         color: messageOptionSheetStyle?.iconColor ?? colorPalette.iconSecondary,
         size: 24,
       ),
-      messageOptionSheetStyle: CometChatMessageOptionSheetStyle(
+      messageOptionSheetStyle: ConvoKitMessageOptionSheetStyle(
         titleTextStyle: TextStyle(
           color: messageOptionSheetStyle?.titleColor,
           fontFamily: typography.body?.regular?.fontFamily,
@@ -114,7 +114,7 @@ class MessageTemplateUtils {
     BuildContext context,
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
-    CometChatMessageOptionSheetStyle? messageOptionSheetStyle,
+    ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     return CometChatMessageOption(
       id: MessageOptionConstants.replyInThreadMessage,
@@ -124,7 +124,7 @@ class MessageTemplateUtils {
         color: messageOptionSheetStyle?.iconColor ?? colorPalette.iconSecondary,
         size: 24,
       ),
-      messageOptionSheetStyle: CometChatMessageOptionSheetStyle(
+      messageOptionSheetStyle: ConvoKitMessageOptionSheetStyle(
         titleTextStyle: TextStyle(
           color: messageOptionSheetStyle?.titleColor,
           fontFamily: typography.body?.regular?.fontFamily,
@@ -165,7 +165,7 @@ class MessageTemplateUtils {
     BaseMessage messageObject,
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
-    CometChatMessageOptionSheetStyle? messageOptionSheetStyle,
+    ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     // One option id; the title flips on state (mute vocabulary per the
     // landed design). UNKNOWN renders as the muted/get-notifications action —
@@ -183,7 +183,7 @@ class MessageTemplateUtils {
         color: messageOptionSheetStyle?.iconColor ?? colorPalette.iconSecondary,
         size: 24,
       ),
-      messageOptionSheetStyle: CometChatMessageOptionSheetStyle(
+      messageOptionSheetStyle: ConvoKitMessageOptionSheetStyle(
         titleTextStyle: TextStyle(
           color: messageOptionSheetStyle?.titleColor,
           fontFamily: typography.body?.regular?.fontFamily,
@@ -214,7 +214,7 @@ class MessageTemplateUtils {
     BaseMessage messageObject,
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
-    CometChatMessageOptionSheetStyle? messageOptionSheetStyle,
+    ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     // One surface slot; id and title flip on the message's pin state so the
     // handlers can dispatch by id.
@@ -231,7 +231,7 @@ class MessageTemplateUtils {
         color: messageOptionSheetStyle?.iconColor ?? colorPalette.iconSecondary,
         size: 24,
       ),
-      messageOptionSheetStyle: CometChatMessageOptionSheetStyle(
+      messageOptionSheetStyle: ConvoKitMessageOptionSheetStyle(
         titleTextStyle: TextStyle(
           color: messageOptionSheetStyle?.titleColor,
           fontFamily: typography.body?.regular?.fontFamily,
@@ -252,7 +252,7 @@ class MessageTemplateUtils {
     BaseMessage messageObject,
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
-    CometChatMessageOptionSheetStyle? messageOptionSheetStyle,
+    ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     final bool saved = isMessageSaved(messageObject);
     return CometChatMessageOption(
@@ -269,7 +269,7 @@ class MessageTemplateUtils {
         color: messageOptionSheetStyle?.iconColor ?? colorPalette.iconSecondary,
         size: 24,
       ),
-      messageOptionSheetStyle: CometChatMessageOptionSheetStyle(
+      messageOptionSheetStyle: ConvoKitMessageOptionSheetStyle(
         titleTextStyle: TextStyle(
           color: messageOptionSheetStyle?.titleColor,
           fontFamily: typography.body?.regular?.fontFamily,
@@ -289,7 +289,7 @@ class MessageTemplateUtils {
     BuildContext context,
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
-    CometChatMessageOptionSheetStyle? messageOptionSheetStyle,
+    ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     return CometChatMessageOption(
       id: MessageOptionConstants.shareMessage,
@@ -301,7 +301,7 @@ class MessageTemplateUtils {
         width: 24,
         color: messageOptionSheetStyle?.iconColor ?? colorPalette.iconSecondary,
       ),
-      messageOptionSheetStyle: CometChatMessageOptionSheetStyle(
+      messageOptionSheetStyle: ConvoKitMessageOptionSheetStyle(
         titleTextStyle: TextStyle(
           color: messageOptionSheetStyle?.titleColor,
           fontFamily: typography.body?.regular?.fontFamily,
@@ -325,7 +325,7 @@ class MessageTemplateUtils {
     BuildContext context,
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
-    CometChatMessageOptionSheetStyle? messageOptionSheetStyle,
+    ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     return CometChatMessageOption(
       id: MessageOptionConstants.translateMessage,
@@ -337,7 +337,7 @@ class MessageTemplateUtils {
         width: 24,
         color: messageOptionSheetStyle?.iconColor ?? colorPalette.iconSecondary,
       ),
-      messageOptionSheetStyle: CometChatMessageOptionSheetStyle(
+      messageOptionSheetStyle: ConvoKitMessageOptionSheetStyle(
         titleTextStyle: TextStyle(
           color: messageOptionSheetStyle?.titleColor,
           fontFamily: typography.body?.regular?.fontFamily,
@@ -357,7 +357,7 @@ class MessageTemplateUtils {
     BuildContext context,
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
-    CometChatMessageOptionSheetStyle? messageOptionSheetStyle,
+    ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     return CometChatMessageOption(
       id: MessageOptionConstants.copyMessage,
@@ -367,7 +367,7 @@ class MessageTemplateUtils {
         color: messageOptionSheetStyle?.iconColor ?? colorPalette.iconSecondary,
         size: 24,
       ),
-      messageOptionSheetStyle: CometChatMessageOptionSheetStyle(
+      messageOptionSheetStyle: ConvoKitMessageOptionSheetStyle(
         titleTextStyle: TextStyle(
           color: messageOptionSheetStyle?.titleColor,
           fontFamily: typography.body?.regular?.fontFamily,
@@ -387,7 +387,7 @@ class MessageTemplateUtils {
     BuildContext context,
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
-    CometChatMessageOptionSheetStyle? messageOptionSheetStyle,
+    ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     return CometChatMessageOption(
       id: MessageOptionConstants.messageInformation,
@@ -397,7 +397,7 @@ class MessageTemplateUtils {
         color: messageOptionSheetStyle?.iconColor ?? colorPalette.iconSecondary,
         size: 24,
       ),
-      messageOptionSheetStyle: CometChatMessageOptionSheetStyle(
+      messageOptionSheetStyle: ConvoKitMessageOptionSheetStyle(
         titleTextStyle: TextStyle(
           color: messageOptionSheetStyle?.titleColor,
           fontFamily: typography.body?.regular?.fontFamily,
@@ -425,7 +425,7 @@ class MessageTemplateUtils {
     BuildContext context,
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
-    CometChatMessageOptionSheetStyle? messageOptionSheetStyle,
+    ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     return CometChatMessageOption(
       id: MessageOptionConstants.sendMessagePrivately,
@@ -437,7 +437,7 @@ class MessageTemplateUtils {
         width: 24,
         color: messageOptionSheetStyle?.iconColor ?? colorPalette.iconSecondary,
       ),
-      messageOptionSheetStyle: CometChatMessageOptionSheetStyle(
+      messageOptionSheetStyle: ConvoKitMessageOptionSheetStyle(
         titleTextStyle: TextStyle(
           color: messageOptionSheetStyle?.titleColor,
           fontFamily: typography.body?.regular?.fontFamily,
@@ -457,7 +457,7 @@ class MessageTemplateUtils {
     BuildContext context,
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
-    CometChatMessageOptionSheetStyle? messageOptionSheetStyle,
+    ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     return CometChatMessageOption(
       id: MessageOptionConstants.markAsUnread,
@@ -467,7 +467,7 @@ class MessageTemplateUtils {
         color: messageOptionSheetStyle?.iconColor ?? colorPalette.iconSecondary,
         size: 24,
       ),
-      messageOptionSheetStyle: CometChatMessageOptionSheetStyle(
+      messageOptionSheetStyle: ConvoKitMessageOptionSheetStyle(
         titleTextStyle: TextStyle(
           color: messageOptionSheetStyle?.titleColor,
           fontFamily: typography.body?.regular?.fontFamily,
@@ -491,7 +491,7 @@ class MessageTemplateUtils {
     BuildContext context,
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
-    CometChatMessageOptionSheetStyle? messageOptionSheetStyle,
+    ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     return CometChatMessageOption(
       id: MessageOptionConstants.reportMessage,
@@ -501,7 +501,7 @@ class MessageTemplateUtils {
         color: messageOptionSheetStyle?.iconColor ?? colorPalette.iconSecondary,
         size: 24,
       ),
-      messageOptionSheetStyle: CometChatMessageOptionSheetStyle(
+      messageOptionSheetStyle: ConvoKitMessageOptionSheetStyle(
         titleTextStyle: TextStyle(
           color: messageOptionSheetStyle?.titleColor,
           fontFamily: typography.body?.regular?.fontFamily,

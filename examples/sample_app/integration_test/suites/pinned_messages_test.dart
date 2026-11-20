@@ -16,7 +16,7 @@ import '../sdk_user_b/messaging_actions.dart';
 /// How the sample app reaches it (master_app/lib/screens/messages_screen.dart):
 /// the message header's ⋯ menu → "Pinned Messages" pushes
 /// `CometChatPinnedMessages`; a row tap pops it and calls `_openPinnedMessage`,
-/// which scrolls the mounted list via `CometChatMessageListController`.
+/// which scrolls the mounted list via `ConvoKitMessageListController`.
 /// Pin / Unpin live on the SECOND page ("More") of the long-press overlay and
 /// take effect without a confirm dialog; unpinning FROM the pinned list is a
 /// row long-press followed by an "Unpin" confirm.
@@ -52,7 +52,7 @@ void main() {
   /// Ids pinned by the running test; unpinned in tearDown even on failure.
   final pinnedIds = <int>{};
 
-  final messageList = find.byType(CometChatMessageList);
+  final messageList = find.byType(ConvoKitMessageList);
   final pinnedScreen = find.byType(CometChatPinnedMessages);
 
   setUpAll(() async {

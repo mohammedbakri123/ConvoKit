@@ -94,7 +94,7 @@ void main() {
 
     Widget list() => MaterialApp(
       home: Scaffold(
-        body: CometChatMessageList(user: _them, messageListBloc: bloc),
+        body: ConvoKitMessageList(user: _them, messageListBloc: bloc),
       ),
     );
 
@@ -131,7 +131,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatMessageList(user: _them, messageListBloc: bloc),
+          body: ConvoKitMessageList(user: _them, messageListBloc: bloc),
         ),
       ),
     );

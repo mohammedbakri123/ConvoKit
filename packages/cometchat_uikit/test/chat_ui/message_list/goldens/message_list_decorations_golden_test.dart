@@ -1,7 +1,7 @@
 /// Golden pins for the non-bubble rows of the message list: the date
 /// separator, the "New Messages" unread divider, and the group-action
 /// (member joined / kicked / scope changed) bubble. Each is the real Kit
-/// widget, built with the arguments `CometChatMessageList` passes it.
+/// widget, built with the arguments `ConvoKitMessageList` passes it.
 ///
 ///   flutter test test/chat_ui/message_list/goldens/                  # verify
 ///   flutter test test/chat_ui/message_list/goldens/ --update-goldens # rebake

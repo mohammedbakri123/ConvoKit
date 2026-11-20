@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:convokit/cometchat_chat_uikit.dart';
 
-/// Adapter that wraps [MessageListBloc] to implement [CometChatMessageListControllerProtocol].
+/// Adapter that wraps [MessageListBloc] to implement [ConvoKitMessageListControllerProtocol].
 ///
 /// This adapter allows the BLoC-based message list to work with existing
 /// message templates and extensions that expect the controller protocol.
@@ -19,7 +19,7 @@ import 'package:convokit/cometchat_chat_uikit.dart';
 /// // Use adapter with message options
 /// template.options!(loggedInUser, message, context, group, additionalConfigurations);
 /// ```
-class MessageListBlocAdapter implements CometChatMessageListControllerProtocol {
+class MessageListBlocAdapter implements ConvoKitMessageListControllerProtocol {
   /// The underlying BLoC instance
   final MessageListBloc bloc;
 
@@ -53,7 +53,7 @@ class MessageListBlocAdapter implements CometChatMessageListControllerProtocol {
   }
 
   // ============================================================
-  // CometChatMessageListControllerProtocol Implementation
+  // ConvoKitMessageListControllerProtocol Implementation
   // ============================================================
 
   @override

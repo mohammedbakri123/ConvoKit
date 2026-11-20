@@ -1,7 +1,7 @@
-/// Render-verified prop matrix for [CometChatAnimatedMessageList] — Track 3
+/// Render-verified prop matrix for [ConvoKitAnimatedMessageList] — Track 3
 /// PROP1 (ENG-38931).
 ///
-/// The list is the scrolling engine under [CometChatMessageList]: it consumes
+/// The list is the scrolling engine under [ConvoKitMessageList]: it consumes
 /// an [AnimatedMessageListBloc]'s operations stream and animates inserts and
 /// removals. Every case drives it through a mocked bloc, which is what the
 /// real message list does with its own internal one.
@@ -67,7 +67,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -83,7 +83,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -101,7 +101,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -118,7 +118,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -135,7 +135,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -152,7 +152,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -169,7 +169,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -186,7 +186,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -203,7 +203,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -223,7 +223,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -244,7 +244,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -263,7 +263,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -280,7 +280,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -299,7 +299,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -316,7 +316,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -333,7 +333,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -350,7 +350,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(messages: const []),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -369,7 +369,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -386,7 +386,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -407,7 +407,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -427,7 +427,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -444,7 +444,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -461,7 +461,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -478,7 +478,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -497,7 +497,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -517,7 +517,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -538,7 +538,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -557,7 +557,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -574,7 +574,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -594,7 +594,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),
@@ -612,7 +612,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: CometChatAnimatedMessageList(
+          body: ConvoKitAnimatedMessageList(
             bloc: _bloc(),
             itemBuilder: (context, message, index, animation) =>
                 Text('item ${(message as TextMessage).text}'),

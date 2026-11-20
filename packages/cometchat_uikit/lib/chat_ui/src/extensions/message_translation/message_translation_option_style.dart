@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 ///[MessageTranslationOptionStyle] is a data class that has styling-related properties
 ///to customize the appearance of the option that appears in the bottom modal sheet on long-pressing a message bubble
 @Deprecated(
-  'Has no effect: only MessageTranslationConfiguration accepted it. Style the Translate option with CometChatMessageListStyle.messageOptionSheetStyle, and hide it with CometChatMessageList.hideTranslateMessageOption. Will be removed in 7.0.0.',
+  'Has no effect: only MessageTranslationConfiguration accepted it. Style the Translate option with ConvoKitMessageListStyle.messageOptionSheetStyle, and hide it with ConvoKitMessageList.hideTranslateMessageOption. Will be removed in 7.0.0.',
 )
 class MessageTranslationOptionStyle {
   /// Creates a [MessageTranslationOptionStyle].

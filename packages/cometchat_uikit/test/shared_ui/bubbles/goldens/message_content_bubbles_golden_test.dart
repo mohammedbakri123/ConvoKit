@@ -2,7 +2,7 @@
 /// multi-file, multi-audio, deleted, the image/video placeholder state, and a
 /// text bubble carrying a mention. Each renders the real Kit widget as the
 /// content view of a real [CometChatMessageBubble], incoming and outgoing,
-/// the way `CometChatMessageList` composes it.
+/// the way `ConvoKitMessageList` composes it.
 ///
 /// Nothing here reaches the network: media bubbles are given no URL (their
 /// placeholder state is the subject) or a URL that is only ever displayed,

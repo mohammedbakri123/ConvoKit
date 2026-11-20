@@ -1,5 +1,5 @@
 /// Golden pins for the message-list bubble, composed the way
-/// `CometChatMessageList._buildMessageItem` composes it: a
+/// `ConvoKitMessageList._buildMessageItem` composes it: a
 /// [CometChatMessageBubble] carrying a [CometChatTextBubble] as its content
 /// view and a [CometChatReceipt] as its status-info view.
 ///

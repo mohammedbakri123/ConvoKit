@@ -81,7 +81,7 @@ Future<List<String>> _keysFor(
   await tester.pumpWidget(
     MaterialApp(
       home: Scaffold(
-        body: CometChatAnimatedMessageList(
+        body: ConvoKitAnimatedMessageList(
           bloc: _bloc(messages),
           reversed: true,
           itemBuilder: (context, message, index, animation) =>

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 /// deprecation message names the components that now configure what it
 /// described.
 @Deprecated(
-  'Has no effect: no v6 API accepts it. The Translate option shows while the message-translation extension is enabled; hide it with CometChatMessageList.hideTranslateMessageOption, style it with CometChatMessageListStyle.messageOptionSheetStyle, and style the translation with CometChatIncomingMessageBubbleStyle.messageTranslationBubbleStyle and CometChatOutgoingMessageBubbleStyle.messageTranslationBubbleStyle. Will be removed in 7.0.0.',
+  'Has no effect: no v6 API accepts it. The Translate option shows while the message-translation extension is enabled; hide it with ConvoKitMessageList.hideTranslateMessageOption, style it with ConvoKitMessageListStyle.messageOptionSheetStyle, and style the translation with CometChatIncomingMessageBubbleStyle.messageTranslationBubbleStyle and CometChatOutgoingMessageBubbleStyle.messageTranslationBubbleStyle. Will be removed in 7.0.0.',
 )
 class MessageTranslationConfiguration {
   /// Creates a [MessageTranslationConfiguration].

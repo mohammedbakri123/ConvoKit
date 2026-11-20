@@ -16,7 +16,7 @@ import 'package:convokit/chat_ui/src/message_list/domain/usecases/get_logged_in_
 import 'package:convokit/shared_ui/src/clean_architecture/core/result.dart';
 
 // ===========================================================================
-// CometChatMessageListDateTimeFormatPropertyTest — Flutter equivalent
+// ConvoKitMessageListDateTimeFormatPropertyTest — Flutter equivalent
 // Tests date/time formatting logic: today shows time only, yesterday shows
 // "Yesterday", older shows date, date separator format, header timestamp.
 // ===========================================================================

@@ -49,7 +49,7 @@ typedef MessageItemBuilder =
 ///
 /// It works with [AnimatedMessageListBloc] for state management and receives
 /// [MessageOperation] events for animations.
-class CometChatAnimatedMessageList extends StatefulWidget {
+class ConvoKitAnimatedMessageList extends StatefulWidget {
   // Deprecated in 6.2.0: no effect, removed in 7.0.0.
 
   /// Whether to handle the safe area.
@@ -160,7 +160,7 @@ class CometChatAnimatedMessageList extends StatefulWidget {
   /// because the list doesn't contain the latest messages yet.
   final bool hasMoreNewer;
 
-  const CometChatAnimatedMessageList({
+  const ConvoKitAnimatedMessageList({
     super.key,
     required this.itemBuilder,
     required this.bloc,
@@ -197,12 +197,12 @@ class CometChatAnimatedMessageList extends StatefulWidget {
   });
 
   @override
-  State<CometChatAnimatedMessageList> createState() =>
-      _CometChatAnimatedMessageListState();
+  State<ConvoKitAnimatedMessageList> createState() =>
+      _ConvoKitAnimatedMessageListState();
 }
 
-class _CometChatAnimatedMessageListState
-    extends State<CometChatAnimatedMessageList>
+class _ConvoKitAnimatedMessageListState
+    extends State<ConvoKitAnimatedMessageList>
     with TickerProviderStateMixin {
   // Keys and controllers
   GlobalKey<SliverAnimatedListState> _listKey = GlobalKey();

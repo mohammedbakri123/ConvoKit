@@ -665,51 +665,51 @@ void main() {
     );
 
     test(
-      'CometChatMessageOptionSheetStyle keeps every field through copyWith/merge/lerp',
+      'ConvoKitMessageOptionSheetStyle keeps every field through copyWith/merge/lerp',
       () {
-        expectStyleContract<CometChatMessageOptionSheetStyle>(
-          label: 'CometChatMessageOptionSheetStyle',
-          empty: const CometChatMessageOptionSheetStyle(),
+        expectStyleContract<ConvoKitMessageOptionSheetStyle>(
+          label: 'ConvoKitMessageOptionSheetStyle',
+          empty: const ConvoKitMessageOptionSheetStyle(),
           copyWithNothing: (s) => s.copyWith(),
           merge: (s, o) => s.merge(o),
           lerp: (s, o, t) => s.lerp(o, t),
           fields: [
-            Fld<CometChatMessageOptionSheetStyle, Color>(
+            Fld<ConvoKitMessageOptionSheetStyle, Color>(
               'backgroundColor',
               const Color(0xFFB764A8),
               const Color(0xFFC169AB),
               (s, v) => s.copyWith(backgroundColor: v),
               (s) => s.backgroundColor,
             ),
-            Fld<CometChatMessageOptionSheetStyle, Border>(
+            Fld<ConvoKitMessageOptionSheetStyle, Border>(
               'border',
               Border.all(width: 226.5),
               Border.all(width: 227.5),
               (s, v) => s.copyWith(border: v),
               (s) => s.border,
             ),
-            Fld<CometChatMessageOptionSheetStyle, BorderRadiusGeometry>(
+            Fld<ConvoKitMessageOptionSheetStyle, BorderRadiusGeometry>(
               'borderRadius',
               BorderRadius.circular(228.5),
               BorderRadius.circular(229.5),
               (s, v) => s.copyWith(borderRadius: v),
               (s) => s.borderRadius,
             ),
-            Fld<CometChatMessageOptionSheetStyle, TextStyle>(
+            Fld<ConvoKitMessageOptionSheetStyle, TextStyle>(
               'titleTextStyle',
               const TextStyle(fontSize: 230.5),
               const TextStyle(fontSize: 231.5),
               (s, v) => s.copyWith(titleTextStyle: v),
               (s) => s.titleTextStyle,
             ),
-            Fld<CometChatMessageOptionSheetStyle, Color>(
+            Fld<ConvoKitMessageOptionSheetStyle, Color>(
               'titleColor',
               const Color(0xFF078CC0),
               const Color(0xFF1191C3),
               (s, v) => s.copyWith(titleColor: v),
               (s) => s.titleColor,
             ),
-            Fld<CometChatMessageOptionSheetStyle, Color>(
+            Fld<ConvoKitMessageOptionSheetStyle, Color>(
               'iconColor',
               const Color(0xFF1B96C6),
               const Color(0xFF259BC9),

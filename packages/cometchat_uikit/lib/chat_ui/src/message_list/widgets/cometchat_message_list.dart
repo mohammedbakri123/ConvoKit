@@ -42,26 +42,26 @@ typedef HeaderFooterBuilder =
 /// Builder function for state views (empty, error, loading)
 typedef StateViewBuilder = Widget Function(BuildContext context);
 
-/// [CometChatMessageList] is a Clean Architecture + BLoC based message list widget.
-/// Imperative handle for an already-mounted [CometChatMessageList].
+/// [ConvoKitMessageList] is a Clean Architecture + BLoC based message list widget.
+/// Imperative handle for an already-mounted [ConvoKitMessageList].
 ///
-/// [CometChatMessageList.goToMessageId] is read once, in initState, so it can
+/// [ConvoKitMessageList.goToMessageId] is read once, in initState, so it can
 /// only aim a list that is about to be built. Surfaces that stay on screen
 /// and need to re-aim the list they already have — a pinned or saved row
 /// jumping to its message — attach one of these instead of remounting.
 ///
-/// Create it in the host State, pass it to [CometChatMessageList.controller],
+/// Create it in the host State, pass it to [ConvoKitMessageList.controller],
 /// and call [jumpToMessage]. It attaches on mount and detaches on dispose;
 /// calls made while detached return false rather than throwing.
-class CometChatMessageListController {
-  _CometChatMessageListState? _state;
+class ConvoKitMessageListController {
+  _ConvoKitMessageListState? _state;
 
   /// Whether a list is currently mounted and listening.
   bool get isAttached => _state != null;
 
-  void _attach(_CometChatMessageListState state) => _state = state;
+  void _attach(_ConvoKitMessageListState state) => _state = state;
 
-  void _detach(_CometChatMessageListState state) {
+  void _detach(_ConvoKitMessageListState state) {
     // Guarded so a new list attaching before the old one disposes (route
     // transitions rebuild both) does not clear the live attachment.
     if (identical(_state, state)) _state = null;
@@ -78,7 +78,7 @@ class CometChatMessageListController {
   }
 }
 
-class CometChatMessageList extends StatefulWidget {
+class ConvoKitMessageList extends StatefulWidget {
   /// Whether mentions are disabled. When true, the list renders messages
   /// without a [CometChatMentionsFormatter], including one passed in
   /// [textFormatters].
@@ -99,7 +99,7 @@ class CometChatMessageList extends StatefulWidget {
   /// Text shown when the list is empty. Ignored when [emptyStateView] is set.
   final String? emptyStateText;
 
-  const CometChatMessageList({
+  const ConvoKitMessageList({
     super.key,
     this.user,
     this.group,
@@ -218,19 +218,19 @@ class CometChatMessageList extends StatefulWidget {
   final WidgetBuilder? emptyStateView;
   final WidgetBuilder? errorStateView;
   final WidgetBuilder? emptyChatGreetingView;
-  final CometChatMessageListStyle? style;
+  final ConvoKitMessageListStyle? style;
   final ScrollController? scrollController;
 
   ///[controller] optional imperative handle used to re-aim an already-mounted
-  ///list (see [CometChatMessageListController.jumpToMessage]). Unlike
+  ///list (see [ConvoKitMessageListController.jumpToMessage]). Unlike
   ///[goToMessageId], which is consumed once at init, this works for the life
   ///of the widget.
-  final CometChatMessageListController? controller;
+  final ConvoKitMessageListController? controller;
   final ChatAlignment alignment;
   final OnError? onError;
   final OnLoad<BaseMessage>? onLoad;
   final OnEmpty? onEmpty;
-  final Function(CometChatMessageListControllerProtocol controller)?
+  final Function(ConvoKitMessageListControllerProtocol controller)?
   stateCallBack;
 
   ///[customSoundForMessages] asset path of the sound played when a message
@@ -366,16 +366,16 @@ class CometChatMessageList extends StatefulWidget {
   final bool loadLastAgentConversation;
 
   @override
-  State<CometChatMessageList> createState() => _CometChatMessageListState();
+  State<ConvoKitMessageList> createState() => _ConvoKitMessageListState();
 }
 
-class _CometChatMessageListState extends State<CometChatMessageList>
+class _ConvoKitMessageListState extends State<ConvoKitMessageList>
     with WidgetsBindingObserver, CometChatUIEventListener {
   late MessageListBloc _messageListBloc;
   late AnimatedMessageListBloc _animatedBloc;
   bool _isExternalBloc = false;
   late MessageListBlocAdapter _blocAdapter;
-  late CometChatMessageListStyle _style;
+  late ConvoKitMessageListStyle _style;
   late CometChatColorPalette _colorPalette;
   late CometChatTypography _typography;
   late CometChatSpacing _spacing;
@@ -489,13 +489,13 @@ class _CometChatMessageListState extends State<CometChatMessageList>
     _blocAdapter.updateContext(context);
     // Sync moderation visibility flag so shared utilities that consult the
     // singleton (e.g. bubble radius helpers) stay in step with the widget
-    // prop. v5 parity: CometChatMessageListController did the same.
+    // prop. v5 parity: ConvoKitMessageListController did the same.
     ModerationCheckUtil.instance.hideModerationStatus =
         widget.hideModerationView ?? false;
   }
 
   @override
-  void didUpdateWidget(covariant CometChatMessageList oldWidget) {
+  void didUpdateWidget(covariant ConvoKitMessageList oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (!identical(oldWidget.controller, widget.controller)) {
       oldWidget.controller?._detach(this);
@@ -511,9 +511,9 @@ class _CometChatMessageListState extends State<CometChatMessageList>
     _colorPalette = CometChatThemeHelper.getColorPalette(context);
     _typography = CometChatThemeHelper.getTypography(context);
     _spacing = CometChatThemeHelper.getSpacing(context);
-    _style = CometChatThemeHelper.getTheme<CometChatMessageListStyle>(
+    _style = CometChatThemeHelper.getTheme<ConvoKitMessageListStyle>(
       context: context,
-      defaultTheme: CometChatMessageListStyle.of,
+      defaultTheme: ConvoKitMessageListStyle.of,
     ).merge(widget.style);
 
     // Cache bubble styles to avoid expensive lookups during rebuilds
@@ -1080,7 +1080,7 @@ class _CometChatMessageListState extends State<CometChatMessageList>
   /// Builds the AI greeting view matching v5 pattern:
   /// Avatar + greeting message + introductory message + suggested message chips.
   /// Data comes from user.metadata fields set on the CometChat dashboard;
-  /// [CometChatMessageList.suggestedMessages] replaces the metadata chips.
+  /// [ConvoKitMessageList.suggestedMessages] replaces the metadata chips.
   Widget _buildAIGreetingView() {
     final user = widget.user;
     final greetingMessage =
@@ -1267,7 +1267,7 @@ class _CometChatMessageListState extends State<CometChatMessageList>
         Expanded(
           child: Stack(
             children: [
-              CometChatAnimatedMessageList(
+              ConvoKitAnimatedMessageList(
                 bloc: _animatedBloc,
                 itemBuilder: _buildMessageItem,
                 scrollController: _scrollController,
@@ -2353,8 +2353,8 @@ class _CometChatMessageListState extends State<CometChatMessageList>
     );
   }
 
-  /// [CometChatMessageList.textFormatters], without its mentions formatters
-  /// when [CometChatMessageList.disableMentions] is true.
+  /// [ConvoKitMessageList.textFormatters], without its mentions formatters
+  /// when [ConvoKitMessageList.disableMentions] is true.
   List<CometChatTextFormatter>? _givenTextFormatters() {
     final given = widget.textFormatters;
     if (given == null || widget.disableMentions != true) return given;
@@ -2364,9 +2364,9 @@ class _CometChatMessageListState extends State<CometChatMessageList>
     ];
   }
 
-  /// The kit's default formatters with [CometChatMessageList.disableMentions],
-  /// [CometChatMessageList.mentionAllLabel] and
-  /// [CometChatMessageList.mentionAllLabelId] applied, or null (each call
+  /// The kit's default formatters with [ConvoKitMessageList.disableMentions],
+  /// [ConvoKitMessageList.mentionAllLabel] and
+  /// [ConvoKitMessageList.mentionAllLabelId] applied, or null (each call
   /// site keeps its own default) when none of them is set.
   List<CometChatTextFormatter>? _mentionConfiguredDefaults() {
     final disableMentions = widget.disableMentions == true;
@@ -3096,7 +3096,7 @@ class _CometChatMessageListState extends State<CometChatMessageList>
     );
   }
 
-  /// The timestamp shown on a bubble: [CometChatMessageList.datePattern] when
+  /// The timestamp shown on a bubble: [ConvoKitMessageList.datePattern] when
   /// set, else the `time` of the list's [DateTimeFormatterCallback], else the
   /// app-wide one, else `h:mm am/pm`. Same fallback order as [CometChatDate].
   String _formatTime(BaseMessage message, DateTime dateTime) {
@@ -3238,7 +3238,7 @@ class _CometChatMessageListState extends State<CometChatMessageList>
     );
   }
 
-  /// Maps the list-level [CometChatMessageListStyle.messageOptionSheetStyle]
+  /// Maps the list-level [ConvoKitMessageListStyle.messageOptionSheetStyle]
   /// onto the action overlay's own style. The overlay is what v6 shows in
   /// place of the v5 option sheet, so this is where that style has to land.
   /// `border` has no overlay equivalent and is not mapped.

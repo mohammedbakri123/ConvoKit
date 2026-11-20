@@ -115,7 +115,7 @@ class _ThreadScreenState extends State<ThreadScreen> {
               Expanded(
                 child: GestureDetector(
                   onTap: () => FocusScope.of(context).unfocus(),
-                  child: CometChatMessageList(
+                  child: ConvoKitMessageList(
                     user: widget.user,
                     group: widget.group,
                     parentMessageId: widget.message.id,

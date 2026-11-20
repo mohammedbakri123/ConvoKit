@@ -84,7 +84,7 @@ class CometChatReactionList extends StatefulWidget {
 
   ///[avatarStyle] styles the avatar on each reactor row. Takes precedence
   ///over [CometChatReactionListStyle.avatarStyle], which is the way to set it
-  ///on the list [CometChatMessageList] opens.
+  ///on the list [ConvoKitMessageList] opens.
   final CometChatAvatarStyle? avatarStyle;
 
   ///[message] is a parameter used to set the message object for which the reactions are to be fetched

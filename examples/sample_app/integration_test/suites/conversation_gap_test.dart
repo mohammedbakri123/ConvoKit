@@ -60,7 +60,7 @@ void main() {
   final bUid = TestCredentials.userBUid;
   final bName = TestCredentials.userBName;
 
-  final messageList = find.byType(CometChatMessageList);
+  final messageList = find.byType(ConvoKitMessageList);
 
   setUp(() async {
     await CleanupHelper.fullReset();

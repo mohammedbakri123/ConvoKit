@@ -367,7 +367,7 @@ void main() {
         .map((a) => a.style?.backgroundColor);
 
     testWidgets('style avatarStyle reaches every reactor avatar — the route '
-        'CometChatMessageList takes through reactionListStyle', (tester) async {
+        'ConvoKitMessageList takes through reactionListStyle', (tester) async {
       const fill = Color(0xFF1A0A0A);
       await tester.pumpWidget(
         MaterialApp(

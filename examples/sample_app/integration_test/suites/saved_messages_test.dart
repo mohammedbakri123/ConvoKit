@@ -35,7 +35,7 @@ void main() {
   final stamp = DateTime.now().millisecondsSinceEpoch;
   final savedIds = <int>{};
 
-  final messageList = find.byType(CometChatMessageList);
+  final messageList = find.byType(ConvoKitMessageList);
   final savedScreen = find.byType(CometChatSavedMessages);
 
   setUpAll(() async {

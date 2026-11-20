@@ -235,7 +235,7 @@ void main() {
 
   // ---------------------------------------------------------------------------
   group('CometChatMessageOption', () {
-    const sheetStyle = CometChatMessageOptionSheetStyle(
+    const sheetStyle = ConvoKitMessageOptionSheetStyle(
       titleTextStyle: TextStyle(fontSize: 15),
       iconColor: Color(0xFF0C5F66),
       backgroundColor: Color(0xFFFFFFFF),

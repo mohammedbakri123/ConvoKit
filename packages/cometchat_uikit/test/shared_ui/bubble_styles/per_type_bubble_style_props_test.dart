@@ -11,7 +11,7 @@
 /// and hands them to the surrounding [CometChatMessageBubble].
 ///
 /// So the file has two halves: the chrome nine driven through
-/// [CometChatMessageList] with a message of the right type, and the
+/// [ConvoKitMessageList] with a message of the right type, and the
 /// type-specific properties asserted on their own widget.
 ///
 ///   flutter test test/shared_ui/bubble_styles/per_type_bubble_style_props_test.dart
@@ -156,10 +156,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_text()),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   textBubbleStyle: CometChatTextBubbleStyle(
                     border: Border.fromBorderSide(
@@ -180,10 +180,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_text()),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   textBubbleStyle: CometChatTextBubbleStyle(
                     borderRadius: BorderRadius.all(Radius.circular(63)),
@@ -207,10 +207,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_text()),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   textBubbleStyle: CometChatTextBubbleStyle(
                     messageBubbleBackgroundImage: DecorationImage(
@@ -231,10 +231,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_text()),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   textBubbleStyle: CometChatTextBubbleStyle(
                     messageBubbleDateStyle: CometChatDateStyle(
@@ -255,10 +255,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_text()),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   textBubbleStyle: CometChatTextBubbleStyle(
                     messageBubbleAvatarStyle: CometChatAvatarStyle(
@@ -279,10 +279,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_text()),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   textBubbleStyle: CometChatTextBubbleStyle(
                     senderNameTextStyle: TextStyle(fontSize: 23),
@@ -303,10 +303,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_text()),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   textBubbleStyle: CometChatTextBubbleStyle(
                     threadedMessageIndicatorTextStyle: TextStyle(fontSize: 11),
@@ -327,10 +327,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_text()),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   textBubbleStyle: CometChatTextBubbleStyle(
                     threadedMessageIndicatorIconColor: Color(0x0ff1d077),
@@ -349,10 +349,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_text(byMe: true)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 outgoingMessageBubbleStyle: CometChatOutgoingMessageBubbleStyle(
                   textBubbleStyle: CometChatTextBubbleStyle(
                     messageReceiptStyle: CometChatMessageReceiptStyle(
@@ -375,10 +375,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.image)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   imageBubbleStyle: CometChatImageBubbleStyle(
                     border: Border.fromBorderSide(
@@ -399,10 +399,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.image)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   imageBubbleStyle: CometChatImageBubbleStyle(
                     borderRadius: BorderRadius.all(Radius.circular(63)),
@@ -426,10 +426,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.image)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   imageBubbleStyle: CometChatImageBubbleStyle(
                     messageBubbleBackgroundImage: DecorationImage(
@@ -450,10 +450,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.image)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   imageBubbleStyle: CometChatImageBubbleStyle(
                     messageBubbleDateStyle: CometChatDateStyle(
@@ -474,10 +474,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.image)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   imageBubbleStyle: CometChatImageBubbleStyle(
                     messageBubbleAvatarStyle: CometChatAvatarStyle(
@@ -498,10 +498,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.image)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   imageBubbleStyle: CometChatImageBubbleStyle(
                     senderNameTextStyle: TextStyle(fontSize: 23),
@@ -522,10 +522,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.image)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   imageBubbleStyle: CometChatImageBubbleStyle(
                     threadedMessageIndicatorTextStyle: TextStyle(fontSize: 11),
@@ -546,10 +546,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.image)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   imageBubbleStyle: CometChatImageBubbleStyle(
                     threadedMessageIndicatorIconColor: Color(0x0ff1d177),
@@ -568,12 +568,12 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(
                 _media(MessageTypeConstants.image, byMe: true),
               ),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 outgoingMessageBubbleStyle: CometChatOutgoingMessageBubbleStyle(
                   imageBubbleStyle: CometChatImageBubbleStyle(
                     messageReceiptStyle: CometChatMessageReceiptStyle(
@@ -596,10 +596,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.video)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   videoBubbleStyle: CometChatVideoBubbleStyle(
                     border: Border.fromBorderSide(
@@ -620,10 +620,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.video)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   videoBubbleStyle: CometChatVideoBubbleStyle(
                     borderRadius: BorderRadius.all(Radius.circular(63)),
@@ -647,10 +647,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.video)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   videoBubbleStyle: CometChatVideoBubbleStyle(
                     messageBubbleBackgroundImage: DecorationImage(
@@ -671,10 +671,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.video)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   videoBubbleStyle: CometChatVideoBubbleStyle(
                     messageBubbleDateStyle: CometChatDateStyle(
@@ -695,10 +695,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.video)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   videoBubbleStyle: CometChatVideoBubbleStyle(
                     messageBubbleAvatarStyle: CometChatAvatarStyle(
@@ -719,10 +719,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.video)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   videoBubbleStyle: CometChatVideoBubbleStyle(
                     senderNameTextStyle: TextStyle(fontSize: 23),
@@ -743,10 +743,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.video)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   videoBubbleStyle: CometChatVideoBubbleStyle(
                     threadedMessageIndicatorTextStyle: TextStyle(fontSize: 11),
@@ -767,10 +767,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.video)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   videoBubbleStyle: CometChatVideoBubbleStyle(
                     threadedMessageIndicatorIconColor: Color(0x0ff1d277),
@@ -789,12 +789,12 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(
                 _media(MessageTypeConstants.video, byMe: true),
               ),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 outgoingMessageBubbleStyle: CometChatOutgoingMessageBubbleStyle(
                   videoBubbleStyle: CometChatVideoBubbleStyle(
                     messageReceiptStyle: CometChatMessageReceiptStyle(
@@ -817,10 +817,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.file)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   fileBubbleStyle: CometChatFileBubbleStyle(
                     border: Border.fromBorderSide(
@@ -841,10 +841,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.file)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   fileBubbleStyle: CometChatFileBubbleStyle(
                     borderRadius: BorderRadius.all(Radius.circular(63)),
@@ -868,10 +868,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.file)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   fileBubbleStyle: CometChatFileBubbleStyle(
                     messageBubbleBackgroundImage: DecorationImage(
@@ -892,10 +892,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.file)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   fileBubbleStyle: CometChatFileBubbleStyle(
                     messageBubbleDateStyle: CometChatDateStyle(
@@ -916,10 +916,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.file)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   fileBubbleStyle: CometChatFileBubbleStyle(
                     messageBubbleAvatarStyle: CometChatAvatarStyle(
@@ -940,10 +940,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.file)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   fileBubbleStyle: CometChatFileBubbleStyle(
                     senderNameTextStyle: TextStyle(fontSize: 23),
@@ -964,10 +964,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.file)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   fileBubbleStyle: CometChatFileBubbleStyle(
                     threadedMessageIndicatorTextStyle: TextStyle(fontSize: 11),
@@ -988,10 +988,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.file)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   fileBubbleStyle: CometChatFileBubbleStyle(
                     threadedMessageIndicatorIconColor: Color(0x0ff1d377),
@@ -1010,12 +1010,12 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(
                 _media(MessageTypeConstants.file, byMe: true),
               ),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 outgoingMessageBubbleStyle: CometChatOutgoingMessageBubbleStyle(
                   fileBubbleStyle: CometChatFileBubbleStyle(
                     messageReceiptStyle: CometChatMessageReceiptStyle(
@@ -1038,10 +1038,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_custom(ExtensionType.sticker)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   stickerBubbleStyle: CometChatStickerBubbleStyle(
                     border: Border.fromBorderSide(
@@ -1062,10 +1062,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_custom(ExtensionType.sticker)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   stickerBubbleStyle: CometChatStickerBubbleStyle(
                     borderRadius: BorderRadius.all(Radius.circular(63)),
@@ -1089,10 +1089,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_custom(ExtensionType.sticker)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   stickerBubbleStyle: CometChatStickerBubbleStyle(
                     messageBubbleBackgroundImage: DecorationImage(
@@ -1113,10 +1113,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_custom(ExtensionType.sticker)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   stickerBubbleStyle: CometChatStickerBubbleStyle(
                     messageBubbleDateStyle: CometChatDateStyle(
@@ -1137,10 +1137,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_custom(ExtensionType.sticker)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   stickerBubbleStyle: CometChatStickerBubbleStyle(
                     messageBubbleAvatarStyle: CometChatAvatarStyle(
@@ -1161,10 +1161,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_custom(ExtensionType.sticker)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   stickerBubbleStyle: CometChatStickerBubbleStyle(
                     senderNameTextStyle: TextStyle(fontSize: 23),
@@ -1185,10 +1185,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_custom(ExtensionType.sticker)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   stickerBubbleStyle: CometChatStickerBubbleStyle(
                     threadedMessageIndicatorTextStyle: TextStyle(fontSize: 11),
@@ -1209,10 +1209,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_custom(ExtensionType.sticker)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   stickerBubbleStyle: CometChatStickerBubbleStyle(
                     threadedMessageIndicatorIconColor: Color(0x0ff1d477),
@@ -1231,12 +1231,12 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(
                 _custom(ExtensionType.sticker, byMe: true),
               ),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 outgoingMessageBubbleStyle: CometChatOutgoingMessageBubbleStyle(
                   stickerBubbleStyle: CometChatStickerBubbleStyle(
                     messageReceiptStyle: CometChatMessageReceiptStyle(
@@ -1259,10 +1259,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_text(deletedAt: DateTime(2024, 1, 1))),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   deletedBubbleStyle: CometChatDeletedBubbleStyle(
                     border: Border.fromBorderSide(
@@ -1283,10 +1283,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_text(deletedAt: DateTime(2024, 1, 1))),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   deletedBubbleStyle: CometChatDeletedBubbleStyle(
                     borderRadius: BorderRadius.all(Radius.circular(63)),
@@ -1310,10 +1310,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_text(deletedAt: DateTime(2024, 1, 1))),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   deletedBubbleStyle: CometChatDeletedBubbleStyle(
                     messageBubbleBackgroundImage: DecorationImage(
@@ -1339,10 +1339,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_text(deletedAt: DateTime(2024, 1, 1))),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   deletedBubbleStyle: CometChatDeletedBubbleStyle(
                     messageBubbleDateStyle: CometChatDateStyle(
@@ -1363,10 +1363,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_text(deletedAt: DateTime(2024, 1, 1))),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   deletedBubbleStyle: CometChatDeletedBubbleStyle(
                     messageBubbleAvatarStyle: CometChatAvatarStyle(
@@ -1387,10 +1387,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_text(deletedAt: DateTime(2024, 1, 1))),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   deletedBubbleStyle: CometChatDeletedBubbleStyle(
                     senderNameTextStyle: TextStyle(fontSize: 23),
@@ -1411,10 +1411,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_text(deletedAt: DateTime(2024, 1, 1))),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   deletedBubbleStyle: CometChatDeletedBubbleStyle(
                     threadedMessageIndicatorTextStyle: TextStyle(fontSize: 11),
@@ -1435,10 +1435,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_text(deletedAt: DateTime(2024, 1, 1))),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   deletedBubbleStyle: CometChatDeletedBubbleStyle(
                     threadedMessageIndicatorIconColor: Color(0x0ff1d577),
@@ -1457,12 +1457,12 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(
                 _text(deletedAt: DateTime(2024, 1, 1), byMe: true),
               ),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 outgoingMessageBubbleStyle: CometChatOutgoingMessageBubbleStyle(
                   deletedBubbleStyle: CometChatDeletedBubbleStyle(
                     messageReceiptStyle: CometChatMessageReceiptStyle(
@@ -1707,10 +1707,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.audio)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   voiceNoteBubbleStyle: CometChatVoiceNoteBubbleStyle(
                     border: Border.fromBorderSide(
@@ -1731,10 +1731,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.audio)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   voiceNoteBubbleStyle: CometChatVoiceNoteBubbleStyle(
                     borderRadius: BorderRadius.all(Radius.circular(83)),
@@ -1758,10 +1758,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.audio)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   voiceNoteBubbleStyle: CometChatVoiceNoteBubbleStyle(
                     messageBubbleBackgroundImage: DecorationImage(
@@ -1782,10 +1782,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.audio)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   voiceNoteBubbleStyle: CometChatVoiceNoteBubbleStyle(
                     messageBubbleDateStyle: CometChatDateStyle(
@@ -1806,10 +1806,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.audio)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   voiceNoteBubbleStyle: CometChatVoiceNoteBubbleStyle(
                     messageBubbleAvatarStyle: CometChatAvatarStyle(
@@ -1830,10 +1830,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.audio)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   voiceNoteBubbleStyle: CometChatVoiceNoteBubbleStyle(
                     senderNameTextStyle: TextStyle(fontSize: 23),
@@ -1854,10 +1854,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.audio)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   voiceNoteBubbleStyle: CometChatVoiceNoteBubbleStyle(
                     threadedMessageIndicatorTextStyle: TextStyle(fontSize: 11),
@@ -1878,10 +1878,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.audio)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   voiceNoteBubbleStyle: CometChatVoiceNoteBubbleStyle(
                     threadedMessageIndicatorIconColor: Color(0xFF1F1003),
@@ -1900,12 +1900,12 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(
                 _media(MessageTypeConstants.audio, byMe: true),
               ),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 outgoingMessageBubbleStyle: CometChatOutgoingMessageBubbleStyle(
                   voiceNoteBubbleStyle: CometChatVoiceNoteBubbleStyle(
                     messageReceiptStyle: CometChatMessageReceiptStyle(
@@ -1928,10 +1928,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_call()),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   voiceCallBubbleStyle: CometChatCallBubbleStyle(
                     border: Border.fromBorderSide(
@@ -1952,10 +1952,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_call()),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   voiceCallBubbleStyle: CometChatCallBubbleStyle(
                     borderRadius: BorderRadius.all(Radius.circular(83)),
@@ -1979,10 +1979,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_call()),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   voiceCallBubbleStyle: CometChatCallBubbleStyle(
                     messageBubbleBackgroundImage: DecorationImage(
@@ -2003,10 +2003,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_call()),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   voiceCallBubbleStyle: CometChatCallBubbleStyle(
                     messageBubbleDateStyle: CometChatDateStyle(
@@ -2027,10 +2027,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_call()),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   voiceCallBubbleStyle: CometChatCallBubbleStyle(
                     messageBubbleAvatarStyle: CometChatAvatarStyle(
@@ -2051,10 +2051,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_call()),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   voiceCallBubbleStyle: CometChatCallBubbleStyle(
                     senderNameTextStyle: TextStyle(fontSize: 23),
@@ -2075,10 +2075,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_call()),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   voiceCallBubbleStyle: CometChatCallBubbleStyle(
                     threadedMessageIndicatorTextStyle: TextStyle(fontSize: 11),
@@ -2099,10 +2099,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_call()),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   voiceCallBubbleStyle: CometChatCallBubbleStyle(
                     threadedMessageIndicatorIconColor: Color(0xFF1F2003),
@@ -2121,10 +2121,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_call(byMe: true)),
-              style: CometChatMessageListStyle(
+              style: ConvoKitMessageListStyle(
                 outgoingMessageBubbleStyle: CometChatOutgoingMessageBubbleStyle(
                   voiceCallBubbleStyle: CometChatCallBubbleStyle(
                     messageReceiptStyle: CometChatMessageReceiptStyle(

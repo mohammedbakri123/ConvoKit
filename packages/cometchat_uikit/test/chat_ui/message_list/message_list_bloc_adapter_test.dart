@@ -1,5 +1,5 @@
 /// MessageListBlocAdapter — the shim that lets legacy templates and
-/// extensions drive the BLoC through `CometChatMessageListControllerProtocol`.
+/// extensions drive the BLoC through `ConvoKitMessageListControllerProtocol`.
 ///
 /// Every method is a one-line delegation, which is exactly why it is worth
 /// pinning: a protocol method wired to the wrong event (or to the wrong

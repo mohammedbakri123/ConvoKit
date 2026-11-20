@@ -8,14 +8,14 @@ import 'package:convokit/chat_ui/src/message_list/cometchat_message_list_style.d
 // ---------------------------------------------------------------------------
 
 void main() {
-  group('CometChatMessageListStyle', () {
+  group('ConvoKitMessageListStyle', () {
     // =====================================================================
     // Default Values
     // =====================================================================
 
     group('Default Values', () {
       test('all properties are null by default', () {
-        const style = CometChatMessageListStyle();
+        const style = ConvoKitMessageListStyle();
         expect(style.backgroundColor, isNull);
         expect(style.border, isNull);
         expect(style.borderRadius, isNull);
@@ -39,7 +39,7 @@ void main() {
       });
 
       test('empty chat greeting properties are null by default', () {
-        const style = CometChatMessageListStyle();
+        const style = ConvoKitMessageListStyle();
         expect(style.emptyChatGreetingTitleTextColor, isNull);
         expect(style.emptyChatGreetingTitleTextStyle, isNull);
         expect(style.emptyChatGreetingSubtitleTextColor, isNull);
@@ -53,7 +53,7 @@ void main() {
 
     group('Custom Values', () {
       test('constructor accepts all custom values', () {
-        const style = CometChatMessageListStyle(
+        const style = ConvoKitMessageListStyle(
           backgroundColor: Colors.red,
           border: Border(top: BorderSide(color: Colors.blue, width: 2)),
           borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -76,7 +76,7 @@ void main() {
 
       test('constructor accepts TextStyle values', () {
         const textStyle = TextStyle(fontSize: 16, fontWeight: FontWeight.bold);
-        const style = CometChatMessageListStyle(
+        const style = ConvoKitMessageListStyle(
           emptyStateTextStyle: textStyle,
           emptyStateSubtitleStyle: textStyle,
           errorStateTextStyle: textStyle,
@@ -99,7 +99,7 @@ void main() {
 
     group('copyWith', () {
       test('copyWith returns new instance with replaced values', () {
-        const original = CometChatMessageListStyle(
+        const original = ConvoKitMessageListStyle(
           backgroundColor: Colors.red,
           emptyStateTextColor: Colors.green,
         );
@@ -109,7 +109,7 @@ void main() {
       });
 
       test('copyWith preserves all values when no arguments passed', () {
-        const original = CometChatMessageListStyle(
+        const original = ConvoKitMessageListStyle(
           backgroundColor: Colors.red,
           emptyStateTextColor: Colors.green,
           errorStateTextColor: Colors.blue,
@@ -123,7 +123,7 @@ void main() {
       });
 
       test('copyWith replaces border and borderRadius', () {
-        const original = CometChatMessageListStyle(
+        const original = ConvoKitMessageListStyle(
           border: Border(top: BorderSide(color: Colors.red)),
           borderRadius: BorderRadius.all(Radius.circular(8)),
         );
@@ -138,7 +138,7 @@ void main() {
       });
 
       test('copyWith replaces empty state styles', () {
-        const original = CometChatMessageListStyle(
+        const original = ConvoKitMessageListStyle(
           emptyStateTextStyle: TextStyle(fontSize: 14),
           emptyStateSubtitleStyle: TextStyle(fontSize: 12),
         );
@@ -150,7 +150,7 @@ void main() {
       });
 
       test('copyWith replaces error state styles', () {
-        const original = CometChatMessageListStyle(
+        const original = ConvoKitMessageListStyle(
           errorStateTextStyle: TextStyle(fontSize: 14),
           errorStateSubtitleStyle: TextStyle(fontSize: 12),
         );
@@ -163,7 +163,7 @@ void main() {
       });
 
       test('copyWith replaces greeting styles', () {
-        const original = CometChatMessageListStyle(
+        const original = ConvoKitMessageListStyle(
           emptyChatGreetingTitleTextColor: Colors.red,
           emptyChatGreetingSubtitleTextColor: Colors.blue,
         );
@@ -182,7 +182,7 @@ void main() {
 
     group('merge', () {
       test('merge with null returns same style', () {
-        const style = CometChatMessageListStyle(
+        const style = ConvoKitMessageListStyle(
           backgroundColor: Colors.red,
           emptyStateTextColor: Colors.green,
         );
@@ -192,12 +192,12 @@ void main() {
       });
 
       test('merge replaces non-null values from other', () {
-        const base = CometChatMessageListStyle(
+        const base = ConvoKitMessageListStyle(
           backgroundColor: Colors.red,
           emptyStateTextColor: Colors.green,
           errorStateTextColor: Colors.blue,
         );
-        const other = CometChatMessageListStyle(
+        const other = ConvoKitMessageListStyle(
           backgroundColor: Colors.purple,
           emptyStateTextColor: Colors.orange,
         );
@@ -209,14 +209,14 @@ void main() {
       });
 
       test('merge preserves base values when other has nulls', () {
-        const base = CometChatMessageListStyle(
+        const base = ConvoKitMessageListStyle(
           backgroundColor: Colors.red,
           border: Border(top: BorderSide(color: Colors.black)),
           emptyStateTextColor: Colors.green,
           errorStateTextColor: Colors.blue,
           emptyChatGreetingTitleTextColor: Colors.teal,
         );
-        const other = CometChatMessageListStyle();
+        const other = ConvoKitMessageListStyle();
         final merged = base.merge(other);
         // All base values preserved since other has all nulls
         expect(merged.backgroundColor, Colors.red);
@@ -226,11 +226,11 @@ void main() {
       });
 
       test('merge replaces greeting styles from other', () {
-        const base = CometChatMessageListStyle(
+        const base = ConvoKitMessageListStyle(
           emptyChatGreetingTitleTextColor: Colors.red,
           emptyChatGreetingSubtitleTextColor: Colors.blue,
         );
-        const other = CometChatMessageListStyle(
+        const other = ConvoKitMessageListStyle(
           emptyChatGreetingTitleTextColor: Colors.green,
         );
         final merged = base.merge(other);
@@ -245,12 +245,12 @@ void main() {
 
     group('of(context)', () {
       testWidgets('of returns default style', (tester) async {
-        late CometChatMessageListStyle resolvedStyle;
+        late ConvoKitMessageListStyle resolvedStyle;
         await tester.pumpWidget(
           MaterialApp(
             home: Builder(
               builder: (context) {
-                resolvedStyle = CometChatMessageListStyle.of(context);
+                resolvedStyle = ConvoKitMessageListStyle.of(context);
                 return const SizedBox();
               },
             ),
@@ -278,11 +278,11 @@ void main() {
       const colorD = Color(0xFFFFA500);
 
       test('lerp at t=0 returns this style', () {
-        const styleA = CometChatMessageListStyle(
+        const styleA = ConvoKitMessageListStyle(
           backgroundColor: colorA,
           emptyStateTextColor: colorC,
         );
-        const styleB = CometChatMessageListStyle(
+        const styleB = ConvoKitMessageListStyle(
           backgroundColor: colorB,
           emptyStateTextColor: colorD,
         );
@@ -292,11 +292,11 @@ void main() {
       });
 
       test('lerp at t=1 returns other style', () {
-        const styleA = CometChatMessageListStyle(
+        const styleA = ConvoKitMessageListStyle(
           backgroundColor: colorA,
           emptyStateTextColor: colorC,
         );
-        const styleB = CometChatMessageListStyle(
+        const styleB = ConvoKitMessageListStyle(
           backgroundColor: colorB,
           emptyStateTextColor: colorD,
         );
@@ -306,8 +306,8 @@ void main() {
       });
 
       test('lerp at t=0.5 interpolates colors', () {
-        const styleA = CometChatMessageListStyle(backgroundColor: Colors.black);
-        const styleB = CometChatMessageListStyle(backgroundColor: Colors.white);
+        const styleA = ConvoKitMessageListStyle(backgroundColor: Colors.black);
+        const styleB = ConvoKitMessageListStyle(backgroundColor: Colors.white);
         final result = styleA.lerp(styleB, 0.5);
         // Interpolated color should be between black and white
         expect(result.backgroundColor, isNotNull);
@@ -316,26 +316,26 @@ void main() {
       });
 
       test('lerp handles null values gracefully', () {
-        const styleA = CometChatMessageListStyle(backgroundColor: Colors.red);
-        const styleB = CometChatMessageListStyle();
+        const styleA = ConvoKitMessageListStyle(backgroundColor: Colors.red);
+        const styleB = ConvoKitMessageListStyle();
         final result = styleA.lerp(styleB, 0.5);
         // Color.lerp(Colors.red, null, 0.5) returns a partially transparent red
         expect(result.backgroundColor, isNotNull);
       });
 
-      test('lerp with non-CometChatMessageListStyle returns this', () {
-        const style = CometChatMessageListStyle(backgroundColor: Colors.red);
-        // lerp checks `other is! CometChatMessageListStyle`
+      test('lerp with non-ConvoKitMessageListStyle returns this', () {
+        const style = ConvoKitMessageListStyle(backgroundColor: Colors.red);
+        // lerp checks `other is! ConvoKitMessageListStyle`
         // Since we can't easily pass a non-type, test with same type
         final result = style.lerp(null, 0.5);
         expect(result.backgroundColor, Colors.red);
       });
 
       test('lerp interpolates borderRadius', () {
-        const styleA = CometChatMessageListStyle(
+        const styleA = ConvoKitMessageListStyle(
           borderRadius: BorderRadius.all(Radius.circular(0)),
         );
-        const styleB = CometChatMessageListStyle(
+        const styleB = ConvoKitMessageListStyle(
           borderRadius: BorderRadius.all(Radius.circular(20)),
         );
         final result = styleA.lerp(styleB, 0.5);
@@ -343,10 +343,10 @@ void main() {
       });
 
       test('lerp interpolates text styles', () {
-        const styleA = CometChatMessageListStyle(
+        const styleA = ConvoKitMessageListStyle(
           emptyStateTextStyle: TextStyle(fontSize: 10),
         );
-        const styleB = CometChatMessageListStyle(
+        const styleB = ConvoKitMessageListStyle(
           emptyStateTextStyle: TextStyle(fontSize: 20),
         );
         final result = styleA.lerp(styleB, 0.5);
@@ -360,21 +360,21 @@ void main() {
 
     group('ThemeExtension compliance', () {
       test('is a ThemeExtension', () {
-        const style = CometChatMessageListStyle();
-        expect(style, isA<ThemeExtension<CometChatMessageListStyle>>());
+        const style = ConvoKitMessageListStyle();
+        expect(style, isA<ThemeExtension<ConvoKitMessageListStyle>>());
       });
 
-      test('copyWith returns CometChatMessageListStyle', () {
-        const style = CometChatMessageListStyle();
+      test('copyWith returns ConvoKitMessageListStyle', () {
+        const style = ConvoKitMessageListStyle();
         final copied = style.copyWith(backgroundColor: Colors.red);
-        expect(copied, isA<CometChatMessageListStyle>());
+        expect(copied, isA<ConvoKitMessageListStyle>());
       });
 
-      test('lerp returns CometChatMessageListStyle', () {
-        const styleA = CometChatMessageListStyle();
-        const styleB = CometChatMessageListStyle(backgroundColor: Colors.red);
+      test('lerp returns ConvoKitMessageListStyle', () {
+        const styleA = ConvoKitMessageListStyle();
+        const styleB = ConvoKitMessageListStyle(backgroundColor: Colors.red);
         final result = styleA.lerp(styleB, 0.5);
-        expect(result, isA<CometChatMessageListStyle>());
+        expect(result, isA<ConvoKitMessageListStyle>());
       });
     });
 
@@ -384,8 +384,8 @@ void main() {
 
     group('Equality', () {
       test('two default styles are equal by reference pattern', () {
-        const style1 = CometChatMessageListStyle();
-        const style2 = CometChatMessageListStyle();
+        const style1 = ConvoKitMessageListStyle();
+        const style2 = ConvoKitMessageListStyle();
         // Both have same null values
         expect(style1.backgroundColor, style2.backgroundColor);
         expect(style1.border, style2.border);
@@ -393,11 +393,11 @@ void main() {
       });
 
       test('styles with same values have same properties', () {
-        const style1 = CometChatMessageListStyle(
+        const style1 = ConvoKitMessageListStyle(
           backgroundColor: Colors.red,
           emptyStateTextColor: Colors.green,
         );
-        const style2 = CometChatMessageListStyle(
+        const style2 = ConvoKitMessageListStyle(
           backgroundColor: Colors.red,
           emptyStateTextColor: Colors.green,
         );
@@ -406,8 +406,8 @@ void main() {
       });
 
       test('styles with different values have different properties', () {
-        const style1 = CometChatMessageListStyle(backgroundColor: Colors.red);
-        const style2 = CometChatMessageListStyle(backgroundColor: Colors.blue);
+        const style1 = ConvoKitMessageListStyle(backgroundColor: Colors.red);
+        const style2 = ConvoKitMessageListStyle(backgroundColor: Colors.blue);
         expect(style1.backgroundColor, isNot(style2.backgroundColor));
       });
     });

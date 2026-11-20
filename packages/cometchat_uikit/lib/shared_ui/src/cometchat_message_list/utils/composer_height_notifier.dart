@@ -12,7 +12,7 @@ import 'package:flutter/foundation.dart';
 /// final composerHeightNotifier = ComposerHeightNotifier();
 ///
 /// // Pass to message list
-/// CometChatAnimatedMessageList(
+/// ConvoKitAnimatedMessageList(
 ///   composerHeightNotifier: composerHeightNotifier,
 ///   // ...
 /// )

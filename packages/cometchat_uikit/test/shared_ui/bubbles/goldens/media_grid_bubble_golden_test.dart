@@ -1,7 +1,7 @@
 /// Golden pins for the multi-attachment image bubble — the real
 /// [CometChatImagesBubble] (and the [CometChatMediaGrid] inside it) hosted in a
 /// [CometChatMessageBubble] with zero content padding, which is how
-/// `CometChatMessageList` composes a multi-attachment media message.
+/// `ConvoKitMessageList` composes a multi-attachment media message.
 ///
 /// The grid has five genuinely different arrangements and each gets a golden:
 /// one square, two side by side, three with the hero on top, three with the

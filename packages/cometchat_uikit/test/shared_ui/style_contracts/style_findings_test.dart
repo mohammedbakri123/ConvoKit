@@ -247,7 +247,7 @@ void main() {
         isNull,
       );
       expect(
-        const CometChatMessageListStyle()
+        const ConvoKitMessageListStyle()
             .copyWith(loadingStateIconColor: _a, loadingStateIconSize: 8)
             .backgroundColor,
         isNull,

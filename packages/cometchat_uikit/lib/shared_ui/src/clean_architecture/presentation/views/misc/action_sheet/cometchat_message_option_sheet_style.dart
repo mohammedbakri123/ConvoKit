@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-/// [CometChatMessageOptionSheetStyle] is a class that holds the styling of the message options sheet.
+/// [ConvoKitMessageOptionSheetStyle] is a class that holds the styling of the message options sheet.
 /// This class is used to set the styling for the message options sheet in the CometChatMessageActionSheet.
 /// Use this class to set the styling of the message options sheet.
 /// This class provides the following options to customize the message options sheet:
 /// ```dart
-///  const CometChatMessageOptionSheetStyle({
+///  const ConvoKitMessageOptionSheetStyle({
 ///  this.backgroundColor,
 ///  this.border,
 ///  this.borderRadius,
@@ -14,9 +14,9 @@ import 'package:flutter/material.dart';
 ///  this.iconColor,
 ///  });
 ///  ```
-class CometChatMessageOptionSheetStyle
-    extends ThemeExtension<CometChatMessageOptionSheetStyle> {
-  const CometChatMessageOptionSheetStyle({
+class ConvoKitMessageOptionSheetStyle
+    extends ThemeExtension<ConvoKitMessageOptionSheetStyle> {
+  const ConvoKitMessageOptionSheetStyle({
     this.backgroundColor,
     this.border,
     this.borderRadius,
@@ -43,11 +43,11 @@ class CometChatMessageOptionSheetStyle
   ///[iconColor] icon color
   final Color? iconColor;
 
-  static CometChatMessageOptionSheetStyle of(BuildContext context) =>
-      const CometChatMessageOptionSheetStyle();
+  static ConvoKitMessageOptionSheetStyle of(BuildContext context) =>
+      const ConvoKitMessageOptionSheetStyle();
 
   @override
-  CometChatMessageOptionSheetStyle copyWith({
+  ConvoKitMessageOptionSheetStyle copyWith({
     Color? backgroundColor,
     Border? border,
     BorderRadiusGeometry? borderRadius,
@@ -55,7 +55,7 @@ class CometChatMessageOptionSheetStyle
     Color? titleColor,
     Color? iconColor,
   }) {
-    return CometChatMessageOptionSheetStyle(
+    return ConvoKitMessageOptionSheetStyle(
       backgroundColor: backgroundColor ?? this.backgroundColor,
       border: border ?? this.border,
       titleTextStyle: titleTextStyle ?? this.titleTextStyle,
@@ -65,8 +65,8 @@ class CometChatMessageOptionSheetStyle
     );
   }
 
-  CometChatMessageOptionSheetStyle merge(
-    CometChatMessageOptionSheetStyle? style,
+  ConvoKitMessageOptionSheetStyle merge(
+    ConvoKitMessageOptionSheetStyle? style,
   ) {
     if (style == null) return this;
     return copyWith(
@@ -80,14 +80,14 @@ class CometChatMessageOptionSheetStyle
   }
 
   @override
-  CometChatMessageOptionSheetStyle lerp(
-    ThemeExtension<CometChatMessageOptionSheetStyle>? other,
+  ConvoKitMessageOptionSheetStyle lerp(
+    ThemeExtension<ConvoKitMessageOptionSheetStyle>? other,
     double t,
   ) {
-    if (other is! CometChatMessageOptionSheetStyle) {
+    if (other is! ConvoKitMessageOptionSheetStyle) {
       return this;
     }
-    return CometChatMessageOptionSheetStyle(
+    return ConvoKitMessageOptionSheetStyle(
       backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t),
       border: Border.lerp(border, other.border, t),
       titleTextStyle: TextStyle.lerp(titleTextStyle, other.titleTextStyle, t),

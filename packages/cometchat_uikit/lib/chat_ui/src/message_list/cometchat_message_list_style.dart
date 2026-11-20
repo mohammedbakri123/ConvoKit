@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:convokit/cometchat_chat_uikit.dart';
 
-///[CometChatMessageListStyle] is a data class that has styling-related properties
-///to customize the appearance of [CometChatMessageList]
+///[ConvoKitMessageListStyle] is a data class that has styling-related properties
+///to customize the appearance of [ConvoKitMessageList]
 ///
 /// ```dart
-/// CometChatMessageListStyle(
+/// ConvoKitMessageListStyle(
 /// border: Border.all(color: Colors.red, width: 2),
 /// borderRadius: BorderRadius.circular(10),
 /// backgroundColor: Colors.green,
@@ -47,16 +47,16 @@ import 'package:convokit/cometchat_chat_uikit.dart';
 /// border: Border.all(color: Colors.red, width: 2),
 /// borderRadius: BorderRadius.circular(10),
 /// ),
-/// CometChatMessageOptionSheetStyle(
+/// ConvoKitMessageOptionSheetStyle(
 ///       backgroundColor: Colors.green,
 ///       border: Border.all(color: Colors.red, width: 2),
 ///       borderRadius: BorderRadius.circular(10),
 ///    )
 ///  0
 /// ```
-class CometChatMessageListStyle
-    extends ThemeExtension<CometChatMessageListStyle> {
-  const CometChatMessageListStyle({
+class ConvoKitMessageListStyle
+    extends ThemeExtension<ConvoKitMessageListStyle> {
+  const ConvoKitMessageListStyle({
     this.border,
     this.borderRadius,
     this.backgroundColor,
@@ -129,7 +129,7 @@ class CometChatMessageListStyle
   final CometChatMessageInformationStyle? messageInformationStyle;
 
   ///[messageOptionSheetStyle] that can be used to style message option sheet
-  final CometChatMessageOptionSheetStyle? messageOptionSheetStyle;
+  final ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle;
 
   ///[mentionsStyle] is a parameter used to set the style for mentions
   final CometChatMentionsStyle? mentionsStyle;
@@ -157,7 +157,7 @@ class CometChatMessageListStyle
 
   /// Copy with some properties replaced
   @override
-  CometChatMessageListStyle copyWith({
+  ConvoKitMessageListStyle copyWith({
     Color? backgroundColor,
     BoxBorder? border,
     BorderRadiusGeometry? borderRadius,
@@ -176,7 +176,7 @@ class CometChatMessageListStyle
     CometChatOutgoingMessageBubbleStyle? outgoingMessageBubbleStyle,
     CometChatIncomingMessageBubbleStyle? incomingMessageBubbleStyle,
     CometChatMessageInformationStyle? messageInformationStyle,
-    CometChatMessageOptionSheetStyle? messageOptionSheetStyle,
+    ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
     CometChatMentionsStyle? mentionsStyle,
     CometChatActionBubbleStyle? actionBubbleStyle,
     CometChatReactionListStyle? reactionListStyle,
@@ -186,7 +186,7 @@ class CometChatMessageListStyle
     Color? emptyChatGreetingSubtitleTextColor,
     TextStyle? emptyChatGreetingSubtitleTextStyle,
   }) {
-    return CometChatMessageListStyle(
+    return ConvoKitMessageListStyle(
       backgroundColor: backgroundColor ?? this.backgroundColor,
       border: border ?? this.border,
       borderRadius: borderRadius ?? this.borderRadius,
@@ -231,7 +231,7 @@ class CometChatMessageListStyle
   }
 
   /// Merge with another MessageListStyle
-  CometChatMessageListStyle merge(CometChatMessageListStyle? other) {
+  ConvoKitMessageListStyle merge(ConvoKitMessageListStyle? other) {
     if (other == null) return this;
     return copyWith(
       backgroundColor: other.backgroundColor,
@@ -263,15 +263,15 @@ class CometChatMessageListStyle
     );
   }
 
-  static CometChatMessageListStyle of(BuildContext context) =>
-      const CometChatMessageListStyle();
+  static ConvoKitMessageListStyle of(BuildContext context) =>
+      const ConvoKitMessageListStyle();
 
   @override
-  CometChatMessageListStyle lerp(CometChatMessageListStyle? other, double t) {
-    if (other is! CometChatMessageListStyle) {
+  ConvoKitMessageListStyle lerp(ConvoKitMessageListStyle? other, double t) {
+    if (other is! ConvoKitMessageListStyle) {
       return this;
     }
-    return CometChatMessageListStyle(
+    return ConvoKitMessageListStyle(
       backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t),
       border: BoxBorder.lerp(border, other.border, t),
       borderRadius: BorderRadiusGeometry.lerp(

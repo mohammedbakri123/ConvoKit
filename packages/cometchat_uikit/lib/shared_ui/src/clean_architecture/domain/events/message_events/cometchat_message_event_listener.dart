@@ -6,7 +6,7 @@ import '../../../data/models/interactive_message/card_message.dart';
 import '../../../data/models/interactive_message/scheduler_message.dart';
 import '../../../data/models/interactive_message/custom_interactive_message.dart';
 
-///Listener class for [CometChatMessageList]
+///Listener class for [ConvoKitMessageList]
 
 enum LiveReactionType { liveReaction }
 

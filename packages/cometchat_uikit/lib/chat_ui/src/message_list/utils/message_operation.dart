@@ -21,7 +21,7 @@ enum MessageOperationType {
 /// Represents an operation to be performed on the animated message list
 ///
 /// These operations are emitted by [MessageListBloc] and consumed by
-/// [CometChatAnimatedMessageList] to perform animations.
+/// [ConvoKitAnimatedMessageList] to perform animations.
 class MessageOperation {
   final MessageOperationType type;
   final BaseMessage? message;

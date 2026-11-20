@@ -5,7 +5,7 @@
 /// exist on the web view the button pushes, so their cases tap through to it.
 /// The seven message-bubble chrome properties are read by
 /// `MessageUtils.getBubbleStyle` off the incoming/outgoing aggregates, so
-/// those go through [CometChatMessageList] with a document message.
+/// those go through [ConvoKitMessageList] with a document message.
 ///
 ///   flutter test test/chat_ui/extensions/collaborative/collaborative_bubble_props_test.dart
 library;
@@ -97,10 +97,10 @@ MockMessageListBloc _listBloc(BaseMessage message) {
 Widget _list(CometChatCollaborativeBubbleStyle style, {bool byMe = false}) =>
     MaterialApp(
       home: Scaffold(
-        body: CometChatMessageList(
+        body: ConvoKitMessageList(
           user: _them,
           messageListBloc: _listBloc(_document(byMe: byMe)),
-          style: CometChatMessageListStyle(
+          style: ConvoKitMessageListStyle(
             incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
               collaborativeDocumentBubbleStyle: style,
             ),

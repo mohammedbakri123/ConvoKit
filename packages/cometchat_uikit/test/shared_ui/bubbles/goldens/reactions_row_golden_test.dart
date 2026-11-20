@@ -1,7 +1,7 @@
 /// Golden pins for the reactions row under a bubble — the real
 /// [CometChatReactions] in the `footerView` slot of a real
 /// [CometChatMessageBubble], lifted 5dp the way
-/// `CometChatMessageList._getReactionsView` lifts it so the chips overlap the
+/// `ConvoKitMessageList._getReactionsView` lifts it so the chips overlap the
 /// bubble's bottom edge.
 ///
 /// The emoji themselves render as blocks in the CI variant; what these pin is

@@ -421,7 +421,7 @@ void main() {
             onReactionTap: (message, reaction) => reacted = message,
             addReactionIcon: const Icon(Icons.add, key: Key('add-reaction')),
             onAddReactionIconTap: (_) => addTapped = true,
-            messageOptionStyle: const CometChatMessageOptionSheetStyle(
+            messageOptionStyle: const ConvoKitMessageOptionSheetStyle(
               titleColor: Color(0xFF263030),
             ),
           ),

@@ -17,7 +17,7 @@ import 'package:convokit/shared_ui/src/clean_architecture/core/result.dart';
 import 'package:convokit/shared_ui/src/clean_architecture/core/constants/enums.dart';
 
 // ===========================================================================
-// CometChatMessageListAlignmentPropertyTest — Flutter equivalent
+// ConvoKitMessageListAlignmentPropertyTest — Flutter equivalent
 // Tests message alignment logic: sent messages align right, received align
 // left, action messages center, group messages with/without avatar,
 // alignment with/without timestamp, alignment with/without read receipts.

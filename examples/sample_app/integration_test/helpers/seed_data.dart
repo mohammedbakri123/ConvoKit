@@ -52,7 +52,7 @@ class SeedData {
   static String get testUserUid => _testUserUid;
 
   /// UID of the peer used as the "other side" of the seeded conversation.
-  /// Tests render `CometChatMessageList(user: User(uid: testPeerUid))` to view
+  /// Tests render `ConvoKitMessageList(user: User(uid: testPeerUid))` to view
   /// messages exchanged with this peer.
   static String get testPeerUid => _testPeerUid;
 

@@ -14,7 +14,7 @@ class CometchatMessageOptionSheet extends StatefulWidget {
 
   /// Legacy controller state.
   @Deprecated('Has no effect. Will be removed in 7.0.0.')
-  final CometChatMessageListControllerProtocol? state;
+  final ConvoKitMessageListControllerProtocol? state;
 
   /// Legacy data payload.
   @Deprecated('Has no effect. Will be removed in 7.0.0.')
@@ -58,7 +58,7 @@ class CometchatMessageOptionSheet extends StatefulWidget {
   final Function(BaseMessage)? onAddReactionIconTap;
 
   ///[messageOptionStyle] sets the style for the message option bottom sheet
-  final CometChatMessageOptionSheetStyle? messageOptionStyle;
+  final ConvoKitMessageOptionSheetStyle? messageOptionStyle;
 
   ///[hideReactionOption] This prop defines whether Reaction option should be visible or not.
   final bool? hideReactionOption;
@@ -82,9 +82,9 @@ class _CometchatMessageOptionSheetState
   @override
   Widget build(BuildContext context) {
     final optionStyle =
-        CometChatThemeHelper.getTheme<CometChatMessageOptionSheetStyle>(
+        CometChatThemeHelper.getTheme<ConvoKitMessageOptionSheetStyle>(
           context: context,
-          defaultTheme: CometChatMessageOptionSheetStyle.of,
+          defaultTheme: ConvoKitMessageOptionSheetStyle.of,
         ).merge(widget.messageOptionStyle);
     final spacing = CometChatThemeHelper.getSpacing(context);
     final colorPalette = CometChatThemeHelper.getColorPalette(context);
@@ -320,21 +320,21 @@ class _CometchatMessageOptionSheetState
 
 ///Function to show message option bottom sheet
 ///
-/// Uses [CometChatMessageListControllerProtocol] for controller access.
+/// Uses [ConvoKitMessageListControllerProtocol] for controller access.
 Future<ActionItem?> showMessageOptionSheet({
   required BuildContext context,
   required List<ActionItem> actionItems,
   required CometChatColorPalette colorPalette,
   final String? title,
   required final dynamic message,
-  final CometChatMessageListControllerProtocol? state,
-  final CometChatMessageListControllerProtocol? controllerProtocol,
+  final ConvoKitMessageListControllerProtocol? state,
+  final ConvoKitMessageListControllerProtocol? controllerProtocol,
   final Function(BaseMessage message, String? reaction)? onReactionTap,
   final Widget? addReactionIcon,
   final Function(BaseMessage message)? addReactionIconTap,
   bool hideReactions = false,
   List<String>? favoriteReactions,
-  CometChatMessageOptionSheetStyle? style,
+  ConvoKitMessageOptionSheetStyle? style,
   bool? hideReactionOption,
 }) {
   return showModalBottomSheet<ActionItem>(

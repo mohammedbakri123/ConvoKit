@@ -201,7 +201,7 @@ void main() {
     ) async {
       _tallView(tester);
       await tester.pumpWidget(
-        _app(CometChatMessageList(user: _bob, messageListBloc: _bloc(_text()))),
+        _app(ConvoKitMessageList(user: _bob, messageListBloc: _bloc(_text()))),
       );
       await _settle(tester);
 
@@ -218,7 +218,7 @@ void main() {
       _tallView(tester);
       await tester.pumpWidget(
         _app(
-          CometChatMessageList(
+          ConvoKitMessageList(
             user: _bob,
             messageListBloc: _bloc(_text(byMe: false)),
           ),
@@ -236,7 +236,7 @@ void main() {
       fakeEnabledExtensions = {};
       _tallView(tester);
       await tester.pumpWidget(
-        _app(CometChatMessageList(user: _bob, messageListBloc: _bloc(_text()))),
+        _app(ConvoKitMessageList(user: _bob, messageListBloc: _bloc(_text()))),
       );
       await _settle(tester);
 
@@ -250,7 +250,7 @@ void main() {
       await clearFakeSdkBackend();
       _tallView(tester);
       await tester.pumpWidget(
-        _app(CometChatMessageList(user: _bob, messageListBloc: _bloc(_text()))),
+        _app(ConvoKitMessageList(user: _bob, messageListBloc: _bloc(_text()))),
       );
       await _settle(tester);
 
@@ -260,13 +260,13 @@ void main() {
       );
     });
 
-    testWidgets('CometChatMessageList.hideTranslateMessageOption hides it', (
+    testWidgets('ConvoKitMessageList.hideTranslateMessageOption hides it', (
       tester,
     ) async {
       _tallView(tester);
       await tester.pumpWidget(
         _app(
-          CometChatMessageList(
+          ConvoKitMessageList(
             user: _bob,
             messageListBloc: _bloc(_text()),
             hideTranslateMessageOption: true,
@@ -285,7 +285,7 @@ void main() {
       _tallView(tester);
       await tester.pumpWidget(
         _app(
-          CometChatMessageList(
+          ConvoKitMessageList(
             user: _bob,
             messageListBloc: _bloc(_text()),
             additionalConfigurations: AdditionalConfigurations(),
@@ -306,7 +306,7 @@ void main() {
       _tallView(tester);
       await tester.pumpWidget(
         _app(
-          CometChatMessageList(
+          ConvoKitMessageList(
             user: _bob,
             messageListBloc: _bloc(_text()),
             additionalConfigurations: AdditionalConfigurations(
@@ -326,7 +326,7 @@ void main() {
       _tallView(tester);
       await tester.pumpWidget(
         _app(
-          CometChatMessageList(user: _bob, messageListBloc: _bloc(_image())),
+          ConvoKitMessageList(user: _bob, messageListBloc: _bloc(_image())),
         ),
       );
       await _settle(tester);
@@ -342,7 +342,7 @@ void main() {
       _tallView(tester);
       await tester.pumpWidget(
         _app(
-          CometChatMessageList(
+          ConvoKitMessageList(
             user: _bob,
             messageListBloc: _bloc(
               _text(metadata: {'translated_message': 'hola'}),
@@ -374,7 +374,7 @@ void main() {
       _tallView(tester);
       await tester.pumpWidget(
         _app(
-          CometChatMessageList(user: _bob, messageListBloc: _bloc(_text())),
+          ConvoKitMessageList(user: _bob, messageListBloc: _bloc(_text())),
           locale: const Locale('fr'),
         ),
       );
@@ -404,7 +404,7 @@ void main() {
       final bloc = _bloc(message);
       _tallView(tester);
       await tester.pumpWidget(
-        _app(CometChatMessageList(user: _bob, messageListBloc: bloc)),
+        _app(ConvoKitMessageList(user: _bob, messageListBloc: bloc)),
       );
       await _settle(tester);
       expect(find.byType(MessageTranslationBubble), findsNothing);
@@ -438,7 +438,7 @@ void main() {
       final bloc = _bloc(message);
       _tallView(tester);
       await tester.pumpWidget(
-        _app(CometChatMessageList(user: _bob, messageListBloc: bloc)),
+        _app(ConvoKitMessageList(user: _bob, messageListBloc: bloc)),
       );
       await _settle(tester);
       await _tapTranslate(tester);
@@ -461,7 +461,7 @@ void main() {
       final bloc = _bloc(message);
       _tallView(tester);
       await tester.pumpWidget(
-        _app(CometChatMessageList(user: _bob, messageListBloc: bloc)),
+        _app(ConvoKitMessageList(user: _bob, messageListBloc: bloc)),
       );
       await _settle(tester);
       await _tapTranslate(tester);
@@ -478,7 +478,7 @@ void main() {
       final bloc = _bloc(message);
       _tallView(tester);
       await tester.pumpWidget(
-        _app(CometChatMessageList(user: _bob, messageListBloc: bloc)),
+        _app(ConvoKitMessageList(user: _bob, messageListBloc: bloc)),
       );
       await _settle(tester);
       await _tapTranslate(tester);
@@ -492,7 +492,7 @@ void main() {
     testWidgets('resolves mentions in the translation', (tester) async {
       await tester.pumpWidget(
         _app(
-          CometChatMessageList(
+          ConvoKitMessageList(
             user: _bob,
             messageListBloc: _bloc(
               _text(
@@ -519,12 +519,12 @@ void main() {
         'messageTranslationBubbleStyle', (tester) async {
       await tester.pumpWidget(
         _app(
-          CometChatMessageList(
+          ConvoKitMessageList(
             user: _bob,
             messageListBloc: _bloc(
               _text(metadata: {'translated_message': 'hola mundo'}),
             ),
-            style: CometChatMessageListStyle(
+            style: ConvoKitMessageListStyle(
               outgoingMessageBubbleStyle: CometChatOutgoingMessageBubbleStyle(
                 messageTranslationBubbleStyle:
                     CometChatMessageTranslationBubbleStyle(
@@ -558,12 +558,12 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _app(
-          CometChatMessageList(
+          ConvoKitMessageList(
             user: _bob,
             messageListBloc: _bloc(
               _text(byMe: false, metadata: {'translated_message': 'hola'}),
             ),
-            style: CometChatMessageListStyle(
+            style: ConvoKitMessageListStyle(
               incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                 messageTranslationBubbleStyle:
                     CometChatMessageTranslationBubbleStyle(
@@ -586,7 +586,7 @@ void main() {
         'wins over the direction style', (tester) async {
       await tester.pumpWidget(
         _app(
-          CometChatMessageList(
+          ConvoKitMessageList(
             user: _bob,
             messageListBloc: _bloc(
               _text(metadata: {'translated_message': 'hola mundo'}),
@@ -599,7 +599,7 @@ void main() {
                     ),
                   ),
             ),
-            style: CometChatMessageListStyle(
+            style: ConvoKitMessageListStyle(
               outgoingMessageBubbleStyle: CometChatOutgoingMessageBubbleStyle(
                 messageTranslationBubbleStyle:
                     CometChatMessageTranslationBubbleStyle(
@@ -626,7 +626,7 @@ void main() {
       final long = List.filled(12, 'translate sentinel words').join(' ');
       await tester.pumpWidget(
         _app(
-          CometChatMessageList(
+          ConvoKitMessageList(
             user: _bob,
             messageListBloc: _bloc(
               _text(text: long, metadata: {'translated_message': long}),
@@ -647,7 +647,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _app(
-          CometChatMessageList(
+          ConvoKitMessageList(
             user: _bob,
             messageListBloc: _bloc(
               _text(

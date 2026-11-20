@@ -329,7 +329,7 @@ void main() {
       );
 
       expect(adapter.bloc, same(bloc));
-      expect(adapter, isA<CometChatMessageListControllerProtocol>());
+      expect(adapter, isA<ConvoKitMessageListControllerProtocol>());
     });
   });
 

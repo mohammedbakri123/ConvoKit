@@ -16,7 +16,7 @@ import 'package:convokit/chat_ui/src/message_list/domain/usecases/get_logged_in_
 import 'package:convokit/shared_ui/src/clean_architecture/core/result.dart';
 
 // ===========================================================================
-// CometChatMessageListVisibilityPropertyTest — Flutter equivalent
+// ConvoKitMessageListVisibilityPropertyTest — Flutter equivalent
 // Tests visibility flags: avatarVisibility, hideTimestamp, receiptsVisibility,
 // hideDateSeparator, disableReactions, hideThreadView, hideGroupActionMessages,
 // hideStickyDate — each flag controls visibility correctly at the BLoC/config

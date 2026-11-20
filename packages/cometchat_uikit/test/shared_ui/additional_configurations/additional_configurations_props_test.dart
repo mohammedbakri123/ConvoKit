@@ -6,7 +6,7 @@
 /// and each group is exercised where it is actually consumed:
 ///
 ///   * bubble styles and formatters — by the default templates, reached by
-///     handing the bag to [CometChatMessageList.additionalConfigurations];
+///     handing the bag to [ConvoKitMessageList.additionalConfigurations];
 ///   * message-option flags — by [MessageTemplateUtils.getTextMessageOptions],
 ///     which returns the option list the sheet is built from;
 ///   * attachment-option flags — by `ComposerAttachmentUtils.getAttachmentOptions`.
@@ -370,7 +370,7 @@ void main() {
       await tester.pumpWidget(
         _optionsHost(
           AdditionalConfigurations(
-            messageOptionSheetStyle: const CometChatMessageOptionSheetStyle(
+            messageOptionSheetStyle: const ConvoKitMessageOptionSheetStyle(
               iconColor: Color(0xFF130101),
             ),
           ),
@@ -522,7 +522,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_text(byMe: false)),
               additionalConfigurations: AdditionalConfigurations(
@@ -547,7 +547,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_text(byMe: false)),
               additionalConfigurations: AdditionalConfigurations(
@@ -565,7 +565,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.image)),
               additionalConfigurations: AdditionalConfigurations(
@@ -585,7 +585,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.video)),
               additionalConfigurations: AdditionalConfigurations(
@@ -605,7 +605,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.file)),
               additionalConfigurations: AdditionalConfigurations(
@@ -627,7 +627,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.audio)),
               additionalConfigurations: AdditionalConfigurations(
@@ -649,7 +649,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: CometChatMessageList(
+              body: ConvoKitMessageList(
                 user: _them,
                 messageListBloc: _bloc(_media(MessageTypeConstants.audio)),
                 additionalConfigurations: AdditionalConfigurations(
@@ -670,7 +670,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(
                 _text(byMe: false, deletedAt: DateTime(2024, 1, 1)),
@@ -694,7 +694,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(
                 _text(byMe: false, text: 'see https://cometchat.com'),
@@ -718,7 +718,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_call(CallTypeConstants.audioCall)),
               additionalConfigurations: AdditionalConfigurations(
@@ -740,7 +740,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_call(CallTypeConstants.videoCall)),
               additionalConfigurations: AdditionalConfigurations(
@@ -760,7 +760,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_text(byMe: false)),
               additionalConfigurations: AdditionalConfigurations(
@@ -782,7 +782,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _them,
               messageListBloc: _bloc(_media(MessageTypeConstants.image)),
               additionalConfigurations: AdditionalConfigurations(

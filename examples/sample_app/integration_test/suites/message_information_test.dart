@@ -46,7 +46,7 @@ void main() {
   final groupGuid = 'e2einfo$stamp';
   final groupName = 'E2E Info $stamp';
 
-  final messageList = find.byType(CometChatMessageList);
+  final messageList = find.byType(ConvoKitMessageList);
   final infoSheet = find.byType(CometChatMessageInformation);
 
   // _convertTime(…, "dd/M/yyyy, h:mm a") — e.g. "17/9/2026, 1:05 PM".

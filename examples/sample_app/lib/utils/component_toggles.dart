@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 /// ```dart
 /// ValueListenableBuilder<bool>(
 ///   valueListenable: ComponentToggles.instance.hideReceipts,
-///   builder: (_, value, __) => CometChatMessageList(disableReceipts: value, ...),
+///   builder: (_, value, __) => ConvoKitMessageList(disableReceipts: value, ...),
 /// )
 /// ```
 class ComponentToggles {

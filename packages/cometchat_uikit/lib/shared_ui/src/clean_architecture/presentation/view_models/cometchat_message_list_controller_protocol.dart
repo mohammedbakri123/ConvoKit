@@ -1,7 +1,7 @@
 import '../../../../cometchat_uikit_shared.dart';
 import 'package:flutter/widgets.dart';
 
-abstract class CometChatMessageListControllerProtocol
+abstract class ConvoKitMessageListControllerProtocol
     extends CometChatSearchListControllerProtocol<BaseMessage> {
   Map<String, CometChatMessageTemplate> getTemplateMap();
   ScrollController getScrollController();

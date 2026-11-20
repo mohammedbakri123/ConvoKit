@@ -1198,7 +1198,7 @@ class CometChatUIKit {
     }
   }
 
-  ///[addReaction] will add a reaction to a message with the provided message ID and will update the UI of `CometChatMessageList` and `CometChatReactions` accordingly
+  ///[addReaction] will add a reaction to a message with the provided message ID and will update the UI of `ConvoKitMessageList` and `CometChatReactions` accordingly
 
   static Future<BaseMessage?> addReaction(
     int messageId,
@@ -1243,7 +1243,7 @@ class CometChatUIKit {
     return message;
   }
 
-  ///[addReaction] will remove a reaction to a message with the provided message ID and will update the UI of [CometChatMessageList] and [CometChatReactions] accordingly
+  ///[addReaction] will remove a reaction to a message with the provided message ID and will update the UI of [ConvoKitMessageList] and [CometChatReactions] accordingly
   static Future<BaseMessage?> removeReaction(
     int messageId,
     String reaction, {

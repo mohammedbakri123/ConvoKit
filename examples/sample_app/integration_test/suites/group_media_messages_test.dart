@@ -44,7 +44,7 @@ import '../sdk_user_b/group_test_actions.dart';
 /// (findAttachmentButton / openAttachmentSheet / assetImageFinder) work
 /// identically once a group conversation is open.
 ///
-/// Media bubbles in A's list are dispatched by CometChatMessageList:
+/// Media bubbles in A's list are dispatched by ConvoKitMessageList:
 ///   image -> CometChatImageBubble (CachedNetworkImage/Image.network, no filename
 ///            text; in headless CI the network image typically shows the
 ///            image_placeholder asset rather than a decoded thumbnail)

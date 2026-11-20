@@ -156,7 +156,7 @@ export 'src/models/extension_bubble_styles/cometchat_exception_style.dart';
 export 'src/formatter/markdown/markdown_text_formatter.dart';
 
 // Export animated message list widgets only (not the full barrel)
-// The CometChatMessageList widget is exported from chat_ui/src/message_list
+// The ConvoKitMessageList widget is exported from chat_ui/src/message_list
 // Hide MessageItemBuilder to avoid conflict with chat_ui version
 export 'src/cometchat_message_list/widgets/cometchat_animated_message_list.dart'
     hide MessageItemBuilder;

@@ -5,7 +5,7 @@ import 'package:convokit/cometchat_chat_uikit.dart'
         CometChatActionBubble,
         CometChatMessageComposer,
         CometChatMessageHeader,
-        CometChatMessageList,
+        ConvoKitMessageList,
         CometChatMessagePreview,
         CometChatRichTextToolbar,
         FormatType,
@@ -271,7 +271,7 @@ class ComposerDepthHelper {
     await tester.pump(const Duration(milliseconds: 400));
   }
 
-  // ─── Message list inspection (scoped to CometChatMessageList) ─────────────
+  // ─── Message list inspection (scoped to ConvoKitMessageList) ─────────────
   //
   // Scoping matters: the Chats tab stays mounted under the messages route and
   // its conversation subtitle repeats the latest message text, so a whole-tree
@@ -289,7 +289,7 @@ class ComposerDepthHelper {
     }
 
     for (final root
-        in find.byType(CometChatMessageList, skipOffstage: false).evaluate()) {
+        in find.byType(ConvoKitMessageList, skipOffstage: false).evaluate()) {
       root.visitChildren(walk);
       if (stop) return;
     }
@@ -393,8 +393,8 @@ class ComposerDepthHelper {
 
   /// Global rect of the message list viewport.
   static Rect listRect(WidgetTester tester) {
-    final list = find.byType(CometChatMessageList);
-    if (list.evaluate().isEmpty) fail('CometChatMessageList is not on screen');
+    final list = find.byType(ConvoKitMessageList);
+    if (list.evaluate().isEmpty) fail('ConvoKitMessageList is not on screen');
     return tester.getRect(list.first);
   }
 

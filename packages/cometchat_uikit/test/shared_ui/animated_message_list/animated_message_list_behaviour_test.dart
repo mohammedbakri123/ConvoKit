@@ -1,5 +1,5 @@
-/// Behaviour tests for [CometChatAnimatedMessageList] — the scrolling engine
-/// under [CometChatMessageList].
+/// Behaviour tests for [ConvoKitAnimatedMessageList] — the scrolling engine
+/// under [ConvoKitMessageList].
 ///
 /// These drive the widget through a REAL [AnimatedMessageListBloc] (it is
 /// SDK-free: every handler only rewrites its own state and pushes a
@@ -134,7 +134,7 @@ void main() {
     addTearDown(controller.dispose);
     await tester.pumpWidget(
       _host(
-        CometChatAnimatedMessageList(
+        ConvoKitAnimatedMessageList(
           bloc: bloc,
           scrollController: controller,
           reversed: reversed,
@@ -168,7 +168,7 @@ void main() {
       bloc = newBloc();
       await tester.pumpWidget(
         _host(
-          CometChatAnimatedMessageList(
+          ConvoKitAnimatedMessageList(
             bloc: bloc,
             itemBuilder: _row,
             emptyBuilder: (_) => const Text('nothing yet'),
@@ -432,7 +432,7 @@ void main() {
     });
 
     testWidgets('FINDING: the jump button never shows an unread count. '
-        'CometChatAnimatedMessageList builds ScrollToBottomButton without '
+        'ConvoKitAnimatedMessageList builds ScrollToBottomButton without '
         'passing unreadCount, so it stays 0 and the badge branch '
         '(unreadCount > 0) can never render — there is no live new-message '
         'indicator while the user is scrolled up.', (tester) async {

@@ -57,8 +57,8 @@ class _MessagesScreenState extends State<MessagesScreen>
 
   // Pin & Save: imperative handle for the mounted list, used to jump to a
   // tapped pinned/saved message without tearing the list down.
-  final CometChatMessageListController _messageListController =
-      CometChatMessageListController();
+  final ConvoKitMessageListController _messageListController =
+      ConvoKitMessageListController();
 
   final _toggles = ComponentToggles.instance;
 
@@ -244,7 +244,7 @@ class _MessagesScreenState extends State<MessagesScreen>
   Widget _buildMessageList() {
     final t = _toggles;
 
-    return CometChatMessageList(
+    return ConvoKitMessageList(
       controller: _messageListController,
       user: _user,
       group: _group,

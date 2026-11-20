@@ -1,4 +1,4 @@
-// Render-verified prop matrix for [CometChatMessageList] (PROP1/PROP2, ENG-38770).
+// Render-verified prop matrix for [ConvoKitMessageList] (PROP1/PROP2, ENG-38770).
 //
 // Every test in this file constructs the real widget, pumps it, and asserts on
 // something the prop actually changed in the built tree. Constructor-assignment
@@ -114,7 +114,7 @@ Future<void> _settle(WidgetTester tester, [int frames = 12]) async {
 Container _root(WidgetTester tester) => tester.widget<Container>(
   find
       .descendant(
-        of: find.byType(CometChatMessageList),
+        of: find.byType(ConvoKitMessageList),
         matching: find.byType(Container),
       )
       .first,
@@ -326,7 +326,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               padding: const EdgeInsets.all(21),
@@ -342,7 +342,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               margin: const EdgeInsets.only(left: 17),
@@ -358,7 +358,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               height: 321,
@@ -367,7 +367,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(tester.getSize(find.byType(CometChatMessageList)).height, 321);
+      expect(tester.getSize(find.byType(ConvoKitMessageList)).height, 321);
     });
 
     testWidgets('width reaches the root container', (tester) async {
@@ -375,7 +375,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: Center(
-              child: CometChatMessageList(
+              child: ConvoKitMessageList(
                 user: _bob,
                 messageListBloc: _mock(),
                 width: 234,
@@ -385,7 +385,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(tester.getSize(find.byType(CometChatMessageList)).width, 234);
+      expect(tester.getSize(find.byType(ConvoKitMessageList)).width, 234);
     });
 
     testWidgets('style paints its backgroundColor on the root container', (
@@ -394,10 +394,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
-              style: const CometChatMessageListStyle(
+              style: const ConvoKitMessageListStyle(
                 backgroundColor: Color(0xFF123456),
               ),
             ),
@@ -417,7 +417,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               headerView: (context, {user, group, parentMessageId}) =>
@@ -434,7 +434,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               footerView: (context, {user, group, parentMessageId}) =>
@@ -451,7 +451,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(
                 status: MessageListStatus.empty,
@@ -472,7 +472,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(
                 status: MessageListStatus.empty,
@@ -493,7 +493,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(
                 status: MessageListStatus.error,
@@ -515,7 +515,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(
                 status: MessageListStatus.error,
@@ -537,7 +537,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(
                 status: MessageListStatus.loading,
@@ -559,7 +559,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               headerView: (context, {user, group, parentMessageId}) {
@@ -579,7 +579,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               group: _group,
               messageListBloc: _mock(),
               headerView: (context, {user, group, parentMessageId}) =>
@@ -596,7 +596,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               parentMessageId: 99,
@@ -614,7 +614,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(messages: [_text('INJECTED_BODY')]),
             ),
@@ -636,7 +636,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               scrollController: controller,
@@ -656,7 +656,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(user: _bob, messageListBloc: _mock()),
+            body: ConvoKitMessageList(user: _bob, messageListBloc: _mock()),
           ),
         ),
       );
@@ -675,7 +675,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               alignment: ChatAlignment.leftAligned,
@@ -698,7 +698,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               group: _group,
               messageListBloc: _mock(messages: [_text('hi', sender: _bob)]),
               avatarVisibility: true,
@@ -716,7 +716,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               group: _group,
               messageListBloc: _mock(messages: [_text('hi', sender: _bob)]),
               avatarVisibility: false,
@@ -732,7 +732,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               hideTimestamp: true,
@@ -755,7 +755,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               hideTimestamp: false,
@@ -776,7 +776,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               hideDateSeparator: true,
@@ -795,7 +795,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: CometChatMessageList(
+              body: ConvoKitMessageList(
                 key: UniqueKey(),
                 user: _bob,
                 messageListBloc: _mock(),
@@ -824,7 +824,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               receiptsVisibility: true,
@@ -840,7 +840,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               receiptsVisibility: false,
@@ -867,7 +867,7 @@ void main() {
           await tester.pumpWidget(
             MaterialApp(
               home: Scaffold(
-                body: CometChatMessageList(
+                body: ConvoKitMessageList(
                   user: _bob,
                   hideReplies: false,
                   hideDeletedMessages: true,
@@ -897,7 +897,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: CometChatMessageList(
+              body: ConvoKitMessageList(
                 user: _bob,
                 hideReplies: true,
                 hideDeletedMessages: false,
@@ -927,7 +927,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(user: _bob, messageListBloc: _mock()),
+            body: ConvoKitMessageList(user: _bob, messageListBloc: _mock()),
           ),
         ),
       );
@@ -950,7 +950,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               hideReplyOption: true,
@@ -971,7 +971,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               hideReplyInThreadOption: true,
@@ -992,7 +992,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               hideShareMessageOption: true,
@@ -1013,7 +1013,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               hideCopyMessageOption: true,
@@ -1034,7 +1034,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               hideEditMessageOption: true,
@@ -1055,7 +1055,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: CometChatMessageList(
+              body: ConvoKitMessageList(
                 user: _bob,
                 messageListBloc: _mock(),
                 hideMessageInfoOption: true,
@@ -1077,7 +1077,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               hideDeleteMessageOption: true,
@@ -1098,7 +1098,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               group: _group,
               messageListBloc: _mock(messages: [_text('hi', sender: _bob)]),
               hideMessagePrivatelyOption: true,
@@ -1119,7 +1119,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               group: _group,
               messageListBloc: _mock(messages: [_text('hi', sender: _bob)]),
               showMarkAsUnreadOption: true,
@@ -1135,7 +1135,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               group: _group,
               messageListBloc: _mock(messages: [_text('hi', sender: _bob)]),
               hideFlagOption: true,
@@ -1160,7 +1160,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               hideTranslateMessageOption: true,
@@ -1180,7 +1180,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               favoriteReactions: const ['🔥', '🎉'],
@@ -1197,7 +1197,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               addReactionIcon: icon,
@@ -1213,7 +1213,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               disableReactions: true,
@@ -1229,7 +1229,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               hideReactionOption: true,
@@ -1245,7 +1245,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               disableReactions: false,
@@ -1263,7 +1263,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               addMoreReactionTap: (message) => tapped = message,
@@ -1284,7 +1284,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mockTransition(MessageListStatus.loaded),
               onLoad: (messages) => loaded = messages,
@@ -1302,7 +1302,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mockTransition(
                 MessageListStatus.empty,
@@ -1322,7 +1322,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mockTransition(
                 MessageListStatus.error,
@@ -1343,7 +1343,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               stateCallBack: (state) => controller = state,
@@ -1361,7 +1361,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               enableSwipeToReply: true,
@@ -1384,7 +1384,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               enableSwipeToReply: false,
@@ -1405,7 +1405,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               hideDateSeparator: true,
@@ -1424,7 +1424,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               hideDateSeparator: false,
@@ -1443,7 +1443,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               hideStickyDate: true,
@@ -1463,7 +1463,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               hideStickyDate: true,
@@ -1490,7 +1490,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               hideStickyDate: true,
@@ -1514,7 +1514,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               hideStickyDate: true,
@@ -1543,7 +1543,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               group: _group,
               messageListBloc: _mock(messages: [action]),
               hideGroupActionMessages: true,
@@ -1566,7 +1566,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               receiptsVisibility: true,
@@ -1594,7 +1594,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               templates: [_contentTemplate('TEMPLATE_CONTENT')],
@@ -1612,7 +1612,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               addTemplate: [_contentTemplate('ADDED_CONTENT')],
@@ -1632,7 +1632,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               textFormatters: [formatter],
@@ -1657,7 +1657,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               additionalConfigurations: configurations,
@@ -1678,7 +1678,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               enableMultipleAttachments: true,
@@ -1702,7 +1702,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: bloc,
               goToMessageId: 4242,
@@ -1724,7 +1724,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: bloc,
               startFromUnreadMessages: true,
@@ -1743,7 +1743,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: bloc,
               startFromUnreadMessages: false,
@@ -1762,7 +1762,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: CometChatMessageList(
+              body: ConvoKitMessageList(
                 user: _bob,
                 messageListBloc: bloc,
                 messagesRequestBuilder: MessagesRequestBuilder()
@@ -1787,7 +1787,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               hideModerationView: true,
@@ -1805,7 +1805,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(),
               hideModerationView: false,
@@ -1825,7 +1825,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: CometChatMessageList(
+              body: ConvoKitMessageList(
                 user: _bob,
                 disableReceipts: true,
                 disableSoundForMessages: true,
@@ -1854,7 +1854,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: CometChatMessageList(
+              body: ConvoKitMessageList(
                 user: _bob,
                 customSoundForMessages: 'sounds/ping.mp3',
                 customSoundForMessagePackage: 'my_sounds',
@@ -1880,7 +1880,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mockWithThread(3),
               hideThreadView: true,
@@ -1903,7 +1903,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mockWithThread(3),
               hideThreadView: false,
@@ -1927,7 +1927,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mockWithThread(3),
               onThreadRepliesClick: (message, context, {template}) =>
@@ -1955,7 +1955,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(messages: [_reacted('with reactions')]),
               onReactionClick: (reaction, message) => clicked = reaction,
@@ -1977,7 +1977,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(messages: [_reacted('with reactions')]),
               onReactionLongPress: (reaction, message) => held = reaction,
@@ -1998,7 +1998,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: _bob,
               messageListBloc: _mock(messages: [_reacted('with reactions')]),
               reactionsRequestBuilder: builder,
@@ -2028,7 +2028,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: CometChatMessageList(
+              body: ConvoKitMessageList(
                 group: _group,
                 messageListBloc: _mock(messages: [_text('hi', sender: _bob)]),
                 flagReasonLocalizer: localizer,
@@ -2065,7 +2065,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: aiUser,
               messageListBloc: _mock(
                 status: MessageListStatus.empty,
@@ -2086,7 +2086,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: aiUser,
               messageListBloc: _mock(
                 status: MessageListStatus.empty,
@@ -2107,7 +2107,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: aiUser,
               messageListBloc: _mock(
                 status: MessageListStatus.empty,
@@ -2131,7 +2131,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageList(
+            body: ConvoKitMessageList(
               user: aiUser,
               messageListBloc: bloc,
               loadLastAgentConversation: true,
@@ -2155,7 +2155,7 @@ void main() {
         .join(' | ');
 
     /// Wraps [list] the way every test in this group pumps it.
-    Widget host(CometChatMessageList list) =>
+    Widget host(ConvoKitMessageList list) =>
         MaterialApp(home: Scaffold(body: list));
 
     testWidgets('mentionAllLabel replaces the @all label in bubbles', (
@@ -2165,7 +2165,7 @@ void main() {
       Future<void> pump({String? mentionAllLabel}) async {
         await tester.pumpWidget(
           host(
-            CometChatMessageList(
+            ConvoKitMessageList(
               key: UniqueKey(),
               user: _bob,
               messageListBloc: _mock(messages: [message]),
@@ -2191,7 +2191,7 @@ void main() {
       Future<void> pump({String? mentionAllLabelId}) async {
         await tester.pumpWidget(
           host(
-            CometChatMessageList(
+            ConvoKitMessageList(
               key: UniqueKey(),
               user: _bob,
               messageListBloc: _mock(messages: [message]),
@@ -2215,7 +2215,7 @@ void main() {
       Future<void> pump({bool? disableMentions}) async {
         await tester.pumpWidget(
           host(
-            CometChatMessageList(
+            ConvoKitMessageList(
               key: UniqueKey(),
               user: _bob,
               messageListBloc: _mock(messages: [message]),
@@ -2240,7 +2240,7 @@ void main() {
       Future<void> pump({bool? disableMentions}) async {
         await tester.pumpWidget(
           host(
-            CometChatMessageList(
+            ConvoKitMessageList(
               key: UniqueKey(),
               user: _bob,
               messageListBloc: _mock(messages: [message]),
@@ -2264,7 +2264,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: CometChatMessageList(
+              body: ConvoKitMessageList(
                 key: UniqueKey(),
                 user: _bob,
                 messageListBloc: _mock(
@@ -2299,11 +2299,11 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: CometChatMessageList(
+              body: ConvoKitMessageList(
                 key: UniqueKey(),
                 user: _bob,
                 messageListBloc: _mock(messages: [reply]),
-                style: CometChatMessageListStyle(
+                style: ConvoKitMessageListStyle(
                   outgoingMessageBubbleStyle:
                       CometChatOutgoingMessageBubbleStyle(
                         messagePreviewStyle: previewStyle,

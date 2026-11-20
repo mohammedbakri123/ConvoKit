@@ -213,7 +213,7 @@ void main() {
         await MessageHelper.sendMessage(tester, own);
         if (!await ScreenReach.waitForTextWithin(
           tester,
-          find.byType(CometChatMessageList),
+          find.byType(ConvoKitMessageList),
           own,
         )) {
           fail(
@@ -238,7 +238,7 @@ void main() {
         await ScreenReach.openConversationNamed(tester, groupName);
         if (!await ScreenReach.waitForTextWithin(
           tester,
-          find.byType(CometChatMessageList),
+          find.byType(ConvoKitMessageList),
           groupSeedText,
         )) {
           fail('The seeded group message never rendered.');
@@ -335,7 +335,7 @@ void main() {
         await MessageHelper.sendMessage(tester, own);
         if (!await ScreenReach.waitForTextWithin(
           tester,
-          find.byType(CometChatMessageList),
+          find.byType(ConvoKitMessageList),
           own,
         )) {
           fail('The message to long-press never rendered.');

@@ -216,7 +216,7 @@ class ScreenReach {
     final center = centerOfText(
       tester,
       messageText,
-      within: find.byType(CometChatMessageList),
+      within: find.byType(ConvoKitMessageList),
     );
     if (center == null) {
       fail(

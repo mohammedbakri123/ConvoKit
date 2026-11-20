@@ -16,7 +16,7 @@ import '../sdk_user_b/thread_actions.dart';
 /// Threads inside a GROUP conversation. The 1:1 thread cases
 /// (1TO1-049/050/051/053, E2E-040/041/043) cover the same flows for a user
 /// chat; everything here adds the GROUP context (ThreadScreen(group:_group),
-/// CometChatMessageList(group:..., parentMessageId:...), and the group-only
+/// ConvoKitMessageList(group:..., parentMessageId:...), and the group-only
 /// sender-name/avatar header on incoming thread replies).
 ///
 /// Covered IDs (7):

@@ -125,13 +125,13 @@ void main() {
       final peer = User(uid: SeedData.testPeerUid, name: 'E2E Peer');
 
       await tester.pumpWidget(
-        appHost(CometChatMessageList(user: peer)),
+        appHost(ConvoKitMessageList(user: peer)),
       );
 
       // Real-time wait for SDK fetch + first render.
       await pumpForDuration(tester, const Duration(seconds: 8));
 
-      expect(find.byType(CometChatMessageList), findsOneWidget);
+      expect(find.byType(ConvoKitMessageList), findsOneWidget);
 
       // The seed step writes the message text "E2E msg #N ..." for each
       // bubble. The bubble renders text inside a RichText (formatters
@@ -172,12 +172,12 @@ void main() {
       );
 
       await tester.pumpWidget(
-        appHost(CometChatMessageList(user: emptyUser)),
+        appHost(ConvoKitMessageList(user: emptyUser)),
       );
 
       await pumpForDuration(tester, const Duration(seconds: 6));
 
-      expect(find.byType(CometChatMessageList), findsOneWidget);
+      expect(find.byType(ConvoKitMessageList), findsOneWidget);
       expect(
         findRichTextContaining('E2E msg #'),
         findsNothing,
@@ -198,7 +198,7 @@ void main() {
 
       await tester.pumpWidget(
         appHost(
-          CometChatMessageList(
+          ConvoKitMessageList(
             user: emptyUser,
             emptyStateView: (context) => const Center(
               child: Text(
@@ -220,7 +220,7 @@ void main() {
       debugPrint(
         'Custom emptyStateView matches: ${customEmpty.evaluate().length}',
       );
-      expect(find.byType(CometChatMessageList), findsOneWidget);
+      expect(find.byType(ConvoKitMessageList), findsOneWidget);
 
       await screenshot(tester, '03_custom_empty_view');
     });
@@ -230,7 +230,7 @@ void main() {
 
       await tester.pumpWidget(
         appHost(
-          CometChatMessageList(
+          ConvoKitMessageList(
             user: peer,
             headerView: (context, {user, group, parentMessageId}) => Container(
               key: const Key('e2e_custom_header'),
@@ -259,7 +259,7 @@ void main() {
 
       await tester.pumpWidget(
         appHost(
-          CometChatMessageList(
+          ConvoKitMessageList(
             user: peer,
             footerView: (context, {user, group, parentMessageId}) => Container(
               key: const Key('e2e_custom_footer'),
@@ -288,9 +288,9 @@ void main() {
 
       await tester.pumpWidget(
         appHost(
-          CometChatMessageList(
+          ConvoKitMessageList(
             user: peer,
-            style: CometChatMessageListStyle(
+            style: ConvoKitMessageListStyle(
               backgroundColor: Colors.amber.shade50,
             ),
           ),
@@ -299,7 +299,7 @@ void main() {
 
       await pumpForDuration(tester, const Duration(seconds: 6));
 
-      expect(find.byType(CometChatMessageList), findsOneWidget);
+      expect(find.byType(ConvoKitMessageList), findsOneWidget);
 
       await screenshot(tester, '06_custom_style_background');
     });
@@ -318,7 +318,7 @@ void main() {
 
       await tester.pumpWidget(
         appHost(
-          CometChatMessageList(
+          ConvoKitMessageList(
             user: peer,
             messagesRequestBuilder: builder,
           ),
@@ -333,7 +333,7 @@ void main() {
         'Custom messagesRequestBuilder smoke: $bubbleCount bubbles rendered',
       );
 
-      expect(find.byType(CometChatMessageList), findsOneWidget);
+      expect(find.byType(ConvoKitMessageList), findsOneWidget);
       expect(
         bubbleCount,
         greaterThanOrEqualTo(1),
@@ -350,7 +350,7 @@ void main() {
       final peer = User(uid: SeedData.testPeerUid, name: 'E2E Peer');
 
       await tester.pumpWidget(
-        appHost(CometChatMessageList(user: peer)),
+        appHost(ConvoKitMessageList(user: peer)),
       );
 
       await pumpForDuration(tester, const Duration(seconds: 8));

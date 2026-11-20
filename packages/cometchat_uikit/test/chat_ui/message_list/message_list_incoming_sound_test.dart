@@ -1,6 +1,6 @@
 /// The message list's incoming-message sound (ENG-38688).
 ///
-/// The bloc migration dropped it: CometChatMessageList stored
+/// The bloc migration dropped it: ConvoKitMessageList stored
 /// customSoundForMessages and never read it, and handed
 /// disableSoundForMessages to a bloc that never played anything. The
 /// conversations list stays silent for the open conversation because the

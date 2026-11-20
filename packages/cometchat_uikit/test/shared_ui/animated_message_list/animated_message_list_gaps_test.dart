@@ -1,4 +1,4 @@
-/// The corners of [CometChatAnimatedMessageList] that
+/// The corners of [ConvoKitAnimatedMessageList] that
 /// `animated_message_list_behaviour_test.dart` does not reach: the child-index
 /// reuse callback, the newer-page loading indicator, the short-list initial
 /// scroll, and the keyboard-follow path for normal (non-reversed) lists.
@@ -93,7 +93,7 @@ void main() {
     addTearDown(controller.dispose);
     await tester.pumpWidget(
       _host(
-        CometChatAnimatedMessageList(
+        ConvoKitAnimatedMessageList(
           bloc: bloc,
           scrollController: controller,
           reversed: reversed,
