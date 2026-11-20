@@ -11,7 +11,7 @@ topics:
   - cometchat
   - uikit
 screenshots:
-  - description: "CometChat Flutter UI Kit components: conversations, messages, and calls."
+  - description: "CometChat Flutter UI Kit components: conversations and messages."
     path: screenshots/overview_cometchat_screens.png
 
 environment:
@@ -45,7 +45,6 @@ dependencies:
   # Held at 3.x deliberately: cached_network_image 4.0.0 requires Dart
   # ^3.12.0, above this package's 3.10.8 floor.
   cached_network_image: ^3.4.1
-  cometchat_calls_sdk: ^5.1.0
   # Ceiling held below 13 deliberately. Admitting 13.x does not merely permit
   # it, it lets pub choose it, and permission_handler 13.0.1 pulls
   # permission_handler_android 14.0.0, whose build.gradle.kts uses a top-level
