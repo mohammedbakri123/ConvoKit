@@ -75,6 +75,8 @@ class FakeChatBackend {
 
   void updateUser(ChatUser? user) => _session.updateUser(user);
 
+  void emitEvent(ChatEvent event) => _events.emitEvent(event);
+
   void injectMessage(ChatMessage message) {
     final list = messagesByConversation.putIfAbsent(
       message.conversationId,
