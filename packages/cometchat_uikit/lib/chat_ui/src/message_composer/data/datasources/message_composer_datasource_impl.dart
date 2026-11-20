@@ -104,14 +104,19 @@ class MessageComposerDataSourceImpl implements MessageComposerDataSource {
         'audio' => ck.AttachmentKind.audio,
         _ => ck.AttachmentKind.file,
       };
-      final localPath = message.file;
+      final filePath = (message.file != null && message.file!.isNotEmpty)
+          ? message.file!
+          : (message.attachment?.fileUrl != null &&
+                  message.attachment!.fileUrl.isNotEmpty)
+              ? message.attachment!.fileUrl
+              : 'local_file';
       final attId = 'att_${DateTime.now().microsecondsSinceEpoch}';
 
       // 1. Initial local state
       var attachment = ck.ChatAttachment(
         id: attId,
         kind: attachmentKind,
-        localPath: localPath.isNotEmpty ? localPath : 'local_file',
+        localPath: filePath,
         state: ck.AttachmentState.local,
       );
 
@@ -119,13 +124,13 @@ class MessageComposerDataSourceImpl implements MessageComposerDataSource {
       attachment = ck.ChatAttachment(
         id: attId,
         kind: attachmentKind,
-        localPath: localPath.isNotEmpty ? localPath : 'local_file',
+        localPath: filePath,
         state: ck.AttachmentState.uploading,
         uploadProgress: 0.0,
       );
 
       final uploadReq = ck.UploadRequest.file(
-        localPath.isNotEmpty ? localPath : 'file',
+        filePath,
         kind: attachmentKind,
         mimeType: message.attachment?.fileMimeType,
         name: message.attachment?.fileName,
@@ -151,7 +156,7 @@ class MessageComposerDataSourceImpl implements MessageComposerDataSource {
           attachment = ck.ChatAttachment(
             id: attId,
             kind: attachmentKind,
-            localPath: localPath.isNotEmpty ? localPath : 'local_file',
+            localPath: filePath,
             state: ck.AttachmentState.failed,
             uploadFailure: err,
           );
@@ -170,7 +175,7 @@ class MessageComposerDataSourceImpl implements MessageComposerDataSource {
         id: attId,
         remoteId: uploadedMedia.id,
         kind: attachmentKind,
-        localPath: localPath.isNotEmpty ? localPath : null,
+        localPath: filePath,
         url: uploadedMedia.url,
         thumbnailUrl: uploadedMedia.thumbnailUrl,
         mimeType: uploadedMedia.mimeType,
@@ -258,6 +263,9 @@ class MessageComposerDataSourceImpl implements MessageComposerDataSource {
         name: message.sender?.name ?? '',
         avatarUrl: message.sender?.avatar,
       );
+      final subType = (message.subType != null && message.subType!.isNotEmpty)
+          ? message.subType!
+          : 'custom';
       final ckMsg = ck.CustomMessage(
         localId: message.muid.isNotEmpty
             ? message.muid
@@ -265,7 +273,7 @@ class MessageComposerDataSourceImpl implements MessageComposerDataSource {
         conversationId: convId,
         sender: senderUser,
         createdAt: message.sentAt ?? DateTime.now(),
-        kind: message.subType.isNotEmpty ? message.subType : 'custom',
+        kind: subType,
         data: message.customData ?? const {},
       );
       final res = await repo.sendMessage(ckMsg);

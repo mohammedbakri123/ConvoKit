@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cometchat_chat_uikit/convokit.dart' as ck;
+import '../../../../src/adapters/cometchat_message_adapter.dart';
 import '../../../../src/adapters/cometchat_sdk_adapter.dart';
 import 'package:intl/intl.dart';
 import '../../../../shared_ui/cometchat_uikit_shared.dart';
@@ -694,18 +696,7 @@ class MessageTemplateUtils {
       );
     }
 
-    if (additionalConfigurations?.hideEditMessageOption != true &&
-        _validateOption(
-          loggedInUser,
-          messageObject,
-          context,
-          group,
-          MessageOptionConstants.editMessage,
-        )) {
-      messageOptionList.add(
-        getEditOption(context, colorPalette, typography, style),
-      );
-    }
+    // Message editing is deferred to v1.1 per decisions list
 
     if (additionalConfigurations?.hideMessageInfoOption != true &&
         _validateOption(
@@ -901,11 +892,14 @@ class MessageTemplateUtils {
       category: MessageCategoryConstants.message,
       contentView:
           (
-            BaseMessage message,
+            dynamic message,
             BuildContext context,
             BubbleAlignment alignment, {
             AdditionalConfigurations? additionalConfigurations,
           }) {
+            if (message is ck.ChatMessage) {
+              message = CometChatMessageAdapter.toSdkMessage(message);
+            }
             TextMessage textMessage = message as TextMessage;
             if (message.deletedAt != null) {
               return getDeleteMessageBubble(
@@ -927,11 +921,15 @@ class MessageTemplateUtils {
   }
 
   static Widget getTextMessageContentView(
-    TextMessage message,
+    dynamic message,
     BuildContext context,
     BubbleAlignment alignment, {
     AdditionalConfigurations? additionalConfigurations,
   }) {
+    if (message is ck.ChatMessage) {
+      message = CometChatMessageAdapter.toSdkMessage(message);
+    }
+    final TextMessage textMessage = message as TextMessage;
     final textBubble = MessageTemplateUtils.getTextMessageBubble(
       message.text,
       message,
@@ -1009,11 +1007,14 @@ class MessageTemplateUtils {
       category: MessageCategoryConstants.message,
       contentView:
           (
-            BaseMessage message,
+            dynamic message,
             BuildContext context,
             BubbleAlignment alignment, {
             AdditionalConfigurations? additionalConfigurations,
           }) {
+            if (message is ck.ChatMessage) {
+              message = CometChatMessageAdapter.toSdkMessage(message);
+            }
             MediaMessage audioMessage = message as MediaMessage;
             if (message.deletedAt != null) {
               return getDeleteMessageBubble(
@@ -1040,11 +1041,14 @@ class MessageTemplateUtils {
       category: MessageCategoryConstants.message,
       contentView:
           (
-            BaseMessage message,
+            dynamic message,
             BuildContext context,
             BubbleAlignment alignment, {
             AdditionalConfigurations? additionalConfigurations,
           }) {
+            if (message is ck.ChatMessage) {
+              message = CometChatMessageAdapter.toSdkMessage(message);
+            }
             if (message.deletedAt != null) {
               return getDeleteMessageBubble(
                 message,
@@ -1070,11 +1074,14 @@ class MessageTemplateUtils {
       category: MessageCategoryConstants.message,
       contentView:
           (
-            BaseMessage message,
+            dynamic message,
             BuildContext context,
             BubbleAlignment alignment, {
             AdditionalConfigurations? additionalConfigurations,
           }) {
+            if (message is ck.ChatMessage) {
+              message = CometChatMessageAdapter.toSdkMessage(message);
+            }
             if (message.deletedAt != null) {
               return getDeleteMessageBubble(
                 message,
@@ -1126,11 +1133,14 @@ class MessageTemplateUtils {
       category: MessageCategoryConstants.message,
       contentView:
           (
-            BaseMessage message,
+            dynamic message,
             BuildContext context,
             BubbleAlignment alignment, {
             AdditionalConfigurations? additionalConfigurations,
           }) {
+            if (message is ck.ChatMessage) {
+              message = CometChatMessageAdapter.toSdkMessage(message);
+            }
             if (message.deletedAt != null) {
               return getDeleteMessageBubble(
                 message,
@@ -1157,11 +1167,14 @@ class MessageTemplateUtils {
       category: MessageCategoryConstants.interactive,
       contentView:
           (
-            BaseMessage message,
+            dynamic message,
             BuildContext context,
             BubbleAlignment alignment, {
             AdditionalConfigurations? additionalConfigurations,
           }) {
+            if (message is ck.ChatMessage) {
+              message = CometChatMessageAdapter.toSdkMessage(message);
+            }
             if (message.deletedAt != null) {
               return getDeleteMessageBubble(
                 message,
@@ -1194,11 +1207,14 @@ class MessageTemplateUtils {
       category: MessageCategoryConstants.interactive,
       contentView:
           (
-            BaseMessage message,
+            dynamic message,
             BuildContext context,
             BubbleAlignment alignment, {
             AdditionalConfigurations? additionalConfigurations,
           }) {
+            if (message is ck.ChatMessage) {
+              message = CometChatMessageAdapter.toSdkMessage(message);
+            }
             if (message.deletedAt != null) {
               return getDeleteMessageBubble(
                 message,
@@ -1328,12 +1344,15 @@ class MessageTemplateUtils {
   }
 
   static List<CometChatMessageOption> getMessageOptions(
-    User loggedInUser,
-    BaseMessage messageObject,
+    dynamic loggedInUser,
+    dynamic messageObject,
     BuildContext context,
-    Group? group,
+    dynamic group, [
     AdditionalConfigurations? additionalConfigurations,
-  ) {
+  ]) {
+    if (messageObject is ck.ChatMessage) {
+      messageObject = CometChatMessageAdapter.toSdkMessage(messageObject);
+    }
     List<CometChatMessageOption> optionList = [];
     if (messageObject.category == MessageCategoryConstants.message) {
       switch (messageObject.type) {
@@ -1395,16 +1414,20 @@ class MessageTemplateUtils {
         additionalConfigurations,
       );
     }
+    optionList.removeWhere((opt) => opt.id == MessageOptionConstants.editMessage);
     return optionList;
   }
 
   static bool _validateOption(
-    User loggedInUser,
-    BaseMessage messageObject,
+    dynamic loggedInUser,
+    dynamic messageObject,
     BuildContext context,
-    Group? group,
+    dynamic group,
     String optionId,
   ) {
+    if (MessageOptionConstants.editMessage == optionId) {
+      return false; // Editing deferred to v1.1
+    }
     if (MessageOptionConstants.replyInThreadMessage == optionId &&
         messageObject.parentMessageId == 0) {
       return true;
@@ -1554,20 +1577,7 @@ class MessageTemplateUtils {
     final String? caption = messageObject is MediaMessage
         ? messageObject.caption?.trim()
         : null;
-    if (caption != null &&
-        caption.isNotEmpty &&
-        additionalConfigurations?.hideEditMessageOption != true &&
-        _validateOption(
-          loggedInUser,
-          messageObject,
-          context,
-          group,
-          MessageOptionConstants.editMessage,
-        )) {
-      messageOptionList.add(
-        getEditOption(context, colorPalette, typography, style),
-      );
-    }
+    // Message editing is deferred to v1.1 per decisions list
 
     if (additionalConfigurations?.hideReplyOption != true) {
       messageOptionList.add(
@@ -1811,11 +1821,16 @@ class MessageTemplateUtils {
   }
 
   static Widget getAudioMessageContentView(
-    MediaMessage message,
+    dynamic message,
     BuildContext context,
     BubbleAlignment alignment, {
     AdditionalConfigurations? additionalConfigurations,
   }) {
+    if (message is ck.ChatMessage) {
+      message = CometChatMessageAdapter.toSdkMessage(message);
+    }
+    final MediaMessage mediaMessage = message as MediaMessage;
+    message = mediaMessage;
     // Voice notes ALWAYS render via CometChatVoiceNoteBubble (below), on both
     // values of enableMultipleAttachments — a voice note is single by nature
     // and keeps the same look on both paths. Only non-voice audio *files* use
@@ -1848,11 +1863,16 @@ class MessageTemplateUtils {
   }
 
   static Widget getFileMessageContentView(
-    MediaMessage message,
+    dynamic message,
     BuildContext context,
     BubbleAlignment alignment, {
     AdditionalConfigurations? additionalConfigurations,
   }) {
+    if (message is ck.ChatMessage) {
+      message = CometChatMessageAdapter.toSdkMessage(message);
+    }
+    final MediaMessage mediaMessage = message as MediaMessage;
+    message = mediaMessage;
     if (additionalConfigurations?.enableMultipleAttachments ?? true) {
       // Every attachment renders as a file card (legacy mixed-type messages
       // from older clients land here too).
@@ -1882,11 +1902,16 @@ class MessageTemplateUtils {
   }
 
   static Widget getImageMessageContentView(
-    MediaMessage message,
+    dynamic message,
     BuildContext context,
     BubbleAlignment alignment, {
     AdditionalConfigurations? additionalConfigurations,
   }) {
+    if (message is ck.ChatMessage) {
+      message = CometChatMessageAdapter.toSdkMessage(message);
+    }
+    final MediaMessage mediaMessage = message as MediaMessage;
+    message = mediaMessage;
     if (additionalConfigurations?.enableMultipleAttachments ?? true) {
       return CometChatImagesBubble(
         message: message,
@@ -1935,11 +1960,16 @@ class MessageTemplateUtils {
   }
 
   static Widget getVideoMessageContentView(
-    MediaMessage message,
+    dynamic message,
     BuildContext context,
     BubbleAlignment alignment, {
     AdditionalConfigurations? additionalConfigurations,
   }) {
+    if (message is ck.ChatMessage) {
+      message = CometChatMessageAdapter.toSdkMessage(message);
+    }
+    final MediaMessage mediaMessage = message as MediaMessage;
+    message = mediaMessage;
     if (additionalConfigurations?.enableMultipleAttachments ?? true) {
       return CometChatVideosBubble(
         message: message,
@@ -2064,11 +2094,14 @@ class MessageTemplateUtils {
       category: MessageCategoryConstants.card,
       contentView:
           (
-            BaseMessage message,
+            dynamic message,
             BuildContext context,
             BubbleAlignment alignment, {
             AdditionalConfigurations? additionalConfigurations,
           }) {
+            if (message is ck.ChatMessage) {
+              message = CometChatMessageAdapter.toSdkMessage(message);
+            }
             if (message.deletedAt != null) {
               return getDeleteMessageBubble(
                 message,
@@ -2116,11 +2149,14 @@ class MessageTemplateUtils {
       category: MessageCategoryConstants.interactive,
       contentView:
           (
-            BaseMessage message,
+            dynamic message,
             BuildContext context,
             BubbleAlignment alignment, {
             AdditionalConfigurations? additionalConfigurations,
           }) {
+            if (message is ck.ChatMessage) {
+              message = CometChatMessageAdapter.toSdkMessage(message);
+            }
             if (message.deletedAt != null) {
               return getDeleteMessageBubble(
                 message,
@@ -2212,11 +2248,14 @@ class MessageTemplateUtils {
       category: MessageCategoryConstants.custom,
       contentView:
           (
-            BaseMessage message,
+            dynamic message,
             BuildContext context,
             BubbleAlignment alignment, {
             AdditionalConfigurations? additionalConfigurations,
           }) {
+            if (message is ck.ChatMessage) {
+              message = CometChatMessageAdapter.toSdkMessage(message);
+            }
             if (message.deletedAt != null) {
               return getDeleteMessageBubble(
                 message,
@@ -2376,11 +2415,14 @@ class MessageTemplateUtils {
       category: MessageCategoryConstants.custom,
       contentView:
           (
-            BaseMessage message,
+            dynamic message,
             BuildContext context,
             BubbleAlignment alignment, {
             AdditionalConfigurations? additionalConfigurations,
           }) {
+            if (message is ck.ChatMessage) {
+              message = CometChatMessageAdapter.toSdkMessage(message);
+            }
             if (message.deletedAt != null) {
               return getDeleteMessageBubble(
                 message,
@@ -2419,11 +2461,14 @@ class MessageTemplateUtils {
       category: MessageCategoryConstants.custom,
       contentView:
           (
-            BaseMessage message,
+            dynamic message,
             BuildContext context,
             BubbleAlignment alignment, {
             AdditionalConfigurations? additionalConfigurations,
           }) {
+            if (message is ck.ChatMessage) {
+              message = CometChatMessageAdapter.toSdkMessage(message);
+            }
             if (message.deletedAt != null) {
               return getDeleteMessageBubble(
                 message,
@@ -2477,11 +2522,14 @@ class MessageTemplateUtils {
       category: MessageCategoryConstants.custom,
       contentView:
           (
-            BaseMessage message,
+            dynamic message,
             BuildContext context,
             BubbleAlignment alignment, {
             AdditionalConfigurations? additionalConfigurations,
           }) {
+            if (message is ck.ChatMessage) {
+              message = CometChatMessageAdapter.toSdkMessage(message);
+            }
             if (message.deletedAt != null) {
               return getDeleteMessageBubble(
                 message,
@@ -2540,11 +2588,14 @@ class MessageTemplateUtils {
       category: CometChatMessageCategory.categoryAgentic,
       contentView:
           (
-            BaseMessage message,
+            dynamic message,
             BuildContext context,
             BubbleAlignment alignment, {
             AdditionalConfigurations? additionalConfigurations,
           }) {
+            if (message is ck.ChatMessage) {
+              message = CometChatMessageAdapter.toSdkMessage(message);
+            }
             if (message.deletedAt != null) {
               return getDeleteMessageBubble(
                 message,
