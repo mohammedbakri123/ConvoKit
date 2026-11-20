@@ -99,7 +99,7 @@ String _getLabelForDate(
   }
 }
 
-/// Get a relative time string for a single item matching CometChatDate.setDayTime:
+/// Get a relative time string for a single item matching ConvoKitDate.setDayTime:
 /// - Today (< 24h): Time only (e.g., "2:35 PM")
 /// - Yesterday (24–48h): "Yesterday"
 /// - This week (2–7 days): Day name (e.g., "Monday")

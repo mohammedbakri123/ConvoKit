@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../../../../../cometchat_uikit_shared.dart';
 
-///[CometChatStatusIndicator] is a widget that is used to indicate the online status of a [User]
+///[ConvoKitStatusIndicator] is a widget that is used to indicate the online status of a [User]
 /// ```dart
-/// CometChatStatusIndicator(
-///  style: CometChatStatusIndicatorStyle(
+/// ConvoKitStatusIndicator(
+///  style: ConvoKitStatusIndicatorStyle(
 ///  backgroundColor: Colors.green,
 ///  border: Border.all(color: Colors.white, width: 2),
 ///  ),
@@ -17,8 +17,8 @@ import '../../../../../../cometchat_uikit_shared.dart';
 ///  ),
 ///  );
 /// ```
-class CometChatStatusIndicator extends StatelessWidget {
-  const CometChatStatusIndicator({
+class ConvoKitStatusIndicator extends StatelessWidget {
+  const ConvoKitStatusIndicator({
     super.key,
     this.style,
     this.width,
@@ -27,7 +27,7 @@ class CometChatStatusIndicator extends StatelessWidget {
   });
 
   ///[style] contains properties that affects the appearance of this widget
-  final CometChatStatusIndicatorStyle? style;
+  final ConvoKitStatusIndicatorStyle? style;
 
   ///[width] provides width to the widget
   final double? width;
@@ -41,12 +41,12 @@ class CometChatStatusIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final statusIndicatorStyle =
-        CometChatThemeHelper.getTheme<CometChatStatusIndicatorStyle>(
+        ConvoKitThemeHelper.getTheme<ConvoKitStatusIndicatorStyle>(
           context: context,
-          defaultTheme: CometChatStatusIndicatorStyle.of,
+          defaultTheme: ConvoKitStatusIndicatorStyle.of,
         ).merge(style);
 
-    final spacing = CometChatThemeHelper.getSpacing(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
 
     // An unlabelled coloured dot. It conveys presence visually but announces
     // nothing, so it is hidden rather than read out as an empty node.

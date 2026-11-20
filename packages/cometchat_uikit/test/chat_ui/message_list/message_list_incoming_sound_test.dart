@@ -27,7 +27,7 @@ import 'package:convokit/chat_ui/src/message_list/domain/usecases/mark_as_read_u
 import 'package:convokit/chat_ui/src/message_list/domain/usecases/mark_as_unread_usecase.dart';
 import 'package:convokit/cometchat_chat_uikit.dart'
     show
-        CometChatUIKit,
+        ConvoKitUIKit,
         MessageCategoryConstants,
         MessageTypeConstants,
         ReceiverTypeConstants,
@@ -151,7 +151,7 @@ void main() {
 
   setUp(() {
     _played.clear();
-    CometChatUIKit.loggedInUser = _me;
+    ConvoKitUIKit.loggedInUser = _me;
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(_channel, (call) async {
           if (call.method == 'playCustomSound') {
@@ -164,7 +164,7 @@ void main() {
   });
 
   tearDown(() {
-    CometChatUIKit.loggedInUser = null;
+    ConvoKitUIKit.loggedInUser = null;
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(_channel, null);
   });

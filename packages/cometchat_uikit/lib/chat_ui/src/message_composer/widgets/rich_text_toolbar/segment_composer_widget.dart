@@ -18,9 +18,9 @@ import 'segment_composer_controller.dart';
 class SegmentComposerWidget extends StatefulWidget {
   final SegmentComposerController controller;
   final String placeholder;
-  final CometChatColorPalette? colorPalette;
-  final CometChatSpacing? spacing;
-  final CometChatTypography? typography;
+  final ConvoKitColorPalette? colorPalette;
+  final ConvoKitSpacing? spacing;
+  final ConvoKitTypography? typography;
   final TextStyle? textStyle;
   final TextStyle? placeholderStyle;
   final double maxHeight;
@@ -87,10 +87,10 @@ class _SegmentComposerWidgetState extends State<SegmentComposerWidget> {
   @override
   Widget build(BuildContext context) {
     final palette =
-        widget.colorPalette ?? CometChatThemeHelper.getColorPalette(context);
-    final space = widget.spacing ?? CometChatThemeHelper.getSpacing(context);
+        widget.colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
+    final space = widget.spacing ?? ConvoKitThemeHelper.getSpacing(context);
     final typo =
-        widget.typography ?? CometChatThemeHelper.getTypography(context);
+        widget.typography ?? ConvoKitThemeHelper.getTypography(context);
 
     // Check if there are any code blocks
     final hasCodeBlocks = widget.controller.segments.any(
@@ -169,9 +169,9 @@ class _NormalSegmentWidget extends StatefulWidget {
   final ComposerSegment segment;
   final SegmentComposerController controller;
   final String? placeholder;
-  final CometChatColorPalette colorPalette;
-  final CometChatSpacing spacing;
-  final CometChatTypography typography;
+  final ConvoKitColorPalette colorPalette;
+  final ConvoKitSpacing spacing;
+  final ConvoKitTypography typography;
   final TextStyle? textStyle;
   final TextStyle? placeholderStyle;
   final ValueChanged<String>? onChange;
@@ -350,7 +350,7 @@ class _NormalSegmentWidgetState extends State<_NormalSegmentWidget> {
       controller: widget.segment.controller,
       focusNode: widget.segment.focusNode,
       textCapitalization: TextCapitalization.sentences,
-      keyboardAppearance: CometChatThemeHelper.getBrightness(context),
+      keyboardAppearance: ConvoKitThemeHelper.getBrightness(context),
       cursorColor: widget.colorPalette.primary ?? Colors.blue,
       scrollPhysics: const ClampingScrollPhysics(),
       contentInsertionConfiguration: widget.onContentInserted != null
@@ -477,9 +477,9 @@ class _NormalSegmentWidgetState extends State<_NormalSegmentWidget> {
 class _CodeSegmentWidget extends StatefulWidget {
   final ComposerSegment segment;
   final SegmentComposerController controller;
-  final CometChatColorPalette colorPalette;
-  final CometChatSpacing spacing;
-  final CometChatTypography typography;
+  final ConvoKitColorPalette colorPalette;
+  final ConvoKitSpacing spacing;
+  final ConvoKitTypography typography;
 
   const _CodeSegmentWidget({
     super.key,

@@ -185,8 +185,8 @@ ConvoKitUsersStyle _style(int offset) {
     itemTitleTextColor: c(16),
     separatorColor: c(17),
     separatorHeight: d(18),
-    avatarStyle: CometChatAvatarStyle(backgroundColor: c(19)),
-    statusIndicatorStyle: CometChatStatusIndicatorStyle(backgroundColor: c(20)),
+    avatarStyle: ConvoKitAvatarStyle(backgroundColor: c(19)),
+    statusIndicatorStyle: ConvoKitStatusIndicatorStyle(backgroundColor: c(20)),
     searchBackgroundColor: c(21),
     searchBorder: BorderSide(width: d(22)),
     searchBorderRadius: BorderRadius.circular(d(23)),
@@ -239,8 +239,8 @@ ConvoKitUsersStyle _copyEverything(ConvoKitUsersStyle onto, int offset) {
     itemTitleTextColor: c(16),
     separatorColor: c(17),
     separatorHeight: d(18),
-    avatarStyle: CometChatAvatarStyle(backgroundColor: c(19)),
-    statusIndicatorStyle: CometChatStatusIndicatorStyle(backgroundColor: c(20)),
+    avatarStyle: ConvoKitAvatarStyle(backgroundColor: c(19)),
+    statusIndicatorStyle: ConvoKitStatusIndicatorStyle(backgroundColor: c(20)),
     searchBackgroundColor: c(21),
     searchBorder: BorderSide(width: d(22)),
     searchBorderRadius: BorderRadius.circular(d(23)),
@@ -427,7 +427,7 @@ void main() {
   testWidgets('of() ignores its context and returns the bare defaults', (
     tester,
   ) async {
-    // `of` predates CometChatThemeHelper: it does not read the theme, so a
+    // `of` predates ConvoKitThemeHelper: it does not read the theme, so a
     // style registered as a ThemeExtension is NOT what it returns. Components
     // resolve the themed style through the helper instead.
     late ConvoKitUsersStyle resolved;

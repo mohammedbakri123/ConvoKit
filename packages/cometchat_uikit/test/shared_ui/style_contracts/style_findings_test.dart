@@ -76,7 +76,7 @@ void main() {
     });
   });
 
-  group('CometChatColorPalette', () {
+  group('ConvoKitColorPalette', () {
     test('FINDING the extendedPrimary ramp is shifted by one slot', () {
       // FINDING: copyWith reads the ramp one step behind itself —
       //   extendedPrimary200: extendedPrimary100 ?? this.extendedPrimary200,
@@ -85,7 +85,7 @@ void main() {
       // low, and `extendedPrimary900` can never be set at all. copyWith is
       // how a resolved palette is adjusted, so a caller's ramp override lands
       // on the wrong tokens.
-      final palette = CometChatColorPalette().copyWith(
+      final palette = ConvoKitColorPalette().copyWith(
         extendedPrimary100: _a,
         extendedPrimary900: _c,
       );
@@ -95,7 +95,7 @@ void main() {
       expect(palette.extendedPrimary900, isNull); // should be _c
 
       // The same shift one step further up the ramp.
-      final mid = CometChatColorPalette().copyWith(extendedPrimary500: _b);
+      final mid = ConvoKitColorPalette().copyWith(extendedPrimary500: _b);
       expect(mid.extendedPrimary500, isNull); // should be _b
       expect(mid.extendedPrimary600, _b); // should be null
     });
@@ -104,7 +104,7 @@ void main() {
       // FINDING: there is no `neutral` field; the parameter is dead API.
       // `alertColor`, by contrast, is alive — it is the only way to set
       // `messageSeen` through copyWith.
-      final palette = CometChatColorPalette().copyWith(
+      final palette = ConvoKitColorPalette().copyWith(
         neutral: _a,
         alertColor: _b,
       );
@@ -112,14 +112,14 @@ void main() {
     });
   });
 
-  group('CometChatSpacing', () {
+  group('ConvoKitSpacing', () {
     test('FINDING lerp interpolates `spacing` towards `other.spacing1`', () {
       // FINDING: `spacing: lerpDouble(spacing, other.spacing1, t)` — the first
       // line of the lerp reads the wrong field on `other`, so animating
       // between two spacing scales lands `spacing` on the other scale's
       // `spacing1`. Every other line of the lerp is correctly paired.
-      final from = CometChatSpacing(spacing: 2, spacing1: 4);
-      final to = CometChatSpacing(spacing: 200, spacing1: 400);
+      final from = ConvoKitSpacing(spacing: 2, spacing1: 4);
+      final to = ConvoKitSpacing(spacing: 200, spacing1: 400);
 
       final end = from.lerp(to, 1.0);
 
@@ -130,25 +130,25 @@ void main() {
     test('padding/margin/radius fall back to the spacing scale', () {
       // The constructor derives the three aliases from `spacing*` when they
       // are not given, and keeps an explicit value when they are.
-      final spacing = CometChatSpacing(spacing4: 99);
+      final spacing = ConvoKitSpacing(spacing4: 99);
       expect(spacing.padding4, 99);
       expect(spacing.margin4, 99);
       expect(spacing.radius4, 99);
-      expect(CometChatSpacing(spacing4: 99, padding4: 7).padding4, 7);
+      expect(ConvoKitSpacing(spacing4: 99, padding4: 7).padding4, 7);
 
       // FINDING: the padding scale stops at padding10 while margin runs to
       // margin20 and radius to radiusMax — there is no padding11..padding20
       // or paddingMax field at all, even though copyWith advertises them.
-      expect(CometChatSpacing().margin20, 80);
-      expect(CometChatSpacing().padding10, 40);
-      expect(CometChatSpacing().radiusMax, 1000);
+      expect(ConvoKitSpacing().margin20, 80);
+      expect(ConvoKitSpacing().padding10, 40);
+      expect(ConvoKitSpacing().radiusMax, 1000);
     });
 
     test('FINDING copyWith declares padding11..paddingMax but drops them', () {
       // FINDING: copyWith accepts padding11-padding20, paddingMax and
       // marginMax; none of them exist as fields, so the values vanish with no
       // way to read them back — the call is accepted and does nothing.
-      final spacing = CometChatSpacing(
+      final spacing = ConvoKitSpacing(
         spacing4: 99,
       ).copyWith(padding11: 11, marginMax: 12);
       expect(spacing.spacing4, 99);
@@ -206,16 +206,16 @@ void main() {
     });
   });
 
-  group('CometChatMessageBubbleStyle', () {
+  group('ConvoKitMessageBubbleStyle', () {
     test('FINDING lerp ignores t for backgroundImage', () {
       // FINDING: `backgroundImage: other.backgroundImage ?? backgroundImage`
       // — the other end's image is adopted at every t, including t == 0, so
       // the image snaps instead of being held until the animation ends.
       const mine = DecorationImage(image: AssetImage('mine'));
       const theirs = DecorationImage(image: AssetImage('theirs'));
-      final at0 = const CometChatMessageBubbleStyle(
+      final at0 = const ConvoKitMessageBubbleStyle(
         backgroundImage: mine,
-      ).lerp(const CometChatMessageBubbleStyle(backgroundImage: theirs), 0.0);
+      ).lerp(const ConvoKitMessageBubbleStyle(backgroundImage: theirs), 0.0);
       expect(at0.backgroundImage, theirs); // should be `mine` at t == 0
     });
   });

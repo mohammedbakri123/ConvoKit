@@ -101,8 +101,8 @@ Iterable<BorderRadiusGeometry?> _boxRadii(WidgetTester tester) => tester
 void main() {
   // The "tap to remove" subtitle only renders on the row for the logged-in
   // user's own reaction, which is decided by this static.
-  setUp(() => CometChatUIKit.loggedInUser = _me);
-  tearDown(() => CometChatUIKit.loggedInUser = null);
+  setUp(() => ConvoKitUIKit.loggedInUser = _me);
+  tearDown(() => ConvoKitUIKit.loggedInUser = null);
 
   group('the sheet', () {
     testWidgets('backgroundColor', (tester) async {
@@ -363,7 +363,7 @@ void main() {
 
   group('reactor avatars', () {
     Iterable<Color?> avatarFills(WidgetTester tester) => tester
-        .widgetList<CometChatAvatar>(find.byType(CometChatAvatar))
+        .widgetList<ConvoKitAvatar>(find.byType(ConvoKitAvatar))
         .map((a) => a.style?.backgroundColor);
 
     testWidgets('style avatarStyle reaches every reactor avatar — the route '
@@ -392,7 +392,7 @@ void main() {
               message: _message(),
               reactionListBloc: _bloc(_loaded),
               style: CometChatReactionListStyle(
-                avatarStyle: const CometChatAvatarStyle(backgroundColor: fill),
+                avatarStyle: const ConvoKitAvatarStyle(backgroundColor: fill),
               ),
             ),
           ),
@@ -413,11 +413,11 @@ void main() {
               message: _message(),
               reactionListBloc: _bloc(_loaded),
               style: CometChatReactionListStyle(
-                avatarStyle: const CometChatAvatarStyle(
+                avatarStyle: const ConvoKitAvatarStyle(
                   backgroundColor: fromStyle,
                 ),
               ),
-              avatarStyle: const CometChatAvatarStyle(
+              avatarStyle: const ConvoKitAvatarStyle(
                 backgroundColor: fromWidget,
               ),
             ),

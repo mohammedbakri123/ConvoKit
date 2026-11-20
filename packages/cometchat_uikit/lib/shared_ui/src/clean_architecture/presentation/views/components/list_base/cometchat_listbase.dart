@@ -229,7 +229,7 @@ class _CometChatListBaseState extends State<CometChatListBase> {
                                   absorbing: widget.searchReadOnly,
                                   child: TextField(
                                     keyboardAppearance:
-                                        CometChatThemeHelper.getBrightness(
+                                        ConvoKitThemeHelper.getBrightness(
                                               context,
                                             ) ==
                                             Brightness.dark

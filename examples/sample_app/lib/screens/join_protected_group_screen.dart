@@ -15,9 +15,9 @@ class JoinProtectedGroupScreen extends StatefulWidget {
 }
 
 class _JoinProtectedGroupScreenState extends State<JoinProtectedGroupScreen> {
-  late CometChatColorPalette _colorPalette;
-  late CometChatTypography _typography;
-  late CometChatSpacing _spacing;
+  late ConvoKitColorPalette _colorPalette;
+  late ConvoKitTypography _typography;
+  late ConvoKitSpacing _spacing;
 
   final _formKey = GlobalKey<FormState>();
   final _passwordController = TextEditingController();
@@ -30,9 +30,9 @@ class _JoinProtectedGroupScreenState extends State<JoinProtectedGroupScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _colorPalette = CometChatThemeHelper.getColorPalette(context);
-    _typography = CometChatThemeHelper.getTypography(context);
-    _spacing = CometChatThemeHelper.getSpacing(context);
+    _colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    _typography = ConvoKitThemeHelper.getTypography(context);
+    _spacing = ConvoKitThemeHelper.getSpacing(context);
   }
 
   @override
@@ -142,7 +142,7 @@ class _JoinProtectedGroupScreenState extends State<JoinProtectedGroupScreen> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(bottom: _spacing.padding3 ?? 0),
-                  child: CometChatAvatar(
+                  child: ConvoKitAvatar(
                     height: 60,
                     width: 60,
                     name: widget.group.name,
@@ -152,8 +152,8 @@ class _JoinProtectedGroupScreenState extends State<JoinProtectedGroupScreen> {
                 Positioned(
                   bottom: 12,
                   right: 5,
-                  child: CometChatStatusIndicator(
-                    style: CometChatStatusIndicatorStyle(
+                  child: ConvoKitStatusIndicator(
+                    style: ConvoKitStatusIndicatorStyle(
                       backgroundColor: _colorPalette.success,
                       border: Border.all(
                         color: _colorPalette.white ?? Colors.white,
@@ -342,7 +342,7 @@ class _JoinProtectedGroupScreenState extends State<JoinProtectedGroupScreen> {
 /// Show the Join Protected Group bottom sheet (mobile + web).
 Future<void> showJoinProtectedGroup({
   required BuildContext context,
-  required CometChatColorPalette colorPalette,
+  required ConvoKitColorPalette colorPalette,
   required Group group,
 }) {
   final screenSize = MediaQuery.of(context).size;

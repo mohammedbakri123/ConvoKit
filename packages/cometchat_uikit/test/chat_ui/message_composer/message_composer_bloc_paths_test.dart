@@ -3,8 +3,8 @@
 /// a media message, the panel/padding plumbing, and every kit-event listener
 /// callback the bloc mixes in.
 ///
-/// The listeners are plain UI-event maps ([CometChatMessageEvents],
-/// [CometChatUIEvents], [ConvoKitUserEvents],
+/// The listeners are plain UI-event maps ([ConvoKitMessageEvents],
+/// [ConvoKitUIEvents], [ConvoKitUserEvents],
 /// [CometChatStreamCallBackEvents]), so each callback is driven end to end by
 /// firing the corresponding static. Real SDK model objects are used
 /// throughout, because half of what is asserted here is which fields survive a
@@ -34,7 +34,7 @@ class FakeBaseMessage extends Fake implements BaseMessage {}
 
 /// Records every kit message event, so an assertion can name the exact
 /// sequence a send or edit announced.
-class EventRecorder with CometChatMessageEventListener {
+class EventRecorder with ConvoKitMessageEventListener {
   final List<(BaseMessage, core_enums.MessageStatus)> sent = [];
   final List<(BaseMessage, MessageEditStatus)> edited = [];
 
@@ -119,7 +119,7 @@ void main() {
   setUp(() {
     repo = MockRepo();
     recorder = EventRecorder();
-    CometChatMessageEvents.addMessagesListener('composer_paths', recorder);
+    ConvoKitMessageEvents.addMessagesListener('composer_paths', recorder);
     when(
       () => repo.getLoggedInUser(),
     ).thenAnswer((_) async => Success(user(_me)));
@@ -138,7 +138,7 @@ void main() {
   });
 
   tearDown(() {
-    CometChatMessageEvents.removeMessagesListener('composer_paths');
+    ConvoKitMessageEvents.removeMessagesListener('composer_paths');
   });
 
   MessageComposerBloc makeBloc({
@@ -1160,7 +1160,7 @@ void main() {
         final mine = await ready(asUser: user('agent'));
         final other = await ready(asUser: user('someone'));
 
-        CometChatUIEvents.ccAgentChatThreadResolved(
+        ConvoKitUIEvents.ccAgentChatThreadResolved(
           receiverId: 'agent',
           parentMessageId: 77,
         );
@@ -1177,7 +1177,7 @@ void main() {
     test('a group composer ignores agent thread resolution', () async {
       final bloc = await ready(asGroup: chatGroup());
 
-      CometChatUIEvents.ccAgentChatThreadResolved(
+      ConvoKitUIEvents.ccAgentChatThreadResolved(
         receiverId: 'team',
         parentMessageId: 77,
       );
@@ -1196,7 +1196,7 @@ void main() {
     test('an external edit-in-progress loads the message to edit', () async {
       final bloc = await ready();
 
-      CometChatMessageEvents.ccMessageEdited(
+      ConvoKitMessageEvents.ccMessageEdited(
         text(id: 9, body: 'edit me'),
         MessageEditStatus.inProgress,
       );
@@ -1210,7 +1210,7 @@ void main() {
     test('an external edit of a media message loads its caption', () async {
       final bloc = await ready();
 
-      CometChatMessageEvents.ccMessageEdited(
+      ConvoKitMessageEvents.ccMessageEdited(
         media(id: 9, caption: 'cap'),
         MessageEditStatus.inProgress,
       );
@@ -1223,7 +1223,7 @@ void main() {
     test('an external edit of another kind loads empty text', () async {
       final bloc = await ready();
 
-      CometChatMessageEvents.ccMessageEdited(
+      ConvoKitMessageEvents.ccMessageEdited(
         CustomMessage(
           id: 9,
           receiverUid: _peer,
@@ -1243,7 +1243,7 @@ void main() {
     test('an edit for another conversation is ignored', () async {
       final bloc = await ready();
 
-      CometChatMessageEvents.ccMessageEdited(
+      ConvoKitMessageEvents.ccMessageEdited(
         text(id: 9, body: 'not mine', receiverUid: 'elsewhere'),
         MessageEditStatus.inProgress,
       );
@@ -1256,7 +1256,7 @@ void main() {
     test('a completed edit is not loaded back into the composer', () async {
       final bloc = await ready();
 
-      CometChatMessageEvents.ccMessageEdited(
+      ConvoKitMessageEvents.ccMessageEdited(
         text(id: 9, body: 'done'),
         MessageEditStatus.success,
       );
@@ -1269,13 +1269,13 @@ void main() {
     test('ccReplyToMessage arms reply mode for this thread only', () async {
       final bloc = await ready();
 
-      CometChatMessageEvents.ccReplyToMessage(
+      ConvoKitMessageEvents.ccReplyToMessage(
         text(id: 9, body: 'in a thread', parentMessageId: 5),
       );
       await settle();
       expect(bloc.state.isReplyMode, isFalse, reason: 'wrong thread');
 
-      CometChatMessageEvents.ccReplyToMessage(text(id: 9, body: 'reply me'));
+      ConvoKitMessageEvents.ccReplyToMessage(text(id: 9, body: 'reply me'));
       await settle();
       expect(bloc.state.replyMessage?.id, 9);
       await bloc.close();
@@ -1284,7 +1284,7 @@ void main() {
     test('an incoming 1:1 message matches by sender, not receiver', () async {
       final bloc = await ready();
 
-      CometChatMessageEvents.ccReplyToMessage(
+      ConvoKitMessageEvents.ccReplyToMessage(
         text(id: 9, body: 'incoming', receiverUid: _me, sender: user(_peer)),
       );
       await settle();
@@ -1296,7 +1296,7 @@ void main() {
     test('a group composer matches by guid', () async {
       final bloc = await ready(asGroup: chatGroup());
 
-      CometChatMessageEvents.ccReplyToMessage(
+      ConvoKitMessageEvents.ccReplyToMessage(
         text(
           id: 9,
           body: 'in the group',
@@ -1317,7 +1317,7 @@ void main() {
         await settle();
         expect(bloc.state.isReplyMode, isTrue);
 
-        CometChatMessageEvents.ccMessageSent(
+        ConvoKitMessageEvents.ccMessageSent(
           text(id: 10, body: 'from an extension'),
           status,
         );
@@ -1333,7 +1333,7 @@ void main() {
       bloc.add(SetReplyMessage(text(id: 9, body: 'parent')));
       await settle();
 
-      CometChatMessageEvents.ccMessageSent(
+      ConvoKitMessageEvents.ccMessageSent(
         text(id: 10, body: 'elsewhere', receiverUid: 'elsewhere'),
         core_enums.MessageStatus.sent,
       );
@@ -1346,7 +1346,7 @@ void main() {
     test('ccComposeMessage fills the composer', () async {
       final bloc = await ready();
 
-      CometChatUIEvents.ccComposeMessage(
+      ConvoKitUIEvents.ccComposeMessage(
         'drafted elsewhere',
         MessageEditStatus.inProgress,
       );
@@ -1390,7 +1390,7 @@ void main() {
     test('showPanel and hidePanel arrive through the UI event bus', () async {
       final bloc = await ready();
 
-      CometChatUIEvents.showPanel(
+      ConvoKitUIEvents.showPanel(
         null,
         CustomUIPosition.composerTop,
         (_) => const SizedBox(),
@@ -1398,7 +1398,7 @@ void main() {
       await settle();
       expect(bloc.state.headerPanel, isNotNull);
 
-      CometChatUIEvents.hidePanel(null, CustomUIPosition.composerTop);
+      ConvoKitUIEvents.hidePanel(null, CustomUIPosition.composerTop);
       await settle();
       expect(bloc.state.headerPanel, isNull);
       await bloc.close();
@@ -1409,23 +1409,23 @@ void main() {
       () async {
         final bloc = await ready();
 
-        CometChatUIEvents.lockBottomPadding(null, 88);
+        ConvoKitUIEvents.lockBottomPadding(null, 88);
         await settle();
         expect(bloc.state.lockedBottomPadding, 88);
 
-        CometChatUIEvents.unlockBottomPadding(null);
+        ConvoKitUIEvents.unlockBottomPadding(null);
         await settle();
         expect(bloc.state.lockedBottomPadding, isNull);
 
         // Addressed to somebody else: ignored on both sides.
         final otherId = {'uid': 'somebody_else', 'parentMessageId': 0};
-        CometChatUIEvents.lockBottomPadding(otherId, 99);
+        ConvoKitUIEvents.lockBottomPadding(otherId, 99);
         await settle();
         expect(bloc.state.lockedBottomPadding, isNull);
 
-        CometChatUIEvents.lockBottomPadding(null, 12);
+        ConvoKitUIEvents.lockBottomPadding(null, 12);
         await settle();
-        CometChatUIEvents.unlockBottomPadding(otherId);
+        ConvoKitUIEvents.unlockBottomPadding(otherId);
         await settle();
         expect(bloc.state.lockedBottomPadding, 12);
         await bloc.close();
@@ -1439,13 +1439,13 @@ void main() {
         final bloc = await ready();
         bloc.onFocusRequested = () => focused++;
 
-        CometChatUIEvents.requestComposerFocus({
+        ConvoKitUIEvents.requestComposerFocus({
           'uid': 'somebody_else',
           'parentMessageId': 0,
         });
         expect(focused, 0);
 
-        CometChatUIEvents.requestComposerFocus(null);
+        ConvoKitUIEvents.requestComposerFocus(null);
         expect(focused, 1);
         await bloc.close();
       },
@@ -1475,16 +1475,16 @@ void main() {
     });
 
     test('close() deregisters from every bus', () async {
-      final before = CometChatMessageEvents.messagesListener.length;
+      final before = ConvoKitMessageEvents.messagesListener.length;
       final bloc = await ready();
-      expect(CometChatMessageEvents.messagesListener.length, before + 1);
+      expect(ConvoKitMessageEvents.messagesListener.length, before + 1);
 
       await bloc.close();
-      expect(CometChatMessageEvents.messagesListener.length, before);
+      expect(ConvoKitMessageEvents.messagesListener.length, before);
 
       // Nothing must reach the closed bloc.
       expect(
-        () => CometChatUIEvents.ccComposeMessage(
+        () => ConvoKitUIEvents.ccComposeMessage(
           'late',
           MessageEditStatus.inProgress,
         ),

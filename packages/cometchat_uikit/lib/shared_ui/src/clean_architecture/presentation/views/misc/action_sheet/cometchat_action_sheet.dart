@@ -44,13 +44,13 @@ class _CometChatAttachmentOptionSheetState
   @override
   Widget build(BuildContext context) {
     final actionSheetStyle =
-        CometChatThemeHelper.getTheme<CometChatAttachmentOptionSheetStyle>(
+        ConvoKitThemeHelper.getTheme<CometChatAttachmentOptionSheetStyle>(
           context: context,
           defaultTheme: CometChatAttachmentOptionSheetStyle.of,
         ).merge(widget.style);
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final spacing = CometChatThemeHelper.getSpacing(context);
-    final typography = CometChatThemeHelper.getTypography(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
 
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
@@ -204,7 +204,7 @@ class _CometChatAttachmentOptionSheetState
 Future<ActionItem?>? showCometChatAttachmentOptionSheet({
   required BuildContext context,
   required List<ActionItem> actionItems,
-  required CometChatColorPalette colorPalette,
+  required ConvoKitColorPalette colorPalette,
   final CometChatAttachmentOptionSheetStyle? style,
 }) {
   return showModalBottomSheet<ActionItem>(

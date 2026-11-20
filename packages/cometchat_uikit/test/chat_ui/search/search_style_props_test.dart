@@ -555,8 +555,8 @@ void main() {
       expect(_hasStyle(tester, _c1, 23), isTrue, reason: 'row title');
       expect(_hasStyle(tester, _c2, 13), isTrue, reason: 'row subtitle');
 
-      final items = tester.widgetList<CometChatListItem>(
-        find.byType(CometChatListItem),
+      final items = tester.widgetList<ConvoKitListItem>(
+        find.byType(ConvoKitListItem),
       );
       expect(items, isNotEmpty);
       expect(items.first.style.background, _c3);
@@ -572,12 +572,12 @@ void main() {
                 _conversationsState(conversations: _unreadConversations()),
               ),
               searchStyle: const CometChatSearchStyle(
-                avatarStyle: CometChatAvatarStyle(backgroundColor: _c1),
-                statusIndicatorStyle: CometChatStatusIndicatorStyle(
+                avatarStyle: ConvoKitAvatarStyle(backgroundColor: _c1),
+                statusIndicatorStyle: ConvoKitStatusIndicatorStyle(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                 ),
-                badgeStyle: CometChatBadgeStyle(backgroundColor: _c3),
-                dateStyle: CometChatDateStyle(borderRadius: BorderRadius.zero),
+                badgeStyle: ConvoKitBadgeStyle(backgroundColor: _c3),
+                dateStyle: ConvoKitDateStyle(borderRadius: BorderRadius.zero),
               ),
             ),
           ),
@@ -585,8 +585,8 @@ void main() {
       );
       await tester.pump();
 
-      final items = tester.widgetList<CometChatListItem>(
-        find.byType(CometChatListItem),
+      final items = tester.widgetList<ConvoKitListItem>(
+        find.byType(ConvoKitListItem),
       );
       expect(items.first.avatarStyle.backgroundColor, _c1);
       // statusIndicatorStyle and dateStyle were dead until ENG-39121 — the
@@ -596,14 +596,14 @@ void main() {
         const BorderRadius.all(Radius.circular(6)),
       );
 
-      final badges = tester.widgetList<CometChatBadge>(
-        find.byType(CometChatBadge),
+      final badges = tester.widgetList<ConvoKitBadge>(
+        find.byType(ConvoKitBadge),
       );
       expect(badges, isNotEmpty, reason: 'the fixture carries unread mail');
       expect(badges.first.style.backgroundColor, _c3);
 
-      final dates = tester.widgetList<CometChatDate>(
-        find.byType(CometChatDate),
+      final dates = tester.widgetList<ConvoKitDate>(
+        find.byType(ConvoKitDate),
       );
       expect(dates, isNotEmpty);
       expect(dates.first.style.borderRadius, BorderRadius.zero);
@@ -640,8 +640,8 @@ void main() {
     });
 
     testWidgets('receiptStyle reaches the receipt', (tester) async {
-      CometChatUIKit.loggedInUser = FakeUser(name: 'Bob', uid: 'u2');
-      addTearDown(() => CometChatUIKit.loggedInUser = null);
+      ConvoKitUIKit.loggedInUser = FakeUser(name: 'Bob', uid: 'u2');
+      addTearDown(() => ConvoKitUIKit.loggedInUser = null);
 
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
@@ -659,8 +659,8 @@ void main() {
       );
       await tester.pump();
 
-      final receipts = tester.widgetList<CometChatReceipt>(
-        find.byType(CometChatReceipt),
+      final receipts = tester.widgetList<ConvoKitReceipt>(
+        find.byType(ConvoKitReceipt),
       );
       expect(receipts, isNotEmpty);
       expect(receipts.first.style?.sentIconColor, _c4);

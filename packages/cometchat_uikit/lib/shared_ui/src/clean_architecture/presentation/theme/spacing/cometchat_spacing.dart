@@ -2,9 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-///[CometChatSpacing] is a class that holds the spacing values for the CometChat UI Kit.
-class CometChatSpacing extends ThemeExtension<CometChatSpacing> {
-  CometChatSpacing({
+///[ConvoKitSpacing] is a class that holds the spacing values for the CometChat UI Kit.
+class ConvoKitSpacing extends ThemeExtension<ConvoKitSpacing> {
+  ConvoKitSpacing({
     this.spacing = 2,
     this.spacing1 = 4,
     this.spacing2 = 8,
@@ -302,7 +302,7 @@ class CometChatSpacing extends ThemeExtension<CometChatSpacing> {
   double? radiusMax;
 
   @override
-  CometChatSpacing copyWith({
+  ConvoKitSpacing copyWith({
     double? spacing,
     double? spacing1,
     double? spacing2,
@@ -378,7 +378,7 @@ class CometChatSpacing extends ThemeExtension<CometChatSpacing> {
     double? radius6,
     double? radiusMax,
   }) {
-    return CometChatSpacing(
+    return ConvoKitSpacing(
       spacing: spacing ?? this.spacing,
       spacing1: spacing1 ?? this.spacing1,
       spacing2: spacing2 ?? this.spacing2,
@@ -445,14 +445,14 @@ class CometChatSpacing extends ThemeExtension<CometChatSpacing> {
   }
 
   @override
-  CometChatSpacing lerp(
-    covariant ThemeExtension<CometChatSpacing>? other,
+  ConvoKitSpacing lerp(
+    covariant ThemeExtension<ConvoKitSpacing>? other,
     double t,
   ) {
-    if (other is! CometChatSpacing) {
+    if (other is! ConvoKitSpacing) {
       return this;
     }
-    return CometChatSpacing(
+    return ConvoKitSpacing(
       spacing: lerpDouble(spacing, other.spacing1, t),
       spacing1: lerpDouble(spacing1, other.spacing1, t),
       spacing2: lerpDouble(spacing2, other.spacing2, t),
@@ -518,9 +518,9 @@ class CometChatSpacing extends ThemeExtension<CometChatSpacing> {
     );
   }
 
-  static CometChatSpacing of(BuildContext context) => CometChatSpacing();
+  static ConvoKitSpacing of(BuildContext context) => ConvoKitSpacing();
 
-  CometChatSpacing merge(CometChatSpacing? other) {
+  ConvoKitSpacing merge(ConvoKitSpacing? other) {
     if (other == null) return this;
     return copyWith(
       spacing: other.spacing,

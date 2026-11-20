@@ -23,9 +23,9 @@ class FileBubbleFactory extends BubbleFactory<MediaMessage> {
     BuildContext context,
     MediaMessage message,
     BubbleAlignment alignment, {
-    CometChatColorPalette? colorPalette,
-    CometChatTypography? typography,
-    CometChatSpacing? spacing,
+    ConvoKitColorPalette? colorPalette,
+    ConvoKitTypography? typography,
+    ConvoKitSpacing? spacing,
   }) {
     return CometChatFileBubble(
       fileUrl: message.attachment?.fileUrl,

@@ -37,7 +37,7 @@ class ConvoKitGroupMembersController
   final bool? hideScopeChangeOption;
 
   String? _conversationId;
-  CometChatConfirmDialogStyle? confirmDialogStyle;
+  ConvoKitConfirmDialogStyle? confirmDialogStyle;
   ConvoKitChangeScopeStyle? changeScopeStyle;
 
   //Constructor
@@ -300,9 +300,9 @@ class ConvoKitGroupMembersController
     Group group,
     GroupMember member,
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
   ) {
     List<CometChatOption> optionList = [];
     List<CometChatGroupMemberOption> groupMemberOptions = [];
@@ -354,9 +354,9 @@ class ConvoKitGroupMembersController
     Group group,
     GroupMember member,
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
   ) {
     switch (optionId) {
       case GroupMemberOptionConstants.ban:
@@ -499,16 +499,16 @@ class ConvoKitGroupMembersController
 
   void showConfirmDialog(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing, {
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing, {
     Function(BuildContext)? onConfirm,
     Widget? icon,
     String? title,
     String? messageText,
     String? confirmButtonText,
   }) {
-    CometChatConfirmDialog(
+    ConvoKitConfirmDialog(
       context: context,
       confirmButtonText: cc.Translations.of(context).deleteCapital,
       cancelButtonText: cc.Translations.of(context).cancelCapital,
@@ -519,7 +519,7 @@ class ConvoKitGroupMembersController
         isActionRunning.value = false;
         Navigator.of(dialogContext).pop();
       },
-      style: CometChatConfirmDialogStyle(
+      style: ConvoKitConfirmDialogStyle(
         iconColor: confirmDialogStyle?.iconColor ?? colorPalette.error,
         backgroundColor: confirmDialogStyle?.backgroundColor,
         shadow: confirmDialogStyle?.shadow,

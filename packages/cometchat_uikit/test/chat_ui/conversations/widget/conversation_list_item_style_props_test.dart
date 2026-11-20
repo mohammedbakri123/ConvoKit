@@ -26,7 +26,7 @@
 /// Three reads in the item cannot be caught on their own because another
 /// read always covers them, not because a row is weak: subtitleTextColor at
 /// 630 (638 re-applies it last) and dateStyle.textColor at 814 and 819
-/// (CometChatDate applies textColor as both base colour and final copyWith,
+/// (ConvoKitDate applies textColor as both base colour and final copyWith,
 /// so either read alone paints the sentinel). Deleting both 814 and 819 fails
 /// the dateStyle row.
 ///
@@ -198,7 +198,7 @@ Conversation _aliceImage() => _FakeConversation(
   lastMessage: _FakeImageMessage(from: _bob),
 );
 
-final _palette = CometChatColorPalette(
+final _palette = ConvoKitColorPalette(
   primary: const Color(0xFF6852D6),
   textPrimary: const Color(0xFF141414),
   textSecondary: const Color(0xFF727272),
@@ -213,7 +213,7 @@ final _palette = CometChatColorPalette(
   transparent: const Color(0x00000000),
 );
 
-final _spacing = CometChatSpacing(
+final _spacing = ConvoKitSpacing(
   padding: 2,
   padding1: 4,
   padding2: 8,
@@ -226,7 +226,7 @@ final _spacing = CometChatSpacing(
   radiusMax: 1000,
 );
 
-const _typography = CometChatTypography(
+const _typography = ConvoKitTypography(
   heading2: CometChatTextStyleHeading2(
     bold: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
   ),
@@ -264,11 +264,11 @@ Translations _tr(WidgetTester t) => Translations.of(_ctx(t));
 
 /// The theme's own palette and spacing: what children that are not handed the
 /// item's palette fall back to.
-CometChatColorPalette _themePalette(WidgetTester t) =>
-    CometChatThemeHelper.getColorPalette(_ctx(t));
+ConvoKitColorPalette _themePalette(WidgetTester t) =>
+    ConvoKitThemeHelper.getColorPalette(_ctx(t));
 
-CometChatSpacing _themeSpacing(WidgetTester t) =>
-    CometChatThemeHelper.getSpacing(_ctx(t));
+ConvoKitSpacing _themeSpacing(WidgetTester t) =>
+    ConvoKitThemeHelper.getSpacing(_ctx(t));
 
 TextStyle? _textStyle(WidgetTester t, String data) =>
     t.widget<Text>(find.text(data)).style;
@@ -287,7 +287,7 @@ BoxDecoration _decoration(WidgetTester t, Type type) =>
 TextStyle? _dateTextStyle(WidgetTester t) => t
     .widget<Text>(
       find.descendant(
-        of: find.byType(CometChatDate),
+        of: find.byType(ConvoKitDate),
         matching: find.byType(Text),
       ),
     )
@@ -533,16 +533,16 @@ final _matrix = <_Row>[
   _Row(
     'avatarStyle',
     'reaches the avatar box',
-    value: const CometChatAvatarStyle(backgroundColor: _kAvatar),
-    probe: (t) => _decoration(t, CometChatAvatar).color,
+    value: const ConvoKitAvatarStyle(backgroundColor: _kAvatar),
+    probe: (t) => _decoration(t, ConvoKitAvatar).color,
     unset: (t) => _themePalette(t).extendedPrimary500,
     expected: _kAvatar,
   ),
   _Row(
     'statusIndicatorStyle',
     'borders the presence dot',
-    value: const CometChatStatusIndicatorStyle(border: _kStatusBorder),
-    probe: (t) => _decoration(t, CometChatStatusIndicator).border,
+    value: const ConvoKitStatusIndicatorStyle(border: _kStatusBorder),
+    probe: (t) => _decoration(t, ConvoKitStatusIndicator).border,
     unset: (t) =>
         Border.all(width: _spacing.spacing ?? 0, color: _palette.background1!),
     expected: _kStatusBorder,
@@ -550,17 +550,17 @@ final _matrix = <_Row>[
   _Row(
     'statusIndicatorStyle',
     'rounds the presence dot',
-    value: const CometChatStatusIndicatorStyle(
+    value: const ConvoKitStatusIndicatorStyle(
       borderRadius: BorderRadius.all(Radius.circular(3)),
     ),
-    probe: (t) => _decoration(t, CometChatStatusIndicator).borderRadius,
+    probe: (t) => _decoration(t, ConvoKitStatusIndicator).borderRadius,
     unset: (t) => BorderRadius.circular(_themeSpacing(t).radiusMax ?? 0),
     expected: const BorderRadius.all(Radius.circular(3)),
   ),
   _Row(
     'dateStyle',
     'colours the timestamp',
-    value: const CometChatDateStyle(textColor: _kDate),
+    value: const ConvoKitDateStyle(textColor: _kDate),
     probe: (t) => _dateTextStyle(t)?.color,
     unset: (t) => _palette.textSecondary,
     expected: _kDate,
@@ -568,7 +568,7 @@ final _matrix = <_Row>[
   _Row(
     'dateStyle',
     'sizes and spaces the timestamp text',
-    value: const CometChatDateStyle(
+    value: const ConvoKitDateStyle(
       textStyle: TextStyle(fontSize: 13.5, letterSpacing: 0.5),
     ),
     probe: (t) {
@@ -581,10 +581,10 @@ final _matrix = <_Row>[
   _Row(
     'dateStyle',
     'rounds the timestamp box',
-    value: const CometChatDateStyle(
+    value: const ConvoKitDateStyle(
       borderRadius: BorderRadius.all(Radius.circular(5)),
     ),
-    probe: (t) => _decoration(t, CometChatDate).borderRadius,
+    probe: (t) => _decoration(t, ConvoKitDate).borderRadius,
     unset: (t) =>
         BorderRadius.all(Radius.circular(_themeSpacing(t).radius1 ?? 0)),
     expected: const BorderRadius.all(Radius.circular(5)),
@@ -592,8 +592,8 @@ final _matrix = <_Row>[
   _Row(
     'badgeStyle',
     'fills the unread badge',
-    value: const CometChatBadgeStyle(backgroundColor: _kBadge),
-    probe: (t) => _decoration(t, CometChatBadge).color,
+    value: const ConvoKitBadgeStyle(backgroundColor: _kBadge),
+    probe: (t) => _decoration(t, ConvoKitBadge).color,
     unset: (t) => _themePalette(t).primary,
     expected: _kBadge,
   ),
@@ -670,12 +670,12 @@ void main() {
                           checkBoxCheckedBackgroundColor:
                               v['checkBoxCheckedBackgroundColor'] as Color?,
                           avatarStyle:
-                              v['avatarStyle'] as CometChatAvatarStyle?,
+                              v['avatarStyle'] as ConvoKitAvatarStyle?,
                           statusIndicatorStyle:
                               v['statusIndicatorStyle']
-                                  as CometChatStatusIndicatorStyle?,
-                          dateStyle: v['dateStyle'] as CometChatDateStyle?,
-                          badgeStyle: v['badgeStyle'] as CometChatBadgeStyle?,
+                                  as ConvoKitStatusIndicatorStyle?,
+                          dateStyle: v['dateStyle'] as ConvoKitDateStyle?,
+                          badgeStyle: v['badgeStyle'] as ConvoKitBadgeStyle?,
                           // checkBoxSelectIconTint and receiptStyle are
                           // covered in conversations_family_fixes_test.dart
                           // (see the library comment).

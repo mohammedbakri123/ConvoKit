@@ -317,11 +317,11 @@ class _S {
   final Color? separatorColor;
   final double? separatorHeight;
   final CometChatTypingIndicatorStyle? typingIndicatorStyle;
-  final CometChatAvatarStyle? avatarStyle;
-  final CometChatStatusIndicatorStyle? statusIndicatorStyle;
-  final CometChatBadgeStyle? badgeStyle;
-  final CometChatDateStyle? dateStyle;
-  final CometChatConfirmDialogStyle? deleteConversationDialogStyle;
+  final ConvoKitAvatarStyle? avatarStyle;
+  final ConvoKitStatusIndicatorStyle? statusIndicatorStyle;
+  final ConvoKitBadgeStyle? badgeStyle;
+  final ConvoKitDateStyle? dateStyle;
+  final ConvoKitConfirmDialogStyle? deleteConversationDialogStyle;
   final Color? submitIconColor;
   final Color? searchIconColor;
   final Color? searchBackgroundColor;
@@ -395,9 +395,9 @@ const _unwired = {
 
 /// The theme tokens the widget falls back to when a field is unset.
 typedef _Env = ({
-  CometChatColorPalette palette,
-  CometChatTypography typography,
-  CometChatSpacing spacing,
+  ConvoKitColorPalette palette,
+  ConvoKitTypography typography,
+  ConvoKitSpacing spacing,
 });
 
 class _Row {
@@ -463,9 +463,9 @@ Translations _tr(WidgetTester tester) =>
 _Env _env(WidgetTester tester) {
   final context = tester.element(_conversations);
   return (
-    palette: CometChatThemeHelper.getColorPalette(context),
-    typography: CometChatThemeHelper.getTypography(context),
-    spacing: CometChatThemeHelper.getSpacing(context),
+    palette: ConvoKitThemeHelper.getColorPalette(context),
+    typography: ConvoKitThemeHelper.getTypography(context),
+    spacing: ConvoKitThemeHelper.getSpacing(context),
   );
 }
 
@@ -733,7 +733,7 @@ final _matrix = <_Row>[
     'deleteConversationDialogStyle',
     'paints the dialog opened from the long-press Delete action',
     set: const _S(
-      deleteConversationDialogStyle: CometChatConfirmDialogStyle(
+      deleteConversationDialogStyle: ConvoKitConfirmDialogStyle(
         backgroundColor: _kDialog,
       ),
     ),
@@ -966,16 +966,16 @@ final _matrix = <_Row>[
   _Row(
     'avatarStyle',
     'backgroundColor paints the row avatar',
-    set: const _S(avatarStyle: CometChatAvatarStyle(backgroundColor: _kAvatar)),
-    probe: (t) => _decoration(t, CometChatAvatar).color,
+    set: const _S(avatarStyle: ConvoKitAvatarStyle(backgroundColor: _kAvatar)),
+    probe: (t) => _decoration(t, ConvoKitAvatar).color,
     expected: _kAvatar,
     unset: (e) => e.palette.extendedPrimary500,
   ),
   _Row(
     'badgeStyle',
     'backgroundColor paints the unread badge',
-    set: const _S(badgeStyle: CometChatBadgeStyle(backgroundColor: _kBadge)),
-    probe: (t) => _decoration(t, CometChatBadge).color,
+    set: const _S(badgeStyle: ConvoKitBadgeStyle(backgroundColor: _kBadge)),
+    probe: (t) => _decoration(t, ConvoKitBadge).color,
     expected: _kBadge,
     unset: (e) => e.palette.primary,
   ),
@@ -983,11 +983,11 @@ final _matrix = <_Row>[
     'statusIndicatorStyle',
     'border outlines the presence dot',
     set: const _S(
-      statusIndicatorStyle: CometChatStatusIndicatorStyle(
+      statusIndicatorStyle: ConvoKitStatusIndicatorStyle(
         border: _kStatusBorder,
       ),
     ),
-    probe: (t) => _decoration(t, CometChatStatusIndicator).border,
+    probe: (t) => _decoration(t, ConvoKitStatusIndicator).border,
     expected: _kStatusBorder,
     unset: (e) => Border.all(
       width: e.spacing.spacing ?? 0,
@@ -1014,11 +1014,11 @@ final _matrix = <_Row>[
   _Row(
     'dateStyle',
     'textColor colours the timestamp',
-    set: const _S(dateStyle: CometChatDateStyle(textColor: _kDateText)),
+    set: const _S(dateStyle: ConvoKitDateStyle(textColor: _kDateText)),
     probe: (t) => t
         .widget<Text>(
           find.descendant(
-            of: find.byType(CometChatDate).first,
+            of: find.byType(ConvoKitDate).first,
             matching: find.byType(Text),
           ),
         )

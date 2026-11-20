@@ -6,7 +6,7 @@ export 'package:cometchat_sdk/cometchat_sdk.dart';
 
 // Legacy exports needed by clean architecture
 export '../../l10n/translations.dart';
-export '../cometchat_ui_kit/cometchat_ui_kit.dart' show CometChatUIKit;
+export '../cometchat_ui_kit/cometchat_ui_kit.dart' show ConvoKitUIKit;
 
 // Core Layer
 export 'core/core.dart';

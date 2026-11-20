@@ -34,9 +34,9 @@ class UsersList extends StatelessWidget {
 
   final UsersBloc usersBloc;
   final ConvoKitUsersStyle style;
-  final CometChatColorPalette colorPalette;
-  final CometChatSpacing spacing;
-  final CometChatTypography typography;
+  final ConvoKitColorPalette colorPalette;
+  final ConvoKitSpacing spacing;
+  final ConvoKitTypography typography;
   final ScrollController? scrollController;
   final WidgetBuilder? loadingStateView;
   final WidgetBuilder? emptyStateView;
@@ -59,8 +59,8 @@ class UsersList extends StatelessWidget {
   options;
 
   final bool? stickyHeaderVisibility;
-  final CometChatAvatarStyle? avatarStyle;
-  final CometChatStatusIndicatorStyle? statusIndicatorStyle;
+  final ConvoKitAvatarStyle? avatarStyle;
+  final ConvoKitStatusIndicatorStyle? statusIndicatorStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +94,7 @@ class UsersList extends StatelessWidget {
     if (loadingStateView != null) {
       return Center(child: loadingStateView!(context));
     }
-    return CometChatShimmerEffect(
+    return ConvoKitShimmerEffect(
       colorPalette: colorPalette,
       child: ListView.builder(
         itemCount: 20,
@@ -143,7 +143,7 @@ class UsersList extends StatelessWidget {
               padding: EdgeInsets.only(bottom: spacing.padding5 ?? 0),
               child: Image.asset(
                 AssetConstants(
-                  CometChatThemeHelper.getBrightness(context),
+                  ConvoKitThemeHelper.getBrightness(context),
                 ).emptyUserList,
                 package: UIConstants.packageName,
                 width: 120,
@@ -328,7 +328,7 @@ class UsersList extends StatelessWidget {
                         ),
                   ),
                 Expanded(
-                  child: CometChatListItem(
+                  child: ConvoKitListItem(
                     id: user.uid,
                     avatarName: user.name,
                     avatarURL: user.avatar,
@@ -338,10 +338,10 @@ class UsersList extends StatelessWidget {
                     subtitleView: subtitleView?.call(context, user),
                     tailView: trailingView?.call(context, user),
                     avatarStyle:
-                        avatarStyle ?? CometChatAvatarStyle.of(context),
+                        avatarStyle ?? ConvoKitAvatarStyle.of(context),
                     statusIndicatorColor: statusColor,
                     statusIndicatorIcon: null,
-                    statusIndicatorStyle: CometChatStatusIndicatorStyle(
+                    statusIndicatorStyle: ConvoKitStatusIndicatorStyle(
                       border:
                           statusIndicatorStyle?.border ??
                           Border.all(

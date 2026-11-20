@@ -23,7 +23,7 @@ import '../../../../src/core/convo_kit.dart';
 import '../../../../src/adapters/cometchat_session_adapter.dart';
 import '../../../../src/adapters/cometchat_media_adapter.dart';
 
-class CometChatUIKit {
+class ConvoKitUIKit {
   static UIKitSettings? authenticationSettings;
 
   /// Host-supplied contracts and ConvoKit instance.
@@ -188,12 +188,12 @@ class CometChatUIKit {
     try {
       final User? user = await getLoggedInUser();
       if (user != null) {
-        CometChatUIKit.loggedInUser = user;
+        ConvoKitUIKit.loggedInUser = user;
         _initiateAfterLogin(user);
       }
       getConversationUpdateSettings();
     } catch (e) {
-      ccLog('CometChatUIKit.init: restoring the session failed: $e');
+      ccLog('ConvoKitUIKit.init: restoring the session failed: $e');
     }
 
     //executing custom onSuccess handler when CometChat SDK is initialized successfully
@@ -427,7 +427,7 @@ class CometChatUIKit {
     try {
       currentToken = await ChatAuthGateway.instance.getUserAuthToken();
     } catch (e) {
-      ccLog('CometChatUIKit.loginWithAuthToken: reading the auth token: $e');
+      ccLog('ConvoKitUIKit.loginWithAuthToken: reading the auth token: $e');
     }
     if (currentToken != null && currentToken == authToken) {
       await _afterLogin(
@@ -444,7 +444,7 @@ class CometChatUIKit {
           'ERR_USER_ALREADY_LOGGED_IN',
           'User ${loggedInUser.uid} is logged in with a different auth token.',
           'A user is already logged in. Log out first '
-              '(CometChatUIKit.logout), then log in with this auth token.',
+              '(ConvoKitUIKit.logout), then log in with this auth token.',
         ),
       ),
       "user already logged in but failed to execute onError callback",
@@ -472,10 +472,10 @@ class CometChatUIKit {
   ) {
     try {
       getConversationUpdateSettings();
-      CometChatUIKit.loggedInUser = user;
+      ConvoKitUIKit.loggedInUser = user;
       _initiateAfterLogin(user);
     } catch (e) {
-      ccLog('CometChatUIKit: set-up after login failed: $e');
+      ccLog('ConvoKitUIKit: set-up after login failed: $e');
     }
     _runHostCallback(() => onSuccess?.call(user), failureLog);
     return Future<void>.value();
@@ -490,7 +490,7 @@ class CometChatUIKit {
     try {
       initializeTimeZones();
     } catch (e) {
-      ccLog('CometChatUIKit: loading the time zone database failed: $e');
+      ccLog('ConvoKitUIKit: loading the time zone database failed: $e');
     }
   }
 
@@ -607,7 +607,7 @@ class CometChatUIKit {
     String message,
     dynamic Function(String)? onSuccess,
   ) async {
-    CometChatUIKit.loggedInUser = null;
+    ConvoKitUIKit.loggedInUser = null;
     _runHostCallback(
       () => onSuccess?.call(message),
       'user logout was successful: $message, but unable to execute custom '
@@ -660,7 +660,7 @@ class CometChatUIKit {
       message.muid = DateTime.now().microsecondsSinceEpoch.toString();
     }
 
-    CometChatMessageEvents.ccMessageSent(
+    ConvoKitMessageEvents.ccMessageSent(
       message,
       core_enums.MessageStatus.inProgress,
     );
@@ -685,7 +685,7 @@ class CometChatUIKit {
         }
         //the ccMessageSent event is emitted to update the message receipt shown
         //in the footer of the message bubble from in progress to sent
-        CometChatMessageEvents.ccMessageSent(
+        ConvoKitMessageEvents.ccMessageSent(
           sentMessage,
           core_enums.MessageStatus.sent,
         );
@@ -711,7 +711,7 @@ class CometChatUIKit {
         } else {
           message.metadata = {"error": error};
         }
-        CometChatMessageEvents.ccMessageSent(
+        ConvoKitMessageEvents.ccMessageSent(
           message,
           core_enums.MessageStatus.error,
         );
@@ -734,7 +734,7 @@ class CometChatUIKit {
       message.muid = DateTime.now().microsecondsSinceEpoch.toString();
     }
 
-    CometChatMessageEvents.ccMessageSent(
+    ConvoKitMessageEvents.ccMessageSent(
       message,
       core_enums.MessageStatus.inProgress,
     );
@@ -759,7 +759,7 @@ class CometChatUIKit {
         }
         //the ccMessageSent event is emitted to update the message receipt shown
         //in the footer of the message bubble from in progress to sent
-        CometChatMessageEvents.ccMessageSent(
+        ConvoKitMessageEvents.ccMessageSent(
           sentMessage,
           core_enums.MessageStatus.sent,
         );
@@ -785,7 +785,7 @@ class CometChatUIKit {
         } else {
           message.metadata = {"error": error};
         }
-        CometChatMessageEvents.ccMessageSent(
+        ConvoKitMessageEvents.ccMessageSent(
           message,
           core_enums.MessageStatus.error,
         );
@@ -810,7 +810,7 @@ class CometChatUIKit {
       message.muid = DateTime.now().microsecondsSinceEpoch.toString();
     }
 
-    CometChatMessageEvents.ccMessageSent(
+    ConvoKitMessageEvents.ccMessageSent(
       message,
       core_enums.MessageStatus.inProgress,
     );
@@ -873,7 +873,7 @@ class CometChatUIKit {
         }
         //the ccMessageSent event is emitted to update the message receipt shown
         //in the footer of the message bubble from in progress to sent
-        CometChatMessageEvents.ccMessageSent(
+        ConvoKitMessageEvents.ccMessageSent(
           sentMessage,
           core_enums.MessageStatus.sent,
         );
@@ -899,7 +899,7 @@ class CometChatUIKit {
         } else {
           message.metadata = {"error": error};
         }
-        CometChatMessageEvents.ccMessageSent(
+        ConvoKitMessageEvents.ccMessageSent(
           message,
           core_enums.MessageStatus.error,
         );
@@ -923,7 +923,7 @@ class CometChatUIKit {
       message.muid = DateTime.now().microsecondsSinceEpoch.toString();
     }
 
-    CometChatMessageEvents.ccMessageSent(
+    ConvoKitMessageEvents.ccMessageSent(
       message,
       core_enums.MessageStatus.inProgress,
     );
@@ -948,7 +948,7 @@ class CometChatUIKit {
         }
         //the ccMessageSent event is emitted to update the message receipt shown
         //in the footer of the message bubble from in progress to sent
-        CometChatMessageEvents.ccMessageSent(
+        ConvoKitMessageEvents.ccMessageSent(
           sentMessage,
           core_enums.MessageStatus.sent,
         );
@@ -974,7 +974,7 @@ class CometChatUIKit {
         } else {
           message.metadata = {"error": error};
         }
-        CometChatMessageEvents.ccMessageSent(
+        ConvoKitMessageEvents.ccMessageSent(
           message,
           core_enums.MessageStatus.error,
         );
@@ -998,7 +998,7 @@ class CometChatUIKit {
       message.muid = DateTime.now().microsecondsSinceEpoch.toString();
     }
 
-    CometChatMessageEvents.ccMessageSent(
+    ConvoKitMessageEvents.ccMessageSent(
       message,
       core_enums.MessageStatus.inProgress,
     );
@@ -1024,7 +1024,7 @@ class CometChatUIKit {
         }
         //the ccMessageSent event is emitted to update the message receipt shown
         //in the footer of the message bubble from in progress to sent
-        CometChatMessageEvents.ccMessageSent(
+        ConvoKitMessageEvents.ccMessageSent(
           sentMessage,
           core_enums.MessageStatus.sent,
         );
@@ -1050,7 +1050,7 @@ class CometChatUIKit {
         } else {
           message.metadata = {"error": error};
         }
-        CometChatMessageEvents.ccMessageSent(
+        ConvoKitMessageEvents.ccMessageSent(
           message,
           core_enums.MessageStatus.error,
         );
@@ -1074,7 +1074,7 @@ class CometChatUIKit {
       message.muid = DateTime.now().microsecondsSinceEpoch.toString();
     }
 
-    CometChatMessageEvents.ccMessageSent(
+    ConvoKitMessageEvents.ccMessageSent(
       message,
       core_enums.MessageStatus.inProgress,
     );
@@ -1099,7 +1099,7 @@ class CometChatUIKit {
         }
         //the ccMessageSent event is emitted to update the message receipt shown
         //in the footer of the message bubble from in progress to sent
-        CometChatMessageEvents.ccMessageSent(
+        ConvoKitMessageEvents.ccMessageSent(
           sentMessage,
           core_enums.MessageStatus.sent,
         );
@@ -1125,7 +1125,7 @@ class CometChatUIKit {
         } else {
           message.metadata = {"error": error};
         }
-        CometChatMessageEvents.ccMessageSent(
+        ConvoKitMessageEvents.ccMessageSent(
           message,
           core_enums.MessageStatus.error,
         );
@@ -1141,7 +1141,7 @@ class CometChatUIKit {
   }) async {
     User? user = await ChatAuthGateway.instance.getLoggedInUser(
       onSuccess: (user) {
-        CometChatUIKit.loggedInUser = user;
+        ConvoKitUIKit.loggedInUser = user;
 
         //executing the custom onSuccess handler
         if (onSuccess != null) {
@@ -1221,7 +1221,7 @@ class CometChatUIKit {
           }
         }
 
-        CometChatMessageEvents.ccMessageEdited(
+        ConvoKitMessageEvents.ccMessageEdited(
           reactedMessage,
           MessageEditStatus.success,
         );
@@ -1265,7 +1265,7 @@ class CometChatUIKit {
           }
         }
 
-        CometChatMessageEvents.ccMessageEdited(
+        ConvoKitMessageEvents.ccMessageEdited(
           reactedMessage,
           MessageEditStatus.success,
         );
@@ -1315,7 +1315,7 @@ class CometChatUIKit {
       message.muid = DateTime.now().microsecondsSinceEpoch.toString();
     }
 
-    CometChatMessageEvents.ccMessageSent(
+    ConvoKitMessageEvents.ccMessageSent(
       message,
       core_enums.MessageStatus.inProgress,
     );
@@ -1341,7 +1341,7 @@ class CometChatUIKit {
         }
         //the ccMessageSent event is emitted to update the message receipt shown
         //in the footer of the message bubble from in progress to sent
-        CometChatMessageEvents.ccMessageSent(
+        ConvoKitMessageEvents.ccMessageSent(
           sentMessage,
           core_enums.MessageStatus.sent,
         );
@@ -1367,7 +1367,7 @@ class CometChatUIKit {
         } else {
           message.metadata = {"error": error};
         }
-        CometChatMessageEvents.ccMessageSent(
+        ConvoKitMessageEvents.ccMessageSent(
           message,
           core_enums.MessageStatus.error,
         );

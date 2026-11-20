@@ -14,10 +14,10 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   setUp(() {
-    CometChatUIKit.authenticationSettings = null;
+    ConvoKitUIKit.authenticationSettings = null;
   });
   tearDown(() {
-    CometChatUIKit.authenticationSettings = null;
+    ConvoKitUIKit.authenticationSettings = null;
   });
 
   // -------------------------------------------------------------------------

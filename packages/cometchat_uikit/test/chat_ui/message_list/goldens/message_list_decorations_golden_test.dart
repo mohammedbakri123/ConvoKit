@@ -15,12 +15,12 @@ import '../../../helpers/golden_config.dart';
 import '../../../helpers/golden_message_harness.dart';
 
 /// An action message in the list is the content view of a centre-aligned
-/// [CometChatMessageBubble] with no header, footer or status row, on the
+/// [ConvoKitMessageBubble] with no header, footer or status row, on the
 /// transparent fill `BubbleUIBuilder.getBubbleStyle` gives group actions.
-Widget _action(String text) => CometChatMessageBubble(
+Widget _action(String text) => ConvoKitMessageBubble(
   alignment: BubbleAlignment.center,
-  style: const CometChatMessageBubbleStyle(backgroundColor: Color(0x00000000)),
-  contentView: CometChatActionBubble(text: text),
+  style: const ConvoKitMessageBubbleStyle(backgroundColor: Color(0x00000000)),
+  contentView: ConvoKitActionBubble(text: text),
 );
 
 void _row(
@@ -54,7 +54,7 @@ void main() {
         'date separator — an older day renders as an absolute date pill',
         // Noon, so no timezone can move it onto a neighbouring day; far enough
         // back that it never becomes "Today", "Yesterday" or a weekday name.
-        () => CometChatDate(
+        () => ConvoKitDate(
           date: DateTime(2023, 11, 14, 12),
           pattern: DateTimePattern.dayDateFormat,
         ),
@@ -62,7 +62,7 @@ void main() {
       _row(
         'date_separator_custom_string',
         'date separator — dateSeparatorPattern output, e.g. "Today"',
-        () => CometChatDate(
+        () => ConvoKitDate(
           date: DateTime(2023, 11, 14, 12),
           pattern: DateTimePattern.dayDateFormat,
           customDateString: 'Today',

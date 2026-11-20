@@ -79,9 +79,9 @@ class _CometChatInlineAudioRecorderState
     extends State<CometChatInlineAudioRecorder> {
   late InlineAudioRecorderBloc _bloc;
   late CometChatInlineAudioRecorderStyle _style;
-  late CometChatColorPalette _colorPalette;
-  late CometChatSpacing _spacing;
-  late CometChatTypography _typography;
+  late ConvoKitColorPalette _colorPalette;
+  late ConvoKitSpacing _spacing;
+  late ConvoKitTypography _typography;
   bool _themeInitialized = false;
   Brightness? _cachedBrightness;
 
@@ -110,15 +110,15 @@ class _CometChatInlineAudioRecorderState
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final currentBrightness = CometChatThemeHelper.getBrightness(context);
+    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
     if (_themeInitialized && !brightnessChanged) return;
     _cachedBrightness = currentBrightness;
     _themeInitialized = true;
-    _colorPalette = CometChatThemeHelper.getColorPalette(context);
-    _spacing = CometChatThemeHelper.getSpacing(context);
-    _typography = CometChatThemeHelper.getTypography(context);
+    _colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    _spacing = ConvoKitThemeHelper.getSpacing(context);
+    _typography = ConvoKitThemeHelper.getTypography(context);
     _style = CometChatInlineAudioRecorderStyle.of(context).merge(widget.style);
   }
 

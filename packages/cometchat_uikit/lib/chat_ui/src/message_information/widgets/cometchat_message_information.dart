@@ -54,13 +54,13 @@ class CometChatMessageInformation extends StatefulWidget {
   final List<CometChatTextFormatter>? textFormatters;
 
   /// [colorPalette] optional pre-cached color palette for optimization
-  final CometChatColorPalette? colorPalette;
+  final ConvoKitColorPalette? colorPalette;
 
   /// [typography] optional pre-cached typography for optimization
-  final CometChatTypography? typography;
+  final ConvoKitTypography? typography;
 
   /// [spacing] optional pre-cached spacing for optimization
-  final CometChatSpacing? spacing;
+  final ConvoKitSpacing? spacing;
 
   ///[messageInformationBloc] Optional external MessageInformationBloc
   ///instance. If provided, it is used instead of creating one internally and
@@ -81,9 +81,9 @@ class _CometChatMessageInformationState
   bool _isExternalBloc = false;
 
   /// Theme caching - initialized once in didChangeDependencies
-  late CometChatColorPalette _colorPalette;
-  late CometChatTypography _typography;
-  late CometChatSpacing _spacing;
+  late ConvoKitColorPalette _colorPalette;
+  late ConvoKitTypography _typography;
+  late ConvoKitSpacing _spacing;
   bool _themeInitialized = false;
   Brightness? _cachedBrightness;
 
@@ -152,7 +152,7 @@ class _CometChatMessageInformationState
 
     // Only initialize theme once to avoid expensive lookups during rebuilds
     // **Requirements: 6.1, 6.2**
-    final currentBrightness = CometChatThemeHelper.getBrightness(context);
+    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
     if (!_themeInitialized || brightnessChanged) {
@@ -160,14 +160,14 @@ class _CometChatMessageInformationState
       // Use passed values or fallback to lookups (for standalone usage)
       // **Requirement: 6.3**
       _colorPalette =
-          widget.colorPalette ?? CometChatThemeHelper.getColorPalette(context);
+          widget.colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
       _typography =
-          widget.typography ?? CometChatThemeHelper.getTypography(context);
-      _spacing = widget.spacing ?? CometChatThemeHelper.getSpacing(context);
+          widget.typography ?? ConvoKitThemeHelper.getTypography(context);
+      _spacing = widget.spacing ?? ConvoKitThemeHelper.getSpacing(context);
 
       // Merge style with theme
       _messageInfoStyle =
-          CometChatThemeHelper.getTheme<CometChatMessageInformationStyle>(
+          ConvoKitThemeHelper.getTheme<CometChatMessageInformationStyle>(
             context: context,
             defaultTheme: CometChatMessageInformationStyle.of,
           ).merge(widget.messageInformationStyle);
@@ -196,7 +196,7 @@ class _CometChatMessageInformationState
     // Update style if it changed
     if (widget.messageInformationStyle != oldWidget.messageInformationStyle) {
       _messageInfoStyle =
-          CometChatThemeHelper.getTheme<CometChatMessageInformationStyle>(
+          ConvoKitThemeHelper.getTheme<CometChatMessageInformationStyle>(
             context: context,
             defaultTheme: CometChatMessageInformationStyle.of,
           ).merge(widget.messageInformationStyle);
@@ -450,7 +450,7 @@ class _CometChatMessageInformationState
                   children: [
                     Padding(
                       padding: EdgeInsets.only(right: _spacing.padding1 ?? 0),
-                      child: CometChatReceipt(
+                      child: ConvoKitReceipt(
                         status: ReceiptStatus.read,
                         size: 16,
                         style: _messageInfoStyle.messageReceiptStyle,
@@ -492,7 +492,7 @@ class _CometChatMessageInformationState
                   children: [
                     Padding(
                       padding: EdgeInsets.only(right: _spacing.padding1 ?? 0),
-                      child: CometChatReceipt(
+                      child: ConvoKitReceipt(
                         status: ReceiptStatus.delivered,
                         size: 16,
                         style: _messageInfoStyle.messageReceiptStyle,
@@ -541,7 +541,7 @@ class _CometChatMessageInformationState
       leading: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CometChatAvatar(
+          ConvoKitAvatar(
             height: 40,
             width: 40,
             name: messageReceipt.sender.name,
@@ -619,7 +619,7 @@ class _CometChatMessageInformationState
 
   /// Build loading view with shimmer effect
   Widget _buildLoadingView() {
-    return CometChatShimmerEffect(
+    return ConvoKitShimmerEffect(
       child: ListView.builder(
         shrinkWrap: true,
         itemCount: 10,
@@ -703,7 +703,7 @@ Future showMessageInformation({
   final CometChatMessageInformationStyle? messageInformationStyle,
   final List<CometChatTextFormatter>? textFormatters,
 }) {
-  final colorPalette = CometChatThemeHelper.getColorPalette(context);
+  final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
   return showModalBottomSheet(
     context: context,
     isScrollControlled: true,

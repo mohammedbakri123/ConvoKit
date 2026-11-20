@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-/// The [CometChatColorPalette] class provides a color palette for the CometChat UI Kit.
-class CometChatColorPalette extends ThemeExtension<CometChatColorPalette> {
+/// The [ConvoKitColorPalette] class provides a color palette for the CometChat UI Kit.
+class ConvoKitColorPalette extends ThemeExtension<ConvoKitColorPalette> {
   /// [primary] - Primary Color
   final Color? primary;
 
@@ -181,7 +181,7 @@ class CometChatColorPalette extends ThemeExtension<CometChatColorPalette> {
   ///[messageSeen] provides color that is used to indicate the message has been read
   Color? messageSeen;
 
-  CometChatColorPalette({
+  ConvoKitColorPalette({
     /// Primary Color
     this.primary,
 
@@ -261,7 +261,7 @@ class CometChatColorPalette extends ThemeExtension<CometChatColorPalette> {
   });
 
   @override
-  CometChatColorPalette copyWith({
+  ConvoKitColorPalette copyWith({
     /// Primary Color
     Color? primary,
 
@@ -340,7 +340,7 @@ class CometChatColorPalette extends ThemeExtension<CometChatColorPalette> {
     Color? black,
     Color? alertColor,
   }) {
-    return CometChatColorPalette(
+    return ConvoKitColorPalette(
       /// Primary Color
       primary: primary ?? this.primary,
 
@@ -423,14 +423,14 @@ class CometChatColorPalette extends ThemeExtension<CometChatColorPalette> {
 
   ///[lerp] method blends two colors together based on the percentage provided.
   @override
-  CometChatColorPalette lerp(
-    ThemeExtension<CometChatColorPalette>? other,
+  ConvoKitColorPalette lerp(
+    ThemeExtension<ConvoKitColorPalette>? other,
     double t,
   ) {
-    if (other is! CometChatColorPalette) {
+    if (other is! ConvoKitColorPalette) {
       return this;
     }
-    return CometChatColorPalette(
+    return ConvoKitColorPalette(
       /// Primary Color
       primary: Color.lerp(primary, other.primary, t),
 
@@ -567,7 +567,7 @@ class CometChatColorPalette extends ThemeExtension<CometChatColorPalette> {
     );
   }
 
-  ///[of] method returns the default [CometChatColorPalette] instance.
-  static CometChatColorPalette of(BuildContext? context) =>
-      CometChatColorPalette();
+  ///[of] method returns the default [ConvoKitColorPalette] instance.
+  static ConvoKitColorPalette of(BuildContext? context) =>
+      ConvoKitColorPalette();
 }

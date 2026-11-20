@@ -7,8 +7,8 @@ import '../../../../shared_ui/cometchat_uikit_shared.dart';
 class ComposerAttachmentUtils {
   static ConvoKitMessageComposerAction takePhotoOption(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
     CometChatAttachmentOptionSheetStyle? style,
   ) {
     return ConvoKitMessageComposerAction(
@@ -37,8 +37,8 @@ class ComposerAttachmentUtils {
 
   static ConvoKitMessageComposerAction attachPhoto(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
     CometChatAttachmentOptionSheetStyle? style,
   ) {
     return ConvoKitMessageComposerAction(
@@ -67,8 +67,8 @@ class ComposerAttachmentUtils {
 
   static ConvoKitMessageComposerAction attachVideo(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
     CometChatAttachmentOptionSheetStyle? style,
   ) {
     return ConvoKitMessageComposerAction(
@@ -97,8 +97,8 @@ class ComposerAttachmentUtils {
 
   static ConvoKitMessageComposerAction audioAttachmentOption(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
     CometChatAttachmentOptionSheetStyle? style,
   ) {
     return ConvoKitMessageComposerAction(
@@ -127,8 +127,8 @@ class ComposerAttachmentUtils {
 
   static ConvoKitMessageComposerAction fileAttachmentOption(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
     CometChatAttachmentOptionSheetStyle? style,
   ) {
     return ConvoKitMessageComposerAction(
@@ -157,8 +157,8 @@ class ComposerAttachmentUtils {
 
   static ConvoKitMessageComposerAction collaborativeDocumentOption(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
     CometChatAttachmentOptionSheetStyle? style,
   ) {
     return ConvoKitMessageComposerAction(
@@ -189,8 +189,8 @@ class ComposerAttachmentUtils {
 
   static ConvoKitMessageComposerAction collaborativeWhiteboardOption(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
     CometChatAttachmentOptionSheetStyle? style,
   ) {
     return ConvoKitMessageComposerAction(
@@ -222,8 +222,8 @@ class ComposerAttachmentUtils {
 
   static ConvoKitMessageComposerAction pollsOption(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
     CometChatAttachmentOptionSheetStyle? style,
   ) {
     return ConvoKitMessageComposerAction(
@@ -257,8 +257,8 @@ class ComposerAttachmentUtils {
     Map<String, dynamic>? id,
     AdditionalConfigurations? additionalConfigurations,
   ) {
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final typography = CometChatThemeHelper.getTypography(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
     final style = additionalConfigurations?.attachmentOptionSheetStyle;
     List<ConvoKitMessageComposerAction> actions = [];
 

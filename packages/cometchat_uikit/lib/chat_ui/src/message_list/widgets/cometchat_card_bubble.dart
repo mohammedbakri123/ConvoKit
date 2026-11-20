@@ -28,7 +28,7 @@ class CometChatCardBubble extends StatelessWidget {
   final CardMessage message;
 
   /// Callback when the user taps an action within the card.
-  /// Fires alongside the [CometChatUIEvents.ccCardActionClicked] event.
+  /// Fires alongside the [ConvoKitUIEvents.ccCardActionClicked] event.
   final void Function(CardMessage message, CometChatCardActionEvent action)?
   onCardAction;
 
@@ -66,7 +66,7 @@ class CometChatCardBubble extends StatelessWidget {
           onCardAction?.call(message, action);
 
           // Emit the UI event (for global subscription — covers nested agent cards too)
-          CometChatUIEvents.ccCardActionClicked(message, action);
+          ConvoKitUIEvents.ccCardActionClicked(message, action);
         },
       ),
     );
@@ -75,8 +75,8 @@ class CometChatCardBubble extends StatelessWidget {
   /// Fallback view when getCard() is null/empty.
   /// Shows getFallbackText() → getText() → "Card Message".
   Widget _buildFallbackView(BuildContext context) {
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final typography = CometChatThemeHelper.getTypography(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
 
     final fallbackText =
         message.getFallbackText() ??

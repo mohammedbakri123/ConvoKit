@@ -94,10 +94,10 @@ abstract class CometChatTextFormatter implements Formatter {
         forConversation: forConversation,
       );
     } else {
-      CometChatColorPalette colorPalette = CometChatThemeHelper.getColorPalette(
+      ConvoKitColorPalette colorPalette = ConvoKitThemeHelper.getColorPalette(
         context,
       );
-      CometChatTypography typography = CometChatThemeHelper.getTypography(
+      ConvoKitTypography typography = ConvoKitThemeHelper.getTypography(
         context,
       );
       return TextStyle(
@@ -335,7 +335,7 @@ abstract class CometChatTextFormatter implements Formatter {
     return TextDecoration.combine([d1, d2]);
   }
 
-  // List<AttributedText> getAttributedText(String text, CometChatTheme theme, BubbleAlignment? alignment, {List<AttributedText>? existingAttributes});
+  // List<AttributedText> getAttributedText(String text, ConvoKitTheme theme, BubbleAlignment? alignment, {List<AttributedText>? existingAttributes});
 
   ///[getAttributedText] is a function which is used to get the attributed text which is used to style the text in the message bubble and conversation subtitle
   List<AttributedText> getAttributedText(

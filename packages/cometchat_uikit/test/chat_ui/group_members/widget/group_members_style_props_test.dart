@@ -171,9 +171,9 @@ void main() {
     registerFallbackValue(_participant);
     registerFallbackValue(_group);
     registerFallbackValue(_FakeBuildContext());
-    registerFallbackValue(CometChatColorPalette());
-    registerFallbackValue(CometChatTypography());
-    registerFallbackValue(CometChatSpacing());
+    registerFallbackValue(ConvoKitColorPalette());
+    registerFallbackValue(ConvoKitTypography());
+    registerFallbackValue(ConvoKitSpacing());
   });
 
   group('owner scope badge', () {
@@ -447,21 +447,21 @@ void main() {
 
   group('row chrome', () {
     testWidgets('avatarStyle reaches the list item', (tester) async {
-      const avatar = CometChatAvatarStyle(backgroundColor: Color(0xFF0E0E0E));
+      const avatar = ConvoKitAvatarStyle(backgroundColor: Color(0xFF0E0E0E));
       await tester.pumpWidget(
         _list(const ConvoKitGroupMembersStyle(avatarStyle: avatar)),
       );
       await _settle(tester);
       expect(
         tester
-            .widget<CometChatListItem>(find.byType(CometChatListItem).first)
+            .widget<ConvoKitListItem>(find.byType(ConvoKitListItem).first)
             .avatarStyle,
         avatar,
       );
     });
 
     testWidgets('statusIndicatorStyle reaches the list item', (tester) async {
-      const indicator = CometChatStatusIndicatorStyle(
+      const indicator = ConvoKitStatusIndicatorStyle(
         backgroundColor: Color(0xFF0F0F0F),
       );
       await tester.pumpWidget(
@@ -472,7 +472,7 @@ void main() {
       await _settle(tester);
       expect(
         tester
-            .widget<CometChatListItem>(find.byType(CometChatListItem).first)
+            .widget<ConvoKitListItem>(find.byType(ConvoKitListItem).first)
             .statusIndicatorStyle,
         indicator,
       );
@@ -491,7 +491,7 @@ void main() {
       await _settle(tester);
       expect(
         tester
-            .widget<CometChatListItem>(find.byType(CometChatListItem).first)
+            .widget<ConvoKitListItem>(find.byType(ConvoKitListItem).first)
             .style
             .titleStyle
             ?.fontSize,
@@ -531,7 +531,7 @@ void main() {
       await _settle(tester);
       expect(
         tester
-            .widget<CometChatListItem>(find.byType(CometChatListItem).first)
+            .widget<ConvoKitListItem>(find.byType(ConvoKitListItem).first)
             .statusIndicatorColor,
         const Color(0xFF111111),
       );
@@ -887,7 +887,7 @@ void main() {
                 'Kick',
               ),
               style: const ConvoKitGroupMembersStyle(
-                confirmDialogStyle: CometChatConfirmDialogStyle(
+                confirmDialogStyle: ConvoKitConfirmDialogStyle(
                   iconColor: Color(0xFF1D1D1D),
                 ),
               ),

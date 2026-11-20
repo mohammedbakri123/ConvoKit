@@ -5,7 +5,7 @@ import '../../../cometchat_chat_uikit.dart' as cc;
 import '../../../shared_ui/src/clean_architecture/core/utils/thread_toast.dart';
 import '../../../src/adapters/cometchat_sdk_adapter.dart';
 
-///[ConvoKitConversations] is a component that shows all conversations involving the logged in user with the help of [CometChatListBase] and [CometChatListItem]
+///[ConvoKitConversations] is a component that shows all conversations involving the logged in user with the help of [CometChatListBase] and [ConvoKitListItem]
 ///By default, for each conversation that will be listed, the name of the user or group the logged in user is having conversation with will be displayed in the title of every list item,
 ///the subtitle will contain the last message in that conversation along with its receipt status, the leading view will contain the avatars of the user and groups and
 ///status indicator will indicate if users are online and icons for indicating a private or password protected group,
@@ -16,9 +16,9 @@ import '../../../src/adapters/cometchat_sdk_adapter.dart';
 ///
 /// ```dart
 /// ConvoKitConversations(
-///  avatarStyle: CometChatAvatarStyle(),
-///  statusIndicatorStyle: CometChatStatusIndicatorStyle(),
-///  badgeStyle: CometChatBadgeStyle(),
+///  avatarStyle: ConvoKitAvatarStyle(),
+///  statusIndicatorStyle: ConvoKitStatusIndicatorStyle(),
+///  badgeStyle: ConvoKitBadgeStyle(),
 ///  receiptStyle: CometChatMessageReceiptStyle(),
 ///  appBarOptions: [],
 ///  hideReceipt: false,
@@ -223,7 +223,7 @@ class ConvoKitConversations extends StatefulWidget {
   ///[activateSelection] lets the widget know if conversations are allowed to be selected
   final ActivateSelection? activateSelection;
 
-  ///[datePattern] is used to generate customDateString for CometChatDate
+  ///[datePattern] is used to generate customDateString for ConvoKitDate
   final String Function(Conversation conversation)? datePattern;
 
   ///[typingIndicatorText] if not null is visible instead of default text shown when another user is typing
@@ -255,22 +255,22 @@ class ConvoKitConversations extends StatefulWidget {
   ///[textFormatters] is given, like [mentionAllLabel].
   final String? mentionAllLabelId;
 
-  ///[datePadding] provides padding for [CometChatDate]
+  ///[datePadding] provides padding for [ConvoKitDate]
   final EdgeInsets? datePadding;
 
-  ///[dateHeight] provides height for [CometChatDate]
+  ///[dateHeight] provides height for [ConvoKitDate]
   final double? dateHeight;
 
-  ///[dateBackgroundIsTransparent] controls the background of [CometChatDate]
+  ///[dateBackgroundIsTransparent] controls the background of [ConvoKitDate]
   final bool? dateBackgroundIsTransparent;
 
-  ///[dateWidth] provides width for [CometChatDate]
+  ///[dateWidth] provides width for [ConvoKitDate]
   final double? dateWidth;
 
-  ///[badgeWidth] provides width for [CometChatBadge]
+  ///[badgeWidth] provides width for [ConvoKitBadge]
   final double? badgeWidth;
 
-  ///[badgeHeight] provides height for [CometChatBadge]
+  ///[badgeHeight] provides height for [ConvoKitBadge]
   final double? badgeHeight;
 
   ///[badgePadding] provides padding to the widget
@@ -381,13 +381,13 @@ class ConvoKitConversations extends StatefulWidget {
 class _ConvoKitConversationsState extends State<ConvoKitConversations>
     with AutomaticKeepAliveClientMixin, RouteAware {
   late ConvoKitConversationsStyle style;
-  late CometChatStatusIndicatorStyle statusStyle;
+  late ConvoKitStatusIndicatorStyle statusStyle;
   late CometChatTypingIndicatorStyle typingStyle;
   late CometChatMessageReceiptStyle receiptStyle;
-  late CometChatDateStyle datesStyle;
-  late CometChatTypography typography;
-  late CometChatColorPalette colorPalette;
-  late CometChatSpacing spacing;
+  late ConvoKitDateStyle datesStyle;
+  late ConvoKitTypography typography;
+  late ConvoKitColorPalette colorPalette;
+  late ConvoKitSpacing spacing;
 
   late String dateString;
 
@@ -437,7 +437,7 @@ class _ConvoKitConversationsState extends State<ConvoKitConversations>
 
     // Only initialize theme once to avoid expensive lookups during keyboard animation
     // But re-initialize when brightness changes (dark mode toggle)
-    final currentBrightness = CometChatThemeHelper.getBrightness(context);
+    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
     if (_themeInitialized && !brightnessChanged) return;
@@ -445,28 +445,28 @@ class _ConvoKitConversationsState extends State<ConvoKitConversations>
     _themeInitialized = true;
     _cachedWidget = null; // Clear cached widget so it rebuilds with new theme
 
-    typography = CometChatThemeHelper.getTypography(context);
-    colorPalette = CometChatThemeHelper.getColorPalette(context);
-    spacing = CometChatThemeHelper.getSpacing(context);
-    style = CometChatThemeHelper.getTheme<ConvoKitConversationsStyle>(
+    typography = ConvoKitThemeHelper.getTypography(context);
+    colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    spacing = ConvoKitThemeHelper.getSpacing(context);
+    style = ConvoKitThemeHelper.getTheme<ConvoKitConversationsStyle>(
       context: context,
       defaultTheme: ConvoKitConversationsStyle.of,
     ).merge(widget.conversationsStyle);
-    statusStyle = CometChatThemeHelper.getTheme<CometChatStatusIndicatorStyle>(
+    statusStyle = ConvoKitThemeHelper.getTheme<ConvoKitStatusIndicatorStyle>(
       context: context,
-      defaultTheme: CometChatStatusIndicatorStyle.of,
+      defaultTheme: ConvoKitStatusIndicatorStyle.of,
     ).merge(style.statusIndicatorStyle);
-    typingStyle = CometChatThemeHelper.getTheme<CometChatTypingIndicatorStyle>(
+    typingStyle = ConvoKitThemeHelper.getTheme<CometChatTypingIndicatorStyle>(
       context: context,
       defaultTheme: CometChatTypingIndicatorStyle.of,
     ).merge(style.typingIndicatorStyle);
-    receiptStyle = CometChatThemeHelper.getTheme<CometChatMessageReceiptStyle>(
+    receiptStyle = ConvoKitThemeHelper.getTheme<CometChatMessageReceiptStyle>(
       context: context,
       defaultTheme: CometChatMessageReceiptStyle.of,
     ).merge(style.receiptStyle);
-    datesStyle = CometChatThemeHelper.getTheme<CometChatDateStyle>(
+    datesStyle = ConvoKitThemeHelper.getTheme<ConvoKitDateStyle>(
       context: context,
-      defaultTheme: CometChatDateStyle.of,
+      defaultTheme: ConvoKitDateStyle.of,
     ).merge(style.dateStyle);
   }
 
@@ -836,7 +836,7 @@ class _ConvoKitConversationsState extends State<ConvoKitConversations>
     if (!CometChatSdkAdapter.isPinConversationEnabled()) return false;
     final pinnedBy = conversation.pinnedBy;
     if (pinnedBy == null) return true;
-    return pinnedBy == CometChatUIKit.loggedInUser?.uid;
+    return pinnedBy == ConvoKitUIKit.loggedInUser?.uid;
   }
 
   /// The long-press options the integrator supplied for [conversation].
@@ -1072,12 +1072,12 @@ class _ConvoKitConversationsState extends State<ConvoKitConversations>
   /// Shows delete confirmation dialog
   void _showDeleteConfirmationDialog(Conversation conversation) {
     final confirmDialogStyle =
-        CometChatThemeHelper.getTheme<CometChatConfirmDialogStyle>(
+        ConvoKitThemeHelper.getTheme<ConvoKitConfirmDialogStyle>(
           context: context,
-          defaultTheme: CometChatConfirmDialogStyle.of,
+          defaultTheme: ConvoKitConfirmDialogStyle.of,
         ).merge(style.deleteConversationDialogStyle);
 
-    CometChatConfirmDialog(
+    ConvoKitConfirmDialog(
       context: context,
       confirmButtonText: cc.Translations.of(context).delete,
       cancelButtonText: cc.Translations.of(context).cancel,
@@ -1102,7 +1102,7 @@ class _ConvoKitConversationsState extends State<ConvoKitConversations>
       onCancel: (dialogContext) {
         Navigator.of(dialogContext).pop();
       },
-      style: CometChatConfirmDialogStyle(
+      style: ConvoKitConfirmDialogStyle(
         iconColor: confirmDialogStyle.iconColor ?? colorPalette.error,
         backgroundColor: confirmDialogStyle.backgroundColor,
         shadow: confirmDialogStyle.shadow,
@@ -1206,8 +1206,8 @@ class _ConversationContextMenu extends StatefulWidget {
     })
   >
   entries;
-  final CometChatColorPalette colorPalette;
-  final CometChatTypography typography;
+  final ConvoKitColorPalette colorPalette;
+  final ConvoKitTypography typography;
   final Widget child;
 
   @override

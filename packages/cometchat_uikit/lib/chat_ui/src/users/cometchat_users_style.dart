@@ -110,10 +110,10 @@ class ConvoKitUsersStyle extends ThemeExtension<ConvoKitUsersStyle> {
   final Color? separatorColor;
 
   ///[avatarStyle] set style for avatar
-  final CometChatAvatarStyle? avatarStyle;
+  final ConvoKitAvatarStyle? avatarStyle;
 
   ///[statusIndicatorStyle] set style for status indicator
-  final CometChatStatusIndicatorStyle? statusIndicatorStyle;
+  final ConvoKitStatusIndicatorStyle? statusIndicatorStyle;
 
   ///[searchBorder] provides border for search box
   final BorderSide? searchBorder;
@@ -204,8 +204,8 @@ class ConvoKitUsersStyle extends ThemeExtension<ConvoKitUsersStyle> {
     Color? itemTitleTextColor,
     double? separatorHeight,
     Color? separatorColor,
-    CometChatAvatarStyle? avatarStyle,
-    CometChatStatusIndicatorStyle? statusIndicatorStyle,
+    ConvoKitAvatarStyle? avatarStyle,
+    ConvoKitStatusIndicatorStyle? statusIndicatorStyle,
     Color? searchBackgroundColor,
     BorderSide? searchBorder,
     BorderRadius? searchBorderRadius,

@@ -1,4 +1,4 @@
-/// Behaviour tests for [CometChatUIKitHelper] — the public façade an
+/// Behaviour tests for [ConvoKitUIKitHelper] — the public façade an
 /// integrator uses to raise UI Kit events from their own code.
 ///
 /// Every method is a one-line forward onto one of the five event buses, so the
@@ -76,7 +76,7 @@ mixin _Records {
   }
 }
 
-class _MsgRec with CometChatMessageEventListener, _Records {
+class _MsgRec with ConvoKitMessageEventListener, _Records {
   @override
   void ccMessageSent(BaseMessage message, MessageSendStatus messageStatus) =>
       calls.add(_Call('ccMessageSent', [message, messageStatus]));
@@ -205,7 +205,7 @@ class _ConvRec with ConvoKitConversationEventListener, _Records {
       calls.add(_Call('ccUpdateConversation', [conversation]));
 }
 
-class _UiRec with CometChatUIEventListener, _Records {
+class _UiRec with ConvoKitUIEventListener, _Records {
   @override
   void showPanel(
     Map<String, dynamic>? id,
@@ -251,11 +251,11 @@ void main() {
   late _UiRec ui;
 
   setUp(() {
-    CometChatMessageEvents.messagesListener.clear();
+    ConvoKitMessageEvents.messagesListener.clear();
     ConvoKitUserEvents.usersListener.clear();
     ConvoKitGroupEvents.groupsListener.clear();
     ConvoKitConversationEvents.conversationListListener.clear();
-    CometChatUIEvents.uiListener.clear();
+    ConvoKitUIEvents.uiListener.clear();
 
     msg = _MsgRec();
     usr = _UserRec();
@@ -263,19 +263,19 @@ void main() {
     conv = _ConvRec();
     ui = _UiRec();
 
-    CometChatMessageEvents.addMessagesListener('rec', msg);
+    ConvoKitMessageEvents.addMessagesListener('rec', msg);
     ConvoKitUserEvents.addUsersListener('rec', usr);
     ConvoKitGroupEvents.addGroupsListener('rec', grp);
     ConvoKitConversationEvents.addConversationListListener('rec', conv);
-    CometChatUIEvents.addUiListener('rec', ui);
+    ConvoKitUIEvents.addUiListener('rec', ui);
   });
 
   tearDown(() {
-    CometChatMessageEvents.messagesListener.clear();
+    ConvoKitMessageEvents.messagesListener.clear();
     ConvoKitUserEvents.usersListener.clear();
     ConvoKitGroupEvents.groupsListener.clear();
     ConvoKitConversationEvents.conversationListListener.clear();
-    CometChatUIEvents.uiListener.clear();
+    ConvoKitUIEvents.uiListener.clear();
   });
 
   /// Nothing the helper does may leak onto a bus it does not name.
@@ -289,7 +289,7 @@ void main() {
   group('message events', () {
     test('onMessageSent reaches the message bus with the status', () {
       final m = _text();
-      CometChatUIKitHelper.onMessageSent(m, MessageSendStatus.inProgress);
+      ConvoKitUIKitHelper.onMessageSent(m, MessageSendStatus.inProgress);
 
       expect(msg.only.name, 'ccMessageSent');
       expect(msg.only.args, [same(m), MessageSendStatus.inProgress]);
@@ -298,8 +298,8 @@ void main() {
 
     test('onMessageSent forwards each status value distinctly', () {
       final m = _text();
-      CometChatUIKitHelper.onMessageSent(m, MessageSendStatus.sent);
-      CometChatUIKitHelper.onMessageSent(m, MessageSendStatus.error);
+      ConvoKitUIKitHelper.onMessageSent(m, MessageSendStatus.sent);
+      ConvoKitUIKitHelper.onMessageSent(m, MessageSendStatus.error);
 
       expect(msg.calls.map((c) => c.args[1]), [
         MessageSendStatus.sent,
@@ -309,7 +309,7 @@ void main() {
 
     test('onMessageEdited carries the edit status', () {
       final m = _text();
-      CometChatUIKitHelper.onMessageEdited(m, MessageEditStatus.inProgress);
+      ConvoKitUIKitHelper.onMessageEdited(m, MessageEditStatus.inProgress);
 
       expect(msg.only.name, 'ccMessageEdited');
       expect(msg.only.args, [same(m), MessageEditStatus.inProgress]);
@@ -317,7 +317,7 @@ void main() {
 
     test('onMessageDeleted carries the event status', () {
       final m = _text();
-      CometChatUIKitHelper.onMessageDeleted(m, EventStatus.success);
+      ConvoKitUIKitHelper.onMessageDeleted(m, EventStatus.success);
 
       expect(msg.only.name, 'ccMessageDeleted');
       expect(msg.only.args, [same(m), EventStatus.success]);
@@ -325,7 +325,7 @@ void main() {
 
     test('onMessageRead carries the message', () {
       final m = _text();
-      CometChatUIKitHelper.onMessageRead(m);
+      ConvoKitUIKitHelper.onMessageRead(m);
 
       expect(msg.only.name, 'ccMessageRead');
       expect(msg.only.args, [same(m)]);
@@ -333,7 +333,7 @@ void main() {
 
     test('onMessageModerated carries the message', () {
       final m = _text();
-      CometChatUIKitHelper.onMessageModerated(m);
+      ConvoKitUIKitHelper.onMessageModerated(m);
 
       expect(msg.only.name, 'onMessageModerated');
       expect(msg.only.args, [same(m)]);
@@ -341,10 +341,10 @@ void main() {
 
     test('onLiveReaction forwards the reaction but drops the receiverId', () {
       // FINDING (lossy, not a crash): the helper's `receiverId` argument has
-      // no path to any listener — `CometChatMessageEvents.ccLiveReaction`
+      // no path to any listener — `ConvoKitMessageEvents.ccLiveReaction`
       // accepts it and then calls `listener.ccLiveReaction(reaction)` only.
       // An integrator cannot tell which conversation a live reaction was for.
-      CometChatUIKitHelper.onLiveReaction('❤️', 'u2');
+      ConvoKitUIKitHelper.onLiveReaction('❤️', 'u2');
 
       expect(msg.only.name, 'ccLiveReaction');
       expect(msg.only.args, ['❤️']);
@@ -354,8 +354,8 @@ void main() {
   // =========================================================================
   group('user events', () {
     test('onUserBlocked and onUserUnblocked stay distinct', () {
-      CometChatUIKitHelper.onUserBlocked(_bob);
-      CometChatUIKitHelper.onUserUnblocked(_bob);
+      ConvoKitUIKitHelper.onUserBlocked(_bob);
+      ConvoKitUIKitHelper.onUserUnblocked(_bob);
 
       expect(usr.calls.map((c) => c.name), [
         'ccUserBlocked',
@@ -370,8 +370,8 @@ void main() {
   // =========================================================================
   group('group events', () {
     test('onGroupCreated and onGroupDeleted stay distinct', () {
-      CometChatUIKitHelper.onGroupCreated(_team);
-      CometChatUIKitHelper.onGroupDeleted(_team);
+      ConvoKitUIKitHelper.onGroupCreated(_team);
+      ConvoKitUIKitHelper.onGroupDeleted(_team);
 
       expect(grp.calls.map((c) => c.name), [
         'ccGroupCreated',
@@ -383,7 +383,7 @@ void main() {
 
     test('onGroupLeft carries action, user and group in order', () {
       final a = _action();
-      CometChatUIKitHelper.onGroupLeft(a, _bob, _team);
+      ConvoKitUIKitHelper.onGroupLeft(a, _bob, _team);
 
       expect(grp.only.name, 'ccGroupLeft');
       expect(grp.only.args, [same(a), same(_bob), same(_team)]);
@@ -391,7 +391,7 @@ void main() {
 
     test('onGroupMemberScopeChanged keeps to/from the right way round', () {
       final a = _action();
-      CometChatUIKitHelper.onGroupMemberScopeChanged(
+      ConvoKitUIKitHelper.onGroupMemberScopeChanged(
         a,
         _bob,
         GroupMemberScope.admin,
@@ -411,7 +411,7 @@ void main() {
 
     test('onGroupMemberBanned keeps bannedUser before bannedBy', () {
       final a = _action();
-      CometChatUIKitHelper.onGroupMemberBanned(a, _bob, _alice, _team);
+      ConvoKitUIKitHelper.onGroupMemberBanned(a, _bob, _alice, _team);
 
       expect(grp.only.name, 'ccGroupMemberBanned');
       expect(grp.only.args, [same(a), same(_bob), same(_alice), same(_team)]);
@@ -419,7 +419,7 @@ void main() {
 
     test('onGroupMemberKicked keeps kickedUser before kickedBy', () {
       final a = _action();
-      CometChatUIKitHelper.onGroupMemberKicked(a, _bob, _alice, _team);
+      ConvoKitUIKitHelper.onGroupMemberKicked(a, _bob, _alice, _team);
 
       expect(grp.only.name, 'ccGroupMemberKicked');
       expect(grp.only.args, [same(a), same(_bob), same(_alice), same(_team)]);
@@ -427,14 +427,14 @@ void main() {
 
     test('onGroupMemberUnbanned keeps unbannedUser before unbannedBy', () {
       final a = _action();
-      CometChatUIKitHelper.onGroupMemberUnbanned(a, _bob, _alice, _team);
+      ConvoKitUIKitHelper.onGroupMemberUnbanned(a, _bob, _alice, _team);
 
       expect(grp.only.name, 'ccGroupMemberUnbanned');
       expect(grp.only.args, [same(a), same(_bob), same(_alice), same(_team)]);
     });
 
     test('onGroupMemberJoined carries the user and the group', () {
-      CometChatUIKitHelper.onGroupMemberJoined(_bob, _team);
+      ConvoKitUIKitHelper.onGroupMemberJoined(_bob, _team);
 
       expect(grp.only.name, 'ccGroupMemberJoined');
       expect(grp.only.args, [same(_bob), same(_team)]);
@@ -443,7 +443,7 @@ void main() {
     test('onGroupMemberAdded carries both lists by identity', () {
       final actions = [_action()];
       final users = [_bob];
-      CometChatUIKitHelper.onGroupMemberAdded(actions, users, _team, _alice);
+      ConvoKitUIKitHelper.onGroupMemberAdded(actions, users, _team, _alice);
 
       expect(grp.only.name, 'ccGroupMemberAdded');
       expect(grp.only.args, [
@@ -456,7 +456,7 @@ void main() {
 
     test('onOwnershipChanged carries the group and the new owner', () {
       final owner = _member();
-      CometChatUIKitHelper.onOwnershipChanged(_team, owner);
+      ConvoKitUIKitHelper.onOwnershipChanged(_team, owner);
 
       expect(grp.only.name, 'ccOwnershipChanged');
       expect(grp.only.args, [same(_team), same(owner)]);
@@ -467,8 +467,8 @@ void main() {
   group('conversation events', () {
     test('onConversationDeleted and onConversationUpdate stay distinct', () {
       final c = _conversation();
-      CometChatUIKitHelper.onConversationDeleted(c);
-      CometChatUIKitHelper.onConversationUpdate(c);
+      ConvoKitUIKitHelper.onConversationDeleted(c);
+      ConvoKitUIKitHelper.onConversationUpdate(c);
 
       expect(conv.calls.map((e) => e.name), [
         'ccConversationDeleted',
@@ -484,7 +484,7 @@ void main() {
   group('UI events', () {
     test('showPanel forwards the builder itself, not a wrapper', () {
       Widget builder(BuildContext _) => const SizedBox.shrink();
-      CometChatUIKitHelper.showPanel(
+      ConvoKitUIKitHelper.showPanel(
         {'uid': 'u2'},
         CustomUIPosition.messageListBottom,
         builder,
@@ -502,7 +502,7 @@ void main() {
     test(
       'hidePanel accepts a null id (a broadcast) and keeps the position',
       () {
-        CometChatUIKitHelper.hidePanel(null, CustomUIPosition.messageListTop);
+        ConvoKitUIKitHelper.hidePanel(null, CustomUIPosition.messageListTop);
 
         expect(ui.only.name, 'hidePanel');
         expect(ui.only.args, [null, CustomUIPosition.messageListTop]);
@@ -511,7 +511,7 @@ void main() {
 
     test('ccActiveChatChanged carries all five arguments in order', () {
       final m = _text();
-      CometChatUIKitHelper.ccActiveChatChanged(
+      ConvoKitUIKitHelper.ccActiveChatChanged(
         {'uid': 'u2'},
         m,
         _bob,
@@ -530,14 +530,14 @@ void main() {
     });
 
     test('onOpenChat passes whichever of user / group was supplied', () {
-      CometChatUIKitHelper.onOpenChat(null, _team);
+      ConvoKitUIKitHelper.onOpenChat(null, _team);
 
       expect(ui.only.name, 'openChat');
       expect(ui.only.args, [null, same(_team)]);
     });
 
     test('ccComposeMessage carries the draft text and the edit status', () {
-      CometChatUIKitHelper.ccComposeMessage(
+      ConvoKitUIKitHelper.ccComposeMessage(
         'draft',
         MessageEditStatus.inProgress,
       );
@@ -553,7 +553,7 @@ void main() {
       final second = _GroupRec();
       ConvoKitGroupEvents.addGroupsListener('second', second);
 
-      CometChatUIKitHelper.onGroupCreated(_team);
+      ConvoKitUIKitHelper.onGroupCreated(_team);
 
       expect(grp.only.name, 'ccGroupCreated');
       expect(second.only.name, 'ccGroupCreated');
@@ -563,9 +563,9 @@ void main() {
       ConvoKitGroupEvents.groupsListener.clear();
       ConvoKitConversationEvents.conversationListListener.clear();
 
-      expect(() => CometChatUIKitHelper.onGroupCreated(_team), returnsNormally);
+      expect(() => ConvoKitUIKitHelper.onGroupCreated(_team), returnsNormally);
       expect(
-        () => CometChatUIKitHelper.onConversationDeleted(_conversation()),
+        () => ConvoKitUIKitHelper.onConversationDeleted(_conversation()),
         returnsNormally,
       );
     });

@@ -32,9 +32,9 @@ class TextBubbleFactory extends BubbleFactory<TextMessage> {
     BuildContext context,
     TextMessage message,
     BubbleAlignment alignment, {
-    CometChatColorPalette? colorPalette,
-    CometChatTypography? typography,
-    CometChatSpacing? spacing,
+    ConvoKitColorPalette? colorPalette,
+    ConvoKitTypography? typography,
+    ConvoKitSpacing? spacing,
   }) {
     final style = alignment == BubbleAlignment.right
         ? outgoingStyle

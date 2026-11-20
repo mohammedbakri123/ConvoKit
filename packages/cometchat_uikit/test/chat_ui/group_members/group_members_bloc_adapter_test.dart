@@ -114,9 +114,9 @@ class SpyBloc extends GroupMembersBloc {
   List<CometChatGroupMemberOption> getDefaultOptions(
     GroupMember member,
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
   ) {
     return optionsOverride ??
         super.getDefaultOptions(
@@ -363,9 +363,9 @@ void main() {
         group,
         FakeMember('a'),
         context,
-        CometChatColorPalette(),
-        const CometChatTypography(),
-        CometChatSpacing(),
+        ConvoKitColorPalette(),
+        const ConvoKitTypography(),
+        ConvoKitSpacing(),
       );
 
       // The owner ('me') sees all three default options on a participant.
@@ -407,9 +407,9 @@ void main() {
         group,
         member,
         context,
-        CometChatColorPalette(),
-        const CometChatTypography(),
-        CometChatSpacing(),
+        ConvoKitColorPalette(),
+        const ConvoKitTypography(),
+        ConvoKitSpacing(),
       );
 
       expect(options, hasLength(2));

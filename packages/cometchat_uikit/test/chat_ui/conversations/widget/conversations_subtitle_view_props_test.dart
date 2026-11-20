@@ -33,7 +33,7 @@
 /// * hideThreadIndicator: an explicit null fails both `!= null` guards
 ///   (121, 166), so the view paints no receipt at all, where the documented
 ///   default (true) paints one.
-/// * The waiting receipt is drawn by CometChatReceipt from the theme palette:
+/// * The waiting receipt is drawn by ConvoKitReceipt from the theme palette:
 ///   the view never forwards colorPalette (or a waitIcon) to it (229-260).
 /// * hideThreadIndicator: false routes the tick through the thread row
 ///   (121-132), which skips both checks the plain path makes: it keeps the
@@ -366,7 +366,7 @@ const _kIconSecondary = Color(0xFFA1A1A1);
 const _kIconHighlight = Color(0xFF3E2BA8);
 const _kErrorBase = Color(0xFFF44649);
 
-final _palette = CometChatColorPalette(
+final _palette = ConvoKitColorPalette(
   textSecondary: _kTextSecondary,
   textHighlight: _kTextHighlight,
   iconSecondary: _kIconSecondary,
@@ -374,9 +374,9 @@ final _palette = CometChatColorPalette(
   error: _kErrorBase,
 );
 
-final _spacing = CometChatSpacing(padding: 2, padding1: 4, padding2: 8);
+final _spacing = ConvoKitSpacing(padding: 2, padding1: 4, padding2: 8);
 
-const _typography = CometChatTypography(
+const _typography = ConvoKitTypography(
   body: CometChatTextStyleBody(regular: TextStyle(fontSize: 14)),
 );
 
@@ -399,7 +399,7 @@ const _kSubtitleStyle = ConvoKitConversationsStyle(
   itemSubtitleTextStyle: TextStyle(fontSize: 13.25, color: _kSubtitleLoser),
 );
 
-const _kTypography = CometChatTypography(
+const _kTypography = ConvoKitTypography(
   body: CometChatTextStyleBody(
     regular: TextStyle(
       fontSize: 14.75,
@@ -438,9 +438,9 @@ class _Props {
   final ConvoKitConversationsStyle? style;
   final CometChatMessageReceiptStyle? receiptStyle;
   final CometChatTypingIndicatorStyle? typingStyle;
-  final CometChatColorPalette? colorPalette;
-  final CometChatSpacing? spacing;
-  final CometChatTypography? typography;
+  final ConvoKitColorPalette? colorPalette;
+  final ConvoKitSpacing? spacing;
+  final ConvoKitTypography? typography;
   final bool? hideThreadIndicator;
   final bool? receiptsVisibility;
   final String? typingIndicatorText;
@@ -634,7 +634,7 @@ final _matrix = <_Row>[
     ),
     probe: (t) => [
       _count(_inView(find.byIcon(Icons.subdirectory_arrow_right))),
-      _count(_inView(find.byType(CometChatReceipt))),
+      _count(_inView(find.byType(ConvoKitReceipt))),
     ],
     before: [1, 1],
     expected: [0, 0],
@@ -647,7 +647,7 @@ final _matrix = <_Row>[
     signedIn: true,
     conversation: _mine,
     set: () => _Props(conversation: _incoming(), hideThreadIndicator: true),
-    probe: (t) => _count(_inView(find.byType(CometChatReceipt))),
+    probe: (t) => _count(_inView(find.byType(ConvoKitReceipt))),
     before: 1,
     expected: 0,
   ),
@@ -658,7 +658,7 @@ final _matrix = <_Row>[
     conversation: _mine,
     set: () =>
         _Props(conversation: _mine(deleted: true), hideThreadIndicator: true),
-    probe: (t) => _count(_inView(find.byType(CometChatReceipt))),
+    probe: (t) => _count(_inView(find.byType(ConvoKitReceipt))),
     before: 1,
     expected: 0,
   ),
@@ -671,7 +671,7 @@ final _matrix = <_Row>[
       conversation: _mine(type: 'groupMember'),
       hideThreadIndicator: true,
     ),
-    probe: (t) => _count(_inView(find.byType(CometChatReceipt))),
+    probe: (t) => _count(_inView(find.byType(ConvoKitReceipt))),
     before: 1,
     expected: 0,
   ),
@@ -684,7 +684,7 @@ final _matrix = <_Row>[
       conversation: _mine(category: MessageCategoryConstants.call),
       hideThreadIndicator: true,
     ),
-    probe: (t) => _count(_inView(find.byType(CometChatReceipt))),
+    probe: (t) => _count(_inView(find.byType(ConvoKitReceipt))),
     before: 1,
     expected: 0,
   ),
@@ -823,7 +823,7 @@ final _matrix = <_Row>[
   ),
   _Row(
     'receiptStyle',
-    'reaches CometChatReceipt, whose waitIconColor tints the pending clock',
+    'reaches ConvoKitReceipt, whose waitIconColor tints the pending clock',
     signedIn: true,
     conversation: () => _mine(id: 0),
     set: () => _Props(
@@ -990,7 +990,7 @@ final _matrix = <_Row>[
       hideThreadIndicator: true,
       spacing: _spacing.copyWith(padding1: 9.5),
     ),
-    probe: (t) => _padAbove(t, _inView(find.byType(CometChatReceipt))),
+    probe: (t) => _padAbove(t, _inView(find.byType(ConvoKitReceipt))),
     before: const EdgeInsets.only(right: 4),
     expected: const EdgeInsets.only(right: 9.5),
   ),
@@ -1210,8 +1210,8 @@ void main() {
     for (final row in _matrix) {
       testWidgets('${row.prop}: ${row.claim}', (tester) async {
         if (row.signedIn) {
-          CometChatUIKit.loggedInUser = _me;
-          addTearDown(() => CometChatUIKit.loggedInUser = null);
+          ConvoKitUIKit.loggedInUser = _me;
+          addTearDown(() => ConvoKitUIKit.loggedInUser = null);
         }
         final sides = <(String, _Props?, Object?)>[
           (

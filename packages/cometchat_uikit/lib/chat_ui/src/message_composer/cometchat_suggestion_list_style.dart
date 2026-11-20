@@ -28,7 +28,7 @@ class ConvoKitSuggestionListStyle
   final Color? textColor;
 
   ///[avatarStyle] sets the avatar style of the suggestion list
-  final CometChatAvatarStyle? avatarStyle;
+  final ConvoKitAvatarStyle? avatarStyle;
 
   ConvoKitSuggestionListStyle merge(ConvoKitSuggestionListStyle? style) {
     return ConvoKitSuggestionListStyle(
@@ -48,7 +48,7 @@ class ConvoKitSuggestionListStyle
     BorderRadius? borderRadius,
     TextStyle? textStyle,
     Color? textColor,
-    CometChatAvatarStyle? messageBubbleAvatarStyle,
+    ConvoKitAvatarStyle? messageBubbleAvatarStyle,
   }) {
     return ConvoKitSuggestionListStyle(
       backgroundColor: backgroundColor ?? this.backgroundColor,

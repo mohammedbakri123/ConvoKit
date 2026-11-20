@@ -67,8 +67,8 @@ class ConvoKitRichTextToolbarStyle
 
   /// Factory for theme-based defaults
   static ConvoKitRichTextToolbarStyle of(BuildContext context) {
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final spacing = CometChatThemeHelper.getSpacing(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
 
     return ConvoKitRichTextToolbarStyle(
       backgroundColor: colorPalette.background2,

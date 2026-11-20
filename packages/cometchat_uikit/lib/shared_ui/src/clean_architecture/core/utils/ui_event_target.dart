@@ -1,6 +1,6 @@
 /// Addressing for the UI event bus.
 ///
-/// [CometChatUIEvents] fans every panel event out to every registered
+/// [ConvoKitUIEvents] fans every panel event out to every registered
 /// listener, so each component decides for itself whether an event was meant
 /// for it. That decision used to be hand-rolled per component, and each
 /// hand-rolled copy got it wrong in a different way. This is the single
@@ -30,7 +30,7 @@ library;
 ///
 /// [nullTargetsAll] decides what an unaddressed event (a null [eventId]) means
 /// for this caller. The composer treats it as a broadcast, because the public
-/// `CometChatUIKitHelper` lets an integrator raise a panel without naming a
+/// `ConvoKitUIKitHelper` lets an integrator raise a panel without naming a
 /// conversation. The message list treats it as addressed to nobody.
 bool uiEventTargets(
   Map<String, dynamic>? eventId,
@@ -49,7 +49,7 @@ bool uiEventTargets(
 
   // A partial id that names no conversation is still subject to the thread
   // check above; only a *mismatching* name rules the event out. Integrators
-  // may hand `CometChatUIKitHelper.showPanel` a bare `{parentMessageId: n}`,
+  // may hand `ConvoKitUIKitHelper.showPanel` a bare `{parentMessageId: n}`,
   // and that should keep working.
   if (eventConversation == null || componentConversation == null) return true;
 

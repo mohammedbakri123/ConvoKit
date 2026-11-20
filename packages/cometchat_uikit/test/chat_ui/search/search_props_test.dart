@@ -716,7 +716,7 @@ void main() {
     testWidgets('usersStatusVisibility false drops the presence dot', (
       tester,
     ) async {
-      int dots() => find.byType(CometChatStatusIndicator).evaluate().length;
+      int dots() => find.byType(ConvoKitStatusIndicator).evaluate().length;
 
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
@@ -763,7 +763,7 @@ void main() {
         ),
       ];
 
-      int badges() => find.byType(CometChatStatusIndicator).evaluate().length;
+      int badges() => find.byType(ConvoKitStatusIndicator).evaluate().length;
 
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
@@ -813,8 +813,8 @@ void main() {
       );
       await tester.pump();
 
-      final dates = tester.widgetList<CometChatDate>(
-        find.byType(CometChatDate),
+      final dates = tester.widgetList<ConvoKitDate>(
+        find.byType(ConvoKitDate),
       );
       expect(dates, isNotEmpty);
       expect(dates.first.dateTimeFormatterCallback, isA<_StubDateFormatter>());
@@ -990,10 +990,10 @@ void main() {
     // so the static has to agree before any of this is observable — the same
     // gate ConvoKitConversationListItem._shouldShowReceipt applies.
     setUp(() {
-      CometChatUIKit.loggedInUser = FakeUser(name: 'Bob', uid: 'u2');
+      ConvoKitUIKit.loggedInUser = FakeUser(name: 'Bob', uid: 'u2');
     });
     tearDown(() {
-      CometChatUIKit.loggedInUser = null;
+      ConvoKitUIKit.loggedInUser = null;
     });
 
     testWidgets('an outgoing last message renders a receipt', (tester) async {
@@ -1010,7 +1010,7 @@ void main() {
       );
       await tester.pump();
 
-      expect(find.byType(CometChatReceipt), findsOneWidget);
+      expect(find.byType(ConvoKitReceipt), findsOneWidget);
     });
 
     testWidgets('receiptsVisibility false removes it', (tester) async {
@@ -1030,14 +1030,14 @@ void main() {
 
       // Paired with the case above, so the absence is attributable to the prop
       // rather than to the receipt never rendering in this fixture.
-      expect(find.byType(CometChatReceipt), findsNothing);
+      expect(find.byType(ConvoKitReceipt), findsNothing);
     });
 
     testWidgets('an incoming last message renders no receipt', (tester) async {
       // Someone else is the logged-in user, so the fixture's message is now
       // incoming. Guards against the gate being dropped and receipts showing
       // on every row.
-      CometChatUIKit.loggedInUser = FakeUser(name: 'Alice', uid: 'u1');
+      ConvoKitUIKit.loggedInUser = FakeUser(name: 'Alice', uid: 'u1');
 
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
@@ -1052,7 +1052,7 @@ void main() {
       );
       await tester.pump();
 
-      expect(find.byType(CometChatReceipt), findsNothing);
+      expect(find.byType(ConvoKitReceipt), findsNothing);
     });
   });
 }

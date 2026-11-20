@@ -268,9 +268,9 @@ class _CometChatFlagMessageDialogState
   bool _hasError = false;
   String _errorMessage = '';
 
-  late CometChatColorPalette _colorPalette;
-  late CometChatTypography _typography;
-  late CometChatSpacing _spacing;
+  late ConvoKitColorPalette _colorPalette;
+  late ConvoKitTypography _typography;
+  late ConvoKitSpacing _spacing;
   bool _themeInitialized = false;
 
   /// Default translations for known reason IDs.
@@ -286,9 +286,9 @@ class _CometChatFlagMessageDialogState
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (!_themeInitialized) {
-      _colorPalette = CometChatThemeHelper.getColorPalette(context);
-      _typography = CometChatThemeHelper.getTypography(context);
-      _spacing = CometChatThemeHelper.getSpacing(context);
+      _colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+      _typography = ConvoKitThemeHelper.getTypography(context);
+      _spacing = ConvoKitThemeHelper.getSpacing(context);
       _loadDefaultReasonTranslations();
       _themeInitialized = true;
       _fetchReasons();

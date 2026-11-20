@@ -36,7 +36,7 @@ const _paletteUnselectedIcon = Color(0xFF6F7081);
 const _paletteSelectedBorder = Color(0xFF708192);
 const _paletteUnselectedBorder = Color(0xFF8192A3);
 
-final _palette = CometChatColorPalette(
+final _palette = ConvoKitColorPalette(
   secondaryButtonBackground: _paletteSelectedBg,
   background3: _paletteUnselectedBg,
   textWhite: _paletteSelectedText,
@@ -47,13 +47,13 @@ final _palette = CometChatColorPalette(
   borderLight: _paletteUnselectedBorder,
 );
 
-final _spacing = CometChatSpacing(
+final _spacing = ConvoKitSpacing(
   padding1: 5.5,
   padding3: 13.5,
   radiusMax: 17.5,
 );
 
-const _typography = CometChatTypography(
+const _typography = ConvoKitTypography(
   body: CometChatTextStyleBody(
     medium: TextStyle(
       fontSize: 15.25,

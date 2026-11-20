@@ -87,8 +87,8 @@ Future<void> _settle(WidgetTester tester) async {
 }
 
 void main() {
-  setUp(() => CometChatUIKit.loggedInUser = _me);
-  tearDown(() => CometChatUIKit.loggedInUser = null);
+  setUp(() => ConvoKitUIKit.loggedInUser = _me);
+  tearDown(() => ConvoKitUIKit.loggedInUser = null);
 
   group('CometChatAudioPlayer', () {
     testWidgets('every property reaches the player', (tester) async {
@@ -107,9 +107,9 @@ void main() {
               barCount: 23,
               playIcon: const Icon(Icons.play_arrow, key: Key('play')),
               pauseIcon: const Icon(Icons.pause, key: Key('pause')),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
               // the player reads the play-button half of the bubble style;
               // the bubble itself owns backgroundColor
               style: const CometChatVoiceNoteBubbleStyle(
@@ -149,9 +149,9 @@ void main() {
               width: 251,
               receiptsVisibility: true,
               textFormatters: const [],
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
               style: const ConvoKitThreadedHeaderStyle(
                 bubbleContainerBackGroundColor: Color(0xFF261010),
               ),
@@ -183,9 +183,9 @@ void main() {
               onChange: (_) => changed = true,
               onContentInserted: (_) {},
               onPasteImage: () async => false,
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
             ),
           ),
         ),

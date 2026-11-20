@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../../cometchat_uikit_shared.dart'
-    show CometChatMessageReceiptStyle, CometChatAvatarStyle, CometChatDateStyle;
+    show CometChatMessageReceiptStyle, ConvoKitAvatarStyle, ConvoKitDateStyle;
 
 ///[CometChatStickerBubbleStyle] is a data class that has styling-related properties fo [CometChatStickerBubble]
 class CometChatStickerBubbleStyle
@@ -40,10 +40,10 @@ class CometChatStickerBubbleStyle
   final CometChatMessageReceiptStyle? messageReceiptStyle;
 
   ///[messageBubbleAvatarStyle] provides style to the avatar of the sender
-  final CometChatAvatarStyle? messageBubbleAvatarStyle;
+  final ConvoKitAvatarStyle? messageBubbleAvatarStyle;
 
   ///[messageBubbleDateStyle] provides style to the date of the message bubble
-  final CometChatDateStyle? messageBubbleDateStyle;
+  final ConvoKitDateStyle? messageBubbleDateStyle;
 
   ///[messageBubbleBackgroundImage] provides background image to the message bubble of the sent message
   final DecorationImage? messageBubbleBackgroundImage;
@@ -59,9 +59,9 @@ class CometChatStickerBubbleStyle
     BorderRadiusGeometry? borderRadius,
     TextStyle? threadedMessageIndicatorTextStyle,
     Color? threadedMessageIndicatorIconColor,
-    CometChatAvatarStyle? messageBubbleAvatarStyle,
+    ConvoKitAvatarStyle? messageBubbleAvatarStyle,
     CometChatMessageReceiptStyle? messageReceiptStyle,
-    CometChatDateStyle? messageBubbleDateStyle,
+    ConvoKitDateStyle? messageBubbleDateStyle,
     TextStyle? senderNameTextStyle,
   }) {
     return CometChatStickerBubbleStyle(

@@ -7,7 +7,7 @@ import '../../../../../../cometchat_uikit_shared.dart';
 /// CometChatCard(
 ///  title: 'Title',
 ///  subtitle: 'Subtitle',
-///  avatar: CometChatAvatar(),
+///  avatar: ConvoKitAvatar(),
 ///  bottomView: Text('Bottom View'),
 ///  );
 ///  ```
@@ -87,7 +87,7 @@ class CometChatCard extends StatelessWidget {
                 ),
             ?subtitleView,
             avatarView ??
-                CometChatAvatar(
+                ConvoKitAvatar(
                   image: avatarUrl,
                   name: avatarName,
                   height: avatarHeight ?? 120,

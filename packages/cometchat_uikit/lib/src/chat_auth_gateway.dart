@@ -2,7 +2,7 @@ import 'package:cometchat_sdk/cometchat_sdk.dart'
     show AppSettings, CometChat, CometChatException, User;
 import 'package:flutter/foundation.dart';
 
-/// The chat SDK calls `CometChatUIKit` makes to initialise, restore a session,
+/// The chat SDK calls `ConvoKitUIKit` makes to initialise, restore a session,
 /// log in and log out.
 ///
 /// Package-private (see `lib/src/`), like `CallsSdkGateway`. The methods have
@@ -12,7 +12,7 @@ import 'package:flutter/foundation.dart';
 abstract interface class ChatAuthGateway {
   static ChatAuthGateway? _override;
 
-  /// The gateway `CometChatUIKit` uses: the chat SDK, unless a test put a
+  /// The gateway `ConvoKitUIKit` uses: the chat SDK, unless a test put a
   /// fake in.
   static ChatAuthGateway get instance =>
       _override ?? const DefaultChatAuthGateway();

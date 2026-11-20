@@ -42,13 +42,13 @@ class CometChatDecoratedContainer extends StatelessWidget {
   final VoidCallback? onCloseIconTap;
 
   ///[colorPalette] is a parameter which takes the colorPalette of the Container.
-  final CometChatColorPalette? colorPalette;
+  final ConvoKitColorPalette? colorPalette;
 
   ///[typography] is a parameter which takes the typography of the Container.
-  final CometChatTypography? typography;
+  final ConvoKitTypography? typography;
 
   ///[spacing] is a parameter which takes the spacing of the Container.
-  final CometChatSpacing? spacing;
+  final ConvoKitSpacing? spacing;
 
   ///[height] is a double parameter which takes the height of the Container.
   final double? height;

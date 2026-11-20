@@ -450,10 +450,10 @@ class _Props {
   final List<CometChatTextFormatter>? textFormatters;
   final DateTimeFormatterCallback? dateTimeFormatterCallback;
   final ConvoKitConversationListItemStyle? style;
-  final CometChatAvatarStyle? avatarStyle;
-  final CometChatStatusIndicatorStyle? statusIndicatorStyle;
-  final CometChatDateStyle? dateStyle;
-  final CometChatBadgeStyle? badgeStyle;
+  final ConvoKitAvatarStyle? avatarStyle;
+  final ConvoKitStatusIndicatorStyle? statusIndicatorStyle;
+  final ConvoKitDateStyle? dateStyle;
+  final ConvoKitBadgeStyle? badgeStyle;
   final CometChatTypingIndicatorStyle? typingIndicatorStyle;
   final double? avatarHeight;
   final double? avatarWidth;
@@ -463,9 +463,9 @@ class _Props {
   final double? statusIndicatorWidth;
   final Widget? Function(Conversation, TypingIndicator?)? subtitleView;
   final Widget? Function(Conversation, TypingIndicator?)? trailingView;
-  final CometChatColorPalette? colorPalette;
-  final CometChatSpacing? spacing;
-  final CometChatTypography? typography;
+  final ConvoKitColorPalette? colorPalette;
+  final ConvoKitSpacing? spacing;
+  final ConvoKitTypography? typography;
   final Widget? privateGroupIcon;
   final Widget? protectedGroupIcon;
   final Widget? readIcon;
@@ -596,13 +596,13 @@ int _count(Finder finder) => finder.evaluate().length;
 
 BuildContext _ctx(WidgetTester tester) => tester.element(find.byType(Scaffold));
 
-CometChatColorPalette _palette(BuildContext c) =>
-    CometChatThemeHelper.getColorPalette(c);
+ConvoKitColorPalette _palette(BuildContext c) =>
+    ConvoKitThemeHelper.getColorPalette(c);
 
-CometChatTypography _typography(BuildContext c) =>
-    CometChatThemeHelper.getTypography(c);
+ConvoKitTypography _typography(BuildContext c) =>
+    ConvoKitThemeHelper.getTypography(c);
 
-CometChatSpacing _spacing(BuildContext c) => CometChatThemeHelper.getSpacing(c);
+ConvoKitSpacing _spacing(BuildContext c) => ConvoKitThemeHelper.getSpacing(c);
 
 Finder _in(Type type, Type child) =>
     find.descendant(of: find.byType(type), matching: find.byType(child));
@@ -641,16 +641,16 @@ TextStyle? _typingStyle(WidgetTester tester) =>
     tester.widget<Text>(find.text(_typingText(tester))).style;
 
 Text _dateText(WidgetTester tester) =>
-    tester.widget<Text>(_in(CometChatDate, Text));
+    tester.widget<Text>(_in(ConvoKitDate, Text));
 
 Text _initials(WidgetTester tester) =>
-    tester.widget<Text>(_in(CometChatAvatar, Text));
+    tester.widget<Text>(_in(ConvoKitAvatar, Text));
 
 Checkbox _checkbox(WidgetTester tester) =>
     tester.widget<Checkbox>(find.byType(Checkbox));
 
 Color? _dotBorderColor(WidgetTester tester) =>
-    (_decoration(tester, CometChatStatusIndicator).border as Border?)
+    (_decoration(tester, ConvoKitStatusIndicator).border as Border?)
         ?.top
         .color;
 
@@ -678,7 +678,7 @@ final _matrix = <_Row>[
     'hideUserStatus',
     'true drops the presence dot of an online user',
     set: (r) => const _Props(hideUserStatus: true),
-    probe: (t, r) => _count(find.byType(CometChatStatusIndicator)),
+    probe: (t, r) => _count(find.byType(ConvoKitStatusIndicator)),
     unset: 1,
     expected: 0,
   ),
@@ -688,7 +688,7 @@ final _matrix = <_Row>[
     conversation: _privateGroup,
     set: (r) => const _Props(hideGroupType: true),
     probe: (t, r) => [
-      _count(find.byType(CometChatStatusIndicator)),
+      _count(find.byType(ConvoKitStatusIndicator)),
       _count(find.byIcon(Icons.shield)),
     ],
     unset: [1, 1],
@@ -734,7 +734,7 @@ final _matrix = <_Row>[
     'avatarHeight',
     'sets the rendered avatar height',
     set: (r) => const _Props(avatarHeight: 61),
-    probe: (t, r) => t.getSize(find.byType(CometChatAvatar)),
+    probe: (t, r) => t.getSize(find.byType(ConvoKitAvatar)),
     unset: const Size(48, 48),
     expected: const Size(48, 61),
   ),
@@ -742,7 +742,7 @@ final _matrix = <_Row>[
     'avatarWidth',
     'sets the rendered avatar width',
     set: (r) => const _Props(avatarWidth: 59),
-    probe: (t, r) => t.getSize(find.byType(CometChatAvatar)),
+    probe: (t, r) => t.getSize(find.byType(ConvoKitAvatar)),
     unset: const Size(48, 48),
     expected: const Size(59, 48),
   ),
@@ -750,7 +750,7 @@ final _matrix = <_Row>[
     'avatarPadding',
     'insets the avatar content inside its box',
     set: (r) => const _Props(avatarPadding: EdgeInsets.all(7)),
-    probe: (t, r) => t.getSize(_in(CometChatAvatar, ClipRRect)),
+    probe: (t, r) => t.getSize(_in(ConvoKitAvatar, ClipRRect)),
     unset: const Size(48, 48),
     expected: const Size(34, 34),
   ),
@@ -759,8 +759,8 @@ final _matrix = <_Row>[
     'offsets the avatar box inside its slot',
     set: (r) => const _Props(avatarMargin: EdgeInsets.all(5)),
     probe: (t, r) =>
-        t.getTopLeft(_in(CometChatAvatar, ClipRRect)) -
-        t.getTopLeft(find.byType(CometChatAvatar)),
+        t.getTopLeft(_in(ConvoKitAvatar, ClipRRect)) -
+        t.getTopLeft(find.byType(ConvoKitAvatar)),
     unset: Offset.zero,
     expected: const Offset(5, 5),
   ),
@@ -768,7 +768,7 @@ final _matrix = <_Row>[
     'statusIndicatorHeight',
     'sets the rendered presence-dot height',
     set: (r) => const _Props(statusIndicatorHeight: 9),
-    probe: (t, r) => t.getSize(find.byType(CometChatStatusIndicator)),
+    probe: (t, r) => t.getSize(find.byType(ConvoKitStatusIndicator)),
     unset: const Size(14, 14),
     expected: const Size(14, 9),
   ),
@@ -776,7 +776,7 @@ final _matrix = <_Row>[
     'statusIndicatorWidth',
     'sets the rendered presence-dot width',
     set: (r) => const _Props(statusIndicatorWidth: 11),
-    probe: (t, r) => t.getSize(find.byType(CometChatStatusIndicator)),
+    probe: (t, r) => t.getSize(find.byType(ConvoKitStatusIndicator)),
     unset: const Size(14, 14),
     expected: const Size(11, 14),
   ),
@@ -796,7 +796,7 @@ final _matrix = <_Row>[
     probe: (t, r) => [
       _count(
         find.descendant(
-          of: find.byType(CometChatStatusIndicator),
+          of: find.byType(ConvoKitStatusIndicator),
           matching: find.byKey(_privateIcon.key!),
         ),
       ),
@@ -818,7 +818,7 @@ final _matrix = <_Row>[
     probe: (t, r) => [
       _count(
         find.descendant(
-          of: find.byType(CometChatStatusIndicator),
+          of: find.byType(ConvoKitStatusIndicator),
           matching: find.byKey(_protectedIcon.key!),
         ),
       ),
@@ -910,8 +910,8 @@ final _matrix = <_Row>[
     set: (r) => _Props(trailingView: (c, t) => r.slot(c, t, 'TAIL-SENTINEL')),
     probe: (t, r) => [
       _count(find.text('TAIL-SENTINEL')),
-      _count(find.byType(CometChatDate)),
-      _count(find.byType(CometChatBadge)),
+      _count(find.byType(ConvoKitDate)),
+      _count(find.byType(ConvoKitBadge)),
       r.slotArgs,
     ],
     unset: [0, 1, 1, null],
@@ -924,7 +924,7 @@ final _matrix = <_Row>[
     set: (r) => _Props(trailingView: (c, t) => r.slot(c, t, 'TAIL-SENTINEL')),
     probe: (t, r) => [
       _count(find.text('TAIL-SENTINEL')),
-      _count(find.byType(CometChatDate)),
+      _count(find.byType(ConvoKitDate)),
       r.slotArgs,
     ],
     unset: [0, 1, null],
@@ -952,7 +952,7 @@ final _matrix = <_Row>[
     'colorPalette',
     'background1 edges the presence dot',
     set: (r) =>
-        _Props(colorPalette: CometChatColorPalette(background1: _kPaletteEdge)),
+        _Props(colorPalette: ConvoKitColorPalette(background1: _kPaletteEdge)),
     probe: (t, r) => _dotBorderColor(t),
     unset: _FromTheme((c) => _palette(c).background1),
     expected: _kPaletteEdge,
@@ -962,13 +962,13 @@ final _matrix = <_Row>[
     'warning fills the private-group badge and background1 colours its shield',
     conversation: _privateGroup,
     set: (r) => _Props(
-      colorPalette: CometChatColorPalette(
+      colorPalette: ConvoKitColorPalette(
         warning: _kWarning,
         background1: _kPaletteEdge,
       ),
     ),
     probe: (t, r) => [
-      _decoration(t, CometChatStatusIndicator).color,
+      _decoration(t, ConvoKitStatusIndicator).color,
       t.widget<Icon>(find.byIcon(Icons.shield)).color,
     ],
     unset: _FromTheme((c) => [_palette(c).warning, _palette(c).background1]),
@@ -979,13 +979,13 @@ final _matrix = <_Row>[
     'success fills the protected-group badge and background1 colours its lock',
     conversation: _protectedGroup,
     set: (r) => _Props(
-      colorPalette: CometChatColorPalette(
+      colorPalette: ConvoKitColorPalette(
         success: _kSuccess,
         background1: _kPaletteEdge,
       ),
     ),
     probe: (t, r) => [
-      _decoration(t, CometChatStatusIndicator).color,
+      _decoration(t, ConvoKitStatusIndicator).color,
       t.widget<Icon>(find.byIcon(Icons.lock)).color,
     ],
     unset: _FromTheme((c) => [_palette(c).success, _palette(c).background1]),
@@ -996,7 +996,7 @@ final _matrix = <_Row>[
     'primary tints the read tick',
     signedIn: true,
     conversation: _read,
-    set: (r) => _Props(colorPalette: CometChatColorPalette(primary: _kPrimary)),
+    set: (r) => _Props(colorPalette: ConvoKitColorPalette(primary: _kPrimary)),
     probe: (t, r) => t.widget<Icon>(find.byIcon(Icons.done_all)).color,
     unset: _FromTheme((c) => _palette(c).primary),
     expected: _kPrimary,
@@ -1007,7 +1007,7 @@ final _matrix = <_Row>[
     signedIn: true,
     conversation: _delivered,
     set: (r) => _Props(
-      colorPalette: CometChatColorPalette(iconSecondary: _kIconSecondary),
+      colorPalette: ConvoKitColorPalette(iconSecondary: _kIconSecondary),
     ),
     probe: (t, r) => t.widget<Icon>(find.byIcon(Icons.done_all)).color,
     unset: _FromTheme((c) => _palette(c).iconSecondary),
@@ -1019,7 +1019,7 @@ final _matrix = <_Row>[
     signedIn: true,
     conversation: _minePinned,
     set: (r) => _Props(
-      colorPalette: CometChatColorPalette(iconSecondary: _kIconSecondary),
+      colorPalette: ConvoKitColorPalette(iconSecondary: _kIconSecondary),
     ),
     probe: (t, r) => [
       t.widget<Icon>(find.byIcon(Icons.done)).color,
@@ -1036,7 +1036,7 @@ final _matrix = <_Row>[
     signedIn: true,
     conversation: _pending,
     set: (r) => _Props(
-      colorPalette: CometChatColorPalette(iconSecondary: _kIconSecondary),
+      colorPalette: ConvoKitColorPalette(iconSecondary: _kIconSecondary),
     ),
     probe: (t, r) => t.widget<Icon>(find.byIcon(Icons.schedule)).color,
     unset: _FromTheme((c) => _palette(c).iconSecondary),
@@ -1047,7 +1047,7 @@ final _matrix = <_Row>[
     'error tints the mark on a message moderation rejected',
     signedIn: true,
     conversation: _rejected,
-    set: (r) => _Props(colorPalette: CometChatColorPalette(error: _kError)),
+    set: (r) => _Props(colorPalette: ConvoKitColorPalette(error: _kError)),
     probe: (t, r) => t.widget<Icon>(find.byIcon(Icons.error_outline)).color,
     unset: _FromTheme((c) => _palette(c).error),
     expected: _kError,
@@ -1058,7 +1058,7 @@ final _matrix = <_Row>[
     base: (r) => const _Props(style: ConvoKitConversationListItemStyle()),
     set: (r) => _Props(
       style: const ConvoKitConversationListItemStyle(),
-      colorPalette: CometChatColorPalette(
+      colorPalette: ConvoKitColorPalette(
         background1: _kRowBackground,
         textPrimary: _kTitle,
         textSecondary: _kSubtitle,
@@ -1089,7 +1089,7 @@ final _matrix = <_Row>[
     base: (r) => const _Props(style: ConvoKitConversationListItemStyle()),
     set: (r) => _Props(
       style: const ConvoKitConversationListItemStyle(),
-      colorPalette: CometChatColorPalette(
+      colorPalette: ConvoKitColorPalette(
         background4: _kSelectedBackground,
         iconSecondary: _kTypeIcon,
         primary: _kCheckFill,
@@ -1117,7 +1117,7 @@ final _matrix = <_Row>[
     'textHighlight colours the typing line',
     typing: _bobTyping,
     set: (r) =>
-        _Props(colorPalette: CometChatColorPalette(textHighlight: _kHighlight)),
+        _Props(colorPalette: ConvoKitColorPalette(textHighlight: _kHighlight)),
     probe: (t, r) => _typingStyle(t)?.color,
     unset: _FromTheme((c) => _palette(c).textHighlight),
     expected: _kHighlight,
@@ -1125,14 +1125,14 @@ final _matrix = <_Row>[
   _Row(
     'spacing',
     'padding4 and padding3 inset the row; padding3 spaces avatar and title',
-    set: (r) => _Props(spacing: CometChatSpacing(padding4: 29, padding3: 13)),
+    set: (r) => _Props(spacing: ConvoKitSpacing(padding4: 29, padding3: 13)),
     probe: (t, r) => [
-      t.getTopLeft(find.byType(CometChatAvatar)).dx -
+      t.getTopLeft(find.byType(ConvoKitAvatar)).dx -
           t.getTopLeft(find.byType(ConvoKitConversationListItem)).dx,
       t.getTopLeft(_in(InkWell, Row).first).dy -
           t.getTopLeft(find.byType(ConvoKitConversationListItem)).dy,
       t.getTopLeft(find.text('Alice')).dx -
-          t.getTopRight(find.byType(CometChatAvatar)).dx,
+          t.getTopRight(find.byType(ConvoKitAvatar)).dx,
     ],
     unset: [16.0, 12.0, 12.0],
     expected: [29.0, 13.0, 13.0],
@@ -1144,12 +1144,12 @@ final _matrix = <_Row>[
     signedIn: true,
     conversation: _minePinned,
     set: (r) => _Props(
-      spacing: CometChatSpacing(spacing: 2.5, padding2: 7, padding1: 5),
+      spacing: ConvoKitSpacing(spacing: 2.5, padding2: 7, padding1: 5),
     ),
     probe: (t, r) {
       final column = find
           .ancestor(
-            of: find.byType(CometChatDate),
+            of: find.byType(ConvoKitDate),
             matching: find.byType(Column),
           )
           .first;
@@ -1159,7 +1159,7 @@ final _matrix = <_Row>[
           .ancestor(of: tick, matching: find.byType(Row))
           .first;
       return [
-        (_decoration(t, CometChatStatusIndicator).border as Border?)?.top.width,
+        (_decoration(t, ConvoKitStatusIndicator).border as Border?)?.top.width,
         t.getTopLeft(column).dx -
             t
                 .getTopLeft(
@@ -1201,12 +1201,12 @@ final _matrix = <_Row>[
     base: (r) => const _Props(style: ConvoKitConversationListItemStyle()),
     set: (r) => _Props(
       style: const ConvoKitConversationListItemStyle(),
-      spacing: CometChatSpacing(padding3: 11, padding2: 6, radius1: 2.5),
+      spacing: ConvoKitSpacing(padding3: 11, padding2: 6, radius1: 2.5),
     ),
     probe: (t, r) => [
       t.getTopLeft(find.byType(Checkbox)).dx -
           t.getTopLeft(find.byType(ConvoKitConversationListItem)).dx,
-      t.getTopLeft(find.byType(CometChatAvatar)).dx -
+      t.getTopLeft(find.byType(ConvoKitAvatar)).dx -
           t.getTopRight(find.byType(Checkbox)).dx,
       (_checkbox(t).shape! as RoundedRectangleBorder).borderRadius,
     ],
@@ -1223,7 +1223,7 @@ final _matrix = <_Row>[
     'typography',
     'heading2.bold sizes the avatar initials',
     set: (r) => const _Props(
-      typography: CometChatTypography(
+      typography: ConvoKitTypography(
         heading2: CometChatTextStyleHeading2(bold: TextStyle(fontSize: 27.5)),
       ),
     ),
@@ -1236,7 +1236,7 @@ final _matrix = <_Row>[
     'caption1.regular sizes the pin glyph',
     conversation: _pinned,
     set: (r) => const _Props(
-      typography: CometChatTypography(
+      typography: ConvoKitTypography(
         caption1: CometChatTextStyleCaption1(
           regular: TextStyle(fontSize: 15.5),
         ),
@@ -1252,7 +1252,7 @@ final _matrix = <_Row>[
     base: (r) => const _Props(style: ConvoKitConversationListItemStyle()),
     set: (r) => const _Props(
       style: ConvoKitConversationListItemStyle(),
-      typography: CometChatTypography(
+      typography: ConvoKitTypography(
         heading4: CometChatTextStyleHeading4(medium: TextStyle(fontSize: 19.5)),
         body: CometChatTextStyleBody(regular: TextStyle(fontSize: 15.5)),
         caption1: CometChatTextStyleCaption1(
@@ -1281,7 +1281,7 @@ final _matrix = <_Row>[
     base: (r) => const _Props(style: ConvoKitConversationListItemStyle()),
     set: (r) => const _Props(
       style: ConvoKitConversationListItemStyle(),
-      typography: CometChatTypography(
+      typography: ConvoKitTypography(
         body: CometChatTextStyleBody(regular: TextStyle(fontSize: 15.5)),
       ),
     ),
@@ -1446,10 +1446,10 @@ final _matrix = <_Row>[
     'avatarStyle fills the avatar',
     set: (r) => const _Props(
       style: ConvoKitConversationListItemStyle(
-        avatarStyle: CometChatAvatarStyle(backgroundColor: _kAvatar),
+        avatarStyle: ConvoKitAvatarStyle(backgroundColor: _kAvatar),
       ),
     ),
-    probe: (t, r) => _decoration(t, CometChatAvatar).color,
+    probe: (t, r) => _decoration(t, ConvoKitAvatar).color,
     unset: _FromTheme((c) => _palette(c).extendedPrimary500),
     expected: _kAvatar,
   ),
@@ -1458,12 +1458,12 @@ final _matrix = <_Row>[
     'statusIndicatorStyle.border edges the presence dot',
     set: (r) => const _Props(
       style: ConvoKitConversationListItemStyle(
-        statusIndicatorStyle: CometChatStatusIndicatorStyle(
+        statusIndicatorStyle: ConvoKitStatusIndicatorStyle(
           border: _kDotBorder,
         ),
       ),
     ),
-    probe: (t, r) => _decoration(t, CometChatStatusIndicator).border,
+    probe: (t, r) => _decoration(t, ConvoKitStatusIndicator).border,
     unset: _FromTheme(
       (c) => Border.all(
         width: _spacing(c).spacing ?? 0,
@@ -1477,12 +1477,12 @@ final _matrix = <_Row>[
     'statusIndicatorStyle.borderRadius rounds the presence dot',
     set: (r) => const _Props(
       style: ConvoKitConversationListItemStyle(
-        statusIndicatorStyle: CometChatStatusIndicatorStyle(
+        statusIndicatorStyle: ConvoKitStatusIndicatorStyle(
           borderRadius: _kDotRadius,
         ),
       ),
     ),
-    probe: (t, r) => _decoration(t, CometChatStatusIndicator).borderRadius,
+    probe: (t, r) => _decoration(t, ConvoKitStatusIndicator).borderRadius,
     unset: _FromTheme((c) => BorderRadius.circular(_spacing(c).radiusMax ?? 0)),
     expected: _kDotRadius,
   ),
@@ -1491,7 +1491,7 @@ final _matrix = <_Row>[
     'dateStyle colours the timestamp',
     set: (r) => const _Props(
       style: ConvoKitConversationListItemStyle(
-        dateStyle: CometChatDateStyle(textColor: _kDateText),
+        dateStyle: ConvoKitDateStyle(textColor: _kDateText),
       ),
     ),
     probe: (t, r) => _dateText(t).style?.color,
@@ -1503,7 +1503,7 @@ final _matrix = <_Row>[
     'dateStyle.textStyle sizes the timestamp',
     set: (r) => const _Props(
       style: ConvoKitConversationListItemStyle(
-        dateStyle: CometChatDateStyle(textStyle: TextStyle(fontSize: 11.5)),
+        dateStyle: ConvoKitDateStyle(textStyle: TextStyle(fontSize: 11.5)),
       ),
     ),
     probe: (t, r) => _dateText(t).style?.fontSize,
@@ -1515,10 +1515,10 @@ final _matrix = <_Row>[
     'dateStyle.borderRadius rounds the timestamp box',
     set: (r) => const _Props(
       style: ConvoKitConversationListItemStyle(
-        dateStyle: CometChatDateStyle(borderRadius: _kDateRadius),
+        dateStyle: ConvoKitDateStyle(borderRadius: _kDateRadius),
       ),
     ),
-    probe: (t, r) => _decoration(t, CometChatDate).borderRadius,
+    probe: (t, r) => _decoration(t, ConvoKitDate).borderRadius,
     unset: _FromTheme(
       (c) => BorderRadius.all(Radius.circular(_spacing(c).radius1 ?? 0)),
     ),
@@ -1529,10 +1529,10 @@ final _matrix = <_Row>[
     'badgeStyle fills the unread badge',
     set: (r) => const _Props(
       style: ConvoKitConversationListItemStyle(
-        badgeStyle: CometChatBadgeStyle(backgroundColor: _kBadge),
+        badgeStyle: ConvoKitBadgeStyle(backgroundColor: _kBadge),
       ),
     ),
-    probe: (t, r) => _decoration(t, CometChatBadge).color,
+    probe: (t, r) => _decoration(t, ConvoKitBadge).color,
     unset: _FromTheme((c) => _palette(c).primary),
     expected: _kBadge,
   ),
@@ -1557,9 +1557,9 @@ final _matrix = <_Row>[
     'avatarStyle',
     'fills the avatar',
     set: (r) => const _Props(
-      avatarStyle: CometChatAvatarStyle(backgroundColor: _kAvatar),
+      avatarStyle: ConvoKitAvatarStyle(backgroundColor: _kAvatar),
     ),
-    probe: (t, r) => _decoration(t, CometChatAvatar).color,
+    probe: (t, r) => _decoration(t, ConvoKitAvatar).color,
     unset: _FromTheme((c) => _palette(c).extendedPrimary500),
     expected: _kAvatar,
   ),
@@ -1568,16 +1568,16 @@ final _matrix = <_Row>[
     'outranks style.avatarStyle',
     base: (r) => const _Props(
       style: ConvoKitConversationListItemStyle(
-        avatarStyle: CometChatAvatarStyle(backgroundColor: _kOutranked),
+        avatarStyle: ConvoKitAvatarStyle(backgroundColor: _kOutranked),
       ),
     ),
     set: (r) => const _Props(
       style: ConvoKitConversationListItemStyle(
-        avatarStyle: CometChatAvatarStyle(backgroundColor: _kOutranked),
+        avatarStyle: ConvoKitAvatarStyle(backgroundColor: _kOutranked),
       ),
-      avatarStyle: CometChatAvatarStyle(backgroundColor: _kAvatar),
+      avatarStyle: ConvoKitAvatarStyle(backgroundColor: _kAvatar),
     ),
-    probe: (t, r) => _decoration(t, CometChatAvatar).color,
+    probe: (t, r) => _decoration(t, ConvoKitAvatar).color,
     unset: _kOutranked,
     expected: _kAvatar,
   ),
@@ -1585,9 +1585,9 @@ final _matrix = <_Row>[
     'statusIndicatorStyle',
     'border edges the presence dot',
     set: (r) => const _Props(
-      statusIndicatorStyle: CometChatStatusIndicatorStyle(border: _kDotBorder),
+      statusIndicatorStyle: ConvoKitStatusIndicatorStyle(border: _kDotBorder),
     ),
-    probe: (t, r) => _decoration(t, CometChatStatusIndicator).border,
+    probe: (t, r) => _decoration(t, ConvoKitStatusIndicator).border,
     unset: _FromTheme(
       (c) => Border.all(
         width: _spacing(c).spacing ?? 0,
@@ -1600,11 +1600,11 @@ final _matrix = <_Row>[
     'statusIndicatorStyle',
     'borderRadius rounds the presence dot',
     set: (r) => const _Props(
-      statusIndicatorStyle: CometChatStatusIndicatorStyle(
+      statusIndicatorStyle: ConvoKitStatusIndicatorStyle(
         borderRadius: _kDotRadius,
       ),
     ),
-    probe: (t, r) => _decoration(t, CometChatStatusIndicator).borderRadius,
+    probe: (t, r) => _decoration(t, ConvoKitStatusIndicator).borderRadius,
     unset: _FromTheme((c) => BorderRadius.circular(_spacing(c).radiusMax ?? 0)),
     expected: _kDotRadius,
   ),
@@ -1613,20 +1613,20 @@ final _matrix = <_Row>[
     'outranks style.statusIndicatorStyle',
     base: (r) => const _Props(
       style: ConvoKitConversationListItemStyle(
-        statusIndicatorStyle: CometChatStatusIndicatorStyle(
+        statusIndicatorStyle: ConvoKitStatusIndicatorStyle(
           border: _kOutrankedBorder,
         ),
       ),
     ),
     set: (r) => const _Props(
       style: ConvoKitConversationListItemStyle(
-        statusIndicatorStyle: CometChatStatusIndicatorStyle(
+        statusIndicatorStyle: ConvoKitStatusIndicatorStyle(
           border: _kOutrankedBorder,
         ),
       ),
-      statusIndicatorStyle: CometChatStatusIndicatorStyle(border: _kDotBorder),
+      statusIndicatorStyle: ConvoKitStatusIndicatorStyle(border: _kDotBorder),
     ),
-    probe: (t, r) => _decoration(t, CometChatStatusIndicator).border,
+    probe: (t, r) => _decoration(t, ConvoKitStatusIndicator).border,
     unset: _kOutrankedBorder,
     expected: _kDotBorder,
   ),
@@ -1634,7 +1634,7 @@ final _matrix = <_Row>[
     'dateStyle',
     'textColor colours the timestamp',
     set: (r) =>
-        const _Props(dateStyle: CometChatDateStyle(textColor: _kDateText)),
+        const _Props(dateStyle: ConvoKitDateStyle(textColor: _kDateText)),
     probe: (t, r) => _dateText(t).style?.color,
     unset: _FromTheme((c) => _palette(c).textSecondary),
     expected: _kDateText,
@@ -1643,7 +1643,7 @@ final _matrix = <_Row>[
     'dateStyle',
     'textStyle sizes the timestamp',
     set: (r) => const _Props(
-      dateStyle: CometChatDateStyle(textStyle: TextStyle(fontSize: 11.5)),
+      dateStyle: ConvoKitDateStyle(textStyle: TextStyle(fontSize: 11.5)),
     ),
     probe: (t, r) => _dateText(t).style?.fontSize,
     unset: _FromTheme((c) => _typography(c).caption1?.regular?.fontSize),
@@ -1653,8 +1653,8 @@ final _matrix = <_Row>[
     'dateStyle',
     'borderRadius rounds the timestamp box',
     set: (r) =>
-        const _Props(dateStyle: CometChatDateStyle(borderRadius: _kDateRadius)),
-    probe: (t, r) => _decoration(t, CometChatDate).borderRadius,
+        const _Props(dateStyle: ConvoKitDateStyle(borderRadius: _kDateRadius)),
+    probe: (t, r) => _decoration(t, ConvoKitDate).borderRadius,
     unset: _FromTheme(
       (c) => BorderRadius.all(Radius.circular(_spacing(c).radius1 ?? 0)),
     ),
@@ -1665,14 +1665,14 @@ final _matrix = <_Row>[
     'outranks style.dateStyle',
     base: (r) => const _Props(
       style: ConvoKitConversationListItemStyle(
-        dateStyle: CometChatDateStyle(textColor: _kOutranked),
+        dateStyle: ConvoKitDateStyle(textColor: _kOutranked),
       ),
     ),
     set: (r) => const _Props(
       style: ConvoKitConversationListItemStyle(
-        dateStyle: CometChatDateStyle(textColor: _kOutranked),
+        dateStyle: ConvoKitDateStyle(textColor: _kOutranked),
       ),
-      dateStyle: CometChatDateStyle(textColor: _kDateText),
+      dateStyle: ConvoKitDateStyle(textColor: _kDateText),
     ),
     probe: (t, r) => _dateText(t).style?.color,
     unset: _kOutranked,
@@ -1682,13 +1682,13 @@ final _matrix = <_Row>[
     'badgeStyle',
     'fills the unread badge and colours its count',
     set: (r) => const _Props(
-      badgeStyle: CometChatBadgeStyle(
+      badgeStyle: ConvoKitBadgeStyle(
         backgroundColor: _kBadge,
         textColor: _kBadgeText,
       ),
     ),
     probe: (t, r) => [
-      _decoration(t, CometChatBadge).color,
+      _decoration(t, ConvoKitBadge).color,
       t.widget<Text>(find.text('3')).style?.color,
     ],
     unset: _FromTheme(
@@ -1701,16 +1701,16 @@ final _matrix = <_Row>[
     'outranks style.badgeStyle',
     base: (r) => const _Props(
       style: ConvoKitConversationListItemStyle(
-        badgeStyle: CometChatBadgeStyle(backgroundColor: _kOutranked),
+        badgeStyle: ConvoKitBadgeStyle(backgroundColor: _kOutranked),
       ),
     ),
     set: (r) => const _Props(
       style: ConvoKitConversationListItemStyle(
-        badgeStyle: CometChatBadgeStyle(backgroundColor: _kOutranked),
+        badgeStyle: ConvoKitBadgeStyle(backgroundColor: _kOutranked),
       ),
-      badgeStyle: CometChatBadgeStyle(backgroundColor: _kBadge),
+      badgeStyle: ConvoKitBadgeStyle(backgroundColor: _kBadge),
     ),
-    probe: (t, r) => _decoration(t, CometChatBadge).color,
+    probe: (t, r) => _decoration(t, ConvoKitBadge).color,
     unset: _kOutranked,
     expected: _kBadge,
   ),
@@ -1761,8 +1761,8 @@ void main() {
     for (final row in _matrix) {
       testWidgets('${row.prop}: ${row.claim}', (tester) async {
         if (row.signedIn) {
-          CometChatUIKit.loggedInUser = _me;
-          addTearDown(() => CometChatUIKit.loggedInUser = null);
+          ConvoKitUIKit.loggedInUser = _me;
+          addTearDown(() => ConvoKitUIKit.loggedInUser = null);
         }
         final sides = <(String, _Props Function(_Rec), Object?)>[
           ('base', row.base ?? (r) => const _Props(), row.unset),

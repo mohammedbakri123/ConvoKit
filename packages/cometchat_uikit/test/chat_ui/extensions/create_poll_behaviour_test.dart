@@ -466,8 +466,8 @@ void main() {
                 child: ElevatedButton(
                   onPressed: () => showCometChatCreatePoll(
                     context: context,
-                    colorPalette: CometChatThemeHelper.getColorPalette(context),
-                    spacing: CometChatThemeHelper.getSpacing(context),
+                    colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+                    spacing: ConvoKitThemeHelper.getSpacing(context),
                     uid: 'u2',
                     title: 'Sheet poll',
                     quotedMessage: _quoted(9),

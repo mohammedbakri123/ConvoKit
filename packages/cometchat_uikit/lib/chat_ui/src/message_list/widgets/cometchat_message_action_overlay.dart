@@ -313,12 +313,12 @@ class _CometChatMessageActionOverlayState
 
   @override
   Widget build(BuildContext context) {
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final spacing = CometChatThemeHelper.getSpacing(context);
-    final typography = CometChatThemeHelper.getTypography(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
 
     final overlayStyle =
-        CometChatThemeHelper.getTheme<CometChatMessageActionOverlayStyle>(
+        ConvoKitThemeHelper.getTheme<CometChatMessageActionOverlayStyle>(
           context: context,
           defaultTheme: CometChatMessageActionOverlayStyle.of,
         ).merge(widget.style);
@@ -370,9 +370,9 @@ class _CometChatMessageActionOverlayState
 
   Widget _buildContent(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
+    ConvoKitTypography typography,
     CometChatMessageActionOverlayStyle overlayStyle,
   ) {
     final isLeftAligned = widget.bubbleAlignment == BubbleAlignment.left;
@@ -499,9 +499,9 @@ class _CometChatMessageActionOverlayState
   }
 
   Widget _buildReactionsRow(
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
+    ConvoKitTypography typography,
     CometChatMessageActionOverlayStyle overlayStyle,
   ) {
     return Container(
@@ -544,9 +544,9 @@ class _CometChatMessageActionOverlayState
 
   Widget _buildReactionItem(
     String reaction,
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
+    ConvoKitTypography typography,
   ) {
     return GestureDetector(
       onTap: () {
@@ -574,8 +574,8 @@ class _CometChatMessageActionOverlayState
   }
 
   Widget _buildAddReactionButton(
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
   ) {
     return GestureDetector(
       onTap: () async {
@@ -612,9 +612,9 @@ class _CometChatMessageActionOverlayState
   }
 
   Widget _buildOptionsContainer(
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
+    ConvoKitTypography typography,
     CometChatMessageActionOverlayStyle overlayStyle,
   ) {
     if (_listActions.isEmpty && _quickActions.isEmpty) {
@@ -728,9 +728,9 @@ class _CometChatMessageActionOverlayState
 
   Widget _buildOptionItem(
     ActionItem item,
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
+    ConvoKitTypography typography,
     CometChatMessageActionOverlayStyle overlayStyle, {
     VoidCallback? onTapOverride,
   }) {

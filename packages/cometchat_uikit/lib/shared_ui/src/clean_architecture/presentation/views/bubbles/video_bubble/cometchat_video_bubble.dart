@@ -85,10 +85,10 @@ class CometChatVideoBubble extends StatefulWidget {
   final Widget? placeHolder;
 
   /// [colorPalette] optional pre-cached color palette to avoid expensive lookups during keyboard animation
-  final CometChatColorPalette? colorPalette;
+  final ConvoKitColorPalette? colorPalette;
 
   /// [spacing] optional pre-cached spacing to avoid expensive lookups during keyboard animation
-  final CometChatSpacing? spacing;
+  final ConvoKitSpacing? spacing;
 
   @override
   State<CometChatVideoBubble> createState() => _CometChatVideoBubbleState();
@@ -96,8 +96,8 @@ class CometChatVideoBubble extends StatefulWidget {
 
 class _CometChatVideoBubbleState extends State<CometChatVideoBubble> {
   late CometChatVideoBubbleStyle videoBubbleStyle;
-  late CometChatColorPalette colorPalette;
-  late CometChatSpacing spacing;
+  late ConvoKitColorPalette colorPalette;
+  late ConvoKitSpacing spacing;
   Brightness _cachedBrightness = Brightness.light; // Cache platform brightness
   bool _themeInitialized = false;
 
@@ -106,19 +106,19 @@ class _CometChatVideoBubbleState extends State<CometChatVideoBubble> {
     super.didChangeDependencies();
     // Only initialize theme once to avoid expensive lookups during keyboard animation
     // But re-initialize when brightness changes (dark mode toggle)
-    final currentBrightness = CometChatThemeHelper.getBrightness(context);
+    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _themeInitialized && _cachedBrightness != currentBrightness;
     if (!_themeInitialized || brightnessChanged) {
       videoBubbleStyle =
-          CometChatThemeHelper.getTheme<CometChatVideoBubbleStyle>(
+          ConvoKitThemeHelper.getTheme<CometChatVideoBubbleStyle>(
             context: context,
             defaultTheme: CometChatVideoBubbleStyle.of,
           ).merge(widget.style);
       // Use passed values OR fallback to lookup (for standalone usage)
       colorPalette =
-          widget.colorPalette ?? CometChatThemeHelper.getColorPalette(context);
-      spacing = widget.spacing ?? CometChatThemeHelper.getSpacing(context);
+          widget.colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
+      spacing = widget.spacing ?? ConvoKitThemeHelper.getSpacing(context);
       // Cache platform brightness to detect dark mode changes
       _cachedBrightness = currentBrightness;
       _themeInitialized = true;
@@ -131,7 +131,7 @@ class _CometChatVideoBubbleState extends State<CometChatVideoBubble> {
     // Update style if it changed
     if (widget.style != oldWidget.style) {
       videoBubbleStyle =
-          CometChatThemeHelper.getTheme<CometChatVideoBubbleStyle>(
+          ConvoKitThemeHelper.getTheme<CometChatVideoBubbleStyle>(
             context: context,
             defaultTheme: CometChatVideoBubbleStyle.of,
           ).merge(widget.style);

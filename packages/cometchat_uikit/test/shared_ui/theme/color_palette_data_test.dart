@@ -1,4 +1,4 @@
-/// Data-class behaviour for [CometChatColorPalette] — `copyWith`, `lerp` and
+/// Data-class behaviour for [ConvoKitColorPalette] — `copyWith`, `lerp` and
 /// `of`.
 ///
 /// `theme_extension_props_test.dart` already proves every property supplied
@@ -31,7 +31,7 @@ Color _b(int i) => Color.fromARGB(0xFF, 0x10, 0x20, i + 100);
 int? _blue(Color? c) => c == null ? null : c.toARGB32() & 0xFF;
 
 /// One field of the palette: its name, its index, and how to read it.
-typedef _Row = (String name, int index, Color? Function(CometChatColorPalette));
+typedef _Row = (String name, int index, Color? Function(ConvoKitColorPalette));
 
 /// Every `Color` field the palette declares, in declaration order.
 const List<_Row> _rows = [
@@ -93,69 +93,69 @@ const List<_Row> _rows = [
   ('messageSeen', 56, _getMessageSeen),
 ];
 
-Color? _getPrimary(CometChatColorPalette p) => p.primary;
-Color? _getEp50(CometChatColorPalette p) => p.extendedPrimary50;
-Color? _getEp100(CometChatColorPalette p) => p.extendedPrimary100;
-Color? _getEp200(CometChatColorPalette p) => p.extendedPrimary200;
-Color? _getEp300(CometChatColorPalette p) => p.extendedPrimary300;
-Color? _getEp400(CometChatColorPalette p) => p.extendedPrimary400;
-Color? _getEp500(CometChatColorPalette p) => p.extendedPrimary500;
-Color? _getEp600(CometChatColorPalette p) => p.extendedPrimary600;
-Color? _getEp700(CometChatColorPalette p) => p.extendedPrimary700;
-Color? _getEp800(CometChatColorPalette p) => p.extendedPrimary800;
-Color? _getEp900(CometChatColorPalette p) => p.extendedPrimary900;
-Color? _getN50(CometChatColorPalette p) => p.neutral50;
-Color? _getN100(CometChatColorPalette p) => p.neutral100;
-Color? _getN200(CometChatColorPalette p) => p.neutral200;
-Color? _getN300(CometChatColorPalette p) => p.neutral300;
-Color? _getN400(CometChatColorPalette p) => p.neutral400;
-Color? _getN500(CometChatColorPalette p) => p.neutral500;
-Color? _getN600(CometChatColorPalette p) => p.neutral600;
-Color? _getN700(CometChatColorPalette p) => p.neutral700;
-Color? _getN800(CometChatColorPalette p) => p.neutral800;
-Color? _getN900(CometChatColorPalette p) => p.neutral900;
-Color? _getInfo(CometChatColorPalette p) => p.info;
-Color? _getWarning(CometChatColorPalette p) => p.warning;
-Color? _getError(CometChatColorPalette p) => p.error;
-Color? _getSuccess(CometChatColorPalette p) => p.success;
-Color? _getError100(CometChatColorPalette p) => p.error100;
-Color? _getBg1(CometChatColorPalette p) => p.background1;
-Color? _getBg2(CometChatColorPalette p) => p.background2;
-Color? _getBg3(CometChatColorPalette p) => p.background3;
-Color? _getBg4(CometChatColorPalette p) => p.background4;
-Color? _getTextPrimary(CometChatColorPalette p) => p.textPrimary;
-Color? _getTextSecondary(CometChatColorPalette p) => p.textSecondary;
-Color? _getTextTertiary(CometChatColorPalette p) => p.textTertiary;
-Color? _getTextDisabled(CometChatColorPalette p) => p.textDisabled;
-Color? _getTextWhite(CometChatColorPalette p) => p.textWhite;
-Color? _getTextHighlight(CometChatColorPalette p) => p.textHighlight;
-Color? _getBorderLight(CometChatColorPalette p) => p.borderLight;
-Color? _getBorderDefault(CometChatColorPalette p) => p.borderDefault;
-Color? _getBorderDark(CometChatColorPalette p) => p.borderDark;
-Color? _getBorderHighlight(CometChatColorPalette p) => p.borderHighlight;
-Color? _getIconPrimary(CometChatColorPalette p) => p.iconPrimary;
-Color? _getIconSecondary(CometChatColorPalette p) => p.iconSecondary;
-Color? _getIconTertiary(CometChatColorPalette p) => p.iconTertiary;
-Color? _getIconWhite(CometChatColorPalette p) => p.iconWhite;
-Color? _getIconHighlight(CometChatColorPalette p) => p.iconHighlight;
-Color? _getShimmerBackground(CometChatColorPalette p) => p.shimmerBackground;
-Color? _getButtonBackground(CometChatColorPalette p) => p.buttonBackground;
-Color? _getSecondaryButtonBackground(CometChatColorPalette p) =>
+Color? _getPrimary(ConvoKitColorPalette p) => p.primary;
+Color? _getEp50(ConvoKitColorPalette p) => p.extendedPrimary50;
+Color? _getEp100(ConvoKitColorPalette p) => p.extendedPrimary100;
+Color? _getEp200(ConvoKitColorPalette p) => p.extendedPrimary200;
+Color? _getEp300(ConvoKitColorPalette p) => p.extendedPrimary300;
+Color? _getEp400(ConvoKitColorPalette p) => p.extendedPrimary400;
+Color? _getEp500(ConvoKitColorPalette p) => p.extendedPrimary500;
+Color? _getEp600(ConvoKitColorPalette p) => p.extendedPrimary600;
+Color? _getEp700(ConvoKitColorPalette p) => p.extendedPrimary700;
+Color? _getEp800(ConvoKitColorPalette p) => p.extendedPrimary800;
+Color? _getEp900(ConvoKitColorPalette p) => p.extendedPrimary900;
+Color? _getN50(ConvoKitColorPalette p) => p.neutral50;
+Color? _getN100(ConvoKitColorPalette p) => p.neutral100;
+Color? _getN200(ConvoKitColorPalette p) => p.neutral200;
+Color? _getN300(ConvoKitColorPalette p) => p.neutral300;
+Color? _getN400(ConvoKitColorPalette p) => p.neutral400;
+Color? _getN500(ConvoKitColorPalette p) => p.neutral500;
+Color? _getN600(ConvoKitColorPalette p) => p.neutral600;
+Color? _getN700(ConvoKitColorPalette p) => p.neutral700;
+Color? _getN800(ConvoKitColorPalette p) => p.neutral800;
+Color? _getN900(ConvoKitColorPalette p) => p.neutral900;
+Color? _getInfo(ConvoKitColorPalette p) => p.info;
+Color? _getWarning(ConvoKitColorPalette p) => p.warning;
+Color? _getError(ConvoKitColorPalette p) => p.error;
+Color? _getSuccess(ConvoKitColorPalette p) => p.success;
+Color? _getError100(ConvoKitColorPalette p) => p.error100;
+Color? _getBg1(ConvoKitColorPalette p) => p.background1;
+Color? _getBg2(ConvoKitColorPalette p) => p.background2;
+Color? _getBg3(ConvoKitColorPalette p) => p.background3;
+Color? _getBg4(ConvoKitColorPalette p) => p.background4;
+Color? _getTextPrimary(ConvoKitColorPalette p) => p.textPrimary;
+Color? _getTextSecondary(ConvoKitColorPalette p) => p.textSecondary;
+Color? _getTextTertiary(ConvoKitColorPalette p) => p.textTertiary;
+Color? _getTextDisabled(ConvoKitColorPalette p) => p.textDisabled;
+Color? _getTextWhite(ConvoKitColorPalette p) => p.textWhite;
+Color? _getTextHighlight(ConvoKitColorPalette p) => p.textHighlight;
+Color? _getBorderLight(ConvoKitColorPalette p) => p.borderLight;
+Color? _getBorderDefault(ConvoKitColorPalette p) => p.borderDefault;
+Color? _getBorderDark(ConvoKitColorPalette p) => p.borderDark;
+Color? _getBorderHighlight(ConvoKitColorPalette p) => p.borderHighlight;
+Color? _getIconPrimary(ConvoKitColorPalette p) => p.iconPrimary;
+Color? _getIconSecondary(ConvoKitColorPalette p) => p.iconSecondary;
+Color? _getIconTertiary(ConvoKitColorPalette p) => p.iconTertiary;
+Color? _getIconWhite(ConvoKitColorPalette p) => p.iconWhite;
+Color? _getIconHighlight(ConvoKitColorPalette p) => p.iconHighlight;
+Color? _getShimmerBackground(ConvoKitColorPalette p) => p.shimmerBackground;
+Color? _getButtonBackground(ConvoKitColorPalette p) => p.buttonBackground;
+Color? _getSecondaryButtonBackground(ConvoKitColorPalette p) =>
     p.secondaryButtonBackground;
-Color? _getButtonIconColor(CometChatColorPalette p) => p.buttonIconColor;
-Color? _getButtonText(CometChatColorPalette p) => p.buttonText;
-Color? _getSecondaryButtonIcon(CometChatColorPalette p) =>
+Color? _getButtonIconColor(ConvoKitColorPalette p) => p.buttonIconColor;
+Color? _getButtonText(ConvoKitColorPalette p) => p.buttonText;
+Color? _getSecondaryButtonIcon(ConvoKitColorPalette p) =>
     p.secondaryButtonIcon;
-Color? _getSecondaryButtonText(CometChatColorPalette p) =>
+Color? _getSecondaryButtonText(ConvoKitColorPalette p) =>
     p.secondaryButtonText;
-Color? _getWhite(CometChatColorPalette p) => p.white;
-Color? _getTransparent(CometChatColorPalette p) => p.transparent;
-Color? _getBlack(CometChatColorPalette p) => p.black;
-Color? _getMessageSeen(CometChatColorPalette p) => p.messageSeen;
+Color? _getWhite(ConvoKitColorPalette p) => p.white;
+Color? _getTransparent(ConvoKitColorPalette p) => p.transparent;
+Color? _getBlack(ConvoKitColorPalette p) => p.black;
+Color? _getMessageSeen(ConvoKitColorPalette p) => p.messageSeen;
 
 /// A palette whose every colour is [f] of that field's index.
-CometChatColorPalette _palette(Color Function(int) f, {Gradient? shimmer}) =>
-    CometChatColorPalette(
+ConvoKitColorPalette _palette(Color Function(int) f, {Gradient? shimmer}) =>
+    ConvoKitColorPalette(
       primary: f(1),
       extendedPrimary50: f(2),
       extendedPrimary100: f(3),
@@ -229,7 +229,7 @@ void main() {
     });
 
     test('white, transparent, black and messageSeen have defaults', () {
-      final p = CometChatColorPalette();
+      final p = ConvoKitColorPalette();
       expect(p.white, Colors.white);
       expect(p.transparent, Colors.transparent);
       expect(p.black, Colors.black);
@@ -289,7 +289,7 @@ void main() {
 
     test('a non-palette extension leaves the palette untouched', () {
       final p = _palette(_a);
-      // The `other is! CometChatColorPalette` guard: a theme carrying a
+      // The `other is! ConvoKitColorPalette` guard: a theme carrying a
       // different extension type must not blank the palette out.
       expect(identical(p.lerp(null, 0.5), p), isTrue);
     });
@@ -387,9 +387,9 @@ void main() {
   // ═══════════════════════════════════════════════════════════════════════════
 
   test('of() ignores its context and returns the bare defaults', () {
-    // `of` predates CometChatThemeHelper and does not read the theme; every
+    // `of` predates ConvoKitThemeHelper and does not read the theme; every
     // call site that needs the themed palette must go through the helper.
-    final p = CometChatColorPalette.of(null);
+    final p = ConvoKitColorPalette.of(null);
     expect(p.primary, isNull);
     expect(p.white, Colors.white);
     expect(p.messageSeen, const Color(0XFF56E8A7));

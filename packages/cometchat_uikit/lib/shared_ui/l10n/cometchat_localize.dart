@@ -5,36 +5,36 @@ import 'package:intl/intl.dart' as intl;
 
 import 'translations.dart';
 
-/// The type of the UI Kit's localized strings: what [CometChatLocalize.of]
-/// returns and what [CometChatLocalize.registerTranslations] takes.
+/// The type of the UI Kit's localized strings: what [ConvoKitLocalize.of]
+/// returns and what [ConvoKitLocalize.registerTranslations] takes.
 ///
 /// It is the same runtime type as the deprecated [Translations], so the two
 /// are interchangeable. Name this type, not [Translations], in fields,
 /// parameters and `extends` clauses (to add or override strings).
 // The alias is how the deprecated name is kept out of the replacement API:
-// `CometChatLocalize` is typed in terms of this name, so an integrator can
+// `ConvoKitLocalize` is typed in terms of this name, so an integrator can
 // finish migrating without a `deprecated_member_use` warning left behind.
 // ignore: deprecated_member_use_from_same_package
 typedef CometChatLocalizations = Translations;
 
-/// The localization entry point of the UI Kit, matching `CometChatLocalize`
+/// The localization entry point of the UI Kit, matching `ConvoKitLocalize`
 /// in the React, Angular, iOS and Android UI Kits.
 ///
 /// It replaces the deprecated [Translations] class as the API integrators
 /// code against. The strings are still the ones [Translations] carries, so
-/// `CometChatLocalize.of(context)` returns the same object as
+/// `ConvoKitLocalize.of(context)` returns the same object as
 /// `Translations.of(context)` and the two can be mixed while you migrate.
 ///
 /// Wire it into your app once:
 ///
 /// ```dart
 /// MaterialApp(
-///   localizationsDelegates: CometChatLocalize.localizationsDelegates,
-///   supportedLocales: CometChatLocalize.supportedLocales,
+///   localizationsDelegates: ConvoKitLocalize.localizationsDelegates,
+///   supportedLocales: ConvoKitLocalize.supportedLocales,
 /// );
 /// ```
-class CometChatLocalize {
-  CometChatLocalize._();
+class ConvoKitLocalize {
+  ConvoKitLocalize._();
 
   /// The localizations delegate that provides the UI Kit's strings.
   ///
@@ -43,13 +43,13 @@ class CometChatLocalize {
   /// deprecated `Translations.delegate` serves them too, so an app that has
   /// not migrated its `MaterialApp` yet still shows the registered strings.
   static const LocalizationsDelegate<CometChatLocalizations> delegate =
-      _CometChatLocalizeDelegate();
+      _ConvoKitLocalizeDelegate();
 
   /// This delegate together with the Material, Cupertino and widgets
   /// delegates, for `MaterialApp.localizationsDelegates`.
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
       <LocalizationsDelegate<dynamic>>[
-        CometChatLocalize.delegate,
+        ConvoKitLocalize.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -96,7 +96,7 @@ class CometChatLocalize {
       throw ArgumentError.value(
         locale,
         'locale',
-        'CometChatLocalize has no translation for "${locale.languageCode}"',
+        'ConvoKitLocalize has no translation for "${locale.languageCode}"',
       );
     }
     _selectedLocale.value = locale;
@@ -124,7 +124,7 @@ class CometChatLocalize {
   ///   String get users => 'People';
   /// }
   ///
-  /// CometChatLocalize.registerTranslations(MyEnglish());
+  /// ConvoKitLocalize.registerTranslations(MyEnglish());
   /// ```
   ///
   /// A translation registered for a regional locale of the same language
@@ -141,11 +141,11 @@ class CometChatLocalize {
   }
 }
 
-/// Serves the strings registered with [CometChatLocalize.registerTranslations]
+/// Serves the strings registered with [ConvoKitLocalize.registerTranslations]
 /// and falls back to the built-in translation of the locale.
-class _CometChatLocalizeDelegate
+class _ConvoKitLocalizeDelegate
     extends LocalizationsDelegate<CometChatLocalizations> {
-  const _CometChatLocalizeDelegate();
+  const _ConvoKitLocalizeDelegate();
 
   @override
   bool isSupported(Locale locale) =>
@@ -157,12 +157,12 @@ class _CometChatLocalizeDelegate
     // An app that lists en_US or en_IN would otherwise skip a translation
     // registered for en, which is how `TranslationsEn().localeName` is keyed.
     return SynchronousFuture<CometChatLocalizations>(
-      CometChatLocalize._registered[name] ??
-          CometChatLocalize._registered[locale.languageCode] ??
+      ConvoKitLocalize._registered[name] ??
+          ConvoKitLocalize._registered[locale.languageCode] ??
           lookupTranslations(locale),
     );
   }
 
   @override
-  bool shouldReload(_CometChatLocalizeDelegate old) => false;
+  bool shouldReload(_ConvoKitLocalizeDelegate old) => false;
 }

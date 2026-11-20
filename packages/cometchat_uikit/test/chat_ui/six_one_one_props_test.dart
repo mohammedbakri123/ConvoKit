@@ -233,7 +233,7 @@ class _StickerCase {
   final Map<String, dynamic> foreign;
 
   /// A hidePanel that targets this button's composer; null is the unaddressed
-  /// broadcast CometChatUIKitHelper can raise.
+  /// broadcast ConvoKitUIKitHelper can raise.
   final Map<String, dynamic>? own;
 }
 
@@ -474,14 +474,14 @@ void main() {
           await tester.pump();
           states.add(_stickerState(tester));
 
-          CometChatUIEvents.hidePanel(
+          ConvoKitUIEvents.hidePanel(
             c.foreign,
             CustomUIPosition.composerBottom,
           );
           await tester.pump();
           states.add(_stickerState(tester));
 
-          CometChatUIEvents.hidePanel(c.own, CustomUIPosition.composerBottom);
+          ConvoKitUIEvents.hidePanel(c.own, CustomUIPosition.composerBottom);
           await tester.pump();
           states.add(_stickerState(tester));
 
@@ -514,8 +514,8 @@ void main() {
   });
 
   group('ConvoKitConversations pinConversationOptionVisibility matrix', () {
-    setUp(() => CometChatUIKit.loggedInUser = _FakeUser(uid: _me, name: 'Me'));
-    tearDown(() => CometChatUIKit.loggedInUser = null);
+    setUp(() => ConvoKitUIKit.loggedInUser = _FakeUser(uid: _me, name: 'Me'));
+    tearDown(() => ConvoKitUIKit.loggedInUser = null);
 
     for (final c in _pinMatrix) {
       testWidgets('pinConversationOptionVisibility ${c.effect}', (

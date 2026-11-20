@@ -497,7 +497,7 @@ void main() {
         reason: 'no search may fire → no "No records found" state',
       );
       expect(
-        inSearch(find.byType(CometChatShimmerEffect)),
+        inSearch(find.byType(ConvoKitShimmerEffect)),
         findsNothing,
         reason: 'no search may fire → no loading shimmer',
       );

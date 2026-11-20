@@ -13,8 +13,8 @@ import '../../../../cometchat_uikit_shared.dart'
         CometChatFileBubbleStyle,
         CometChatAttachmentOptionSheetStyle,
         ConvoKitMessageOptionSheetStyle,
-        CometChatActionBubbleStyle,
-        CometChatDeletedBubbleStyle,
+        ConvoKitActionBubbleStyle,
+        ConvoKitDeletedBubbleStyle,
         CometChatLinkPreviewBubbleStyle,
         CometChatCallBubbleStyle;
 
@@ -282,11 +282,11 @@ class AdditionalConfigurations {
   ///[messageOptionSheetStyle] is a [ConvoKitMessageOptionSheetStyle] that can be used to style message option sheet
   final ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle;
 
-  ///[actionBubbleStyle] is a [CometChatActionBubbleStyle] that can be used to style action bubble
-  final CometChatActionBubbleStyle? actionBubbleStyle;
+  ///[actionBubbleStyle] is a [ConvoKitActionBubbleStyle] that can be used to style action bubble
+  final ConvoKitActionBubbleStyle? actionBubbleStyle;
 
-  ///[deletedBubbleStyle] is a [CometChatDeletedBubbleStyle] that can be used to style deleted bubble
-  final CometChatDeletedBubbleStyle? deletedBubbleStyle;
+  ///[deletedBubbleStyle] is a [ConvoKitDeletedBubbleStyle] that can be used to style deleted bubble
+  final ConvoKitDeletedBubbleStyle? deletedBubbleStyle;
 
   ///[linkPreviewBubbleStyle] styles `CometChatLinkPreviewBubble`. Filled per
   ///message from the Incoming/Outgoing message bubble style by alignment; set

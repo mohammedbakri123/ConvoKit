@@ -49,7 +49,7 @@ class CometChatVideosBubble extends StatelessWidget {
     // user's text — render the caption on its own instead.
     if (attachments.isEmpty && !hasCaption) return const SizedBox.shrink();
 
-    final resolved = CometChatThemeHelper.getTheme<CometChatVideosBubbleStyle>(
+    final resolved = ConvoKitThemeHelper.getTheme<CometChatVideosBubbleStyle>(
       context: context,
       defaultTheme: CometChatVideosBubbleStyle.of,
     ).merge(style);

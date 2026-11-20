@@ -11,18 +11,18 @@ import '../../presentation/theme/spacing/cometchat_spacing.dart';
 import '../../presentation/formatters/cometchat_text_formatter.dart';
 import '../../../../cometchat_uikit_shared.dart'
     show
-        CometChatDateStyle,
+        ConvoKitDateStyle,
         CometChatMessageReceiptStyle,
-        CometChatAvatarStyle,
-        CometChatActionBubbleStyle,
-        CometChatMessageBubble,
-        CometChatMessageBubbleStyle,
-        CometChatAvatar,
-        CometChatDate,
-        CometChatReceipt,
+        ConvoKitAvatarStyle,
+        ConvoKitActionBubbleStyle,
+        ConvoKitMessageBubble,
+        ConvoKitMessageBubbleStyle,
+        ConvoKitAvatar,
+        ConvoKitDate,
+        ConvoKitReceipt,
         MessageReceiptUtils,
         ReceiptStatus,
-        CometChatUIKit,
+        ConvoKitUIKit,
         MessageCategoryConstants,
         MessageTypeConstants,
         CallTypeConstants,
@@ -55,9 +55,9 @@ class MessageUtils {
     required BaseMessage message,
     CometChatMessageTemplate? template,
     required BubbleAlignment bubbleAlignment,
-    required CometChatColorPalette colorPalette,
-    required CometChatTypography typography,
-    required CometChatSpacing spacing,
+    required ConvoKitColorPalette colorPalette,
+    required ConvoKitTypography typography,
+    required ConvoKitSpacing spacing,
     required BuildContext context,
     List<CometChatTextFormatter>? textFormatters,
     CometChatOutgoingMessageBubbleStyle? outgoingMessageBubbleStyle,
@@ -92,12 +92,12 @@ class MessageUtils {
     Widget? headerView;
 
     final outgoingMessageBubbleStyle0 =
-        CometChatThemeHelper.getTheme<CometChatOutgoingMessageBubbleStyle>(
+        ConvoKitThemeHelper.getTheme<CometChatOutgoingMessageBubbleStyle>(
           context: context,
           defaultTheme: CometChatOutgoingMessageBubbleStyle.of,
         ).merge(outgoingMessageBubbleStyle);
     final incomingMessageBubbleStyle0 =
-        CometChatThemeHelper.getTheme<CometChatIncomingMessageBubbleStyle>(
+        ConvoKitThemeHelper.getTheme<CometChatIncomingMessageBubbleStyle>(
           context: context,
           defaultTheme: CometChatIncomingMessageBubbleStyle.of,
         ).merge(incomingMessageBubbleStyle);
@@ -198,8 +198,8 @@ class MessageUtils {
             // the caller set). Loose fit keeps short bubbles hugging their
             // content while long ones wrap at the available width.
             Flexible(
-              child: CometChatMessageBubble(
-                style: CometChatMessageBubbleStyle(
+              child: ConvoKitMessageBubble(
+                style: ConvoKitMessageBubbleStyle(
                   backgroundColor: backgroundColor,
                   border: bubbleStyleData?.border,
                   borderRadius: bubbleStyleData?.borderRadius,
@@ -223,17 +223,17 @@ class MessageUtils {
   static Color _getBubbleBackgroundColor(
     BaseMessage messageObject,
     CometChatMessageTemplate? template,
-    CometChatColorPalette colorPalette,
+    ConvoKitColorPalette colorPalette,
     BubbleAlignment alignment,
   ) {
-    return messageObject.sender?.uid == CometChatUIKit.loggedInUser?.uid
+    return messageObject.sender?.uid == ConvoKitUIKit.loggedInUser?.uid
         ? colorPalette.primary ?? Colors.transparent
         : colorPalette.neutral300 ?? Colors.transparent;
   }
 
   static Widget? _getSuitableContentView(
     BaseMessage messageObject,
-    CometChatColorPalette colorPalette,
+    ConvoKitColorPalette colorPalette,
     BuildContext context,
     CometChatMessageTemplate? template,
     BubbleAlignment alignment,
@@ -253,7 +253,7 @@ class MessageUtils {
 
   /// Separator between a state glyph and whatever follows it in the caption
   /// row. Its surrounding spaces are the spacing — no extra padding.
-  static Widget _statusBullet(Color? color, CometChatTypography typography) {
+  static Widget _statusBullet(Color? color, ConvoKitTypography typography) {
     return Text(
       ' • ',
       style: TextStyle(
@@ -269,11 +269,11 @@ class MessageUtils {
     BubbleAlignment alignment,
     BaseMessage message,
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
     CometChatMessageTemplate? template,
-    CometChatDateStyle? dateStyle,
+    ConvoKitDateStyle? dateStyle,
     CometChatMessageReceiptStyle? receiptStyle,
     bool? receiptsVisibility, {
     bool showPinIndicator = false,
@@ -350,11 +350,11 @@ class MessageUtils {
     BubbleAlignment alignment,
     BaseMessage message,
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
     CometChatMessageTemplate? template,
-    CometChatAvatarStyle? avatarStyle,
+    ConvoKitAvatarStyle? avatarStyle,
   ) {
     return (message.sender != null &&
             message.receiver != null &&
@@ -362,7 +362,7 @@ class MessageUtils {
             alignment == BubbleAlignment.left)
         ? Padding(
             padding: EdgeInsets.only(right: spacing.padding2 ?? 0),
-            child: CometChatAvatar(
+            child: ConvoKitAvatar(
               image: message.sender?.avatar,
               name: message.sender?.name,
               width: 36,
@@ -377,11 +377,11 @@ class MessageUtils {
     BubbleAlignment alignment,
     BaseMessage message,
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
     CometChatMessageTemplate? template,
-    CometChatMessageBubbleStyleData? messageBubbleStyleData, {
+    ConvoKitMessageBubbleStyleData? messageBubbleStyleData, {
     String? senderNameOverride,
     // Pinned/saved list surfaces show a name on EVERY row (including 1-1
     // and own messages) so each row is attributable at a glance.
@@ -421,11 +421,11 @@ class MessageUtils {
     BubbleAlignment alignment,
     BaseMessage message,
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
     CometChatMessageTemplate? template,
-    CometChatMessageBubbleStyleData? messageBubbleStyleData, {
+    ConvoKitMessageBubbleStyleData? messageBubbleStyleData, {
     String? senderNameOverride,
     bool showSentDate = false,
   }) {
@@ -480,10 +480,10 @@ class MessageUtils {
 
   static Widget _getTime(
     BaseMessage messageObject,
-    CometChatColorPalette? colorPalette,
-    CometChatTypography? typography,
+    ConvoKitColorPalette? colorPalette,
+    ConvoKitTypography? typography,
     BubbleAlignment alignment,
-    CometChatDateStyle? dateStyle, {
+    ConvoKitDateStyle? dateStyle, {
     bool compact = false,
   }) {
     if (messageObject.sentAt == null) {
@@ -491,12 +491,12 @@ class MessageUtils {
     }
 
     DateTime lastMessageTime = messageObject.sentAt!;
-    return CometChatDate(
+    return ConvoKitDate(
       date: lastMessageTime,
       pattern: DateTimePattern.timeFormat,
       isTransparentBackground: true,
       padding: compact ? EdgeInsets.zero : null,
-      style: CometChatDateStyle(
+      style: ConvoKitDateStyle(
         backgroundColor: Colors.transparent,
         textStyle: TextStyle(
           color: alignment == BubbleAlignment.right
@@ -513,15 +513,15 @@ class MessageUtils {
 
   static Widget _getReceiptIcon(
     BaseMessage message,
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
     CometChatMessageReceiptStyle? receiptStyle,
   ) {
     ReceiptStatus status = MessageReceiptUtils.getReceiptStatus(message);
 
     return Padding(
       padding: EdgeInsets.only(left: spacing.padding1 ?? 0),
-      child: CometChatReceipt(
+      child: ConvoKitReceipt(
         status: status,
         size: 16,
         style: CometChatMessageReceiptStyle(
@@ -537,17 +537,17 @@ class MessageUtils {
 
 ///the following extension [BubbleUIBuilder] is used to build the UI of the message bubbles.
 extension BubbleUIBuilder on MessageUtils {
-  static CometChatMessageBubbleStyleData? getBubbleStyle(
+  static ConvoKitMessageBubbleStyleData? getBubbleStyle(
     BaseMessage message,
     CometChatOutgoingMessageBubbleStyle? outgoingMessageBubbleStyle,
     CometChatIncomingMessageBubbleStyle? incomingMessageBubbleStyle,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
   ) {
-    bool isSent = message.sender?.uid == CometChatUIKit.loggedInUser?.uid;
+    bool isSent = message.sender?.uid == ConvoKitUIKit.loggedInUser?.uid;
     if (message.deletedAt != null) {
-      return CometChatMessageBubbleStyleData(
+      return ConvoKitMessageBubbleStyleData(
         backgroundColor: isSent
             ? outgoingMessageBubbleStyle?.deletedBubbleStyle?.backgroundColor
             : incomingMessageBubbleStyle?.deletedBubbleStyle?.backgroundColor,
@@ -605,14 +605,14 @@ extension BubbleUIBuilder on MessageUtils {
                 MessageTypeConstants.groupActions ||
         key == MessageCategoryConstants.call + CallTypeConstants.audioCall ||
         key == MessageCategoryConstants.call + CallTypeConstants.videoCall) {
-      return CometChatMessageBubbleStyleData(
+      return ConvoKitMessageBubbleStyleData(
         backgroundColor: colorPalette.transparent,
       );
     }
-    CometChatMessageBubbleStyleData? messageBubbleStyleData;
+    ConvoKitMessageBubbleStyleData? messageBubbleStyleData;
     switch (key) {
       case const (MessageCategoryConstants.message + MessageTypeConstants.text):
-        messageBubbleStyleData = CometChatMessageBubbleStyleData(
+        messageBubbleStyleData = ConvoKitMessageBubbleStyleData(
           backgroundColor: isSent
               ? outgoingMessageBubbleStyle?.textBubbleStyle?.backgroundColor
               : incomingMessageBubbleStyle?.textBubbleStyle?.backgroundColor,
@@ -671,7 +671,7 @@ extension BubbleUIBuilder on MessageUtils {
         break;
       case const (MessageCategoryConstants.message +
           MessageTypeConstants.image):
-        messageBubbleStyleData = CometChatMessageBubbleStyleData(
+        messageBubbleStyleData = ConvoKitMessageBubbleStyleData(
           backgroundColor: isSent
               ? outgoingMessageBubbleStyle?.imageBubbleStyle?.backgroundColor
               : incomingMessageBubbleStyle?.imageBubbleStyle?.backgroundColor,
@@ -729,7 +729,7 @@ extension BubbleUIBuilder on MessageUtils {
         );
         break;
       case const (MessageCategoryConstants.message + MessageTypeConstants.file):
-        messageBubbleStyleData = CometChatMessageBubbleStyleData(
+        messageBubbleStyleData = ConvoKitMessageBubbleStyleData(
           backgroundColor: isSent
               ? outgoingMessageBubbleStyle?.fileBubbleStyle?.backgroundColor
               : incomingMessageBubbleStyle?.fileBubbleStyle?.backgroundColor,
@@ -788,7 +788,7 @@ extension BubbleUIBuilder on MessageUtils {
         break;
       case const (MessageCategoryConstants.message +
           MessageTypeConstants.video):
-        messageBubbleStyleData = CometChatMessageBubbleStyleData(
+        messageBubbleStyleData = ConvoKitMessageBubbleStyleData(
           backgroundColor: isSent
               ? outgoingMessageBubbleStyle?.videoBubbleStyle?.backgroundColor
               : incomingMessageBubbleStyle?.videoBubbleStyle?.backgroundColor,
@@ -847,7 +847,7 @@ extension BubbleUIBuilder on MessageUtils {
         break;
       case const (MessageCategoryConstants.message +
           MessageTypeConstants.audio):
-        messageBubbleStyleData = CometChatMessageBubbleStyleData(
+        messageBubbleStyleData = ConvoKitMessageBubbleStyleData(
           backgroundColor: isSent
               ? outgoingMessageBubbleStyle
                     ?.effectiveVoiceNoteBubbleStyle
@@ -920,7 +920,7 @@ extension BubbleUIBuilder on MessageUtils {
         break;
       case const (MessageCategoryConstants.custom +
           ExtensionType.extensionPoll):
-        messageBubbleStyleData = CometChatMessageBubbleStyleData(
+        messageBubbleStyleData = ConvoKitMessageBubbleStyleData(
           backgroundColor: isSent
               ? outgoingMessageBubbleStyle?.pollsBubbleStyle?.backgroundColor
               : incomingMessageBubbleStyle?.pollsBubbleStyle?.backgroundColor,
@@ -972,7 +972,7 @@ extension BubbleUIBuilder on MessageUtils {
         );
         break;
       case const (MessageCategoryConstants.custom + ExtensionType.document):
-        messageBubbleStyleData = CometChatMessageBubbleStyleData(
+        messageBubbleStyleData = ConvoKitMessageBubbleStyleData(
           backgroundColor: isSent
               ? outgoingMessageBubbleStyle
                     ?.collaborativeDocumentBubbleStyle
@@ -1038,7 +1038,7 @@ extension BubbleUIBuilder on MessageUtils {
         );
         break;
       case const (MessageCategoryConstants.custom + ExtensionType.whiteboard):
-        messageBubbleStyleData = CometChatMessageBubbleStyleData(
+        messageBubbleStyleData = ConvoKitMessageBubbleStyleData(
           backgroundColor: isSent
               ? outgoingMessageBubbleStyle
                     ?.collaborativeWhiteboardBubbleStyle
@@ -1104,7 +1104,7 @@ extension BubbleUIBuilder on MessageUtils {
         );
         break;
       case const (MessageCategoryConstants.custom + ExtensionType.sticker):
-        messageBubbleStyleData = CometChatMessageBubbleStyleData(
+        messageBubbleStyleData = ConvoKitMessageBubbleStyleData(
           backgroundColor:
               (isSent
                   ? outgoingMessageBubbleStyle
@@ -1172,7 +1172,7 @@ extension BubbleUIBuilder on MessageUtils {
           callType = msg.customData?['callType'];
         }
         if (callType == CallTypeConstants.audioCall) {
-          messageBubbleStyleData = CometChatMessageBubbleStyleData(
+          messageBubbleStyleData = ConvoKitMessageBubbleStyleData(
             backgroundColor: isSent
                 ? outgoingMessageBubbleStyle
                           ?.voiceCallBubbleStyle
@@ -1233,7 +1233,7 @@ extension BubbleUIBuilder on MessageUtils {
                       ?.threadedMessageIndicatorTextStyle,
           );
         } else {
-          messageBubbleStyleData = CometChatMessageBubbleStyleData(
+          messageBubbleStyleData = ConvoKitMessageBubbleStyleData(
             backgroundColor: isSent
                 ? outgoingMessageBubbleStyle
                           ?.videoCallBubbleStyle
@@ -1297,7 +1297,7 @@ extension BubbleUIBuilder on MessageUtils {
         break;
     }
 
-    final defaultMessageBubbleStyleData = CometChatMessageBubbleStyleData(
+    final defaultMessageBubbleStyleData = ConvoKitMessageBubbleStyleData(
       backgroundColor: isSent
           ? outgoingMessageBubbleStyle?.backgroundColor ?? colorPalette.primary
           : incomingMessageBubbleStyle?.backgroundColor ??
@@ -1336,25 +1336,25 @@ extension BubbleUIBuilder on MessageUtils {
     List<CometChatTextFormatter>? formatters,
     CometChatIncomingMessageBubbleStyle? incomingMessageBubbleStyle2,
     CometChatOutgoingMessageBubbleStyle? outgoingMessageBubbleStyle2,
-    CometChatActionBubbleStyle? actionBubbleStyle2,
+    ConvoKitActionBubbleStyle? actionBubbleStyle2,
   ) {
     AdditionalConfigurations? additionalConfigurations;
     final outgoingMessageBubbleStyle =
-        CometChatThemeHelper.getTheme<CometChatOutgoingMessageBubbleStyle>(
+        ConvoKitThemeHelper.getTheme<CometChatOutgoingMessageBubbleStyle>(
           context: context,
           defaultTheme: CometChatOutgoingMessageBubbleStyle.of,
         ).merge(outgoingMessageBubbleStyle2);
     final incomingMessageBubbleStyle =
-        CometChatThemeHelper.getTheme<CometChatIncomingMessageBubbleStyle>(
+        ConvoKitThemeHelper.getTheme<CometChatIncomingMessageBubbleStyle>(
           context: context,
           defaultTheme: CometChatIncomingMessageBubbleStyle.of,
         ).merge(incomingMessageBubbleStyle2);
-    bool isSent = message.sender?.uid == CometChatUIKit.loggedInUser?.uid;
+    bool isSent = message.sender?.uid == ConvoKitUIKit.loggedInUser?.uid;
 
     final actionBubbleStyle =
-        CometChatThemeHelper.getTheme<CometChatActionBubbleStyle>(
+        ConvoKitThemeHelper.getTheme<ConvoKitActionBubbleStyle>(
           context: context,
-          defaultTheme: CometChatActionBubbleStyle.of,
+          defaultTheme: ConvoKitActionBubbleStyle.of,
         ).merge(actionBubbleStyle2);
 
     List<CometChatTextFormatter> textFormatters =
@@ -1477,9 +1477,9 @@ extension BubbleUIBuilder on MessageUtils {
   static BorderRadiusGeometry? getSentTextMediaBorderRadiusGeometry(
     BaseMessage message,
     BorderRadiusGeometry? borderRadius,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
   ) {
     final moderationUtil = ModerationCheckUtil.instance;
     if (message.metadata != null &&
@@ -1504,9 +1504,9 @@ extension BubbleUIBuilder on MessageUtils {
   }
 }
 
-///[CometChatMessageBubbleStyleData] is a model class which contains the style properties for the message bubble.
-class CometChatMessageBubbleStyleData {
-  CometChatMessageBubbleStyleData({
+///[ConvoKitMessageBubbleStyleData] is a model class which contains the style properties for the message bubble.
+class ConvoKitMessageBubbleStyleData {
+  ConvoKitMessageBubbleStyleData({
     this.backgroundColor,
     this.border,
     this.borderRadius,
@@ -1543,11 +1543,11 @@ class CometChatMessageBubbleStyleData {
   ///[threadedMessageIndicatorIconColor] provides color to the threaded message icon
   Color? threadedMessageIndicatorIconColor;
 
-  ///[messageBubbleAvatarStyle] provides style to the avatar of the senderCometChatAvatarStyle? messageBubbleAvatarStyle;
-  CometChatAvatarStyle? messageBubbleAvatarStyle;
+  ///[messageBubbleAvatarStyle] provides style to the avatar of the senderConvoKitAvatarStyle? messageBubbleAvatarStyle;
+  ConvoKitAvatarStyle? messageBubbleAvatarStyle;
 
   ///[messageBubbleDateStyle] provides style to the date of the message bubble
-  CometChatDateStyle? messageBubbleDateStyle;
+  ConvoKitDateStyle? messageBubbleDateStyle;
 
   ///[senderNameTextStyle] provides style to the sender name of the received message
   TextStyle? senderNameTextStyle;
@@ -1573,15 +1573,15 @@ class CometChatMessageBubbleStyleData {
   ///[exceptionIconTint] provides icon color for the exception view warning icon
   final Color? exceptionIconTint;
 
-  CometChatMessageBubbleStyleData copyWith({
+  ConvoKitMessageBubbleStyleData copyWith({
     DecorationImage? messageBubbleBackgroundImage,
     Color? backgroundColor,
     BoxBorder? border,
     BorderRadiusGeometry? borderRadius,
     TextStyle? threadedMessageIndicatorTextStyle,
     Color? threadedMessageIndicatorIconColor,
-    CometChatAvatarStyle? messageBubbleAvatarStyle,
-    CometChatDateStyle? messageBubbleDateStyle,
+    ConvoKitAvatarStyle? messageBubbleAvatarStyle,
+    ConvoKitDateStyle? messageBubbleDateStyle,
     TextStyle? senderNameTextStyle,
     CometChatMessageReceiptStyle? messageReceiptStyle,
     Color? moderationBackgroundColor,
@@ -1591,7 +1591,7 @@ class CometChatMessageBubbleStyleData {
     TextStyle? exceptionTextStyle,
     Color? exceptionIconTint,
   }) {
-    return CometChatMessageBubbleStyleData(
+    return ConvoKitMessageBubbleStyleData(
       messageBubbleBackgroundImage:
           messageBubbleBackgroundImage ?? this.messageBubbleBackgroundImage,
       backgroundColor: backgroundColor ?? this.backgroundColor,
@@ -1620,8 +1620,8 @@ class CometChatMessageBubbleStyleData {
     );
   }
 
-  CometChatMessageBubbleStyleData merge(
-    CometChatMessageBubbleStyleData? other,
+  ConvoKitMessageBubbleStyleData merge(
+    ConvoKitMessageBubbleStyleData? other,
   ) {
     if (other == null) return this;
     return copyWith(
@@ -1646,8 +1646,8 @@ class CometChatMessageBubbleStyleData {
     );
   }
 
-  CometChatMessageBubbleStyleData mergeIfNull(
-    CometChatMessageBubbleStyleData? other,
+  ConvoKitMessageBubbleStyleData mergeIfNull(
+    ConvoKitMessageBubbleStyleData? other,
   ) {
     if (other == null) return this;
     return copyWith(

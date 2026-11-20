@@ -302,9 +302,9 @@ void main() {
               audioUrl: 'https://example.com/a.mp3',
               title: 'Voice note',
               alignment: BubbleAlignment.left,
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
               style: const CometChatVoiceNoteBubbleStyle(
                 audioBarColor: Color(0xFF1E7070),
                 border: Border.fromBorderSide(

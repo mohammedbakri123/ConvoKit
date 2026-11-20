@@ -6,8 +6,8 @@
 //
 // The fixes, for reference. `core/utils/text_scale_utils.dart` holds three
 // helpers: `scaledMaxLines` lets a single-line label wrap above 1.15x instead
-// of clipping (`CometChatListItem`, `ConvoKitConversationListItem`,
-// `CometChatGroupListItem`, `CometChatFilesBubble`, `CometChatDate`);
+// of clipping (`ConvoKitListItem`, `ConvoKitConversationListItem`,
+// `CometChatGroupListItem`, `CometChatFilesBubble`, `ConvoKitDate`);
 // `scaledDimension` grows a fixed box with the text size (composer attachment
 // tiles, audio player rows). Beyond those: the conversations empty state and the incoming-call
 // screen became scrollable, the deleted bubble's label became `Flexible`, and
@@ -264,9 +264,9 @@ void main() {
         return Builder(
           builder: (BuildContext context) => ConversationsEmptyView(
             style: const ConvoKitConversationsStyle(),
-            colorPalette: CometChatThemeHelper.getColorPalette(context),
-            spacing: CometChatThemeHelper.getSpacing(context),
-            typography: CometChatThemeHelper.getTypography(context),
+            colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+            spacing: ConvoKitThemeHelper.getSpacing(context),
+            typography: ConvoKitThemeHelper.getTypography(context),
           ),
         );
       });
@@ -280,9 +280,9 @@ void main() {
                 'Something went wrong while loading your conversations. '
                 'Check your connection and try again.',
             style: const ConvoKitConversationsStyle(),
-            colorPalette: CometChatThemeHelper.getColorPalette(context),
-            spacing: CometChatThemeHelper.getSpacing(context),
-            typography: CometChatThemeHelper.getTypography(context),
+            colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+            spacing: ConvoKitThemeHelper.getSpacing(context),
+            typography: ConvoKitThemeHelper.getTypography(context),
           ),
         );
       });
@@ -290,7 +290,7 @@ void main() {
 
     testWidgets('shared list item', (WidgetTester tester) async {
       await check(tester, 'shared list item', () {
-        return const CometChatListItem(
+        return const ConvoKitListItem(
           avatarName: 'Alexandra Constantinou',
           title: 'Alexandra Constantinou',
           subtitleView: Text('Typing a fairly ordinary message right now…'),
@@ -355,10 +355,10 @@ void main() {
       await check(tester, 'avatar, badge and date row', () {
         return Row(
           children: <Widget>[
-            const CometChatAvatar(name: 'Alexandra Constantinou'),
+            const ConvoKitAvatar(name: 'Alexandra Constantinou'),
             const Expanded(child: Text('Alexandra Constantinou')),
-            CometChatDate(date: DateTime(2026, 9, 1, 14, 30)),
-            const CometChatBadge(count: 128),
+            ConvoKitDate(date: DateTime(2026, 9, 1, 14, 30)),
+            const ConvoKitBadge(count: 128),
           ],
         );
       });
@@ -428,7 +428,7 @@ void main() {
 
     testWidgets('action bubble', (WidgetTester tester) async {
       await check(tester, 'action bubble', () {
-        return const CometChatActionBubble(
+        return const ConvoKitActionBubble(
           text:
               'Alexandra Constantinou added Bob Smith to Platform '
               'Engineering — On Call',
@@ -441,7 +441,7 @@ void main() {
         return Builder(
           builder: (BuildContext context) => asBubble(
             context,
-            const CometChatDeletedBubble(),
+            const ConvoKitDeletedBubble(),
             BubbleAlignment.left,
           ),
         );
@@ -450,7 +450,7 @@ void main() {
 
     testWidgets('deleted bubble via its factory', (WidgetTester tester) async {
       // The factory lays the deleted row out itself rather than delegating to
-      // CometChatDeletedBubble, and it is the path the message list actually
+      // ConvoKitDeletedBubble, and it is the path the message list actually
       // takes. 6.2.0's Flexible fix reached the bubble above and not this
       // copy, and this harness did not catch that because it only pumped the
       // bubble — so the second copy is covered here too now. ENG-39099.
@@ -631,7 +631,7 @@ void main() {
         return Builder(
           builder: (BuildContext context) => asBubble(
             context,
-            const CometChatMessageBubble(
+            const ConvoKitMessageBubble(
               alignment: BubbleAlignment.right,
               headerView: Text('Alexandra Constantinou'),
               contentView: CometChatTextBubble(
@@ -659,7 +659,7 @@ void main() {
     // These three build their own bloc and hit the SDK on construction, so they
     // cannot be pumped in a widget test without a live CometChat session. What
     // is testable of them is already covered: all three render their rows
-    // through `CometChatListItem`, which has its own surface above, and the
+    // through `ConvoKitListItem`, which has its own surface above, and the
     // search results reuse the message bubbles. If they ever grow a
     // presentational sub-view that can be constructed standalone, add it here.
 
@@ -667,12 +667,12 @@ void main() {
       await check(tester, 'users list', () {
         return ListView(
           children: <Widget>[
-            CometChatListItem(
+            ConvoKitListItem(
               avatarName: 'Alexandra Constantinou',
               title: 'Alexandra Constantinou',
               subtitleView: const Text('Available'),
             ),
-            CometChatListItem(
+            ConvoKitListItem(
               avatarName: 'Bob Smith',
               title: 'Bob Smith',
               subtitleView: const Text('Away — back at 15:00'),

@@ -8,14 +8,14 @@
 /// chat SDK.
 ///
 /// The timezone database is populated by `initializeTimeZones()`, which the
-/// package calls from `CometChatUIKit.init`. Tests call it directly in setUpAll
+/// package calls from `ConvoKitUIKit.init`. Tests call it directly in setUpAll
 /// since they do not boot the kit.
 ///
 ///   flutter test test/shared_ui/utils/scheduler_utils_test.dart
 library;
 
 import 'package:convokit/cometchat_chat_uikit.dart';
-// The initializer CometChatUIKit.init calls. It has to be this one:
+// The initializer ConvoKitUIKit.init calls. It has to be this one:
 // SchedulerUtils once read a second database copy that nothing filled, and
 // a test that initialised that copy directly hid it.
 import 'package:convokit/shared_ui/src/utils/timezone_utils/data/latest.dart';
@@ -628,7 +628,7 @@ void main() {
   });
   // -------------------------------------------------------------------------
   // The static timeZones map — 976 lines of it, read by
-  // CometChatUIKit._inititalizeTimeZoneDetails to resolve the local zone.
+  // ConvoKitUIKit._inititalizeTimeZoneDetails to resolve the local zone.
   // -------------------------------------------------------------------------
   group('timeZones map', () {
     test('every entry carries the abbr and name the kit reads', () {

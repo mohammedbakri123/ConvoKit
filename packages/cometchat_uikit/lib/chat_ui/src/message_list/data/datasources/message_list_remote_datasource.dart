@@ -74,8 +74,8 @@ class MessageListRemoteDataSourceImpl implements MessageListRemoteDataSource {
 
   ck.MessageRepository? get _convoKitRepository =>
       _repository ??
-      CometChatUIKit.messageRepository ??
-      CometChatUIKit.kit?.messages;
+      ConvoKitUIKit.messageRepository ??
+      ConvoKitUIKit.kit?.messages;
 
   static final CometChatMessageAdapter _messageAdapter =
       CometChatMessageAdapter();
@@ -309,7 +309,7 @@ class MessageListRemoteDataSourceImpl implements MessageListRemoteDataSource {
   @override
   Future<User?> getLoggedInUser() async {
     try {
-      final session = CometChatUIKit.session ?? CometChatUIKit.kit?.session;
+      final session = ConvoKitUIKit.session ?? ConvoKitUIKit.kit?.session;
       if (session != null) {
         final u = session.currentUser;
         if (u != null) {
@@ -343,8 +343,8 @@ class MessageListRemoteDataSourceImpl implements MessageListRemoteDataSource {
   }) async {
     try {
       final convRepo =
-          CometChatUIKit.conversationRepository ??
-          CometChatUIKit.kit?.conversations;
+          ConvoKitUIKit.conversationRepository ??
+          ConvoKitUIKit.kit?.conversations;
       if (convRepo != null) {
         final convId = conversationType == 'group'
             ? 'group_$conversationWith'

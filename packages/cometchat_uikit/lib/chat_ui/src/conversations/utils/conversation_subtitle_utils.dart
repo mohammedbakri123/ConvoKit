@@ -31,8 +31,8 @@ class ConversationSubtitleUtils {
     Color? iconColor, {
     AdditionalConfigurations? additionalConfigurations,
   }) {
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final typography = CometChatThemeHelper.getTypography(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
     TextStyle subtitleStyle0 = TextStyle(
       overflow: TextOverflow.ellipsis,
       color: colorPalette.textSecondary,
@@ -45,7 +45,7 @@ class ConversationSubtitleUtils {
     BaseMessage? lastMessage = conversation.lastMessage;
     String? messageCategory = lastMessage?.category;
 
-    final spacing = CometChatThemeHelper.getSpacing(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
 
     if (messageCategory == null || lastMessage == null) {
       return Text(
@@ -85,7 +85,7 @@ class ConversationSubtitleUtils {
                 lastMessage.type == MessageTypeConstants.meeting)) {
           prefix = "";
         } else if (lastMessage.sender?.uid !=
-            CometChatUIKit.loggedInUser?.uid) {
+            ConvoKitUIKit.loggedInUser?.uid) {
           prefix = "${lastMessage.sender?.name}: ";
         } else {
           prefix = "${cc.Translations.of(context).you}: ";

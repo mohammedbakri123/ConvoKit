@@ -29,7 +29,7 @@ import '../sdk_user_b/group_actions.dart';
 /// Widget facts confirmed against the codebase:
 ///   - ConvoKitMessageHeader sets title = group.name and a
 ///     "{memberCount} Members" subtitle (cometchat_message_header.dart L399),
-///     and renders a CometChatAvatar via CometChatListItem.
+///     and renders a ConvoKitAvatar via ConvoKitListItem.
 ///   - auxiliaryButtonView -> _buildCallButtons renders CometChatCallButtons
 ///     when enableCalls == true; main.dart sets enableCalls = true (L161) and
 ///     the voice/video buttons default to visible, so both render for groups.
@@ -130,8 +130,8 @@ void main() {
     testWidgets('GRP-053: header displays group avatar', (tester) async {
       await openHeaderGroup(tester);
 
-      expect(hasType('CometChatAvatar'), isTrue,
-          reason: 'GRP-053: a CometChatAvatar should render in the group header');
+      expect(hasType('ConvoKitAvatar'), isTrue,
+          reason: 'GRP-053: a ConvoKitAvatar should render in the group header');
     });
 
     // GRP-054: header displays the member count. (partial)

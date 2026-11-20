@@ -30,9 +30,9 @@ class GroupInfoScreen extends StatefulWidget {
 
 class _GroupInfoScreenState extends State<GroupInfoScreen>
     with GroupListener, ConvoKitGroupEventListener {
-  late CometChatColorPalette _colorPalette;
-  late CometChatTypography _typography;
-  late CometChatSpacing _spacing;
+  late ConvoKitColorPalette _colorPalette;
+  late ConvoKitTypography _typography;
+  late ConvoKitSpacing _spacing;
 
   late Group _group;
   int _membersCount = 1;
@@ -62,9 +62,9 @@ class _GroupInfoScreenState extends State<GroupInfoScreen>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _colorPalette = CometChatThemeHelper.getColorPalette(context);
-    _typography = CometChatThemeHelper.getTypography(context);
-    _spacing = CometChatThemeHelper.getSpacing(context);
+    _colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    _typography = ConvoKitThemeHelper.getTypography(context);
+    _spacing = ConvoKitThemeHelper.getSpacing(context);
   }
 
   @override
@@ -231,7 +231,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen>
   }
 
   void _showLeaveConfirm() {
-    CometChatConfirmDialog(
+    ConvoKitConfirmDialog(
       context: context,
       icon: Icon(Icons.logout, color: _colorPalette.error, size: 48),
       title: Text(
@@ -255,7 +255,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen>
       ),
       confirmButtonText: cc.Translations.of(context).leave,
       cancelButtonText: cc.Translations.of(context).cancel,
-      style: CometChatConfirmDialogStyle(
+      style: ConvoKitConfirmDialogStyle(
         confirmButtonBackground: _colorPalette.error,
         confirmButtonTextColor: _colorPalette.white,
       ),
@@ -341,7 +341,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen>
   }
 
   void _showTransferOwnershipConfirm() {
-    CometChatConfirmDialog(
+    ConvoKitConfirmDialog(
       context: context,
       showIcon: false,
       title: Text(
@@ -366,7 +366,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen>
       ),
       confirmButtonText: cc.Translations.of(context).continueText,
       cancelButtonText: cc.Translations.of(context).cancel,
-      style: CometChatConfirmDialogStyle(
+      style: ConvoKitConfirmDialogStyle(
         confirmButtonBackground: _colorPalette.primary,
         confirmButtonTextColor: _colorPalette.white,
       ),
@@ -386,7 +386,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen>
   }
 
   void _onDeleteAndExit() {
-    CometChatConfirmDialog(
+    ConvoKitConfirmDialog(
       context: context,
       useRootNavigator: true,
       icon: Padding(
@@ -420,7 +420,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen>
       ),
       confirmButtonText: cc.Translations.of(context).deleteAndExit,
       cancelButtonText: cc.Translations.of(context).cancel,
-      style: CometChatConfirmDialogStyle(
+      style: ConvoKitConfirmDialogStyle(
         confirmButtonBackground: _colorPalette.error,
         confirmButtonTextColor: _colorPalette.white,
       ),
@@ -569,12 +569,12 @@ class _GroupInfoScreenState extends State<GroupInfoScreen>
         top: _spacing.padding10 ?? 0,
         bottom: _spacing.padding3 ?? 0,
       ),
-      child: CometChatAvatar(
+      child: ConvoKitAvatar(
         height: 120,
         width: 120,
         image: _group.icon ?? '',
         name: _group.name,
-        style: CometChatAvatarStyle(
+        style: ConvoKitAvatarStyle(
           placeHolderTextStyle: TextStyle(
             fontSize: 48,
             fontWeight: FontWeight.bold,

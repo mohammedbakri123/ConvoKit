@@ -51,7 +51,7 @@ class MarkdownTextFormatter extends CometChatTextFormatter {
   // ── Regex patterns ──────────────────────────────────────────────────────────
 
   /// Helper to pick text color based on bubble alignment
-  static Color? _textColor(CometChatColorPalette cp, BubbleAlignment? align) =>
+  static Color? _textColor(ConvoKitColorPalette cp, BubbleAlignment? align) =>
       align == BubbleAlignment.right ? cp.white : cp.textPrimary;
 
   static final _boldPattern = RegExp(r'\*\*(.+?)\*\*');
@@ -115,7 +115,7 @@ class MarkdownTextFormatter extends CometChatTextFormatter {
     BubbleAlignment? alignment, {
     bool forConversation = false,
   }) {
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
     return TextStyle(
       color: alignment == BubbleAlignment.right
           ? colorPalette.white
@@ -135,7 +135,7 @@ class MarkdownTextFormatter extends CometChatTextFormatter {
     bool forConversation = false,
   }) {
     List<AttributedText> result = existingAttributes ?? [];
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
 
     // Collect code ranges first — these are "protected" zones where
     // inline formatting (bold, italic, etc.) must NOT be applied.
@@ -328,10 +328,10 @@ class MarkdownTextFormatter extends CometChatTextFormatter {
     Function(String)? onTap, {
     required bool forConversation,
     List<_Range> excludeRanges = const [],
-    required TextStyle Function(CometChatColorPalette, BubbleAlignment?, bool)
+    required TextStyle Function(ConvoKitColorPalette, BubbleAlignment?, bool)
     styleBuilder,
   }) {
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
     final matches = pattern.allMatches(text);
     final attrs = matches
         .where((match) => !_overlapsAny(match.start, match.end, excludeRanges))
@@ -417,11 +417,11 @@ class MarkdownTextFormatter extends CometChatTextFormatter {
     String text,
     BuildContext context,
     BubbleAlignment? alignment,
-    CometChatColorPalette colorPalette,
+    ConvoKitColorPalette colorPalette,
     List<AttributedText> existing,
     Function(String)? onTap,
   ) {
-    final spacing = CometChatThemeHelper.getSpacing(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
     final isSent = alignment == BubbleAlignment.right;
     final backgroundColor = isSent
         ? (colorPalette.white?.withValues(alpha: 0.2) ??
@@ -495,7 +495,7 @@ class MarkdownTextFormatter extends CometChatTextFormatter {
     String text,
     BuildContext context,
     BubbleAlignment? alignment,
-    CometChatColorPalette colorPalette,
+    ConvoKitColorPalette colorPalette,
     List<AttributedText> existing,
     Function(String)? onTap,
   ) {
@@ -531,11 +531,11 @@ class MarkdownTextFormatter extends CometChatTextFormatter {
     String text,
     BuildContext context,
     BubbleAlignment? alignment,
-    CometChatColorPalette colorPalette,
+    ConvoKitColorPalette colorPalette,
     List<AttributedText> existing,
     Function(String)? onTap,
   ) {
-    final typography = CometChatThemeHelper.getTypography(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
     final isSent = alignment == BubbleAlignment.right;
 
     // Border: 3px left bar — primary for received, white for sent
@@ -597,7 +597,7 @@ class MarkdownTextFormatter extends CometChatTextFormatter {
     String text,
     BuildContext context,
     BubbleAlignment? alignment,
-    CometChatColorPalette colorPalette,
+    ConvoKitColorPalette colorPalette,
     List<AttributedText> existing, {
     List<_Range> excludeRanges = const [],
   }) {

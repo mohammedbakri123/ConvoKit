@@ -98,10 +98,10 @@ void main() {
   setUpAll(() => registerFallbackValue(_text('fallback')));
 
   // BubbleUIBuilder.getBubbleStyle decides sent-vs-received from the global
-  // CometChatUIKit.loggedInUser, not from the bloc state, so the outgoing
+  // ConvoKitUIKit.loggedInUser, not from the bloc state, so the outgoing
   // bubble path is only reachable with that global set.
-  setUp(() => CometChatUIKit.loggedInUser = _alice);
-  tearDown(() => CometChatUIKit.loggedInUser = null);
+  setUp(() => ConvoKitUIKit.loggedInUser = _alice);
+  tearDown(() => ConvoKitUIKit.loggedInUser = null);
 
   group('container decoration', () {
     testWidgets('backgroundColor paints the root decoration', (tester) async {
@@ -184,7 +184,7 @@ void main() {
       await _settle(tester);
       expect(
         tester
-            .widget<CometChatMessageBubble>(find.byType(CometChatMessageBubble))
+            .widget<ConvoKitMessageBubble>(find.byType(ConvoKitMessageBubble))
             .style
             ?.backgroundColor,
         const Color(0xFF778899),
@@ -212,7 +212,7 @@ void main() {
       await _settle(tester);
       expect(
         tester
-            .widget<CometChatMessageBubble>(find.byType(CometChatMessageBubble))
+            .widget<ConvoKitMessageBubble>(find.byType(ConvoKitMessageBubble))
             .style
             ?.backgroundColor,
         const Color(0xFF223344),
@@ -228,7 +228,7 @@ void main() {
               messageListBloc: _mock(messages: [_text('hi', sender: _bob)]),
               avatarVisibility: true,
               style: const ConvoKitMessageListStyle(
-                avatarStyle: CometChatAvatarStyle(
+                avatarStyle: ConvoKitAvatarStyle(
                   backgroundColor: Color(0xFF9911AA),
                 ),
               ),
@@ -239,7 +239,7 @@ void main() {
       await _settle(tester);
       expect(
         tester
-            .widget<CometChatAvatar>(find.byType(CometChatAvatar).first)
+            .widget<ConvoKitAvatar>(find.byType(ConvoKitAvatar).first)
             .style
             ?.backgroundColor,
         const Color(0xFF9911AA),
@@ -267,7 +267,7 @@ void main() {
               group: _group,
               messageListBloc: _mock(messages: [action]),
               style: const ConvoKitMessageListStyle(
-                actionBubbleStyle: CometChatActionBubbleStyle(
+                actionBubbleStyle: ConvoKitActionBubbleStyle(
                   backgroundColor: Color(0xFF3355FF),
                 ),
               ),
@@ -278,7 +278,7 @@ void main() {
       await _settle(tester);
       expect(
         tester
-            .widget<CometChatActionBubble>(find.byType(CometChatActionBubble))
+            .widget<ConvoKitActionBubble>(find.byType(ConvoKitActionBubble))
             .style
             ?.backgroundColor,
         const Color(0xFF3355FF),

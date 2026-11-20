@@ -2,7 +2,7 @@
 /// PROP1.
 ///
 /// [ConvoKitConversationListItem] (50 props), [CometChatGroupListItem] (28)
-/// and [CometChatListItem] (23). Companion to
+/// and [ConvoKitListItem] (23). Companion to
 /// `list_item_styles_props_test.dart`, which covers the style objects these
 /// take; this covers the widgets' own parameters.
 ///
@@ -168,15 +168,15 @@ void main() {
               avatarWidth: 46,
               avatarPadding: const EdgeInsets.all(7),
               avatarMargin: const EdgeInsets.all(3),
-              avatarStyle: const CometChatAvatarStyle(backgroundColor: _c1),
+              avatarStyle: const ConvoKitAvatarStyle(backgroundColor: _c1),
             ),
           ),
         ),
       );
       await tester.pump();
 
-      final avatar = tester.widget<CometChatAvatar>(
-        find.byType(CometChatAvatar),
+      final avatar = tester.widget<ConvoKitAvatar>(
+        find.byType(ConvoKitAvatar),
       );
       expect(avatar.height, 44);
       expect(avatar.width, 46);
@@ -199,7 +199,7 @@ void main() {
               statusIndicatorBorderRadius: const BorderRadius.all(
                 Radius.circular(9),
               ),
-              statusIndicatorStyle: const CometChatStatusIndicatorStyle(
+              statusIndicatorStyle: const ConvoKitStatusIndicatorStyle(
                 backgroundColor: _c2,
               ),
             ),
@@ -208,8 +208,8 @@ void main() {
       );
       await tester.pump();
 
-      final dot = tester.widget<CometChatStatusIndicator>(
-        find.byType(CometChatStatusIndicator),
+      final dot = tester.widget<ConvoKitStatusIndicator>(
+        find.byType(ConvoKitStatusIndicator),
       );
       expect(dot.height, 20);
       expect(dot.width, 22);
@@ -229,13 +229,13 @@ void main() {
               badgeWidth: 34,
               badgeHeight: 26,
               badgePadding: const EdgeInsets.all(4),
-              badgeStyle: const CometChatBadgeStyle(backgroundColor: _c3),
+              badgeStyle: const ConvoKitBadgeStyle(backgroundColor: _c3),
               datePattern: (x) => 'pinned',
               datePadding: const EdgeInsets.all(5),
               dateHeight: 30,
               dateWidth: 60,
               dateBackgroundIsTransparent: false,
-              dateStyle: const CometChatDateStyle(textColor: _c4),
+              dateStyle: const ConvoKitDateStyle(textColor: _c4),
               dateTimeFormatterCallback: _StubDateFormatter(),
             ),
           ),
@@ -243,13 +243,13 @@ void main() {
       );
       await tester.pump();
 
-      final badge = tester.widget<CometChatBadge>(find.byType(CometChatBadge));
+      final badge = tester.widget<ConvoKitBadge>(find.byType(ConvoKitBadge));
       expect(badge.width, 34);
       expect(badge.height, 26);
       expect(badge.padding, const EdgeInsets.all(4));
       expect(badge.style.backgroundColor, _c3);
 
-      final date = tester.widget<CometChatDate>(find.byType(CometChatDate));
+      final date = tester.widget<ConvoKitDate>(find.byType(ConvoKitDate));
       expect(date.customDateString, 'pinned');
       expect(date.padding, const EdgeInsets.all(5));
       expect(date.height, 30);
@@ -303,8 +303,8 @@ void main() {
       );
       await tester.pump();
 
-      final dot = tester.widget<CometChatStatusIndicator>(
-        find.byType(CometChatStatusIndicator),
+      final dot = tester.widget<ConvoKitStatusIndicator>(
+        find.byType(ConvoKitStatusIndicator),
       );
       // The conversation is with a private group, so the private colour is
       // what should paint.
@@ -326,7 +326,7 @@ void main() {
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatStatusIndicator), findsOneWidget);
+      expect(find.byType(ConvoKitStatusIndicator), findsOneWidget);
 
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
@@ -344,14 +344,14 @@ void main() {
       );
       await tester.pump();
 
-      expect(find.byType(CometChatStatusIndicator), findsNothing);
+      expect(find.byType(ConvoKitStatusIndicator), findsNothing);
     });
 
     testWidgets('the three receipt icons render for an outgoing message', (
       tester,
     ) async {
-      CometChatUIKit.loggedInUser = FakeUser(name: 'Bruno', uid: 'u2');
-      addTearDown(() => CometChatUIKit.loggedInUser = null);
+      ConvoKitUIKit.loggedInUser = FakeUser(name: 'Bruno', uid: 'u2');
+      addTearDown(() => ConvoKitUIKit.loggedInUser = null);
 
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
@@ -411,9 +411,9 @@ void main() {
                 conversation: FakeConversation(),
                 onItemClick: (_) {},
                 textFormatters: const <CometChatTextFormatter>[],
-                colorPalette: CometChatThemeHelper.getColorPalette(context),
-                spacing: CometChatThemeHelper.getSpacing(context),
-                typography: CometChatThemeHelper.getTypography(context),
+                colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+                spacing: ConvoKitThemeHelper.getSpacing(context),
+                typography: ConvoKitThemeHelper.getTypography(context),
               ),
             ),
           ),
@@ -464,15 +464,15 @@ void main() {
               avatarWidth: 46,
               avatarPadding: const EdgeInsets.all(7),
               avatarMargin: const EdgeInsets.all(3),
-              avatarStyle: const CometChatAvatarStyle(backgroundColor: _c1),
+              avatarStyle: const ConvoKitAvatarStyle(backgroundColor: _c1),
             ),
           ),
         ),
       );
       await tester.pump();
 
-      final avatar = tester.widget<CometChatAvatar>(
-        find.byType(CometChatAvatar),
+      final avatar = tester.widget<ConvoKitAvatar>(
+        find.byType(ConvoKitAvatar),
       );
       expect(avatar.height, 44);
       expect(avatar.width, 46);
@@ -495,7 +495,7 @@ void main() {
               statusIndicatorBorderRadius: const BorderRadius.all(
                 Radius.circular(9),
               ),
-              statusIndicatorStyle: const CometChatStatusIndicatorStyle(
+              statusIndicatorStyle: const ConvoKitStatusIndicatorStyle(
                 border: Border.fromBorderSide(BorderSide(color: _c2)),
               ),
             ),
@@ -504,8 +504,8 @@ void main() {
       );
       await tester.pump();
 
-      final dot = tester.widget<CometChatStatusIndicator>(
-        find.byType(CometChatStatusIndicator),
+      final dot = tester.widget<ConvoKitStatusIndicator>(
+        find.byType(ConvoKitStatusIndicator),
       );
       expect(dot.height, 20);
       expect(dot.width, 22);
@@ -559,8 +559,8 @@ void main() {
       expect(find.byIcon(Icons.shield), findsOneWidget);
       expect(
         tester
-            .widget<CometChatStatusIndicator>(
-              find.byType(CometChatStatusIndicator),
+            .widget<ConvoKitStatusIndicator>(
+              find.byType(ConvoKitStatusIndicator),
             )
             .style
             ?.backgroundColor,
@@ -620,9 +620,9 @@ void main() {
               builder: (context) => CometChatGroupListItem(
                 group: FakeGroup(),
                 onItemClick: (_) {},
-                colorPalette: CometChatThemeHelper.getColorPalette(context),
-                spacing: CometChatThemeHelper.getSpacing(context),
-                typography: CometChatThemeHelper.getTypography(context),
+                colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+                spacing: ConvoKitThemeHelper.getSpacing(context),
+                typography: ConvoKitThemeHelper.getTypography(context),
               ),
             ),
           ),
@@ -635,12 +635,12 @@ void main() {
   });
 
   // ===========================================================================
-  group('CometChatListItem', () {
+  group('ConvoKitListItem', () {
     testWidgets('avatar props reach the avatar', (tester) async {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            const CometChatListItem(
+            const ConvoKitListItem(
               avatarName: 'Alexandra',
               avatarURL: 'https://example.invalid/a.png',
               title: 'Alexandra',
@@ -648,15 +648,15 @@ void main() {
               avatarWidth: 46,
               avatarPadding: EdgeInsets.all(7),
               avatarMargin: EdgeInsets.all(3),
-              avatarStyle: CometChatAvatarStyle(backgroundColor: _c1),
+              avatarStyle: ConvoKitAvatarStyle(backgroundColor: _c1),
             ),
           ),
         ),
       );
       await tester.pump();
 
-      final avatar = tester.widget<CometChatAvatar>(
-        find.byType(CometChatAvatar),
+      final avatar = tester.widget<ConvoKitAvatar>(
+        find.byType(ConvoKitAvatar),
       );
       expect(avatar.name, 'Alexandra');
       expect(avatar.image, 'https://example.invalid/a.png');
@@ -671,7 +671,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            const CometChatListItem(
+            const ConvoKitListItem(
               avatarName: 'Alexandra',
               title: 'Alexandra',
               statusIndicatorColor: _c2,
@@ -679,7 +679,7 @@ void main() {
               statusIndicatorHeight: 20,
               statusIndicatorWidth: 22,
               statusIndicatorBorderRadius: BorderRadius.all(Radius.circular(9)),
-              statusIndicatorStyle: CometChatStatusIndicatorStyle(
+              statusIndicatorStyle: ConvoKitStatusIndicatorStyle(
                 border: Border.fromBorderSide(BorderSide(color: _c3)),
               ),
             ),
@@ -688,8 +688,8 @@ void main() {
       );
       await tester.pump();
 
-      final dot = tester.widget<CometChatStatusIndicator>(
-        find.byType(CometChatStatusIndicator),
+      final dot = tester.widget<ConvoKitStatusIndicator>(
+        find.byType(ConvoKitStatusIndicator),
       );
       expect(dot.height, 20);
       expect(dot.width, 22);
@@ -705,7 +705,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            const CometChatListItem(
+            const ConvoKitListItem(
               avatarName: 'Alexandra',
               title: 'Alexandra',
               id: 'row-1',

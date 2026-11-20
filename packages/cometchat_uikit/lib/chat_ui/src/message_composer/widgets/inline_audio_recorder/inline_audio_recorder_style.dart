@@ -93,8 +93,8 @@ class CometChatInlineAudioRecorderStyle {
 
   /// Creates a style from the current theme
   static CometChatInlineAudioRecorderStyle of(BuildContext context) {
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final typography = CometChatThemeHelper.getTypography(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
 
     return CometChatInlineAudioRecorderStyle(
       backgroundColor: colorPalette.background1,

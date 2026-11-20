@@ -1,17 +1,17 @@
 import '../../../../../../cometchat_uikit_shared.dart';
 import 'package:flutter/material.dart';
 
-///[CometChatStatusIndicatorStyle] is a data class that has styling-related properties
-///to customize the appearance of [CometChatStatusIndicator]
+///[ConvoKitStatusIndicatorStyle] is a data class that has styling-related properties
+///to customize the appearance of [ConvoKitStatusIndicator]
 ///``` dart
-///CometChatStatusIndicatorStyle(
+///ConvoKitStatusIndicatorStyle(
 /// backgroundColor: Colors.white,
 /// border: Border.all(color: Colors.white, width: 0),
 /// );
 /// ```
-class CometChatStatusIndicatorStyle
-    extends ThemeExtension<CometChatStatusIndicatorStyle> {
-  const CometChatStatusIndicatorStyle({
+class ConvoKitStatusIndicatorStyle
+    extends ThemeExtension<ConvoKitStatusIndicatorStyle> {
+  const ConvoKitStatusIndicatorStyle({
     this.backgroundColor,
     this.border,
     this.borderRadius,
@@ -26,23 +26,23 @@ class CometChatStatusIndicatorStyle
   ///[borderRadius] border radius of the status indicator
   final BorderRadiusGeometry? borderRadius;
 
-  static CometChatStatusIndicatorStyle of(BuildContext context) =>
-      const CometChatStatusIndicatorStyle();
+  static ConvoKitStatusIndicatorStyle of(BuildContext context) =>
+      const ConvoKitStatusIndicatorStyle();
 
   @override
-  CometChatStatusIndicatorStyle copyWith({
+  ConvoKitStatusIndicatorStyle copyWith({
     Color? backgroundColor,
     Border? border,
     BorderRadiusGeometry? borderRadius,
   }) {
-    return CometChatStatusIndicatorStyle(
+    return ConvoKitStatusIndicatorStyle(
       backgroundColor: backgroundColor ?? this.backgroundColor,
       border: border ?? this.border,
       borderRadius: borderRadius ?? this.borderRadius,
     );
   }
 
-  CometChatStatusIndicatorStyle merge(CometChatStatusIndicatorStyle? style) {
+  ConvoKitStatusIndicatorStyle merge(ConvoKitStatusIndicatorStyle? style) {
     if (style == null) return this;
     return copyWith(
       backgroundColor: style.backgroundColor,
@@ -52,14 +52,14 @@ class CometChatStatusIndicatorStyle
   }
 
   @override
-  CometChatStatusIndicatorStyle lerp(
-    ThemeExtension<CometChatStatusIndicatorStyle>? other,
+  ConvoKitStatusIndicatorStyle lerp(
+    ThemeExtension<ConvoKitStatusIndicatorStyle>? other,
     double t,
   ) {
-    if (other is! CometChatStatusIndicatorStyle) {
+    if (other is! ConvoKitStatusIndicatorStyle) {
       return this;
     }
-    return CometChatStatusIndicatorStyle(
+    return ConvoKitStatusIndicatorStyle(
       backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t),
       border: Border.lerp(border, other.border, t),
       borderRadius: BorderRadiusGeometry.lerp(

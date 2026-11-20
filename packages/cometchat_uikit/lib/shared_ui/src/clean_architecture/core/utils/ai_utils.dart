@@ -97,9 +97,9 @@ class AIUtils {
 
   static Widget getErrorText(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing, {
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing, {
     String? errorStateText,
     TextStyle? errorTextStyle,
   }) {

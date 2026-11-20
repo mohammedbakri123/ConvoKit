@@ -75,10 +75,10 @@ class CometChatPhoneNumberFormatter extends CometChatTextFormatter {
         forConversation: forConversation,
       );
     } else {
-      CometChatColorPalette colorPalette = CometChatThemeHelper.getColorPalette(
+      ConvoKitColorPalette colorPalette = ConvoKitThemeHelper.getColorPalette(
         context,
       );
-      CometChatTypography typography = CometChatThemeHelper.getTypography(
+      ConvoKitTypography typography = ConvoKitThemeHelper.getTypography(
         context,
       );
       return TextStyle(

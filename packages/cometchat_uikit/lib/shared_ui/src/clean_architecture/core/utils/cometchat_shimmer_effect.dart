@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../presentation/theme/colors/cometchat_color_palette.dart';
 
-class CometChatShimmerEffect extends StatefulWidget {
-  const CometChatShimmerEffect({
+class ConvoKitShimmerEffect extends StatefulWidget {
+  const ConvoKitShimmerEffect({
     super.key,
     required this.child,
     this.linearGradient,
@@ -11,13 +11,13 @@ class CometChatShimmerEffect extends StatefulWidget {
 
   final Widget child;
   final LinearGradient? linearGradient;
-  final CometChatColorPalette? colorPalette;
+  final ConvoKitColorPalette? colorPalette;
 
   @override
-  State<CometChatShimmerEffect> createState() => _CometChatShimmerEffectState();
+  State<ConvoKitShimmerEffect> createState() => _ConvoKitShimmerEffectState();
 }
 
-class _CometChatShimmerEffectState extends State<CometChatShimmerEffect>
+class _ConvoKitShimmerEffectState extends State<ConvoKitShimmerEffect>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
 

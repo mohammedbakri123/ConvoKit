@@ -16,8 +16,8 @@ import '../../../shared_ui/cometchat_uikit_shared.dart';
 void showListOptionsMenu({
   required BuildContext rowContext,
   required List<CometChatOption> options,
-  required CometChatColorPalette colorPalette,
-  required CometChatSpacing spacing,
+  required ConvoKitColorPalette colorPalette,
+  required ConvoKitSpacing spacing,
 }) {
   if (options.isEmpty) return;
 

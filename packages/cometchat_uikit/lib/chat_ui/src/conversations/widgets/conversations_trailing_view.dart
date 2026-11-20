@@ -11,8 +11,8 @@ import '../../../../cometchat_chat_uikit.dart';
 /// the conversation is with an AI role user.
 ///
 /// The trailing view uses:
-/// - [CometChatDate] for displaying the timestamp
-/// - [CometChatBadge] for displaying the unread count
+/// - [ConvoKitDate] for displaying the timestamp
+/// - [ConvoKitBadge] for displaying the unread count
 class ConversationsTrailingView extends StatelessWidget {
   const ConversationsTrailingView({
     super.key,
@@ -40,16 +40,16 @@ class ConversationsTrailingView extends StatelessWidget {
   final ConvoKitConversationsStyle style;
 
   /// The style configuration for the date widget.
-  final CometChatDateStyle datesStyle;
+  final ConvoKitDateStyle datesStyle;
 
   /// The color palette used for styling.
-  final CometChatColorPalette colorPalette;
+  final ConvoKitColorPalette colorPalette;
 
   /// The spacing configuration for padding and margins.
-  final CometChatSpacing spacing;
+  final ConvoKitSpacing spacing;
 
   /// The typography configuration for text styles.
-  final CometChatTypography typography;
+  final ConvoKitTypography typography;
 
   /// Custom date pattern callback for formatting the date.
   /// If provided, the returned string will be used as the custom date string.
@@ -135,13 +135,13 @@ class ConversationsTrailingView extends StatelessWidget {
       customDateString = datePattern!(conversation);
     }
 
-    return CometChatDate(
+    return ConvoKitDate(
       date: lastMessageTime,
       padding: datePadding ?? const EdgeInsets.all(0),
       height: dateHeight,
       isTransparentBackground: dateBackgroundIsTransparent,
       width: dateWidth,
-      style: CometChatDateStyle(
+      style: ConvoKitDateStyle(
         backgroundColor: datesStyle.backgroundColor ?? colorPalette.transparent,
         textStyle: TextStyle(
           color: datesStyle.textColor ?? colorPalette.textSecondary,
@@ -163,11 +163,11 @@ class ConversationsTrailingView extends StatelessWidget {
 
   /// Returns the unread message count badge widget.
   Widget _getUnreadCount(BuildContext context) {
-    return CometChatBadge(
+    return ConvoKitBadge(
       count: conversation.unreadMessageCount,
       width: badgeWidth,
       height: badgeHeight ?? 20,
-      style: style.badgeStyle ?? const CometChatBadgeStyle(),
+      style: style.badgeStyle ?? const ConvoKitBadgeStyle(),
       padding: badgePadding,
     );
   }

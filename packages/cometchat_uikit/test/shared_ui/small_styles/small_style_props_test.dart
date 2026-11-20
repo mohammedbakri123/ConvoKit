@@ -101,7 +101,7 @@ void main() {
               borderRadius: BorderRadius.all(Radius.circular(91)),
               textColor: Color(0xFF215252),
               textStyle: TextStyle(fontSize: 31),
-              avatarStyle: CometChatAvatarStyle(
+              avatarStyle: ConvoKitAvatarStyle(
                 backgroundColor: Color(0xFF215353),
               ),
             ),
@@ -211,13 +211,13 @@ void main() {
       );
     });
   });
-  group('CometChatBadge own props', () {
+  group('ConvoKitBadge own props', () {
     testWidgets('count, height, width and padding size the badge', (
       tester,
     ) async {
       await tester.pumpWidget(
         _host(
-          const CometChatBadge(
+          const ConvoKitBadge(
             count: 42,
             height: 37,
             width: 39,
@@ -234,22 +234,22 @@ void main() {
     });
   });
 
-  group('CometChatAvatar own props', () {
+  group('ConvoKitAvatar own props', () {
     testWidgets('name, geometry and the theme objects reach the avatar', (
       tester,
     ) async {
       await tester.pumpWidget(
         _host(
           Builder(
-            builder: (context) => CometChatAvatar(
+            builder: (context) => ConvoKitAvatar(
               name: 'Alice',
               height: 41,
               width: 43,
               padding: const EdgeInsets.only(left: 7),
               margin: const EdgeInsets.only(top: 9),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
             ),
           ),
         ),
@@ -275,7 +275,7 @@ void main() {
 
       await tester.pumpWidget(
         _host(
-          const CometChatAvatar(
+          const ConvoKitAvatar(
             name: 'Alice',
             image: 'https://example.com/alice.png',
           ),
@@ -289,16 +289,16 @@ void main() {
     });
   });
 
-  group('CometChatReceipt own props', () {
+  group('ConvoKitReceipt own props', () {
     testWidgets('size and colorPalette reach the receipt', (tester) async {
       await tester.pumpWidget(
         _host(
           Builder(
-            builder: (context) => CometChatReceipt(
+            builder: (context) => ConvoKitReceipt(
               status: ReceiptStatus.read,
               size: 29,
               readIcon: const Icon(Icons.done_all, key: Key('read')),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
             ),
           ),
         ),
@@ -317,7 +317,7 @@ void main() {
       }.entries) {
         await tester.pumpWidget(
           _host(
-            CometChatReceipt(
+            ConvoKitReceipt(
               status: entry.key,
               waitIcon: const Icon(Icons.schedule, key: Key('wait')),
               sentIcon: const Icon(Icons.check, key: Key('sent')),
@@ -337,13 +337,13 @@ void main() {
     });
   });
 
-  group('CometChatDate own props', () {
+  group('ConvoKitDate own props', () {
     testWidgets('pattern, geometry and the transparent flag reach the date', (
       tester,
     ) async {
       await tester.pumpWidget(
         _host(
-          CometChatDate(
+          ConvoKitDate(
             date: DateTime.fromMillisecondsSinceEpoch(1700000000000),
             pattern: DateTimePattern.dayDateFormat,
             height: 45,
@@ -363,7 +363,7 @@ void main() {
     testWidgets('customDateString replaces the formatted date', (tester) async {
       await tester.pumpWidget(
         _host(
-          CometChatDate(
+          ConvoKitDate(
             date: DateTime.fromMillisecondsSinceEpoch(1700000000000),
             customDateString: 'THE DAY',
           ),
@@ -376,14 +376,14 @@ void main() {
     testWidgets('dateTimeFormatterCallback reaches the date', (tester) async {
       await tester.pumpWidget(
         _host(
-          CometChatDate(
+          ConvoKitDate(
             date: DateTime.fromMillisecondsSinceEpoch(1700000000000),
             dateTimeFormatterCallback: _TestDateFormatter(),
           ),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatDate), findsOneWidget);
+      expect(find.byType(ConvoKitDate), findsOneWidget);
     });
   });
 
@@ -407,9 +407,9 @@ void main() {
                 margin: const EdgeInsets.only(top: 13),
                 onReactionTap: (_) => tapped = true,
                 onReactionLongPress: (_) => longPressed = true,
-                colorPalette: CometChatThemeHelper.getColorPalette(context),
-                spacing: CometChatThemeHelper.getSpacing(context),
-                typography: CometChatThemeHelper.getTypography(context),
+                colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+                spacing: ConvoKitThemeHelper.getSpacing(context),
+                typography: ConvoKitThemeHelper.getTypography(context),
               ),
             ),
           ),

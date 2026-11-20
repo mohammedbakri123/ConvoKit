@@ -27,8 +27,8 @@ class ResponsiveHomeScreen extends StatefulWidget {
 class _ResponsiveHomeScreenState extends State<ResponsiveHomeScreen> {
   int _currentIndex = 0;
   final _toggles = ComponentToggles.instance;
-  late CometChatColorPalette _colorPalette;
-  late CometChatTypography _typography;
+  late ConvoKitColorPalette _colorPalette;
+  late ConvoKitTypography _typography;
 
   // Currently selected conversation for the middle panel (desktop only)
   User? _selectedUser;
@@ -79,7 +79,7 @@ class _ResponsiveHomeScreenState extends State<ResponsiveHomeScreen> {
   @override
   void initState() {
     super.initState();
-    CometChatUIEvents.addUiListener(
+    ConvoKitUIEvents.addUiListener(
       _uiListenerId,
       _ResponsiveHomeUIEventListener(
         onOpenChat: (user, group) {
@@ -91,14 +91,14 @@ class _ResponsiveHomeScreenState extends State<ResponsiveHomeScreen> {
 
   @override
   void dispose() {
-    CometChatUIEvents.removeUiListener(_uiListenerId);
+    ConvoKitUIEvents.removeUiListener(_uiListenerId);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _colorPalette = CometChatThemeHelper.getColorPalette(context);
-    _typography = CometChatThemeHelper.getTypography(context);
+    _colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    _typography = ConvoKitThemeHelper.getTypography(context);
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -224,7 +224,7 @@ class _ResponsiveHomeScreenState extends State<ResponsiveHomeScreen> {
       final receiver = message.receiver;
       if (receiver is Group) group = receiver;
     } else {
-      final loggedInUid = CometChatUIKit.loggedInUser?.uid;
+      final loggedInUid = ConvoKitUIKit.loggedInUser?.uid;
       final sender = message.sender;
       final receiver = message.receiver;
       if (sender != null && sender.uid != loggedInUid) {
@@ -567,7 +567,7 @@ class _ResponsiveHomeScreenState extends State<ResponsiveHomeScreen> {
   }
 
   Widget _buildProfileMenu() {
-    final loggedInUser = CometChatUIKit.loggedInUser;
+    final loggedInUser = ConvoKitUIKit.loggedInUser;
 
     return PopupMenuButton<String>(
       shape: RoundedRectangleBorder(
@@ -581,7 +581,7 @@ class _ResponsiveHomeScreenState extends State<ResponsiveHomeScreen> {
       elevation: 2,
       menuPadding: const EdgeInsets.symmetric(vertical: 8),
       padding: EdgeInsets.zero,
-      icon: CometChatAvatar(
+      icon: ConvoKitAvatar(
         width: 36,
         height: 36,
         image: loggedInUser?.avatar ?? '',
@@ -621,7 +621,7 @@ class _ResponsiveHomeScreenState extends State<ResponsiveHomeScreen> {
             }
             break;
           case '/logout':
-            await CometChatUIKit.logout(
+            await ConvoKitUIKit.logout(
               onSuccess: (_) {
                 Navigator.pushAndRemoveUntil(
                   context,
@@ -992,7 +992,7 @@ class _ResponsiveHomeScreenState extends State<ResponsiveHomeScreen> {
           User? threadUser;
           Group? threadGroup;
           if (parent.receiverType == ReceiverTypeConstants.user) {
-            final loggedInUid = CometChatUIKit.loggedInUser?.uid;
+            final loggedInUid = ConvoKitUIKit.loggedInUser?.uid;
             threadUser = (parent.sender?.uid == loggedInUid)
                 ? parent.receiver as User?
                 : parent.sender;
@@ -1028,7 +1028,7 @@ class _ResponsiveHomeScreenState extends State<ResponsiveHomeScreen> {
     }
 
     if (receiverType == ReceiverTypeConstants.user) {
-      final loggedInUid = CometChatUIKit.loggedInUser?.uid;
+      final loggedInUid = ConvoKitUIKit.loggedInUser?.uid;
       final otherUid = (sender?.uid == loggedInUid) ? receiverUid : sender?.uid;
       if (otherUid != null) {
         CometChat.getUser(
@@ -1050,7 +1050,7 @@ class _ResponsiveHomeScreenState extends State<ResponsiveHomeScreen> {
 }
 
 /// Listener for CometChat UI events in ResponsiveHomeScreen
-class _ResponsiveHomeUIEventListener with CometChatUIEventListener {
+class _ResponsiveHomeUIEventListener with ConvoKitUIEventListener {
   final void Function(User? user, Group? group) onOpenChat;
 
   _ResponsiveHomeUIEventListener({required this.onOpenChat});

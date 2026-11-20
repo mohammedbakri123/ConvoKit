@@ -15,7 +15,7 @@ import 'message_information_state.dart';
 /// - Real-time receipt updates via SDK listeners
 ///
 /// The BLoC registers listeners for:
-/// - CometChatMessageEvents: onMessagesRead, onMessagesDelivered
+/// - ConvoKitMessageEvents: onMessagesRead, onMessagesDelivered
 ///
 /// **Requirements: 1.1, 1.4, 2.1, 2.2, 2.3, 2.4, 2.5, 3.1, 3.2, 3.3, 3.4, 3.5, 5.1, 5.2, 5.3, 5.4, 5.5**
 class MessageInformationBloc
@@ -358,7 +358,7 @@ class MessageInformationBloc
   void _registerSDKListeners() {
     // Register UI message event listener for read/delivered receipts
     // **Requirements: 5.1, 5.2**
-    CometChatMessageEvents.addMessagesListener(
+    ConvoKitMessageEvents.addMessagesListener(
       _uiMessageListenerKey,
       _MessageInformationUIMessageListener(
         onMessagesReadCallback: _handleMessagesRead,
@@ -402,7 +402,7 @@ class MessageInformationBloc
   @override
   Future<void> close() {
     // Remove all SDK listeners to prevent memory leaks
-    CometChatMessageEvents.removeMessagesListener(_uiMessageListenerKey);
+    ConvoKitMessageEvents.removeMessagesListener(_uiMessageListenerKey);
     ConvoKitGroupEvents.removeGroupsListener(_uiGroupListenerKey);
     return super.close();
   }
@@ -412,14 +412,14 @@ class MessageInformationBloc
 // LISTENER CLASSES
 // ============================================================
 
-/// UI Message event listener for CometChatMessageEvents
+/// UI Message event listener for ConvoKitMessageEvents
 ///
 /// Handles:
 /// - onMessagesRead (update receipt with read timestamp)
 /// - onMessagesDelivered (update receipt with delivered timestamp)
 ///
 /// **Requirements: 5.1, 5.2**
-class _MessageInformationUIMessageListener with CometChatMessageEventListener {
+class _MessageInformationUIMessageListener with ConvoKitMessageEventListener {
   final void Function(MessageReceipt) onMessagesReadCallback;
   final void Function(MessageReceipt) onMessagesDeliveredCallback;
 

@@ -31,7 +31,7 @@ class ConversationUtils {
     Conversation conversation,
     dynamic controller,
     BuildContext context,
-    CometChatColorPalette colorPalette,
+    ConvoKitColorPalette colorPalette,
   ) {
     return getDefaultOptionsWithCallback(
       conversation: conversation,
@@ -48,7 +48,7 @@ class ConversationUtils {
   static List<CometChatOption>? getDefaultOptionsWithCallback({
     required Conversation conversation,
     required BuildContext context,
-    required CometChatColorPalette colorPalette,
+    required ConvoKitColorPalette colorPalette,
     required Function(Conversation)? onDelete,
   }) {
     return [
@@ -110,7 +110,7 @@ class ConversationUtils {
     BaseMessage message,
     BuildContext context,
   ) {
-    if (message.sender?.uid == CometChatUIKit.loggedInUser?.uid) {
+    if (message.sender?.uid == ConvoKitUIKit.loggedInUser?.uid) {
       return Translations.of(context).youInitiatedGroupCall;
     } else {
       return "${message.sender?.name} ${Translations.of(context).initiatedGroupCall}";
@@ -472,7 +472,7 @@ class ConversationUtils {
     String messageType = message.type;
     Widget subtitle;
 
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
 
     switch (messageType) {
       case MessageTypeConstants.text:
@@ -510,7 +510,7 @@ class ConversationUtils {
   static Widget _getFileIconWidget(
     BaseMessage message,
     Color? iconColor,
-    CometChatColorPalette colorPalette,
+    ConvoKitColorPalette colorPalette,
   ) {
     const size = 16.0;
     final color = iconColor ?? colorPalette.iconSecondary;
@@ -574,7 +574,7 @@ class ConversationUtils {
   static Widget _getAudioIconWidget(
     BaseMessage message,
     Color? iconColor,
-    CometChatColorPalette colorPalette,
+    ConvoKitColorPalette colorPalette,
   ) {
     const size = 16.0;
     final color = iconColor ?? colorPalette.iconSecondary;
@@ -609,7 +609,7 @@ class ConversationUtils {
     BuildContext context,
     Color? iconColor,
   ) {
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
     BaseMessage message = conversation.lastMessage!;
     if (message.metadata != null && _checkForLinks(message.metadata!)) {
       return Icon(
@@ -659,7 +659,7 @@ class ConversationUtils {
     String messageType = message.type;
     Widget subtitle;
 
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
 
     switch (messageType) {
       case ExtensionType.extensionPoll:
@@ -718,7 +718,7 @@ class ConversationUtils {
     User? conversationWithUser;
     Group? conversationWithGroup;
 
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
 
     if (conversation.conversationWith is User) {
       conversationWithUser = conversation.conversationWith as User;

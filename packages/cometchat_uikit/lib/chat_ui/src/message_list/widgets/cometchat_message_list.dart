@@ -258,7 +258,7 @@ class ConvoKitMessageList extends StatefulWidget {
   ///over [dateTimeFormatterCallback]'s `time`.
   final String Function(BaseMessage message)? datePattern;
   final String Function(DateTime dateTime)? dateSeparatorPattern;
-  final CometChatDateStyle? dateSeparatorStyle;
+  final ConvoKitDateStyle? dateSeparatorStyle;
   final bool? hideDateSeparator;
   final bool? hideStickyDate;
   final ThreadRepliesClick? onThreadRepliesClick;
@@ -370,15 +370,15 @@ class ConvoKitMessageList extends StatefulWidget {
 }
 
 class _ConvoKitMessageListState extends State<ConvoKitMessageList>
-    with WidgetsBindingObserver, CometChatUIEventListener {
+    with WidgetsBindingObserver, ConvoKitUIEventListener {
   late MessageListBloc _messageListBloc;
   late AnimatedMessageListBloc _animatedBloc;
   bool _isExternalBloc = false;
   late MessageListBlocAdapter _blocAdapter;
   late ConvoKitMessageListStyle _style;
-  late CometChatColorPalette _colorPalette;
-  late CometChatTypography _typography;
-  late CometChatSpacing _spacing;
+  late ConvoKitColorPalette _colorPalette;
+  late ConvoKitTypography _typography;
+  late ConvoKitSpacing _spacing;
   Map<String, CometChatMessageTemplate> _templateMap = {};
   late ScrollController _scrollController;
   StreamSubscription<MessageOperation>? _operationsSubscription;
@@ -430,7 +430,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
     WidgetsBinding.instance.addObserver(this);
     _uiEventListenerId =
         'message_list_${DateTime.now().millisecondsSinceEpoch}';
-    CometChatUIEvents.addUiListener(_uiEventListenerId, this);
+    ConvoKitUIEvents.addUiListener(_uiEventListenerId, this);
     _scrollController = widget.scrollController ?? ScrollController();
     _initializeBlocs();
     _initializeTemplates();
@@ -476,7 +476,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
     super.didChangeDependencies();
 
     // Check if brightness has changed (dark mode toggle)
-    final currentBrightness = CometChatThemeHelper.getBrightness(context);
+    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
 
@@ -508,23 +508,23 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
   }
 
   void _initializeTheme() {
-    _colorPalette = CometChatThemeHelper.getColorPalette(context);
-    _typography = CometChatThemeHelper.getTypography(context);
-    _spacing = CometChatThemeHelper.getSpacing(context);
-    _style = CometChatThemeHelper.getTheme<ConvoKitMessageListStyle>(
+    _colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    _typography = ConvoKitThemeHelper.getTypography(context);
+    _spacing = ConvoKitThemeHelper.getSpacing(context);
+    _style = ConvoKitThemeHelper.getTheme<ConvoKitMessageListStyle>(
       context: context,
       defaultTheme: ConvoKitMessageListStyle.of,
     ).merge(widget.style);
 
     // Cache bubble styles to avoid expensive lookups during rebuilds
     _cachedOutgoingStyle =
-        CometChatThemeHelper.getTheme<CometChatOutgoingMessageBubbleStyle>(
+        ConvoKitThemeHelper.getTheme<CometChatOutgoingMessageBubbleStyle>(
           context: context,
           defaultTheme: CometChatOutgoingMessageBubbleStyle.of,
         ).merge(_style.outgoingMessageBubbleStyle);
 
     _cachedIncomingStyle =
-        CometChatThemeHelper.getTheme<CometChatIncomingMessageBubbleStyle>(
+        ConvoKitThemeHelper.getTheme<CometChatIncomingMessageBubbleStyle>(
           context: context,
           defaultTheme: CometChatIncomingMessageBubbleStyle.of,
         ).merge(_style.incomingMessageBubbleStyle);
@@ -744,7 +744,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
   void dispose() {
     _bubbleKeys.clear();
     widget.controller?._detach(this);
-    CometChatUIEvents.removeUiListener(_uiEventListenerId);
+    ConvoKitUIEvents.removeUiListener(_uiEventListenerId);
     WidgetsBinding.instance.removeObserver(this);
     _operationsSubscription?.cancel();
     // Clear all audio states and release memory
@@ -1104,7 +1104,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
               SizedBox(
                 width: 60,
                 height: 60,
-                child: CometChatAvatar(image: user?.avatar, name: user?.name),
+                child: ConvoKitAvatar(image: user?.avatar, name: user?.name),
               ),
               SizedBox(height: _spacing.spacing5 ?? 20),
               if (greetingMessage.isNotEmpty)
@@ -1163,7 +1163,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
                           _spacing.radiusMax ?? 20,
                         ),
                         onTap: () {
-                          CometChatUIEvents.ccComposeMessage(
+                          ConvoKitUIEvents.ccComposeMessage(
                             msg,
                             MessageEditStatus.inProgress,
                           );
@@ -1327,7 +1327,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
   }
 
   /// The AI bottom panel — smart replies, conversation starters and anything
-  /// else published through [CometChatUIEvents.showPanel] at
+  /// else published through [ConvoKitUIEvents.showPanel] at
   /// [CustomUIPosition.messageListBottom].
   ///
   /// Rendered by [_buildContent] for every status, not just the ones that
@@ -1363,11 +1363,11 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
             }
 
             return IgnorePointer(
-              child: CometChatDate(
+              child: ConvoKitDate(
                 date: date,
                 pattern: DateTimePattern.dayDateFormat,
                 customDateString: customDateString,
-                style: widget.dateSeparatorStyle ?? const CometChatDateStyle(),
+                style: widget.dateSeparatorStyle ?? const ConvoKitDateStyle(),
                 dateTimeFormatterCallback: widget.dateTimeFormatterCallback,
               ),
             );
@@ -1379,7 +1379,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
 
   /// Build shimmer placeholder shown during jump-to-message fetch
   Widget _buildJumpShimmer() {
-    return CometChatShimmerEffect(
+    return ConvoKitShimmerEffect(
       colorPalette: _colorPalette,
       child: ListView.builder(
         reverse: true,
@@ -1686,8 +1686,8 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
               (message.type == MessageTypeConstants.audio &&
                   !CometChatVoiceNoteBubble.isVoiceNote(message)));
 
-      bubbleView = CometChatMessageBubble(
-        style: CometChatMessageBubbleStyle(
+      bubbleView = ConvoKitMessageBubble(
+        style: ConvoKitMessageBubbleStyle(
           backgroundColor: backgroundColor,
           backgroundImage: isDeleted
               ? null
@@ -1754,11 +1754,11 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
           dateSeparator = Center(
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: _spacing.padding3 ?? 12),
-              child: CometChatDate(
+              child: ConvoKitDate(
                 date: messageDate,
                 pattern: DateTimePattern.dayDateFormat,
                 customDateString: customDateString,
-                style: widget.dateSeparatorStyle ?? const CometChatDateStyle(),
+                style: widget.dateSeparatorStyle ?? const ConvoKitDateStyle(),
                 dateTimeFormatterCallback: widget.dateTimeFormatterCallback,
               ),
             ),
@@ -1903,7 +1903,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
     // Wrap with swipe-to-reply
     final swipeableWidget = CometChatMessageSwipe(
       enabled: _canSwipe(message),
-      onSwipe: () => CometChatMessageEvents.ccReplyToMessage(message),
+      onSwipe: () => ConvoKitMessageEvents.ccReplyToMessage(message),
       child: messageWidget,
     );
 
@@ -1988,11 +1988,11 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
   }
 
   /// Get avatar widget for incoming messages
-  Widget _getAvatar(User? user, CometChatAvatarStyle? avatarStyle) {
+  Widget _getAvatar(User? user, ConvoKitAvatarStyle? avatarStyle) {
     if (user == null) return const SizedBox();
     return Padding(
       padding: EdgeInsets.only(right: _spacing.padding2 ?? 8),
-      child: CometChatAvatar(
+      child: ConvoKitAvatar(
         image: user.avatar,
         name: user.name,
         width: 36,
@@ -2005,7 +2005,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
   /// Get header view (sender name)
   Widget? _getHeaderView(
     BaseMessage message,
-    CometChatMessageBubbleStyleData? bubbleStyleData,
+    ConvoKitMessageBubbleStyleData? bubbleStyleData,
   ) {
     final template = _resolveTemplate(message);
 
@@ -2635,7 +2635,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
   Widget? _getFooterView(
     BaseMessage message,
     BubbleAlignment alignment,
-    CometChatMessageBubbleStyleData? bubbleStyleData,
+    ConvoKitMessageBubbleStyleData? bubbleStyleData,
   ) {
     final template = _resolveTemplate(message);
 
@@ -2644,7 +2644,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
     }
 
     // In ConvoKit mode, reactions are deferred to v1.1
-    if (CometChatUIKit.isConvoKitMode) {
+    if (ConvoKitUIKit.isConvoKitMode) {
       return null;
     }
 
@@ -2677,7 +2677,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
   /// error100 background, bottom-rounded to fuse with the bubble).
   Widget _buildModerationView(BubbleAlignment alignment, BaseMessage message) {
     final moderationStyle =
-        CometChatThemeHelper.getTheme<CometChatModerationStyle>(
+        ConvoKitThemeHelper.getTheme<CometChatModerationStyle>(
           context: context,
           defaultTheme: CometChatModerationStyle.of,
         ).merge(_cachedOutgoingStyle?.moderationStyle);
@@ -2817,7 +2817,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
   Widget? _getStatusInfoView(
     BaseMessage message,
     BubbleAlignment alignment,
-    CometChatMessageBubbleStyleData? bubbleStyleData, {
+    ConvoKitMessageBubbleStyleData? bubbleStyleData, {
     bool showTimestamp = true,
     bool receiptErrorOnly = false,
   }) {
@@ -2973,7 +2973,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
   /// never be silent.
   Widget _getReceiptIcon(
     BaseMessage message,
-    CometChatMessageBubbleStyleData? bubbleStyleData, {
+    ConvoKitMessageBubbleStyleData? bubbleStyleData, {
     bool errorOnly = false,
   }) {
     // Moderated messages always show the error icon regardless of delivery
@@ -3010,7 +3010,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
               break;
           }
         }
-        return CometChatReceipt(
+        return ConvoKitReceipt(
           status: status,
           size: 16,
           style: bubbleStyleData?.messageReceiptStyle,
@@ -3027,7 +3027,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
   Widget? _getThreadView(
     BaseMessage message,
     BubbleAlignment alignment,
-    CometChatMessageBubbleStyleData? bubbleStyleData,
+    ConvoKitMessageBubbleStyleData? bubbleStyleData,
   ) {
     // Seed the notifier with the model's current count so it has the right
     // baseline before any live increments arrive.
@@ -3098,14 +3098,14 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
 
   /// The timestamp shown on a bubble: [ConvoKitMessageList.datePattern] when
   /// set, else the `time` of the list's [DateTimeFormatterCallback], else the
-  /// app-wide one, else `h:mm am/pm`. Same fallback order as [CometChatDate].
+  /// app-wide one, else `h:mm am/pm`. Same fallback order as [ConvoKitDate].
   String _formatTime(BaseMessage message, DateTime dateTime) {
     final custom = widget.datePattern?.call(message);
     if (custom != null) return custom;
     final millis = dateTime.millisecondsSinceEpoch;
     final fromCallback =
         widget.dateTimeFormatterCallback?.time(millis) ??
-        CometChatUIKit.authenticationSettings?.dateTimeFormatterCallback?.time(
+        ConvoKitUIKit.authenticationSettings?.dateTimeFormatterCallback?.time(
           millis,
         );
     if (fromCallback != null) return fromCallback;
@@ -3213,8 +3213,8 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
         ? _buildModerationView(alignment, message)
         : null;
 
-    return CometChatMessageBubble(
-      style: CometChatMessageBubbleStyle(
+    return ConvoKitMessageBubble(
+      style: ConvoKitMessageBubbleStyle(
         backgroundColor: backgroundColor,
         backgroundImage: isDeleted
             ? null
@@ -3327,7 +3327,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
       heroTag: heroTag,
       bubbleSize: bubbleSize,
       favoriteReactions: widget.favoriteReactions,
-      hideReactions: CometChatUIKit.isConvoKitMode
+      hideReactions: ConvoKitUIKit.isConvoKitMode
           ? true
           : (widget.disableReactions == true ||
               widget.hideReactionOption == true),
@@ -3386,7 +3386,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
         case MessageOptionConstants.deleteMessage:
           return widget.hideDeleteMessageOption != true;
         case MessageOptionConstants.editMessage:
-          return CometChatUIKit.isConvoKitMode
+          return ConvoKitUIKit.isConvoKitMode
               ? false
               : widget.hideEditMessageOption != true;
         case MessageOptionConstants.messageInformation:
@@ -3399,7 +3399,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
           );
           return widget.hideReplyInThreadOption != true;
         case MessageOptionConstants.threadSubscription:
-          return CometChatUIKit
+          return ConvoKitUIKit
                       .authenticationSettings
                       ?.enableThreadSubscription ==
                   true &&
@@ -3457,7 +3457,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
             ccLog(
               '[MessageList] Inline reply clicked for message id=${message.id}',
             );
-            CometChatMessageEvents.ccReplyToMessage(message);
+            ConvoKitMessageEvents.ccReplyToMessage(message);
             return;
           }
 
@@ -3536,8 +3536,8 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
 
           // Handle edit message option
           if (option.id == MessageOptionConstants.editMessage) {
-            if (CometChatUIKit.isConvoKitMode) return;
-            CometChatMessageEvents.ccMessageEdited(
+            if (ConvoKitUIKit.isConvoKitMode) return;
+            ConvoKitMessageEvents.ccMessageEdited(
               message,
               MessageEditStatus.inProgress,
             );
@@ -3627,7 +3627,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
         // the threaded header, and the bloc's copy of the thread root all
         // restamp themselves.
         message.threadSubscribed = !wasSubscribed;
-        CometChatMessageEvents.ccThreadSubscriptionChanged(
+        ConvoKitMessageEvents.ccThreadSubscriptionChanged(
           threadId,
           !wasSubscribed,
         );
@@ -3783,9 +3783,9 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
             );
       if (updated != null) {
         if (pin) {
-          CometChatMessageEvents.ccMessagePinned(updated);
+          ConvoKitMessageEvents.ccMessagePinned(updated);
         } else {
-          CometChatMessageEvents.ccMessageUnpinned(updated);
+          ConvoKitMessageEvents.ccMessageUnpinned(updated);
         }
         if (mounted) {
           _showThreadToast(
@@ -3829,9 +3829,9 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
             );
       if (updated != null) {
         if (save) {
-          CometChatMessageEvents.ccMessageSaved(updated);
+          ConvoKitMessageEvents.ccMessageSaved(updated);
         } else {
-          CometChatMessageEvents.ccMessageUnsaved(updated);
+          ConvoKitMessageEvents.ccMessageUnsaved(updated);
         }
         if (mounted) {
           _showThreadToast(
@@ -3946,7 +3946,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
   void _handleDeleteMessage(BaseMessage message) {
     if (!mounted) return;
 
-    CometChatConfirmDialog(
+    ConvoKitConfirmDialog(
       context: context,
       icon: Icon(Icons.delete_outline, color: _colorPalette.error, size: 48),
       title: Text(Translations.of(context).delete, textAlign: TextAlign.center),
@@ -3956,7 +3956,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
       ),
       confirmButtonText: Translations.of(context).delete,
       cancelButtonText: Translations.of(context).cancel,
-      style: CometChatConfirmDialogStyle(
+      style: ConvoKitConfirmDialogStyle(
         confirmButtonBackground: _colorPalette.error,
         confirmButtonTextColor: _colorPalette.white,
       ),
@@ -3971,7 +3971,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
             // and the bubble type is preserved.
             message.deletedAt = updatedMessage.deletedAt ?? DateTime.now();
             message.deletedBy = updatedMessage.deletedBy;
-            CometChatMessageEvents.ccMessageDeleted(
+            ConvoKitMessageEvents.ccMessageDeleted(
               message,
               EventStatus.success,
             );

@@ -4,7 +4,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:cometchat_sdk/cometchat_sdk.dart';
 
 import 'package:convokit/shared_ui/src/cometchat_ui_kit/cometchat_ui_kit.dart'
-    show CometChatUIKit;
+    show ConvoKitUIKit;
 import 'package:convokit/chat_ui/src/message_list/bloc/message_list_bloc.dart';
 import 'package:convokit/chat_ui/src/message_list/bloc/message_list_event.dart';
 import 'package:convokit/chat_ui/src/message_list/bloc/message_list_state.dart';
@@ -517,9 +517,9 @@ void main() {
           // the injected getLoggedInUserUseCase: ENG-34111 swapped them to
           // avoid a platform-channel call per load (see _onLoadMessages).
           // Seed that cache directly, and restore it afterwards.
-          final previous = CometChatUIKit.loggedInUser;
-          CometChatUIKit.loggedInUser = FakeUser();
-          addTearDown(() => CometChatUIKit.loggedInUser = previous);
+          final previous = ConvoKitUIKit.loggedInUser;
+          ConvoKitUIKit.loggedInUser = FakeUser();
+          addTearDown(() => ConvoKitUIKit.loggedInUser = previous);
           final msgs = [FakeTextMessage(1)];
           when(
             () => repo.getMessages(

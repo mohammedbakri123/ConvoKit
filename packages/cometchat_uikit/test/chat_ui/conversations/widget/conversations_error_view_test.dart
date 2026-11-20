@@ -22,9 +22,9 @@ void main() {
                 return ConversationsErrorView(
                   errorMessage: 'Network failure',
                   style: const ConvoKitConversationsStyle(),
-                  colorPalette: CometChatThemeHelper.getColorPalette(context),
-                  spacing: CometChatThemeHelper.getSpacing(context),
-                  typography: CometChatThemeHelper.getTypography(context),
+                  colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+                  spacing: ConvoKitThemeHelper.getSpacing(context),
+                  typography: ConvoKitThemeHelper.getTypography(context),
                 );
               },
             ),
@@ -48,9 +48,9 @@ void main() {
               return ConversationsErrorView(
                 errorMessage: 'x',
                 style: const ConvoKitConversationsStyle(),
-                colorPalette: CometChatThemeHelper.getColorPalette(context),
-                spacing: CometChatThemeHelper.getSpacing(context),
-                typography: CometChatThemeHelper.getTypography(context),
+                colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+                spacing: ConvoKitThemeHelper.getSpacing(context),
+                typography: ConvoKitThemeHelper.getTypography(context),
                 customView: (_) =>
                     const Text('Custom error', key: Key('custom-err')),
               );
@@ -78,9 +78,9 @@ void main() {
                 style: const ConvoKitConversationsStyle(
                   errorStateTextColor: customColor,
                 ),
-                colorPalette: CometChatThemeHelper.getColorPalette(context),
-                spacing: CometChatThemeHelper.getSpacing(context),
-                typography: CometChatThemeHelper.getTypography(context),
+                colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+                spacing: ConvoKitThemeHelper.getSpacing(context),
+                typography: ConvoKitThemeHelper.getTypography(context),
               );
             },
           ),

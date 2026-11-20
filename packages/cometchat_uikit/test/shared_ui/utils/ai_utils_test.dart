@@ -163,13 +163,13 @@ void main() {
     testWidgets('its default caption is the two-line apology', (tester) async {
       Color? secondary;
       await _pump(tester, (context) {
-        final palette = CometChatThemeHelper.getColorPalette(context);
+        final palette = ConvoKitThemeHelper.getColorPalette(context);
         secondary = palette.textSecondary;
         return AIUtils.getErrorText(
           context,
           palette,
-          CometChatThemeHelper.getTypography(context),
-          CometChatThemeHelper.getSpacing(context),
+          ConvoKitThemeHelper.getTypography(context),
+          ConvoKitThemeHelper.getSpacing(context),
         );
       });
 
@@ -186,9 +186,9 @@ void main() {
         tester,
         (context) => AIUtils.getErrorText(
           context,
-          CometChatThemeHelper.getColorPalette(context),
-          CometChatThemeHelper.getTypography(context),
-          CometChatThemeHelper.getSpacing(context),
+          ConvoKitThemeHelper.getColorPalette(context),
+          ConvoKitThemeHelper.getTypography(context),
+          ConvoKitThemeHelper.getSpacing(context),
           errorStateText: 'No summary available',
           errorTextStyle: _text,
         ),

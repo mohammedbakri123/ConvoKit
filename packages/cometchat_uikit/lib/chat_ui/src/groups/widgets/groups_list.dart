@@ -66,13 +66,13 @@ class GroupsList extends StatelessWidget {
   final ConvoKitGroupsStyle style;
 
   /// The color palette used for styling.
-  final CometChatColorPalette colorPalette;
+  final ConvoKitColorPalette colorPalette;
 
   /// The spacing configuration for padding and margins.
-  final CometChatSpacing spacing;
+  final ConvoKitSpacing spacing;
 
   /// The typography configuration for text styles.
-  final CometChatTypography typography;
+  final ConvoKitTypography typography;
 
   /// Optional scroll controller for the list.
   final ScrollController? scrollController;
@@ -128,10 +128,10 @@ class GroupsList extends StatelessWidget {
   options;
 
   /// Style for the avatar.
-  final CometChatAvatarStyle? avatarStyle;
+  final ConvoKitAvatarStyle? avatarStyle;
 
   /// Style for the status indicator.
-  final CometChatStatusIndicatorStyle? statusIndicatorStyle;
+  final ConvoKitStatusIndicatorStyle? statusIndicatorStyle;
 
   /// Custom icon for private groups.
   final Widget? privateGroupIcon;
@@ -190,7 +190,7 @@ class GroupsList extends StatelessWidget {
     if (loadingStateView != null) {
       return Center(child: loadingStateView!(context));
     }
-    return CometChatShimmerEffect(
+    return ConvoKitShimmerEffect(
       colorPalette: colorPalette,
       child: ListView.builder(
         itemCount: 20,
@@ -260,7 +260,7 @@ class GroupsList extends StatelessWidget {
               padding: EdgeInsets.only(bottom: spacing.padding5 ?? 0),
               child: Image.asset(
                 AssetConstants(
-                  CometChatThemeHelper.getBrightness(context),
+                  ConvoKitThemeHelper.getBrightness(context),
                 ).emptyGroupList,
                 package: UIConstants.packageName,
                 width: 120,

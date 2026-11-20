@@ -87,14 +87,14 @@ class _ConvoKitSavedMessagesState extends State<ConvoKitSavedMessages> {
       onUpdated: _applyUpdated,
       onRemoved: _applyRemoved,
     );
-    CometChatMessageEvents.addMessagesListener(_listenerId, _kitEvents);
+    ConvoKitMessageEvents.addMessagesListener(_listenerId, _kitEvents);
     CometChatSdkAdapter.addMessageListener(_listenerId, _sdkEvents);
     _fetchAll();
   }
 
   @override
   void dispose() {
-    CometChatMessageEvents.removeMessagesListener(_listenerId);
+    ConvoKitMessageEvents.removeMessagesListener(_listenerId);
     CometChatSdkAdapter.removeMessageListener(_listenerId);
     super.dispose();
   }
@@ -190,10 +190,10 @@ class _ConvoKitSavedMessagesState extends State<ConvoKitSavedMessages> {
 
   /// Compact Material-style dialog chrome (filled primary confirm button,
   /// reduced sizes) — mirrors the message list's pin/save dialogs.
-  CometChatConfirmDialogStyle _confirmDialogStyle(BuildContext context) {
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final typography = CometChatThemeHelper.getTypography(context);
-    return CometChatConfirmDialogStyle(
+  ConvoKitConfirmDialogStyle _confirmDialogStyle(BuildContext context) {
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
+    return ConvoKitConfirmDialogStyle(
       confirmButtonBackground: colorPalette.primary,
       confirmButtonTextColor: colorPalette.white,
       titleTextStyle: TextStyle(
@@ -227,7 +227,7 @@ class _ConvoKitSavedMessagesState extends State<ConvoKitSavedMessages> {
 
   Future<void> _unsave(BaseMessage message) async {
     final translations = Translations.of(context);
-    CometChatConfirmDialog(
+    ConvoKitConfirmDialog(
       context: context,
       style: _confirmDialogStyle(context),
       intentPadding: const EdgeInsets.symmetric(horizontal: 40),
@@ -241,7 +241,7 @@ class _ConvoKitSavedMessagesState extends State<ConvoKitSavedMessages> {
             const ConvoKitSavedMessagesStyle()
                 .merge(widget.style)
                 .unsaveIconColor ??
-            CometChatThemeHelper.getColorPalette(context).iconHighlight,
+            ConvoKitThemeHelper.getColorPalette(context).iconHighlight,
         size: 32,
       ),
       title: Text(translations.unsaveConfirmTitle, textAlign: TextAlign.center),
@@ -262,7 +262,7 @@ class _ConvoKitSavedMessagesState extends State<ConvoKitSavedMessages> {
           },
         );
         if (updated != null) {
-          CometChatMessageEvents.ccMessageUnsaved(updated);
+          ConvoKitMessageEvents.ccMessageUnsaved(updated);
           if (mounted) {
             CometChatThreadToast.show(
               context,
@@ -285,7 +285,7 @@ class _ConvoKitSavedMessagesState extends State<ConvoKitSavedMessages> {
   ) {
     final receiver = message.receiver;
     final sender = message.sender;
-    final loggedInUid = CometChatUIKit.loggedInUser?.uid;
+    final loggedInUid = ConvoKitUIKit.loggedInUser?.uid;
 
     // Thread replies are NOT titled by their parent conversation — a reply
     // buried in a thread isn't "a message in #group", so showing the group
@@ -330,8 +330,8 @@ class _ConvoKitSavedMessagesState extends State<ConvoKitSavedMessages> {
 
   @override
   Widget build(BuildContext context) {
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final typography = CometChatThemeHelper.getTypography(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
     final style = const ConvoKitSavedMessagesStyle().merge(widget.style);
     final translations = Translations.of(context);
 
@@ -397,11 +397,11 @@ class _ConvoKitSavedMessagesState extends State<ConvoKitSavedMessages> {
   }
 
   Widget _buildBody(
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
     ConvoKitSavedMessagesStyle style,
   ) {
-    final spacing = CometChatThemeHelper.getSpacing(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
     final translations = Translations.of(context);
 
     if (_loading) {
@@ -497,12 +497,12 @@ class _ConvoKitSavedMessagesState extends State<ConvoKitSavedMessages> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(right: spacing.padding3 ?? 12),
-                  child: CometChatAvatar(
+                  child: ConvoKitAvatar(
                     name: conversation.name,
                     image: conversation.avatar,
                     height: 48,
                     width: 48,
-                    style: CometChatAvatarStyle(
+                    style: ConvoKitAvatarStyle(
                       placeHolderTextStyle: TextStyle(
                         fontSize: typography.heading2?.bold?.fontSize,
                         fontWeight: typography.heading2?.bold?.fontWeight,
@@ -564,12 +564,12 @@ class _ConvoKitSavedMessagesState extends State<ConvoKitSavedMessages> {
                             // this screen is saved, and its pin state shows
                             // in the conversation instead. The trailing
                             // caption is just the saved date.
-                            CometChatDate(
+                            ConvoKitDate(
                               date: savedAt,
                               padding: EdgeInsets.zero,
                               isTransparentBackground: true,
                               pattern: DateTimePattern.dayDateTimeFormat,
-                              style: CometChatDateStyle(
+                              style: ConvoKitDateStyle(
                                 backgroundColor: colorPalette.transparent,
                                 border: Border.all(
                                   width: 0,
@@ -599,7 +599,7 @@ class _ConvoKitSavedMessagesState extends State<ConvoKitSavedMessages> {
 }
 
 /// Kit-event delegate: reacts to save/unsave actions taken on this device.
-class _SavedKitEventsDelegate with CometChatMessageEventListener {
+class _SavedKitEventsDelegate with ConvoKitMessageEventListener {
   _SavedKitEventsDelegate({
     required this.onSaved,
     required this.onUnsaved,

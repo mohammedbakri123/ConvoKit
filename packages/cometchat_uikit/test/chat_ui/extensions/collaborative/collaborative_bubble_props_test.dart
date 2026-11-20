@@ -118,8 +118,8 @@ Future<void> _settle(WidgetTester tester) async {
   }
 }
 
-CometChatMessageBubble _messageBubble(WidgetTester tester) => tester
-    .widget<CometChatMessageBubble>(find.byType(CometChatMessageBubble).first);
+ConvoKitMessageBubble _messageBubble(WidgetTester tester) => tester
+    .widget<ConvoKitMessageBubble>(find.byType(ConvoKitMessageBubble).first);
 
 /// A 1x1 transparent PNG — enough for a DecorationImage that never paints.
 final _pixel = base64Decode(
@@ -148,8 +148,8 @@ void _ignorePlatformOnlyErrors() {
 
 void main() {
   setUpAll(() => registerFallbackValue(_document()));
-  setUp(() => CometChatUIKit.loggedInUser = _me);
-  tearDown(() => CometChatUIKit.loggedInUser = null);
+  setUp(() => ConvoKitUIKit.loggedInUser = _me);
+  tearDown(() => ConvoKitUIKit.loggedInUser = null);
 
   group('the bubble itself', () {
     testWidgets('backgroundColor fills the header band', (tester) async {
@@ -311,21 +311,21 @@ void main() {
       await tester.pumpWidget(
         _list(
           const CometChatCollaborativeBubbleStyle(
-            messageBubbleAvatarStyle: CometChatAvatarStyle(
+            messageBubbleAvatarStyle: ConvoKitAvatarStyle(
               backgroundColor: Color(0xFF1B0707),
             ),
           ),
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('messageBubbleDateStyle reaches the bubble', (tester) async {
       await tester.pumpWidget(
         _list(
           const CometChatCollaborativeBubbleStyle(
-            messageBubbleDateStyle: CometChatDateStyle(
+            messageBubbleDateStyle: ConvoKitDateStyle(
               textStyle: TextStyle(color: Color(0xFF1B0808)),
             ),
           ),
@@ -365,7 +365,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('threadedMessageIndicatorIconColor reaches the bubble', (
@@ -379,7 +379,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('messageReceiptStyle reaches my own bubble', (tester) async {
@@ -394,7 +394,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
   });
 

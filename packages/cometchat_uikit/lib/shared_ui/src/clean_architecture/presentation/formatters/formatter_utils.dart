@@ -73,8 +73,8 @@ class FormatterUtils {
       );
     }
 
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final typography = CometChatThemeHelper.getTypography(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
 
     final defaultTextStyle =
         textStyle ??
@@ -202,8 +202,8 @@ class FormatterUtils {
     AttributedText attr,
     BuildContext context,
     BubbleAlignment? alignment,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
   ) {
     final displayText = attr.underlyingText ?? '';
 
@@ -337,7 +337,7 @@ class FormatterUtils {
   ///It takes [text], [formatters], [theme], [alignment] and [forConversation] as a parameter
   ///[text] is a string which needs to be styled
   ///[formatters] is a list of [CometChatTextFormatter] which is used to style the text
-  ///[theme] is a object of [CometChatTheme] which is used to style the text
+  ///[theme] is a object of [ConvoKitTheme] which is used to style the text
   ///[alignment] is a object of [BubbleAlignment] which is used to style the text
   ///[forConversation] is a boolean which is used to style the text in the conversation subtitle
   static List<InlineSpan> buildTextSpan(
@@ -359,10 +359,10 @@ class FormatterUtils {
         forConversation: forConversation,
       );
     }
-    CometChatColorPalette colorPalette = CometChatThemeHelper.getColorPalette(
+    ConvoKitColorPalette colorPalette = ConvoKitThemeHelper.getColorPalette(
       context,
     );
-    CometChatTypography typography = CometChatThemeHelper.getTypography(
+    ConvoKitTypography typography = ConvoKitThemeHelper.getTypography(
       context,
     );
 
@@ -712,10 +712,10 @@ class FormatterUtils {
         forConversation: true,
       );
     }
-    CometChatColorPalette colorPalette = CometChatThemeHelper.getColorPalette(
+    ConvoKitColorPalette colorPalette = ConvoKitThemeHelper.getColorPalette(
       context,
     );
-    CometChatTypography typography = CometChatThemeHelper.getTypography(
+    ConvoKitTypography typography = ConvoKitThemeHelper.getTypography(
       context,
     );
 
@@ -876,8 +876,8 @@ class FormatterUtils {
     required BubbleAlignment? alignment,
     required bool forConversation,
     required TextStyle? textStyle,
-    required CometChatColorPalette colorPalette,
-    required CometChatTypography typography,
+    required ConvoKitColorPalette colorPalette,
+    required ConvoKitTypography typography,
   }) {
     final displayText =
         attributedText.underlyingText ??

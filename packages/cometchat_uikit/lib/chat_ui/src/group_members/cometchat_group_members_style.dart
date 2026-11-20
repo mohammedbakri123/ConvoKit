@@ -133,16 +133,16 @@ class ConvoKitGroupMembersStyle
   final Color? listItemSelectedBackgroundColor;
 
   ///[confirmDialogStyle] provides styling for the confirm dialog
-  final CometChatConfirmDialogStyle? confirmDialogStyle;
+  final ConvoKitConfirmDialogStyle? confirmDialogStyle;
 
   ///[listItemStyle] style for every list item
   final ListItemStyle? listItemStyle;
 
   ///[avatarStyle] set style for avatar
-  final CometChatAvatarStyle? avatarStyle;
+  final ConvoKitAvatarStyle? avatarStyle;
 
   ///[statusIndicatorStyle] set style for status indicator
-  final CometChatStatusIndicatorStyle? statusIndicatorStyle;
+  final ConvoKitStatusIndicatorStyle? statusIndicatorStyle;
 
   ///[retryButtonBackgroundColor] provides background color for retry button
   final Color? retryButtonBackgroundColor;
@@ -249,10 +249,10 @@ class ConvoKitGroupMembersStyle
     BorderSide? checkboxBorder,
     BorderRadiusGeometry? checkboxBorderRadius,
     Color? listItemSelectedBackgroundColor,
-    CometChatConfirmDialogStyle? confirmDialogStyle,
+    ConvoKitConfirmDialogStyle? confirmDialogStyle,
     ListItemStyle? listItemStyle,
-    CometChatAvatarStyle? avatarStyle,
-    CometChatStatusIndicatorStyle? statusIndicatorStyle,
+    ConvoKitAvatarStyle? avatarStyle,
+    ConvoKitStatusIndicatorStyle? statusIndicatorStyle,
     TextStyle? errorStateSubtitleStyle,
     Color? retryButtonBackgroundColor,
     Color? retryButtonTextColor,

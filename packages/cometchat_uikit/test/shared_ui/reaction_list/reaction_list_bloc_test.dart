@@ -113,7 +113,7 @@ class _FakeSdkClient extends Fake implements sdk.SdkClient {
 }
 
 /// Records what the kit event bus is told about an edited message.
-class _EditRecorder with CometChatMessageEventListener {
+class _EditRecorder with ConvoKitMessageEventListener {
   final List<BaseMessage> edited = [];
 
   @override
@@ -688,14 +688,14 @@ void main() {
 
   group('the message-event listener', () {
     test('reaction events on the bus reach the bloc', () async {
-      final before = CometChatMessageEvents.messagesListener.length;
+      final before = ConvoKitMessageEvents.messagesListener.length;
       final bloc = makeBloc({
         all: [
           page([reaction('👍', 'u1')]),
         ],
       });
       expect(
-        CometChatMessageEvents.messagesListener.length,
+        ConvoKitMessageEvents.messagesListener.length,
         before + 1,
         reason: 'the bloc registers itself on construction',
       );
@@ -703,7 +703,7 @@ void main() {
       bloc.add(const InitializeReactionList());
       await settle();
 
-      CometChatMessageEvents.onMessageReactionAdded(
+      ConvoKitMessageEvents.onMessageReactionAdded(
         ReactionEvent(reaction: reaction('🎉', 'u2')),
       );
       await settle();
@@ -712,7 +712,7 @@ void main() {
         '🎉',
       ]);
 
-      CometChatMessageEvents.onMessageReactionRemoved(
+      ConvoKitMessageEvents.onMessageReactionRemoved(
         ReactionEvent(reaction: reaction('🎉', 'u2')),
       );
       await settle();
@@ -720,7 +720,7 @@ void main() {
 
       await bloc.close();
       expect(
-        CometChatMessageEvents.messagesListener.length,
+        ConvoKitMessageEvents.messagesListener.length,
         before,
         reason: 'close() must deregister, or the bloc leaks',
       );
@@ -736,8 +736,8 @@ void main() {
       await settle();
       final before = bloc.state;
 
-      CometChatMessageEvents.onMessageReactionAdded(ReactionEvent());
-      CometChatMessageEvents.onMessageReactionRemoved(ReactionEvent());
+      ConvoKitMessageEvents.onMessageReactionAdded(ReactionEvent());
+      ConvoKitMessageEvents.onMessageReactionRemoved(ReactionEvent());
       await settle();
 
       expect(bloc.state, same(before));
@@ -836,9 +836,9 @@ void main() {
         onRemoveReaction = (_, _) async => updated;
 
         final recorder = _EditRecorder();
-        CometChatMessageEvents.addMessagesListener('edit_recorder', recorder);
+        ConvoKitMessageEvents.addMessagesListener('edit_recorder', recorder);
         addTearDown(
-          () => CometChatMessageEvents.removeMessagesListener('edit_recorder'),
+          () => ConvoKitMessageEvents.removeMessagesListener('edit_recorder'),
         );
 
         final mine = reaction('👍', 'u1');
@@ -861,9 +861,9 @@ void main() {
 
     test('a success with no messageObject announces nothing', () async {
       final recorder = _EditRecorder();
-      CometChatMessageEvents.addMessagesListener('edit_recorder2', recorder);
+      ConvoKitMessageEvents.addMessagesListener('edit_recorder2', recorder);
       addTearDown(
-        () => CometChatMessageEvents.removeMessagesListener('edit_recorder2'),
+        () => ConvoKitMessageEvents.removeMessagesListener('edit_recorder2'),
       );
 
       final mine = reaction('👍', 'u1');

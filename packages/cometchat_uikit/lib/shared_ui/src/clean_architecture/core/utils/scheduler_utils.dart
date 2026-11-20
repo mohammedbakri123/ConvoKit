@@ -1,5 +1,5 @@
 import 'dart:convert';
-// The timezone copy CometChatUIKit.init initialises. SchedulerUtils used to
+// The timezone copy ConvoKitUIKit.init initialises. SchedulerUtils used to
 // import a second, identical copy whose database nothing ever filled.
 import '../../../utils/timezone_utils/date_time.dart';
 import '../../../utils/timezone_utils/env.dart';
@@ -12,7 +12,7 @@ import '../../../logging/cometchat_log.dart';
 import '../../data/models/interactive_message/scheduler_message.dart'
     show TimeRange, SchedulerMessage;
 import '../../../../cometchat_uikit_shared.dart'
-    show Translations, CometChatUIKit;
+    show Translations, ConvoKitUIKit;
 
 enum TimeFormat { twelveHour, twentyFourHour }
 
@@ -1775,7 +1775,7 @@ class SchedulerUtils {
 
   static bool isScheduleButtonDisabled(SchedulerMessage schedulerMessage) {
     bool isSender =
-        schedulerMessage.sender?.uid == CometChatUIKit.loggedInUser?.uid;
+        schedulerMessage.sender?.uid == ConvoKitUIKit.loggedInUser?.uid;
     bool buttonIsDisabled =
         isSender && !schedulerMessage.allowSenderInteraction;
     return buttonIsDisabled;

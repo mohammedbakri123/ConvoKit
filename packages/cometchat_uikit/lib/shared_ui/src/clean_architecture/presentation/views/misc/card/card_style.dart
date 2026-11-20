@@ -23,5 +23,5 @@ class CardStyle {
   final TextStyle? titleStyle;
 
   ///[avatarStyle] sets style for avatar
-  final CometChatAvatarStyle? avatarStyle;
+  final ConvoKitAvatarStyle? avatarStyle;
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../../../../../cometchat_uikit_shared.dart';
 
-///[CometChatBadgeStyle] is a data class that has styling-related properties
-///to customize the appearance of [CometChatBadge]
+///[ConvoKitBadgeStyle] is a data class that has styling-related properties
+///to customize the appearance of [ConvoKitBadge]
 ///``` dart
-///CometChatBadgeStyle(
+///ConvoKitBadgeStyle(
 /// textStyle: TextStyle(
 /// color: Colors.white,
 /// fontSize: 12,
@@ -15,8 +15,8 @@ import '../../../../../../cometchat_uikit_shared.dart';
 /// border: Border.all(color: Colors.white, width: 0),
 /// );
 ///```
-class CometChatBadgeStyle extends ThemeExtension<CometChatBadgeStyle> {
-  const CometChatBadgeStyle({
+class ConvoKitBadgeStyle extends ThemeExtension<ConvoKitBadgeStyle> {
+  const ConvoKitBadgeStyle({
     this.textStyle,
     this.textColor,
     this.backgroundColor,
@@ -43,11 +43,11 @@ class CometChatBadgeStyle extends ThemeExtension<CometChatBadgeStyle> {
   ///[boxShape] shape of the badge
   final BoxShape? boxShape;
 
-  static CometChatBadgeStyle of(BuildContext context) =>
-      const CometChatBadgeStyle();
+  static ConvoKitBadgeStyle of(BuildContext context) =>
+      const ConvoKitBadgeStyle();
 
   @override
-  CometChatBadgeStyle copyWith({
+  ConvoKitBadgeStyle copyWith({
     Color? backgroundColor,
     Border? border,
     TextStyle? textStyle,
@@ -55,7 +55,7 @@ class CometChatBadgeStyle extends ThemeExtension<CometChatBadgeStyle> {
     BorderRadiusGeometry? borderRadius,
     BoxShape? boxShape,
   }) {
-    return CometChatBadgeStyle(
+    return ConvoKitBadgeStyle(
       backgroundColor: backgroundColor ?? this.backgroundColor,
       border: border ?? this.border,
       textStyle: textStyle ?? this.textStyle,
@@ -65,7 +65,7 @@ class CometChatBadgeStyle extends ThemeExtension<CometChatBadgeStyle> {
     );
   }
 
-  CometChatBadgeStyle merge(CometChatBadgeStyle? style) {
+  ConvoKitBadgeStyle merge(ConvoKitBadgeStyle? style) {
     if (style == null) return this;
     return copyWith(
       backgroundColor: style.backgroundColor,
@@ -78,14 +78,14 @@ class CometChatBadgeStyle extends ThemeExtension<CometChatBadgeStyle> {
   }
 
   @override
-  CometChatBadgeStyle lerp(
-    ThemeExtension<CometChatBadgeStyle>? other,
+  ConvoKitBadgeStyle lerp(
+    ThemeExtension<ConvoKitBadgeStyle>? other,
     double t,
   ) {
-    if (other is! CometChatBadgeStyle) {
+    if (other is! ConvoKitBadgeStyle) {
       return this;
     }
-    return CometChatBadgeStyle(
+    return ConvoKitBadgeStyle(
       backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t),
       border: Border.lerp(border, other.border, t),
       textStyle: TextStyle.lerp(textStyle, other.textStyle, t),

@@ -93,7 +93,7 @@ class ConvoKitMessageListStyle
   final BorderRadiusGeometry? borderRadius;
 
   ///[avatarStyle] set style for avatar visible in leading view of message bubble
-  final CometChatAvatarStyle? avatarStyle;
+  final ConvoKitAvatarStyle? avatarStyle;
 
   // ///[emptyStateTextStyle] defines the style of the text to be displayed when the message list is empty
   final TextStyle? emptyStateTextStyle;
@@ -135,7 +135,7 @@ class ConvoKitMessageListStyle
   final CometChatMentionsStyle? mentionsStyle;
 
   ///[actionBubbleStyle] is a parameter used to set the style for group actions
-  final CometChatActionBubbleStyle? actionBubbleStyle;
+  final ConvoKitActionBubbleStyle? actionBubbleStyle;
 
   ///[reactionListStyle] is used to set the style for the reaction list
   final CometChatReactionListStyle? reactionListStyle;
@@ -161,7 +161,7 @@ class ConvoKitMessageListStyle
     Color? backgroundColor,
     BoxBorder? border,
     BorderRadiusGeometry? borderRadius,
-    CometChatAvatarStyle? messageBubbleAvatarStyle,
+    ConvoKitAvatarStyle? messageBubbleAvatarStyle,
     Widget? loadingStateIcon,
     double? loadingStateIconSize,
     Color? loadingStateIconColor,
@@ -178,7 +178,7 @@ class ConvoKitMessageListStyle
     CometChatMessageInformationStyle? messageInformationStyle,
     ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
     CometChatMentionsStyle? mentionsStyle,
-    CometChatActionBubbleStyle? actionBubbleStyle,
+    ConvoKitActionBubbleStyle? actionBubbleStyle,
     CometChatReactionListStyle? reactionListStyle,
     CometChatReactionsStyle? reactionsStyle,
     Color? emptyChatGreetingTitleTextColor,

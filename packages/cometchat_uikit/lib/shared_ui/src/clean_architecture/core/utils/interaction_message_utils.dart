@@ -152,9 +152,9 @@ class InteractiveMessageUtils {
   }) {
     Map<String, dynamic> requestData = {
       InteractiveMessageConstants.appID:
-          CometChatUIKit.authenticationSettings?.appId ?? "",
+          ConvoKitUIKit.authenticationSettings?.appId ?? "",
       InteractiveMessageConstants.region:
-          CometChatUIKit.authenticationSettings?.region ?? "",
+          ConvoKitUIKit.authenticationSettings?.region ?? "",
       InteractiveMessageConstants.trigger:
           InteractiveMessageConstants.uiMessageInteracted,
       InteractiveMessageConstants.data: {

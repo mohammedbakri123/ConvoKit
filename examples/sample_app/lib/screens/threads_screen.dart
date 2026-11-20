@@ -22,8 +22,8 @@ class InboxSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = CometChatThemeHelper.getColorPalette(context);
-    final typography = CometChatThemeHelper.getTypography(context);
+    final palette = ConvoKitThemeHelper.getColorPalette(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
     return Container(
       color: palette.background1,
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),

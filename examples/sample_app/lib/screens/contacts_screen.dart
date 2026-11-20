@@ -61,9 +61,9 @@ class _ContactsScreenState extends State<ContactsScreen>
 
   @override
   Widget build(BuildContext context) {
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final typography = CometChatThemeHelper.getTypography(context);
-    final spacing = CometChatThemeHelper.getSpacing(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
     return CometChatListBase(
       title: cc.Translations.of(context).newChat,
       showBackButton: true,

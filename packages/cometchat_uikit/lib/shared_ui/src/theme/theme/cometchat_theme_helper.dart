@@ -1,11 +1,11 @@
 import '../../../cometchat_uikit_shared.dart';
 import 'package:flutter/material.dart';
 
-///[CometChatThemeHelper] is a class that gives the styling to the text displayed in the buttons
-class CometChatThemeHelper {
+///[ConvoKitThemeHelper] is a class that gives the styling to the text displayed in the buttons
+class ConvoKitThemeHelper {
   /// Get the color palette from the current theme or return the default color palette
-  static CometChatColorPalette getColorPalette(BuildContext context) {
-    return CometChatColorPalette(
+  static ConvoKitColorPalette getColorPalette(BuildContext context) {
+    return ConvoKitColorPalette(
       //Primary Colour
       primary: _getColorPrimary(context),
       //Extended Primary Color
@@ -81,9 +81,9 @@ class CometChatThemeHelper {
     final mBrightness = getBrightness(context);
     final theme = Theme.of(context);
     final primaryColor = theme.colorScheme.primary;
-    final colorPalette = theme.extension<CometChatColorPalette>();
+    final colorPalette = theme.extension<ConvoKitColorPalette>();
 
-    // First preference: Use the color from the CometChatColorPalette extension if available
+    // First preference: Use the color from the ConvoKitColorPalette extension if available
     if (colorPalette?.primary != null) {
       return colorPalette!.primary!;
     }
@@ -108,7 +108,7 @@ class CometChatThemeHelper {
     final mBrightness = getBrightness(context);
 
     final primaryColor = _getColorPrimary(context);
-    final ccColorPalette = Theme.of(context).extension<CometChatColorPalette>();
+    final ccColorPalette = Theme.of(context).extension<ConvoKitColorPalette>();
 
     final blendColorsPercentage = mBrightness == Brightness.light
         ? [0.96, 0.88, 0.77, 0.66, 0.55, 0.44, 0.33, 0.22, 0.11, 0.11]
@@ -197,7 +197,7 @@ class CometChatThemeHelper {
   /// Neutral colors
   static MaterialColor _getColorNeutral(BuildContext context) {
     final mBrightness = getBrightness(context);
-    final ccColorPalette = Theme.of(context).extension<CometChatColorPalette>();
+    final ccColorPalette = Theme.of(context).extension<ConvoKitColorPalette>();
     const neutral = Color(0xFF141414);
 
     MaterialColor neutralColorShades =
@@ -436,10 +436,10 @@ class CometChatThemeHelper {
   /// Private helper function to get color from CCColorPalette
   static Color _getColor(
     BuildContext context,
-    Color? Function(CometChatColorPalette?) colorFunction,
+    Color? Function(ConvoKitColorPalette?) colorFunction,
     Color defaultColor,
   ) {
-    final ccColorPalette = _getThemeExtensionData<CometChatColorPalette>(
+    final ccColorPalette = _getThemeExtensionData<ConvoKitColorPalette>(
       context,
     );
     return colorFunction(ccColorPalette) ?? defaultColor;
@@ -471,19 +471,19 @@ class CometChatThemeHelper {
   }
 
   /// Get the default spacing values used in the UI components
-  static CometChatSpacing getSpacing(BuildContext context) {
-    CometChatSpacing? themeSpacing = Theme.of(
+  static ConvoKitSpacing getSpacing(BuildContext context) {
+    ConvoKitSpacing? themeSpacing = Theme.of(
       context,
-    ).extension<CometChatSpacing>();
-    CometChatSpacing defaultSpacing = CometChatSpacing();
+    ).extension<ConvoKitSpacing>();
+    ConvoKitSpacing defaultSpacing = ConvoKitSpacing();
     return defaultSpacing.merge(themeSpacing);
   }
 
   static Brightness getBrightness(BuildContext context) {
-    if (CometChatThemeMode.mode == ThemeMode.system) {
+    if (ConvoKitThemeMode.mode == ThemeMode.system) {
       return MediaQuery.of(context).platformBrightness;
     } else {
-      if (CometChatThemeMode.mode == ThemeMode.light) {
+      if (ConvoKitThemeMode.mode == ThemeMode.light) {
         return Brightness.light;
       } else {
         return Brightness.dark;
@@ -492,8 +492,8 @@ class CometChatThemeHelper {
   }
 
   /// Get the default text styles used in the UI components
-  static CometChatTypography getTypography(BuildContext context) {
-    return CometChatTypography(
+  static ConvoKitTypography getTypography(BuildContext context) {
+    return ConvoKitTypography(
       heading1: CometChatTextStyleHeading1.of(context),
       heading2: CometChatTextStyleHeading2.of(context),
       heading3: CometChatTextStyleHeading3.of(context),

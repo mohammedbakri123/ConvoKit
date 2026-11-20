@@ -14,9 +14,9 @@ class TransferOwnershipScreen extends StatefulWidget {
 }
 
 class _TransferOwnershipScreenState extends State<TransferOwnershipScreen> {
-  late CometChatColorPalette _colorPalette;
-  late CometChatTypography _typography;
-  late CometChatSpacing _spacing;
+  late ConvoKitColorPalette _colorPalette;
+  late ConvoKitTypography _typography;
+  late ConvoKitSpacing _spacing;
 
   bool _isLoading = false;
 
@@ -26,9 +26,9 @@ class _TransferOwnershipScreenState extends State<TransferOwnershipScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _colorPalette = CometChatThemeHelper.getColorPalette(context);
-    _typography = CometChatThemeHelper.getTypography(context);
-    _spacing = CometChatThemeHelper.getSpacing(context);
+    _colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    _typography = ConvoKitThemeHelper.getTypography(context);
+    _spacing = ConvoKitThemeHelper.getSpacing(context);
   }
 
   void _onTransferPressed() {
@@ -70,7 +70,7 @@ class _TransferOwnershipScreenState extends State<TransferOwnershipScreen> {
   }
 
   void _showConfirmDialog(GroupMember member) {
-    CometChatConfirmDialog(
+    ConvoKitConfirmDialog(
       context: context,
       showIcon: false,
       title: const Text('Ownership Transfer', textAlign: TextAlign.center),
@@ -80,7 +80,7 @@ class _TransferOwnershipScreenState extends State<TransferOwnershipScreen> {
       ),
       confirmButtonText: 'Transfer',
       cancelButtonText: 'Cancel',
-      style: CometChatConfirmDialogStyle(
+      style: ConvoKitConfirmDialogStyle(
         confirmButtonBackground: _colorPalette.primary,
         confirmButtonTextColor: _colorPalette.white,
         titleTextStyle: TextStyle(

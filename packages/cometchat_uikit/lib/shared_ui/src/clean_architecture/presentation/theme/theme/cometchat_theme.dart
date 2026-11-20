@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CometChatTheme {
-  CometChatTheme._();
+class ConvoKitTheme {
+  ConvoKitTheme._();
 
   static Iterable<ThemeExtension<dynamic>>? mergeThemeExtensions(
     BuildContext context,

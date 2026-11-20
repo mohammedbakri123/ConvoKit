@@ -48,9 +48,9 @@ class GroupMembersBlocAdapter
     Group group,
     GroupMember member,
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
   ) {
     // Delegate to bloc's getDefaultOptions and convert CometChatGroupMemberOption to CometChatOption
     final options = bloc.getDefaultOptions(

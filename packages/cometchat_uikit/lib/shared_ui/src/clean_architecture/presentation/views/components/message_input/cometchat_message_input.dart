@@ -224,7 +224,7 @@ class _CometChatMessageInputState extends State<CometChatMessageInput> {
     // Update style if changed
     if (widget.style != oldWidget.style && widget.style != null) {
       messageInputStyle =
-          CometChatThemeHelper.getTheme<CometChatMessageInputStyle>(
+          ConvoKitThemeHelper.getTheme<CometChatMessageInputStyle>(
             context: context,
             defaultTheme: CometChatMessageInputStyle.of,
           ).merge(widget.style);
@@ -232,9 +232,9 @@ class _CometChatMessageInputState extends State<CometChatMessageInput> {
   }
 
   late CometChatMessageInputStyle messageInputStyle;
-  late CometChatColorPalette colorPalette;
-  late CometChatSpacing spacing;
-  late CometChatTypography typography;
+  late ConvoKitColorPalette colorPalette;
+  late ConvoKitSpacing spacing;
+  late ConvoKitTypography typography;
   bool _themeInitialized = false;
   Brightness? _cachedBrightness;
 
@@ -243,7 +243,7 @@ class _CometChatMessageInputState extends State<CometChatMessageInput> {
     super.didChangeDependencies();
     // Only initialize theme once to avoid expensive lookups during keyboard animation
     // But re-initialize when brightness changes (dark mode toggle)
-    final currentBrightness = CometChatThemeHelper.getBrightness(context);
+    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
     if (_themeInitialized && !brightnessChanged) return;
@@ -251,13 +251,13 @@ class _CometChatMessageInputState extends State<CometChatMessageInput> {
     _themeInitialized = true;
 
     messageInputStyle =
-        CometChatThemeHelper.getTheme<CometChatMessageInputStyle>(
+        ConvoKitThemeHelper.getTheme<CometChatMessageInputStyle>(
           context: context,
           defaultTheme: CometChatMessageInputStyle.of,
         ).merge(widget.style);
-    colorPalette = CometChatThemeHelper.getColorPalette(context);
-    spacing = CometChatThemeHelper.getSpacing(context);
-    typography = CometChatThemeHelper.getTypography(context);
+    colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    spacing = ConvoKitThemeHelper.getSpacing(context);
+    typography = ConvoKitThemeHelper.getTypography(context);
   }
 
   @override
@@ -508,7 +508,7 @@ class _CometChatMessageInputState extends State<CometChatMessageInput> {
       key: ValueKey(_textEditingController.hashCode),
       textCapitalization: TextCapitalization.sentences,
       textAlignVertical: TextAlignVertical.center,
-      keyboardAppearance: CometChatThemeHelper.getBrightness(context),
+      keyboardAppearance: ConvoKitThemeHelper.getBrightness(context),
       cursorColor: colorPalette.primary ?? Colors.blue,
       scrollPhysics: const ClampingScrollPhysics(),
       contentInsertionConfiguration: widget.onContentInserted != null
@@ -591,7 +591,7 @@ class _CometChatMessageInputState extends State<CometChatMessageInput> {
         child: TextFormField(
           key: ValueKey('codeblock_${_textEditingController.hashCode}'),
           textCapitalization: TextCapitalization.none,
-          keyboardAppearance: CometChatThemeHelper.getBrightness(context),
+          keyboardAppearance: ConvoKitThemeHelper.getBrightness(context),
           style: TextStyle(
             color: textColor,
             fontSize: typography.body?.regular?.fontSize ?? 14,

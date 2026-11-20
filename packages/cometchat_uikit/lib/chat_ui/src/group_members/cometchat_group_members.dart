@@ -164,9 +164,9 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
   final ValueNotifier<bool> _isSelectionOn = ValueNotifier<bool>(false);
 
   // Cached theme values (theme-caching pattern)
-  late CometChatColorPalette _colorPalette;
-  late CometChatTypography _typography;
-  late CometChatSpacing _spacing;
+  late ConvoKitColorPalette _colorPalette;
+  late ConvoKitTypography _typography;
+  late ConvoKitSpacing _spacing;
   bool _themeInitialized = false;
 
   @override
@@ -198,9 +198,9 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (!_themeInitialized) {
-      _colorPalette = CometChatThemeHelper.getColorPalette(context);
-      _typography = CometChatThemeHelper.getTypography(context);
-      _spacing = CometChatThemeHelper.getSpacing(context);
+      _colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+      _typography = ConvoKitThemeHelper.getTypography(context);
+      _spacing = ConvoKitThemeHelper.getSpacing(context);
       _themeInitialized = true;
     }
   }
@@ -217,7 +217,7 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
   // ── Helpers ────────────────────────────────────────────────────────────────
 
   ConvoKitGroupMembersStyle _resolvedStyle(BuildContext context) {
-    return CometChatThemeHelper.getTheme<ConvoKitGroupMembersStyle>(
+    return ConvoKitThemeHelper.getTheme<ConvoKitGroupMembersStyle>(
       context: context,
       defaultTheme: ConvoKitGroupMembersStyle.of,
     ).merge(widget.style);
@@ -383,7 +383,7 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
             else
               const SizedBox(),
             Expanded(
-              child: CometChatListItem(
+              child: ConvoKitListItem(
                 id: member.uid,
                 avatarName: member.name,
                 avatarURL: member.avatar,
@@ -397,14 +397,14 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
                 tailView: tail,
                 avatarStyle:
                     groupMemberStyle.avatarStyle ??
-                    const CometChatAvatarStyle(),
+                    const ConvoKitAvatarStyle(),
                 avatarHeight: 40,
                 avatarWidth: 40,
                 statusIndicatorColor: statusUtils.statusIndicatorColor,
                 statusIndicatorIcon: statusUtils.icon,
                 statusIndicatorStyle:
                     groupMemberStyle.statusIndicatorStyle ??
-                    const CometChatStatusIndicatorStyle(),
+                    const ConvoKitStatusIndicatorStyle(),
                 hideSeparator: widget.hideSeparator ?? true,
                 titleView: title,
                 leadingStateView: leading,
@@ -521,7 +521,7 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
       );
 
       if (widget.addOptions != null &&
-          widget.group.owner != CometChatUIKit.loggedInUser?.uid &&
+          widget.group.owner != ConvoKitUIKit.loggedInUser?.uid &&
           member.scope == GroupMemberScope.admin) {
         return;
       }
@@ -537,12 +537,12 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
     ConvoKitGroupMembersStyle groupMemberStyle,
   ) {
     final confirmDialogStyle =
-        CometChatThemeHelper.getTheme<CometChatConfirmDialogStyle>(
+        ConvoKitThemeHelper.getTheme<ConvoKitConfirmDialogStyle>(
           context: context,
-          defaultTheme: CometChatConfirmDialogStyle.of,
+          defaultTheme: ConvoKitConfirmDialogStyle.of,
         ).merge(groupMemberStyle.confirmDialogStyle);
     final changeScopeStyle =
-        CometChatThemeHelper.getTheme<ConvoKitChangeScopeStyle>(
+        ConvoKitThemeHelper.getTheme<ConvoKitChangeScopeStyle>(
           context: context,
           defaultTheme: ConvoKitChangeScopeStyle.of,
         ).merge(groupMemberStyle.changeScopeStyle);
@@ -611,10 +611,10 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
     required Widget icon,
     required String message,
     required String confirmText,
-    required CometChatConfirmDialogStyle confirmDialogStyle,
+    required ConvoKitConfirmDialogStyle confirmDialogStyle,
     required VoidCallback onConfirm,
   }) {
-    CometChatConfirmDialog(
+    ConvoKitConfirmDialog(
       context: context,
       icon: icon,
       title: Text(
@@ -639,7 +639,7 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
       ),
       confirmButtonText: confirmText,
       cancelButtonText: cc.Translations.of(context).cancelCapital,
-      style: CometChatConfirmDialogStyle(
+      style: ConvoKitConfirmDialogStyle(
         iconColor: confirmDialogStyle.iconColor ?? _colorPalette.error,
         backgroundColor: confirmDialogStyle.backgroundColor,
         cancelButtonBackground:
@@ -730,7 +730,7 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
     if (widget.loadingStateView != null) {
       return Center(child: widget.loadingStateView!(context));
     }
-    return CometChatShimmerEffect(
+    return ConvoKitShimmerEffect(
       colorPalette: _colorPalette,
       child: ListView.builder(
         itemCount: 30,

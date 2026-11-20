@@ -1,6 +1,6 @@
 /// Matrix goldens for the four primitives every list row and bubble is built
-/// from: [CometChatAvatar], [CometChatBadge], [CometChatStatusIndicator] and
-/// [CometChatReceipt]. One PNG per primitive, all its sizes / states in a row,
+/// from: [ConvoKitAvatar], [ConvoKitBadge], [ConvoKitStatusIndicator] and
+/// [ConvoKitReceipt]. One PNG per primitive, all its sizes / states in a row,
 /// light and dark.
 ///
 /// Avatars have no URL, so they show the initials fallback and nothing touches
@@ -38,8 +38,8 @@ Widget _matrix(List<List<Widget>> rows) => Padding(
   ),
 );
 
-Widget _avatar(String name, double size, {CometChatAvatarStyle? style}) =>
-    CometChatAvatar(name: name, width: size, height: size, style: style);
+Widget _avatar(String name, double size, {ConvoKitAvatarStyle? style}) =>
+    ConvoKitAvatar(name: name, width: size, height: size, style: style);
 
 Widget _dot({
   Color? color,
@@ -48,12 +48,12 @@ Widget _dot({
   bool ring = false,
 }) => Builder(
   builder: (context) {
-    final palette = CometChatThemeHelper.getColorPalette(context);
-    return CometChatStatusIndicator(
+    final palette = ConvoKitThemeHelper.getColorPalette(context);
+    return ConvoKitStatusIndicator(
       width: size,
       height: size,
       backgroundImage: icon,
-      style: CometChatStatusIndicatorStyle(
+      style: ConvoKitStatusIndicatorStyle(
         backgroundColor: color ?? palette.success,
         border: ring
             ? Border.all(color: palette.background1 ?? Colors.white, width: 2)
@@ -87,7 +87,7 @@ void main() {
             _avatar(
               'Design Review',
               48,
-              style: CometChatAvatarStyle(
+              style: ConvoKitAvatarStyle(
                 borderRadius: BorderRadius.circular(12),
                 placeHolderTextStyle: const TextStyle(fontSize: 18),
               ),
@@ -95,7 +95,7 @@ void main() {
             _avatar(
               'Chen Wei',
               48,
-              style: CometChatAvatarStyle(
+              style: ConvoKitAvatarStyle(
                 border: Border.all(color: const Color(0xFF09C26F), width: 2),
               ),
             ),
@@ -110,13 +110,13 @@ void main() {
         alignment: Alignment.topLeft,
         builder: () => _matrix(const [
           [
-            CometChatBadge(count: 0),
-            CometChatBadge(count: 1),
-            CometChatBadge(count: 9),
-            CometChatBadge(count: 12),
-            CometChatBadge(count: 99),
-            CometChatBadge(count: 250),
-            CometChatBadge(count: 1200),
+            ConvoKitBadge(count: 0),
+            ConvoKitBadge(count: 1),
+            ConvoKitBadge(count: 9),
+            ConvoKitBadge(count: 12),
+            ConvoKitBadge(count: 99),
+            ConvoKitBadge(count: 250),
+            ConvoKitBadge(count: 1200),
           ],
         ]),
       );
@@ -134,7 +134,7 @@ void main() {
             _dot(size: 16, ring: true),
             Builder(
               builder: (context) {
-                final palette = CometChatThemeHelper.getColorPalette(context);
+                final palette = ConvoKitThemeHelper.getColorPalette(context);
                 return _dot(
                   size: 16,
                   color: palette.warning,
@@ -144,14 +144,14 @@ void main() {
             ),
             Builder(
               builder: (context) {
-                final palette = CometChatThemeHelper.getColorPalette(context);
+                final palette = ConvoKitThemeHelper.getColorPalette(context);
                 return _dot(
                   size: 16,
                   icon: Icon(Icons.lock, size: 9, color: palette.background1),
                 );
               },
             ),
-            const CometChatStatusIndicator(),
+            const ConvoKitStatusIndicator(),
           ],
         ]),
       );
@@ -171,7 +171,7 @@ void main() {
                 ReceiptStatus.read,
                 ReceiptStatus.error,
               ])
-                CometChatReceipt(status: status, size: size),
+                ConvoKitReceipt(status: status, size: size),
             ],
         ]),
       );

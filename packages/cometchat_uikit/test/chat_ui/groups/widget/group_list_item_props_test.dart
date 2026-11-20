@@ -6,7 +6,7 @@
 /// case sets one prop (or one tightly coupled pair) to a sentinel no theme
 /// uses, pumps the item, and asserts at the render site the prop is routed
 /// to: the row Container, the title or subtitle Text, the Checkbox, the
-/// CometChatAvatar or the CometChatStatusIndicator. Every assertion fails if
+/// ConvoKitAvatar or the ConvoKitStatusIndicator. Every assertion fails if
 /// the item stopped reading the prop.
 ///
 /// [CometChatGroupListItemStyle] is plain data with one reader, so its cases
@@ -79,7 +79,7 @@ BoxDecoration _avatarBox(WidgetTester tester) =>
             .widget<Container>(
               find
                   .descendant(
-                    of: find.byType(CometChatAvatar),
+                    of: find.byType(ConvoKitAvatar),
                     matching: find.byType(Container),
                   )
                   .first,
@@ -88,13 +88,13 @@ BoxDecoration _avatarBox(WidgetTester tester) =>
         as BoxDecoration;
 
 Finder _avatarClip() => find.descendant(
-  of: find.byType(CometChatAvatar),
+  of: find.byType(ConvoKitAvatar),
   matching: find.byType(ClipRRect),
 );
 
 Text _initials(WidgetTester tester) => tester.widget<Text>(
   find.descendant(
-    of: find.byType(CometChatAvatar),
+    of: find.byType(ConvoKitAvatar),
     matching: find.byType(Text),
   ),
 );
@@ -104,7 +104,7 @@ BoxDecoration _badgeBox(WidgetTester tester) =>
             .widget<Container>(
               find
                   .descendant(
-                    of: find.byType(CometChatStatusIndicator),
+                    of: find.byType(ConvoKitStatusIndicator),
                     matching: find.byType(Container),
                   )
                   .first,
@@ -141,7 +141,7 @@ void main() {
       expect(find.text('7 ${_l10n(tester).members}'), findsOneWidget);
       expect(_initials(tester).data, 'QL');
       // A private group carries the type badge.
-      expect(find.byType(CometChatStatusIndicator), findsOneWidget);
+      expect(find.byType(ConvoKitStatusIndicator), findsOneWidget);
 
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
@@ -160,7 +160,7 @@ void main() {
       expect(find.text('1 ${_l10n(tester).member}'), findsOneWidget);
       expect(_initials(tester).data, 'SC');
       // A public group carries none.
-      expect(find.byType(CometChatStatusIndicator), findsNothing);
+      expect(find.byType(ConvoKitStatusIndicator), findsNothing);
     });
 
     testWidgets('onItemClick: a tap reports the group', (tester) async {
@@ -263,7 +263,7 @@ void main() {
           ),
         );
         await tester.pump();
-        final palette = CometChatThemeHelper.getColorPalette(
+        final palette = ConvoKitThemeHelper.getColorPalette(
           _itemContext(tester),
         );
         final unselected = _row(tester).color;
@@ -336,7 +336,7 @@ void main() {
           ),
         );
         await tester.pump();
-        expect(find.byType(CometChatStatusIndicator), findsOneWidget);
+        expect(find.byType(ConvoKitStatusIndicator), findsOneWidget);
 
         await mockNetworkImagesFor(
           () => tester.pumpWidget(
@@ -350,7 +350,7 @@ void main() {
           ),
         );
         await tester.pump();
-        expect(find.byType(CometChatStatusIndicator), findsNothing);
+        expect(find.byType(ConvoKitStatusIndicator), findsNothing);
       }
     });
 
@@ -397,13 +397,13 @@ void main() {
             CometChatGroupListItem(
               group: FakeGroup(),
               onItemClick: (_) {},
-              avatarStyle: CometChatAvatarStyle(
+              avatarStyle: ConvoKitAvatarStyle(
                 backgroundColor: const Color(0xFF3E4F60),
                 border: Border.all(color: const Color(0xFF605F4E), width: 2),
                 placeHolderTextColor: const Color(0xFF4E3F2D),
               ),
               style: const CometChatGroupListItemStyle(
-                avatarStyle: CometChatAvatarStyle(
+                avatarStyle: ConvoKitAvatarStyle(
                   backgroundColor: Color(0xFF0D0E0F),
                 ),
               ),
@@ -429,11 +429,11 @@ void main() {
             CometChatGroupListItem(
               group: FakeGroup(type: CometChatGroupType.private),
               onItemClick: (_) {},
-              statusIndicatorStyle: CometChatStatusIndicatorStyle(
+              statusIndicatorStyle: ConvoKitStatusIndicatorStyle(
                 border: Border.all(color: const Color(0xFF718293), width: 3),
               ),
               style: CometChatGroupListItemStyle(
-                statusIndicatorStyle: CometChatStatusIndicatorStyle(
+                statusIndicatorStyle: ConvoKitStatusIndicatorStyle(
                   border: Border.all(color: const Color(0xFF0E0D0C)),
                 ),
               ),
@@ -459,7 +459,7 @@ void main() {
         ),
       );
       await tester.pump();
-      expect(tester.getSize(find.byType(CometChatAvatar)), const Size(48, 48));
+      expect(tester.getSize(find.byType(ConvoKitAvatar)), const Size(48, 48));
 
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
@@ -475,7 +475,7 @@ void main() {
       );
       await tester.pump();
 
-      expect(tester.getSize(find.byType(CometChatAvatar)), const Size(57, 63));
+      expect(tester.getSize(find.byType(ConvoKitAvatar)), const Size(57, 63));
     });
 
     testWidgets('avatarPadding insets the avatar content inside its box', (
@@ -505,7 +505,7 @@ void main() {
       await tester.pump();
 
       // The box keeps its 48x48; the content shrinks by the padding.
-      expect(tester.getSize(find.byType(CometChatAvatar)), const Size(48, 48));
+      expect(tester.getSize(find.byType(ConvoKitAvatar)), const Size(48, 48));
       expect(tester.getSize(_avatarClip()), const Size(38, 34));
     });
 
@@ -525,11 +525,11 @@ void main() {
       );
       await tester.pump();
 
-      expect(tester.getSize(find.byType(CometChatAvatar)), const Size(56, 60));
+      expect(tester.getSize(find.byType(ConvoKitAvatar)), const Size(56, 60));
       expect(tester.getSize(_avatarClip()), const Size(48, 48));
       expect(
         tester.getTopLeft(_avatarClip()) -
-            tester.getTopLeft(find.byType(CometChatAvatar)),
+            tester.getTopLeft(find.byType(ConvoKitAvatar)),
         const Offset(2, 4),
       );
     });
@@ -548,7 +548,7 @@ void main() {
       );
       await tester.pump();
       expect(
-        tester.getSize(find.byType(CometChatStatusIndicator)),
+        tester.getSize(find.byType(ConvoKitStatusIndicator)),
         const Size(14, 14),
       );
 
@@ -567,7 +567,7 @@ void main() {
       await tester.pump();
 
       expect(
-        tester.getSize(find.byType(CometChatStatusIndicator)),
+        tester.getSize(find.byType(ConvoKitStatusIndicator)),
         const Size(19, 17),
       );
     });
@@ -587,7 +587,7 @@ void main() {
       );
       await tester.pump();
       expect(find.text('lead-g-lead'), findsOneWidget);
-      expect(find.byType(CometChatAvatar), findsNothing);
+      expect(find.byType(ConvoKitAvatar), findsNothing);
 
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
@@ -601,7 +601,7 @@ void main() {
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatAvatar), findsOneWidget);
+      expect(find.byType(ConvoKitAvatar), findsOneWidget);
     });
 
     testWidgets('titleView replaces the group name', (tester) async {
@@ -676,7 +676,7 @@ void main() {
               CometChatGroupListItem(
                 group: FakeGroup(type: entry.key),
                 onItemClick: (_) {},
-                colorPalette: CometChatColorPalette(
+                colorPalette: ConvoKitColorPalette(
                   warning: const Color(0xFFA1B2C3),
                   success: const Color(0xFFC3B2A1),
                   background1: const Color(0xFFB2A1C3),
@@ -722,7 +722,7 @@ void main() {
             CometChatGroupListItem(
               group: FakeGroup(),
               onItemClick: (_) {},
-              spacing: CometChatSpacing(padding3: 11, padding4: 23),
+              spacing: ConvoKitSpacing(padding3: 11, padding4: 23),
             ),
           ),
         ),
@@ -744,7 +744,7 @@ void main() {
             CometChatGroupListItem(
               group: FakeGroup(),
               onItemClick: (_) {},
-              typography: const CometChatTypography(
+              typography: const ConvoKitTypography(
                 heading2: CometChatTextStyleHeading2(
                   bold: TextStyle(fontSize: 31.5),
                 ),
@@ -792,7 +792,7 @@ void main() {
 
       expect(
         find.descendant(
-          of: find.byType(CometChatStatusIndicator),
+          of: find.byType(ConvoKitStatusIndicator),
           matching: find.byKey(const ValueKey('private-glyph')),
         ),
         findsOneWidget,
@@ -834,7 +834,7 @@ void main() {
 
       expect(
         find.descendant(
-          of: find.byType(CometChatStatusIndicator),
+          of: find.byType(ConvoKitStatusIndicator),
           matching: find.byKey(const ValueKey('protected-glyph')),
         ),
         findsOneWidget,
@@ -1009,7 +1009,7 @@ void main() {
                 group: FakeGroup(),
                 onItemClick: (_) {},
                 style: const CometChatGroupListItemStyle(
-                  avatarStyle: CometChatAvatarStyle(
+                  avatarStyle: ConvoKitAvatarStyle(
                     backgroundColor: Color(0xFF56789A),
                     borderRadius: BorderRadius.all(Radius.circular(6)),
                   ),
@@ -1036,7 +1036,7 @@ void main() {
                 group: FakeGroup(type: CometChatGroupType.password),
                 onItemClick: (_) {},
                 style: CometChatGroupListItemStyle(
-                  statusIndicatorStyle: CometChatStatusIndicatorStyle(
+                  statusIndicatorStyle: ConvoKitStatusIndicatorStyle(
                     border: Border.all(
                       color: const Color(0xFF6789AB),
                       width: 2.5,
@@ -1197,8 +1197,8 @@ void main() {
         ),
       );
       await tester.pump();
-      final dot = tester.widget<CometChatStatusIndicator>(
-        find.byType(CometChatStatusIndicator),
+      final dot = tester.widget<ConvoKitStatusIndicator>(
+        find.byType(ConvoKitStatusIndicator),
       );
       expect(
         dot.style?.borderRadius,
@@ -1243,8 +1243,8 @@ void main() {
           ),
         );
         await tester.pump();
-        final dot = tester.widget<CometChatStatusIndicator>(
-          find.byType(CometChatStatusIndicator),
+        final dot = tester.widget<ConvoKitStatusIndicator>(
+          find.byType(ConvoKitStatusIndicator),
         );
         expect(dot.style?.backgroundColor, const Color(0xFFE2D3C4));
       },
@@ -1266,8 +1266,8 @@ void main() {
           ),
         );
         await tester.pump();
-        final dot = tester.widget<CometChatStatusIndicator>(
-          find.byType(CometChatStatusIndicator),
+        final dot = tester.widget<ConvoKitStatusIndicator>(
+          find.byType(ConvoKitStatusIndicator),
         );
         expect(dot.style?.backgroundColor, const Color(0xFFD3C4B5));
       },

@@ -26,13 +26,13 @@ class ConversationsLoadingView extends StatelessWidget {
   final WidgetBuilder? customView;
 
   /// The color palette used for styling the shimmer effect.
-  final CometChatColorPalette colorPalette;
+  final ConvoKitColorPalette colorPalette;
 
   /// The spacing configuration for padding and margins.
-  final CometChatSpacing spacing;
+  final ConvoKitSpacing spacing;
 
   /// The typography configuration (currently unused but kept for consistency).
-  final CometChatTypography typography;
+  final ConvoKitTypography typography;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class ConversationsLoadingView extends StatelessWidget {
     }
 
     // Default shimmer loading view
-    return CometChatShimmerEffect(
+    return ConvoKitShimmerEffect(
       colorPalette: colorPalette,
       child: ListView.builder(
         itemCount: 30,

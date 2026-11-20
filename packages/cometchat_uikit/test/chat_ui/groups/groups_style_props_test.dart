@@ -290,8 +290,8 @@ void main() {
             ConvoKitGroups(
               groupsBloc: _loaded(),
               groupsStyle: const ConvoKitGroupsStyle(
-                avatarStyle: CometChatAvatarStyle(backgroundColor: _c3),
-                statusIndicatorStyle: CometChatStatusIndicatorStyle(
+                avatarStyle: ConvoKitAvatarStyle(backgroundColor: _c3),
+                statusIndicatorStyle: ConvoKitStatusIndicatorStyle(
                   backgroundColor: _c4,
                 ),
               ),
@@ -338,8 +338,8 @@ void main() {
 
       // And they actually paint: g2 is private, g3 is password.
       final dots = tester
-          .widgetList<CometChatStatusIndicator>(
-            find.byType(CometChatStatusIndicator),
+          .widgetList<ConvoKitStatusIndicator>(
+            find.byType(ConvoKitStatusIndicator),
           )
           .map((d) => d.style?.backgroundColor)
           .toList();

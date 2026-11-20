@@ -63,13 +63,13 @@ class CometChatReactions extends StatefulWidget {
   final double? height;
 
   /// [colorPalette] optional pre-cached color palette to avoid expensive lookups during keyboard animation
-  final CometChatColorPalette? colorPalette;
+  final ConvoKitColorPalette? colorPalette;
 
   /// [spacing] optional pre-cached spacing to avoid expensive lookups during keyboard animation
-  final CometChatSpacing? spacing;
+  final ConvoKitSpacing? spacing;
 
   /// [typography] optional pre-cached typography to avoid expensive lookups during keyboard animation
-  final CometChatTypography? typography;
+  final ConvoKitTypography? typography;
 
   @override
   State<CometChatReactions> createState() => _CometChatReactionsState();
@@ -93,7 +93,7 @@ class _CometChatReactionsState extends State<CometChatReactions> {
     }
     // Update style if it changed
     if (widget.style != oldWidget.style) {
-      style = CometChatThemeHelper.getTheme<CometChatReactionsStyle>(
+      style = ConvoKitThemeHelper.getTheme<CometChatReactionsStyle>(
         context: context,
         defaultTheme: CometChatReactionsStyle.of,
       ).merge(widget.style);
@@ -119,9 +119,9 @@ class _CometChatReactionsState extends State<CometChatReactions> {
   }
 
   late CometChatReactionsStyle style;
-  late CometChatColorPalette colorPalette;
-  late CometChatSpacing spacing;
-  late CometChatTypography typography;
+  late ConvoKitColorPalette colorPalette;
+  late ConvoKitSpacing spacing;
+  late ConvoKitTypography typography;
   bool _themeInitialized = false;
   Brightness? _cachedBrightness;
 
@@ -129,21 +129,21 @@ class _CometChatReactionsState extends State<CometChatReactions> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Only initialize theme once to avoid expensive lookups during keyboard animation
-    final currentBrightness = CometChatThemeHelper.getBrightness(context);
+    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
     if (!_themeInitialized || brightnessChanged) {
       _cachedBrightness = currentBrightness;
-      style = CometChatThemeHelper.getTheme<CometChatReactionsStyle>(
+      style = ConvoKitThemeHelper.getTheme<CometChatReactionsStyle>(
         context: context,
         defaultTheme: CometChatReactionsStyle.of,
       ).merge(widget.style);
       // Use passed values OR fallback to lookup (for standalone usage)
       colorPalette =
-          widget.colorPalette ?? CometChatThemeHelper.getColorPalette(context);
-      spacing = widget.spacing ?? CometChatThemeHelper.getSpacing(context);
+          widget.colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
+      spacing = widget.spacing ?? ConvoKitThemeHelper.getSpacing(context);
       typography =
-          widget.typography ?? CometChatThemeHelper.getTypography(context);
+          widget.typography ?? ConvoKitThemeHelper.getTypography(context);
       _themeInitialized = true;
     }
   }
@@ -151,9 +151,9 @@ class _CometChatReactionsState extends State<CometChatReactions> {
   Widget? getExtraReactions(
     ReactionsState state,
     CometChatReactionsStyle style,
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
+    ConvoKitTypography typography,
   ) {
     if (state.hasMore && state.extraCount > 1) {
       return GestureDetector(
@@ -318,7 +318,7 @@ class _CometChatReactionsState extends State<CometChatReactions> {
     );
   }
 
-  EdgeInsets getMargin(CometChatSpacing spacing) {
+  EdgeInsets getMargin(ConvoKitSpacing spacing) {
     double leftAlignment = 0;
     if (widget.alignment == BubbleAlignment.right) {
       leftAlignment = spacing.margin ?? 0;

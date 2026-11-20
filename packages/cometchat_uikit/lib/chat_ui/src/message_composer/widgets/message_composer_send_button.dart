@@ -66,12 +66,12 @@ class MessageComposerSendButton extends StatelessWidget {
   final BorderRadiusGeometry? sendButtonBorderRadius;
 
   /// Color palette for theming.
-  /// If not provided, uses CometChatThemeHelper.getColorPalette(context).
-  final CometChatColorPalette? colorPalette;
+  /// If not provided, uses ConvoKitThemeHelper.getColorPalette(context).
+  final ConvoKitColorPalette? colorPalette;
 
   /// Spacing configuration.
-  /// If not provided, uses CometChatThemeHelper.getSpacing(context).
-  final CometChatSpacing? spacing;
+  /// If not provided, uses ConvoKitThemeHelper.getSpacing(context).
+  final ConvoKitSpacing? spacing;
 
   @override
   Widget build(BuildContext context) {
@@ -87,9 +87,9 @@ class MessageComposerSendButton extends StatelessWidget {
     }
 
     final effectiveColorPalette =
-        colorPalette ?? CometChatThemeHelper.getColorPalette(context);
+        colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
     final effectiveSpacing =
-        spacing ?? CometChatThemeHelper.getSpacing(context);
+        spacing ?? ConvoKitThemeHelper.getSpacing(context);
 
     final Color backgroundColor =
         sendButtonIconBackgroundColor ??
@@ -144,7 +144,7 @@ class MessageComposerSendButton extends StatelessWidget {
     );
   }
 
-  Widget _buildIcon(CometChatColorPalette colorPalette) {
+  Widget _buildIcon(ConvoKitColorPalette colorPalette) {
     if (sendButtonIcon != null) {
       return sendButtonIcon!;
     }

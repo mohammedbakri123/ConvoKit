@@ -1,15 +1,15 @@
 import '../../../../../../cometchat_uikit_shared.dart';
 import 'package:flutter/material.dart';
 
-/// `CometChatConfirmDialog` is a class that allows you to show a customizable confirmation dialog with a title, message, icon, and two buttons.
+/// `ConvoKitConfirmDialog` is a class that allows you to show a customizable confirmation dialog with a title, message, icon, and two buttons.
 ///
-/// The dialog can be customized using the [CometChatConfirmDialogStyle] class, which allows for setting styles such as background color, button styles, and padding.
+/// The dialog can be customized using the [ConvoKitConfirmDialogStyle] class, which allows for setting styles such as background color, button styles, and padding.
 ///
 /// You can show the dialog using the [show] method, which will render it on the current context.
 ///
 /// Example usage:
 /// ```dart
-/// CometChatConfirmDialog(
+/// ConvoKitConfirmDialog(
 ///  context: context,
 ///  title: Text("Block this contact?"),
 ///  messageText: Text("Are you sure you want to block this contact? You won’t receive messages from them anymore."),
@@ -22,15 +22,15 @@ import 'package:flutter/material.dart';
 ///  onCancel: (dialogContext) {
 ///     Navigator.of(dialogContext).pop();
 ///  },
-///  style: CometChatConfirmDialogStyle(
+///  style: ConvoKitConfirmDialogStyle(
 ///     backgroundColor: Colors.white,
 ///     shadow: Colors.black,
 ///     confirmButtonBackground: Colors.red,
 ///  ),
 /// ).show();
 /// ```
-class CometChatConfirmDialog {
-  /// Creates an instance of [CometChatConfirmDialog].
+class ConvoKitConfirmDialog {
+  /// Creates an instance of [ConvoKitConfirmDialog].
   ///
   /// [context] is required and represents the current widget context to display the dialog.
   /// [title] defines the title of the dialog as a [Widget] (e.g., a [Text] widget).
@@ -39,9 +39,9 @@ class CometChatConfirmDialog {
   /// [cancelButtonText] is the text to be displayed on the cancel button.
   /// [onConfirm] is the callback function that gets invoked when the confirm button is pressed.
   /// [onCancel] is the callback function that gets invoked when the cancel button is pressed.
-  /// [style] is an optional [CometChatConfirmDialogStyle] object to customize the dialog appearance. It defaults to [CometChatConfirmDialogStyle].
+  /// [style] is an optional [ConvoKitConfirmDialogStyle] object to customize the dialog appearance. It defaults to [ConvoKitConfirmDialogStyle].
   /// [contentPadding], [actionsPadding], [titlePadding], and [iconPadding] define padding for different elements of the dialog.
-  CometChatConfirmDialog({
+  ConvoKitConfirmDialog({
     required this.context,
     this.title,
     this.messageText,
@@ -49,7 +49,7 @@ class CometChatConfirmDialog {
     this.cancelButtonText,
     this.onConfirm,
     this.onCancel,
-    this.style = const CometChatConfirmDialogStyle(),
+    this.style = const ConvoKitConfirmDialogStyle(),
     this.contentPadding,
     this.actionsPadding,
     this.titlePadding,
@@ -94,7 +94,7 @@ class CometChatConfirmDialog {
   final Function(BuildContext dialogContext)? onCancel;
 
   /// A style object to customize the appearance of the dialog.
-  final CometChatConfirmDialogStyle style;
+  final ConvoKitConfirmDialogStyle style;
 
   /// The padding applied to the content of the dialog.
   final EdgeInsetsGeometry? contentPadding;
@@ -126,13 +126,13 @@ class CometChatConfirmDialog {
   /// for styling the title, message, and action buttons.
   void show() {
     final confirmDialogStyle =
-        CometChatThemeHelper.getTheme<CometChatConfirmDialogStyle>(
+        ConvoKitThemeHelper.getTheme<ConvoKitConfirmDialogStyle>(
           context: context,
-          defaultTheme: CometChatConfirmDialogStyle.of,
+          defaultTheme: ConvoKitConfirmDialogStyle.of,
         ).merge(style);
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final spacing = CometChatThemeHelper.getSpacing(context);
-    final typography = CometChatThemeHelper.getTypography(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
 
     showDialog(
       context: context,

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../../../../cometchat_uikit_shared.dart'
     show
-        CometChatAvatarStyle,
+        ConvoKitAvatarStyle,
         CometChatReactionsStyle,
-        CometChatDateStyle,
+        ConvoKitDateStyle,
         CometChatTextBubbleStyle,
         CometChatImageBubbleStyle,
         CometChatVideoBubbleStyle,
@@ -11,7 +11,7 @@ import '../../../../../cometchat_uikit_shared.dart'
         CometChatFileBubbleStyle,
         CometChatCollaborativeBubbleStyle,
         CometChatPollsBubbleStyle,
-        CometChatDeletedBubbleStyle,
+        ConvoKitDeletedBubbleStyle,
         CometChatLinkPreviewBubbleStyle,
         CometChatMessageTranslationBubbleStyle,
         CometChatStickerBubbleStyle,
@@ -26,9 +26,9 @@ import '../../../../../cometchat_uikit_shared.dart'
 ///  backgroundColor: Colors.white,
 ///  border: Border.all(color: Colors.red),
 ///  borderRadius: BorderRadius.circular(10),
-///  messageBubbleAvatarStyle: CometChatAvatarStyle(),
+///  messageBubbleAvatarStyle: ConvoKitAvatarStyle(),
 ///  messageReceiptStyle: CometChatMessageReceiptStyle(),
-///  messageBubbleDateStyle: CometChatDateStyle(),
+///  messageBubbleDateStyle: ConvoKitDateStyle(),
 ///  textBubbleStyle: CometChatTextBubbleStyle(),
 ///  imageBubbleStyle: CometChatImageBubbleStyle(),
 ///  videoBubbleStyle: CometChatVideoBubbleStyle(),
@@ -85,13 +85,13 @@ class CometChatIncomingMessageBubbleStyle
   final Color? threadedMessageIndicatorIconColor;
 
   ///[messageBubbleAvatarStyle] provides style to the avatar of the sender
-  final CometChatAvatarStyle? messageBubbleAvatarStyle;
+  final ConvoKitAvatarStyle? messageBubbleAvatarStyle;
 
   ///[messageBubbleReactionStyle] provides style to the reactions of the message bubble
   final CometChatReactionsStyle? messageBubbleReactionStyle;
 
   ///[messageBubbleDateStyle] provides style to the date of the message bubble
-  final CometChatDateStyle? messageBubbleDateStyle;
+  final ConvoKitDateStyle? messageBubbleDateStyle;
 
   ///[textBubbleStyle] provides style to the text bubble of the received message
   final CometChatTextBubbleStyle? textBubbleStyle;
@@ -129,7 +129,7 @@ class CometChatIncomingMessageBubbleStyle
   final CometChatPollsBubbleStyle? pollsBubbleStyle;
 
   ///[deletedBubbleStyle] provides style to the deleted bubble of the received message
-  final CometChatDeletedBubbleStyle? deletedBubbleStyle;
+  final ConvoKitDeletedBubbleStyle? deletedBubbleStyle;
 
   ///[linkPreviewBubbleStyle] provides style to the link preview bubble of the sent message
   final CometChatLinkPreviewBubbleStyle? linkPreviewBubbleStyle;
@@ -160,10 +160,10 @@ class CometChatIncomingMessageBubbleStyle
     BorderRadiusGeometry? borderRadius,
     TextStyle? threadedMessageIndicatorTextStyle,
     Color? threadedMessageIndicatorIconColor,
-    CometChatAvatarStyle? messageBubbleAvatarStyle,
+    ConvoKitAvatarStyle? messageBubbleAvatarStyle,
     CometChatMessageReceiptStyle? messageReceiptStyle,
     CometChatReactionsStyle? messageBubbleReactionStyle,
-    CometChatDateStyle? messageBubbleDateStyle,
+    ConvoKitDateStyle? messageBubbleDateStyle,
     CometChatTextBubbleStyle? textBubbleStyle,
     CometChatImageBubbleStyle? imageBubbleStyle,
     CometChatVideoBubbleStyle? videoBubbleStyle,
@@ -174,7 +174,7 @@ class CometChatIncomingMessageBubbleStyle
     CometChatCollaborativeBubbleStyle? collaborativeDocumentBubbleStyle,
     CometChatCollaborativeBubbleStyle? collaborativeWhiteboardBubbleStyle,
     CometChatPollsBubbleStyle? pollsBubbleStyle,
-    CometChatDeletedBubbleStyle? deletedBubbleStyle,
+    ConvoKitDeletedBubbleStyle? deletedBubbleStyle,
     CometChatLinkPreviewBubbleStyle? linkPreviewBubbleStyle,
     CometChatMessageTranslationBubbleStyle? messageTranslationBubbleStyle,
     CometChatStickerBubbleStyle? stickerBubbleStyle,

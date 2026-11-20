@@ -9,7 +9,7 @@ import 'package:convokit/cometchat_chat_uikit.dart';
 import 'package:convokit/shared_ui/src/constants/ui_kit_constants.dart'
     as legacy_constants;
 
-class _RecordingListener with CometChatMessageEventListener {
+class _RecordingListener with ConvoKitMessageEventListener {
   final List<(int, bool)> received = [];
 
   @override
@@ -19,19 +19,19 @@ class _RecordingListener with CometChatMessageEventListener {
 }
 
 void main() {
-  group('CometChatMessageEvents.ccThreadSubscriptionChanged', () {
+  group('ConvoKitMessageEvents.ccThreadSubscriptionChanged', () {
     test('reaches registered listeners and stops after removal', () {
       final listener = _RecordingListener();
-      CometChatMessageEvents.addMessagesListener('test_thread_sub', listener);
+      ConvoKitMessageEvents.addMessagesListener('test_thread_sub', listener);
 
-      CometChatMessageEvents.ccThreadSubscriptionChanged(42, true);
+      ConvoKitMessageEvents.ccThreadSubscriptionChanged(42, true);
       expect(listener.received, [(42, true)]);
 
-      CometChatMessageEvents.ccThreadSubscriptionChanged(42, false);
+      ConvoKitMessageEvents.ccThreadSubscriptionChanged(42, false);
       expect(listener.received, [(42, true), (42, false)]);
 
-      CometChatMessageEvents.removeMessagesListener('test_thread_sub');
-      CometChatMessageEvents.ccThreadSubscriptionChanged(7, true);
+      ConvoKitMessageEvents.removeMessagesListener('test_thread_sub');
+      ConvoKitMessageEvents.ccThreadSubscriptionChanged(7, true);
       expect(listener.received.length, 2);
     });
 
@@ -39,12 +39,12 @@ void main() {
       // A listener that does not override ccThreadSubscriptionChanged must
       // inherit the empty default — no crash, non-breaking.
       final plain = _PlainListener();
-      CometChatMessageEvents.addMessagesListener('test_plain', plain);
+      ConvoKitMessageEvents.addMessagesListener('test_plain', plain);
       expect(
-        () => CometChatMessageEvents.ccThreadSubscriptionChanged(1, true),
+        () => ConvoKitMessageEvents.ccThreadSubscriptionChanged(1, true),
         returnsNormally,
       );
-      CometChatMessageEvents.removeMessagesListener('test_plain');
+      ConvoKitMessageEvents.removeMessagesListener('test_plain');
     });
   });
 
@@ -166,7 +166,7 @@ void main() {
     )..threadSubscribed = true;
 
     Widget host({required bool show, required bool gateOn}) {
-      CometChatUIKit.authenticationSettings =
+      ConvoKitUIKit.authenticationSettings =
           (UIKitSettingsBuilder()..enableThreadSubscription = gateOn).build();
       return MaterialApp(
         home: Scaffold(
@@ -240,4 +240,4 @@ void main() {
   });
 }
 
-class _PlainListener with CometChatMessageEventListener {}
+class _PlainListener with ConvoKitMessageEventListener {}

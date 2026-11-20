@@ -89,7 +89,7 @@ _MockUsersBloc _loaded({Set<String> selected = const {}}) => _bloc(
 );
 
 /// Base theme inputs. None of these values is reused as a sentinel.
-final _palette = CometChatColorPalette(
+final _palette = ConvoKitColorPalette(
   primary: const Color(0xFF131313),
   success: const Color(0xFF141414),
   background1: const Color(0xFF151515),
@@ -102,7 +102,7 @@ final _palette = CometChatColorPalette(
   transparent: const Color(0x00000000),
 );
 
-final _spacing = CometChatSpacing(
+final _spacing = ConvoKitSpacing(
   padding1: 4,
   padding2: 8,
   padding3: 12,
@@ -112,7 +112,7 @@ final _spacing = CometChatSpacing(
   radius2: 8,
 );
 
-const _typography = CometChatTypography(
+const _typography = ConvoKitTypography(
   heading4: CometChatTextStyleHeading4(medium: TextStyle(fontSize: 16)),
 );
 
@@ -130,7 +130,7 @@ Translations _l10n(WidgetTester tester) =>
 TextStyle? _styleOf(WidgetTester tester, Finder text) =>
     tester.widget<Text>(text).style;
 
-/// CometChatListItem keys its row Container with the user's uid.
+/// ConvoKitListItem keys its row Container with the user's uid.
 Finder _row(String uid) => find.byKey(ValueKey<String>(uid));
 
 /// The first decorated Container inside [owner].
@@ -225,7 +225,7 @@ void main() {
           UsersList(
             usersBloc: _loaded(),
             style: const ConvoKitUsersStyle(),
-            colorPalette: CometChatColorPalette(
+            colorPalette: ConvoKitColorPalette(
               textPrimary: const Color(0xFF2B3C4D),
             ),
             spacing: _spacing,
@@ -248,7 +248,7 @@ void main() {
             usersBloc: _loaded(),
             style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
-            spacing: CometChatSpacing(padding2: 5, padding4: 37),
+            spacing: ConvoKitSpacing(padding2: 5, padding4: 37),
             typography: _typography,
           ),
         ),
@@ -269,7 +269,7 @@ void main() {
             style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
-            typography: const CometChatTypography(
+            typography: const ConvoKitTypography(
               heading4: CometChatTextStyleHeading4(
                 medium: TextStyle(fontSize: 23.5),
               ),
@@ -331,7 +331,7 @@ void main() {
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatShimmerEffect), findsOneWidget);
+      expect(find.byType(ConvoKitShimmerEffect), findsOneWidget);
 
       await tester.pumpWidget(
         _wrap(
@@ -349,7 +349,7 @@ void main() {
       await tester.pump();
 
       expect(find.byKey(const Key('loading-sentinel')), findsOneWidget);
-      expect(find.byType(CometChatShimmerEffect), findsNothing);
+      expect(find.byType(ConvoKitShimmerEffect), findsNothing);
     });
 
     testWidgets('emptyStateView replaces the empty state', (tester) async {
@@ -412,7 +412,7 @@ void main() {
 
       expect(find.text('row-u1'), findsOneWidget);
       expect(find.text('row-u3'), findsOneWidget);
-      expect(find.byType(CometChatListItem), findsNothing);
+      expect(find.byType(ConvoKitListItem), findsNothing);
     });
 
     testWidgets('subtitleView renders inside its own row', (tester) async {
@@ -476,7 +476,7 @@ void main() {
         find.descendant(of: _row('u1'), matching: find.text('lead-u1')),
         findsOneWidget,
       );
-      expect(find.byType(CometChatAvatar), findsNothing);
+      expect(find.byType(ConvoKitAvatar), findsNothing);
     });
 
     testWidgets('titleView replaces the name', (tester) async {
@@ -510,7 +510,7 @@ void main() {
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
-            avatarStyle: const CometChatAvatarStyle(
+            avatarStyle: const ConvoKitAvatarStyle(
               backgroundColor: Color(0xFF3C4D5E),
               border: Border.fromBorderSide(
                 BorderSide(color: Color(0xFF4D5E6F), width: 2),
@@ -521,7 +521,7 @@ void main() {
       );
       await tester.pump();
 
-      final avatar = _decorationIn(tester, find.byType(CometChatAvatar).first);
+      final avatar = _decorationIn(tester, find.byType(ConvoKitAvatar).first);
       expect(avatar.color, const Color(0xFF3C4D5E));
       expect(
         avatar.border,
@@ -542,7 +542,7 @@ void main() {
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
-            statusIndicatorStyle: const CometChatStatusIndicatorStyle(
+            statusIndicatorStyle: const ConvoKitStatusIndicatorStyle(
               backgroundColor: Color(0xFF5E6F70),
               border: Border.fromBorderSide(
                 BorderSide(color: Color(0xFF6F7081), width: 1.5),
@@ -555,7 +555,7 @@ void main() {
 
       final dot = _decorationIn(
         tester,
-        find.byType(CometChatStatusIndicator).first,
+        find.byType(ConvoKitStatusIndicator).first,
       );
       expect(dot.color, const Color(0xFF5E6F70));
       expect(
@@ -584,7 +584,7 @@ void main() {
         ),
       );
       await tester.pump();
-      final byDefault = find.byType(CometChatStatusIndicator).evaluate().length;
+      final byDefault = find.byType(ConvoKitStatusIndicator).evaluate().length;
 
       await tester.pumpWidget(
         _wrap(
@@ -599,7 +599,7 @@ void main() {
         ),
       );
       await tester.pump();
-      final hidden = find.byType(CometChatStatusIndicator).evaluate().length;
+      final hidden = find.byType(ConvoKitStatusIndicator).evaluate().length;
 
       expect(byDefault, 3);
       expect(hidden, 0);

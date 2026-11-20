@@ -370,8 +370,8 @@ void main() {
     });
 
     testWidgets('an injected colorPalette is swapped in place', (tester) async {
-      final first = CometChatColorPalette(background3: const Color(0xFF010203));
-      final second = CometChatColorPalette(
+      final first = ConvoKitColorPalette(background3: const Color(0xFF010203));
+      final second = ConvoKitColorPalette(
         background3: const Color(0xFF040506),
       );
 
@@ -392,7 +392,7 @@ void main() {
           CometChatImageBubble(
             key: const ValueKey('same'),
             colorPalette: first,
-            spacing: CometChatSpacing(radius3: 4),
+            spacing: ConvoKitSpacing(radius3: 4),
           ),
         ),
       );
@@ -404,7 +404,7 @@ void main() {
           CometChatImageBubble(
             key: const ValueKey('same'),
             colorPalette: second,
-            spacing: CometChatSpacing(radius3: 12),
+            spacing: ConvoKitSpacing(radius3: 12),
           ),
         ),
       );

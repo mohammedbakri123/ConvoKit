@@ -39,7 +39,7 @@ class CometChatSessionAdapter implements ChatSession {
 
   static ChatUser _fromCometChatUser(cc.User user) {
     // Every property is read defensively: legacy tests set
-    // `CometChatUIKit.loggedInUser` with mocktail `Fake` users that only
+    // `ConvoKitUIKit.loggedInUser` with mocktail `Fake` users that only
     // implement a subset of `User` (one fake implements just `uid`). The
     // old setter stored the user without reading any property; this
     // conversion must not throw on a partially-implemented User. Real SDK

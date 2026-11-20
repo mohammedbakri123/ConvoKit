@@ -3,8 +3,8 @@ import '../../../shared_ui/cometchat_uikit_shared.dart' as ui_kit;
 import '../../../shared_ui/cometchat_uikit_shared.dart';
 import '../clean_architecture/core/constants/enums.dart' as core_enums;
 
-///[CometChatUIKitHelper] contains static methods for triggering local events
-class CometChatUIKitHelper {
+///[ConvoKitUIKitHelper] contains static methods for triggering local events
+class ConvoKitUIKitHelper {
   //---------- Message Events ----------
   ///[onMessageSent] is used to inform the listeners
   ///when the logged-in user is sending a message
@@ -12,31 +12,31 @@ class CometChatUIKitHelper {
     BaseMessage message,
     core_enums.MessageStatus messageStatus,
   ) {
-    CometChatMessageEvents.ccMessageSent(message, messageStatus);
+    ConvoKitMessageEvents.ccMessageSent(message, messageStatus);
   }
 
   ///[onMessageEdited] is used to inform the listeners
   ///when the logged-in user is editing a message
   static void onMessageEdited(BaseMessage message, MessageEditStatus status) {
-    CometChatMessageEvents.ccMessageEdited(message, status);
+    ConvoKitMessageEvents.ccMessageEdited(message, status);
   }
 
   ///[onMessageDeleted] is used to inform the listeners
   ///when the logged-in user has deleted a message
   static void onMessageDeleted(BaseMessage message, EventStatus status) {
-    CometChatMessageEvents.ccMessageDeleted(message, status);
+    ConvoKitMessageEvents.ccMessageDeleted(message, status);
   }
 
   ///[onMessageRead] is used to inform the listeners
   ///when the logged-in user has read a message
   static void onMessageRead(BaseMessage message) {
-    CometChatMessageEvents.ccMessageRead(message);
+    ConvoKitMessageEvents.ccMessageRead(message);
   }
 
   ///[onLiveReaction] is used to inform the listeners
   ///when the logged-in user sends a transient message (live reaction)
   static void onLiveReaction(String reaction, String receiverId) {
-    CometChatMessageEvents.ccLiveReaction(reaction, receiverId);
+    ConvoKitMessageEvents.ccLiveReaction(reaction, receiverId);
   }
 
   //---------- User Events ----------
@@ -55,7 +55,7 @@ class CometChatUIKitHelper {
   ///[onMessageModerated] is used to inform the listeners
   ///when the logged-in user has moderated a message
   static void onMessageModerated(BaseMessage message) {
-    CometChatMessageEvents.onMessageModerated(message);
+    ConvoKitMessageEvents.onMessageModerated(message);
   }
 
   //---------- Group Events ----------
@@ -196,12 +196,12 @@ class CometChatUIKitHelper {
     CustomUIPosition uiPosition,
     WidgetBuilder child,
   ) {
-    CometChatUIEvents.showPanel(id, uiPosition, child);
+    ConvoKitUIEvents.showPanel(id, uiPosition, child);
   }
 
   ///[hidePanel] used to hide the panel above message composer
   static void hidePanel(Map<String, dynamic>? id, CustomUIPosition uiPosition) {
-    CometChatUIEvents.hidePanel(id, uiPosition);
+    ConvoKitUIEvents.hidePanel(id, uiPosition);
   }
 
   ///[ccActiveChatChanged] used to notify if the logged-in user
@@ -213,7 +213,7 @@ class CometChatUIKitHelper {
     Group? group,
     int unreadMessageCount,
   ) {
-    CometChatUIEvents.ccActiveChatChanged(
+    ConvoKitUIEvents.ccActiveChatChanged(
       id,
       lastMessage,
       user,
@@ -225,12 +225,12 @@ class CometChatUIKitHelper {
   ///[onOpenChat] used to open the chat conversation
   ///of a user or a group
   static void onOpenChat(User? user, Group? group) {
-    CometChatUIEvents.openChat(user, group);
+    ConvoKitUIEvents.openChat(user, group);
   }
 
   ///[ccComposeMessage] used to add replies to message composer
   ///when the logged-in user is adding a message to composer
   static void ccComposeMessage(String text, MessageEditStatus status) {
-    CometChatUIEvents.ccComposeMessage(text, status);
+    ConvoKitUIEvents.ccComposeMessage(text, status);
   }
 }

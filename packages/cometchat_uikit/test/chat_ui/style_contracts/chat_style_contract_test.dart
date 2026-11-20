@@ -184,26 +184,26 @@ void main() {
               (s, v) => s.copyWith(separatorColor: v),
               (s) => s.separatorColor,
             ),
-            Fld<ConvoKitConversationsStyle, CometChatAvatarStyle>(
+            Fld<ConvoKitConversationsStyle, ConvoKitAvatarStyle>(
               'avatarStyle',
-              CometChatAvatarStyle(),
-              CometChatAvatarStyle(),
+              ConvoKitAvatarStyle(),
+              ConvoKitAvatarStyle(),
               (s, v) => s.copyWith(messageBubbleAvatarStyle: v),
               (s) => s.avatarStyle,
               lerpsByValue: false,
             ),
-            Fld<ConvoKitConversationsStyle, CometChatStatusIndicatorStyle>(
+            Fld<ConvoKitConversationsStyle, ConvoKitStatusIndicatorStyle>(
               'statusIndicatorStyle',
-              CometChatStatusIndicatorStyle(),
-              CometChatStatusIndicatorStyle(),
+              ConvoKitStatusIndicatorStyle(),
+              ConvoKitStatusIndicatorStyle(),
               (s, v) => s.copyWith(statusIndicatorStyle: v),
               (s) => s.statusIndicatorStyle,
               lerpsByValue: false,
             ),
-            Fld<ConvoKitConversationsStyle, CometChatBadgeStyle>(
+            Fld<ConvoKitConversationsStyle, ConvoKitBadgeStyle>(
               'badgeStyle',
-              CometChatBadgeStyle(),
-              CometChatBadgeStyle(),
+              ConvoKitBadgeStyle(),
+              ConvoKitBadgeStyle(),
               (s, v) => s.copyWith(badgeStyle: v),
               (s) => s.badgeStyle,
               lerpsByValue: false,
@@ -224,10 +224,10 @@ void main() {
               (s) => s.mentionsStyle,
               lerpsByValue: false,
             ),
-            Fld<ConvoKitConversationsStyle, CometChatDateStyle>(
+            Fld<ConvoKitConversationsStyle, ConvoKitDateStyle>(
               'dateStyle',
-              CometChatDateStyle(),
-              CometChatDateStyle(),
+              ConvoKitDateStyle(),
+              ConvoKitDateStyle(),
               (s, v) => s.copyWith(dateStyle: v),
               (s) => s.dateStyle,
               lerpsByValue: false,
@@ -240,10 +240,10 @@ void main() {
               (s) => s.typingIndicatorStyle,
               lerpsByValue: false,
             ),
-            Fld<ConvoKitConversationsStyle, CometChatConfirmDialogStyle>(
+            Fld<ConvoKitConversationsStyle, ConvoKitConfirmDialogStyle>(
               'deleteConversationDialogStyle',
-              CometChatConfirmDialogStyle(),
-              CometChatConfirmDialogStyle(),
+              ConvoKitConfirmDialogStyle(),
+              ConvoKitConfirmDialogStyle(),
               (s, v) => s.copyWith(deleteConversationDialogStyle: v),
               (s) => s.deleteConversationDialogStyle,
               lerpsByValue: false,
@@ -1049,37 +1049,37 @@ void main() {
               (s, v) => s.copyWith(checkBoxSelectIconTint: v),
               (s) => s.checkBoxSelectIconTint,
             ),
-            Fld<ConvoKitConversationListItemStyle, CometChatAvatarStyle>(
+            Fld<ConvoKitConversationListItemStyle, ConvoKitAvatarStyle>(
               'avatarStyle',
-              CometChatAvatarStyle(),
-              CometChatAvatarStyle(),
+              ConvoKitAvatarStyle(),
+              ConvoKitAvatarStyle(),
               (s, v) => s.copyWith(avatarStyle: v),
               (s) => s.avatarStyle,
               lerpsByValue: false,
             ),
             Fld<
               ConvoKitConversationListItemStyle,
-              CometChatStatusIndicatorStyle
+              ConvoKitStatusIndicatorStyle
             >(
               'statusIndicatorStyle',
-              CometChatStatusIndicatorStyle(),
-              CometChatStatusIndicatorStyle(),
+              ConvoKitStatusIndicatorStyle(),
+              ConvoKitStatusIndicatorStyle(),
               (s, v) => s.copyWith(statusIndicatorStyle: v),
               (s) => s.statusIndicatorStyle,
               lerpsByValue: false,
             ),
-            Fld<ConvoKitConversationListItemStyle, CometChatDateStyle>(
+            Fld<ConvoKitConversationListItemStyle, ConvoKitDateStyle>(
               'dateStyle',
-              CometChatDateStyle(),
-              CometChatDateStyle(),
+              ConvoKitDateStyle(),
+              ConvoKitDateStyle(),
               (s, v) => s.copyWith(dateStyle: v),
               (s) => s.dateStyle,
               lerpsByValue: false,
             ),
-            Fld<ConvoKitConversationListItemStyle, CometChatBadgeStyle>(
+            Fld<ConvoKitConversationListItemStyle, ConvoKitBadgeStyle>(
               'badgeStyle',
-              CometChatBadgeStyle(),
-              CometChatBadgeStyle(),
+              ConvoKitBadgeStyle(),
+              ConvoKitBadgeStyle(),
               (s, v) => s.copyWith(badgeStyle: v),
               (s) => s.badgeStyle,
               lerpsByValue: false,
@@ -1251,10 +1251,10 @@ void main() {
               (s, v) => s.copyWith(groupIconBackgroundColor: v),
               (s) => s.groupIconBackgroundColor,
             ),
-            Fld<ConvoKitMessageHeaderStyle, CometChatAvatarStyle>(
+            Fld<ConvoKitMessageHeaderStyle, ConvoKitAvatarStyle>(
               'avatarStyle',
-              CometChatAvatarStyle(),
-              CometChatAvatarStyle(),
+              ConvoKitAvatarStyle(),
+              ConvoKitAvatarStyle(),
               (s, v) => s.copyWith(avatarStyle: v),
               (s) => s.avatarStyle,
               lerpsByValue: false,
@@ -1267,10 +1267,10 @@ void main() {
               (s) => s.callButtonsStyle,
               lerpsByValue: false,
             ),
-            Fld<ConvoKitMessageHeaderStyle, CometChatStatusIndicatorStyle>(
+            Fld<ConvoKitMessageHeaderStyle, ConvoKitStatusIndicatorStyle>(
               'statusIndicatorStyle',
-              CometChatStatusIndicatorStyle(),
-              CometChatStatusIndicatorStyle(),
+              ConvoKitStatusIndicatorStyle(),
+              ConvoKitStatusIndicatorStyle(),
               (s, v) => s.copyWith(statusIndicatorStyle: v),
               (s) => s.statusIndicatorStyle,
               lerpsByValue: false,
@@ -1409,10 +1409,10 @@ void main() {
               (s, v) => s.copyWith(readTextColor: v),
               (s) => s.readTextColor,
             ),
-            Fld<CometChatMessageInformationStyle, CometChatAvatarStyle>(
+            Fld<CometChatMessageInformationStyle, ConvoKitAvatarStyle>(
               'avatarStyle',
-              CometChatAvatarStyle(),
-              CometChatAvatarStyle(),
+              ConvoKitAvatarStyle(),
+              ConvoKitAvatarStyle(),
               (s, v) => s.copyWith(messageBubbleAvatarStyle: v),
               (s) => s.avatarStyle,
               lerpsByValue: false,
@@ -1791,10 +1791,10 @@ void main() {
               (s, v) => s.copyWith(textColor: v),
               (s) => s.textColor,
             ),
-            Fld<ConvoKitSuggestionListStyle, CometChatAvatarStyle>(
+            Fld<ConvoKitSuggestionListStyle, ConvoKitAvatarStyle>(
               'avatarStyle',
-              CometChatAvatarStyle(),
-              CometChatAvatarStyle(),
+              ConvoKitAvatarStyle(),
+              ConvoKitAvatarStyle(),
               (s, v) => s.copyWith(messageBubbleAvatarStyle: v),
               (s) => s.avatarStyle,
               lerpsByValue: false,
@@ -2053,10 +2053,10 @@ void main() {
               (s, v) => s.copyWith(borderRadius: v),
               (s) => s.borderRadius,
             ),
-            Fld<ConvoKitMessageListStyle, CometChatAvatarStyle>(
+            Fld<ConvoKitMessageListStyle, ConvoKitAvatarStyle>(
               'avatarStyle',
-              CometChatAvatarStyle(),
-              CometChatAvatarStyle(),
+              ConvoKitAvatarStyle(),
+              ConvoKitAvatarStyle(),
               (s, v) => s.copyWith(messageBubbleAvatarStyle: v),
               (s) => s.avatarStyle,
               lerpsByValue: false,
@@ -2157,10 +2157,10 @@ void main() {
               (s) => s.mentionsStyle,
               lerpsByValue: false,
             ),
-            Fld<ConvoKitMessageListStyle, CometChatActionBubbleStyle>(
+            Fld<ConvoKitMessageListStyle, ConvoKitActionBubbleStyle>(
               'actionBubbleStyle',
-              CometChatActionBubbleStyle(),
-              CometChatActionBubbleStyle(),
+              ConvoKitActionBubbleStyle(),
+              ConvoKitActionBubbleStyle(),
               (s, v) => s.copyWith(actionBubbleStyle: v),
               (s) => s.actionBubbleStyle,
               lerpsByValue: false,
@@ -2364,18 +2364,18 @@ void main() {
               (s, v) => s.copyWith(separatorColor: v),
               (s) => s.separatorColor,
             ),
-            Fld<ConvoKitGroupsStyle, CometChatAvatarStyle>(
+            Fld<ConvoKitGroupsStyle, ConvoKitAvatarStyle>(
               'avatarStyle',
-              CometChatAvatarStyle(),
-              CometChatAvatarStyle(),
+              ConvoKitAvatarStyle(),
+              ConvoKitAvatarStyle(),
               (s, v) => s.copyWith(avatarStyle: v),
               (s) => s.avatarStyle,
               lerpsByValue: false,
             ),
-            Fld<ConvoKitGroupsStyle, CometChatStatusIndicatorStyle>(
+            Fld<ConvoKitGroupsStyle, ConvoKitStatusIndicatorStyle>(
               'statusIndicatorStyle',
-              CometChatStatusIndicatorStyle(),
-              CometChatStatusIndicatorStyle(),
+              ConvoKitStatusIndicatorStyle(),
+              ConvoKitStatusIndicatorStyle(),
               (s, v) => s.copyWith(statusIndicatorStyle: v),
               (s) => s.statusIndicatorStyle,
               lerpsByValue: false,

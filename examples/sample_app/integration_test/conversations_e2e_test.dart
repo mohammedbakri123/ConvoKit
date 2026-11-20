@@ -471,7 +471,7 @@ void main() {
         );
       }
 
-      // Step 3: Wait for the CometChatConfirmDialog to appear
+      // Step 3: Wait for the ConvoKitConfirmDialog to appear
       await pumpForDuration(tester, const Duration(seconds: 1));
 
       await screenshot(tester, '12_delete_confirm_dialog');

@@ -311,9 +311,9 @@ void main() {
           UsersList(
             usersBloc: _loaded(),
             style: const ConvoKitUsersStyle(),
-            colorPalette: CometChatColorPalette(),
-            spacing: CometChatSpacing(),
-            typography: const CometChatTypography(),
+            colorPalette: ConvoKitColorPalette(),
+            spacing: ConvoKitSpacing(),
+            typography: const ConvoKitTypography(),
             options: (context, user) {
               built.add(user.uid);
               return [
@@ -353,9 +353,9 @@ void main() {
           UsersList(
             usersBloc: _loaded(),
             style: const ConvoKitUsersStyle(),
-            colorPalette: CometChatColorPalette(),
-            spacing: CometChatSpacing(),
-            typography: const CometChatTypography(),
+            colorPalette: ConvoKitColorPalette(),
+            spacing: ConvoKitSpacing(),
+            typography: const ConvoKitTypography(),
             options: (context, user) => const [],
           ),
         ),
@@ -370,9 +370,9 @@ void main() {
             key: const ValueKey('with-callback'),
             usersBloc: _loaded(),
             style: const ConvoKitUsersStyle(),
-            colorPalette: CometChatColorPalette(),
-            spacing: CometChatSpacing(),
-            typography: const CometChatTypography(),
+            colorPalette: ConvoKitColorPalette(),
+            spacing: ConvoKitSpacing(),
+            typography: const ConvoKitTypography(),
             onItemLongPress: (context, user) => pressed.add(user.uid),
             options: (context, user) => [
               CometChatOption(id: 'mute', title: 'Mute ${user.name}'),

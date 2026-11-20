@@ -218,7 +218,7 @@ void main() {
         }
 
         // cometchat_pinned_messages.dart: rows carry no unpin icon; unpin is the
-        // row's onLongPress → CometChatConfirmDialog with 'Unpin message?' and a
+        // row's onLongPress → ConvoKitConfirmDialog with 'Unpin message?' and a
         // confirm button labelled unpinButton = 'Unpin'.
         final rowCenter = ScreenReach.centerOfText(
           tester,
@@ -325,7 +325,7 @@ void main() {
             fail('Setup: live pin of $id failed: ${error?.code}');
           }
           pinnedIds.add(id);
-          CometChatMessageEvents.ccMessagePinned(updated);
+          ConvoKitMessageEvents.ccMessagePinned(updated);
         }
 
         await pinLive(foreignId);

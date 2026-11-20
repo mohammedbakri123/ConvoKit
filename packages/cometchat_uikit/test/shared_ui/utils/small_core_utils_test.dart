@@ -172,8 +172,8 @@ void main() {
     ) async {
       late TextStyle expected;
       final w = await pumpBuilt(tester, (c) {
-        final typography = CometChatThemeHelper.getTypography(c);
-        final palette = CometChatThemeHelper.getColorPalette(c);
+        final typography = ConvoKitThemeHelper.getTypography(c);
+        final palette = ConvoKitThemeHelper.getColorPalette(c);
         expected = TextStyle(
           fontSize: typography.body?.regular?.fontSize,
           fontWeight: typography.body?.regular?.fontWeight,
@@ -184,7 +184,7 @@ void main() {
           c,
           palette,
           typography,
-          CometChatThemeHelper.getSpacing(c),
+          ConvoKitThemeHelper.getSpacing(c),
         );
       });
       expect(w, isA<Container>());
@@ -205,9 +205,9 @@ void main() {
         tester,
         (c) => AIUtils.getErrorText(
           c,
-          CometChatThemeHelper.getColorPalette(c),
-          CometChatThemeHelper.getTypography(c),
-          CometChatThemeHelper.getSpacing(c),
+          ConvoKitThemeHelper.getColorPalette(c),
+          ConvoKitThemeHelper.getTypography(c),
+          ConvoKitThemeHelper.getSpacing(c),
           errorStateText: 'no luck',
           errorTextStyle: const TextStyle(color: Color(0xFF445566)),
         ),

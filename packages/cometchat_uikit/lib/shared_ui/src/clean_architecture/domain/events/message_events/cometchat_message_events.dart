@@ -7,12 +7,12 @@ import '../../../data/models/interactive_message/custom_interactive_message.dart
 import 'cometchat_message_event_listener.dart';
 
 ///Event emitting class for [ConvoKitMessageList]
-class CometChatMessageEvents {
-  static Map<String, CometChatMessageEventListener> messagesListener = {};
+class ConvoKitMessageEvents {
+  static Map<String, ConvoKitMessageEventListener> messagesListener = {};
 
   static void addMessagesListener(
     String listenerId,
-    CometChatMessageEventListener listenerClass,
+    ConvoKitMessageEventListener listenerClass,
   ) {
     messagesListener[listenerId] = listenerClass;
   }

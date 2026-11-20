@@ -53,13 +53,13 @@ class StickerAuxiliaryButton extends StatefulWidget {
 }
 
 class _StickerAuxiliaryButtonState extends State<StickerAuxiliaryButton>
-    with CometChatUIEventListener {
+    with ConvoKitUIEventListener {
   /// true = sticker panel is closed (default), false = sticker panel is open
   bool _isStickerPanelClosed = true;
 
   late String _listenerId;
-  late CometChatColorPalette colorPalette;
-  late CometChatSpacing spacing;
+  late ConvoKitColorPalette colorPalette;
+  late ConvoKitSpacing spacing;
   bool _themeInitialized = false;
   Brightness? _cachedBrightness;
   @override
@@ -72,12 +72,12 @@ class _StickerAuxiliaryButtonState extends State<StickerAuxiliaryButton>
     _listenerId =
         'StickerAuxiliaryButtonListener_'
         '${identityHashCode(this)}';
-    CometChatUIEvents.addUiListener(_listenerId, this);
+    ConvoKitUIEvents.addUiListener(_listenerId, this);
   }
 
   @override
   void dispose() {
-    CometChatUIEvents.removeUiListener(_listenerId);
+    ConvoKitUIEvents.removeUiListener(_listenerId);
     super.dispose();
   }
 
@@ -101,14 +101,14 @@ class _StickerAuxiliaryButtonState extends State<StickerAuxiliaryButton>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final currentBrightness = CometChatThemeHelper.getBrightness(context);
+    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
     if (_themeInitialized && !brightnessChanged) return;
     _cachedBrightness = currentBrightness;
     _themeInitialized = true;
-    colorPalette = CometChatThemeHelper.getColorPalette(context);
-    spacing = CometChatThemeHelper.getSpacing(context);
+    colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    spacing = ConvoKitThemeHelper.getSpacing(context);
   }
 
   @override

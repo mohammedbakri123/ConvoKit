@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../../../../../cometchat_uikit_shared.dart';
 
-///[CometChatDateStyle] is a data class that has styling-related properties
-///to customize the appearance of [CometChatDate]
+///[ConvoKitDateStyle] is a data class that has styling-related properties
+///to customize the appearance of [ConvoKitDate]
 ///``` dart
-///CometChatDateStyle(
+///ConvoKitDateStyle(
 /// textStyle: TextStyle(
 /// color: Colors.white,
 /// fontSize: 12,
@@ -15,8 +15,8 @@ import '../../../../../../cometchat_uikit_shared.dart';
 /// border: Border.all(color: Colors.white, width: 0),
 /// );
 /// ```
-class CometChatDateStyle extends ThemeExtension<CometChatDateStyle> {
-  const CometChatDateStyle({
+class ConvoKitDateStyle extends ThemeExtension<ConvoKitDateStyle> {
+  const ConvoKitDateStyle({
     this.textStyle,
     this.border,
     this.backgroundColor,
@@ -39,18 +39,18 @@ class CometChatDateStyle extends ThemeExtension<CometChatDateStyle> {
   /// [borderRadius] provides border radius to the date
   final BorderRadiusGeometry? borderRadius;
 
-  static CometChatDateStyle of(BuildContext context) =>
-      const CometChatDateStyle();
+  static ConvoKitDateStyle of(BuildContext context) =>
+      const ConvoKitDateStyle();
 
   @override
-  CometChatDateStyle copyWith({
+  ConvoKitDateStyle copyWith({
     Color? backgroundColor,
     Border? border,
     TextStyle? textStyle,
     Color? textColor,
     BorderRadiusGeometry? borderRadius,
   }) {
-    return CometChatDateStyle(
+    return ConvoKitDateStyle(
       backgroundColor: backgroundColor ?? this.backgroundColor,
       border: border ?? this.border,
       textStyle: textStyle ?? this.textStyle,
@@ -59,7 +59,7 @@ class CometChatDateStyle extends ThemeExtension<CometChatDateStyle> {
     );
   }
 
-  CometChatDateStyle merge(CometChatDateStyle? style) {
+  ConvoKitDateStyle merge(ConvoKitDateStyle? style) {
     if (style == null) return this;
     return copyWith(
       backgroundColor: style.backgroundColor,
@@ -71,11 +71,11 @@ class CometChatDateStyle extends ThemeExtension<CometChatDateStyle> {
   }
 
   @override
-  CometChatDateStyle lerp(ThemeExtension<CometChatDateStyle>? other, double t) {
-    if (other is! CometChatDateStyle) {
+  ConvoKitDateStyle lerp(ThemeExtension<ConvoKitDateStyle>? other, double t) {
+    if (other is! ConvoKitDateStyle) {
       return this;
     }
-    return CometChatDateStyle(
+    return ConvoKitDateStyle(
       backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t),
       border: Border.lerp(border, other.border, t),
       textStyle: TextStyle.lerp(textStyle, other.textStyle, t),

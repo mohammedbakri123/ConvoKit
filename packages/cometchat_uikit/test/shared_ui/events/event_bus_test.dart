@@ -1,8 +1,8 @@
 /// Behaviour tests for the four UI Kit event buses and the SDK bridge that
 /// feeds the message bus.
 ///
-///   CometChatMessageEvents  / CometChatMessageEventListener
-///   CometChatUIEvents       / CometChatUIEventListener
+///   ConvoKitMessageEvents  / ConvoKitMessageEventListener
+///   ConvoKitUIEvents       / ConvoKitUIEventListener
 ///   CometChatCallEvents     / CometChatCallEventListener
 ///   ConvoKitUserEvents     / ConvoKitUserEventListener
 ///   ChatSDKEventInitializer (the MessageListener the kit installs on the SDK)
@@ -135,7 +135,7 @@ class _Call {
 
 /// Records every message-bus event, so a test can assert both which event
 /// fired and what payload reached the listener.
-class _MessageRecorder with CometChatMessageEventListener {
+class _MessageRecorder with ConvoKitMessageEventListener {
   final List<_Call> calls = [];
 
   List<String> get names => calls.map((c) => c.name).toList();
@@ -288,9 +288,9 @@ class _MessageRecorder with CometChatMessageEventListener {
 /// A listener that overrides nothing: every call must land on the mixin's own
 /// no-op body. Registered alongside the recorder in every message-bus test, so
 /// an emission that the mixin cannot absorb fails the test it fired in.
-class _SilentMessageListener with CometChatMessageEventListener {}
+class _SilentMessageListener with ConvoKitMessageEventListener {}
 
-class _UiRecorder with CometChatUIEventListener {
+class _UiRecorder with ConvoKitUIEventListener {
   final List<_Call> calls = [];
 
   _Call get only {
@@ -359,7 +359,7 @@ class _UiRecorder with CometChatUIEventListener {
       calls.add(_Call('ccCardActionClicked', [message, action]));
 }
 
-class _SilentUiListener with CometChatUIEventListener {}
+class _SilentUiListener with ConvoKitUIEventListener {}
 
 class _CallRecorder with CometChatCallEventListener {
   final List<_Call> calls = [];
@@ -513,101 +513,101 @@ class _SilentAiListener with CometChatAIAssistantEventsListener {}
 
 void main() {
   // ===========================================================================
-  group('CometChatMessageEvents', () {
+  group('ConvoKitMessageEvents', () {
     late _MessageRecorder rec;
     late _MessageRecorder second;
 
     setUp(() {
-      CometChatMessageEvents.messagesListener.clear();
+      ConvoKitMessageEvents.messagesListener.clear();
       rec = _MessageRecorder();
       second = _MessageRecorder();
-      CometChatMessageEvents.addMessagesListener('rec', rec);
+      ConvoKitMessageEvents.addMessagesListener('rec', rec);
       // Overrides nothing: proves the mixin's no-op defaults absorb every
       // event on this bus.
-      CometChatMessageEvents.addMessagesListener(
+      ConvoKitMessageEvents.addMessagesListener(
         'silent',
         _SilentMessageListener(),
       );
     });
 
-    tearDown(() => CometChatMessageEvents.messagesListener.clear());
+    tearDown(() => ConvoKitMessageEvents.messagesListener.clear());
 
     // --- registration bookkeeping -----------------------------------------
     test('addMessagesListener stores under the id it was given', () {
-      expect(CometChatMessageEvents.messagesListener['rec'], same(rec));
+      expect(ConvoKitMessageEvents.messagesListener['rec'], same(rec));
     });
 
     test(
       're-adding the same id replaces the listener rather than duplicating',
       () {
-        CometChatMessageEvents.addMessagesListener('rec', second);
-        CometChatMessageEvents.ccMessageRead(_text());
+        ConvoKitMessageEvents.addMessagesListener('rec', second);
+        ConvoKitMessageEvents.ccMessageRead(_text());
         expect(rec.calls, isEmpty);
         expect(second.calls, hasLength(1));
-        expect(CometChatMessageEvents.messagesListener, hasLength(2));
+        expect(ConvoKitMessageEvents.messagesListener, hasLength(2));
       },
     );
 
     test('every registered listener is reached, not only the first', () {
-      CometChatMessageEvents.addMessagesListener('second', second);
-      CometChatMessageEvents.ccMessageRead(_text());
+      ConvoKitMessageEvents.addMessagesListener('second', second);
+      ConvoKitMessageEvents.ccMessageRead(_text());
       expect(rec.names, ['ccMessageRead']);
       expect(second.names, ['ccMessageRead']);
     });
 
     test('a removed listener stops receiving', () {
-      CometChatMessageEvents.removeMessagesListener('rec');
-      CometChatMessageEvents.ccMessageRead(_text());
+      ConvoKitMessageEvents.removeMessagesListener('rec');
+      ConvoKitMessageEvents.ccMessageRead(_text());
       expect(rec.calls, isEmpty);
-      expect(CometChatMessageEvents.messagesListener.containsKey('rec'), false);
+      expect(ConvoKitMessageEvents.messagesListener.containsKey('rec'), false);
     });
 
     test('removing an id that was never added is a no-op', () {
-      CometChatMessageEvents.removeMessagesListener('nobody');
-      CometChatMessageEvents.ccMessageRead(_text());
+      ConvoKitMessageEvents.removeMessagesListener('nobody');
+      ConvoKitMessageEvents.ccMessageRead(_text());
       expect(rec.names, ['ccMessageRead']);
     });
 
     // --- composer / message-list events, payload identity ------------------
     test('ccMessageSent carries the message and the status', () {
       final m = _text();
-      CometChatMessageEvents.ccMessageSent(m, MessageSendStatus.inProgress);
+      ConvoKitMessageEvents.ccMessageSent(m, MessageSendStatus.inProgress);
       expect(rec.only.name, 'ccMessageSent');
       expect(rec.only.args, [same(m), MessageSendStatus.inProgress]);
     });
 
     test('ccMessageEdited carries the message and the edit status', () {
       final m = _text();
-      CometChatMessageEvents.ccMessageEdited(m, MessageEditStatus.success);
+      ConvoKitMessageEvents.ccMessageEdited(m, MessageEditStatus.success);
       expect(rec.only.name, 'ccMessageEdited');
       expect(rec.only.args, [same(m), MessageEditStatus.success]);
     });
 
     test('ccMessageDeleted carries the message and the event status', () {
       final m = _text();
-      CometChatMessageEvents.ccMessageDeleted(m, EventStatus.inProgress);
+      ConvoKitMessageEvents.ccMessageDeleted(m, EventStatus.inProgress);
       expect(rec.only.name, 'ccMessageDeleted');
       expect(rec.only.args, [same(m), EventStatus.inProgress]);
     });
 
     test('ccMessageRead carries the message', () {
       final m = _text();
-      CometChatMessageEvents.ccMessageRead(m);
+      ConvoKitMessageEvents.ccMessageRead(m);
       expect(rec.only.args, [same(m)]);
     });
 
     test('ccThreadSubscriptionChanged carries the parent id and the flag', () {
-      CometChatMessageEvents.ccThreadSubscriptionChanged(99, false);
+      ConvoKitMessageEvents.ccThreadSubscriptionChanged(99, false);
       expect(rec.only.name, 'ccThreadSubscriptionChanged');
       expect(rec.only.args, [99, false]);
     });
 
     test('pin / unpin / save / unsave each fire their own event', () {
       final m = _text();
-      CometChatMessageEvents.ccMessagePinned(m);
-      CometChatMessageEvents.ccMessageUnpinned(m);
-      CometChatMessageEvents.ccMessageSaved(m);
-      CometChatMessageEvents.ccMessageUnsaved(m);
+      ConvoKitMessageEvents.ccMessagePinned(m);
+      ConvoKitMessageEvents.ccMessageUnpinned(m);
+      ConvoKitMessageEvents.ccMessageSaved(m);
+      ConvoKitMessageEvents.ccMessageUnsaved(m);
       expect(rec.names, [
         'ccMessagePinned',
         'ccMessageUnpinned',
@@ -622,14 +622,14 @@ void main() {
     test('ccLiveReaction forwards only the reaction, dropping receiverId', () {
       // The bus takes (reaction, receiverId) but the listener signature is
       // (reaction) alone — a listener cannot tell which chat it came from.
-      CometChatMessageEvents.ccLiveReaction('❤️', 'u2');
+      ConvoKitMessageEvents.ccLiveReaction('❤️', 'u2');
       expect(rec.only.name, 'ccLiveReaction');
       expect(rec.only.args, ['❤️']);
     });
 
     test('ccMessageForwarded carries recipients and status', () {
       final m = _text();
-      CometChatMessageEvents.ccMessageForwarded(
+      ConvoKitMessageEvents.ccMessageForwarded(
         m,
         [_bob],
         [_team],
@@ -646,7 +646,7 @@ void main() {
 
     test('ccReplyToMessage carries the message', () {
       final m = _text();
-      CometChatMessageEvents.ccReplyToMessage(m);
+      ConvoKitMessageEvents.ccReplyToMessage(m);
       expect(rec.only.name, 'ccReplyToMessage');
       expect(rec.only.args, [same(m)]);
     });
@@ -654,29 +654,29 @@ void main() {
     // --- SDK-shaped events -------------------------------------------------
     test('onTextMessageReceived carries the text message', () {
       final m = _text('ping');
-      CometChatMessageEvents.onTextMessageReceived(m);
+      ConvoKitMessageEvents.onTextMessageReceived(m);
       expect(rec.only.name, 'onTextMessageReceived');
       expect(rec.only.args, [same(m)]);
     });
 
     test('onMediaMessageReceived carries the media message', () {
       final m = _media();
-      CometChatMessageEvents.onMediaMessageReceived(m);
+      ConvoKitMessageEvents.onMediaMessageReceived(m);
       expect(rec.only.name, 'onMediaMessageReceived');
       expect(rec.only.args, [same(m)]);
     });
 
     test('onCustomMessageReceived carries the custom message', () {
       final m = _custom();
-      CometChatMessageEvents.onCustomMessageReceived(m);
+      ConvoKitMessageEvents.onCustomMessageReceived(m);
       expect(rec.only.name, 'onCustomMessageReceived');
       expect(rec.only.args, [same(m)]);
     });
 
     test('typing started and ended are distinct events', () {
       final t = _typing();
-      CometChatMessageEvents.onTypingStarted(t);
-      CometChatMessageEvents.onTypingEnded(t);
+      ConvoKitMessageEvents.onTypingStarted(t);
+      ConvoKitMessageEvents.onTypingEnded(t);
       expect(rec.names, ['onTypingStarted', 'onTypingEnded']);
       expect(rec.calls.first.args, [same(t)]);
       expect(rec.calls.last.args, [same(t)]);
@@ -684,10 +684,10 @@ void main() {
 
     test('the four receipt events stay distinct', () {
       final r = _receipt();
-      CometChatMessageEvents.onMessagesDelivered(r);
-      CometChatMessageEvents.onMessagesRead(r);
-      CometChatMessageEvents.onMessagesDeliveredToAll(r);
-      CometChatMessageEvents.onMessagesReadByAll(r);
+      ConvoKitMessageEvents.onMessagesDelivered(r);
+      ConvoKitMessageEvents.onMessagesRead(r);
+      ConvoKitMessageEvents.onMessagesDeliveredToAll(r);
+      ConvoKitMessageEvents.onMessagesReadByAll(r);
       expect(rec.names, [
         'onMessagesDelivered',
         'onMessagesRead',
@@ -701,9 +701,9 @@ void main() {
 
     test('onMessageEdited / onMessageDeleted / onMessageModerated', () {
       final m = _text();
-      CometChatMessageEvents.onMessageEdited(m);
-      CometChatMessageEvents.onMessageDeleted(m);
-      CometChatMessageEvents.onMessageModerated(m);
+      ConvoKitMessageEvents.onMessageEdited(m);
+      ConvoKitMessageEvents.onMessageDeleted(m);
+      ConvoKitMessageEvents.onMessageModerated(m);
       expect(rec.names, [
         'onMessageEdited',
         'onMessageDeleted',
@@ -713,7 +713,7 @@ void main() {
 
     test('onTransientMessageReceived carries the transient message', () {
       final m = _transient();
-      CometChatMessageEvents.onTransientMessageReceived(m);
+      ConvoKitMessageEvents.onTransientMessageReceived(m);
       expect(rec.only.name, 'onTransientMessageReceived');
       expect(rec.only.args, [same(m)]);
     });
@@ -738,10 +738,10 @@ void main() {
         _interactive(type: MessageTypeConstants.scheduler),
       );
 
-      CometChatMessageEvents.onFormMessageReceived(form);
-      CometChatMessageEvents.onCardMessageReceived(card);
-      CometChatMessageEvents.onCustomInteractiveMessageReceived(custom);
-      CometChatMessageEvents.onSchedulerMessageReceived(scheduler);
+      ConvoKitMessageEvents.onFormMessageReceived(form);
+      ConvoKitMessageEvents.onCardMessageReceived(card);
+      ConvoKitMessageEvents.onCustomInteractiveMessageReceived(custom);
+      ConvoKitMessageEvents.onSchedulerMessageReceived(scheduler);
 
       expect(rec.names, [
         'onFormMessageReceived',
@@ -757,55 +757,55 @@ void main() {
 
     test('onInteractionGoalCompleted carries the receipt', () {
       final r = _interactionReceipt();
-      CometChatMessageEvents.onInteractionGoalCompleted(r);
+      ConvoKitMessageEvents.onInteractionGoalCompleted(r);
       expect(rec.only.name, 'onInteractionGoalCompleted');
       expect(rec.only.args, [same(r)]);
     });
 
     test('reaction added and removed are distinct events', () {
       final e = _reactionEvent();
-      CometChatMessageEvents.onMessageReactionAdded(e);
-      CometChatMessageEvents.onMessageReactionRemoved(e);
+      ConvoKitMessageEvents.onMessageReactionAdded(e);
+      ConvoKitMessageEvents.onMessageReactionRemoved(e);
       expect(rec.names, ['onMessageReactionAdded', 'onMessageReactionRemoved']);
       expect(rec.calls.first.args, [same(e)]);
       expect(rec.calls.last.args, [same(e)]);
     });
 
     test('emitting with no listeners registered is harmless', () {
-      CometChatMessageEvents.messagesListener.clear();
+      ConvoKitMessageEvents.messagesListener.clear();
       expect(
-        () => CometChatMessageEvents.ccMessageRead(_text()),
+        () => ConvoKitMessageEvents.ccMessageRead(_text()),
         returnsNormally,
       );
     });
   });
 
   // ===========================================================================
-  group('CometChatUIEvents', () {
+  group('ConvoKitUIEvents', () {
     late _UiRecorder rec;
 
     setUp(() {
-      CometChatUIEvents.uiListener.clear();
+      ConvoKitUIEvents.uiListener.clear();
       rec = _UiRecorder();
-      CometChatUIEvents.addUiListener('rec', rec);
-      CometChatUIEvents.addUiListener('silent', _SilentUiListener());
+      ConvoKitUIEvents.addUiListener('rec', rec);
+      ConvoKitUIEvents.addUiListener('silent', _SilentUiListener());
     });
 
-    tearDown(() => CometChatUIEvents.uiListener.clear());
+    tearDown(() => ConvoKitUIEvents.uiListener.clear());
 
     test('addUiListener stores under the id it was given', () {
-      expect(CometChatUIEvents.uiListener['rec'], same(rec));
+      expect(ConvoKitUIEvents.uiListener['rec'], same(rec));
     });
 
     test('a removed listener stops receiving', () {
-      CometChatUIEvents.removeUiListener('rec');
-      CometChatUIEvents.openChat(_bob, null);
+      ConvoKitUIEvents.removeUiListener('rec');
+      ConvoKitUIEvents.openChat(_bob, null);
       expect(rec.calls, isEmpty);
     });
 
     test('showPanel carries id, position and the builder itself', () {
       Widget builder(BuildContext _) => const SizedBox.shrink();
-      CometChatUIEvents.showPanel(
+      ConvoKitUIEvents.showPanel(
         {'uid': 'u2'},
         CustomUIPosition.messageListBottom,
         builder,
@@ -819,14 +819,14 @@ void main() {
     });
 
     test('hidePanel carries id and position', () {
-      CometChatUIEvents.hidePanel(null, CustomUIPosition.messageListTop);
+      ConvoKitUIEvents.hidePanel(null, CustomUIPosition.messageListTop);
       expect(rec.only.name, 'hidePanel');
       expect(rec.only.args, [null, CustomUIPosition.messageListTop]);
     });
 
     test('ccActiveChatChanged carries all five arguments in order', () {
       final m = _text();
-      CometChatUIEvents.ccActiveChatChanged({'uid': 'u2'}, m, _bob, _team, 4);
+      ConvoKitUIEvents.ccActiveChatChanged({'uid': 'u2'}, m, _bob, _team, 4);
       expect(rec.only.name, 'ccActiveChatChanged');
       expect(rec.only.args, [
         {'uid': 'u2'},
@@ -838,19 +838,19 @@ void main() {
     });
 
     test('openChat carries whichever of user / group was given', () {
-      CometChatUIEvents.openChat(_bob, null);
+      ConvoKitUIEvents.openChat(_bob, null);
       expect(rec.only.args, [same(_bob), null]);
     });
 
     test('ccComposeMessage carries the text and the edit status', () {
-      CometChatUIEvents.ccComposeMessage('draft', MessageEditStatus.inProgress);
+      ConvoKitUIEvents.ccComposeMessage('draft', MessageEditStatus.inProgress);
       expect(rec.only.name, 'ccComposeMessage');
       expect(rec.only.args, ['draft', MessageEditStatus.inProgress]);
     });
 
     test('lock / unlock bottom padding are distinct and carry the height', () {
-      CometChatUIEvents.lockBottomPadding({'uid': 'u2'}, 280);
-      CometChatUIEvents.unlockBottomPadding({'uid': 'u2'});
+      ConvoKitUIEvents.lockBottomPadding({'uid': 'u2'}, 280);
+      ConvoKitUIEvents.unlockBottomPadding({'uid': 'u2'});
       expect(rec.calls.map((c) => c.name), [
         'lockBottomPadding',
         'unlockBottomPadding',
@@ -865,7 +865,7 @@ void main() {
     });
 
     test('requestComposerFocus carries the target id', () {
-      CometChatUIEvents.requestComposerFocus({'uid': 'u2'});
+      ConvoKitUIEvents.requestComposerFocus({'uid': 'u2'});
       expect(rec.only.name, 'requestComposerFocus');
       expect(rec.only.args, [
         {'uid': 'u2'},
@@ -873,7 +873,7 @@ void main() {
     });
 
     test('ccAgentChatThreadResolved carries receiver and parent id', () {
-      CometChatUIEvents.ccAgentChatThreadResolved(
+      ConvoKitUIEvents.ccAgentChatThreadResolved(
         receiverId: 'agent-1',
         parentMessageId: 77,
       );
@@ -884,7 +884,7 @@ void main() {
     test('ccCardActionClicked carries the owning message and the action', () {
       final m = _text();
       const action = 'tapped';
-      CometChatUIEvents.ccCardActionClicked(m, action);
+      ConvoKitUIEvents.ccCardActionClicked(m, action);
       expect(rec.only.name, 'ccCardActionClicked');
       expect(rec.only.args, [same(m), action]);
     });
@@ -986,14 +986,14 @@ void main() {
     late ChatSDKEventInitializer bridge;
 
     setUp(() {
-      CometChatMessageEvents.messagesListener.clear();
+      ConvoKitMessageEvents.messagesListener.clear();
       rec = _MessageRecorder();
-      CometChatMessageEvents.addMessagesListener('rec', rec);
+      ConvoKitMessageEvents.addMessagesListener('rec', rec);
       bridge = ChatSDKEventInitializer();
     });
 
     tearDown(() {
-      CometChatMessageEvents.messagesListener.clear();
+      ConvoKitMessageEvents.messagesListener.clear();
       CometChat.removeMessageListener('__CometChatConstantListenerID__');
     });
 

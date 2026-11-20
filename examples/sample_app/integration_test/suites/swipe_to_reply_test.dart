@@ -39,7 +39,7 @@ import '../sdk_user_b/messaging_actions.dart';
 ///     (`id <= 0`), deleted, `action`/`call` category, agentic and moderated
 ///     messages; enabled by default in the sample app
 ///     (`component_toggles.dart`: `enableSwipeToReply = true`).
-///   * Swipe fires `CometChatMessageEvents.ccReplyToMessage`; the composer
+///   * Swipe fires `ConvoKitMessageEvents.ccReplyToMessage`; the composer
 ///     shows `ConvoKitMessagePreview` (with a close button) in
 ///     `_buildInlinePreview`. A sent reply's bubble reuses the same widget
 ///     with `hideCloseButton: true` for the quoted block.
@@ -415,11 +415,11 @@ void main() {
       await ComposerDepthHelper.openGroupByName(tester, groupName);
       await ComposerDepthHelper.waitForInList(tester, text);
 
-      // "<A> added <B>" — CometChatActionBubble(text: action.message).
+      // "<A> added <B>" — ConvoKitActionBubble(text: action.message).
       final action = ComposerDepthHelper.centerOfActionBubble(tester, 'added');
       if (action == null) {
         fail(
-          'No "added" CometChatActionBubble in the group — the action '
+          'No "added" ConvoKitActionBubble in the group — the action '
           'message fixture is missing (or hideGroupActionMessages is on)',
         );
       }

@@ -47,13 +47,13 @@ class CometChatTextBubble extends StatefulWidget {
   final EdgeInsetsGeometry? padding;
 
   /// [colorPalette] optional pre-cached color palette to avoid expensive lookups during keyboard animation
-  final CometChatColorPalette? colorPalette;
+  final ConvoKitColorPalette? colorPalette;
 
   /// [spacing] optional pre-cached spacing to avoid expensive lookups during keyboard animation
-  final CometChatSpacing? spacing;
+  final ConvoKitSpacing? spacing;
 
   /// [typography] optional pre-cached typography to avoid expensive lookups during keyboard animation
-  final CometChatTypography? typography;
+  final ConvoKitTypography? typography;
 
   /// Number of emojis when the message is emoji-only (1–3).
   /// 0 means normal text rendering. When > 0, the bubble renders
@@ -68,9 +68,9 @@ class CometChatTextBubble extends StatefulWidget {
 class _CometChatTextBubbleState extends State<CometChatTextBubble> {
   // Cached theme values to avoid expensive lookups during rebuilds
   CometChatTextBubbleStyle? _textBubbleStyle;
-  CometChatTypography? _typography;
-  CometChatColorPalette? _colorPalette;
-  CometChatSpacing? _spacing;
+  ConvoKitTypography? _typography;
+  ConvoKitColorPalette? _colorPalette;
+  ConvoKitSpacing? _spacing;
   double _cachedMaxWidth = 300; // Default fallback
   TextScaler _cachedTextScaler = TextScaler.noScaling; // Cache text scaler
   bool _themeInitialized = false;
@@ -80,22 +80,22 @@ class _CometChatTextBubbleState extends State<CometChatTextBubble> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Only initialize theme once to avoid expensive lookups during keyboard animation
-    final currentBrightness = CometChatThemeHelper.getBrightness(context);
+    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
     if (!_themeInitialized || brightnessChanged) {
       _cachedBrightness = currentBrightness;
       _textBubbleStyle =
-          CometChatThemeHelper.getTheme<CometChatTextBubbleStyle>(
+          ConvoKitThemeHelper.getTheme<CometChatTextBubbleStyle>(
             context: context,
             defaultTheme: CometChatTextBubbleStyle.of,
           ).merge(widget.style);
       // Use passed values OR fallback to lookup (for standalone usage)
       _typography =
-          widget.typography ?? CometChatThemeHelper.getTypography(context);
+          widget.typography ?? ConvoKitThemeHelper.getTypography(context);
       _colorPalette =
-          widget.colorPalette ?? CometChatThemeHelper.getColorPalette(context);
-      _spacing = widget.spacing ?? CometChatThemeHelper.getSpacing(context);
+          widget.colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
+      _spacing = widget.spacing ?? ConvoKitThemeHelper.getSpacing(context);
       // Cache screen width ONCE to avoid MediaQuery rebuilds during keyboard animation
       _cachedMaxWidth = MediaQuery.sizeOf(context).width * (75 / 100);
       // Cache text scaler ONCE to avoid MediaQuery rebuilds during keyboard animation
@@ -110,7 +110,7 @@ class _CometChatTextBubbleState extends State<CometChatTextBubble> {
     // Update style if it changed
     if (widget.style != oldWidget.style) {
       _textBubbleStyle =
-          CometChatThemeHelper.getTheme<CometChatTextBubbleStyle>(
+          ConvoKitThemeHelper.getTheme<CometChatTextBubbleStyle>(
             context: context,
             defaultTheme: CometChatTextBubbleStyle.of,
           ).merge(widget.style);

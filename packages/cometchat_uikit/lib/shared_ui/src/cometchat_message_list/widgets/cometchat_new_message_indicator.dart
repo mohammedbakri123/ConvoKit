@@ -15,13 +15,13 @@ class CometChatNewMessageIndicator extends StatelessWidget {
   final String? text;
 
   /// Pre-cached color palette (avoids InheritedWidget lookup)
-  final CometChatColorPalette? colorPalette;
+  final ConvoKitColorPalette? colorPalette;
 
   /// Pre-cached typography (avoids InheritedWidget lookup)
-  final CometChatTypography? typography;
+  final ConvoKitTypography? typography;
 
   /// Pre-cached spacing (avoids InheritedWidget lookup)
-  final CometChatSpacing? spacing;
+  final ConvoKitSpacing? spacing;
 
   const CometChatNewMessageIndicator({
     super.key,
@@ -35,9 +35,9 @@ class CometChatNewMessageIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette =
-        colorPalette ?? CometChatThemeHelper.getColorPalette(context);
-    final typo = typography ?? CometChatThemeHelper.getTypography(context);
-    final sp = spacing ?? CometChatThemeHelper.getSpacing(context);
+        colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
+    final typo = typography ?? ConvoKitThemeHelper.getTypography(context);
+    final sp = spacing ?? ConvoKitThemeHelper.getSpacing(context);
 
     final dividerColor = style?.dividerColor ?? palette.error;
     final txtColor = style?.textColor ?? palette.error;

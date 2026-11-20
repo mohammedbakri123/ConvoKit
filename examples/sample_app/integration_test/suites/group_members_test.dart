@@ -54,7 +54,7 @@ import '../sdk_user_b/group_test_actions.dart';
 /// fragile UI checks in try/catch + debugPrint, never failing on the degraded
 /// path — mirroring the caveated cases in groups_test.dart.
 /// Tolerant runtime-type matcher: matches a widget whose runtimeType name
-/// contains [name]. Lets us assert UIKit widgets (e.g. CometChatAvatar) without
+/// contains [name]. Lets us assert UIKit widgets (e.g. ConvoKitAvatar) without
 /// importing the package into the test (mirrors suites/ui_surfaces_test.dart).
 bool _hasType(WidgetTester tester, String name) => find
     .byWidgetPredicate((w) => w.runtimeType.toString().contains(name))
@@ -135,10 +135,10 @@ void main() {
       await AppLauncher.launchAndLogin(tester);
       await openOwnerInfo(tester);
 
-      // _buildProfile renders a 120x120 CometChatAvatar with the group name.
-      // Accept CometChatAvatar (preferred) or a generic avatar surface, plus
+      // _buildProfile renders a 120x120 ConvoKitAvatar with the group name.
+      // Accept ConvoKitAvatar (preferred) or a generic avatar surface, plus
       // the group name as the deterministic anchor that the header rendered.
-      final hasAvatar = _hasType(tester, 'CometChatAvatar') ||
+      final hasAvatar = _hasType(tester, 'ConvoKitAvatar') ||
           find.byType(CircleAvatar).evaluate().isNotEmpty ||
           find.byType(ClipOval).evaluate().isNotEmpty;
       final hasName = find.text(ownerGroupName).evaluate().isNotEmpty;
@@ -399,7 +399,7 @@ void main() {
       await NavigationHelper.openInfoScreen(tester);
       await pumpFor(tester, const Duration(seconds: 3));
 
-      // Tap "Leave" -> CometChatConfirmDialog (confirm "Leave" / "Cancel").
+      // Tap "Leave" -> ConvoKitConfirmDialog (confirm "Leave" / "Cancel").
       var droveLeave = false;
       try {
         final leaveTile = find.text('Leave');

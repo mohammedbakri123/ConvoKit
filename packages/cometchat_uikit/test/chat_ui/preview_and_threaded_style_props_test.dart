@@ -33,7 +33,7 @@ Widget _wrap(Widget child) => MaterialApp(
 
 void main() {
   setUpAll(() {
-    CometChatUIKit.loggedInUser = _me;
+    ConvoKitUIKit.loggedInUser = _me;
   });
 
   // -------------------------------------------------------------------------

@@ -19,7 +19,7 @@ import 'threaded_header_state.dart';
 /// - SDK MessageListener: onTextMessageReceived, onMediaMessageReceived,
 ///   onCustomMessageReceived, onSchedulerMessageReceived, onMessageEdited,
 ///   onMessageDeleted
-/// - UI CometChatMessageEvents: ccMessageSent, ccMessageEdited, ccMessageDeleted
+/// - UI ConvoKitMessageEvents: ccMessageSent, ccMessageEdited, ccMessageDeleted
 class ThreadedHeaderBloc
     extends Bloc<ThreadedHeaderEvent, ThreadedHeaderState> {
   // SDK listener keys - unique per instance to prevent conflicts
@@ -146,7 +146,7 @@ class ThreadedHeaderBloc
     );
 
     // Register UI message event listener
-    CometChatMessageEvents.addMessagesListener(
+    ConvoKitMessageEvents.addMessagesListener(
       _uiMessageListenerKey,
       _ThreadedHeaderUIMessageListener(
         onCCMessageSentCallback: _handleCCMessageSent,
@@ -264,7 +264,7 @@ class ThreadedHeaderBloc
   Future<void> close() {
     // Remove all SDK listeners to prevent memory leaks
     CometChatSdkAdapter.removeMessageListener(_messageListenerKey);
-    CometChatMessageEvents.removeMessagesListener(_uiMessageListenerKey);
+    ConvoKitMessageEvents.removeMessagesListener(_uiMessageListenerKey);
     ConvoKitGroupEvents.removeGroupsListener(_uiGroupListenerKey);
     return super.close();
   }
@@ -329,14 +329,14 @@ class _ThreadedHeaderMessageListener with MessageListener {
   }
 }
 
-/// UI Message event listener for CometChatMessageEvents
+/// UI Message event listener for ConvoKitMessageEvents
 ///
 /// Handles:
 /// - ccMessageSent (increment reply count on successful send)
 /// - ccMessageEdited (update parent message)
 /// - ccMessageDeleted (update parent message)
 /// - onSchedulerMessageReceived (increment reply count)
-class _ThreadedHeaderUIMessageListener with CometChatMessageEventListener {
+class _ThreadedHeaderUIMessageListener with ConvoKitMessageEventListener {
   final void Function(BaseMessage, core_enums.MessageStatus)
   onCCMessageSentCallback;
   final void Function(BaseMessage, MessageEditStatus) onCCMessageEditedCallback;

@@ -21,13 +21,13 @@ class MessageComposerDataSourceImpl implements MessageComposerDataSource {
 
   ck.MessageRepository? get _effectiveMessageRepo =>
       _messageRepository ??
-      CometChatUIKit.messageRepository ??
-      CometChatUIKit.kit?.messages;
+      ConvoKitUIKit.messageRepository ??
+      ConvoKitUIKit.kit?.messages;
 
   ck.ChatMediaProvider? get _effectiveMediaProvider =>
       _mediaProvider ??
-      CometChatUIKit.mediaProvider ??
-      CometChatUIKit.kit?.media;
+      ConvoKitUIKit.mediaProvider ??
+      ConvoKitUIKit.kit?.media;
 
   @override
   Future<cc.TextMessage> sendTextMessage(cc.TextMessage message) async {
@@ -372,7 +372,7 @@ class MessageComposerDataSourceImpl implements MessageComposerDataSource {
 
   @override
   Future<cc.User?> getLoggedInUser() async {
-    final session = CometChatUIKit.session ?? CometChatUIKit.kit?.session;
+    final session = ConvoKitUIKit.session ?? ConvoKitUIKit.kit?.session;
     if (session?.currentUser != null) {
       final u = session!.currentUser!;
       return cc.User(uid: u.id, name: u.name, avatar: u.avatarUrl);

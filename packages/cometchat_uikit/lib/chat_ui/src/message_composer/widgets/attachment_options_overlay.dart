@@ -65,7 +65,7 @@ class AttachmentOptionsOverlay extends StatefulWidget {
 
   /// Custom styling for the overlay.
   ///
-  /// If not provided, uses theme-based defaults from [CometChatThemeHelper].
+  /// If not provided, uses theme-based defaults from [ConvoKitThemeHelper].
   final CometChatAttachmentOptionSheetStyle? style;
 
   /// Maximum height constraint for the overlay.
@@ -81,18 +81,18 @@ class AttachmentOptionsOverlay extends StatefulWidget {
 
   /// Color palette for theming.
   ///
-  /// If not provided, uses [CometChatThemeHelper.getColorPalette].
-  final CometChatColorPalette? colorPalette;
+  /// If not provided, uses [ConvoKitThemeHelper.getColorPalette].
+  final ConvoKitColorPalette? colorPalette;
 
   /// Spacing configuration.
   ///
-  /// If not provided, uses [CometChatThemeHelper.getSpacing].
-  final CometChatSpacing? spacing;
+  /// If not provided, uses [ConvoKitThemeHelper.getSpacing].
+  final ConvoKitSpacing? spacing;
 
   /// Typography configuration.
   ///
-  /// If not provided, uses [CometChatThemeHelper.getTypography].
-  final CometChatTypography? typography;
+  /// If not provided, uses [ConvoKitThemeHelper.getTypography].
+  final ConvoKitTypography? typography;
 
   /// Controls the visibility state for animations.
   ///
@@ -213,11 +213,11 @@ class _AttachmentOptionsOverlayState extends State<AttachmentOptionsOverlay>
     }
 
     final effectiveColorPalette =
-        widget.colorPalette ?? CometChatThemeHelper.getColorPalette(context);
+        widget.colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
     final effectiveSpacing =
-        widget.spacing ?? CometChatThemeHelper.getSpacing(context);
+        widget.spacing ?? ConvoKitThemeHelper.getSpacing(context);
     final effectiveTypography =
-        widget.typography ?? CometChatThemeHelper.getTypography(context);
+        widget.typography ?? ConvoKitThemeHelper.getTypography(context);
 
     // Merge provided style with defaults
     final effectiveStyle = CometChatAttachmentOptionSheetStyle.of(
@@ -288,7 +288,7 @@ class _AttachmentOptionsOverlayState extends State<AttachmentOptionsOverlay>
   /// Gets the border radius from style or defaults to theme spacing.
   BorderRadius _getBorderRadius(
     CometChatAttachmentOptionSheetStyle effectiveStyle,
-    CometChatSpacing spacing,
+    ConvoKitSpacing spacing,
   ) {
     if (effectiveStyle.borderRadius != null) {
       return effectiveStyle.borderRadius as BorderRadius;
@@ -298,9 +298,9 @@ class _AttachmentOptionsOverlayState extends State<AttachmentOptionsOverlay>
 
   /// Builds the scrollable list of action items.
   Widget _buildActionItemsList(
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
+    ConvoKitTypography typography,
     CometChatAttachmentOptionSheetStyle effectiveStyle,
   ) {
     // Use SingleChildScrollView + Column instead of ListView.builder
@@ -332,9 +332,9 @@ class _AttachmentOptionsOverlayState extends State<AttachmentOptionsOverlay>
   Widget _buildActionItem(
     ActionItem item,
     CometChatAttachmentOptionSheetStyle itemStyle,
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
+    ConvoKitTypography typography,
   ) {
     final iconColor = itemStyle.iconColor ?? colorPalette.iconSecondary;
     final titleColor = itemStyle.titleColor ?? colorPalette.textPrimary;

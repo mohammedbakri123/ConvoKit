@@ -11,7 +11,7 @@ import '../../../../shared_ui/src/logging/cometchat_log.dart';
 ///   child: Image.network('https://example.com/image.png'),
 ///   warningText: 'Warning: Graphic Content',
 ///   style: ImageModerationFilterStyle(),
-///   theme: CometChatTheme(),
+///   theme: ConvoKitTheme(),
 /// );
 ///
 /// ```
@@ -75,7 +75,7 @@ class _ImageModerationFilterState extends State<ImageModerationFilter> {
       width: 225,
       child: GestureDetector(
         onTap: () {
-          CometChatConfirmDialog(
+          ConvoKitConfirmDialog(
             context: context,
             title: Text(Translations.of(context).areYouSureUnsafeContent),
             // The title asks the question. Without a messageText the dialog

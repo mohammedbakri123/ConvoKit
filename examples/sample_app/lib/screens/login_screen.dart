@@ -17,9 +17,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  late CometChatColorPalette colorPalette;
-  late CometChatTypography typography;
-  late CometChatSpacing spacing;
+  late ConvoKitColorPalette colorPalette;
+  late ConvoKitTypography typography;
+  late ConvoKitSpacing spacing;
 
   Future<List<SampleUserModel>>? _futureUsers;
   final TextEditingController _uidController = TextEditingController();
@@ -38,9 +38,9 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    colorPalette = CometChatThemeHelper.getColorPalette(context);
-    typography = CometChatThemeHelper.getTypography(context);
-    spacing = CometChatThemeHelper.getSpacing(context);
+    colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    typography = ConvoKitThemeHelper.getTypography(context);
+    spacing = ConvoKitThemeHelper.getSpacing(context);
   }
 
   @override
@@ -55,13 +55,13 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _isLoading = true);
 
     try {
-      User? existingUser = await CometChatUIKit.getLoggedInUser();
+      User? existingUser = await ConvoKitUIKit.getLoggedInUser();
       if (existingUser != null && existingUser.uid != userId) {
         // The previous user's chat and call pushes stop reaching this
         // device: unregistered while their auth tokens still work.
         // Through the UI Kit, not CometChat.logout: its logout also stops
         // call handling for the previous user and logs the Calls SDK out.
-        await CometChatUIKit.logout(
+        await ConvoKitUIKit.logout(
           onSuccess: (_) => debugPrint("Logout Successful"),
           onError: (_) => debugPrint("Logout failed"),
         );
@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // With enableCalls, onSuccess comes once the UI Kit has set up the
       // Calls SDK for this user, within its own time limit.
-      await CometChatUIKit.login(userId, onSuccess: (User loggedInUser) {
+      await ConvoKitUIKit.login(userId, onSuccess: (User loggedInUser) {
         // Never log the User object itself: its toString() carries the
         // live authToken and a signed jwt, and CI copies the raw test log
         // into a published gallery. uid and name are enough to debug a
@@ -258,7 +258,7 @@ class _LoginScreenState extends State<LoginScreen> {
       future: _futureUsers,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CometChatShimmerEffect(
+          return ConvoKitShimmerEffect(
             colorPalette: colorPalette,
             child: GridView.builder(
               itemCount: 6,
@@ -339,7 +339,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               Padding(
                                 padding: EdgeInsets.only(
                                     bottom: spacing.padding2 ?? 8),
-                                child: CometChatAvatar(
+                                child: ConvoKitAvatar(
                                   name: user.username,
                                   image: user.imageURL,
                                 ),
@@ -474,7 +474,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: TextFormField(
             controller: _uidController,
             focusNode: _focusNode,
-            keyboardAppearance: CometChatThemeHelper.getBrightness(context),
+            keyboardAppearance: ConvoKitThemeHelper.getBrightness(context),
             onChanged: (value) {
               if (value.isNotEmpty) _selectedUserNotifier.value = null;
             },

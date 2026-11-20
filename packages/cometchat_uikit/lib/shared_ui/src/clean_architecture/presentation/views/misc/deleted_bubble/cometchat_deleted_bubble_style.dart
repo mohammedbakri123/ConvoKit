@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../../../../../cometchat_uikit_shared.dart';
 
-///[CometChatDeletedBubbleStyle] is a data class that has styling-related properties
-///to customize the appearance of [CometChatDeletedBubble]
+///[ConvoKitDeletedBubbleStyle] is a data class that has styling-related properties
+///to customize the appearance of [ConvoKitDeletedBubble]
 ///
 /// ```dart
-/// CometChatDeletedBubbleStyle(
+/// ConvoKitDeletedBubbleStyle(
 ///      textStyle: TextStyle(),
 ///      backgroundColor: Colors.white,
 ///      border: Border.all(color: Colors.red),
@@ -14,9 +14,9 @@ import '../../../../../../cometchat_uikit_shared.dart';
 ///      textColor: Colors.red,
 /// );
 /// ```
-class CometChatDeletedBubbleStyle
-    extends ThemeExtension<CometChatDeletedBubbleStyle> {
-  const CometChatDeletedBubbleStyle({
+class ConvoKitDeletedBubbleStyle
+    extends ThemeExtension<ConvoKitDeletedBubbleStyle> {
+  const ConvoKitDeletedBubbleStyle({
     this.textStyle,
     this.backgroundColor,
     this.border,
@@ -51,10 +51,10 @@ class CometChatDeletedBubbleStyle
   final BorderRadiusGeometry? borderRadius;
 
   ///[messageBubbleAvatarStyle] provides style to the avatar of the sender
-  final CometChatAvatarStyle? messageBubbleAvatarStyle;
+  final ConvoKitAvatarStyle? messageBubbleAvatarStyle;
 
   ///[messageBubbleDateStyle] provides style to the date of the message bubble
-  final CometChatDateStyle? messageBubbleDateStyle;
+  final ConvoKitDateStyle? messageBubbleDateStyle;
 
   ///[messageBubbleBackgroundImage] provides background image to the message bubble of the sent message
   final DecorationImage? messageBubbleBackgroundImage;
@@ -72,22 +72,22 @@ class CometChatDeletedBubbleStyle
   final CometChatMessageReceiptStyle? messageReceiptStyle;
 
   @override
-  CometChatDeletedBubbleStyle copyWith({
+  ConvoKitDeletedBubbleStyle copyWith({
     TextStyle? textStyle,
     Color? backgroundColor,
     BoxBorder? border,
     BorderRadiusGeometry? borderRadius,
     Color? iconColor,
     Color? textColor,
-    CometChatAvatarStyle? messageBubbleAvatarStyle,
-    CometChatDateStyle? messageBubbleDateStyle,
+    ConvoKitAvatarStyle? messageBubbleAvatarStyle,
+    ConvoKitDateStyle? messageBubbleDateStyle,
     DecorationImage? messageBubbleBackgroundImage,
     TextStyle? threadedMessageIndicatorTextStyle,
     Color? threadedMessageIndicatorIconColor,
     TextStyle? senderNameTextStyle,
     CometChatMessageReceiptStyle? messageReceiptStyle,
   }) {
-    return CometChatDeletedBubbleStyle(
+    return ConvoKitDeletedBubbleStyle(
       textStyle: textStyle ?? this.textStyle,
       backgroundColor: backgroundColor ?? this.backgroundColor,
       border: border ?? this.border,
@@ -111,8 +111,8 @@ class CometChatDeletedBubbleStyle
     );
   }
 
-  CometChatDeletedBubbleStyle merge(
-    covariant CometChatDeletedBubbleStyle? other,
+  ConvoKitDeletedBubbleStyle merge(
+    covariant ConvoKitDeletedBubbleStyle? other,
   ) {
     if (other == null) return this;
     return copyWith(
@@ -134,16 +134,16 @@ class CometChatDeletedBubbleStyle
     );
   }
 
-  static CometChatDeletedBubbleStyle of(BuildContext context) =>
-      const CometChatDeletedBubbleStyle();
+  static ConvoKitDeletedBubbleStyle of(BuildContext context) =>
+      const ConvoKitDeletedBubbleStyle();
 
   @override
-  CometChatDeletedBubbleStyle lerp(
-    CometChatDeletedBubbleStyle? other,
+  ConvoKitDeletedBubbleStyle lerp(
+    ConvoKitDeletedBubbleStyle? other,
     double t,
   ) {
     if (other == null) return this;
-    return CometChatDeletedBubbleStyle(
+    return ConvoKitDeletedBubbleStyle(
       textStyle: TextStyle.lerp(textStyle, other.textStyle, t),
       backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t),
       border: BoxBorder.lerp(border, other.border, t),

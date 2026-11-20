@@ -93,7 +93,7 @@ class CometChatReactionListStyle
 
   ///[avatarStyle] styles the avatar on each reactor row. The list's own
   ///[CometChatReactionList.avatarStyle], when set, takes precedence.
-  final CometChatAvatarStyle? avatarStyle;
+  final ConvoKitAvatarStyle? avatarStyle;
 
   @override
   CometChatReactionListStyle copyWith({
@@ -115,7 +115,7 @@ class CometChatReactionListStyle
     TextStyle? tailViewTextStyle,
     Color? subtitleTextColor,
     TextStyle? emptyTextStyle,
-    CometChatAvatarStyle? avatarStyle,
+    ConvoKitAvatarStyle? avatarStyle,
   }) {
     return CometChatReactionListStyle(
       subtitleTextStyle: subtitleTextStyle ?? this.subtitleTextStyle,

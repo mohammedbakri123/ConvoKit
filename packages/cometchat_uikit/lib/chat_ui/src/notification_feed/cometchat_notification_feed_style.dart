@@ -109,8 +109,8 @@ class CometChatNotificationFeedStyle
   final TextStyle? connectivityBannerTextStyle;
 
   static CometChatNotificationFeedStyle of(BuildContext context) {
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final typography = CometChatThemeHelper.getTypography(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
 
     return CometChatNotificationFeedStyle(
       // Screen

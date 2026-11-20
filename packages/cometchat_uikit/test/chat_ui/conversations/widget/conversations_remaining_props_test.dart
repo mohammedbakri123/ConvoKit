@@ -735,7 +735,7 @@ class _Rec {
 class _FromTheme {
   const _FromTheme(this.resolve);
 
-  final Object? Function(CometChatColorPalette palette, CometChatSpacing space)
+  final Object? Function(ConvoKitColorPalette palette, ConvoKitSpacing space)
   resolve;
 }
 
@@ -887,7 +887,7 @@ _Row _receiptRow(String type, String name) {
   final group = type.endsWith('All');
   final read = type.startsWith('read');
   final at = DateTime(2026, 5, 12, 10, 45);
-  List<Object?> shown(CometChatColorPalette p) => [
+  List<Object?> shown(ConvoKitColorPalette p) => [
     (Icons.done_all, read ? p.primary : p.iconSecondary),
     true,
     read,
@@ -929,7 +929,7 @@ _Row _receiptRow(String type, String name) {
 }
 
 /// Presence dots currently drawn.
-int _dots() => _count(find.byType(CometChatStatusIndicator));
+int _dots() => _count(find.byType(ConvoKitStatusIndicator));
 
 Future<void> _tapText(WidgetTester tester, String text) async {
   await tester.tap(find.text(text));
@@ -1066,8 +1066,8 @@ final _matrix = <_Row>[
     'avatarMargin',
     'spaces every avatar box from its neighbours',
     probe: (t, r) => [
-      _box(t, CometChatAvatar).margin,
-      t.getSize(find.byType(CometChatAvatar).first),
+      _box(t, ConvoKitAvatar).margin,
+      t.getSize(find.byType(ConvoKitAvatar).first),
     ],
     unset: [null, const Size(48, 48)],
     set: _Side(
@@ -1080,11 +1080,11 @@ final _matrix = <_Row>[
     'avatarPadding',
     'insets the avatar content inside its box',
     probe: (t, r) => [
-      _box(t, CometChatAvatar).padding,
+      _box(t, ConvoKitAvatar).padding,
       t.getSize(
         find
             .descendant(
-              of: find.byType(CometChatAvatar).first,
+              of: find.byType(ConvoKitAvatar).first,
               matching: find.byType(ClipRRect),
             )
             .first,
@@ -1100,11 +1100,11 @@ final _matrix = <_Row>[
     'badgePadding',
     'insets the unread count inside its 20 px badge',
     probe: (t, r) => [
-      _box(t, CometChatBadge).padding,
+      _box(t, ConvoKitBadge).padding,
       t.getSize(
         find
             .descendant(
-              of: find.byType(CometChatBadge).first,
+              of: find.byType(ConvoKitBadge).first,
               matching: find.byType(FittedBox),
             )
             .first,
@@ -1122,7 +1122,7 @@ final _matrix = <_Row>[
   _Row(
     'statusIndicatorBorderRadius',
     'rounds the drawn presence dot',
-    probe: (t, r) => _decoration(t, CometChatStatusIndicator).borderRadius,
+    probe: (t, r) => _decoration(t, ConvoKitStatusIndicator).borderRadius,
     unset: _FromTheme((p, s) => BorderRadius.circular(s.radiusMax!)),
     set: _Side(
       'set',
@@ -1136,7 +1136,7 @@ final _matrix = <_Row>[
     'statusIndicatorHeight',
     'sets the rendered presence dot height',
     probe: (t, r) =>
-        t.getSize(find.byType(CometChatStatusIndicator).first).height,
+        t.getSize(find.byType(ConvoKitStatusIndicator).first).height,
     unset: 14.0,
     set: _Side('set', (r) => const _Props(statusIndicatorHeight: 9), 9.0),
   ),
@@ -1144,7 +1144,7 @@ final _matrix = <_Row>[
     'statusIndicatorWidth',
     'sets the rendered presence dot width',
     probe: (t, r) =>
-        t.getSize(find.byType(CometChatStatusIndicator).first).width,
+        t.getSize(find.byType(ConvoKitStatusIndicator).first).width,
     unset: 14.0,
     set: _Side('set', (r) => const _Props(statusIndicatorWidth: 11), 11.0),
   ),
@@ -1153,14 +1153,14 @@ final _matrix = <_Row>[
   _Row(
     'dateHeight',
     'sets the rendered timestamp height',
-    probe: (t, r) => t.getSize(find.byType(CometChatDate).first).height,
+    probe: (t, r) => t.getSize(find.byType(ConvoKitDate).first).height,
     unset: 17.0,
     set: _Side('set', (r) => const _Props(dateHeight: 31), 31.0),
   ),
   _Row(
     'dateWidth',
     'sets the rendered timestamp width',
-    probe: (t, r) => t.getSize(find.byType(CometChatDate).first).width,
+    probe: (t, r) => t.getSize(find.byType(ConvoKitDate).first).width,
     unset: 147.0,
     set: _Side('set', (r) => const _Props(dateWidth: 57), 57.0),
   ),
@@ -1168,10 +1168,10 @@ final _matrix = <_Row>[
     'datePadding',
     'insets the timestamp text inside its box',
     probe: (t, r) {
-      final date = find.byType(CometChatDate).first;
+      final date = find.byType(ConvoKitDate).first;
       final text = find.descendant(of: date, matching: find.byType(Text));
       return [
-        _box(t, CometChatDate).padding,
+        _box(t, ConvoKitDate).padding,
         t.getTopLeft(text) - t.getTopLeft(date),
       ];
     },
@@ -1211,7 +1211,7 @@ final _matrix = <_Row>[
     'replaces the avatar on every row',
     probe: (t, r) => [
       ..._textsStartingWith(t, 'lead-'),
-      _count(find.byType(CometChatAvatar)),
+      _count(find.byType(ConvoKitAvatar)),
     ],
     unset: [3],
     set: _Side(
@@ -1828,13 +1828,13 @@ Future<void> _openAliceMenuAndTapOption(WidgetTester tester, _Rec rec) async {
   }
 }
 
-/// The fill CometChatDate paints behind Alice's timestamp.
+/// The fill ConvoKitDate paints behind Alice's timestamp.
 Color? _dateFill(WidgetTester tester) =>
     (tester
                 .widget<Container>(
                   find
                       .descendant(
-                        of: find.byType(CometChatDate).first,
+                        of: find.byType(ConvoKitDate).first,
                         matching: find.byType(Container),
                       )
                       .first,
@@ -1867,7 +1867,7 @@ void main() {
   User? previousUser;
 
   setUp(() {
-    previousUser = CometChatUIKit.loggedInUser;
+    previousUser = ConvoKitUIKit.loggedInUser;
     _sounds.clear();
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(_soundChannel, (call) async {
@@ -1881,7 +1881,7 @@ void main() {
   tearDown(() async {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(_soundChannel, null);
-    CometChatUIKit.loggedInUser = previousUser;
+    ConvoKitUIKit.loggedInUser = previousUser;
     await sdk.SdkRegistry.clear();
   });
 
@@ -1922,7 +1922,7 @@ void main() {
             bloc = mock;
           }
           if (row.signedIn) {
-            CometChatUIKit.loggedInUser = row.sdk ? _sdkMe : _me;
+            ConvoKitUIKit.loggedInUser = row.sdk ? _sdkMe : _me;
           }
 
           await mockNetworkImagesFor(
@@ -2012,8 +2012,8 @@ void main() {
           var expected = side.expected;
           if (expected is _FromTheme) {
             expected = expected.resolve(
-              CometChatThemeHelper.getColorPalette(_ctx(tester)),
-              CometChatThemeHelper.getSpacing(_ctx(tester)),
+              ConvoKitThemeHelper.getColorPalette(_ctx(tester)),
+              ConvoKitThemeHelper.getSpacing(_ctx(tester)),
             );
           }
           expect(reading, expected, reason: '${row.prop}, ${side.label} side');

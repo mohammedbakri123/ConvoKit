@@ -17,9 +17,9 @@ class GetMenuView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final typography = CometChatThemeHelper.getTypography(context);
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final spacing = CometChatThemeHelper.getSpacing(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
 
     return Container(
       padding: EdgeInsets.symmetric(

@@ -617,7 +617,7 @@ class _UnsupportedView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
-    final colors = CometChatThemeHelper.getColorPalette(context);
+    final colors = ConvoKitThemeHelper.getColorPalette(context);
     final accent = colors.primary ?? const Color(0xFF6852D6);
     return Center(
       child: Padding(

@@ -1,6 +1,6 @@
 /// Golden pins for the multi-attachment image bubble — the real
 /// [CometChatImagesBubble] (and the [CometChatMediaGrid] inside it) hosted in a
-/// [CometChatMessageBubble] with zero content padding, which is how
+/// [ConvoKitMessageBubble] with zero content padding, which is how
 /// `ConvoKitMessageList` composes a multi-attachment media message.
 ///
 /// The grid has five genuinely different arrangements and each gets a golden:
@@ -71,7 +71,7 @@ MediaMessage _imagesMessage(
 }
 
 Widget _bubble(MediaMessage message, BubbleAlignment alignment) {
-  return CometChatMessageBubble(
+  return ConvoKitMessageBubble(
     alignment: alignment,
     // The multi-attachment bubbles carry their own inset; the message list
     // zeroes the outer content padding for them.

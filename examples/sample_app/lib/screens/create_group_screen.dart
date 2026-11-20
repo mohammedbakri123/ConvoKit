@@ -13,9 +13,9 @@ class CreateGroupScreen extends StatefulWidget {
 
 class _CreateGroupScreenState extends State<CreateGroupScreen>
     with SingleTickerProviderStateMixin {
-  late CometChatColorPalette _colorPalette;
-  late CometChatTypography _typography;
-  late CometChatSpacing _spacing;
+  late ConvoKitColorPalette _colorPalette;
+  late ConvoKitTypography _typography;
+  late ConvoKitSpacing _spacing;
 
   late TabController _tabController;
   final _nameController = TextEditingController();
@@ -36,9 +36,9 @@ class _CreateGroupScreenState extends State<CreateGroupScreen>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _colorPalette = CometChatThemeHelper.getColorPalette(context);
-    _typography = CometChatThemeHelper.getTypography(context);
-    _spacing = CometChatThemeHelper.getSpacing(context);
+    _colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    _typography = ConvoKitThemeHelper.getTypography(context);
+    _spacing = ConvoKitThemeHelper.getSpacing(context);
   }
 
   @override
@@ -103,7 +103,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen>
         // Use the UI event to open the conversation — this lets the
         // ResponsiveHomeScreen (desktop) show the group in its middle panel
         // while also working on mobile (HomeScreen listens too).
-        CometChatUIEvents.openChat(null, created);
+        ConvoKitUIEvents.openChat(null, created);
       },
       onError: (CometChatException e) {
         if (!mounted) return;
@@ -385,7 +385,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen>
       controller: controller,
       textCapitalization:
           capitalize ? TextCapitalization.sentences : TextCapitalization.none,
-      keyboardAppearance: CometChatThemeHelper.getBrightness(context),
+      keyboardAppearance: ConvoKitThemeHelper.getBrightness(context),
       onTapOutside: (_) {
         if (FocusManager.instance.primaryFocus?.context != null) {
           FocusScope.of(FocusManager.instance.primaryFocus!.context!).unfocus();
@@ -433,7 +433,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen>
 /// Show the Create Group bottom sheet (mobile + web).
 Future<void> showCreateGroup({
   required BuildContext context,
-  required CometChatColorPalette colorPalette,
+  required ConvoKitColorPalette colorPalette,
 }) {
   final screenSize = MediaQuery.of(context).size;
   final isWide = screenSize.width >= 600;

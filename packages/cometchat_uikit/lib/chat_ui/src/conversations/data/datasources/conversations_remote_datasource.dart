@@ -59,8 +59,8 @@ class ConversationsRemoteDataSourceImpl
 
   ck.ConversationRepository? get _convoKitRepository =>
       _repository ??
-      CometChatUIKit.conversationRepository ??
-      CometChatUIKit.kit?.conversations;
+      ConvoKitUIKit.conversationRepository ??
+      ConvoKitUIKit.kit?.conversations;
 
   static final CometChatConversationAdapter _sdkAdapter =
       CometChatConversationAdapter();

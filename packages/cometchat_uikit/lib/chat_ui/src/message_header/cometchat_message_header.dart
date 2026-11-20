@@ -6,9 +6,9 @@ import '../../../shared_ui/src/clean_architecture/core/utils/thread_toast.dart';
 import '../../../src/adapters/cometchat_sdk_adapter.dart';
 import 'package:intl/intl.dart';
 
-/// [ConvoKitMessageHeader] is a widget which shows [user]/[group] details using [CometChatListItem]
-/// if its being shown for an [User] then the name of the user will be in the [CometChatListItem.title] of [CometChatListItem] and their online/offline status will be in the [subtitleView]
-/// if its being shown for an [Group] then the name of the group will be in the [CometChatListItem.title] of [CometChatListItem] and their member count will be in the [subtitleView]
+/// [ConvoKitMessageHeader] is a widget which shows [user]/[group] details using [ConvoKitListItem]
+/// if its being shown for an [User] then the name of the user will be in the [ConvoKitListItem.title] of [ConvoKitListItem] and their online/offline status will be in the [subtitleView]
+/// if its being shown for an [Group] then the name of the group will be in the [ConvoKitListItem.title] of [ConvoKitListItem] and their member count will be in the [subtitleView]
 ///
 /// ```dart
 /// ConvoKitMessageHeader(
@@ -232,7 +232,7 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
   bool get _showThreadBell =>
       widget.parentMessage != null &&
       widget.threadSubscriptionVisibility != false &&
-      CometChatUIKit.authenticationSettings?.enableThreadSubscription == true;
+      ConvoKitUIKit.authenticationSettings?.enableThreadSubscription == true;
 
   /// Whether the overflow menu's pinned-messages entry should render: a
   /// conversation header (not a thread header), visibility not turned off,
@@ -309,7 +309,7 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
   /// (Flutter's Cupertino library has no anchored menu widget).
   Widget _buildOverflowMenu(
     ConvoKitMessageHeaderStyle headerStyle,
-    CometChatColorPalette colorPalette,
+    ConvoKitColorPalette colorPalette,
   ) {
     final entries = _overflowEntries;
     // M3 menu spec, expressed in kit tokens: container is a surface at
@@ -384,10 +384,10 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
   late MessageHeaderBloc _bloc;
   bool _isExternalBloc = false;
   late ConvoKitMessageHeaderStyle headerStyle;
-  late CometChatColorPalette colorPalette;
-  late CometChatTypography typography;
-  late CometChatSpacing spacing;
-  late CometChatStatusIndicatorStyle statusIndicatorStyle;
+  late ConvoKitColorPalette colorPalette;
+  late ConvoKitTypography typography;
+  late ConvoKitSpacing spacing;
+  late ConvoKitStatusIndicatorStyle statusIndicatorStyle;
   bool _themeInitialized = false;
   Brightness? _cachedBrightness;
   double _cachedWidth = 300; // Cached to avoid MediaQuery in build()
@@ -419,7 +419,7 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
 
     // Only initialize theme once to avoid expensive lookups during keyboard animation
     // But re-initialize when brightness changes (dark mode toggle)
-    final currentBrightness = CometChatThemeHelper.getBrightness(context);
+    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
     if (_themeInitialized && !brightnessChanged) return;
@@ -429,18 +429,18 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
     // Cache width to avoid MediaQuery in build()
     _cachedWidth = MediaQuery.sizeOf(context).width;
 
-    headerStyle = CometChatThemeHelper.getTheme<ConvoKitMessageHeaderStyle>(
+    headerStyle = ConvoKitThemeHelper.getTheme<ConvoKitMessageHeaderStyle>(
       context: context,
       defaultTheme: ConvoKitMessageHeaderStyle.of,
     ).merge(widget.messageHeaderStyle);
     statusIndicatorStyle =
-        CometChatThemeHelper.getTheme<CometChatStatusIndicatorStyle>(
+        ConvoKitThemeHelper.getTheme<ConvoKitStatusIndicatorStyle>(
           context: context,
-          defaultTheme: CometChatStatusIndicatorStyle.of,
+          defaultTheme: ConvoKitStatusIndicatorStyle.of,
         ).merge(headerStyle.statusIndicatorStyle);
-    typography = CometChatThemeHelper.getTypography(context);
-    colorPalette = CometChatThemeHelper.getColorPalette(context);
-    spacing = CometChatThemeHelper.getSpacing(context);
+    typography = ConvoKitThemeHelper.getTypography(context);
+    colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    spacing = ConvoKitThemeHelper.getSpacing(context);
   }
 
   @override
@@ -527,7 +527,7 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
   Widget _getBackButtonView(
     BuildContext context,
     ConvoKitMessageHeaderStyle style,
-    CometChatColorPalette colorPalette,
+    ConvoKitColorPalette colorPalette,
   ) {
     if (widget.showBackButton == true) {
       if (widget.backButton != null) {
@@ -591,7 +591,7 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
     BuildContext context,
     MessageHeaderState state,
     TextStyle? typingIndicatorTextStyle,
-    CometChatTypography typography,
+    ConvoKitTypography typography,
     Color? color,
   ) {
     String text;
@@ -617,8 +617,8 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
     BuildContext context,
     MessageHeaderState state,
     ConvoKitMessageHeaderStyle style,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
   ) {
     Widget? subtitle;
     final subtitleStyle = TextStyle(
@@ -701,9 +701,9 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
     BuildContext context,
     MessageHeaderState state,
     ConvoKitMessageHeaderStyle style,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
   ) {
     if (widget.auxiliaryButtonView != null) {
       return widget.auxiliaryButtonView!(state.group, state.user, context);
@@ -848,7 +848,7 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
       // Tapping the avatar/name/subtitle area opens the info screen (tail
       // buttons claim their own taps first).
       onTap: widget.onHeaderTap,
-      child: CometChatListItem(
+      child: ConvoKitListItem(
         avatarName: avatarName,
         avatarURL: avatarUrl,
         avatarWidth: widget.avatarWidth ?? 40,
@@ -856,14 +856,14 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
         title: title,
         subtitleView: subtitleView,
         titlePadding: EdgeInsets.only(left: spacing.padding2 ?? 0),
-        avatarStyle: CometChatAvatarStyle(
+        avatarStyle: ConvoKitAvatarStyle(
           backgroundColor: widget.group != null
               ? headerStyle.groupIconBackgroundColor
               : null,
         ).merge(headerStyle.avatarStyle),
         statusIndicatorColor: statusIndicatorColor,
         statusIndicatorIcon: icon,
-        statusIndicatorStyle: CometChatStatusIndicatorStyle(
+        statusIndicatorStyle: ConvoKitStatusIndicatorStyle(
           border: Border.all(
             width: spacing.spacing ?? 0,
             color: colorPalette.background1 ?? Colors.white,
@@ -1002,7 +1002,7 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
           ) ??
           "${cc.Translations.of(context).lastSeen} 1 ${cc.Translations.of(context).minuteAgo}";
     } else {
-      return CometChatUIKit.authenticationSettings?.dateTimeFormatterCallback
+      return ConvoKitUIKit.authenticationSettings?.dateTimeFormatterCallback
               ?.minute(date.millisecondsSinceEpoch) ??
           "${cc.Translations.of(context).lastSeen} 1 ${cc.Translations.of(context).minuteAgo}";
     }
@@ -1021,7 +1021,7 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
           ) ??
           "${cc.Translations.of(context).lastSeen} ${difference.inMinutes} ${cc.Translations.of(context).minutesAgo}";
     } else {
-      return CometChatUIKit.authenticationSettings?.dateTimeFormatterCallback
+      return ConvoKitUIKit.authenticationSettings?.dateTimeFormatterCallback
               ?.minutes(diffInMinutes, date.millisecondsSinceEpoch) ??
           "${cc.Translations.of(context).lastSeen} ${difference.inMinutes} ${cc.Translations.of(context).minutesAgo}";
     }
@@ -1035,7 +1035,7 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
           ) ??
           "${cc.Translations.of(context).lastSeen} ${difference.inHours} ${cc.Translations.of(context).hourAgo}";
     } else {
-      return CometChatUIKit.authenticationSettings?.dateTimeFormatterCallback
+      return ConvoKitUIKit.authenticationSettings?.dateTimeFormatterCallback
               ?.hour(date.millisecondsSinceEpoch) ??
           "${cc.Translations.of(context).lastSeen} ${difference.inHours} ${cc.Translations.of(context).hourAgo}";
     }
@@ -1058,7 +1058,7 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
           ) ??
           "${cc.Translations.of(context).lastSeen} ${difference.inHours} ${cc.Translations.of(context).hoursAgo}";
     } else {
-      return CometChatUIKit.authenticationSettings?.dateTimeFormatterCallback
+      return ConvoKitUIKit.authenticationSettings?.dateTimeFormatterCallback
               ?.hours(diffInHours, date.millisecondsSinceEpoch) ??
           "${cc.Translations.of(context).lastSeen} ${difference.inHours} ${cc.Translations.of(context).hoursAgo}";
     }
@@ -1084,7 +1084,7 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
           ) ??
           "${cc.Translations.of(context).lastSeen} $formattedDate ${cc.Translations.of(context).at} $formattedTime";
     } else {
-      return CometChatUIKit.authenticationSettings?.dateTimeFormatterCallback
+      return ConvoKitUIKit.authenticationSettings?.dateTimeFormatterCallback
               ?.otherDays(lastActiveAt.millisecondsSinceEpoch) ??
           "${cc.Translations.of(context).lastSeen} $formattedDate ${cc.Translations.of(context).at} $formattedTime";
     }
@@ -1110,7 +1110,7 @@ class _ThreadNotificationBell extends StatefulWidget {
 }
 
 class _ThreadNotificationBellState extends State<_ThreadNotificationBell>
-    with CometChatMessageEventListener {
+    with ConvoKitMessageEventListener {
   late bool _subscribed;
   bool _inFlight = false;
   late final String _listenerId;
@@ -1121,7 +1121,7 @@ class _ThreadNotificationBellState extends State<_ThreadNotificationBell>
     _subscribed = widget.parentMessage.threadSubscribed;
     _listenerId =
         'message_header_thread_bell_${DateTime.now().millisecondsSinceEpoch}';
-    CometChatMessageEvents.addMessagesListener(_listenerId, this);
+    ConvoKitMessageEvents.addMessagesListener(_listenerId, this);
   }
 
   @override
@@ -1135,7 +1135,7 @@ class _ThreadNotificationBellState extends State<_ThreadNotificationBell>
 
   @override
   void dispose() {
-    CometChatMessageEvents.removeMessagesListener(_listenerId);
+    ConvoKitMessageEvents.removeMessagesListener(_listenerId);
     super.dispose();
   }
 
@@ -1162,7 +1162,7 @@ class _ThreadNotificationBellState extends State<_ThreadNotificationBell>
         // The message object is the state (stateless redesign) — stamp it,
         // then tell the other surfaces through the kit event bus.
         message.threadSubscribed = target;
-        CometChatMessageEvents.ccThreadSubscriptionChanged(message.id, target);
+        ConvoKitMessageEvents.ccThreadSubscriptionChanged(message.id, target);
         CometChatThreadToast.show(
           context,
           target
@@ -1185,7 +1185,7 @@ class _ThreadNotificationBellState extends State<_ThreadNotificationBell>
 
   @override
   Widget build(BuildContext context) {
-    final palette = CometChatThemeHelper.getColorPalette(context);
+    final palette = ConvoKitThemeHelper.getColorPalette(context);
     final label = _subscribed
         ? Translations.of(context).threadMute
         : Translations.of(context).threadUnmute;

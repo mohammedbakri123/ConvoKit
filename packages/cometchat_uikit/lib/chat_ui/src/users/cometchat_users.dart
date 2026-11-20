@@ -120,12 +120,12 @@ class _ConvoKitUsersState extends State<ConvoKitUsers>
   @override
   bool get wantKeepAlive => true;
 
-  late CometChatColorPalette colorPalette;
-  late CometChatTypography typography;
-  late CometChatSpacing spacing;
+  late ConvoKitColorPalette colorPalette;
+  late ConvoKitTypography typography;
+  late ConvoKitSpacing spacing;
   late ConvoKitUsersStyle style;
-  late CometChatAvatarStyle avatarStyle;
-  late CometChatStatusIndicatorStyle statusIndicatorStyle;
+  late ConvoKitAvatarStyle avatarStyle;
+  late ConvoKitStatusIndicatorStyle statusIndicatorStyle;
 
   @override
   void initState() {
@@ -153,31 +153,31 @@ class _ConvoKitUsersState extends State<ConvoKitUsers>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final currentBrightness = CometChatThemeHelper.getBrightness(context);
+    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
     if (_themeInitialized && !brightnessChanged) return;
     _cachedBrightness = currentBrightness;
     _themeInitialized = true;
 
-    typography = CometChatThemeHelper.getTypography(context);
-    colorPalette = CometChatThemeHelper.getColorPalette(context);
-    spacing = CometChatThemeHelper.getSpacing(context);
+    typography = ConvoKitThemeHelper.getTypography(context);
+    colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    spacing = ConvoKitThemeHelper.getSpacing(context);
 
-    style = CometChatThemeHelper.getTheme<ConvoKitUsersStyle>(
+    style = ConvoKitThemeHelper.getTheme<ConvoKitUsersStyle>(
       context: context,
       defaultTheme: ConvoKitUsersStyle.of,
     ).merge(widget.usersStyle);
 
-    avatarStyle = CometChatThemeHelper.getTheme<CometChatAvatarStyle>(
+    avatarStyle = ConvoKitThemeHelper.getTheme<ConvoKitAvatarStyle>(
       context: context,
-      defaultTheme: CometChatAvatarStyle.of,
+      defaultTheme: ConvoKitAvatarStyle.of,
     ).merge(style.avatarStyle);
 
     statusIndicatorStyle =
-        CometChatThemeHelper.getTheme<CometChatStatusIndicatorStyle>(
+        ConvoKitThemeHelper.getTheme<ConvoKitStatusIndicatorStyle>(
           context: context,
-          defaultTheme: CometChatStatusIndicatorStyle.of,
+          defaultTheme: ConvoKitStatusIndicatorStyle.of,
         ).merge(style.statusIndicatorStyle);
   }
 

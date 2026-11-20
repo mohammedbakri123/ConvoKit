@@ -79,10 +79,10 @@ class CometChatImageBubble extends StatefulWidget {
   final Map<String, dynamic>? metadata;
 
   /// [colorPalette] optional pre-cached color palette to avoid expensive lookups during keyboard animation
-  final CometChatColorPalette? colorPalette;
+  final ConvoKitColorPalette? colorPalette;
 
   /// [spacing] optional pre-cached spacing to avoid expensive lookups during keyboard animation
-  final CometChatSpacing? spacing;
+  final ConvoKitSpacing? spacing;
 
   @override
   State<CometChatImageBubble> createState() => _CometChatImageBubbleState();
@@ -90,8 +90,8 @@ class CometChatImageBubble extends StatefulWidget {
 
 class _CometChatImageBubbleState extends State<CometChatImageBubble> {
   late CometChatImageBubbleStyle imageBubbleStyle;
-  late CometChatColorPalette colorPalette;
-  late CometChatSpacing spacing;
+  late ConvoKitColorPalette colorPalette;
+  late ConvoKitSpacing spacing;
   bool _themeInitialized = false;
   Brightness? _cachedBrightness;
 
@@ -99,20 +99,20 @@ class _CometChatImageBubbleState extends State<CometChatImageBubble> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Only initialize theme once to avoid expensive lookups during keyboard animation
-    final currentBrightness = CometChatThemeHelper.getBrightness(context);
+    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
     if (!_themeInitialized || brightnessChanged) {
       _cachedBrightness = currentBrightness;
       imageBubbleStyle =
-          CometChatThemeHelper.getTheme<CometChatImageBubbleStyle>(
+          ConvoKitThemeHelper.getTheme<CometChatImageBubbleStyle>(
             context: context,
             defaultTheme: CometChatImageBubbleStyle.of,
           ).merge(widget.style);
       // Use passed values OR fallback to lookup (for standalone usage)
       colorPalette =
-          widget.colorPalette ?? CometChatThemeHelper.getColorPalette(context);
-      spacing = widget.spacing ?? CometChatThemeHelper.getSpacing(context);
+          widget.colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
+      spacing = widget.spacing ?? ConvoKitThemeHelper.getSpacing(context);
       _themeInitialized = true;
     }
   }
@@ -123,7 +123,7 @@ class _CometChatImageBubbleState extends State<CometChatImageBubble> {
     // Update style if it changed
     if (widget.style != oldWidget.style) {
       imageBubbleStyle =
-          CometChatThemeHelper.getTheme<CometChatImageBubbleStyle>(
+          ConvoKitThemeHelper.getTheme<CometChatImageBubbleStyle>(
             context: context,
             defaultTheme: CometChatImageBubbleStyle.of,
           ).merge(widget.style);

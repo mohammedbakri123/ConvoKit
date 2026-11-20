@@ -36,7 +36,7 @@ class LoginFixture {
     defaultValue: '',
   );
 
-  /// Tracks whether `CometChatUIKit.init` has succeeded for the current
+  /// Tracks whether `ConvoKitUIKit.init` has succeeded for the current
   /// process. Re-initialising the UIKit can throw "already initialised" or
   /// silently leave the SDK in a bad state, so we skip it on subsequent
   /// calls within the same test process (e.g. when `all_e2e_tests.dart`
@@ -81,10 +81,10 @@ class LoginFixture {
       // requires permissions we can't grant in integration_test).
       final uiKitSettings = settingsBuilder.build();
 
-      // CometChatUIKit.init is NOT a true Future; it uses callbacks.
+      // ConvoKitUIKit.init is NOT a true Future; it uses callbacks.
       // Bridge with a Completer.
       final initCompleter = Completer<void>();
-      CometChatUIKit.init(
+      ConvoKitUIKit.init(
         uiKitSettings: uiKitSettings,
         onSuccess: (_) {
           initCompleter.complete();
@@ -92,7 +92,7 @@ class LoginFixture {
         onError: (e) {
           initCompleter.completeError(
             StateError(
-              'CometChatUIKit.init failed: '
+              'ConvoKitUIKit.init failed: '
               '${e.message}',
             ),
           );
@@ -113,7 +113,7 @@ class LoginFixture {
     }
 
     final loginCompleter = Completer<User>();
-    CometChatUIKit.login(
+    ConvoKitUIKit.login(
       testUserUid,
       onSuccess: (user) {
         loginCompleter.complete(user);
@@ -121,7 +121,7 @@ class LoginFixture {
       onError: (e) {
         loginCompleter.completeError(
           StateError(
-            'CometChatUIKit.login failed: '
+            'ConvoKitUIKit.login failed: '
             '${e.message}',
           ),
         );
@@ -139,7 +139,7 @@ class LoginFixture {
   /// the same one we just logged out, so we mark the cached login state
   /// as stale here and let the next `initAndLogin` do the work.
   static Future<void> logout() async {
-    await CometChatUIKit.logout(onSuccess: (_) {}, onError: (_) {});
+    await ConvoKitUIKit.logout(onSuccess: (_) {}, onError: (_) {});
     _loggedIn = false;
   }
 

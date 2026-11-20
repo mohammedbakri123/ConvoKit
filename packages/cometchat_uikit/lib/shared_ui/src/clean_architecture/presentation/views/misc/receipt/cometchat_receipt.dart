@@ -3,13 +3,13 @@ import '../../../../../../cometchat_uikit_shared.dart';
 
 enum ReceiptStatus { error, waiting, sent, read, delivered }
 
-///[CometChatReceipt] is a widget that indicates the delivery status of a message
+///[ConvoKitReceipt] is a widget that indicates the delivery status of a message
 ///by default, a single tick mark indicates a message has been sent
 ///a double tick mark indicates a message has been delivered
 ///a double tick mark of color `cometChatTheme.palette.primary` indicates a message has been read
 /// ```dart
 ///
-///     CometChatReceipt(
+///     ConvoKitReceipt(
 ///       status: ReceiptStatus.read,
 ///       waitIcon: Icon(Icons.schedule),
 ///       sentIcon: Icon(Icons.check),
@@ -18,8 +18,8 @@ enum ReceiptStatus { error, waiting, sent, read, delivered }
 ///      );
 ///
 /// ```
-class CometChatReceipt extends StatefulWidget {
-  const CometChatReceipt({
+class ConvoKitReceipt extends StatefulWidget {
+  const ConvoKitReceipt({
     super.key,
     this.waitIcon,
     this.sentIcon,
@@ -47,7 +47,7 @@ class CometChatReceipt extends StatefulWidget {
   ///[readIcon] widget visible when readAt != null in [BaseMessage]. If blank will load default readIcon
   final Widget? readIcon;
 
-  ///[style] to customize the appearance of [CometChatReceipt]
+  ///[style] to customize the appearance of [ConvoKitReceipt]
   final CometChatMessageReceiptStyle? style;
 
   ///receipt status from which sentAt and readAt will be read to get the receipts
@@ -57,16 +57,16 @@ class CometChatReceipt extends StatefulWidget {
   final double? size;
 
   /// [colorPalette] optional pre-cached color palette to avoid expensive lookups during keyboard animation
-  final CometChatColorPalette? colorPalette;
+  final ConvoKitColorPalette? colorPalette;
 
   @override
-  State<CometChatReceipt> createState() => _CometChatReceiptState();
+  State<ConvoKitReceipt> createState() => _ConvoKitReceiptState();
 }
 
-class _CometChatReceiptState extends State<CometChatReceipt> {
+class _ConvoKitReceiptState extends State<ConvoKitReceipt> {
   // Cached theme values to avoid expensive lookups during rebuilds
   CometChatMessageReceiptStyle? _receiptsStyle;
-  CometChatColorPalette? _colorPalette;
+  ConvoKitColorPalette? _colorPalette;
   bool _themeInitialized = false;
   Brightness? _cachedBrightness;
 
@@ -74,30 +74,30 @@ class _CometChatReceiptState extends State<CometChatReceipt> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Only initialize theme once to avoid expensive lookups during keyboard animation
-    final currentBrightness = CometChatThemeHelper.getBrightness(context);
+    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
     if (!_themeInitialized || brightnessChanged) {
       _cachedBrightness = currentBrightness;
       _receiptsStyle =
-          CometChatThemeHelper.getTheme<CometChatMessageReceiptStyle>(
+          ConvoKitThemeHelper.getTheme<CometChatMessageReceiptStyle>(
             context: context,
             defaultTheme: CometChatMessageReceiptStyle.of,
           ).merge(widget.style);
       // Use passed values OR fallback to lookup (for standalone usage)
       _colorPalette =
-          widget.colorPalette ?? CometChatThemeHelper.getColorPalette(context);
+          widget.colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
       _themeInitialized = true;
     }
   }
 
   @override
-  void didUpdateWidget(CometChatReceipt oldWidget) {
+  void didUpdateWidget(ConvoKitReceipt oldWidget) {
     super.didUpdateWidget(oldWidget);
     // Update style if it changed
     if (widget.style != oldWidget.style) {
       _receiptsStyle =
-          CometChatThemeHelper.getTheme<CometChatMessageReceiptStyle>(
+          ConvoKitThemeHelper.getTheme<CometChatMessageReceiptStyle>(
             context: context,
             defaultTheme: CometChatMessageReceiptStyle.of,
           ).merge(widget.style);

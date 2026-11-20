@@ -9,7 +9,7 @@
 ///   block, so the golden covers the real detection path and the text bubble
 ///   nested under the card, not just the card widget in isolation.
 ///
-/// Both sit in a real [CometChatMessageBubble]. The preview image is served by
+/// Both sit in a real [ConvoKitMessageBubble]. The preview image is served by
 /// the in-memory network in `golden_message_harness.dart`.
 ///
 ///   flutter test test/chat_ui/extensions/goldens/                  # verify
@@ -34,7 +34,7 @@ final _aiko = User(uid: 'golden-aiko', name: 'Aiko Tanaka');
 final _dele = User(uid: 'golden-dele', name: 'Dele Okafor');
 
 Widget _bubble(Widget content, BubbleAlignment alignment) {
-  return CometChatMessageBubble(
+  return ConvoKitMessageBubble(
     alignment: alignment,
     contentView: content,
     statusInfoView: goldenStatusInfo(alignment),
@@ -150,8 +150,8 @@ void _link(
 void main() {
   installGoldenImageNetwork();
 
-  setUp(() => CometChatUIKit.loggedInUser = _me);
-  tearDown(() => CometChatUIKit.loggedInUser = null);
+  setUp(() => ConvoKitUIKit.loggedInUser = _me);
+  tearDown(() => ConvoKitUIKit.loggedInUser = null);
 
   AlchemistConfig.runWithConfig(
     config: goldenConfig(),

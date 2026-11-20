@@ -102,8 +102,8 @@ Iterable<BorderRadiusGeometry?> _materialRadii(WidgetTester tester) => tester
 
 void main() {
   _remainingStyles();
-  setUp(() => CometChatUIKit.loggedInUser = _me);
-  tearDown(() => CometChatUIKit.loggedInUser = null);
+  setUp(() => ConvoKitUIKit.loggedInUser = _me);
+  tearDown(() => ConvoKitUIKit.loggedInUser = null);
 
   group('CometChatMessageInformationStyle', () {
     testWidgets('every property reaches the information sheet', (tester) async {
@@ -137,7 +137,7 @@ void main() {
                 readTextStyle: const TextStyle(fontSize: 13),
                 readDateTextColor: const Color(0xFF220909),
                 readDateTextStyle: const TextStyle(fontSize: 12),
-                avatarStyle: const CometChatAvatarStyle(
+                avatarStyle: const ConvoKitAvatarStyle(
                   backgroundColor: Color(0xFF220A0A),
                 ),
                 messageReceiptStyle: CometChatMessageReceiptStyle(
@@ -341,9 +341,9 @@ void _remainingStyles() {
                 title: 'Message info',
                 template: MessageTemplateUtils.getTextMessageTemplate(),
                 textFormatters: const [],
-                colorPalette: CometChatThemeHelper.getColorPalette(context),
-                spacing: CometChatThemeHelper.getSpacing(context),
-                typography: CometChatThemeHelper.getTypography(context),
+                colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+                spacing: ConvoKitThemeHelper.getSpacing(context),
+                typography: ConvoKitThemeHelper.getTypography(context),
               ),
             ),
           ),

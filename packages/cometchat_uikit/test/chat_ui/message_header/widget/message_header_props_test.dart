@@ -234,8 +234,8 @@ void main() {
         );
         await _settle(tester);
       });
-      final item = tester.widget<CometChatListItem>(
-        find.byType(CometChatListItem),
+      final item = tester.widget<ConvoKitListItem>(
+        find.byType(ConvoKitListItem),
       );
       expect(item.avatarHeight, 51);
       expect(item.avatarWidth, 52);
@@ -258,7 +258,7 @@ void main() {
       });
       expect(
         tester
-            .widget<CometChatListItem>(find.byType(CometChatListItem))
+            .widget<ConvoKitListItem>(find.byType(ConvoKitListItem))
             .style
             .titleStyle
             ?.fontSize,
@@ -505,7 +505,7 @@ void main() {
               group: _team,
               messageHeaderBloc: _mock(group: _team),
               messageHeaderStyle: const ConvoKitMessageHeaderStyle(
-                avatarStyle: CometChatAvatarStyle(
+                avatarStyle: ConvoKitAvatarStyle(
                   borderRadius: BorderRadius.all(Radius.circular(9)),
                 ),
                 groupIconBackgroundColor: Color(0xFFF70707),
@@ -516,7 +516,7 @@ void main() {
         await _settle(tester);
       });
       final avatar = tester
-          .widget<CometChatListItem>(find.byType(CometChatListItem))
+          .widget<ConvoKitListItem>(find.byType(ConvoKitListItem))
           .avatarStyle;
       expect(avatar.backgroundColor, const Color(0xFFF70707));
       expect(avatar.borderRadius, const BorderRadius.all(Radius.circular(9)));
@@ -531,7 +531,7 @@ void main() {
               user: _bob,
               messageHeaderBloc: _mock(),
               messageHeaderStyle: const ConvoKitMessageHeaderStyle(
-                statusIndicatorStyle: CometChatStatusIndicatorStyle(
+                statusIndicatorStyle: ConvoKitStatusIndicatorStyle(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                 ),
                 onlineStatusColor: Color(0xFFF80808),
@@ -541,8 +541,8 @@ void main() {
         );
         await _settle(tester);
       });
-      final item = tester.widget<CometChatListItem>(
-        find.byType(CometChatListItem),
+      final item = tester.widget<ConvoKitListItem>(
+        find.byType(ConvoKitListItem),
       );
       expect(item.statusIndicatorColor, const Color(0xFFF80808));
       expect(

@@ -58,7 +58,7 @@ class CometChatAudiosBubble extends StatelessWidget {
     // user's text — render the caption on its own instead.
     if (attachments.isEmpty && !hasCaption) return const SizedBox.shrink();
 
-    final resolved = CometChatThemeHelper.getTheme<CometChatAudiosBubbleStyle>(
+    final resolved = ConvoKitThemeHelper.getTheme<CometChatAudiosBubbleStyle>(
       context: context,
       defaultTheme: CometChatAudiosBubbleStyle.of,
     ).merge(style);
@@ -160,7 +160,7 @@ class _AudioListState extends State<_AudioList> {
     final audios = widget.attachments;
     final collapsible = audios.length >= 4;
     final visible = (collapsible && !_expanded) ? audios.sublist(0, 3) : audios;
-    final colors = CometChatThemeHelper.getColorPalette(context);
+    final colors = ConvoKitThemeHelper.getColorPalette(context);
     final sent = widget.alignment == BubbleAlignment.right;
     final actionColor = sent
         ? Colors.white
@@ -629,7 +629,7 @@ class _AudioRowState extends State<_AudioRow> {
   /// [_openFileCardTap]). No player, no MIME, no size (per design). Shown on a
   /// type mismatch ([_showAsFile]).
   Widget _buildFileCard(BuildContext context) {
-    final colors = CometChatThemeHelper.getColorPalette(context);
+    final colors = ConvoKitThemeHelper.getColorPalette(context);
     final style = widget.style;
     final rowBg =
         style?.rowBackgroundColor ??
@@ -711,7 +711,7 @@ class _AudioRowState extends State<_AudioRow> {
   @override
   Widget build(BuildContext context) {
     if (_showAsFile) return _buildFileCard(context);
-    final colors = CometChatThemeHelper.getColorPalette(context);
+    final colors = ConvoKitThemeHelper.getColorPalette(context);
     final value = _controller?.value;
     final ready = value?.isInitialized ?? false;
     final playing = value?.isPlaying ?? false;

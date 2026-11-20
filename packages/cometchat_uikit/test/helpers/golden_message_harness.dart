@@ -123,9 +123,9 @@ Widget goldenStatusInfo(
 }) {
   return Builder(
     builder: (context) {
-      final palette = CometChatThemeHelper.getColorPalette(context);
-      final typography = CometChatThemeHelper.getTypography(context);
-      final spacing = CometChatThemeHelper.getSpacing(context);
+      final palette = ConvoKitThemeHelper.getColorPalette(context);
+      final typography = ConvoKitThemeHelper.getTypography(context);
+      final spacing = ConvoKitThemeHelper.getSpacing(context);
       final outgoing = alignment == BubbleAlignment.right;
       return Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -141,7 +141,7 @@ Widget goldenStatusInfo(
           ),
           if (outgoing) ...[
             SizedBox(width: spacing.padding1 ?? 4),
-            CometChatReceipt(status: receipt, size: 16),
+            ConvoKitReceipt(status: receipt, size: 16),
           ],
         ],
       );

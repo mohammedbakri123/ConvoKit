@@ -170,9 +170,9 @@ void main() {
             icon: Icons.mark_email_unread_outlined,
             isSelected: true,
             onTap: () => taps++,
-            colorPalette: CometChatThemeHelper.getColorPalette(context),
-            spacing: CometChatThemeHelper.getSpacing(context),
-            typography: CometChatThemeHelper.getTypography(context),
+            colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+            spacing: ConvoKitThemeHelper.getSpacing(context),
+            typography: ConvoKitThemeHelper.getTypography(context),
             selectedColor: _c1,
             selectedIconColor: _c2,
             selectedTextColor: _c3,
@@ -220,9 +220,9 @@ void main() {
             icon: Icons.photo_outlined,
             isSelected: false,
             onTap: () {},
-            colorPalette: CometChatThemeHelper.getColorPalette(context),
-            spacing: CometChatThemeHelper.getSpacing(context),
-            typography: CometChatThemeHelper.getTypography(context),
+            colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+            spacing: ConvoKitThemeHelper.getSpacing(context),
+            typography: ConvoKitThemeHelper.getTypography(context),
             unselectedColor: _c5,
             unselectedIconColor: _c6,
             unselectedTextColor: _c1,
@@ -260,10 +260,10 @@ void main() {
             (context) => ConversationsTrailingView(
               conversation: FakeConversation(),
               style: const ConvoKitConversationsStyle(),
-              datesStyle: const CometChatDateStyle(textColor: _c1),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              datesStyle: const ConvoKitDateStyle(textColor: _c1),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
               datePattern: (x) => 'pinned',
               datePadding: const EdgeInsets.all(5),
               dateHeight: 30,
@@ -279,7 +279,7 @@ void main() {
       );
       await tester.pump();
 
-      final date = tester.widget<CometChatDate>(find.byType(CometChatDate));
+      final date = tester.widget<ConvoKitDate>(find.byType(ConvoKitDate));
       expect(date.customDateString, 'pinned');
       expect(date.padding, const EdgeInsets.all(5));
       expect(date.height, 30);
@@ -287,7 +287,7 @@ void main() {
       expect(date.isTransparentBackground, isFalse);
       expect(date.dateTimeFormatterCallback, isA<_StubDateFormatter>());
 
-      final badge = tester.widget<CometChatBadge>(find.byType(CometChatBadge));
+      final badge = tester.widget<ConvoKitBadge>(find.byType(ConvoKitBadge));
       expect(badge.width, 34);
       expect(badge.height, 26);
       expect(badge.padding, const EdgeInsets.all(4));
@@ -300,22 +300,22 @@ void main() {
             (context) => ConversationsTrailingView(
               conversation: FakeConversation(),
               style: const ConvoKitConversationsStyle(
-                badgeStyle: CometChatBadgeStyle(backgroundColor: _c2),
+                badgeStyle: ConvoKitBadgeStyle(backgroundColor: _c2),
               ),
-              datesStyle: const CometChatDateStyle(textColor: _c1),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              datesStyle: const ConvoKitDateStyle(textColor: _c1),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
             ),
           ),
         ),
       );
       await tester.pump();
 
-      final date = tester.widget<CometChatDate>(find.byType(CometChatDate));
+      final date = tester.widget<ConvoKitDate>(find.byType(ConvoKitDate));
       expect(date.style.textStyle?.color, _c1);
 
-      final badge = tester.widget<CometChatBadge>(find.byType(CometChatBadge));
+      final badge = tester.widget<ConvoKitBadge>(find.byType(ConvoKitBadge));
       expect(badge.style.backgroundColor, _c2);
     });
   });
@@ -325,8 +325,8 @@ void main() {
     testWidgets('the receipt props render for an outgoing message', (
       tester,
     ) async {
-      CometChatUIKit.loggedInUser = FakeUser(name: 'Bruno', uid: 'u2');
-      addTearDown(() => CometChatUIKit.loggedInUser = null);
+      ConvoKitUIKit.loggedInUser = FakeUser(name: 'Bruno', uid: 'u2');
+      addTearDown(() => ConvoKitUIKit.loggedInUser = null);
 
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
@@ -336,9 +336,9 @@ void main() {
               style: const ConvoKitConversationsStyle(),
               receiptStyle: CometChatMessageReceiptStyle(sentIconColor: _c1),
               typingStyle: const CometChatTypingIndicatorStyle(),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
               readIcon: const Text('read-glyph'),
               deliveredIcon: const Text('delivered-glyph'),
               sentIcon: const Text('sent-glyph'),
@@ -357,8 +357,8 @@ void main() {
     });
 
     testWidgets('receiptsVisibility false removes the receipt', (tester) async {
-      CometChatUIKit.loggedInUser = FakeUser(name: 'Bruno', uid: 'u2');
-      addTearDown(() => CometChatUIKit.loggedInUser = null);
+      ConvoKitUIKit.loggedInUser = FakeUser(name: 'Bruno', uid: 'u2');
+      addTearDown(() => ConvoKitUIKit.loggedInUser = null);
 
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
@@ -368,9 +368,9 @@ void main() {
               style: const ConvoKitConversationsStyle(),
               receiptStyle: CometChatMessageReceiptStyle(),
               typingStyle: const CometChatTypingIndicatorStyle(),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
               sentIcon: const Text('sent-glyph'),
               receiptsVisibility: false,
             ),
@@ -394,9 +394,9 @@ void main() {
               typingStyle: const CometChatTypingIndicatorStyle(
                 textStyle: TextStyle(fontSize: 31),
               ),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
               typingIndicators: [FakeTyping()],
               typingIndicatorText: 'scribbling…',
             ),
@@ -427,9 +427,9 @@ void main() {
               ),
               receiptStyle: CometChatMessageReceiptStyle(),
               typingStyle: const CometChatTypingIndicatorStyle(),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
             ),
           ),
         ),

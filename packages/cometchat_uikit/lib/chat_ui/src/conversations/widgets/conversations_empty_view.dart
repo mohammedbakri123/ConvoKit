@@ -29,13 +29,13 @@ class ConversationsEmptyView extends StatelessWidget {
   final ConvoKitConversationsStyle style;
 
   /// The color palette used for styling text colors.
-  final CometChatColorPalette colorPalette;
+  final ConvoKitColorPalette colorPalette;
 
   /// The spacing configuration for padding and margins.
-  final CometChatSpacing spacing;
+  final ConvoKitSpacing spacing;
 
   /// The typography configuration for text styles.
-  final CometChatTypography typography;
+  final ConvoKitTypography typography;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +61,7 @@ class ConversationsEmptyView extends StatelessWidget {
               padding: EdgeInsets.only(bottom: spacing.padding5 ?? 0),
               child: Image.asset(
                 AssetConstants(
-                  CometChatThemeHelper.getBrightness(context),
+                  ConvoKitThemeHelper.getBrightness(context),
                 ).conversationEmpty,
                 package: UIConstants.packageName,
                 excludeFromSemantics: true,

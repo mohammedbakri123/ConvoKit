@@ -8,7 +8,7 @@
 /// bubble widget reads at all. Those nine travel through
 /// `MessageUtils.getBubbleStyle`, which pulls them off the matching field of
 /// [CometChatIncomingMessageBubbleStyle] / [CometChatOutgoingMessageBubbleStyle]
-/// and hands them to the surrounding [CometChatMessageBubble].
+/// and hands them to the surrounding [ConvoKitMessageBubble].
 ///
 /// So the file has two halves: the chrome nine driven through
 /// [ConvoKitMessageList] with a message of the right type, and the
@@ -121,8 +121,8 @@ Future<void> _settle(WidgetTester tester) async {
   }
 }
 
-CometChatMessageBubble _bubble(WidgetTester tester) => tester
-    .widget<CometChatMessageBubble>(find.byType(CometChatMessageBubble).first);
+ConvoKitMessageBubble _bubble(WidgetTester tester) => tester
+    .widget<ConvoKitMessageBubble>(find.byType(ConvoKitMessageBubble).first);
 
 Iterable<Color?> _fills(WidgetTester tester) => tester
     .widgetList<Container>(find.byType(Container))
@@ -139,15 +139,15 @@ Iterable<Color?> _iconColors(WidgetTester tester) =>
 
 void main() {
   setUpAll(() => registerFallbackValue(_text()));
-  setUp(() => CometChatUIKit.loggedInUser = _me);
-  tearDown(() => CometChatUIKit.loggedInUser = null);
+  setUp(() => ConvoKitUIKit.loggedInUser = _me);
+  tearDown(() => ConvoKitUIKit.loggedInUser = null);
 
   // ---------------------------------------------------------------------
   // The nine chrome properties, per style class.
   //
   // No bubble widget reads these; MessageUtils.getBubbleStyle lifts them off
   // the matching aggregate field and passes them to the enclosing
-  // CometChatMessageBubble. messageReceiptStyle only reaches a bubble I sent,
+  // ConvoKitMessageBubble. messageReceiptStyle only reaches a bubble I sent,
   // so its case flips the fixture and the aggregate.
   // ---------------------------------------------------------------------
 
@@ -237,7 +237,7 @@ void main() {
               style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   textBubbleStyle: CometChatTextBubbleStyle(
-                    messageBubbleDateStyle: CometChatDateStyle(
+                    messageBubbleDateStyle: ConvoKitDateStyle(
                       textStyle: TextStyle(color: Color(0x0ff1d033)),
                     ),
                   ),
@@ -261,7 +261,7 @@ void main() {
               style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   textBubbleStyle: CometChatTextBubbleStyle(
-                    messageBubbleAvatarStyle: CometChatAvatarStyle(
+                    messageBubbleAvatarStyle: ConvoKitAvatarStyle(
                       backgroundColor: Color(0x0ff1d044),
                     ),
                   ),
@@ -272,7 +272,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('senderNameTextStyle reaches the bubble', (tester) async {
@@ -318,7 +318,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('threadedMessageIndicatorIconColor reaches the bubble', (
@@ -342,7 +342,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('messageReceiptStyle reaches the bubble', (tester) async {
@@ -366,7 +366,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
   });
 
@@ -456,7 +456,7 @@ void main() {
               style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   imageBubbleStyle: CometChatImageBubbleStyle(
-                    messageBubbleDateStyle: CometChatDateStyle(
+                    messageBubbleDateStyle: ConvoKitDateStyle(
                       textStyle: TextStyle(color: Color(0x0ff1d133)),
                     ),
                   ),
@@ -480,7 +480,7 @@ void main() {
               style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   imageBubbleStyle: CometChatImageBubbleStyle(
-                    messageBubbleAvatarStyle: CometChatAvatarStyle(
+                    messageBubbleAvatarStyle: ConvoKitAvatarStyle(
                       backgroundColor: Color(0x0ff1d144),
                     ),
                   ),
@@ -491,7 +491,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('senderNameTextStyle reaches the bubble', (tester) async {
@@ -537,7 +537,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('threadedMessageIndicatorIconColor reaches the bubble', (
@@ -561,7 +561,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('messageReceiptStyle reaches the bubble', (tester) async {
@@ -587,7 +587,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
   });
 
@@ -677,7 +677,7 @@ void main() {
               style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   videoBubbleStyle: CometChatVideoBubbleStyle(
-                    messageBubbleDateStyle: CometChatDateStyle(
+                    messageBubbleDateStyle: ConvoKitDateStyle(
                       textStyle: TextStyle(color: Color(0x0ff1d233)),
                     ),
                   ),
@@ -701,7 +701,7 @@ void main() {
               style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   videoBubbleStyle: CometChatVideoBubbleStyle(
-                    messageBubbleAvatarStyle: CometChatAvatarStyle(
+                    messageBubbleAvatarStyle: ConvoKitAvatarStyle(
                       backgroundColor: Color(0x0ff1d244),
                     ),
                   ),
@@ -712,7 +712,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('senderNameTextStyle reaches the bubble', (tester) async {
@@ -758,7 +758,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('threadedMessageIndicatorIconColor reaches the bubble', (
@@ -782,7 +782,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('messageReceiptStyle reaches the bubble', (tester) async {
@@ -808,7 +808,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
   });
 
@@ -898,7 +898,7 @@ void main() {
               style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   fileBubbleStyle: CometChatFileBubbleStyle(
-                    messageBubbleDateStyle: CometChatDateStyle(
+                    messageBubbleDateStyle: ConvoKitDateStyle(
                       textStyle: TextStyle(color: Color(0x0ff1d333)),
                     ),
                   ),
@@ -922,7 +922,7 @@ void main() {
               style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   fileBubbleStyle: CometChatFileBubbleStyle(
-                    messageBubbleAvatarStyle: CometChatAvatarStyle(
+                    messageBubbleAvatarStyle: ConvoKitAvatarStyle(
                       backgroundColor: Color(0x0ff1d344),
                     ),
                   ),
@@ -933,7 +933,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('senderNameTextStyle reaches the bubble', (tester) async {
@@ -979,7 +979,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('threadedMessageIndicatorIconColor reaches the bubble', (
@@ -1003,7 +1003,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('messageReceiptStyle reaches the bubble', (tester) async {
@@ -1029,7 +1029,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
   });
 
@@ -1119,7 +1119,7 @@ void main() {
               style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   stickerBubbleStyle: CometChatStickerBubbleStyle(
-                    messageBubbleDateStyle: CometChatDateStyle(
+                    messageBubbleDateStyle: ConvoKitDateStyle(
                       textStyle: TextStyle(color: Color(0x0ff1d433)),
                     ),
                   ),
@@ -1143,7 +1143,7 @@ void main() {
               style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   stickerBubbleStyle: CometChatStickerBubbleStyle(
-                    messageBubbleAvatarStyle: CometChatAvatarStyle(
+                    messageBubbleAvatarStyle: ConvoKitAvatarStyle(
                       backgroundColor: Color(0x0ff1d444),
                     ),
                   ),
@@ -1154,7 +1154,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('senderNameTextStyle reaches the bubble', (tester) async {
@@ -1200,7 +1200,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('threadedMessageIndicatorIconColor reaches the bubble', (
@@ -1224,7 +1224,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('messageReceiptStyle reaches the bubble', (tester) async {
@@ -1250,11 +1250,11 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
   });
 
-  group('CometChatDeletedBubbleStyle — message-bubble chrome', () {
+  group('ConvoKitDeletedBubbleStyle — message-bubble chrome', () {
     testWidgets('border reaches the bubble', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
@@ -1264,7 +1264,7 @@ void main() {
               messageListBloc: _bloc(_text(deletedAt: DateTime(2024, 1, 1))),
               style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
-                  deletedBubbleStyle: CometChatDeletedBubbleStyle(
+                  deletedBubbleStyle: ConvoKitDeletedBubbleStyle(
                     border: Border.fromBorderSide(
                       BorderSide(color: Color(0x0ff1d500), width: 3),
                     ),
@@ -1288,7 +1288,7 @@ void main() {
               messageListBloc: _bloc(_text(deletedAt: DateTime(2024, 1, 1))),
               style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
-                  deletedBubbleStyle: CometChatDeletedBubbleStyle(
+                  deletedBubbleStyle: ConvoKitDeletedBubbleStyle(
                     borderRadius: BorderRadius.all(Radius.circular(63)),
                   ),
                 ),
@@ -1315,7 +1315,7 @@ void main() {
               messageListBloc: _bloc(_text(deletedAt: DateTime(2024, 1, 1))),
               style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
-                  deletedBubbleStyle: CometChatDeletedBubbleStyle(
+                  deletedBubbleStyle: ConvoKitDeletedBubbleStyle(
                     messageBubbleBackgroundImage: DecorationImage(
                       image: MemoryImage(_pixel),
                     ),
@@ -1344,8 +1344,8 @@ void main() {
               messageListBloc: _bloc(_text(deletedAt: DateTime(2024, 1, 1))),
               style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
-                  deletedBubbleStyle: CometChatDeletedBubbleStyle(
-                    messageBubbleDateStyle: CometChatDateStyle(
+                  deletedBubbleStyle: ConvoKitDeletedBubbleStyle(
+                    messageBubbleDateStyle: ConvoKitDateStyle(
                       textStyle: TextStyle(color: Color(0x0ff1d533)),
                     ),
                   ),
@@ -1368,8 +1368,8 @@ void main() {
               messageListBloc: _bloc(_text(deletedAt: DateTime(2024, 1, 1))),
               style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
-                  deletedBubbleStyle: CometChatDeletedBubbleStyle(
-                    messageBubbleAvatarStyle: CometChatAvatarStyle(
+                  deletedBubbleStyle: ConvoKitDeletedBubbleStyle(
+                    messageBubbleAvatarStyle: ConvoKitAvatarStyle(
                       backgroundColor: Color(0x0ff1d544),
                     ),
                   ),
@@ -1380,7 +1380,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('senderNameTextStyle reaches the bubble', (tester) async {
@@ -1392,7 +1392,7 @@ void main() {
               messageListBloc: _bloc(_text(deletedAt: DateTime(2024, 1, 1))),
               style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
-                  deletedBubbleStyle: CometChatDeletedBubbleStyle(
+                  deletedBubbleStyle: ConvoKitDeletedBubbleStyle(
                     senderNameTextStyle: TextStyle(fontSize: 23),
                   ),
                 ),
@@ -1416,7 +1416,7 @@ void main() {
               messageListBloc: _bloc(_text(deletedAt: DateTime(2024, 1, 1))),
               style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
-                  deletedBubbleStyle: CometChatDeletedBubbleStyle(
+                  deletedBubbleStyle: ConvoKitDeletedBubbleStyle(
                     threadedMessageIndicatorTextStyle: TextStyle(fontSize: 11),
                   ),
                 ),
@@ -1426,7 +1426,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('threadedMessageIndicatorIconColor reaches the bubble', (
@@ -1440,7 +1440,7 @@ void main() {
               messageListBloc: _bloc(_text(deletedAt: DateTime(2024, 1, 1))),
               style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
-                  deletedBubbleStyle: CometChatDeletedBubbleStyle(
+                  deletedBubbleStyle: ConvoKitDeletedBubbleStyle(
                     threadedMessageIndicatorIconColor: Color(0x0ff1d577),
                   ),
                 ),
@@ -1450,7 +1450,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('messageReceiptStyle reaches the bubble', (tester) async {
@@ -1464,7 +1464,7 @@ void main() {
               ),
               style: ConvoKitMessageListStyle(
                 outgoingMessageBubbleStyle: CometChatOutgoingMessageBubbleStyle(
-                  deletedBubbleStyle: CometChatDeletedBubbleStyle(
+                  deletedBubbleStyle: ConvoKitDeletedBubbleStyle(
                     messageReceiptStyle: CometChatMessageReceiptStyle(
                       sentIconColor: Color(0x0ff1d588),
                     ),
@@ -1476,7 +1476,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
   });
   // ---------------------------------------------------------------------
@@ -1551,9 +1551,9 @@ void main() {
                 title: 'report.pdf',
                 subtitle: 'from Bob',
                 fileUrl: 'https://example.com/report.pdf',
-                colorPalette: CometChatThemeHelper.getColorPalette(context),
-                spacing: CometChatThemeHelper.getSpacing(context),
-                typography: CometChatThemeHelper.getTypography(context),
+                colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+                spacing: ConvoKitThemeHelper.getSpacing(context),
+                typography: ConvoKitThemeHelper.getTypography(context),
                 style: const CometChatFileBubbleStyle(
                   titleTextStyle: TextStyle(fontSize: 33),
                   titleColor: Color(0xFF1D3A3A),
@@ -1578,15 +1578,15 @@ void main() {
     });
   });
 
-  group('CometChatDeletedBubbleStyle — the deleted bubble', () {
+  group('ConvoKitDeletedBubbleStyle — the deleted bubble', () {
     testWidgets('textStyle, textColor and iconColor style the placeholder', (
       tester,
     ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatDeletedBubble(
-              style: const CometChatDeletedBubbleStyle(
+            body: ConvoKitDeletedBubble(
+              style: const ConvoKitDeletedBubbleStyle(
                 textStyle: TextStyle(fontSize: 19),
                 textColor: Color(0xFF1D5A5A),
                 iconColor: Color(0xFF1D5B5B),
@@ -1605,16 +1605,16 @@ void main() {
     });
   });
 
-  group('CometChatActionBubbleStyle — the action bubble', () {
+  group('ConvoKitActionBubbleStyle — the action bubble', () {
     testWidgets('textStyle, border and borderRadius style the pill', (
       tester,
     ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatActionBubble(
+            body: ConvoKitActionBubble(
               text: 'Bob joined',
-              style: const CometChatActionBubbleStyle(
+              style: const ConvoKitActionBubbleStyle(
                 textStyle: TextStyle(fontSize: 21),
                 border: Border.fromBorderSide(
                   BorderSide(color: Color(0xFF1D6A6A), width: 3),
@@ -1666,15 +1666,15 @@ void main() {
     });
   });
 
-  group('CometChatMessageBubbleStyle — the bubble shell', () {
+  group('ConvoKitMessageBubbleStyle — the bubble shell', () {
     testWidgets('border and backgroundImage reach the shell', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatMessageBubble(
+            body: ConvoKitMessageBubble(
               alignment: BubbleAlignment.left,
               contentView: const Text('body'),
-              style: CometChatMessageBubbleStyle(
+              style: ConvoKitMessageBubbleStyle(
                 border: const Border.fromBorderSide(
                   BorderSide(color: Color(0xFF1D7A7A), width: 3),
                 ),
@@ -1788,7 +1788,7 @@ void main() {
               style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   voiceNoteBubbleStyle: CometChatVoiceNoteBubbleStyle(
-                    messageBubbleDateStyle: CometChatDateStyle(
+                    messageBubbleDateStyle: ConvoKitDateStyle(
                       textStyle: TextStyle(color: Color(0xFF1F1001)),
                     ),
                   ),
@@ -1812,7 +1812,7 @@ void main() {
               style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   voiceNoteBubbleStyle: CometChatVoiceNoteBubbleStyle(
-                    messageBubbleAvatarStyle: CometChatAvatarStyle(
+                    messageBubbleAvatarStyle: ConvoKitAvatarStyle(
                       backgroundColor: Color(0xFF1F1002),
                     ),
                   ),
@@ -1823,7 +1823,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('senderNameTextStyle reaches the bubble', (tester) async {
@@ -1869,7 +1869,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('threadedMessageIndicatorIconColor reaches the bubble', (
@@ -1893,7 +1893,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('messageReceiptStyle reaches the bubble', (tester) async {
@@ -1919,7 +1919,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
   });
 
@@ -2009,7 +2009,7 @@ void main() {
               style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   voiceCallBubbleStyle: CometChatCallBubbleStyle(
-                    messageBubbleDateStyle: CometChatDateStyle(
+                    messageBubbleDateStyle: ConvoKitDateStyle(
                       textStyle: TextStyle(color: Color(0xFF1F2001)),
                     ),
                   ),
@@ -2033,7 +2033,7 @@ void main() {
               style: ConvoKitMessageListStyle(
                 incomingMessageBubbleStyle: CometChatIncomingMessageBubbleStyle(
                   voiceCallBubbleStyle: CometChatCallBubbleStyle(
-                    messageBubbleAvatarStyle: CometChatAvatarStyle(
+                    messageBubbleAvatarStyle: ConvoKitAvatarStyle(
                       backgroundColor: Color(0xFF1F2002),
                     ),
                   ),
@@ -2044,7 +2044,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('senderNameTextStyle reaches the bubble', (tester) async {
@@ -2090,7 +2090,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('threadedMessageIndicatorIconColor reaches the bubble', (
@@ -2114,7 +2114,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('messageReceiptStyle reaches the bubble', (tester) async {
@@ -2138,7 +2138,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
   });
 }

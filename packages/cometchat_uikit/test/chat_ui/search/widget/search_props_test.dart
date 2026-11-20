@@ -264,7 +264,7 @@ MediaMessage _media(int id, String type, String sender) => MediaMessage(
   sentAt: _sentAt,
 );
 
-/// Every branch CometChatDate can take returns the sentinel, so the assertion
+/// Every branch ConvoKitDate can take returns the sentinel, so the assertion
 /// does not depend on how old the fixture timestamps are.
 class _SentinelFormatter extends DateTimeFormatterCallback {
   @override
@@ -655,7 +655,7 @@ final _matrix = <_Case>[
     subject: (_) => _Props(loadingStateView: (_) => const Text('loading-7Q')),
     observe: (t, _, _) async => [
       _count(find.text('loading-7Q')),
-      _count(find.byType(CometChatShimmerEffect)),
+      _count(find.byType(ConvoKitShimmerEffect)),
     ],
     baseline: [0, 1],
     expected: [1, 0],
@@ -802,7 +802,7 @@ final _matrix = <_Case>[
     ),
     observe: (t, _, _) async => [
       _textsStartingWith(t, 'lead-'),
-      _count(find.byType(CometChatAvatar)),
+      _count(find.byType(ConvoKitAvatar)),
     ],
     baseline: [<String>[], 2],
     expected: [
@@ -837,7 +837,7 @@ final _matrix = <_Case>[
     ),
     observe: (t, _, _) async => [
       _textsStartingWith(t, 'tail-'),
-      _count(find.byType(CometChatBadge)),
+      _count(find.byType(ConvoKitBadge)),
     ],
     baseline: [<String>[], 1],
     expected: [
@@ -850,7 +850,7 @@ final _matrix = <_Case>[
     effect: 'false drops the presence dot and leaves the group badge',
     subject: (_) => const _Props(usersStatusVisibility: false),
     observe: (t, _, _) async => [
-      _count(find.byType(CometChatStatusIndicator)),
+      _count(find.byType(ConvoKitStatusIndicator)),
       _count(find.byIcon(Icons.shield)),
     ],
     baseline: [2, 1],
@@ -861,7 +861,7 @@ final _matrix = <_Case>[
     effect: 'false drops the private-group badge and leaves the dot',
     subject: (_) => const _Props(groupTypeVisibility: false),
     observe: (t, _, _) async => [
-      _count(find.byType(CometChatStatusIndicator)),
+      _count(find.byType(ConvoKitStatusIndicator)),
       _count(find.byIcon(Icons.shield)),
     ],
     baseline: [2, 1],

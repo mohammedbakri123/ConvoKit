@@ -102,20 +102,20 @@ class _CometChatMediaRecorderState extends State<CometChatMediaRecorder> {
   }
 
   late CometChatMediaRecorderStyle mediaRecorderStyle;
-  late CometChatColorPalette colorPalette;
-  late CometChatSpacing spacing;
-  late CometChatTypography typography;
+  late ConvoKitColorPalette colorPalette;
+  late ConvoKitSpacing spacing;
+  late ConvoKitTypography typography;
 
   @override
   void didChangeDependencies() {
     mediaRecorderStyle =
-        CometChatThemeHelper.getTheme<CometChatMediaRecorderStyle>(
+        ConvoKitThemeHelper.getTheme<CometChatMediaRecorderStyle>(
           context: context,
           defaultTheme: CometChatMediaRecorderStyle.of,
         ).merge(widget.style);
-    colorPalette = CometChatThemeHelper.getColorPalette(context);
-    spacing = CometChatThemeHelper.getSpacing(context);
-    typography = CometChatThemeHelper.getTypography(context);
+    colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    spacing = ConvoKitThemeHelper.getSpacing(context);
+    typography = ConvoKitThemeHelper.getTypography(context);
     super.didChangeDependencies();
   }
 
@@ -200,8 +200,8 @@ class _CometChatMediaRecorderState extends State<CometChatMediaRecorder> {
   Widget _getActionItems(
     MediaRecorderState state,
     CometChatMediaRecorderStyle mediaRecorderStyle,
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
   ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -284,8 +284,8 @@ class _CometChatMediaRecorderState extends State<CometChatMediaRecorder> {
   Widget _buttonWrapper(
     Widget child,
     double size,
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
     Color? backgroundColor,
     BorderRadiusGeometry? borderRadius,
     BoxBorder? border,
@@ -324,8 +324,8 @@ class _CometChatMediaRecorderState extends State<CometChatMediaRecorder> {
   Widget _getSendButton(
     MediaRecorderState state,
     CometChatMediaRecorderStyle mediaRecorderStyle,
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
   ) {
     return _buttonWrapper(
       IconButton(
@@ -364,9 +364,9 @@ class _CometChatMediaRecorderState extends State<CometChatMediaRecorder> {
   Widget _getAudioAnimation(
     MediaRecorderState state,
     CometChatMediaRecorderStyle mediaRecorderStyle,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
   ) {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -468,8 +468,8 @@ class _CometChatMediaRecorderState extends State<CometChatMediaRecorder> {
   Widget _getStopButton(
     MediaRecorderState state,
     CometChatMediaRecorderStyle mediaRecorderStyle,
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
   ) {
     return IconButton(
       tooltip: Translations.of(context).stopRecording,
@@ -492,8 +492,8 @@ class _CometChatMediaRecorderState extends State<CometChatMediaRecorder> {
   Widget _getRecordButtons(
     MediaRecorderState state,
     CometChatMediaRecorderStyle mediaRecorderStyle,
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
   ) {
     return _buttonWrapper(
       state.isRecording
@@ -517,8 +517,8 @@ class _CometChatMediaRecorderState extends State<CometChatMediaRecorder> {
   Widget _getStartButton(
     MediaRecorderState state,
     CometChatMediaRecorderStyle mediaRecorderStyle,
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
   ) {
     return IconButton(
       tooltip: Translations.of(context).startRecording,
@@ -543,8 +543,8 @@ class _CometChatMediaRecorderState extends State<CometChatMediaRecorder> {
   Widget _getPauseButton(
     MediaRecorderState state,
     CometChatMediaRecorderStyle mediaRecorderStyle,
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
   ) {
     return IconButton(
       tooltip: Translations.of(context).pauseRecording,

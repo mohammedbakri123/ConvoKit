@@ -59,13 +59,13 @@ List<TextStyle> _textStyles(WidgetTester tester) {
 
 void main() {
   // ===========================================================================
-  group('CometChatBadgeStyle', () {
+  group('ConvoKitBadgeStyle', () {
     testWidgets('all six props reach the badge', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          const CometChatBadge(
+          const ConvoKitBadge(
             count: 12,
-            style: CometChatBadgeStyle(
+            style: ConvoKitBadgeStyle(
               textStyle: TextStyle(fontSize: 19),
               textColor: _c1,
               backgroundColor: _c2,
@@ -93,14 +93,14 @@ void main() {
   });
 
   // ===========================================================================
-  group('CometChatAvatarStyle', () {
+  group('ConvoKitAvatarStyle', () {
     testWidgets('all five props reach the avatar', (tester) async {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            const CometChatAvatar(
+            const ConvoKitAvatar(
               name: 'Alexandra',
-              style: CometChatAvatarStyle(
+              style: ConvoKitAvatarStyle(
                 backgroundColor: _c1,
                 border: Border.fromBorderSide(BorderSide(color: _c2, width: 3)),
                 borderRadius: BorderRadius.all(Radius.circular(11)),
@@ -126,12 +126,12 @@ void main() {
   });
 
   // ===========================================================================
-  group('CometChatStatusIndicatorStyle', () {
+  group('ConvoKitStatusIndicatorStyle', () {
     testWidgets('all three props reach the indicator', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          const CometChatStatusIndicator(
-            style: CometChatStatusIndicatorStyle(
+          const ConvoKitStatusIndicator(
+            style: ConvoKitStatusIndicatorStyle(
               backgroundColor: _c1,
               border: Border.fromBorderSide(BorderSide(color: _c2, width: 2)),
               borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -148,14 +148,14 @@ void main() {
   });
 
   // ===========================================================================
-  group('CometChatDateStyle', () {
+  group('ConvoKitDateStyle', () {
     testWidgets('all five props reach the date', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatDate(
+          ConvoKitDate(
             date: DateTime.fromMillisecondsSinceEpoch(1700000000000),
             isTransparentBackground: false,
-            style: const CometChatDateStyle(
+            style: const ConvoKitDateStyle(
               textStyle: TextStyle(fontSize: 15),
               textColor: _c1,
               backgroundColor: _c2,
@@ -185,7 +185,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            const CometChatListItem(
+            const ConvoKitListItem(
               title: 'Alexandra',
               avatarName: 'Alexandra',
               hideSeparator: false,
@@ -243,7 +243,7 @@ void main() {
               avatarName: 'Quarterly planning',
               cardStyle: CardStyle(
                 titleStyle: TextStyle(color: _c1, fontSize: 23),
-                avatarStyle: CometChatAvatarStyle(backgroundColor: _c2),
+                avatarStyle: ConvoKitAvatarStyle(backgroundColor: _c2),
               ),
             ),
           ),
@@ -258,7 +258,7 @@ void main() {
       );
       expect(
         tester
-            .widget<CometChatAvatar>(find.byType(CometChatAvatar))
+            .widget<ConvoKitAvatar>(find.byType(ConvoKitAvatar))
             .style
             ?.backgroundColor,
         _c2,
@@ -402,7 +402,7 @@ void main() {
         // that status — a shared fixture would let one prop cover for another.
         await tester.pumpWidget(
           _wrap(
-            CometChatReceipt(
+            ConvoKitReceipt(
               status: entry.value,
               style: CometChatMessageReceiptStyle(
                 waitIconColor: _c1,

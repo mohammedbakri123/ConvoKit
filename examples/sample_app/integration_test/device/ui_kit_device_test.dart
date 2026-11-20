@@ -117,20 +117,20 @@ Map<String, Widget Function(BuildContext)> _surfaces() => {
     text: 'Rescheduled to Thursday 14:00 — does that work for everyone?',
     alignment: BubbleAlignment.left,
   ),
-  'deleted bubble': (context) => const CometChatDeletedBubble(),
+  'deleted bubble': (context) => const ConvoKitDeletedBubble(),
   'deleted bubble via its factory': (context) =>
       DeletedBubbleFactory().build(context, _FakeMessage(), BubbleAlignment.left),
-  'shared list item': (context) => const CometChatListItem(
+  'shared list item': (context) => const ConvoKitListItem(
     title: 'Alexandra Constantinou',
     avatarName: 'Alexandra Constantinou',
   ),
-  'date': (context) => CometChatDate(
+  'date': (context) => ConvoKitDate(
     date: DateTime.fromMillisecondsSinceEpoch(1700000000000),
   ),
-  'badge': (context) => const CometChatBadge(count: 128),
-  'avatar': (context) => const CometChatAvatar(name: 'Alexandra Constantinou'),
-  'status indicator': (context) => const CometChatStatusIndicator(),
-  'receipt': (context) => const CometChatReceipt(status: ReceiptStatus.read),
+  'badge': (context) => const ConvoKitBadge(count: 128),
+  'avatar': (context) => const ConvoKitAvatar(name: 'Alexandra Constantinou'),
+  'status indicator': (context) => const ConvoKitStatusIndicator(),
+  'receipt': (context) => const ConvoKitReceipt(status: ReceiptStatus.read),
   'quick view': (context) => const CometChatQuickView(
     title: 'Alexandra Constantinou',
     subtitle: 'Rescheduled to Thursday 14:00 — does that work for everyone?',
@@ -139,7 +139,7 @@ Map<String, Widget Function(BuildContext)> _surfaces() => {
     title: 'Quarterly planning — engineering',
     avatarName: 'Quarterly planning',
   ),
-  'action bubble': (context) => const CometChatActionBubble(
+  'action bubble': (context) => const ConvoKitActionBubble(
     text: 'Alexandra Constantinou added Dimitrios Papadopoulos',
   ),
   // Deprecated in favour of CometChatFilesBubble, but still exported and
@@ -541,12 +541,12 @@ void main() {
     for (final brightness in Brightness.values) {
       testWidgets('the palette, typography and spacing resolve in '
           '${brightness.name}', (tester) async {
-        // CometChatThemeHelper reads the ambient Theme. Headless it reads a
+        // ConvoKitThemeHelper reads the ambient Theme. Headless it reads a
         // synthetic one; here it reads the app's, built by MaterialApp against
         // the device's own platform brightness handling.
-        late CometChatColorPalette palette;
-        late CometChatTypography typography;
-        late CometChatSpacing spacing;
+        late ConvoKitColorPalette palette;
+        late ConvoKitTypography typography;
+        late ConvoKitSpacing spacing;
 
         await tester.pumpWidget(
           MaterialApp(
@@ -554,9 +554,9 @@ void main() {
             supportedLocales: const [Locale('en')],
             theme: ThemeData(brightness: brightness),
             home: Builder(builder: (context) {
-              palette = CometChatThemeHelper.getColorPalette(context);
-              typography = CometChatThemeHelper.getTypography(context);
-              spacing = CometChatThemeHelper.getSpacing(context);
+              palette = ConvoKitThemeHelper.getColorPalette(context);
+              typography = ConvoKitThemeHelper.getTypography(context);
+              spacing = ConvoKitThemeHelper.getSpacing(context);
               return const Scaffold(body: SizedBox());
             }),
           ),

@@ -100,7 +100,7 @@ class _ConvoKitAttachmentTileState extends State<ConvoKitAttachmentTile> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = CometChatThemeHelper.getColorPalette(context);
+    final colors = ConvoKitThemeHelper.getColorPalette(context);
     // Image / video render as square tiles; audio keeps the legacy wide card;
     // plain files get the state-driven card (status inside the icon box).
     final bool isMedia = tile.isImage || tile.isVideo;
@@ -191,7 +191,7 @@ class _ConvoKitAttachmentTileState extends State<ConvoKitAttachmentTile> {
   /// uploading, an error indicator on failure (tap = retry) / rejection.
   /// Used by media (image / video) tiles only — audio and file cards render
   /// status inside their leading icon instead.
-  Widget? _statusOverlay(CometChatColorPalette colors) {
+  Widget? _statusOverlay(ConvoKitColorPalette colors) {
     final scrim = style?.scrimColor ?? Colors.black38;
     final progress = style?.progressColor ?? Colors.white;
     switch (tile.status) {
@@ -244,7 +244,7 @@ class _ConvoKitAttachmentTileState extends State<ConvoKitAttachmentTile> {
 
   // ---- media (image / video) : square thumbnail ----------------------------
 
-  Widget _mediaTile(BuildContext context, CometChatColorPalette colors) {
+  Widget _mediaTile(BuildContext context, ConvoKitColorPalette colors) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: SizedBox(
@@ -338,7 +338,7 @@ class _ConvoKitAttachmentTileState extends State<ConvoKitAttachmentTile> {
 
   /// Thumbnail: server URL → network image; local path (staging) → cross-platform
   /// file image; otherwise a type icon. Audio always shows the centered icon.
-  Widget _thumbWidget(CometChatColorPalette colors) {
+  Widget _thumbWidget(ConvoKitColorPalette colors) {
     if (tile.isAudio) {
       final base = colors.primary ?? const Color(0xFF6C5CE7);
       final lightA = Color.lerp(base, Colors.white, 0.46) ?? base;
@@ -398,12 +398,12 @@ class _ConvoKitAttachmentTileState extends State<ConvoKitAttachmentTile> {
 
   // Legacy-look holder (same art as CometChatImageBubble's placeholder) when
   // a staged image/video tile has nothing to preview.
-  Widget _typeIconFill(CometChatColorPalette colors) =>
+  Widget _typeIconFill(ConvoKitColorPalette colors) =>
       const CometChatMediaPlaceholder(glyphWidth: 26);
 
   // ---- file : state-driven wide card (reference mobile design) -------------
 
-  Widget _fileCard(BuildContext context, CometChatColorPalette colors) {
+  Widget _fileCard(BuildContext context, ConvoKitColorPalette colors) {
     final bool hasError = tile.hasError;
 
     return Container(
@@ -455,7 +455,7 @@ class _ConvoKitAttachmentTileState extends State<ConvoKitAttachmentTile> {
   /// The 40×40 type-badge container (full-colour SVG icon). Upload state renders
   /// *inside* it: a dark scrim with a white spinner (uploading) or a red badge
   /// with a refresh / "!" glyph (failed / rejected).
-  Widget _fileIconBox(BuildContext context, CometChatColorPalette colors) {
+  Widget _fileIconBox(BuildContext context, ConvoKitColorPalette colors) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(style?.iconBorderRadius ?? 10),
       child: SizedBox(
@@ -483,7 +483,7 @@ class _ConvoKitAttachmentTileState extends State<ConvoKitAttachmentTile> {
     );
   }
 
-  Widget _fileIconStatusChild(CometChatColorPalette colors) {
+  Widget _fileIconStatusChild(ConvoKitColorPalette colors) {
     final progress = style?.progressColor ?? Colors.white;
     switch (tile.status) {
       case AttachmentTileStatus.uploading:
@@ -519,8 +519,8 @@ class _ConvoKitAttachmentTileState extends State<ConvoKitAttachmentTile> {
   }
 
   /// Status subtitle: type label while uploading / done, localized error text
-  /// in [CometChatColorPalette.error] for the two failure states.
-  Widget _fileSubtitle(BuildContext context, CometChatColorPalette colors) {
+  /// in [ConvoKitColorPalette.error] for the two failure states.
+  Widget _fileSubtitle(BuildContext context, ConvoKitColorPalette colors) {
     final errorStyle = TextStyle(
       fontSize: 11,
       color: style?.errorBorderColor ?? colors.error ?? Colors.red,
@@ -711,7 +711,7 @@ class _AudioTileCardState extends State<_AudioTileCard> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = CometChatThemeHelper.getColorPalette(context);
+    final colors = ConvoKitThemeHelper.getColorPalette(context);
     final bool hasError = tile.hasError;
 
     return Container(
@@ -766,7 +766,7 @@ class _AudioTileCardState extends State<_AudioTileCard> {
 
   /// The 40×40 play/pause circle. Upload state renders *inside* it, matching
   /// the file card's icon-box treatment.
-  Widget _playCircle(CometChatColorPalette colors) {
+  Widget _playCircle(ConvoKitColorPalette colors) {
     final playing = _player?.value.isPlaying ?? false;
     return Semantics(
       button: true,
@@ -807,7 +807,7 @@ class _AudioTileCardState extends State<_AudioTileCard> {
     );
   }
 
-  Widget _circleStatusChild(CometChatColorPalette colors) {
+  Widget _circleStatusChild(ConvoKitColorPalette colors) {
     final progress = style?.progressColor ?? Colors.white;
     switch (tile.status) {
       case AttachmentTileStatus.uploading:
@@ -842,7 +842,7 @@ class _AudioTileCardState extends State<_AudioTileCard> {
     }
   }
 
-  Widget _errorSubtitle(BuildContext context, CometChatColorPalette colors) {
+  Widget _errorSubtitle(BuildContext context, ConvoKitColorPalette colors) {
     final text = tile.status == AttachmentTileStatus.failed
         ? Translations.of(context).tapToRetry
         : Translations.of(context).uploadFailed;
@@ -860,7 +860,7 @@ class _AudioTileCardState extends State<_AudioTileCard> {
     );
   }
 
-  Widget _seekBar(CometChatColorPalette colors) {
+  Widget _seekBar(ConvoKitColorPalette colors) {
     final value = _player?.value;
     final ready = (value?.isInitialized ?? false) && !_playbackFailed;
     final maxMs = ready ? value!.duration.inMilliseconds.toDouble() : 0.0;
@@ -902,7 +902,7 @@ class _AudioTileCardState extends State<_AudioTileCard> {
     );
   }
 
-  Widget _clock(CometChatColorPalette colors) {
+  Widget _clock(ConvoKitColorPalette colors) {
     final value = _player?.value;
     final ready = (value?.isInitialized ?? false) && !_playbackFailed;
     final text = ready

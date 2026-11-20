@@ -78,7 +78,7 @@ class MetadataConstants {
   // static const String replyMessage = "reply-message";
 }
 
-///[GroupOptionConstants] is a utility class that stores String constants of the options available in `CometChatDetails` if it is being rendered for a [Group]
+///[GroupOptionConstants] is a utility class that stores String constants of the options available in `ConvoKitDetails` if it is being rendered for a [Group]
 class GroupOptionConstants {
   static const String leave = "leave";
   static const String delete = "delete";
@@ -97,7 +97,7 @@ class GroupMemberOptionConstants {
   static const String changeScope = "changeScope";
 }
 
-///[UserOptionConstants] is a utility class that stores String constants of the options available in `CometChatDetails` if it is being rendered for a [User]
+///[UserOptionConstants] is a utility class that stores String constants of the options available in `ConvoKitDetails` if it is being rendered for a [User]
 class UserOptionConstants {
   static const String viewProfile = "viewProfile";
   static const String voiceCall = "voiceCall";
@@ -135,7 +135,7 @@ class ReceiptTypeConstants {
   static const String readByAll = CometChatReceiptType.readByAll;
 }
 
-///[DetailsTemplateConstants] is a utility class that stores String constants of the types of [CometChatDetailsTemplate]
+///[DetailsTemplateConstants] is a utility class that stores String constants of the types of [ConvoKitDetailsTemplate]
 class DetailsTemplateConstants {
   static const String primaryActions = "primaryActions";
   static const String secondaryActions = "secondaryActions";

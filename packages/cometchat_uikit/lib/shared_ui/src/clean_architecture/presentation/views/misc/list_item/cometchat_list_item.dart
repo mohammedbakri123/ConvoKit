@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../../../../../cometchat_uikit_shared.dart';
 
-///[CometChatListItem] is a top level container widget
+///[ConvoKitListItem] is a top level container widget
 ///used internally for displaying each item in components like `ConvoKitUsers`, `ConvoKitGroups`, `ConvoKitConversations`, `ConvoKitGroupMembers`
 /// ```dart
-///                CometChatListItem(
+///                ConvoKitListItem(
 ///                    avatarName: _user.name,
 ///                    avatarURL: _user.avatar,
 ///                    title: _user.name,
@@ -12,7 +12,7 @@ import '../../../../../../cometchat_uikit_shared.dart';
 ///                    statusIndicatorIcon: icon,
 ///                  );
 /// ```
-class CometChatListItem extends StatelessWidget {
+class ConvoKitListItem extends StatelessWidget {
   // Deprecated in 6.2.0: no effect, removed in 7.0.0.
 
   /// Options for the list item.
@@ -21,7 +21,7 @@ class CometChatListItem extends StatelessWidget {
   )
   final List<CometChatOption>? options;
 
-  const CometChatListItem({
+  const ConvoKitListItem({
     super.key,
     this.avatarURL,
     this.avatarName,
@@ -31,13 +31,13 @@ class CometChatListItem extends StatelessWidget {
     this.subtitleView,
     this.tailView,
     this.hideSeparator = true,
-    this.avatarStyle = const CometChatAvatarStyle(),
+    this.avatarStyle = const ConvoKitAvatarStyle(),
     this.style = const ListItemStyle(),
     this.avatarHeight,
     this.avatarWidth,
     this.avatarPadding,
     this.avatarMargin,
-    this.statusIndicatorStyle = const CometChatStatusIndicatorStyle(),
+    this.statusIndicatorStyle = const ConvoKitStatusIndicatorStyle(),
     this.statusIndicatorWidth,
     this.statusIndicatorHeight,
     this.statusIndicatorBorderRadius,
@@ -77,10 +77,10 @@ class CometChatListItem extends StatelessWidget {
   final ListItemStyle style;
 
   ///[avatarStyle] style for avatar
-  final CometChatAvatarStyle avatarStyle;
+  final ConvoKitAvatarStyle avatarStyle;
 
   ///[statusIndicatorStyle] style for status indicator
-  final CometChatStatusIndicatorStyle statusIndicatorStyle;
+  final ConvoKitStatusIndicatorStyle statusIndicatorStyle;
 
   ///[avatarWidth] provides width to the widget
   final double? avatarWidth;
@@ -123,14 +123,14 @@ class CometChatListItem extends StatelessWidget {
     if (leadingStateView != null) {
       return leadingStateView ?? const SizedBox();
     } else {
-      return CometChatAvatar(
+      return ConvoKitAvatar(
         image: avatarURL,
         name: avatarName,
         height: avatarHeight,
         width: avatarWidth,
         margin: avatarMargin,
         padding: avatarPadding,
-        style: CometChatAvatarStyle(
+        style: ConvoKitAvatarStyle(
           placeHolderTextStyle: avatarStyle.placeHolderTextStyle,
           placeHolderTextColor: avatarStyle.placeHolderTextColor,
           backgroundColor: avatarStyle.backgroundColor,
@@ -142,11 +142,11 @@ class CometChatListItem extends StatelessWidget {
   }
 
   Widget getStatus() {
-    return CometChatStatusIndicator(
+    return ConvoKitStatusIndicator(
       height: statusIndicatorHeight,
       width: statusIndicatorWidth,
       backgroundImage: statusIndicatorIcon,
-      style: CometChatStatusIndicatorStyle(
+      style: ConvoKitStatusIndicatorStyle(
         border: statusIndicatorStyle.border,
         backgroundColor: statusIndicatorColor,
         borderRadius: statusIndicatorBorderRadius,
@@ -232,7 +232,7 @@ class CometChatListItem extends StatelessWidget {
   }
 }
 
-///[_CometChatListTile] is a private class used internally in CometChatListItem
+///[_CometChatListTile] is a private class used internally in ConvoKitListItem
 ///to display the list tile with leading, title, subtitle and trailing widgets
 ///such that the widget is not constrained to a specific height
 class _CometChatListTile extends StatelessWidget {
@@ -269,7 +269,7 @@ class _CometChatListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final spacing = CometChatThemeHelper.getSpacing(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
     return Container(
       color: Colors.transparent,
       padding: contentPadding ?? const EdgeInsets.symmetric(horizontal: 0),

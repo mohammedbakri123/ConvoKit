@@ -258,7 +258,7 @@ void main() {
         ),
       );
 
-      final palette = CometChatThemeHelper.getColorPalette(
+      final palette = ConvoKitThemeHelper.getColorPalette(
         tester.element(find.byIcon(Icons.close)),
       );
       expect(

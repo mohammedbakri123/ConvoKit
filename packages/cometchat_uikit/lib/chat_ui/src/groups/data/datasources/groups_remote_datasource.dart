@@ -63,8 +63,8 @@ class GroupsRemoteDataSourceImpl implements GroupsRemoteDataSource {
 
   ck.GroupRepository? get _convoKitRepository =>
       _repository ??
-      CometChatUIKit.groupRepository ??
-      CometChatUIKit.kit?.groups;
+      ConvoKitUIKit.groupRepository ??
+      ConvoKitUIKit.kit?.groups;
 
   static final CometChatGroupAdapter _sdkAdapter = CometChatGroupAdapter();
 

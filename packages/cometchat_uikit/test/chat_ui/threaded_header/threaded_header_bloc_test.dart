@@ -4,7 +4,7 @@
 /// `thread_subscription_test.dart` covers the follow toggle in isolation; this
 /// file covers initialization (four sender/receiver combinations that decide
 /// whether the header is a user or a group header) and the UI-event listeners
-/// the bloc registers, driven through the public [CometChatMessageEvents]
+/// the bloc registers, driven through the public [ConvoKitMessageEvents]
 /// statics.
 ///
 /// The SDK-side `MessageListener` callbacks are NOT exercised: `CometChat`
@@ -251,9 +251,9 @@ void main() {
 
   group('UI event listeners', () {
     test('no listener is registered until initialization', () async {
-      final before = CometChatMessageEvents.messagesListener.length;
+      final before = ConvoKitMessageEvents.messagesListener.length;
       final bloc = ThreadedHeaderBloc();
-      expect(CometChatMessageEvents.messagesListener.length, before);
+      expect(ConvoKitMessageEvents.messagesListener.length, before);
 
       bloc.add(
         InitializeThreadedHeader(
@@ -262,11 +262,11 @@ void main() {
         ),
       );
       await settle();
-      expect(CometChatMessageEvents.messagesListener.length, before + 1);
+      expect(ConvoKitMessageEvents.messagesListener.length, before + 1);
 
       await bloc.close();
       expect(
-        CometChatMessageEvents.messagesListener.length,
+        ConvoKitMessageEvents.messagesListener.length,
         before,
         reason: 'close() must deregister, or the bloc leaks',
       );
@@ -278,15 +278,15 @@ void main() {
       );
       final reply = FakeMessage(id: 200, parentMessageId: 100);
 
-      CometChatMessageEvents.ccMessageSent(reply, MessageStatus.inProgress);
+      ConvoKitMessageEvents.ccMessageSent(reply, MessageStatus.inProgress);
       await settle();
       expect(bloc.state.replyCount, 1, reason: 'in-flight is not a reply yet');
 
-      CometChatMessageEvents.ccMessageSent(reply, MessageStatus.error);
+      ConvoKitMessageEvents.ccMessageSent(reply, MessageStatus.error);
       await settle();
       expect(bloc.state.replyCount, 1);
 
-      CometChatMessageEvents.ccMessageSent(reply, MessageStatus.sent);
+      ConvoKitMessageEvents.ccMessageSent(reply, MessageStatus.sent);
       await settle();
       expect(bloc.state.replyCount, 2);
       await bloc.close();
@@ -299,7 +299,7 @@ void main() {
         final original = bloc.state.parentMessage;
 
         final other = FakeMessage(id: 999);
-        CometChatMessageEvents.ccMessageEdited(
+        ConvoKitMessageEvents.ccMessageEdited(
           other,
           MessageEditStatus.success,
         );
@@ -307,7 +307,7 @@ void main() {
         expect(bloc.state.parentMessage, same(original), reason: 'wrong id');
 
         final parentEdit = FakeMessage(id: 100);
-        CometChatMessageEvents.ccMessageEdited(
+        ConvoKitMessageEvents.ccMessageEdited(
           parentEdit,
           MessageEditStatus.inProgress,
         );
@@ -318,7 +318,7 @@ void main() {
           reason: 'an in-flight edit must not be shown yet',
         );
 
-        CometChatMessageEvents.ccMessageEdited(
+        ConvoKitMessageEvents.ccMessageEdited(
           parentEdit,
           MessageEditStatus.success,
         );
@@ -332,7 +332,7 @@ void main() {
       final bloc = await initialized(FakeMessage(sender: me, receiver: them));
       final original = bloc.state.parentMessage;
 
-      CometChatMessageEvents.ccMessageDeleted(
+      ConvoKitMessageEvents.ccMessageDeleted(
         FakeMessage(id: 999),
         EventStatus.success,
       );
@@ -342,7 +342,7 @@ void main() {
       // Unlike edit, delete is accepted while still in progress — the row must
       // show as deleted immediately.
       final deleted = FakeMessage(id: 100);
-      CometChatMessageEvents.ccMessageDeleted(deleted, EventStatus.inProgress);
+      ConvoKitMessageEvents.ccMessageDeleted(deleted, EventStatus.inProgress);
       await settle();
       expect(bloc.state.parentMessage, same(deleted));
       await bloc.close();
@@ -355,11 +355,11 @@ void main() {
           FakeMessage(sender: me, receiver: them, replyCount: 4),
         );
 
-        CometChatMessageEvents.onSchedulerMessageReceived(FakeScheduler(999));
+        ConvoKitMessageEvents.onSchedulerMessageReceived(FakeScheduler(999));
         await settle();
         expect(bloc.state.replyCount, 4);
 
-        CometChatMessageEvents.onSchedulerMessageReceived(FakeScheduler(100));
+        ConvoKitMessageEvents.onSchedulerMessageReceived(FakeScheduler(100));
         await settle();
         expect(bloc.state.replyCount, 5);
         await bloc.close();
@@ -369,11 +369,11 @@ void main() {
     test('ccThreadSubscriptionChanged only follows this thread', () async {
       final bloc = await initialized(FakeMessage(sender: me, receiver: them));
 
-      CometChatMessageEvents.ccThreadSubscriptionChanged(999, true);
+      ConvoKitMessageEvents.ccThreadSubscriptionChanged(999, true);
       await settle();
       expect(bloc.state.threadSubscribed, isFalse);
 
-      CometChatMessageEvents.ccThreadSubscriptionChanged(100, true);
+      ConvoKitMessageEvents.ccThreadSubscriptionChanged(100, true);
       await settle();
       expect(bloc.state.threadSubscribed, isTrue);
       await bloc.close();
@@ -386,29 +386,29 @@ void main() {
       await bloc.close();
 
       expect(() {
-        CometChatMessageEvents.ccMessageSent(
+        ConvoKitMessageEvents.ccMessageSent(
           FakeMessage(id: 200, parentMessageId: 100),
           MessageStatus.sent,
         );
-        CometChatMessageEvents.ccThreadSubscriptionChanged(100, true);
-        CometChatMessageEvents.onSchedulerMessageReceived(FakeScheduler(100));
+        ConvoKitMessageEvents.ccThreadSubscriptionChanged(100, true);
+        ConvoKitMessageEvents.onSchedulerMessageReceived(FakeScheduler(100));
       }, returnsNormally);
       expect(bloc.state.replyCount, 1);
     });
 
     test('two initialized blocs get distinct listener keys', () async {
-      final before = CometChatMessageEvents.messagesListener.length;
+      final before = ConvoKitMessageEvents.messagesListener.length;
       final a = await initialized(
         FakeMessage(id: 1, sender: me, receiver: them),
       );
       final b = await initialized(
         FakeMessage(id: 2, sender: me, receiver: them),
       );
-      expect(CometChatMessageEvents.messagesListener.length, before + 2);
+      expect(ConvoKitMessageEvents.messagesListener.length, before + 2);
 
       await a.close();
       await b.close();
-      expect(CometChatMessageEvents.messagesListener.length, before);
+      expect(ConvoKitMessageEvents.messagesListener.length, before);
     });
   });
 }

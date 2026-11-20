@@ -503,7 +503,7 @@ void main() {
       await tester.pump();
 
       // Should render the deleted bubble
-      expect(find.byType(CometChatDeletedBubble), findsOneWidget);
+      expect(find.byType(ConvoKitDeletedBubble), findsOneWidget);
     });
   });
 }

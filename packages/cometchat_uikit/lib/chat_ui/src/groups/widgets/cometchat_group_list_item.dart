@@ -10,7 +10,7 @@ import '../../../../cometchat_chat_uikit.dart';
 /// - Trailing view (custom content)
 /// - Selection mode support with checkbox
 /// - Tap and long-press gesture handling
-/// - Full theme integration with CometChatTheme
+/// - Full theme integration with ConvoKitTheme
 /// - Extensive customization through style objects and individual parameters
 ///
 /// ## Basic Usage
@@ -106,10 +106,10 @@ class CometChatGroupListItem extends StatelessWidget {
   final CometChatGroupListItemStyle? style;
 
   /// [avatarStyle] style configuration for the avatar (overrides style.avatarStyle)
-  final CometChatAvatarStyle? avatarStyle;
+  final ConvoKitAvatarStyle? avatarStyle;
 
   /// [statusIndicatorStyle] style configuration for the status indicator (overrides style.statusIndicatorStyle)
-  final CometChatStatusIndicatorStyle? statusIndicatorStyle;
+  final ConvoKitStatusIndicatorStyle? statusIndicatorStyle;
 
   /// [avatarHeight] provides height to the avatar widget
   final double? avatarHeight;
@@ -145,13 +145,13 @@ class CometChatGroupListItem extends StatelessWidget {
   final Widget? Function(Group)? trailingView;
 
   /// [colorPalette] custom color palette (overrides theme colors)
-  final CometChatColorPalette? colorPalette;
+  final ConvoKitColorPalette? colorPalette;
 
   /// [spacing] custom spacing configuration (overrides theme spacing)
-  final CometChatSpacing? spacing;
+  final ConvoKitSpacing? spacing;
 
   /// [typography] custom typography configuration (overrides theme typography)
-  final CometChatTypography? typography;
+  final ConvoKitTypography? typography;
 
   /// [privateGroupIcon] custom icon for private group indicator
   final Widget? privateGroupIcon;
@@ -168,11 +168,11 @@ class CometChatGroupListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final effectiveColorPalette =
-        colorPalette ?? CometChatThemeHelper.getColorPalette(context);
+        colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
     final effectiveSpacing =
-        spacing ?? CometChatThemeHelper.getSpacing(context);
+        spacing ?? ConvoKitThemeHelper.getSpacing(context);
     final effectiveTypography =
-        typography ?? CometChatThemeHelper.getTypography(context);
+        typography ?? ConvoKitThemeHelper.getTypography(context);
     final effectiveStyle =
         style ?? CometChatGroupListItemStyle.fromTheme(context);
 
@@ -271,8 +271,8 @@ class CometChatGroupListItem extends StatelessWidget {
 
   Widget _buildSelectionCheckbox(
     CometChatGroupListItemStyle effectiveStyle,
-    CometChatColorPalette effectiveColorPalette,
-    CometChatSpacing effectiveSpacing,
+    ConvoKitColorPalette effectiveColorPalette,
+    ConvoKitSpacing effectiveSpacing,
   ) {
     return Padding(
       padding: EdgeInsets.only(
@@ -313,9 +313,9 @@ class CometChatGroupListItem extends StatelessWidget {
   Widget _buildLeadingView(
     BuildContext context,
     CometChatGroupListItemStyle effectiveStyle,
-    CometChatColorPalette effectiveColorPalette,
-    CometChatSpacing effectiveSpacing,
-    CometChatTypography effectiveTypography,
+    ConvoKitColorPalette effectiveColorPalette,
+    ConvoKitSpacing effectiveSpacing,
+    ConvoKitTypography effectiveTypography,
   ) {
     if (leadingView != null) {
       final customView = leadingView!(group);
@@ -331,7 +331,7 @@ class CometChatGroupListItem extends StatelessWidget {
     final effectiveAvatarStyle =
         (avatarStyle ??
                 effectiveStyle.avatarStyle ??
-                const CometChatAvatarStyle())
+                const ConvoKitAvatarStyle())
             .copyWith(
               placeHolderTextStyle: TextStyle(
                 fontSize: effectiveTypography.heading2?.bold?.fontSize,
@@ -344,7 +344,7 @@ class CometChatGroupListItem extends StatelessWidget {
       padding: EdgeInsets.only(right: effectiveSpacing.padding3 ?? 12),
       child: Stack(
         children: [
-          CometChatAvatar(
+          ConvoKitAvatar(
             image: group.icon,
             name: group.name,
             height: avatarHeight ?? 48,
@@ -357,11 +357,11 @@ class CometChatGroupListItem extends StatelessWidget {
             Positioned(
               right: 0,
               bottom: 0,
-              child: CometChatStatusIndicator(
+              child: ConvoKitStatusIndicator(
                 height: statusIndicatorHeight ?? 14,
                 width: statusIndicatorWidth ?? 14,
                 backgroundImage: _getStatusIndicatorIcon(effectiveColorPalette),
-                style: CometChatStatusIndicatorStyle(
+                style: ConvoKitStatusIndicatorStyle(
                   // borderRadius was absent here, so neither the widget's
                   // statusIndicatorBorderRadius nor the style's borderRadius
                   // could reach the badge. ENG-39124.
@@ -393,8 +393,8 @@ class CometChatGroupListItem extends StatelessWidget {
   Widget _buildTitleView(
     BuildContext context,
     CometChatGroupListItemStyle effectiveStyle,
-    CometChatColorPalette effectiveColorPalette,
-    CometChatTypography effectiveTypography,
+    ConvoKitColorPalette effectiveColorPalette,
+    ConvoKitTypography effectiveTypography,
   ) {
     if (titleView != null) {
       final customView = titleView!(group);
@@ -421,8 +421,8 @@ class CometChatGroupListItem extends StatelessWidget {
   Widget _buildSubtitleView(
     BuildContext context,
     CometChatGroupListItemStyle effectiveStyle,
-    CometChatColorPalette effectiveColorPalette,
-    CometChatTypography effectiveTypography,
+    ConvoKitColorPalette effectiveColorPalette,
+    ConvoKitTypography effectiveTypography,
   ) {
     if (subtitleView != null) {
       final customView = subtitleView!(group);
@@ -454,9 +454,9 @@ class CometChatGroupListItem extends StatelessWidget {
   Widget _buildTrailingView(
     BuildContext context,
     CometChatGroupListItemStyle effectiveStyle,
-    CometChatColorPalette effectiveColorPalette,
-    CometChatTypography effectiveTypography,
-    CometChatSpacing effectiveSpacing,
+    ConvoKitColorPalette effectiveColorPalette,
+    ConvoKitTypography effectiveTypography,
+    ConvoKitSpacing effectiveSpacing,
   ) {
     if (trailingView != null) {
       final customView = trailingView!(group);
@@ -484,7 +484,7 @@ class CometChatGroupListItem extends StatelessWidget {
   /// then any status indicator style, then the palette.
   Color? _getStatusIndicatorBackgroundColor(
     CometChatGroupListItemStyle effectiveStyle,
-    CometChatColorPalette effectiveColorPalette,
+    ConvoKitColorPalette effectiveColorPalette,
   ) {
     final fromStatusStyle =
         statusIndicatorStyle?.backgroundColor ??
@@ -508,7 +508,7 @@ class CometChatGroupListItem extends StatelessWidget {
     return fromStatusStyle;
   }
 
-  Widget? _getStatusIndicatorIcon(CometChatColorPalette effectiveColorPalette) {
+  Widget? _getStatusIndicatorIcon(ConvoKitColorPalette effectiveColorPalette) {
     // Use custom icons if provided, otherwise use default icons with proper color
     if (group.type == CometChatGroupType.private) {
       if (privateGroupIcon != null) {
@@ -576,10 +576,10 @@ class CometChatGroupListItemStyle {
   final Color? subtitleTextColor;
 
   /// Style for the avatar
-  final CometChatAvatarStyle? avatarStyle;
+  final ConvoKitAvatarStyle? avatarStyle;
 
   /// Style for the status indicator (group type icon)
-  final CometChatStatusIndicatorStyle? statusIndicatorStyle;
+  final ConvoKitStatusIndicatorStyle? statusIndicatorStyle;
 
   /// Background color for unchecked checkbox
   final Color? checkBoxBackgroundColor;
@@ -609,8 +609,8 @@ class CometChatGroupListItemStyle {
 
   /// Creates a style from the current theme context
   factory CometChatGroupListItemStyle.fromTheme(BuildContext context) {
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final typography = CometChatThemeHelper.getTypography(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
 
     return CometChatGroupListItemStyle(
       backgroundColor: colorPalette.background1,
@@ -632,8 +632,8 @@ class CometChatGroupListItemStyle {
     Color? titleTextColor,
     TextStyle? subtitleTextStyle,
     Color? subtitleTextColor,
-    CometChatAvatarStyle? avatarStyle,
-    CometChatStatusIndicatorStyle? statusIndicatorStyle,
+    ConvoKitAvatarStyle? avatarStyle,
+    ConvoKitStatusIndicatorStyle? statusIndicatorStyle,
     Color? checkBoxBackgroundColor,
     Color? checkBoxCheckedBackgroundColor,
     BorderRadius? checkBoxBorderRadius,

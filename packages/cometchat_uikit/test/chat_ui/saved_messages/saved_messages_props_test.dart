@@ -240,7 +240,7 @@ TextStyle? _spanStyle(InlineSpan span, TextStyle? inherited, String needle) {
 List<Text> _dates(WidgetTester t) => t
     .widgetList<Text>(
       find.descendant(
-        of: find.byType(CometChatDate),
+        of: find.byType(ConvoKitDate),
         matching: find.byType(Text),
       ),
     )

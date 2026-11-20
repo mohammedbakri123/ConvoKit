@@ -28,9 +28,9 @@ abstract class BubbleFactory<T extends BaseMessage> {
     BuildContext context,
     T message,
     BubbleAlignment alignment, {
-    CometChatColorPalette? colorPalette,
-    CometChatTypography? typography,
-    CometChatSpacing? spacing,
+    ConvoKitColorPalette? colorPalette,
+    ConvoKitTypography? typography,
+    ConvoKitSpacing? spacing,
   });
 
   /// Returns the factory key for a given message.

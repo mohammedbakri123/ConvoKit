@@ -64,8 +64,8 @@ class CustomTextEditingController extends TextEditingController {
   }
 
   TextStyle _getDefaultTextStyle(BuildContext context, TextStyle? style) {
-    final palette = CometChatThemeHelper.getColorPalette(context);
-    final typography = CometChatThemeHelper.getTypography(context);
+    final palette = ConvoKitThemeHelper.getColorPalette(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
 
     return TextStyle(
       color: palette.textPrimary,

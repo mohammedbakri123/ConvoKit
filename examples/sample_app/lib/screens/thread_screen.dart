@@ -33,8 +33,8 @@ class ThreadScreen extends StatefulWidget {
 class _ThreadScreenState extends State<ThreadScreen> {
   @override
   Widget build(BuildContext context) {
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final typography = CometChatThemeHelper.getTypography(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
 
     final requestBuilder = MessagesRequestBuilder()
       ..parentMessageId = widget.message.id;
@@ -99,7 +99,7 @@ class _ThreadScreenState extends State<ThreadScreen> {
             children: [
               ConvoKitThreadedHeader(
                 parentMessage: widget.message,
-                loggedInUser: CometChatUIKit.loggedInUser!,
+                loggedInUser: ConvoKitUIKit.loggedInUser!,
                 template: widget.template,
                 // The subscription bell lives in the top bar on this screen.
                 threadSubscriptionVisibility: false,

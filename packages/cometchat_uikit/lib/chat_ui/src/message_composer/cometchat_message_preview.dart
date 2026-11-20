@@ -48,15 +48,15 @@ class ConvoKitMessagePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CometChatSpacing spacing = CometChatThemeHelper.getSpacing(context);
-    CometChatColorPalette colorPalette = CometChatThemeHelper.getColorPalette(
+    ConvoKitSpacing spacing = ConvoKitThemeHelper.getSpacing(context);
+    ConvoKitColorPalette colorPalette = ConvoKitThemeHelper.getColorPalette(
       context,
     );
-    CometChatTypography typography = CometChatThemeHelper.getTypography(
+    ConvoKitTypography typography = ConvoKitThemeHelper.getTypography(
       context,
     );
     ConvoKitMessagePreviewStyle style =
-        CometChatThemeHelper.getTheme<ConvoKitMessagePreviewStyle>(
+        ConvoKitThemeHelper.getTheme<ConvoKitMessagePreviewStyle>(
           context: context,
           defaultTheme: ConvoKitMessagePreviewStyle.of,
         ).merge(messagePreviewStyle);

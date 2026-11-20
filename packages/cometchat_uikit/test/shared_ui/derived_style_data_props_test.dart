@@ -1,7 +1,7 @@
 /// Render-verified prop matrix for the derived style holders —
 /// Track 3 PROP2 (ENG-38684).
 ///
-/// [CometChatMessageBubbleStyleData] is not a prop an integrator sets. It is
+/// [ConvoKitMessageBubbleStyleData] is not a prop an integrator sets. It is
 /// computed by `BubbleUIBuilder.getBubbleStyle` from the incoming/outgoing
 /// bubble styles and then unpacked, field by field, into the bubble and its
 /// slot widgets. There are exactly four call sites and all four assign it to a
@@ -12,7 +12,7 @@
 /// rendered tree, the same approach used for the call configurations.
 ///
 /// **Only the fields production reads are constructed here.** Six props on
-/// [CometChatMessageBubbleStyleData] — the moderation and exception trios —
+/// [ConvoKitMessageBubbleStyleData] — the moderation and exception trios —
 /// are never set by `getBubbleStyle` and never read by any consumer, and
 /// `ButtonElementStyle.loadingIconTint` is read only by its own `merge`.
 /// Passing them here would score them render-verified and hide that. They are
@@ -109,17 +109,17 @@ Widget _wrap(Widget child) => MaterialApp(
 
 void main() {
   // -------------------------------------------------------------------------
-  // CometChatMessageBubbleStyleData — 10 of 16 props.
+  // ConvoKitMessageBubbleStyleData — 10 of 16 props.
   //
   // Mapping mirrored from message_utils.dart: the four style fields go into
-  // CometChatMessageBubbleStyle on the bubble itself; the remaining six are
+  // ConvoKitMessageBubbleStyle on the bubble itself; the remaining six are
   // handed to the slot widgets the bubble composes.
   // -------------------------------------------------------------------------
-  group('CometChatMessageBubbleStyleData', () {
+  group('ConvoKitMessageBubbleStyleData', () {
     testWidgets('the four fields the bubble style consumes reach the tree', (
       tester,
     ) async {
-      final styleData = CometChatMessageBubbleStyleData(
+      final styleData = ConvoKitMessageBubbleStyleData(
         backgroundColor: const Color(0xFF101112),
         border: const Border.fromBorderSide(
           BorderSide(color: Color(0xFF131415), width: 3),
@@ -130,9 +130,9 @@ void main() {
 
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageBubble(
+          ConvoKitMessageBubble(
             // --- the mapping message_utils.dart performs ---
-            style: CometChatMessageBubbleStyle(
+            style: ConvoKitMessageBubbleStyle(
               backgroundColor: styleData.backgroundColor,
               border: styleData.border,
               borderRadius: styleData.borderRadius,
@@ -176,11 +176,11 @@ void main() {
     testWidgets('the six slot fields reach the widgets the bubble composes', (
       tester,
     ) async {
-      final styleData = CometChatMessageBubbleStyleData(
-        messageBubbleDateStyle: const CometChatDateStyle(
+      final styleData = ConvoKitMessageBubbleStyleData(
+        messageBubbleDateStyle: const ConvoKitDateStyle(
           textStyle: TextStyle(fontSize: 23),
         ),
-        messageBubbleAvatarStyle: const CometChatAvatarStyle(
+        messageBubbleAvatarStyle: const ConvoKitAvatarStyle(
           backgroundColor: Color(0xFF313233),
         ),
         messageReceiptStyle: CometChatMessageReceiptStyle(
@@ -193,18 +193,18 @@ void main() {
 
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageBubble(
+          ConvoKitMessageBubble(
             // Sender name lands in the header, the date/receipt in the status
             // row, the avatar in the leading slot, the threaded indicator in
             // the thread slot — the same slots message_utils.dart fills.
             headerView: Text('Bob', style: styleData.senderNameTextStyle),
-            leadingView: CometChatAvatar(
+            leadingView: ConvoKitAvatar(
               name: 'Bob',
               style: styleData.messageBubbleAvatarStyle,
             ),
             statusInfoView: Row(
               children: [
-                CometChatDate(
+                ConvoKitDate(
                   date: DateTime(2026, 9, 7, 18, 55),
                   style: styleData.messageBubbleDateStyle!,
                 ),
@@ -265,7 +265,7 @@ void main() {
 
       expect(
         tester
-            .widget<CometChatAvatar>(find.byType(CometChatAvatar))
+            .widget<ConvoKitAvatar>(find.byType(ConvoKitAvatar))
             .style
             ?.backgroundColor,
         const Color(0xFF313233),
@@ -273,7 +273,7 @@ void main() {
       );
       expect(
         tester
-            .widget<CometChatDate>(find.byType(CometChatDate))
+            .widget<ConvoKitDate>(find.byType(ConvoKitDate))
             .style
             .textStyle
             ?.fontSize,

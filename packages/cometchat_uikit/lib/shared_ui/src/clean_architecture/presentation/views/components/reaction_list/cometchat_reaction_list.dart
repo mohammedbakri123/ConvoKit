@@ -2,7 +2,7 @@ import "../../../../clean_architecture.dart";
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../cometchat_uikit_shared.dart'
-    show ListItemStyle, CometChatListItem, CometChatAvatarStyle;
+    show ListItemStyle, ConvoKitListItem, ConvoKitAvatarStyle;
 
 /// [CometChatReactionList] is a StatefulWidget that displays the list of reactions
 /// for a particular message. It requires [reactionRequestBuilder] to fetch the
@@ -85,7 +85,7 @@ class CometChatReactionList extends StatefulWidget {
   ///[avatarStyle] styles the avatar on each reactor row. Takes precedence
   ///over [CometChatReactionListStyle.avatarStyle], which is the way to set it
   ///on the list [ConvoKitMessageList] opens.
-  final CometChatAvatarStyle? avatarStyle;
+  final ConvoKitAvatarStyle? avatarStyle;
 
   ///[message] is a parameter used to set the message object for which the reactions are to be fetched
   final BaseMessage? message;
@@ -139,20 +139,20 @@ class _CometChatReactionListState extends State<CometChatReactionList> {
   }
 
   late CometChatReactionListStyle reactionListStyle;
-  late CometChatColorPalette colorPalette;
-  late CometChatSpacing spacing;
-  late CometChatTypography typography;
+  late ConvoKitColorPalette colorPalette;
+  late ConvoKitSpacing spacing;
+  late ConvoKitTypography typography;
 
   @override
   void didChangeDependencies() {
     reactionListStyle =
-        CometChatThemeHelper.getTheme<CometChatReactionListStyle>(
+        ConvoKitThemeHelper.getTheme<CometChatReactionListStyle>(
           context: context,
           defaultTheme: CometChatReactionListStyle.of,
         ).merge(widget.style);
-    colorPalette = CometChatThemeHelper.getColorPalette(context);
-    spacing = CometChatThemeHelper.getSpacing(context);
-    typography = CometChatThemeHelper.getTypography(context);
+    colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    spacing = ConvoKitThemeHelper.getSpacing(context);
+    typography = ConvoKitThemeHelper.getTypography(context);
     super.didChangeDependencies();
   }
 
@@ -219,9 +219,9 @@ class _CometChatReactionListState extends State<CometChatReactionList> {
   Widget _getList(
     BuildContext context,
     CometChatReactionListStyle reactionListStyle,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
   ) {
     return BlocBuilder<ReactionListBloc, ReactionListState>(
       buildWhen: (previous, current) => previous != current,
@@ -267,9 +267,9 @@ class _CometChatReactionListState extends State<CometChatReactionList> {
   Widget _buildReactionList(
     ReactionListLoaded state,
     CometChatReactionListStyle reactionListStyle,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
   ) {
     return SizedBox(
       width: widget.width,
@@ -298,9 +298,9 @@ class _CometChatReactionListState extends State<CometChatReactionList> {
   Widget _buildReactionTabs(
     ReactionListLoaded state,
     CometChatReactionListStyle reactionListStyle,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
   ) {
     return Stack(
       children: [
@@ -359,9 +359,9 @@ class _CometChatReactionListState extends State<CometChatReactionList> {
     String reaction,
     String label,
     CometChatReactionListStyle reactionListStyle,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
   ) {
     final isSelected = state.selectedReaction == reaction;
     return GestureDetector(
@@ -410,9 +410,9 @@ class _CometChatReactionListState extends State<CometChatReactionList> {
   Widget _buildReactedUsers(
     ReactionListLoaded state,
     CometChatReactionListStyle reactionListStyle,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
   ) {
     List<Reaction> reactions = state.reactionData;
 
@@ -458,7 +458,7 @@ class _CometChatReactionListState extends State<CometChatReactionList> {
       widget.onReactionListItemClick!(reaction.reaction, widget.message);
     } else {
       final isReactedByMe =
-          reaction.reactedBy?.uid == CometChatUIKit.loggedInUser?.uid;
+          reaction.reactedBy?.uid == ConvoKitUIKit.loggedInUser?.uid;
       if (isReactedByMe) {
         _bloc.add(RemoveOwnReaction(reaction));
         // Check if we should close the sheet
@@ -473,9 +473,9 @@ class _CometChatReactionListState extends State<CometChatReactionList> {
 
   Widget getErrorView(
     CometChatReactionListStyle reactionListStyle,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
   ) {
     if (widget.errorStateView != null) {
       return widget.errorStateView!(context);
@@ -501,12 +501,12 @@ class _CometChatReactionListState extends State<CometChatReactionList> {
     Reaction reaction,
     ReactionListLoaded state,
     CometChatReactionListStyle reactionListStyle,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
   ) {
     final isReactedByMe =
-        reaction.reactedBy?.uid == CometChatUIKit.loggedInUser?.uid;
+        reaction.reactedBy?.uid == ConvoKitUIKit.loggedInUser?.uid;
     final title = isReactedByMe ? "You" : (reaction.reactedBy?.name ?? "");
 
     return Padding(
@@ -514,7 +514,7 @@ class _CometChatReactionListState extends State<CometChatReactionList> {
         horizontal: spacing.padding5 ?? 0,
         vertical: spacing.padding2 ?? 0,
       ),
-      child: CometChatListItem(
+      child: ConvoKitListItem(
         avatarURL: reaction.reactedBy?.avatar,
         avatarName: reaction.reactedBy?.name,
         title: title,
@@ -564,7 +564,7 @@ class _CometChatReactionListState extends State<CometChatReactionList> {
         avatarStyle:
             widget.avatarStyle ??
             reactionListStyle.avatarStyle ??
-            const CometChatAvatarStyle(),
+            const ConvoKitAvatarStyle(),
         avatarHeight: 32,
         avatarWidth: 32,
       ),
@@ -574,9 +574,9 @@ class _CometChatReactionListState extends State<CometChatReactionList> {
   Widget _getNoReactionsIndicator(
     BuildContext context,
     CometChatReactionListStyle reactionListStyle,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
   ) {
     if (widget.emptyStateView != null) {
       return Center(child: widget.emptyStateView!(context));
@@ -605,16 +605,16 @@ class _CometChatReactionListState extends State<CometChatReactionList> {
   Widget _getLoadingIndicator(
     BuildContext context,
     CometChatReactionListStyle reactionListStyle,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
   ) {
     if (widget.loadingStateView != null) {
       return Center(child: widget.loadingStateView!(context));
     } else {
       return SizedBox(
         height: widget.height ?? MediaQuery.of(context).size.height * .5,
-        child: CometChatShimmerEffect(
+        child: ConvoKitShimmerEffect(
           colorPalette: colorPalette,
           child: ListView.builder(
             itemCount: 30,

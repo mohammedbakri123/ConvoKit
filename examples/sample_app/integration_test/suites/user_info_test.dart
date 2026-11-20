@@ -83,8 +83,8 @@ void main() {
       await NavigationHelper.openInfoScreen(tester);
       await Future<void>.delayed(const Duration(seconds: 2));
 
-      // An avatar renders either as the CometChatAvatar widget or an Image/CircleAvatar.
-      final avatarPresent = hasType('CometChatAvatar') ||
+      // An avatar renders either as the ConvoKitAvatar widget or an Image/CircleAvatar.
+      final avatarPresent = hasType('ConvoKitAvatar') ||
           hasType('Avatar') ||
           find.byType(CircleAvatar).evaluate().isNotEmpty ||
           find.byType(Image).evaluate().isNotEmpty;
@@ -114,7 +114,7 @@ void main() {
 
       // Non-fatal on presence; structural presence of the info surface is the
       // guarantee — an avatar/name surface must be there.
-      final infoSurface = hasType('CometChatAvatar') ||
+      final infoSurface = hasType('ConvoKitAvatar') ||
           find.byType(Image).evaluate().isNotEmpty ||
           AssertionHelper.anyTextInTree(
               tester, [TestCredentials.userBName, 'User Info']);
@@ -145,7 +145,7 @@ void main() {
 
       // Call buttons may be feature-gated; assert the info surface rendered and
       // log button presence so the test is meaningful but never flaky-fatal.
-      final infoSurface = hasType('CometChatAvatar') ||
+      final infoSurface = hasType('ConvoKitAvatar') ||
           find.byType(Image).evaluate().isNotEmpty ||
           AssertionHelper.anyTextInTree(
               tester, [TestCredentials.userBName, 'User Info']);

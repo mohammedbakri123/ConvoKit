@@ -3,7 +3,7 @@
 ///
 /// Every extension is constructed *inside* the `pumpWidget` call and supplied
 /// through `ThemeData.extensions`, then resolved back through the real
-/// `CometChatThemeHelper` path and asserted on a rendered widget. That is the
+/// `ConvoKitThemeHelper` path and asserted on a rendered widget. That is the
 /// path an integrator actually uses, and it is where the merge bugs live.
 ///
 ///   flutter test test/shared_ui/theme/theme_extension_props_test.dart
@@ -18,16 +18,16 @@ Color _c(int i) => Color(0xFF000000 | (i * 0x000509) | 0x00101010);
 double _d(int i) => 3.0 + i;
 
 void main() {
-  group('CometChatColorPalette', () {
+  group('ConvoKitColorPalette', () {
     testWidgets(
       'every property supplied through the theme extension reaches the resolved palette',
       (tester) async {
-        late CometChatColorPalette resolved;
+        late ConvoKitColorPalette resolved;
         await tester.pumpWidget(
           MaterialApp(
             theme: ThemeData(
               extensions: <ThemeExtension<dynamic>>[
-                CometChatColorPalette(
+                ConvoKitColorPalette(
                   background1: _c(1),
                   background2: _c(2),
                   background3: _c(3),
@@ -92,7 +92,7 @@ void main() {
             ),
             home: Builder(
               builder: (context) {
-                resolved = CometChatThemeHelper.getColorPalette(context);
+                resolved = ConvoKitThemeHelper.getColorPalette(context);
                 return ListView(
                   children: [
                     SizedBox(
@@ -462,7 +462,7 @@ void main() {
         MaterialApp(
           home: Builder(
             builder: (context) {
-              final p = CometChatColorPalette(
+              final p = ConvoKitColorPalette(
                 shimmerBackground: _c(90),
                 shimmerGradient: const LinearGradient(
                   colors: [Color(0xFF102030), Color(0xFF405060)],
@@ -500,16 +500,16 @@ void main() {
     });
   });
 
-  group('CometChatSpacing', () {
+  group('ConvoKitSpacing', () {
     testWidgets(
       'every property supplied through the theme extension survives the merge',
       (tester) async {
-        late CometChatSpacing resolved;
+        late ConvoKitSpacing resolved;
         await tester.pumpWidget(
           MaterialApp(
             theme: ThemeData(
               extensions: <ThemeExtension<dynamic>>[
-                CometChatSpacing(
+                ConvoKitSpacing(
                   margin: _d(1),
                   margin1: _d(2),
                   margin10: _d(3),
@@ -577,7 +577,7 @@ void main() {
             ),
             home: Builder(
               builder: (context) {
-                resolved = CometChatThemeHelper.getSpacing(context);
+                resolved = ConvoKitThemeHelper.getSpacing(context);
                 return ListView(
                   children: [
                     SizedBox(height: resolved.margin, width: 1),
@@ -1075,16 +1075,16 @@ void main() {
     },
   );
 
-  group('CometChatTypography', () {
+  group('ConvoKitTypography', () {
     testWidgets('a wholesale typography extension overrides every role', (
       tester,
     ) async {
-      late CometChatTypography resolved;
+      late ConvoKitTypography resolved;
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(
             extensions: <ThemeExtension<dynamic>>[
-              const CometChatTypography(
+              const ConvoKitTypography(
                 heading1: CometChatTextStyleHeading1(
                   bold: TextStyle(fontSize: 60),
                 ),
@@ -1112,7 +1112,7 @@ void main() {
           ),
           home: Builder(
             builder: (context) {
-              resolved = CometChatThemeHelper.getTypography(context);
+              resolved = ConvoKitThemeHelper.getTypography(context);
               return ListView(
                 children: [
                   Text('heading1', style: resolved.heading1?.bold),

@@ -143,8 +143,8 @@ void main() {
 
   // MessageUtils.getBubbleStyle picks the outer chrome's side off this
   // static, so it has to match the bloc's logged-in user.
-  setUp(() => CometChatUIKit.loggedInUser = _me);
-  tearDown(() => CometChatUIKit.loggedInUser = null);
+  setUp(() => ConvoKitUIKit.loggedInUser = _me);
+  tearDown(() => ConvoKitUIKit.loggedInUser = null);
 
   group('polls', () {
     testWidgets('my poll paints its question with the outgoing '
@@ -186,7 +186,7 @@ void main() {
       expect(_pollsBubble(tester).style?.border, _erasedBorder);
       expect(
         tester
-            .widget<CometChatMessageBubble>(find.byType(CometChatMessageBubble))
+            .widget<ConvoKitMessageBubble>(find.byType(ConvoKitMessageBubble))
             .style
             ?.border,
         border,

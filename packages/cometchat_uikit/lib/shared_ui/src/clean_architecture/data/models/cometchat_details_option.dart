@@ -3,11 +3,11 @@ import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
 import 'cometchat_base_options.dart';
 import '../../presentation/view_models/cometchat_details_controller_protocol.dart';
 
-///[CometChatDetailsOption] is a model class which contains information about options available for every [CometChatDetailsTemplate]
+///[ConvoKitDetailsOption] is a model class which contains information about options available for every [ConvoKitDetailsTemplate]
 ///
 /// ```dart
 ///
-/// CometChatDetailsOption option = CometChatDetailsOption(
+/// ConvoKitDetailsOption option = ConvoKitDetailsOption(
 ///   id: 'option1',
 ///   title: 'Option 1',
 ///   icon: 'icon_url',
@@ -20,13 +20,13 @@ import '../../presentation/view_models/cometchat_details_controller_protocol.dar
 ///   ),
 ///   tail: Icon(Icons.arrow_forward),
 ///   height: 50.0,
-///   onClick: (User? user, Group? group, String section, CometChatDetailsController state) {
+///   onClick: (User? user, Group? group, String section, ConvoKitDetailsController state) {
 ///     // do something on click
 ///   },
 /// );
 ///
 /// ```
-class CometChatDetailsOption extends CometChatBaseOptions {
+class ConvoKitDetailsOption extends CometChatBaseOptions {
   ///to pass custom view to options
   Widget? customView;
 
@@ -41,12 +41,12 @@ class CometChatDetailsOption extends CometChatBaseOptions {
     User? user,
     Group? group,
     String section,
-    CometChatDetailsControllerProtocol state,
+    ConvoKitDetailsControllerProtocol state,
   )?
   onClick;
 
-  ///[CometChatDetailsOption] constructor requires [id] , [title] and [onClick] while initializing.
-  CometChatDetailsOption({
+  ///[ConvoKitDetailsOption] constructor requires [id] , [title] and [onClick] while initializing.
+  ConvoKitDetailsOption({
     this.customView,
     this.onClick,
     this.tail,

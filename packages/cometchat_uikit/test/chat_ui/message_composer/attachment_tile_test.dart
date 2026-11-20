@@ -102,7 +102,7 @@ void main() {
         expect(find.text('Tap to retry'), findsOneWidget);
         expect(_svgBadge(kAttachmentRetryIconAsset), findsOneWidget);
 
-        final colors = CometChatThemeHelper.getColorPalette(
+        final colors = ConvoKitThemeHelper.getColorPalette(
           tester.element(find.byKey(_cardKey)),
         );
         final border = _cardBorder(tester);
@@ -134,7 +134,7 @@ void main() {
         expect(find.text('Upload failed'), findsOneWidget);
         expect(_svgBadge(kAttachmentErrorIconAsset), findsOneWidget);
 
-        final colors = CometChatThemeHelper.getColorPalette(
+        final colors = ConvoKitThemeHelper.getColorPalette(
           tester.element(find.byKey(_cardKey)),
         );
         expect(
@@ -390,7 +390,7 @@ void main() {
         expect(_svgBadge(kAttachmentRetryIconAsset), findsOneWidget);
         expect(find.byType(Slider), findsNothing);
 
-        final colors = CometChatThemeHelper.getColorPalette(
+        final colors = ConvoKitThemeHelper.getColorPalette(
           tester.element(find.byKey(audioKey)),
         );
         final container = tester.widget<Container>(find.byKey(audioKey));

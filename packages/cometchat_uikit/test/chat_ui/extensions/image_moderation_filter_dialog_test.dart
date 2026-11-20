@@ -1,6 +1,6 @@
 /// Tapping the cover over an unsafe image asks before revealing it.
 ///
-/// The dialog passes a title only. `CometChatConfirmDialog` falls back to its
+/// The dialog passes a title only. `ConvoKitConfirmDialog` falls back to its
 /// block-contact message when no `messageText` is given, so the filter must
 /// pass its own (empty) one, or the "reveal image?" dialog asks about
 /// blocking a contact.

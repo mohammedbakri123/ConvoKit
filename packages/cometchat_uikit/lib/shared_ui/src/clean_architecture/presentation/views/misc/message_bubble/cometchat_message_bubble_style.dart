@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import '../../../../../../cometchat_uikit_shared.dart';
 
-///[CometChatMessageBubbleStyle] is a data class that has styling-related properties
-///to customize the appearance of [CometChatMessageBubble]
+///[ConvoKitMessageBubbleStyle] is a data class that has styling-related properties
+///to customize the appearance of [ConvoKitMessageBubble]
 ///
 /// ```dart
-/// CometChatMessageBubbleStyle(
+/// ConvoKitMessageBubbleStyle(
 /// backgroundImage: DecorationImage(),
 /// backgroundColor: Colors.white,
 /// border: Border.all(color: Colors.red),
 /// borderRadius: BorderRadius.circular(10),
 /// )
 /// ```
-class CometChatMessageBubbleStyle
-    extends ThemeExtension<CometChatMessageBubbleStyle> {
-  ///[CometChatMessageBubbleStyle] constructor requires `width`, `height`, `background`, [border], [borderRadius], `gradient` and `padding` while initializing.
-  const CometChatMessageBubbleStyle({
+class ConvoKitMessageBubbleStyle
+    extends ThemeExtension<ConvoKitMessageBubbleStyle> {
+  ///[ConvoKitMessageBubbleStyle] constructor requires `width`, `height`, `background`, [border], [borderRadius], `gradient` and `padding` while initializing.
+  const ConvoKitMessageBubbleStyle({
     this.backgroundImage,
     this.backgroundColor,
     this.border,
@@ -35,7 +35,7 @@ class CometChatMessageBubbleStyle
   final BorderRadiusGeometry? borderRadius;
 
   @override
-  CometChatMessageBubbleStyle copyWith({
+  ConvoKitMessageBubbleStyle copyWith({
     DecorationImage? messageBubbleBackgroundImage,
     Color? backgroundColor,
     BoxBorder? border,
@@ -43,7 +43,7 @@ class CometChatMessageBubbleStyle
     double? widthFlex,
     EdgeInsets? contentPadding,
   }) {
-    return CometChatMessageBubbleStyle(
+    return ConvoKitMessageBubbleStyle(
       backgroundImage: messageBubbleBackgroundImage ?? backgroundImage,
       backgroundColor: backgroundColor ?? this.backgroundColor,
       border: border ?? this.border,
@@ -52,12 +52,12 @@ class CometChatMessageBubbleStyle
   }
 
   @override
-  CometChatMessageBubbleStyle lerp(
-    CometChatMessageBubbleStyle? other,
+  ConvoKitMessageBubbleStyle lerp(
+    ConvoKitMessageBubbleStyle? other,
     double t,
   ) {
     if (other == null) return this;
-    return CometChatMessageBubbleStyle(
+    return ConvoKitMessageBubbleStyle(
       backgroundImage: other.backgroundImage ?? backgroundImage,
       backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t),
       border: BoxBorder.lerp(border, other.border, t),
@@ -69,10 +69,10 @@ class CometChatMessageBubbleStyle
     );
   }
 
-  static CometChatMessageBubbleStyle of(BuildContext context) =>
-      const CometChatMessageBubbleStyle();
+  static ConvoKitMessageBubbleStyle of(BuildContext context) =>
+      const ConvoKitMessageBubbleStyle();
 
-  CometChatMessageBubbleStyle merge(CometChatMessageBubbleStyle? style) {
+  ConvoKitMessageBubbleStyle merge(ConvoKitMessageBubbleStyle? style) {
     if (style == null) return this;
     return copyWith(
       messageBubbleBackgroundImage: style.backgroundImage,

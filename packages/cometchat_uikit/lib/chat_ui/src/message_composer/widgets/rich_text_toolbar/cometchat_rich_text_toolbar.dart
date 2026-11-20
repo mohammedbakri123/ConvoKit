@@ -82,8 +82,8 @@ class ConvoKitRichTextToolbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final toolbarStyle = ConvoKitRichTextToolbarStyle.of(context).merge(style);
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final spacing = CometChatThemeHelper.getSpacing(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
 
     // Calculate disabled formats based on active formats
     final disabledFormats = FormatCompatibility.getDisabledFormats(
@@ -126,8 +126,8 @@ class ConvoKitRichTextToolbar extends StatelessWidget {
   List<Widget> _buildToolbarButtons(
     BuildContext context,
     ConvoKitRichTextToolbarStyle toolbarStyle,
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
     Set<FormatType> disabledFormats,
   ) {
     final List<Widget> buttons = [];
@@ -210,8 +210,8 @@ class ConvoKitRichTextToolbar extends StatelessWidget {
     BuildContext context,
     ConvoKitMessageComposerAction action,
     ConvoKitRichTextToolbarStyle toolbarStyle,
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
   ) {
     final controller = trailingTapController;
     final enabled = controller != null && action.onToolbarTap != null;
@@ -268,8 +268,8 @@ class ConvoKitRichTextToolbar extends StatelessWidget {
     BuildContext context,
     List<FormatType> formats,
     ConvoKitRichTextToolbarStyle toolbarStyle,
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
     Set<FormatType> disabledFormats,
   ) {
     final visibleFormats = formats
@@ -298,8 +298,8 @@ class ConvoKitRichTextToolbar extends StatelessWidget {
     BuildContext context,
     FormatType formatType,
     ConvoKitRichTextToolbarStyle toolbarStyle,
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
     Set<FormatType> disabledFormats, {
     bool isLast = false,
   }) {
@@ -376,8 +376,8 @@ class ConvoKitRichTextToolbar extends StatelessWidget {
   /// Builds a vertical divider between button groups.
   Widget _buildDivider(
     ConvoKitRichTextToolbarStyle toolbarStyle,
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
   ) {
     return Container(
       height: 24,

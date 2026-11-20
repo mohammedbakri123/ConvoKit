@@ -86,7 +86,7 @@ class _BlocSampleAppState extends State<BlocSampleApp> {
       // starting cold both configure the same UI Kit.
       final uiKitSettings = buildAppUIKitSettings();
 
-      CometChatUIKit.init(
+      ConvoKitUIKit.init(
         uiKitSettings: uiKitSettings,
         onSuccess: (message) async {
           debugPrint('CometChat initialized: $message');
@@ -123,7 +123,7 @@ class _BlocSampleAppState extends State<BlocSampleApp> {
   /// when a cached user exists AND that call either succeeds or fails for a
   /// non-auth reason — being offline must not discard a good session.
   Future<bool> _resolveCachedSession() async {
-    final cachedUser = await CometChatUIKit.getLoggedInUser();
+    final cachedUser = await ConvoKitUIKit.getLoggedInUser();
     if (cachedUser == null) return false;
 
     final completer = Completer<_SessionCheckResult>();
@@ -163,7 +163,7 @@ class _BlocSampleAppState extends State<BlocSampleApp> {
   /// clears local state anyway.
   Future<void> _forceLogout() async {
     final completer = Completer<void>();
-    await CometChatUIKit.logout(
+    await ConvoKitUIKit.logout(
       onSuccess: (_) {
         if (!completer.isCompleted) completer.complete();
       },

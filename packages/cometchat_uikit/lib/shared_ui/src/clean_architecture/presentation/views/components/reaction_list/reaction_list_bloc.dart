@@ -168,7 +168,7 @@ class ReactionListError extends ReactionListState {
 
 // BLoC
 class ReactionListBloc extends Bloc<ReactionListEvent, ReactionListState>
-    with CometChatMessageEventListener {
+    with ConvoKitMessageEventListener {
   final int messageId;
   final ReactionsRequestBuilder? reactionsRequestBuilder;
   final BaseMessage? messageObject;
@@ -186,7 +186,7 @@ class ReactionListBloc extends Bloc<ReactionListEvent, ReactionListState>
   }) : super(const ReactionListInitial()) {
     _eventListenerKey =
         "${DateTime.now().microsecondsSinceEpoch}_ReactionListBloc";
-    CometChatMessageEvents.addMessagesListener(_eventListenerKey, this);
+    ConvoKitMessageEvents.addMessagesListener(_eventListenerKey, this);
 
     on<InitializeReactionList>(_onInitialize);
     on<FetchReactions>(_onFetchReactions);
@@ -278,7 +278,7 @@ class ReactionListBloc extends Bloc<ReactionListEvent, ReactionListState>
         event.reaction.reaction!,
         onSuccess: (reactedMessage) {
           if (messageObject != null) {
-            CometChatMessageEvents.ccMessageEdited(
+            ConvoKitMessageEvents.ccMessageEdited(
               messageObject!..reactions = reactedMessage.reactions,
               MessageEditStatus.success,
             );
@@ -495,7 +495,7 @@ class ReactionListBloc extends Bloc<ReactionListEvent, ReactionListState>
 
   @override
   Future<void> close() {
-    CometChatMessageEvents.removeMessagesListener(_eventListenerKey);
+    ConvoKitMessageEvents.removeMessagesListener(_eventListenerKey);
     return super.close();
   }
 }

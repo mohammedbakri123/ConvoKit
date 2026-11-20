@@ -9,7 +9,7 @@
 /// arrives first).
 ///
 /// The SDK listeners it registers are plain UI-event maps
-/// ([CometChatMessageEvents]), so the realtime path is driven end to end by
+/// ([ConvoKitMessageEvents]), so the realtime path is driven end to end by
 /// firing those events.
 ///
 ///   flutter test test/chat_ui/message_information/message_information_receipts_test.dart
@@ -541,10 +541,10 @@ void main() {
 
   group('UI event listeners', () {
     test('onMessagesRead / onMessagesDelivered reach the bloc', () async {
-      final before = CometChatMessageEvents.messagesListener.length;
+      final before = ConvoKitMessageEvents.messagesListener.length;
       final bloc = makeBloc();
       expect(
-        CometChatMessageEvents.messagesListener.length,
+        ConvoKitMessageEvents.messagesListener.length,
         before + 1,
         reason: 'the bloc registers exactly one messages listener',
       );
@@ -556,13 +556,13 @@ void main() {
       );
       await settle();
 
-      CometChatMessageEvents.onMessagesDelivered(
+      ConvoKitMessageEvents.onMessagesDelivered(
         receipt(uid: 'bob', receiverId: 'bob', deliveredAt: _t1),
       );
       await settle();
       expect(bloc.state.receipts.single.deliveredAt, _t1);
 
-      CometChatMessageEvents.onMessagesRead(
+      ConvoKitMessageEvents.onMessagesRead(
         receipt(uid: 'bob', receiverId: 'bob', readAt: _t2),
       );
       await settle();
@@ -570,22 +570,22 @@ void main() {
 
       await bloc.close();
       expect(
-        CometChatMessageEvents.messagesListener.length,
+        ConvoKitMessageEvents.messagesListener.length,
         before,
         reason: 'close() must deregister, or the bloc leaks',
       );
     });
 
     test('two blocs get distinct listener keys', () async {
-      final before = CometChatMessageEvents.messagesListener.length;
+      final before = ConvoKitMessageEvents.messagesListener.length;
       final a = makeBloc();
       final b = makeBloc();
 
-      expect(CometChatMessageEvents.messagesListener.length, before + 2);
+      expect(ConvoKitMessageEvents.messagesListener.length, before + 2);
 
       await a.close();
       await b.close();
-      expect(CometChatMessageEvents.messagesListener.length, before);
+      expect(ConvoKitMessageEvents.messagesListener.length, before);
     });
 
     test('the default constructor falls back to the service locator', () async {
@@ -626,7 +626,7 @@ void main() {
 
         // Firing again must not throw even though the bloc is gone.
         expect(
-          () => CometChatMessageEvents.onMessagesRead(
+          () => ConvoKitMessageEvents.onMessagesRead(
             receipt(uid: 'bob', receiverId: 'bob', readAt: _t2),
           ),
           returnsNormally,

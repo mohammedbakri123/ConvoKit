@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import '../../../../../../cometchat_uikit_shared.dart';
 
-///[CometChatAvatar] is a widget that gives a container for avatar images
+///[ConvoKitAvatar] is a widget that gives a container for avatar images
 /// ```dart
-///        CometChatAvatar(
+///        ConvoKitAvatar(
 ///        image: 'https://example.com/image.jpg',
 ///        name: 'John Doe',
-///        cometchatAvatarStyle: CometChatAvatarStyle(),
+///        cometchatAvatarStyle: ConvoKitAvatarStyle(),
 ///        width: 50,
 ///        height: 50,
 ///        padding: EdgeInsets.all(0),
 ///        );
 /// ```
-class CometChatAvatar extends StatefulWidget {
-  const CometChatAvatar({
+class ConvoKitAvatar extends StatefulWidget {
+  const ConvoKitAvatar({
     super.key,
     this.image,
     this.name,
@@ -34,7 +34,7 @@ class CometChatAvatar extends StatefulWidget {
   final String? name;
 
   ///[style] contains properties that affects the appearance of this widget
-  final CometChatAvatarStyle? style;
+  final ConvoKitAvatarStyle? style;
 
   ///[width] provides width to the widget
   final double? width;
@@ -49,24 +49,24 @@ class CometChatAvatar extends StatefulWidget {
   final EdgeInsetsGeometry? margin;
 
   /// [colorPalette] optional pre-cached color palette to avoid expensive lookups during keyboard animation
-  final CometChatColorPalette? colorPalette;
+  final ConvoKitColorPalette? colorPalette;
 
   /// [spacing] optional pre-cached spacing to avoid expensive lookups during keyboard animation
-  final CometChatSpacing? spacing;
+  final ConvoKitSpacing? spacing;
 
   /// [typography] optional pre-cached typography to avoid expensive lookups during keyboard animation
-  final CometChatTypography? typography;
+  final ConvoKitTypography? typography;
 
   @override
-  State<CometChatAvatar> createState() => _CometChatAvatarState();
+  State<ConvoKitAvatar> createState() => _ConvoKitAvatarState();
 }
 
-class _CometChatAvatarState extends State<CometChatAvatar> {
+class _ConvoKitAvatarState extends State<ConvoKitAvatar> {
   // Cached theme values to avoid expensive lookups during rebuilds
-  CometChatAvatarStyle? _avatarStyle;
-  CometChatTypography? _typography;
-  CometChatColorPalette? _colorPalette;
-  CometChatSpacing? _spacing;
+  ConvoKitAvatarStyle? _avatarStyle;
+  ConvoKitTypography? _typography;
+  ConvoKitColorPalette? _colorPalette;
+  ConvoKitSpacing? _spacing;
   double _cachedAvatarSize = 40; // Default fallback
   double _cachedTextSize = 16; // Default fallback
   bool _themeInitialized = false;
@@ -100,21 +100,21 @@ class _CometChatAvatarState extends State<CometChatAvatar> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Only initialize theme once to avoid expensive lookups during keyboard animation
-    final currentBrightness = CometChatThemeHelper.getBrightness(context);
+    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
     if (!_themeInitialized || brightnessChanged) {
       _cachedBrightness = currentBrightness;
-      _avatarStyle = CometChatThemeHelper.getTheme<CometChatAvatarStyle>(
+      _avatarStyle = ConvoKitThemeHelper.getTheme<ConvoKitAvatarStyle>(
         context: context,
-        defaultTheme: CometChatAvatarStyle.of,
+        defaultTheme: ConvoKitAvatarStyle.of,
       ).merge(widget.style);
       // Use passed values OR fallback to lookup (for standalone usage)
       _typography =
-          widget.typography ?? CometChatThemeHelper.getTypography(context);
+          widget.typography ?? ConvoKitThemeHelper.getTypography(context);
       _colorPalette =
-          widget.colorPalette ?? CometChatThemeHelper.getColorPalette(context);
-      _spacing = widget.spacing ?? CometChatThemeHelper.getSpacing(context);
+          widget.colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
+      _spacing = widget.spacing ?? ConvoKitThemeHelper.getSpacing(context);
       // Cache screen size ONCE to avoid MediaQuery rebuilds during keyboard animation
       final screenSize = MediaQuery.sizeOf(context);
       final screenWidth = screenSize.width;
@@ -127,13 +127,13 @@ class _CometChatAvatarState extends State<CometChatAvatar> {
   }
 
   @override
-  void didUpdateWidget(CometChatAvatar oldWidget) {
+  void didUpdateWidget(ConvoKitAvatar oldWidget) {
     super.didUpdateWidget(oldWidget);
     // Update style if it changed
     if (widget.style != oldWidget.style) {
-      _avatarStyle = CometChatThemeHelper.getTheme<CometChatAvatarStyle>(
+      _avatarStyle = ConvoKitThemeHelper.getTheme<ConvoKitAvatarStyle>(
         context: context,
-        defaultTheme: CometChatAvatarStyle.of,
+        defaultTheme: ConvoKitAvatarStyle.of,
       ).merge(widget.style);
     }
     // Update cached theme values if they changed

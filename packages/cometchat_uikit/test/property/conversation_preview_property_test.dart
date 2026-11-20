@@ -172,8 +172,8 @@ Conversation _genRow(Random r, int index) => Conversation(
 );
 
 void main() {
-  setUp(() => CometChatUIKit.loggedInUser = User(uid: 'me', name: 'Me'));
-  tearDown(() => CometChatUIKit.loggedInUser = null);
+  setUp(() => ConvoKitUIKit.loggedInUser = User(uid: 'me', name: 'Me'));
+  tearDown(() => ConvoKitUIKit.loggedInUser = null);
 
   testWidgets('every message class, category and type produces a non-empty '
       'preview without throwing', (tester) async {

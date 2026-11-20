@@ -24,9 +24,9 @@ void main() {
               builder: (context) {
                 return ConversationsEmptyView(
                   style: const ConvoKitConversationsStyle(),
-                  colorPalette: CometChatThemeHelper.getColorPalette(context),
-                  spacing: CometChatThemeHelper.getSpacing(context),
-                  typography: CometChatThemeHelper.getTypography(context),
+                  colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+                  spacing: ConvoKitThemeHelper.getSpacing(context),
+                  typography: ConvoKitThemeHelper.getTypography(context),
                 );
               },
             ),
@@ -49,9 +49,9 @@ void main() {
               builder: (context) {
                 return ConversationsEmptyView(
                   style: const ConvoKitConversationsStyle(),
-                  colorPalette: CometChatThemeHelper.getColorPalette(context),
-                  spacing: CometChatThemeHelper.getSpacing(context),
-                  typography: CometChatThemeHelper.getTypography(context),
+                  colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+                  spacing: ConvoKitThemeHelper.getSpacing(context),
+                  typography: ConvoKitThemeHelper.getTypography(context),
                   customView: (_) =>
                       const Text('Custom empty', key: Key('custom-empty')),
                 );
@@ -80,9 +80,9 @@ void main() {
                 style: const ConvoKitConversationsStyle(
                   emptyStateTextColor: customColor,
                 ),
-                colorPalette: CometChatThemeHelper.getColorPalette(context),
-                spacing: CometChatThemeHelper.getSpacing(context),
-                typography: CometChatThemeHelper.getTypography(context),
+                colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+                spacing: ConvoKitThemeHelper.getSpacing(context),
+                typography: ConvoKitThemeHelper.getTypography(context),
               );
             },
           ),

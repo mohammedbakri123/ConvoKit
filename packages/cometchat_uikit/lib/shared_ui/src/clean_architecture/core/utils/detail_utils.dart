@@ -10,7 +10,7 @@ import '../../data/models/cometchat_details_template.dart';
 import '../../../../l10n/translations.dart';
 
 ///[DetailUtils] is a Utility class that provides
-///the default options and templates available in `CometChatDetails`
+///the default options and templates available in `ConvoKitDetails`
 ///which allows users to block and unblock other users
 ///group members to view, add, ban other members
 class DetailUtils {
@@ -74,8 +74,8 @@ class DetailUtils {
     );
   }
 
-  static CometChatDetailsOption getViewMemberOption(BuildContext context) {
-    return CometChatDetailsOption(
+  static ConvoKitDetailsOption getViewMemberOption(BuildContext context) {
+    return ConvoKitDetailsOption(
       id: GroupOptionConstants.viewMembers,
       title: Translations.of(context).viewMembers,
       packageName: UIConstants.packageName,
@@ -84,8 +84,8 @@ class DetailUtils {
     );
   }
 
-  static CometChatDetailsOption getBannedMemberOption(BuildContext context) {
-    return CometChatDetailsOption(
+  static ConvoKitDetailsOption getBannedMemberOption(BuildContext context) {
+    return ConvoKitDetailsOption(
       id: GroupOptionConstants.bannedMembers,
       title: Translations.of(context).bannedMembers,
       packageName: UIConstants.packageName,
@@ -94,8 +94,8 @@ class DetailUtils {
     );
   }
 
-  static CometChatDetailsOption getAddMembersOption(BuildContext context) {
-    return CometChatDetailsOption(
+  static ConvoKitDetailsOption getAddMembersOption(BuildContext context) {
+    return ConvoKitDetailsOption(
       id: GroupOptionConstants.addMembers,
       title: Translations.of(context).addMembers,
       packageName: UIConstants.packageName,
@@ -104,8 +104,8 @@ class DetailUtils {
     );
   }
 
-  static CometChatDetailsOption getLeaveGroupOption(BuildContext context) {
-    return CometChatDetailsOption(
+  static ConvoKitDetailsOption getLeaveGroupOption(BuildContext context) {
+    return ConvoKitDetailsOption(
       id: GroupOptionConstants.leave,
       title: Translations.of(context).leaveGroup,
       packageName: UIConstants.packageName,
@@ -113,8 +113,8 @@ class DetailUtils {
     );
   }
 
-  static CometChatDetailsOption getDeleteGroupOption(BuildContext context) {
-    return CometChatDetailsOption(
+  static ConvoKitDetailsOption getDeleteGroupOption(BuildContext context) {
+    return ConvoKitDetailsOption(
       id: GroupOptionConstants.delete,
       title: Translations.of(context).deleteAndExit,
       packageName: UIConstants.packageName,
@@ -122,8 +122,8 @@ class DetailUtils {
     );
   }
 
-  static CometChatDetailsOption getBlockUserOption(BuildContext context) {
-    return CometChatDetailsOption(
+  static ConvoKitDetailsOption getBlockUserOption(BuildContext context) {
+    return ConvoKitDetailsOption(
       id: UserOptionConstants.blockUser,
       title: Translations.of(context).blockUser,
       packageName: UIConstants.packageName,
@@ -131,8 +131,8 @@ class DetailUtils {
     );
   }
 
-  static CometChatDetailsOption getUnBlockUserOption(BuildContext context) {
-    return CometChatDetailsOption(
+  static ConvoKitDetailsOption getUnBlockUserOption(BuildContext context) {
+    return ConvoKitDetailsOption(
       id: UserOptionConstants.unblockUser,
       title: Translations.of(context).unblockUser,
       packageName: UIConstants.packageName,
@@ -140,8 +140,8 @@ class DetailUtils {
     );
   }
 
-  static CometChatDetailsOption getViewProfileOption(BuildContext context) {
-    return CometChatDetailsOption(
+  static ConvoKitDetailsOption getViewProfileOption(BuildContext context) {
+    return ConvoKitDetailsOption(
       id: UserOptionConstants.viewProfile,
       title: Translations.of(context).viewProfile,
       packageName: UIConstants.packageName,
@@ -149,16 +149,16 @@ class DetailUtils {
     );
   }
 
-  static CometChatDetailsOption getLeaveOption(BuildContext context) {
-    return CometChatDetailsOption(
+  static ConvoKitDetailsOption getLeaveOption(BuildContext context) {
+    return ConvoKitDetailsOption(
       id: GroupOptionConstants.leave,
       title: Translations.of(context).leaveGroup,
       titleStyle: _getSecondaryGroupOptionTextStyle(),
     );
   }
 
-  static CometChatDetailsOption getDeleteOption(BuildContext context) {
-    return CometChatDetailsOption(
+  static ConvoKitDetailsOption getDeleteOption(BuildContext context) {
+    return ConvoKitDetailsOption(
       id: GroupOptionConstants.delete,
       title: Translations.of(context).deleteAndExit,
       packageName: UIConstants.packageName,
@@ -166,13 +166,13 @@ class DetailUtils {
     );
   }
 
-  static CometChatDetailsTemplate? getPrimaryDetailsTemplate(
+  static ConvoKitDetailsTemplate? getPrimaryDetailsTemplate(
     BuildContext context,
     User? loggedInUser,
     User? user,
     Group? group,
   ) {
-    return CometChatDetailsTemplate(
+    return ConvoKitDetailsTemplate(
       id: DetailsTemplateConstants.primaryActions,
       hideItemSeparator: true,
       hideSectionSeparator: false,
@@ -195,14 +195,14 @@ class DetailUtils {
     );
   }
 
-  static CometChatDetailsTemplate? getSecondaryDetailsTemplate(
+  static ConvoKitDetailsTemplate? getSecondaryDetailsTemplate(
     BuildContext context,
     User? loggedInUser,
     User? user,
     Group? group,
   ) {
     if (user != null) {
-      return CometChatDetailsTemplate(
+      return ConvoKitDetailsTemplate(
         id: DetailsTemplateConstants.secondaryActions,
         title: Translations.of(context).privacyAndSecurity,
         hideItemSeparator: true,
@@ -216,7 +216,7 @@ class DetailUtils {
                 .toList(),
       );
     } else if (group != null) {
-      return CometChatDetailsTemplate(
+      return ConvoKitDetailsTemplate(
         id: DetailsTemplateConstants.secondaryActions,
         title: Translations.of(context).more,
         hideItemSeparator: true,
@@ -237,20 +237,20 @@ class DetailUtils {
     return null;
   }
 
-  static List<CometChatDetailsTemplate> getDefaultDetailsTemplates(
+  static List<ConvoKitDetailsTemplate> getDefaultDetailsTemplates(
     BuildContext context,
     User? loggedInUser, {
     User? user,
     Group? group,
   }) {
     if (user != null || group != null) {
-      CometChatDetailsTemplate? primaryTemplate = getPrimaryDetailsTemplate(
+      ConvoKitDetailsTemplate? primaryTemplate = getPrimaryDetailsTemplate(
         context,
         loggedInUser,
         user,
         group,
       );
-      CometChatDetailsTemplate? secondaryTemplate = getSecondaryDetailsTemplate(
+      ConvoKitDetailsTemplate? secondaryTemplate = getSecondaryDetailsTemplate(
         context,
         loggedInUser,
         user,

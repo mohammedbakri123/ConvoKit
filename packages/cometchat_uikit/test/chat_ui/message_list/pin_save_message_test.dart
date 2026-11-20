@@ -9,7 +9,7 @@ import 'package:convokit/cometchat_chat_uikit.dart';
 import 'package:convokit/shared_ui/src/constants/ui_kit_constants.dart'
     as legacy_constants;
 
-class _RecordingListener with CometChatMessageEventListener {
+class _RecordingListener with ConvoKitMessageEventListener {
   final List<(String, int)> received = [];
 
   @override
@@ -29,7 +29,7 @@ class _RecordingListener with CometChatMessageEventListener {
       received.add(('unsaved', message.id));
 }
 
-class _PlainListener with CometChatMessageEventListener {}
+class _PlainListener with ConvoKitMessageEventListener {}
 
 BaseMessage _message({
   int id = 1,
@@ -69,15 +69,15 @@ void main() {
     });
   });
 
-  group('CometChatMessageEvents pin/save channels', () {
+  group('ConvoKitMessageEvents pin/save channels', () {
     test('reach registered listeners and stop after removal', () {
       final listener = _RecordingListener();
-      CometChatMessageEvents.addMessagesListener('test_pin_save', listener);
+      ConvoKitMessageEvents.addMessagesListener('test_pin_save', listener);
 
-      CometChatMessageEvents.ccMessagePinned(_message(id: 1));
-      CometChatMessageEvents.ccMessageUnpinned(_message(id: 2));
-      CometChatMessageEvents.ccMessageSaved(_message(id: 3));
-      CometChatMessageEvents.ccMessageUnsaved(_message(id: 4));
+      ConvoKitMessageEvents.ccMessagePinned(_message(id: 1));
+      ConvoKitMessageEvents.ccMessageUnpinned(_message(id: 2));
+      ConvoKitMessageEvents.ccMessageSaved(_message(id: 3));
+      ConvoKitMessageEvents.ccMessageUnsaved(_message(id: 4));
       expect(listener.received, [
         ('pinned', 1),
         ('unpinned', 2),
@@ -85,19 +85,19 @@ void main() {
         ('unsaved', 4),
       ]);
 
-      CometChatMessageEvents.removeMessagesListener('test_pin_save');
-      CometChatMessageEvents.ccMessagePinned(_message(id: 5));
+      ConvoKitMessageEvents.removeMessagesListener('test_pin_save');
+      ConvoKitMessageEvents.ccMessagePinned(_message(id: 5));
       expect(listener.received.length, 4);
     });
 
     test('existing listeners without the new overrides are unaffected', () {
       final plain = _PlainListener();
-      CometChatMessageEvents.addMessagesListener('test_plain_pin', plain);
+      ConvoKitMessageEvents.addMessagesListener('test_plain_pin', plain);
       expect(
-        () => CometChatMessageEvents.ccMessagePinned(_message()),
+        () => ConvoKitMessageEvents.ccMessagePinned(_message()),
         returnsNormally,
       );
-      CometChatMessageEvents.removeMessagesListener('test_plain_pin');
+      ConvoKitMessageEvents.removeMessagesListener('test_plain_pin');
     });
   });
 
@@ -176,7 +176,7 @@ void main() {
     testWidgets('no pin icon in thread mode (parentMessage set)', (
       tester,
     ) async {
-      CometChatUIKit.authenticationSettings =
+      ConvoKitUIKit.authenticationSettings =
           (UIKitSettingsBuilder()..enableThreadSubscription = false).build();
       await tester.pumpWidget(
         host(visible: true, parentMessage: _message(id: 42)),

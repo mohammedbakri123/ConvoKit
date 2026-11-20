@@ -95,9 +95,9 @@ class _LinkEditDialogState extends State<LinkEditDialog> {
     final effectiveStyle = CometChatLinkPreviewStyle.of(
       context,
     ).merge(widget.style);
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final typography = CometChatThemeHelper.getTypography(context);
-    final spacing = CometChatThemeHelper.getSpacing(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
 
     return Dialog(
       backgroundColor: effectiveStyle.backgroundColor,

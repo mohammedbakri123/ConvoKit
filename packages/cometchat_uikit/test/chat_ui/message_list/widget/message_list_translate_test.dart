@@ -185,13 +185,13 @@ void main() {
   setUpAll(() => registerFallbackValue(_text()));
 
   setUp(() async {
-    CometChatUIKit.loggedInUser = _alice;
+    ConvoKitUIKit.loggedInUser = _alice;
     await registerFakeSdkBackend();
     fakeEnabledExtensions = {ExtensionConstants.messageTranslation};
   });
 
   tearDown(() async {
-    CometChatUIKit.loggedInUser = null;
+    ConvoKitUIKit.loggedInUser = null;
     await clearFakeSdkBackend();
   });
 
@@ -331,7 +331,7 @@ void main() {
       );
       await _settle(tester);
 
-      final ids = await _sheetIds(tester, find.byType(CometChatMessageBubble));
+      final ids = await _sheetIds(tester, find.byType(ConvoKitMessageBubble));
       expect(ids, isNotEmpty);
       expect(ids, isNot(contains(MessageOptionConstants.translateMessage)));
     });

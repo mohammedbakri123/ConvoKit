@@ -14,7 +14,7 @@
 ///   search row, frame, separator ... CometChatListBase, via ListBaseStyle
 ///   submit icon ..................... ConvoKitUsers' selection action
 ///   checkboxes, selected row ........ UsersList
-///   title, border, avatar, dot ...... CometChatListItem, via UsersList
+///   title, border, avatar, dot ...... ConvoKitListItem, via UsersList
 ///   initials ........................ SectionSeparator, via UsersList
 ///   empty and error states .......... UsersList / UIStateUtils
 ///
@@ -126,7 +126,7 @@ Checkbox _checkbox(WidgetTester tester, {required bool checked}) => tester
     .widgetList<Checkbox>(find.byType(Checkbox))
     .firstWhere((c) => c.value == checked);
 
-/// CometChatListItem keys its row Container with the user's uid.
+/// ConvoKitListItem keys its row Container with the user's uid.
 BoxDecoration _rowDecoration(WidgetTester tester, String uid) =>
     tester.widget<Container>(find.byKey(ValueKey<String>(uid))).decoration!
         as BoxDecoration;
@@ -457,7 +457,7 @@ void main() {
   });
 
   // ===========================================================================
-  group('rows — painted by CometChatListItem', () {
+  group('rows — painted by ConvoKitListItem', () {
     testWidgets('itemTitleTextColor colours each name', (tester) async {
       await tester.pumpWidget(
         _wrap(
@@ -522,7 +522,7 @@ void main() {
           ConvoKitUsers(
             usersBloc: _loaded(),
             usersStyle: const ConvoKitUsersStyle(
-              avatarStyle: CometChatAvatarStyle(
+              avatarStyle: ConvoKitAvatarStyle(
                 backgroundColor: Color(0xFFE7F809),
                 border: Border.fromBorderSide(
                   BorderSide(color: Color(0xFF0A1B2C), width: 2),
@@ -534,7 +534,7 @@ void main() {
       );
       await tester.pump();
 
-      final avatar = _decorationIn(tester, find.byType(CometChatAvatar).first);
+      final avatar = _decorationIn(tester, find.byType(ConvoKitAvatar).first);
       expect(avatar.color, const Color(0xFFE7F809));
       expect(
         avatar.border,
@@ -552,7 +552,7 @@ void main() {
           ConvoKitUsers(
             usersBloc: _loaded(),
             usersStyle: const ConvoKitUsersStyle(
-              statusIndicatorStyle: CometChatStatusIndicatorStyle(
+              statusIndicatorStyle: ConvoKitStatusIndicatorStyle(
                 backgroundColor: Color(0xFF1B2C3D),
                 border: Border.fromBorderSide(
                   BorderSide(color: Color(0xFF2C3D4E), width: 1.5),
@@ -566,7 +566,7 @@ void main() {
 
       final dot = _decorationIn(
         tester,
-        find.byType(CometChatStatusIndicator).first,
+        find.byType(ConvoKitStatusIndicator).first,
       );
       expect(dot.color, const Color(0xFF1B2C3D));
       expect(

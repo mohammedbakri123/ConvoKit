@@ -43,7 +43,7 @@ class CometChatMediaPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = CometChatThemeHelper.getColorPalette(context);
+    final colors = ConvoKitThemeHelper.getColorPalette(context);
     return Container(
       color: backgroundColor ?? colors.background3,
       alignment: Alignment.center,

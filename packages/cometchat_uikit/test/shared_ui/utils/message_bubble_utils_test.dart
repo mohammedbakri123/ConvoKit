@@ -3,7 +3,7 @@
 /// [MessageUtils.getMessageBubble], the pinned/saved status glyphs, the
 /// per-type style plumbing in [BubbleUIBuilder.getAdditionalConfigurations],
 /// the upload-error border radius, and the two combinators on
-/// [CometChatMessageBubbleStyleData].
+/// [ConvoKitMessageBubbleStyleData].
 ///
 /// The bubble itself is asserted by pumping it: a template hook is only
 /// credited when the widget it returned is in the tree, so a hook that is
@@ -65,9 +65,9 @@ Future<void> pumpBubble(
             message: message,
             template: template,
             bubbleAlignment: alignment,
-            colorPalette: CometChatThemeHelper.getColorPalette(context),
-            typography: CometChatThemeHelper.getTypography(context),
-            spacing: CometChatThemeHelper.getSpacing(context),
+            colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+            typography: ConvoKitThemeHelper.getTypography(context),
+            spacing: ConvoKitThemeHelper.getSpacing(context),
             context: context,
             showPinIndicator: showPinIndicator,
             showSaveIndicator: showSaveIndicator,
@@ -86,11 +86,11 @@ Future<void> pumpBubble(
 void main() {
   setUp(() {
     // `isSent` and the bubble background both compare against this static.
-    CometChatUIKit.loggedInUser = _alice;
+    ConvoKitUIKit.loggedInUser = _alice;
   });
 
   tearDown(() {
-    CometChatUIKit.loggedInUser = null;
+    ConvoKitUIKit.loggedInUser = null;
     ModerationCheckUtil.instance.hideModerationStatus = false;
   });
 
@@ -117,7 +117,7 @@ void main() {
       expect(calls, 1);
       expect(find.text('custom bubble'), findsOneWidget);
       // Nothing of the default bubble is built alongside it.
-      expect(find.byType(CometChatMessageBubble), findsNothing);
+      expect(find.byType(ConvoKitMessageBubble), findsNothing);
     });
 
     testWidgets('a deleted message ignores bubbleView', (tester) async {
@@ -135,7 +135,7 @@ void main() {
         ),
       );
       expect(find.text('custom bubble'), findsNothing);
-      expect(find.byType(CometChatMessageBubble), findsOneWidget);
+      expect(find.byType(ConvoKitMessageBubble), findsOneWidget);
     });
 
     testWidgets('a bubbleView returning null falls back to an empty box', (
@@ -150,7 +150,7 @@ void main() {
           bubbleView: (message, context, alignment) => null,
         ),
       );
-      expect(find.byType(CometChatMessageBubble), findsNothing);
+      expect(find.byType(ConvoKitMessageBubble), findsNothing);
       expect(tester.takeException(), isNull);
     });
 
@@ -210,7 +210,7 @@ void main() {
         message: _text(sender: _bob, receiver: _team),
       );
       expect(find.text('Bob'), findsOneWidget);
-      expect(find.byType(CometChatAvatar), findsOneWidget);
+      expect(find.byType(ConvoKitAvatar), findsOneWidget);
     });
 
     testWidgets('a one-to-one message shows neither', (tester) async {
@@ -219,7 +219,7 @@ void main() {
         message: _text(sender: _bob, receiver: _alice),
       );
       expect(find.text('Bob'), findsNothing);
-      expect(find.byType(CometChatAvatar), findsNothing);
+      expect(find.byType(ConvoKitAvatar), findsNothing);
     });
 
     testWidgets('a right-aligned group message shows no avatar', (
@@ -231,7 +231,7 @@ void main() {
         message: _text(sender: _alice, receiver: _team),
         alignment: BubbleAlignment.right,
       );
-      expect(find.byType(CometChatAvatar), findsNothing);
+      expect(find.byType(ConvoKitAvatar), findsNothing);
     });
 
     testWidgets('forceLeftLayout names every sender, even in a 1-1 chat', (
@@ -374,7 +374,7 @@ void main() {
         alignment: BubbleAlignment.right,
       );
       final context = tester.element(find.byType(Scaffold));
-      final palette = CometChatThemeHelper.getColorPalette(context);
+      final palette = ConvoKitThemeHelper.getColorPalette(context);
       final label = Translations.of(context).edited;
       expect(tester.widget<Text>(find.text(label)).style!.color, palette.white);
 
@@ -398,14 +398,14 @@ void main() {
   group('getMessageBubble — background colour', () {
     /// The bubble's own fill, read back off the rendered bubble.
     Color? fillOf(WidgetTester tester) => tester
-        .widget<CometChatMessageBubble>(find.byType(CometChatMessageBubble))
+        .widget<ConvoKitMessageBubble>(find.byType(ConvoKitMessageBubble))
         .style
         ?.backgroundColor;
 
     testWidgets('my own message uses the primary colour', (tester) async {
       late Color? primary;
       await pumpBubble(tester, message: _text(sender: _alice));
-      primary = CometChatThemeHelper.getColorPalette(
+      primary = ConvoKitThemeHelper.getColorPalette(
         tester.element(find.byType(Scaffold)),
       ).primary;
       expect(fillOf(tester), primary);
@@ -415,7 +415,7 @@ void main() {
       tester,
     ) async {
       await pumpBubble(tester, message: _text(sender: _bob));
-      final neutral = CometChatThemeHelper.getColorPalette(
+      final neutral = ConvoKitThemeHelper.getColorPalette(
         tester.element(find.byType(Scaffold)),
       ).neutral300;
       expect(fillOf(tester), neutral);
@@ -430,7 +430,7 @@ void main() {
       // "not mine" arm.
       final deleted = _text(sender: _bob)..deletedAt = DateTime(2026, 9, 8);
       await pumpBubble(tester, message: deleted);
-      final neutral = CometChatThemeHelper.getColorPalette(
+      final neutral = ConvoKitThemeHelper.getColorPalette(
         tester.element(find.byType(Scaffold)),
       ).neutral300;
       expect(fillOf(tester), neutral);
@@ -448,18 +448,18 @@ void main() {
 
   // ==========================================================================
   group('getSentTextMediaBorderRadiusGeometry', () {
-    late CometChatSpacing spacing;
-    late CometChatColorPalette palette;
-    late CometChatTypography typography;
+    late ConvoKitSpacing spacing;
+    late ConvoKitColorPalette palette;
+    late ConvoKitTypography typography;
 
     Future<void> prime(WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Builder(
             builder: (context) {
-              spacing = CometChatThemeHelper.getSpacing(context);
-              palette = CometChatThemeHelper.getColorPalette(context);
-              typography = CometChatThemeHelper.getTypography(context);
+              spacing = ConvoKitThemeHelper.getSpacing(context);
+              palette = ConvoKitThemeHelper.getColorPalette(context);
+              typography = ConvoKitThemeHelper.getTypography(context);
               return const SizedBox();
             },
           ),
@@ -604,7 +604,7 @@ void main() {
             backgroundColor: Color(0xFF000005),
             border: Border.fromBorderSide(BorderSide(width: 7)),
           ),
-          deletedBubbleStyle: const CometChatDeletedBubbleStyle(
+          deletedBubbleStyle: const ConvoKitDeletedBubbleStyle(
             backgroundColor: Color(0xFF000006),
             border: Border.fromBorderSide(BorderSide(width: 7)),
           ),
@@ -640,7 +640,7 @@ void main() {
             backgroundColor: Color(0xFF0000A5),
             border: Border.fromBorderSide(BorderSide(width: 7)),
           ),
-          deletedBubbleStyle: const CometChatDeletedBubbleStyle(
+          deletedBubbleStyle: const ConvoKitDeletedBubbleStyle(
             backgroundColor: Color(0xFF0000A6),
             border: Border.fromBorderSide(BorderSide(width: 7)),
           ),
@@ -1005,8 +1005,8 @@ void main() {
   });
 
   // ==========================================================================
-  group('CometChatMessageBubbleStyleData', () {
-    CometChatMessageBubbleStyleData base() => CometChatMessageBubbleStyleData(
+  group('ConvoKitMessageBubbleStyleData', () {
+    ConvoKitMessageBubbleStyleData base() => ConvoKitMessageBubbleStyleData(
       backgroundColor: const Color(0xFF111111),
       border: Border.all(color: const Color(0xFF222222)),
       borderRadius: BorderRadius.circular(4),
@@ -1048,7 +1048,7 @@ void main() {
     });
 
     test('merge takes every non-null field from the other side', () {
-      final other = CometChatMessageBubbleStyleData(
+      final other = ConvoKitMessageBubbleStyleData(
         backgroundColor: const Color(0xFFAAAAA1),
         border: Border.all(color: const Color(0xFFAAAAA2)),
         borderRadius: BorderRadius.circular(9),
@@ -1061,8 +1061,8 @@ void main() {
         exceptionBackgroundColor: const Color(0xFFAAAAA6),
         exceptionTextStyle: const TextStyle(fontSize: 24),
         exceptionIconTint: const Color(0xFFAAAAA7),
-        messageBubbleAvatarStyle: const CometChatAvatarStyle(),
-        messageBubbleDateStyle: const CometChatDateStyle(),
+        messageBubbleAvatarStyle: const ConvoKitAvatarStyle(),
+        messageBubbleDateStyle: const ConvoKitDateStyle(),
         messageReceiptStyle: CometChatMessageReceiptStyle(),
       );
       final merged = base().merge(other);
@@ -1091,7 +1091,7 @@ void main() {
 
     test('merge keeps the receiver\'s value where the other side is null', () {
       final merged = base().merge(
-        CometChatMessageBubbleStyleData(
+        ConvoKitMessageBubbleStyleData(
           backgroundColor: const Color(0xFFAAAAA1),
         ),
       );
@@ -1104,7 +1104,7 @@ void main() {
 
     test('merge does not mutate either side', () {
       final a = base();
-      final b = CometChatMessageBubbleStyleData(
+      final b = ConvoKitMessageBubbleStyleData(
         backgroundColor: const Color(0xFFAAAAA1),
       );
       a.merge(b);

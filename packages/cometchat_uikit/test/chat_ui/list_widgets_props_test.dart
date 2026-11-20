@@ -114,9 +114,9 @@ const _c3 = Color(0xFF303132);
 
 /// The three theme objects every list requires. Read from a real context so
 /// the lists get the same values the components would hand them.
-late CometChatColorPalette _palette;
-late CometChatSpacing _spacing;
-late CometChatTypography _typography;
+late ConvoKitColorPalette _palette;
+late ConvoKitSpacing _spacing;
+late ConvoKitTypography _typography;
 
 Widget _host(Widget Function(BuildContext) build) => MaterialApp(
   localizationsDelegates: Translations.localizationsDelegates,
@@ -124,9 +124,9 @@ Widget _host(Widget Function(BuildContext) build) => MaterialApp(
   home: Scaffold(
     body: Builder(
       builder: (context) {
-        _palette = CometChatThemeHelper.getColorPalette(context);
-        _spacing = CometChatThemeHelper.getSpacing(context);
-        _typography = CometChatThemeHelper.getTypography(context);
+        _palette = ConvoKitThemeHelper.getColorPalette(context);
+        _spacing = ConvoKitThemeHelper.getSpacing(context);
+        _typography = ConvoKitThemeHelper.getTypography(context);
         return build(context);
       },
     ),
@@ -162,9 +162,9 @@ void main() {
             (context) => GroupsList(
               groupsBloc: _groupsBloc(GroupsLoaded(groups: _groups())),
               style: const ConvoKitGroupsStyle(),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
               subtitleView: (c, g) => Text('sub-${g.guid}'),
               trailingView: (c, g) => Text('trail-${g.guid}'),
               leadingView: (c, g) => Text('lead-${g.guid}'),
@@ -188,9 +188,9 @@ void main() {
             (context) => GroupsList(
               groupsBloc: _groupsBloc(GroupsLoaded(groups: _groups())),
               style: const ConvoKitGroupsStyle(),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
               listItemView: (g) => Text('row-${g.guid}'),
             ),
           ),
@@ -214,9 +214,9 @@ void main() {
               (context) => GroupsList(
                 groupsBloc: _groupsBloc(entry.value),
                 style: const ConvoKitGroupsStyle(),
-                colorPalette: CometChatThemeHelper.getColorPalette(context),
-                spacing: CometChatThemeHelper.getSpacing(context),
-                typography: CometChatThemeHelper.getTypography(context),
+                colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+                spacing: ConvoKitThemeHelper.getSpacing(context),
+                typography: ConvoKitThemeHelper.getTypography(context),
                 loadingStateView: (c) => const Text('custom-loading'),
                 emptyStateView: (c) => const Text('custom-empty'),
                 errorStateView: (c) => const Text('custom-error'),
@@ -237,9 +237,9 @@ void main() {
             (context) => GroupsList(
               groupsBloc: _groupsBloc(const GroupsError(message: 'boom')),
               style: const ConvoKitGroupsStyle(),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
               errorStateView: (c) => const Text('custom-error'),
               hideError: true,
             ),
@@ -261,9 +261,9 @@ void main() {
             (context) => GroupsList(
               groupsBloc: _groupsBloc(GroupsLoaded(groups: _groups())),
               style: const ConvoKitGroupsStyle(),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
               privateGroupIcon: const Text('private-glyph'),
               protectedGroupIcon: const Text('locked-glyph'),
             ),
@@ -280,9 +280,9 @@ void main() {
             (context) => GroupsList(
               groupsBloc: _groupsBloc(GroupsLoaded(groups: _groups())),
               style: const ConvoKitGroupsStyle(),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
               privateGroupIcon: const Text('private-glyph'),
               hideGroupTypeIcon: true,
             ),
@@ -303,11 +303,11 @@ void main() {
             (context) => GroupsList(
               groupsBloc: _groupsBloc(GroupsLoaded(groups: _groups())),
               style: const ConvoKitGroupsStyle(),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
-              avatarStyle: const CometChatAvatarStyle(backgroundColor: _c1),
-              statusIndicatorStyle: const CometChatStatusIndicatorStyle(
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
+              avatarStyle: const ConvoKitAvatarStyle(backgroundColor: _c1),
+              statusIndicatorStyle: const ConvoKitStatusIndicatorStyle(
                 backgroundColor: _c2,
               ),
             ),
@@ -335,9 +335,9 @@ void main() {
             (context) => GroupsList(
               groupsBloc: _groupsBloc(GroupsLoaded(groups: _groups())),
               style: const ConvoKitGroupsStyle(),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
               onItemTap: (c, g) => tapped = g,
               onItemLongPress: (c, g) => pressed = g,
             ),
@@ -366,9 +366,9 @@ void main() {
                 GroupsLoaded(groups: _groups(), selectedGroups: const {'g1'}),
               ),
               style: const ConvoKitGroupsStyle(),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
               selectionMode: SelectionMode.multiple,
               activateSelection: ActivateSelection.onClick,
             ),
@@ -390,9 +390,9 @@ void main() {
             (context) => GroupsList(
               groupsBloc: _groupsBloc(GroupsLoaded(groups: _groups())),
               style: const ConvoKitGroupsStyle(),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
               scrollController: controller,
             ),
           ),
@@ -417,9 +417,9 @@ void main() {
                 itemTitleTextColor: _c3,
                 itemTitleTextStyle: TextStyle(fontSize: 23),
               ),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
             ),
           ),
         ),
@@ -452,9 +452,9 @@ void main() {
             (context) => UsersList(
               usersBloc: _usersBloc(UsersLoaded(users: _users())),
               style: const ConvoKitUsersStyle(),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
               subtitleView: (c, u) => Text('sub-${u.uid}'),
               trailingView: (c, u) => Text('trail-${u.uid}'),
               leadingView: (c, u) => Text('lead-${u.uid}'),
@@ -478,9 +478,9 @@ void main() {
             (context) => UsersList(
               usersBloc: _usersBloc(UsersLoaded(users: _users())),
               style: const ConvoKitUsersStyle(),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
               listItemView: (u) => Text('row-${u.uid}'),
             ),
           ),
@@ -504,9 +504,9 @@ void main() {
               (context) => UsersList(
                 usersBloc: _usersBloc(entry.value),
                 style: const ConvoKitUsersStyle(),
-                colorPalette: CometChatThemeHelper.getColorPalette(context),
-                spacing: CometChatThemeHelper.getSpacing(context),
-                typography: CometChatThemeHelper.getTypography(context),
+                colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+                spacing: ConvoKitThemeHelper.getSpacing(context),
+                typography: ConvoKitThemeHelper.getTypography(context),
                 loadingStateView: (c) => const Text('custom-loading'),
                 emptyStateView: (c) => const Text('custom-empty'),
                 errorStateView: (c) => const Text('custom-error'),
@@ -523,7 +523,7 @@ void main() {
     testWidgets('usersStatusVisibility false drops the presence dots', (
       tester,
     ) async {
-      int dots() => find.byType(CometChatStatusIndicator).evaluate().length;
+      int dots() => find.byType(ConvoKitStatusIndicator).evaluate().length;
 
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
@@ -531,9 +531,9 @@ void main() {
             (context) => UsersList(
               usersBloc: _usersBloc(UsersLoaded(users: _users())),
               style: const ConvoKitUsersStyle(),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
             ),
           ),
         ),
@@ -547,9 +547,9 @@ void main() {
             (context) => UsersList(
               usersBloc: _usersBloc(UsersLoaded(users: _users())),
               style: const ConvoKitUsersStyle(),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
               usersStatusVisibility: false,
             ),
           ),
@@ -571,9 +571,9 @@ void main() {
             (context) => UsersList(
               usersBloc: _usersBloc(UsersLoaded(users: _users())),
               style: const ConvoKitUsersStyle(),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
             ),
           ),
         ),
@@ -587,9 +587,9 @@ void main() {
             (context) => UsersList(
               usersBloc: _usersBloc(UsersLoaded(users: _users())),
               style: const ConvoKitUsersStyle(),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
               stickyHeaderVisibility: true,
             ),
           ),
@@ -612,11 +612,11 @@ void main() {
             (context) => UsersList(
               usersBloc: _usersBloc(UsersLoaded(users: _users())),
               style: const ConvoKitUsersStyle(),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
-              avatarStyle: const CometChatAvatarStyle(backgroundColor: _c1),
-              statusIndicatorStyle: const CometChatStatusIndicatorStyle(
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
+              avatarStyle: const ConvoKitAvatarStyle(backgroundColor: _c1),
+              statusIndicatorStyle: const ConvoKitStatusIndicatorStyle(
                 backgroundColor: _c2,
               ),
             ),
@@ -625,8 +625,8 @@ void main() {
       );
       await tester.pump();
 
-      final avatars = tester.widgetList<CometChatAvatar>(
-        find.byType(CometChatAvatar),
+      final avatars = tester.widgetList<ConvoKitAvatar>(
+        find.byType(ConvoKitAvatar),
       );
       expect(avatars, isNotEmpty);
       expect(avatars.first.style?.backgroundColor, _c1);
@@ -644,9 +644,9 @@ void main() {
             (context) => UsersList(
               usersBloc: _usersBloc(UsersLoaded(users: _users())),
               style: const ConvoKitUsersStyle(),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
               onItemTap: (c, u) => tapped = u,
               onItemLongPress: (c, u) => pressed = u,
             ),
@@ -675,9 +675,9 @@ void main() {
                 UsersLoaded(users: _users(), selectedUsers: const {'u1'}),
               ),
               style: const ConvoKitUsersStyle(),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
               selectionMode: SelectionMode.multiple,
               activateSelection: ActivateSelection.onClick,
             ),
@@ -704,9 +704,9 @@ void main() {
                 itemTitleTextColor: _c3,
                 itemTitleTextStyle: TextStyle(fontSize: 23),
               ),
-              colorPalette: CometChatThemeHelper.getColorPalette(context),
-              spacing: CometChatThemeHelper.getSpacing(context),
-              typography: CometChatThemeHelper.getTypography(context),
+              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+              spacing: ConvoKitThemeHelper.getSpacing(context),
+              typography: ConvoKitThemeHelper.getTypography(context),
               scrollController: controller,
             ),
           ),

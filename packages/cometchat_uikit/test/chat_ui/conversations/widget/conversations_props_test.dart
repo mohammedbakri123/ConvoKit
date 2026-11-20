@@ -1064,8 +1064,8 @@ void main() {
         await tester.pump();
       });
 
-      final avatar = tester.widgetList<CometChatAvatar>(
-        find.byType(CometChatAvatar),
+      final avatar = tester.widgetList<ConvoKitAvatar>(
+        find.byType(ConvoKitAvatar),
       );
       expect(avatar, isNotEmpty);
       expect(avatar.first.padding, const EdgeInsets.all(7));
@@ -1088,8 +1088,8 @@ void main() {
         await tester.pump();
       });
 
-      final dots = tester.widgetList<CometChatStatusIndicator>(
-        find.byType(CometChatStatusIndicator),
+      final dots = tester.widgetList<ConvoKitStatusIndicator>(
+        find.byType(ConvoKitStatusIndicator),
       );
       expect(dots, isNotEmpty);
       expect(dots.first.height, 20);
@@ -1099,13 +1099,13 @@ void main() {
     testWidgets('usersStatusVisibility false removes the presence dots', (
       tester,
     ) async {
-      // CometChatStatusIndicator renders the group-type badge as well as user
+      // ConvoKitStatusIndicator renders the group-type badge as well as user
       // presence, and the fixture holds two users and one group. So the prop
       // is verified by the *drop* in count, not by absence — asserting
       // findsNothing would fail on the group's badge, which this prop does not
       // control.
       int indicators() =>
-          find.byType(CometChatStatusIndicator).evaluate().length;
+          find.byType(ConvoKitStatusIndicator).evaluate().length;
 
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
@@ -1151,14 +1151,14 @@ void main() {
   // ═══════════════════════════════════════════════════════════════════════════
   group('receipts', () {
     // _shouldShowReceipt compares the last message's sender against
-    // CometChatUIKit.loggedInUser, so receipts only render for outgoing
+    // ConvoKitUIKit.loggedInUser, so receipts only render for outgoing
     // messages. The fixture's last message is sent by u2, so the static has to
     // agree before any of these props can be observed.
     setUp(() {
-      CometChatUIKit.loggedInUser = FakeUser(name: 'Bob', uid: 'u2');
+      ConvoKitUIKit.loggedInUser = FakeUser(name: 'Bob', uid: 'u2');
     });
     tearDown(() {
-      CometChatUIKit.loggedInUser = null;
+      ConvoKitUIKit.loggedInUser = null;
     });
 
     testWidgets('deliveredIcon replaces the delivered receipt', (tester) async {
@@ -1239,7 +1239,7 @@ void main() {
       });
 
       expect(find.text('lead-user_u1'), findsOneWidget);
-      expect(find.byType(CometChatAvatar), findsNothing);
+      expect(find.byType(ConvoKitAvatar), findsNothing);
     });
 
     testWidgets('titleView replaces the title', (tester) async {
@@ -1350,8 +1350,8 @@ void main() {
         await tester.pump();
       });
 
-      final dates = tester.widgetList<CometChatDate>(
-        find.byType(CometChatDate),
+      final dates = tester.widgetList<ConvoKitDate>(
+        find.byType(ConvoKitDate),
       );
       expect(dates, isNotEmpty);
       expect(dates.first.dateTimeFormatterCallback, isA<_StubDateFormatter>());
@@ -1645,7 +1645,7 @@ void main() {
         });
 
         final date = tester
-            .widgetList<CometChatDate>(find.byType(CometChatDate))
+            .widgetList<ConvoKitDate>(find.byType(ConvoKitDate))
             .first;
         expect(date.padding, const EdgeInsets.all(5));
         expect(date.height, 30);
@@ -1668,7 +1668,7 @@ void main() {
         });
 
         final date = tester
-            .widgetList<CometChatDate>(find.byType(CometChatDate))
+            .widgetList<ConvoKitDate>(find.byType(ConvoKitDate))
             .first;
         // Defaulted to a hardcoded true before the fix, so false is the value
         // that proves the prop is read.
@@ -1689,7 +1689,7 @@ void main() {
         });
 
         final badge = tester
-            .widgetList<CometChatBadge>(find.byType(CometChatBadge))
+            .widgetList<ConvoKitBadge>(find.byType(ConvoKitBadge))
             .first;
         expect(badge.padding, const EdgeInsets.all(4));
       });
@@ -1733,8 +1733,8 @@ void main() {
         });
 
         final dot = tester
-            .widgetList<CometChatStatusIndicator>(
-              find.byType(CometChatStatusIndicator),
+            .widgetList<ConvoKitStatusIndicator>(
+              find.byType(ConvoKitStatusIndicator),
             )
             .first;
         expect(

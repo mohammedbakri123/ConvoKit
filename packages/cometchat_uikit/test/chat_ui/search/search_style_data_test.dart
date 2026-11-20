@@ -225,11 +225,11 @@ CometChatSearchStyle _style(int offset) {
     errorStateSubTitleTextStyle: t(42),
     seeMoreTextColor: c(43),
     seeMoreTextStyle: t(44),
-    avatarStyle: CometChatAvatarStyle(backgroundColor: c(45)),
-    statusIndicatorStyle: CometChatStatusIndicatorStyle(backgroundColor: c(46)),
-    badgeStyle: CometChatBadgeStyle(backgroundColor: c(47)),
+    avatarStyle: ConvoKitAvatarStyle(backgroundColor: c(45)),
+    statusIndicatorStyle: ConvoKitStatusIndicatorStyle(backgroundColor: c(46)),
+    badgeStyle: ConvoKitBadgeStyle(backgroundColor: c(47)),
     receiptStyle: CometChatMessageReceiptStyle(waitIconColor: c(48)),
-    dateStyle: CometChatDateStyle(backgroundColor: c(49)),
+    dateStyle: ConvoKitDateStyle(backgroundColor: c(49)),
   );
 }
 
@@ -283,11 +283,11 @@ CometChatSearchStyle _copyEverything(CometChatSearchStyle onto, int offset) {
     errorStateSubTitleTextStyle: t(42),
     seeMoreTextColor: c(43),
     seeMoreTextStyle: t(44),
-    avatarStyle: CometChatAvatarStyle(backgroundColor: c(45)),
-    statusIndicatorStyle: CometChatStatusIndicatorStyle(backgroundColor: c(46)),
-    badgeStyle: CometChatBadgeStyle(backgroundColor: c(47)),
+    avatarStyle: ConvoKitAvatarStyle(backgroundColor: c(45)),
+    statusIndicatorStyle: ConvoKitStatusIndicatorStyle(backgroundColor: c(46)),
+    badgeStyle: ConvoKitBadgeStyle(backgroundColor: c(47)),
     receiptStyle: CometChatMessageReceiptStyle(waitIconColor: c(48)),
-    dateStyle: CometChatDateStyle(backgroundColor: c(49)),
+    dateStyle: ConvoKitDateStyle(backgroundColor: c(49)),
   );
 }
 

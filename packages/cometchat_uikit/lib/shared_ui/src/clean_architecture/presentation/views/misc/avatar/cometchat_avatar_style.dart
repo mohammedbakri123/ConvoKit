@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../../../../../cometchat_uikit_shared.dart';
 
-///[CometChatAvatarStyle] is a data class that has styling-related properties
-///to customize the appearance of [CometChatAvatar]
+///[ConvoKitAvatarStyle] is a data class that has styling-related properties
+///to customize the appearance of [ConvoKitAvatar]
 ///``` dart
-///CometChatAvatarStyle(
+///ConvoKitAvatarStyle(
 /// backgroundColor: Colors.white,
 /// border: Border.all(color: Colors.white, width: 0),
 /// placeHolderTextStyle: TextStyle(
@@ -14,8 +14,8 @@ import '../../../../../../cometchat_uikit_shared.dart';
 /// ),
 /// );
 /// ```
-class CometChatAvatarStyle extends ThemeExtension<CometChatAvatarStyle> {
-  const CometChatAvatarStyle({
+class ConvoKitAvatarStyle extends ThemeExtension<ConvoKitAvatarStyle> {
+  const ConvoKitAvatarStyle({
     this.backgroundColor,
     this.border,
     this.placeHolderTextStyle,
@@ -38,18 +38,18 @@ class CometChatAvatarStyle extends ThemeExtension<CometChatAvatarStyle> {
   ///[borderRadius] border radius of the avatar
   final BorderRadiusGeometry? borderRadius;
 
-  static CometChatAvatarStyle of(BuildContext context) =>
-      const CometChatAvatarStyle();
+  static ConvoKitAvatarStyle of(BuildContext context) =>
+      const ConvoKitAvatarStyle();
 
   @override
-  CometChatAvatarStyle copyWith({
+  ConvoKitAvatarStyle copyWith({
     Color? backgroundColor,
     Border? border,
     TextStyle? placeHolderTextStyle,
     Color? placeHolderTextColor,
     BorderRadiusGeometry? borderRadius,
   }) {
-    return CometChatAvatarStyle(
+    return ConvoKitAvatarStyle(
       backgroundColor: backgroundColor ?? this.backgroundColor,
       border: border ?? this.border,
       placeHolderTextStyle: placeHolderTextStyle ?? this.placeHolderTextStyle,
@@ -58,7 +58,7 @@ class CometChatAvatarStyle extends ThemeExtension<CometChatAvatarStyle> {
     );
   }
 
-  CometChatAvatarStyle merge(CometChatAvatarStyle? style) {
+  ConvoKitAvatarStyle merge(ConvoKitAvatarStyle? style) {
     if (style == null) return this;
     return copyWith(
       backgroundColor: style.backgroundColor,
@@ -70,14 +70,14 @@ class CometChatAvatarStyle extends ThemeExtension<CometChatAvatarStyle> {
   }
 
   @override
-  CometChatAvatarStyle lerp(
-    ThemeExtension<CometChatAvatarStyle>? other,
+  ConvoKitAvatarStyle lerp(
+    ThemeExtension<ConvoKitAvatarStyle>? other,
     double t,
   ) {
-    if (other is! CometChatAvatarStyle) {
+    if (other is! ConvoKitAvatarStyle) {
       return this;
     }
-    return CometChatAvatarStyle(
+    return ConvoKitAvatarStyle(
       backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t),
       border: Border.lerp(border, other.border, t),
       placeHolderTextStyle: TextStyle.lerp(

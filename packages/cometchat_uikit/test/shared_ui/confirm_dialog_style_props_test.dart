@@ -1,7 +1,7 @@
-/// Render-verified prop matrix for [CometChatConfirmDialogStyle] — Track 3
+/// Render-verified prop matrix for [ConvoKitConfirmDialogStyle] — Track 3
 /// PROP1. All 16 props.
 ///
-/// `CometChatConfirmDialog` is not a widget: it is a class holding a
+/// `ConvoKitConfirmDialog` is not a widget: it is a class holding a
 /// `BuildContext` whose `show()` calls `showDialog`. So each case pumps a host,
 /// taps a button that calls `show()`, settles, and asserts against the dialog
 /// route's own tree.
@@ -42,13 +42,13 @@ void main() {
         home: Scaffold(
           body: Builder(
             builder: (context) => TextButton(
-              onPressed: () => CometChatConfirmDialog(
+              onPressed: () => ConvoKitConfirmDialog(
                 context: context,
                 title: const Text('Delete conversation'),
                 messageText: const Text('This cannot be undone.'),
                 confirmButtonText: 'Delete',
                 cancelButtonText: 'Cancel',
-                style: const CometChatConfirmDialogStyle(),
+                style: const ConvoKitConfirmDialogStyle(),
               ).show(),
               child: const Text('open'),
             ),
@@ -76,13 +76,13 @@ void main() {
         home: Scaffold(
           body: Builder(
             builder: (context) => TextButton(
-              onPressed: () => CometChatConfirmDialog(
+              onPressed: () => ConvoKitConfirmDialog(
                 context: context,
                 title: const Text('Delete conversation'),
                 messageText: const Text('This cannot be undone.'),
                 confirmButtonText: 'Delete',
                 cancelButtonText: 'Cancel',
-                style: const CometChatConfirmDialogStyle(
+                style: const ConvoKitConfirmDialogStyle(
                   backgroundColor: _c1,
                   border: BorderSide(color: _c2, width: 3),
                   borderRadius: BorderRadius.all(Radius.circular(19)),
@@ -114,13 +114,13 @@ void main() {
         home: Scaffold(
           body: Builder(
             builder: (context) => TextButton(
-              onPressed: () => CometChatConfirmDialog(
+              onPressed: () => ConvoKitConfirmDialog(
                 context: context,
                 title: const Text('Delete conversation'),
                 messageText: const Text('This cannot be undone.'),
                 confirmButtonText: 'Delete',
                 cancelButtonText: 'Cancel',
-                style: const CometChatConfirmDialogStyle(shadow: _c3),
+                style: const ConvoKitConfirmDialogStyle(shadow: _c3),
               ).show(),
               child: const Text('open'),
             ),
@@ -143,13 +143,13 @@ void main() {
         home: Scaffold(
           body: Builder(
             builder: (context) => TextButton(
-              onPressed: () => CometChatConfirmDialog(
+              onPressed: () => ConvoKitConfirmDialog(
                 context: context,
                 title: const Text('Delete conversation'),
                 messageText: const Text('This cannot be undone.'),
                 confirmButtonText: 'Delete',
                 cancelButtonText: 'Cancel',
-                style: const CometChatConfirmDialogStyle(
+                style: const ConvoKitConfirmDialogStyle(
                   titleTextColor: _c1,
                   titleTextStyle: TextStyle(fontSize: 27),
                   messageTextColor: _c2,
@@ -183,13 +183,13 @@ void main() {
         home: Scaffold(
           body: Builder(
             builder: (context) => TextButton(
-              onPressed: () => CometChatConfirmDialog(
+              onPressed: () => ConvoKitConfirmDialog(
                 context: context,
                 title: const Text('Delete conversation'),
                 messageText: const Text('This cannot be undone.'),
                 confirmButtonText: 'Delete',
                 cancelButtonText: 'Cancel',
-                style: const CometChatConfirmDialogStyle(
+                style: const ConvoKitConfirmDialogStyle(
                   confirmButtonBackground: _c4,
                   confirmButtonTextColor: _c5,
                   confirmButtonTextStyle: TextStyle(fontSize: 21),
@@ -229,13 +229,13 @@ void main() {
         home: Scaffold(
           body: Builder(
             builder: (context) => TextButton(
-              onPressed: () => CometChatConfirmDialog(
+              onPressed: () => ConvoKitConfirmDialog(
                 context: context,
                 title: const Text('Delete conversation'),
                 messageText: const Text('This cannot be undone.'),
                 confirmButtonText: 'Delete',
                 cancelButtonText: 'Cancel',
-                style: const CometChatConfirmDialogStyle(
+                style: const ConvoKitConfirmDialogStyle(
                   cancelButtonBackground: _c6,
                   cancelButtonTextColor: _c7,
                   cancelButtonTextStyle: TextStyle(fontSize: 18),
@@ -277,13 +277,13 @@ void main() {
         home: Scaffold(
           body: Builder(
             builder: (context) => TextButton(
-              onPressed: () => CometChatConfirmDialog(
+              onPressed: () => ConvoKitConfirmDialog(
                 context: context,
                 title: const Text('Delete conversation'),
                 messageText: const Text('This cannot be undone.'),
                 confirmButtonText: 'Delete',
                 cancelButtonText: 'Cancel',
-                style: const CometChatConfirmDialogStyle(
+                style: const ConvoKitConfirmDialogStyle(
                   iconColor: _c8,
                   iconBackgroundColor: _c3,
                 ),
@@ -324,13 +324,13 @@ void main() {
         home: Scaffold(
           body: Builder(
             builder: (context) => TextButton(
-              onPressed: () => CometChatConfirmDialog(
+              onPressed: () => ConvoKitConfirmDialog(
                 context: context,
                 title: const Text('Delete conversation'),
                 messageText: const Text('This cannot be undone.'),
                 confirmButtonText: 'Delete',
                 cancelButtonText: 'Cancel',
-                style: const CometChatConfirmDialogStyle(
+                style: const ConvoKitConfirmDialogStyle(
                   titleTextColor: _c1,
                   messageTextColor: _c2,
                   confirmButtonTextColor: _c5,

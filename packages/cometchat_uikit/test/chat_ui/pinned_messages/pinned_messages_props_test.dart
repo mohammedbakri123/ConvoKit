@@ -417,12 +417,12 @@ void main() {
     await sdk.SdkRegistry.clear();
     sdk.SdkRegistry.register(_FakeSdkClient(backend));
     // Unpin is offered only to a logged-in user.
-    previousUser = CometChatUIKit.loggedInUser;
-    CometChatUIKit.loggedInUser = _me;
+    previousUser = ConvoKitUIKit.loggedInUser;
+    ConvoKitUIKit.loggedInUser = _me;
   });
 
   tearDown(() async {
-    CometChatUIKit.loggedInUser = previousUser;
+    ConvoKitUIKit.loggedInUser = previousUser;
     await sdk.SdkRegistry.clear();
   });
 
@@ -575,7 +575,7 @@ void main() {
         await _load(tester);
         counts.add(_rows.evaluate().length);
         for (final pin in pins) {
-          CometChatMessageEvents.ccMessagePinned(pin);
+          ConvoKitMessageEvents.ccMessagePinned(pin);
           await _load(tester);
           counts.add(_rows.evaluate().length);
         }

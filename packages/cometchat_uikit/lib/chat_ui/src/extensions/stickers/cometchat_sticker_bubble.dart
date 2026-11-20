@@ -52,9 +52,9 @@ class CometChatStickerBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String? stickerUrl = getStickerUrl();
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final spacing = CometChatThemeHelper.getSpacing(context);
-    final style = CometChatThemeHelper.getTheme<CometChatStickerBubbleStyle>(
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
+    final style = ConvoKitThemeHelper.getTheme<CometChatStickerBubbleStyle>(
       context: context,
       defaultTheme: CometChatStickerBubbleStyle.of,
     ).merge(this.style);

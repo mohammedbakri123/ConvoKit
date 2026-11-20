@@ -99,13 +99,13 @@ class CometChatFileBubble extends StatefulWidget {
   final Map<String, dynamic>? metadata;
 
   /// [colorPalette] optional pre-cached color palette to avoid expensive lookups during keyboard animation
-  final CometChatColorPalette? colorPalette;
+  final ConvoKitColorPalette? colorPalette;
 
   /// [spacing] optional pre-cached spacing to avoid expensive lookups during keyboard animation
-  final CometChatSpacing? spacing;
+  final ConvoKitSpacing? spacing;
 
   /// [typography] optional pre-cached typography to avoid expensive lookups during keyboard animation
-  final CometChatTypography? typography;
+  final ConvoKitTypography? typography;
 
   @override
   State<CometChatFileBubble> createState() => _CometChatFileBubbleState();
@@ -197,9 +197,9 @@ class _CometChatFileBubbleState extends State<CometChatFileBubble> {
   ];
 
   late CometChatFileBubbleStyle _fileBubbleStyle;
-  late CometChatColorPalette _colorPalette;
-  late CometChatSpacing _spacing;
-  late CometChatTypography _typography;
+  late ConvoKitColorPalette _colorPalette;
+  late ConvoKitSpacing _spacing;
+  late ConvoKitTypography _typography;
   bool _themeInitialized = false;
   Brightness? _cachedBrightness;
 
@@ -219,22 +219,22 @@ class _CometChatFileBubbleState extends State<CometChatFileBubble> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Only initialize theme once to avoid expensive lookups during keyboard animation
-    final currentBrightness = CometChatThemeHelper.getBrightness(context);
+    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
     if (!_themeInitialized || brightnessChanged) {
       _cachedBrightness = currentBrightness;
       _fileBubbleStyle =
-          CometChatThemeHelper.getTheme<CometChatFileBubbleStyle>(
+          ConvoKitThemeHelper.getTheme<CometChatFileBubbleStyle>(
             context: context,
             defaultTheme: CometChatFileBubbleStyle.of,
           ).merge(widget.style);
       // Use passed values OR fallback to lookup (for standalone usage)
       _colorPalette =
-          widget.colorPalette ?? CometChatThemeHelper.getColorPalette(context);
-      _spacing = widget.spacing ?? CometChatThemeHelper.getSpacing(context);
+          widget.colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
+      _spacing = widget.spacing ?? ConvoKitThemeHelper.getSpacing(context);
       _typography =
-          widget.typography ?? CometChatThemeHelper.getTypography(context);
+          widget.typography ?? ConvoKitThemeHelper.getTypography(context);
       _themeInitialized = true;
     }
   }
@@ -245,7 +245,7 @@ class _CometChatFileBubbleState extends State<CometChatFileBubble> {
     // Update style if it changed
     if (widget.style != oldWidget.style) {
       _fileBubbleStyle =
-          CometChatThemeHelper.getTheme<CometChatFileBubbleStyle>(
+          ConvoKitThemeHelper.getTheme<CometChatFileBubbleStyle>(
             context: context,
             defaultTheme: CometChatFileBubbleStyle.of,
           ).merge(widget.style);

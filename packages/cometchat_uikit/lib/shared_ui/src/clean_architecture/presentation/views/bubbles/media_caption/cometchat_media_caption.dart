@@ -42,8 +42,8 @@ class CometChatMediaCaption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = CometChatThemeHelper.getColorPalette(context);
-    final typography = CometChatThemeHelper.getTypography(context);
+    final colors = ConvoKitThemeHelper.getColorPalette(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
     // Matches CometChatTextBubble's text style.
     final captionStyle = TextStyle(
       color: alignment == BubbleAlignment.right

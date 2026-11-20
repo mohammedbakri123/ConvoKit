@@ -58,9 +58,9 @@ class CometChatLinkPreviewStyle
 
   /// Factory for theme-based defaults
   static CometChatLinkPreviewStyle of(BuildContext context) {
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final typography = CometChatThemeHelper.getTypography(context);
-    final spacing = CometChatThemeHelper.getSpacing(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
 
     return CometChatLinkPreviewStyle(
       backgroundColor: colorPalette.background1,

@@ -65,7 +65,7 @@ class CometChatStickerKeyboardStyle
   ///colour of [errorStateTextStyle].
   final Color? errorStateTextColor;
 
-  /// The fallback `CometChatThemeHelper.getTheme` uses when no
+  /// The fallback `ConvoKitThemeHelper.getTheme` uses when no
   /// [CometChatStickerKeyboardStyle] is registered on the theme: every field
   /// null, so the keyboard keeps its defaults.
   static CometChatStickerKeyboardStyle of(BuildContext context) =>

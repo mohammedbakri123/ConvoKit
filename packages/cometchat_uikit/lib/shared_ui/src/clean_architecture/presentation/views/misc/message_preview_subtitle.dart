@@ -65,7 +65,7 @@ class MessagePreviewSubtitle extends StatelessWidget {
   static String senderPrefixFor(BaseMessage message, BuildContext context) {
     final sender = message.sender;
     if (sender == null) return '';
-    final loggedInUid = CometChatUIKit.loggedInUser?.uid;
+    final loggedInUid = ConvoKitUIKit.loggedInUser?.uid;
     if (loggedInUid != null && sender.uid == loggedInUid) {
       return '${Translations.of(context).you}:';
     }
@@ -137,7 +137,7 @@ class MessagePreviewSubtitle extends StatelessWidget {
     final gap = spacing ?? 2;
     final glyphColor =
         iconColor ??
-        CometChatThemeHelper.getColorPalette(context).iconSecondary;
+        ConvoKitThemeHelper.getColorPalette(context).iconSecondary;
 
     final rich =
         richTextMessage ??

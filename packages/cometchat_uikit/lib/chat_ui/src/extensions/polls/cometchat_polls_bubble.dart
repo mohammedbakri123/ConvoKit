@@ -72,20 +72,20 @@ class _CometChatPollsBubbleState extends State<CometChatPollsBubble> {
   List<Widget> _getAvatars(
     List<User> voters,
     BubbleAlignment? alignment,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
     CometChatPollsBubbleStyle? style,
   ) {
     return voters
         .map(
           (User user) => Align(
             widthFactor: 0.5,
-            child: CometChatAvatar(
+            child: ConvoKitAvatar(
               name: user.name,
               image: user.avatar,
               height: 20,
               width: 20,
-              style: CometChatAvatarStyle(
+              style: ConvoKitAvatarStyle(
                 placeHolderTextStyle: TextStyle(
                   fontSize: typography.caption2?.regular?.fontSize,
                 ),
@@ -114,9 +114,9 @@ class _CometChatPollsBubbleState extends State<CometChatPollsBubble> {
     int totalVotes,
     List<User> voters,
     CometChatPollsBubbleStyle style,
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
-    CometChatTypography typography, {
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
+    ConvoKitTypography typography, {
     bool isLast = false,
   }) {
     int count = votes;
@@ -292,9 +292,9 @@ class _CometChatPollsBubbleState extends State<CometChatPollsBubble> {
     String pollId,
     int totalVotes,
     CometChatPollsBubbleStyle style,
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
+    ConvoKitTypography typography,
   ) {
     return Column(
       children: [
@@ -325,13 +325,13 @@ class _CometChatPollsBubbleState extends State<CometChatPollsBubble> {
 
     List<PollOptions> options = [];
     CometChatPollsBubbleStyle style =
-        CometChatThemeHelper.getTheme<CometChatPollsBubbleStyle>(
+        ConvoKitThemeHelper.getTheme<CometChatPollsBubbleStyle>(
           context: context,
           defaultTheme: CometChatPollsBubbleStyle.of,
         ).merge(widget.style);
-    final typography = CometChatThemeHelper.getTypography(context);
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final spacing = CometChatThemeHelper.getSpacing(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
 
     if (widget.options != null) {
       options = widget.options!;

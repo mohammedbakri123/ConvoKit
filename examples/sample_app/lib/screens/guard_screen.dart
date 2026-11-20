@@ -16,23 +16,23 @@ class GuardScreen extends StatefulWidget {
 
 class _GuardScreenState extends State<GuardScreen> {
   final ValueNotifier<bool?> _shouldGoHome = ValueNotifier<bool?>(null);
-  late CometChatColorPalette _colorPalette;
+  late ConvoKitColorPalette _colorPalette;
   bool _initialized = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _colorPalette = CometChatThemeHelper.getColorPalette(context);
+    _colorPalette = ConvoKitThemeHelper.getColorPalette(context);
     if (_initialized) return;
     _initialized = true;
     _checkSession();
   }
 
   Future<void> _checkSession() async {
-    final cachedUser = await CometChatUIKit.getLoggedInUser();
+    final cachedUser = await ConvoKitUIKit.getLoggedInUser();
     if (cachedUser != null) {
       // Re-login to refresh the connection
-      await CometChatUIKit.login(
+      await ConvoKitUIKit.login(
         cachedUser.uid,
         // The UI Kit starts call handling itself and calls onSuccess once
         // it is ready (bounded), so there is nothing to start here.

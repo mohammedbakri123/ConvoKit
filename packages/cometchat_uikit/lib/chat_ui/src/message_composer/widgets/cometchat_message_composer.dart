@@ -502,9 +502,9 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer>
   // Theme and Styling
   // ============================================================================
   late ConvoKitMessageComposerStyle _style;
-  late CometChatColorPalette _colorPalette;
-  late CometChatSpacing _spacing;
-  late CometChatTypography _typography;
+  late ConvoKitColorPalette _colorPalette;
+  late ConvoKitSpacing _spacing;
+  late ConvoKitTypography _typography;
   late ConvoKitSuggestionListStyle _suggestionListStyle;
 
   // ============================================================================
@@ -1094,7 +1094,7 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer>
 
     // Only initialize theme once to avoid expensive lookups during keyboard animation
     // But re-initialize when brightness changes (dark mode toggle)
-    final currentBrightness = CometChatThemeHelper.getBrightness(context);
+    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
     if (_themeInitialized && !brightnessChanged) return;
@@ -1117,16 +1117,16 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer>
     }
 
     // Initialize theme
-    _colorPalette = CometChatThemeHelper.getColorPalette(context);
-    _typography = CometChatThemeHelper.getTypography(context);
-    _spacing = CometChatThemeHelper.getSpacing(context);
-    _style = CometChatThemeHelper.getTheme<ConvoKitMessageComposerStyle>(
+    _colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    _typography = ConvoKitThemeHelper.getTypography(context);
+    _spacing = ConvoKitThemeHelper.getSpacing(context);
+    _style = ConvoKitThemeHelper.getTheme<ConvoKitMessageComposerStyle>(
       context: context,
       defaultTheme: ConvoKitMessageComposerStyle.of,
     ).merge(widget.messageComposerStyle);
 
     _suggestionListStyle =
-        CometChatThemeHelper.getTheme<ConvoKitSuggestionListStyle>(
+        ConvoKitThemeHelper.getTheme<ConvoKitSuggestionListStyle>(
           context: context,
           defaultTheme: ConvoKitSuggestionListStyle.of,
         ).merge(_style.suggestionListStyle);
@@ -1208,7 +1208,7 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer>
 
     // Reinitialize style if messageComposerStyle changed
     if (widget.messageComposerStyle != oldWidget.messageComposerStyle) {
-      _style = CometChatThemeHelper.getTheme<ConvoKitMessageComposerStyle>(
+      _style = ConvoKitThemeHelper.getTheme<ConvoKitMessageComposerStyle>(
         context: context,
         defaultTheme: ConvoKitMessageComposerStyle.of,
       ).merge(widget.messageComposerStyle);
@@ -1655,7 +1655,7 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer>
         _stickerExtraHeight.value = 0;
 
         // Show sticker keyboard in the footer panel
-        CometChatUIEvents.showPanel(
+        ConvoKitUIEvents.showPanel(
           _composerId,
           CustomUIPosition.composerBottom,
           (context) => CometChatStickerKeyboard(
@@ -1687,7 +1687,7 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer>
         // Dismiss web sticker overlay if showing
         _hideStickerOverlay();
 
-        CometChatUIEvents.hidePanel(
+        ConvoKitUIEvents.hidePanel(
           _composerId,
           CustomUIPosition.composerBottom,
         );
@@ -1780,11 +1780,11 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer>
           // (mirrors _onFocusChange behavior for the regular text field)
           final focused = _segmentComposerController!.focusedSegment;
           if (focused != null) {
-            CometChatUIEvents.hidePanel(
+            ConvoKitUIEvents.hidePanel(
               _composerId,
               CustomUIPosition.composerBottom,
             );
-            CometChatUIEvents.unlockBottomPadding(_composerId);
+            ConvoKitUIEvents.unlockBottomPadding(_composerId);
             _resetStickerExtraHeight();
             if (_attachmentOverlayController.isShowing) {
               _hideAttachmentOverlay();
@@ -1855,7 +1855,7 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer>
 
   void _getAttachmentOptions() {
     final attachmentOptionSheetStyle =
-        CometChatThemeHelper.getTheme<CometChatAttachmentOptionSheetStyle>(
+        ConvoKitThemeHelper.getTheme<CometChatAttachmentOptionSheetStyle>(
           context: context,
           defaultTheme: CometChatAttachmentOptionSheetStyle.of,
         ).merge(_style.attachmentOptionSheetStyle);
@@ -1993,10 +1993,10 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer>
       return;
     }
 
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
     // The popup's own fill matches the keyboard inside it.
     final keyboardBackground =
-        CometChatThemeHelper.getTheme<CometChatStickerKeyboardStyle>(
+        ConvoKitThemeHelper.getTheme<CometChatStickerKeyboardStyle>(
           context: context,
           defaultTheme: CometChatStickerKeyboardStyle.of,
         ).merge(_style.stickerKeyboardStyle).backgroundColor;
@@ -2081,7 +2081,7 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer>
     _stickerOverlayEntry?.remove();
     _stickerOverlayEntry = null;
     // Notify StickerAuxiliaryButton to update its icon state
-    CometChatUIEvents.hidePanel(_composerId, CustomUIPosition.composerBottom);
+    ConvoKitUIEvents.hidePanel(_composerId, CustomUIPosition.composerBottom);
   }
 
   void _onFocusChange() {
@@ -2090,8 +2090,8 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer>
     if (_focusNode.hasFocus) {
       // When text field gets focus, hide sticker keyboard immediately
       // (no debounce) so the panel disappears as the OS keyboard opens.
-      CometChatUIEvents.hidePanel(_composerId, CustomUIPosition.composerBottom);
-      CometChatUIEvents.unlockBottomPadding(_composerId);
+      ConvoKitUIEvents.hidePanel(_composerId, CustomUIPosition.composerBottom);
+      ConvoKitUIEvents.unlockBottomPadding(_composerId);
       _resetStickerExtraHeight();
       // Dismiss attachment overlay when text field gains focus
       if (_attachmentOverlayController.isShowing) {
@@ -2145,7 +2145,7 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer>
     _currentSearchKeyword = searchKeyword;
 
     if (_currentSearchKeyword == null) {
-      CometChatUIEvents.hidePanel(
+      ConvoKitUIEvents.hidePanel(
         _composerId,
         CustomUIPosition.composerPreview,
       );
@@ -2171,7 +2171,7 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer>
       _hasMore = true;
       setState(() {});
 
-      CometChatUIEvents.showPanel(
+      ConvoKitUIEvents.showPanel(
         _composerId,
         CustomUIPosition.composerPreview,
         (context) => _buildSuggestionList(),
@@ -2186,7 +2186,7 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer>
         _scrollDown();
       } else {
         if (_searchKeywordChanged) {
-          CometChatUIEvents.hidePanel(
+          ConvoKitUIEvents.hidePanel(
             _composerId,
             CustomUIPosition.composerPreview,
           );
@@ -2666,7 +2666,7 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer>
 
     for (final msg in msgs) {
       msg.parentMessageId = widget.parentMessageId;
-      CometChatMessageEvents.ccMessageSent(
+      ConvoKitMessageEvents.ccMessageSent(
         msg,
         core_enums.MessageStatus.inProgress,
       );
@@ -2686,7 +2686,7 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer>
         if (sent.muid.isEmpty) sent.muid = msg.muid;
         // Preserve batch metadata if the server didn't echo it back.
         sent.metadata ??= msg.metadata;
-        CometChatMessageEvents.ccMessageSent(
+        ConvoKitMessageEvents.ccMessageSent(
           sent,
           core_enums.MessageStatus.sent,
         );
@@ -2694,7 +2694,7 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer>
       },
       onError: (CometChatException e) {
         msg.metadata = {...?msg.metadata, 'error': e.message};
-        CometChatMessageEvents.ccMessageSent(
+        ConvoKitMessageEvents.ccMessageSent(
           msg,
           core_enums.MessageStatus.error,
         );
@@ -2752,7 +2752,7 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer>
 
   void _previewMessage(BaseMessage message, PreviewMessageMode mode) {
     if (mode == PreviewMessageMode.edit) {
-      if (CometChatUIKit.isConvoKitMode) {
+      if (ConvoKitUIKit.isConvoKitMode) {
         // Editing deferred to v1.1 in ConvoKit UI
         return;
       }
@@ -2968,7 +2968,7 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer>
       // Dismiss suggestion overlay when attachment opens
       if (_overlayPortalController.isShowing) {
         _hideSuggestionOverlay();
-        CometChatUIEvents.hidePanel(
+        ConvoKitUIEvents.hidePanel(
           _composerId,
           CustomUIPosition.composerPreview,
         );
@@ -3704,9 +3704,9 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer>
 
   /// Shows a popup with Edit and Remove options.
   void _onLinkTapped(LinkTapDetails details) {
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final spacing = CometChatThemeHelper.getSpacing(context);
-    final typography = CometChatThemeHelper.getTypography(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
 
     // Capture the active controller NOW (before dialog steals focus).
     // In segment mode, the link lives in the focused segment's controller.
@@ -4527,7 +4527,7 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer>
                     final hasPreview =
                         (state.isEditMode &&
                             state.editMessage != null &&
-                            !CometChatUIKit.isConvoKitMode) ||
+                            !ConvoKitUIKit.isConvoKitMode) ||
                         (state.isReplyMode && state.replyMessage != null);
                     if (hasPreview && !_previewVisible) {
                       _previewVisible = true;
@@ -4901,11 +4901,11 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer>
                     _lastStickerTotalHeight = 0;
                     _expectingKeyboardOpen = false;
                     _stickerHeightClearTimer?.cancel();
-                    CometChatUIEvents.hidePanel(
+                    ConvoKitUIEvents.hidePanel(
                       _composerId,
                       CustomUIPosition.composerBottom,
                     );
-                    CometChatUIEvents.unlockBottomPadding(_composerId);
+                    ConvoKitUIEvents.unlockBottomPadding(_composerId);
                   } else if (_stickerExtraHeight.value < 0) {
                     // Snap back to base height if not dragged far enough
                     _stickerExtraHeight.value = 0;
@@ -5037,7 +5037,7 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer>
               onVerticalDragEnd: (details) {
                 if (_stickerExtraHeight.value < minExtra * 0.5) {
                   _stickerExtraHeight.value = 0;
-                  CometChatUIEvents.hidePanel(
+                  ConvoKitUIEvents.hidePanel(
                     _composerId,
                     CustomUIPosition.composerBottom,
                   );

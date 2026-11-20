@@ -651,7 +651,7 @@ void main() {
       );
       await tester.pump();
       final withStatus = find
-          .byType(CometChatStatusIndicator)
+          .byType(ConvoKitStatusIndicator)
           .evaluate()
           .length;
 
@@ -668,7 +668,7 @@ void main() {
       await tester.pump();
 
       expect(withStatus, greaterThan(0));
-      expect(find.byType(CometChatStatusIndicator), findsNothing);
+      expect(find.byType(ConvoKitStatusIndicator), findsNothing);
     });
 
     testWidgets('stickyHeaderVisibility swaps the inline initial dividers out', (

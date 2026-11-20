@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 ///[CometChatMessageReceiptStyle] is a data class that has styling-related properties
-///to customize the appearance of [CometChatReceipt]
+///to customize the appearance of [ConvoKitReceipt]
 ///``` dart
 ///CometChatMessageReceiptStyle(
 /// waitIconColor: Colors.grey,

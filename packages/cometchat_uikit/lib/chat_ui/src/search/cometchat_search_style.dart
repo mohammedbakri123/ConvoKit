@@ -123,11 +123,11 @@ class CometChatSearchStyle extends ThemeExtension<CometChatSearchStyle> {
   final TextStyle? seeMoreTextStyle;
 
   // Nested styles
-  final CometChatAvatarStyle? avatarStyle;
-  final CometChatStatusIndicatorStyle? statusIndicatorStyle;
-  final CometChatBadgeStyle? badgeStyle;
+  final ConvoKitAvatarStyle? avatarStyle;
+  final ConvoKitStatusIndicatorStyle? statusIndicatorStyle;
+  final ConvoKitBadgeStyle? badgeStyle;
   final CometChatMessageReceiptStyle? receiptStyle;
-  final CometChatDateStyle? dateStyle;
+  final ConvoKitDateStyle? dateStyle;
 
   static CometChatSearchStyle of(BuildContext context) =>
       const CometChatSearchStyle();
@@ -239,11 +239,11 @@ class CometChatSearchStyle extends ThemeExtension<CometChatSearchStyle> {
     TextStyle? errorStateSubTitleTextStyle,
     Color? seeMoreTextColor,
     TextStyle? seeMoreTextStyle,
-    CometChatAvatarStyle? avatarStyle,
-    CometChatStatusIndicatorStyle? statusIndicatorStyle,
-    CometChatBadgeStyle? badgeStyle,
+    ConvoKitAvatarStyle? avatarStyle,
+    ConvoKitStatusIndicatorStyle? statusIndicatorStyle,
+    ConvoKitBadgeStyle? badgeStyle,
     CometChatMessageReceiptStyle? receiptStyle,
-    CometChatDateStyle? dateStyle,
+    ConvoKitDateStyle? dateStyle,
   }) {
     return CometChatSearchStyle(
       backgroundColor: backgroundColor ?? this.backgroundColor,

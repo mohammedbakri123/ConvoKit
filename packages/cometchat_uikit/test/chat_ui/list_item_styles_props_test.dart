@@ -302,11 +302,11 @@ void main() {
               conversation: FakeConversation(),
               onItemClick: (_) {},
               style: const ConvoKitConversationListItemStyle(
-                avatarStyle: CometChatAvatarStyle(backgroundColor: _c1),
-                statusIndicatorStyle: CometChatStatusIndicatorStyle(
+                avatarStyle: ConvoKitAvatarStyle(backgroundColor: _c1),
+                statusIndicatorStyle: ConvoKitStatusIndicatorStyle(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                 ),
-                badgeStyle: CometChatBadgeStyle(backgroundColor: _c3),
+                badgeStyle: ConvoKitBadgeStyle(backgroundColor: _c3),
               ),
             ),
           ),
@@ -316,15 +316,15 @@ void main() {
 
       expect(
         tester
-            .widget<CometChatAvatar>(find.byType(CometChatAvatar))
+            .widget<ConvoKitAvatar>(find.byType(ConvoKitAvatar))
             .style
             ?.backgroundColor,
         _c1,
       );
       expect(
         tester
-            .widget<CometChatStatusIndicator>(
-              find.byType(CometChatStatusIndicator),
+            .widget<ConvoKitStatusIndicator>(
+              find.byType(ConvoKitStatusIndicator),
             )
             .style
             ?.borderRadius,
@@ -332,7 +332,7 @@ void main() {
       );
       expect(
         tester
-            .widget<CometChatBadge>(find.byType(CometChatBadge))
+            .widget<ConvoKitBadge>(find.byType(ConvoKitBadge))
             .style
             .backgroundColor,
         _c3,
@@ -347,7 +347,7 @@ void main() {
               conversation: FakeConversation(),
               onItemClick: (_) {},
               style: const ConvoKitConversationListItemStyle(
-                dateStyle: CometChatDateStyle(
+                dateStyle: ConvoKitDateStyle(
                   textColor: _c5,
                   textStyle: TextStyle(fontSize: 9),
                 ),
@@ -358,7 +358,7 @@ void main() {
         await tester.pump();
       });
 
-      final date = tester.widget<CometChatDate>(find.byType(CometChatDate));
+      final date = tester.widget<ConvoKitDate>(find.byType(ConvoKitDate));
       expect(date.style.textStyle?.color, _c5);
       expect(date.style.textStyle?.fontSize, 9);
     });
@@ -419,8 +419,8 @@ void main() {
     ) async {
       // The receipt only renders for an outgoing message, so the logged-in
       // user has to match the fixture's sender.
-      CometChatUIKit.loggedInUser = FakeUser(name: 'Bruno', uid: 'u2');
-      addTearDown(() => CometChatUIKit.loggedInUser = null);
+      ConvoKitUIKit.loggedInUser = FakeUser(name: 'Bruno', uid: 'u2');
+      addTearDown(() => ConvoKitUIKit.loggedInUser = null);
 
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
@@ -543,8 +543,8 @@ void main() {
               group: FakeGroup(),
               onItemClick: (_) {},
               style: const CometChatGroupListItemStyle(
-                avatarStyle: CometChatAvatarStyle(backgroundColor: _c1),
-                statusIndicatorStyle: CometChatStatusIndicatorStyle(
+                avatarStyle: ConvoKitAvatarStyle(backgroundColor: _c1),
+                statusIndicatorStyle: ConvoKitStatusIndicatorStyle(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                 ),
               ),
@@ -556,15 +556,15 @@ void main() {
 
       expect(
         tester
-            .widget<CometChatAvatar>(find.byType(CometChatAvatar))
+            .widget<ConvoKitAvatar>(find.byType(ConvoKitAvatar))
             .style
             ?.backgroundColor,
         _c1,
       );
       expect(
         tester
-            .widget<CometChatStatusIndicator>(
-              find.byType(CometChatStatusIndicator),
+            .widget<ConvoKitStatusIndicator>(
+              find.byType(ConvoKitStatusIndicator),
             )
             .style
             ?.borderRadius,

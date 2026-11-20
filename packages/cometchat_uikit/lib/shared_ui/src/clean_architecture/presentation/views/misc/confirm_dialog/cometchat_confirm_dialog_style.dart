@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-///[CometChatConfirmDialogStyle] is a data class that has styling-related properties
-///to customize the appearance of [CometChatConfirmDialog]
+///[ConvoKitConfirmDialogStyle] is a data class that has styling-related properties
+///to customize the appearance of [ConvoKitConfirmDialog]
 ///``` dart
-///CometChatConfirmDialogStyle(
+///ConvoKitConfirmDialogStyle(
 /// backgroundColor: Colors.white,
 /// shadow: Colors.black,
 /// confirmButtonTextStyle: TextStyle(
@@ -18,10 +18,10 @@ import 'package:flutter/material.dart';
 /// ),
 /// );
 /// ```
-class CometChatConfirmDialogStyle
-    extends ThemeExtension<CometChatConfirmDialogStyle> {
+class ConvoKitConfirmDialogStyle
+    extends ThemeExtension<ConvoKitConfirmDialogStyle> {
   ///confirm dialog style
-  const CometChatConfirmDialogStyle({
+  const ConvoKitConfirmDialogStyle({
     this.backgroundColor,
     this.border,
     this.borderRadius,
@@ -88,11 +88,11 @@ class CometChatConfirmDialogStyle
   ///[iconBackgroundColor] is a property that defines the background color of the icon
   final Color? iconBackgroundColor;
 
-  static CometChatConfirmDialogStyle of(BuildContext context) =>
-      const CometChatConfirmDialogStyle();
+  static ConvoKitConfirmDialogStyle of(BuildContext context) =>
+      const ConvoKitConfirmDialogStyle();
 
   @override
-  CometChatConfirmDialogStyle copyWith({
+  ConvoKitConfirmDialogStyle copyWith({
     Color? backgroundColor,
     Color? shadow,
     TextStyle? confirmButtonTextStyle,
@@ -110,7 +110,7 @@ class CometChatConfirmDialogStyle
     TextStyle? messageTextStyle,
     Color? messageTextColor,
   }) {
-    return CometChatConfirmDialogStyle(
+    return ConvoKitConfirmDialogStyle(
       backgroundColor: backgroundColor ?? this.backgroundColor,
       shadow: shadow ?? this.shadow,
       confirmButtonTextStyle:
@@ -136,7 +136,7 @@ class CometChatConfirmDialogStyle
     );
   }
 
-  CometChatConfirmDialogStyle merge(CometChatConfirmDialogStyle? style) {
+  ConvoKitConfirmDialogStyle merge(ConvoKitConfirmDialogStyle? style) {
     if (style == null) return this;
     return copyWith(
       backgroundColor: style.backgroundColor,
@@ -159,14 +159,14 @@ class CometChatConfirmDialogStyle
   }
 
   @override
-  CometChatConfirmDialogStyle lerp(
-    ThemeExtension<CometChatConfirmDialogStyle>? other,
+  ConvoKitConfirmDialogStyle lerp(
+    ThemeExtension<ConvoKitConfirmDialogStyle>? other,
     double t,
   ) {
-    if (other is! CometChatConfirmDialogStyle) {
+    if (other is! ConvoKitConfirmDialogStyle) {
       return this;
     }
-    return CometChatConfirmDialogStyle(
+    return ConvoKitConfirmDialogStyle(
       backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t),
       shadow: Color.lerp(shadow, other.shadow, t),
       confirmButtonTextStyle: TextStyle.lerp(

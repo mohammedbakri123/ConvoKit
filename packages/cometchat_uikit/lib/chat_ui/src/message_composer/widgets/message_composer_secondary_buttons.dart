@@ -66,12 +66,12 @@ class MessageComposerSecondaryButtons extends StatelessWidget {
   final BorderRadiusGeometry? secondaryButtonBorderRadius;
 
   /// Color palette for theming.
-  /// If not provided, uses CometChatThemeHelper.getColorPalette(context).
-  final CometChatColorPalette? colorPalette;
+  /// If not provided, uses ConvoKitThemeHelper.getColorPalette(context).
+  final ConvoKitColorPalette? colorPalette;
 
   /// Spacing configuration.
-  /// If not provided, uses CometChatThemeHelper.getSpacing(context).
-  final CometChatSpacing? spacing;
+  /// If not provided, uses ConvoKitThemeHelper.getSpacing(context).
+  final ConvoKitSpacing? spacing;
 
   /// LayerLink for positioning the attachment overlay relative to the button.
   ///
@@ -95,9 +95,9 @@ class MessageComposerSecondaryButtons extends StatelessWidget {
     }
 
     final effectiveColorPalette =
-        colorPalette ?? CometChatThemeHelper.getColorPalette(context);
+        colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
     final effectiveSpacing =
-        spacing ?? CometChatThemeHelper.getSpacing(context);
+        spacing ?? ConvoKitThemeHelper.getSpacing(context);
 
     final Color iconColor =
         secondaryButtonIconColor ??
@@ -123,8 +123,8 @@ class MessageComposerSecondaryButtons extends StatelessWidget {
 
   Widget _buildAttachmentButton(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
     Color iconColor,
   ) {
     Widget icon =

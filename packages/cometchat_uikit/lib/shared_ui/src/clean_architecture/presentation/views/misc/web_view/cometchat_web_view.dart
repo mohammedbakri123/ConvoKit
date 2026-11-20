@@ -37,7 +37,7 @@ class CometChatWebView extends StatefulWidget {
 class _CometChatWebViewState extends State<CometChatWebView> {
   @override
   Widget build(BuildContext context) {
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
     return Scaffold(
       appBar: AppBar(
         // The style's appBarColor was declared and read nowhere — the

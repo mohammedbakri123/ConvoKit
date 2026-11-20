@@ -148,7 +148,7 @@ class ConversationsRepositoryImpl implements ConversationsRepository {
               before.isNotEmpty && int.tryParse(before) != null;
           if (type == 'user' && before.isNotEmpty && !beforeIsNumericPrefix) {
             // "{uidA}_user_{uidB}" — choose the participant that is not us.
-            final ownUid = CometChatUIKit.loggedInUser?.uid ??
+            final ownUid = ConvoKitUIKit.loggedInUser?.uid ??
                 (await CometChatSdkAdapter.getLoggedInUser())?.uid;
             withId = (after == ownUid && before != ownUid) ? before : after;
           } else {
@@ -216,7 +216,7 @@ class ConversationsRepositoryImpl implements ConversationsRepository {
   @override
   Future<Result<User?>> getLoggedInUser() async {
     try {
-      final user = CometChatUIKit.loggedInUser ??
+      final user = ConvoKitUIKit.loggedInUser ??
           await CometChatSdkAdapter.getLoggedInUser();
       return Success(user);
     } on CometChatException catch (e) {

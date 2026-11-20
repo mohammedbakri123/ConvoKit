@@ -509,7 +509,7 @@ class ConversationsBloc extends Bloc<ConversationsEvent, ConversationsState>
 
   /// Register all CometChat UI Event listeners
   void _registerCCEventListeners() {
-    CometChatMessageEvents.addMessagesListener(
+    ConvoKitMessageEvents.addMessagesListener(
       _ccMessageListenerKey,
       _CCMessageEventListener(
         onCCMessageSentCallback: _handleCCMessageSent,
@@ -1388,7 +1388,7 @@ class ConversationsBloc extends Bloc<ConversationsEvent, ConversationsState>
         activeConversationId == message.conversationId) {
       return;
     }
-    CometChatUIKit.soundManager.play(
+    ConvoKitUIKit.soundManager.play(
       sound: activeConversationId == null
           ? Sound.incomingMessageFromOther
           : Sound.incomingMessage,
@@ -1690,7 +1690,7 @@ class ConversationsBloc extends Bloc<ConversationsEvent, ConversationsState>
   /// conversation-update setting from the dashboard, on when it is unknown
   /// (Android's shouldUpdateOnCallActivities). It was fetched and never read.
   static bool get _updateOnCallActivities =>
-      CometChatUIKit.conversationUpdateSettings?.callActivities ?? true;
+      ConvoKitUIKit.conversationUpdateSettings?.callActivities ?? true;
 
   /// Handle incoming call received
   void _handleIncomingCallReceived(Call call) {
@@ -2140,7 +2140,7 @@ class ConversationsBloc extends Bloc<ConversationsEvent, ConversationsState>
     CometChatSdkAdapter.removeConversationListener(_conversationListenerKey);
 
     // Remove CC UI Event listeners
-    CometChatMessageEvents.removeMessagesListener(_ccMessageListenerKey);
+    ConvoKitMessageEvents.removeMessagesListener(_ccMessageListenerKey);
     ConvoKitGroupEvents.removeGroupsListener(_ccGroupListenerKey);
     ConvoKitConversationEvents.removeConversationListListener(
       _ccConversationListenerKey,
@@ -2613,7 +2613,7 @@ class _ConversationConnectionListener with ConnectionListener {
 // ============================================================
 
 /// CC Message event listener for UI-triggered message events
-class _CCMessageEventListener with CometChatMessageEventListener {
+class _CCMessageEventListener with ConvoKitMessageEventListener {
   final void Function(BaseMessage, dynamic) onCCMessageSentCallback;
   final void Function(BaseMessage) onCCMessageReadCallback;
   final void Function(BaseMessage, dynamic) onCCMessageEditedCallback;

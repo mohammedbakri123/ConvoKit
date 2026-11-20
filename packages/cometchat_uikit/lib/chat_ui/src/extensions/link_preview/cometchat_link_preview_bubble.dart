@@ -53,13 +53,13 @@ class CometChatLinkPreviewBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final style =
-        CometChatThemeHelper.getTheme<CometChatLinkPreviewBubbleStyle>(
+        ConvoKitThemeHelper.getTheme<CometChatLinkPreviewBubbleStyle>(
           context: context,
           defaultTheme: CometChatLinkPreviewBubbleStyle.of,
         ).merge(this.style);
-    final typography = CometChatThemeHelper.getTypography(context);
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final spacing = CometChatThemeHelper.getSpacing(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
 
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 232),

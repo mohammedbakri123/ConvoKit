@@ -47,12 +47,12 @@ import '../sdk_user_b/messaging_actions.dart';
 /// E2E-003. The old test cannot fail unless the app is still on Chats with no
 /// login form 6s after tapping Logout, so a red run is a real signal that
 /// logout did not navigate. Source suspects, in order: (1)
-/// `CometChatUIKit.logout` wraps the host's `onSuccess` in a try/catch that
+/// `ConvoKitUIKit.logout` wraps the host's `onSuccess` in a try/catch that
 /// only logs in debug — and the sample app does its navigation INSIDE that
 /// callback (home_screen.dart `/logout`), so any throw there is swallowed and
 /// the user is stranded on Home with a dead session; (2) `onError` only
 /// debugPrints, so a failed logout is also silent. E2E-198 reports which of
-/// the two it was by checking `CometChatUIKit.loggedInUser` on failure.
+/// the two it was by checking `ConvoKitUIKit.loggedInUser` on failure.
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
@@ -82,7 +82,7 @@ void main() {
   }
 
   /// 'h:mm am|pm' exactly as the Kit renders a same-day time — both
-  /// `CometChatDate._getTime` (lower-cased "h:mm a") and the message list's
+  /// `ConvoKitDate._getTime` (lower-cased "h:mm a") and the message list's
   /// `_formatTime` produce this shape.
   String clock(DateTime t) {
     final h = t.hour > 12 ? t.hour - 12 : (t.hour == 0 ? 12 : t.hour);
@@ -167,9 +167,9 @@ void main() {
         }
 
         // cometchat_conversation_list_item.dart `_buildTimestamp`: a
-        // CometChatDate(dayDateTimeFormat) → same-day renders 'h:mm am|pm'.
+        // ConvoKitDate(dayDateTimeFormat) → same-day renders 'h:mm am|pm'.
         final dateText = find.descendant(
-          of: find.descendant(of: row, matching: find.byType(CometChatDate)),
+          of: find.descendant(of: row, matching: find.byType(ConvoKitDate)),
           matching: find.byType(Text),
         );
         expect(
@@ -205,7 +205,7 @@ void main() {
       // draws the time only then (`_getStatusInfoView`: message.sentAt != null).
       final expected = clocksAround(sentAround);
       List<String> captions() =>
-          (ScreenReach.textsInEnclosing<CometChatMessageBubble>(
+          (ScreenReach.textsInEnclosing<ConvoKitMessageBubble>(
                     tester,
                     text,
                     within: messageList,
@@ -237,10 +237,10 @@ void main() {
         await ScreenReach.goToTab(tester, 'Chats');
 
         final row = ScreenReach.conversationRowForUser(bUid);
-        // Scoped to THE row: `_buildUnreadBadge` → CometChatBadge(count), which
+        // Scoped to THE row: `_buildUnreadBadge` → ConvoKitBadge(count), which
         // renders Text('$count') only when count > 0.
         final badgeText = find.descendant(
-          of: find.descendant(of: row, matching: find.byType(CometChatBadge)),
+          of: find.descendant(of: row, matching: find.byType(ConvoKitBadge)),
           matching: find.byType(Text),
         );
         if (!await pumpUntilFound(
@@ -384,13 +384,13 @@ void main() {
       );
       if (!onLogin) {
         // Tell the two failure modes apart for whoever reads the red run.
-        final sessionEnded = CometChatUIKit.loggedInUser == null;
+        final sessionEnded = ConvoKitUIKit.loggedInUser == null;
         fail(
           sessionEnded
               ? 'APP BUG: the SDK session ended (loggedInUser == null) but the '
                     'app never navigated to LoginScreen — the navigation inside '
                     'the logout onSuccess callback did not happen (any exception '
-                    'there is swallowed by CometChatUIKit.logout).'
+                    'there is swallowed by ConvoKitUIKit.logout).'
               : 'Logout never completed: 25s after tapping Logout the SDK '
                     'still has a logged-in user and the app is still on Home '
                     '(CometChat.logout failed or never returned; the sample app '
@@ -410,7 +410,7 @@ void main() {
         reason: 'The login form should be ready for the next user',
       );
       expect(
-        CometChatUIKit.loggedInUser,
+        ConvoKitUIKit.loggedInUser,
         isNull,
         reason: 'Logout should end the SDK session, not only navigate',
       );

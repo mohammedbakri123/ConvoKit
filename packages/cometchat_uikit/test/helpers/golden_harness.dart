@@ -31,7 +31,7 @@ Widget goldenThemed({
       supportedLocales: const [Locale('en')],
       home: Builder(
         builder: (context) => Scaffold(
-          backgroundColor: CometChatThemeHelper.getColorPalette(
+          backgroundColor: ConvoKitThemeHelper.getColorPalette(
             context,
           ).background1,
           body: Align(alignment: alignment, child: child),

@@ -146,7 +146,7 @@ class _CometChatNotificationFeedState extends State<CometChatNotificationFeed> {
     // Build a card theme override from the UIKit color palette so card
     // renderer fallback colors match the UIKit's light/dark theme.
     if (widget.cardThemeOverride == null) {
-      final colorPalette = CometChatThemeHelper.getColorPalette(context);
+      final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
       _resolvedCardThemeOverride = CometChatCardThemeOverride(
         textColor: _colorValueFromPalette(colorPalette.textPrimary),
         secondaryTextColor: _colorValueFromPalette(colorPalette.textSecondary),
@@ -483,15 +483,15 @@ class _CometChatNotificationFeedState extends State<CometChatNotificationFeed> {
   }
 
   Widget _buildFeedItemCard(NotificationFeedItem item) {
-    // Resolve card theme mode from CometChatThemeMode when not explicitly set.
+    // Resolve card theme mode from ConvoKitThemeMode when not explicitly set.
     // CometChatCardView.auto uses MediaQuery.platformBrightnessOf which doesn't
-    // respect CometChatThemeMode forced light/dark. Map it explicitly.
+    // respect ConvoKitThemeMode forced light/dark. Map it explicitly.
     final CometChatCardThemeMode resolvedCardThemeMode;
     if (widget.cardThemeMode != null) {
       resolvedCardThemeMode = widget.cardThemeMode!;
-    } else if (CometChatThemeMode.mode == ThemeMode.light) {
+    } else if (ConvoKitThemeMode.mode == ThemeMode.light) {
       resolvedCardThemeMode = CometChatCardThemeMode.light;
-    } else if (CometChatThemeMode.mode == ThemeMode.dark) {
+    } else if (ConvoKitThemeMode.mode == ThemeMode.dark) {
       resolvedCardThemeMode = CometChatCardThemeMode.dark;
     } else {
       resolvedCardThemeMode = CometChatCardThemeMode.auto;

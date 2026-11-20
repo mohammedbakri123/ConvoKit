@@ -20,14 +20,14 @@ class DeletedBubbleFactory extends BubbleFactory<BaseMessage> {
     BuildContext context,
     BaseMessage message,
     BubbleAlignment alignment, {
-    CometChatColorPalette? colorPalette,
-    CometChatTypography? typography,
-    CometChatSpacing? spacing,
+    ConvoKitColorPalette? colorPalette,
+    ConvoKitTypography? typography,
+    ConvoKitSpacing? spacing,
   }) {
     final palette =
-        colorPalette ?? CometChatThemeHelper.getColorPalette(context);
-    final typo = typography ?? CometChatThemeHelper.getTypography(context);
-    final space = spacing ?? CometChatThemeHelper.getSpacing(context);
+        colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
+    final typo = typography ?? ConvoKitThemeHelper.getTypography(context);
+    final space = spacing ?? ConvoKitThemeHelper.getSpacing(context);
 
     final isOutgoing = alignment == BubbleAlignment.right;
     final textColor = isOutgoing ? palette.white : palette.neutral600;
@@ -40,7 +40,7 @@ class DeletedBubbleFactory extends BubbleFactory<BaseMessage> {
           Icon(Icons.block, size: 16, color: iconColor ?? textColor),
           SizedBox(width: space.padding1 ?? 4),
           // Flexible so the label shrinks rather than overflowing the row.
-          // CometChatDeletedBubble had the same layout and 6.2.0 fixed it
+          // ConvoKitDeletedBubble had the same layout and 6.2.0 fixed it
           // under A11Y3; this factory is the second copy the fix missed, and
           // it is the path the message list actually renders through. Bites on
           // a longer localized string or a large system text size.

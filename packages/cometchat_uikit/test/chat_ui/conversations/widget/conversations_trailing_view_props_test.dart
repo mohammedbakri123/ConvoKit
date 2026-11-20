@@ -3,8 +3,8 @@
 ///
 /// [ConversationsTrailingView] is exported but nothing in lib builds it, so
 /// the matrix renders it standalone: the last-message timestamp
-/// ([CometChatDate]), an optional pin and the unread badge
-/// ([CometChatBadge]).
+/// ([ConvoKitDate]), an optional pin and the unread badge
+/// ([ConvoKitBadge]).
 ///
 /// How the matrix works. [_matrix] is a table. Each row names the prop it
 /// verifies, the conversation it renders, the values it sets (sentinels no
@@ -158,7 +158,7 @@ class _SentinelDates extends DateTimeFormatterCallback {
 final _alice = _FakeUser('u1', 'Alice');
 final _bob = _FakeUser('u2', 'Bob');
 
-/// Long past, so CometChatDate prints it as "d MMM, yyyy" whatever today is.
+/// Long past, so ConvoKitDate prints it as "d MMM, yyyy" whatever today is.
 final _sent = DateTime(2020, 1, 2, 10, 30);
 const _sentText = '2 Jan, 2020';
 
@@ -193,21 +193,21 @@ Conversation _agent(String role) =>
 
 // Baseline tokens: what every row renders with unless it overrides one.
 const _style = ConvoKitConversationsStyle();
-const _datesStyle = CometChatDateStyle();
+const _datesStyle = ConvoKitDateStyle();
 
 const _kTextSecondary = Color(0xFF727272);
 const _kIconSecondary = Color(0xFFA1A1A1);
 const _kTransparent = Color(0x00000000);
 
-final _palette = CometChatColorPalette(
+final _palette = ConvoKitColorPalette(
   textSecondary: _kTextSecondary,
   iconSecondary: _kIconSecondary,
   transparent: _kTransparent,
 );
 
-final _spacing = CometChatSpacing(padding: 2, padding1: 4, padding2: 8);
+final _spacing = ConvoKitSpacing(padding: 2, padding1: 4, padding2: 8);
 
-const _typography = CometChatTypography(
+const _typography = ConvoKitTypography(
   caption1: CometChatTextStyleCaption1(regular: TextStyle(fontSize: 12)),
 );
 
@@ -222,7 +222,7 @@ final _kDateBorder = Border.all(color: _kDateBorderColor, width: 1.5);
 const _kDateRadius = BorderRadius.all(Radius.circular(6.5));
 const _kThemeDateText = Color(0xFF8A7B6C);
 
-const _kTypography = CometChatTypography(
+const _kTypography = ConvoKitTypography(
   caption1: CometChatTextStyleCaption1(
     regular: TextStyle(
       fontSize: 13.75,
@@ -257,10 +257,10 @@ class _Props {
 
   final Conversation? conversation;
   final ConvoKitConversationsStyle? style;
-  final CometChatDateStyle? datesStyle;
-  final CometChatColorPalette? colorPalette;
-  final CometChatSpacing? spacing;
-  final CometChatTypography? typography;
+  final ConvoKitDateStyle? datesStyle;
+  final ConvoKitColorPalette? colorPalette;
+  final ConvoKitSpacing? spacing;
+  final ConvoKitTypography? typography;
   final String Function(Conversation)? datePattern;
   final EdgeInsets? datePadding;
   final double? dateHeight;
@@ -356,7 +356,7 @@ Finder _inView(Finder finder) => find.descendant(
 int _count(Finder finder) => finder.evaluate().length;
 
 Finder _dateText() => find.descendant(
-  of: find.byType(CometChatDate),
+  of: find.byType(ConvoKitDate),
   matching: find.byType(Text),
 );
 
@@ -384,7 +384,7 @@ BoxDecoration _box(WidgetTester tester, Type type) =>
 /// The badge count as painted, or null when no count is shown.
 String? _badgeCount(WidgetTester tester) {
   final text = find.descendant(
-    of: find.byType(CometChatBadge),
+    of: find.byType(ConvoKitBadge),
     matching: find.byType(Text),
   );
   return _count(text) == 0 ? null : tester.widget<Text>(text).data;
@@ -416,7 +416,7 @@ final _matrix = <_Row>[
     'conversation',
     'no last message, no timestamp',
     set: () => _Props(conversation: _chat(noMessage: true)),
-    probe: (t) => [_count(find.byType(CometChatDate)), _when(t)],
+    probe: (t) => [_count(find.byType(ConvoKitDate)), _when(t)],
     before: [1, _sentText],
     expected: [0, null],
   ),
@@ -441,8 +441,8 @@ final _matrix = <_Row>[
     'an AI agent (aiRole) conversation gets no timestamp and no badge',
     set: () => _Props(conversation: _agent(AIConstants.aiRole)),
     probe: (t) => [
-      _count(find.byType(CometChatDate)),
-      _count(find.byType(CometChatBadge)),
+      _count(find.byType(ConvoKitDate)),
+      _count(find.byType(ConvoKitBadge)),
     ],
     before: [1, 1],
     expected: [0, 0],
@@ -452,8 +452,8 @@ final _matrix = <_Row>[
     "an AI agent with the literal role 'ai' is hidden too",
     set: () => _Props(conversation: _agent('ai')),
     probe: (t) => [
-      _count(find.byType(CometChatDate)),
-      _count(find.byType(CometChatBadge)),
+      _count(find.byType(ConvoKitDate)),
+      _count(find.byType(ConvoKitBadge)),
     ],
     before: [1, 1],
     expected: [0, 0],
@@ -465,18 +465,18 @@ final _matrix = <_Row>[
     'badgeStyle colours the unread badge and its count',
     set: () => const _Props(
       style: ConvoKitConversationsStyle(
-        badgeStyle: CometChatBadgeStyle(
+        badgeStyle: ConvoKitBadgeStyle(
           backgroundColor: _kBadgeBackground,
           textColor: _kBadgeText,
         ),
       ),
     ),
     probe: (t) => [
-      _box(t, CometChatBadge).color,
+      _box(t, ConvoKitBadge).color,
       t
           .widget<Text>(
             find.descendant(
-              of: find.byType(CometChatBadge),
+              of: find.byType(ConvoKitBadge),
               matching: find.byType(Text),
             ),
           )
@@ -491,9 +491,9 @@ final _matrix = <_Row>[
     'datesStyle',
     'backgroundColor fills the date chip',
     set: () => const _Props(
-      datesStyle: CometChatDateStyle(backgroundColor: _kDateBackground),
+      datesStyle: ConvoKitDateStyle(backgroundColor: _kDateBackground),
     ),
-    probe: (t) => _box(t, CometChatDate).color,
+    probe: (t) => _box(t, ConvoKitDate).color,
     before: _kTransparent,
     expected: _kDateBackground,
   ),
@@ -501,7 +501,7 @@ final _matrix = <_Row>[
     'datesStyle',
     'textColor colours the timestamp, over a textStyle colour',
     set: () => const _Props(
-      datesStyle: CometChatDateStyle(
+      datesStyle: ConvoKitDateStyle(
         textColor: _kDateText,
         textStyle: TextStyle(color: _kBadgeText),
       ),
@@ -512,10 +512,10 @@ final _matrix = <_Row>[
   ),
   _Row(
     'datesStyle',
-    'textColor is forwarded to CometChatDate, so it beats a themed textColor',
-    themeExtensions: const [CometChatDateStyle(textColor: _kThemeDateText)],
+    'textColor is forwarded to ConvoKitDate, so it beats a themed textColor',
+    themeExtensions: const [ConvoKitDateStyle(textColor: _kThemeDateText)],
     set: () =>
-        const _Props(datesStyle: CometChatDateStyle(textColor: _kDateText)),
+        const _Props(datesStyle: ConvoKitDateStyle(textColor: _kDateText)),
     probe: (t) => _whenStyle(t)?.color,
     before: _kThemeDateText,
     expected: _kDateText,
@@ -524,7 +524,7 @@ final _matrix = <_Row>[
     'datesStyle',
     'textStyle sizes the timestamp',
     set: () => const _Props(
-      datesStyle: CometChatDateStyle(
+      datesStyle: ConvoKitDateStyle(
         textStyle: TextStyle(fontSize: 15.25, fontStyle: FontStyle.italic),
       ),
     ),
@@ -535,8 +535,8 @@ final _matrix = <_Row>[
   _Row(
     'datesStyle',
     'border outlines the date chip',
-    set: () => _Props(datesStyle: CometChatDateStyle(border: _kDateBorder)),
-    probe: (t) => _box(t, CometChatDate).border,
+    set: () => _Props(datesStyle: ConvoKitDateStyle(border: _kDateBorder)),
+    probe: (t) => _box(t, ConvoKitDate).border,
     before: Border.all(width: 0, color: Colors.transparent),
     expected: _kDateBorder,
   ),
@@ -544,9 +544,9 @@ final _matrix = <_Row>[
     'datesStyle',
     'borderRadius rounds the date chip',
     set: () => const _Props(
-      datesStyle: CometChatDateStyle(borderRadius: _kDateRadius),
+      datesStyle: ConvoKitDateStyle(borderRadius: _kDateRadius),
     ),
-    probe: (t) => _box(t, CometChatDate).borderRadius,
+    probe: (t) => _box(t, ConvoKitDate).borderRadius,
     expected: _kDateRadius,
   ),
 
@@ -555,7 +555,7 @@ final _matrix = <_Row>[
     'colorPalette',
     'transparent fills the date chip when datesStyle sets no background',
     set: () => _Props(colorPalette: _palette.copyWith(transparent: _kPalette)),
-    probe: (t) => _box(t, CometChatDate).color,
+    probe: (t) => _box(t, ConvoKitDate).color,
     before: _kTransparent,
     expected: _kPalette,
   ),
@@ -651,7 +651,7 @@ final _matrix = <_Row>[
     'datePadding',
     'insets the timestamp inside its chip; unset, there is none',
     set: () => const _Props(datePadding: EdgeInsets.fromLTRB(9, 5, 3, 1)),
-    probe: (t) => _inset(t, find.byType(CometChatDate), _dateText()),
+    probe: (t) => _inset(t, find.byType(ConvoKitDate), _dateText()),
     before: Offset.zero,
     expected: const Offset(9, 5),
   ),
@@ -659,27 +659,27 @@ final _matrix = <_Row>[
     'dateHeight',
     'sets the laid-out height of the date chip',
     set: () => const _Props(dateHeight: 33),
-    probe: (t) => t.getSize(find.byType(CometChatDate)).height,
+    probe: (t) => t.getSize(find.byType(ConvoKitDate)).height,
     expected: 33.0,
   ),
   _Row(
     'dateWidth',
     'sets the laid-out width of the date chip',
     set: () => const _Props(dateWidth: 59),
-    probe: (t) => t.getSize(find.byType(CometChatDate)).width,
+    probe: (t) => t.getSize(find.byType(ConvoKitDate)).width,
     expected: 59.0,
   ),
   _Row(
     'dateBackgroundIsTransparent',
     'true clears the date background',
     unflipped: () => const _Props(
-      datesStyle: CometChatDateStyle(backgroundColor: _kDateBackground),
+      datesStyle: ConvoKitDateStyle(backgroundColor: _kDateBackground),
     ),
     set: () => const _Props(
-      datesStyle: CometChatDateStyle(backgroundColor: _kDateBackground),
+      datesStyle: ConvoKitDateStyle(backgroundColor: _kDateBackground),
       dateBackgroundIsTransparent: true,
     ),
-    probe: (t) => _box(t, CometChatDate).color,
+    probe: (t) => _box(t, ConvoKitDate).color,
     before: _kDateBackground,
     expected: _kDateBackground.withValues(alpha: 0),
   ),
@@ -687,14 +687,14 @@ final _matrix = <_Row>[
     'dateBackgroundIsTransparent',
     'explicit false keeps the background true cleared',
     unflipped: () => const _Props(
-      datesStyle: CometChatDateStyle(backgroundColor: _kDateBackground),
+      datesStyle: ConvoKitDateStyle(backgroundColor: _kDateBackground),
       dateBackgroundIsTransparent: true,
     ),
     set: () => const _Props(
-      datesStyle: CometChatDateStyle(backgroundColor: _kDateBackground),
+      datesStyle: ConvoKitDateStyle(backgroundColor: _kDateBackground),
       dateBackgroundIsTransparent: false,
     ),
-    probe: (t) => _box(t, CometChatDate).color,
+    probe: (t) => _box(t, ConvoKitDate).color,
     before: _kDateBackground.withValues(alpha: 0),
     expected: _kDateBackground,
   ),
@@ -704,7 +704,7 @@ final _matrix = <_Row>[
     'badgeWidth',
     'sets the laid-out width of the badge',
     set: () => const _Props(badgeWidth: 43),
-    probe: (t) => t.getSize(find.byType(CometChatBadge)).width,
+    probe: (t) => t.getSize(find.byType(ConvoKitBadge)).width,
     before: 16.0,
     expected: 43.0,
   ),
@@ -712,7 +712,7 @@ final _matrix = <_Row>[
     'badgeHeight',
     'sets the laid-out height of the badge; unset, it is 20',
     set: () => const _Props(badgeHeight: 29),
-    probe: (t) => t.getSize(find.byType(CometChatBadge)).height,
+    probe: (t) => t.getSize(find.byType(ConvoKitBadge)).height,
     before: 20.0,
     expected: 29.0,
   ),
@@ -722,9 +722,9 @@ final _matrix = <_Row>[
     set: () => const _Props(badgePadding: EdgeInsets.only(left: 5, top: 3)),
     probe: (t) => _inset(
       t,
-      find.byType(CometChatBadge),
+      find.byType(ConvoKitBadge),
       find.descendant(
-        of: find.byType(CometChatBadge),
+        of: find.byType(ConvoKitBadge),
         matching: find.byType(FittedBox),
       ),
     ),

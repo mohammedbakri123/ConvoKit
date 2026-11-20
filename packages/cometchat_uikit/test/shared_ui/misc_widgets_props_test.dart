@@ -26,7 +26,7 @@ const _c3 = Color(0xFF303132);
 
 /// Deliberately unlike any real theme value, so an assertion can only pass if
 /// the widget read the object it was handed.
-const _typography = CometChatTypography(
+const _typography = ConvoKitTypography(
   heading4: CometChatTextStyleHeading4(
     medium: TextStyle(fontSize: 19, fontWeight: FontWeight.w900),
   ),
@@ -37,7 +37,7 @@ const _typography = CometChatTypography(
   body: CometChatTextStyleBody(regular: TextStyle(fontSize: 33)),
 );
 
-CometChatSpacing _spacing() => CometChatSpacing(
+ConvoKitSpacing _spacing() => ConvoKitSpacing(
   padding: 1,
   padding1: 3,
   padding2: 6,
@@ -85,7 +85,7 @@ void main() {
             width: 320,
             padding: const EdgeInsets.all(9),
             margin: const EdgeInsets.all(5),
-            colorPalette: CometChatThemeHelper.getColorPalette(
+            colorPalette: ConvoKitThemeHelper.getColorPalette(
               context,
             ).copyWith(background1: _c1, textPrimary: _c2),
             typography: _typography,
@@ -204,8 +204,8 @@ void main() {
       );
       await tester.pump();
 
-      final avatar = tester.widget<CometChatAvatar>(
-        find.byType(CometChatAvatar),
+      final avatar = tester.widget<ConvoKitAvatar>(
+        find.byType(ConvoKitAvatar),
       );
       expect(
         avatar.image,
@@ -245,18 +245,18 @@ void main() {
       await tester.pump();
 
       expect(find.text('avatar-slot'), findsOneWidget, reason: 'avatarView');
-      expect(find.byType(CometChatAvatar), findsNothing);
+      expect(find.byType(ConvoKitAvatar), findsNothing);
       expect(find.text('title-slot'), findsOneWidget, reason: 'titleView');
       expect(find.text('Quarterly planning'), findsNothing);
     });
   });
 
   // ===========================================================================
-  group('CometChatMessageBubble', () {
+  group('ConvoKitMessageBubble', () {
     testWidgets('the slots, margin and the two paddings apply', (tester) async {
       await tester.pumpWidget(
         _host(
-          (context) => CometChatMessageBubble(
+          (context) => ConvoKitMessageBubble(
             alignment: BubbleAlignment.right,
             contentView: const Text('content-slot'),
             replyView: const Text('reply-slot'),
@@ -306,10 +306,10 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _host(
-          (context) => CometChatMessageBubble(
+          (context) => ConvoKitMessageBubble(
             alignment: BubbleAlignment.left,
             contentView: const Text('content-slot'),
-            colorPalette: CometChatThemeHelper.getColorPalette(
+            colorPalette: ConvoKitThemeHelper.getColorPalette(
               context,
             ).copyWith(neutral300: _c3),
             spacing: _spacing(),
@@ -617,12 +617,12 @@ void main() {
 
   // ===========================================================================
   group('the bubbles', () {
-    testWidgets('CometChatActionBubble takes the icon, size and padding', (
+    testWidgets('ConvoKitActionBubble takes the icon, size and padding', (
       tester,
     ) async {
       await tester.pumpWidget(
         _wrap(
-          const CometChatActionBubble(
+          const ConvoKitActionBubble(
             text: 'Alexandra added Dimitrios',
             leadingIcon: Icon(Icons.info_outline),
             height: 40,
@@ -651,12 +651,12 @@ void main() {
       expect(bubble.constraints?.maxWidth, 260, reason: 'width');
     });
 
-    testWidgets('CometChatDeletedBubble takes margin and padding', (
+    testWidgets('ConvoKitDeletedBubble takes margin and padding', (
       tester,
     ) async {
       await tester.pumpWidget(
         _wrap(
-          const CometChatDeletedBubble(
+          const ConvoKitDeletedBubble(
             margin: EdgeInsets.all(5),
             padding: EdgeInsets.all(9),
           ),
@@ -682,7 +682,7 @@ void main() {
     test('the props no build method consults', () {
       // `message` is documented as the action message object and read nowhere;
       // the bubble renders `text` only. ENG-39129.
-      const CometChatActionBubble(text: 'Group created', message: 'raw');
+      const ConvoKitActionBubble(text: 'Group created', message: 'raw');
 
       // `from` and `to` are documented as the selector's window; the slot list
       // is generated from `availableSlots` alone. ENG-39129.

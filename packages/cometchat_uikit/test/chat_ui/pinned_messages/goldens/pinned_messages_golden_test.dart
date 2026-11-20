@@ -50,11 +50,11 @@ const _size = Size(375, 420);
 
 void main() {
   setUp(() async {
-    CometChatUIKit.loggedInUser = _me;
+    ConvoKitUIKit.loggedInUser = _me;
     await registerFakeMessageStore();
   });
   tearDown(() async {
-    CometChatUIKit.loggedInUser = null;
+    ConvoKitUIKit.loggedInUser = null;
     await clearFakeMessageStore();
   });
 

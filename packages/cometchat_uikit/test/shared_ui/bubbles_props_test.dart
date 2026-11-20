@@ -164,8 +164,8 @@ void main() {
                 backgroundColor: Color(0xFF556677),
                 borderRadius: BorderRadius.all(Radius.circular(21)),
               ),
-              colorPalette: CometChatColorPalette(primary: Color(0xFF010203)),
-              spacing: CometChatSpacing(padding2: 6),
+              colorPalette: ConvoKitColorPalette(primary: Color(0xFF010203)),
+              spacing: ConvoKitSpacing(padding2: 6),
             ),
           ),
         );

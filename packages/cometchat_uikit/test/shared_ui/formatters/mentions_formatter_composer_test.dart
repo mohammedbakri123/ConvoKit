@@ -97,7 +97,7 @@ class _FakeUsersRequestBuilder extends cc.UsersRequestBuilder {
 
 /// Records the panel events the formatter emits, and can be made to throw so
 /// that the formatter's own error handling is exercised.
-class _PanelSpy with CometChatUIEventListener {
+class _PanelSpy with ConvoKitUIEventListener {
   final List<CustomUIPosition> shown = [];
   final List<CustomUIPosition> hidden = [];
   final List<WidgetBuilder> builders = [];
@@ -186,14 +186,14 @@ void main() {
   late _PanelSpy panel;
 
   setUp(() {
-    CometChatUIKit.loggedInUser = _me;
+    ConvoKitUIKit.loggedInUser = _me;
     panel = _PanelSpy();
-    CometChatUIEvents.addUiListener('mentions-composer-test', panel);
+    ConvoKitUIEvents.addUiListener('mentions-composer-test', panel);
   });
 
   tearDown(() {
-    CometChatUIEvents.removeUiListener('mentions-composer-test');
-    CometChatUIKit.loggedInUser = null;
+    ConvoKitUIEvents.removeUiListener('mentions-composer-test');
+    ConvoKitUIKit.loggedInUser = null;
   });
 
   // ==========================================================================

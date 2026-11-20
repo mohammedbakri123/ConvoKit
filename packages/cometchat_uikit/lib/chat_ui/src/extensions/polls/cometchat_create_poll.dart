@@ -50,9 +50,9 @@ class CometChatCreatePoll extends StatefulWidget {
 }
 
 class _CometChatCreatePollState extends State<CometChatCreatePoll> {
-  late CometChatColorPalette colorPalette;
-  late CometChatTypography typography;
-  late CometChatSpacing spacing;
+  late ConvoKitColorPalette colorPalette;
+  late ConvoKitTypography typography;
+  late ConvoKitSpacing spacing;
 
   String _question = "";
   final List<String> _answers = [];
@@ -89,9 +89,9 @@ class _CometChatCreatePollState extends State<CometChatCreatePoll> {
     super.didChangeDependencies();
 
     // Initialize typography, color palette, and spacing
-    typography = CometChatThemeHelper.getTypography(context);
-    colorPalette = CometChatThemeHelper.getColorPalette(context);
-    spacing = CometChatThemeHelper.getSpacing(context);
+    typography = ConvoKitThemeHelper.getTypography(context);
+    colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    spacing = ConvoKitThemeHelper.getSpacing(context);
 
     // Create the initial list of text fields
     textFields = List.generate(
@@ -415,9 +415,9 @@ class _CometChatCreatePollState extends State<CometChatCreatePoll> {
   // Header Widget
   Widget _buildHeader(
     BuildContext context,
-    CometChatSpacing spacing,
-    CometChatTypography typography,
-    CometChatColorPalette colorPalette,
+    ConvoKitSpacing spacing,
+    ConvoKitTypography typography,
+    ConvoKitColorPalette colorPalette,
   ) {
     return Column(
       children: [
@@ -453,9 +453,9 @@ class _CometChatCreatePollState extends State<CometChatCreatePoll> {
 
   // Questions TextField
   Widget _buildQuestionInput(
-    CometChatTypography typography,
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
+    ConvoKitTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -477,7 +477,7 @@ class _CometChatCreatePollState extends State<CometChatCreatePoll> {
           padding: EdgeInsets.only(bottom: spacing.padding5 ?? 0),
           child: TextFormField(
             textCapitalization: TextCapitalization.sentences,
-            keyboardAppearance: CometChatThemeHelper.getBrightness(context),
+            keyboardAppearance: ConvoKitThemeHelper.getBrightness(context),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "";
@@ -548,7 +548,7 @@ class _CometChatCreatePollState extends State<CometChatCreatePoll> {
               padding: EdgeInsets.only(bottom: spacing.padding2 ?? 0),
               child: TextFormField(
                 textCapitalization: TextCapitalization.sentences,
-                keyboardAppearance: CometChatThemeHelper.getBrightness(context),
+                keyboardAppearance: ConvoKitThemeHelper.getBrightness(context),
                 key: ValueKey('$index'),
                 controller: textEditingControllers[index],
                 validator: (value) {
@@ -757,8 +757,8 @@ class _CometChatCreatePollState extends State<CometChatCreatePoll> {
 ///[showCometChatCreatePoll] is a function used to show the create poll widget
 Future<String?> showCometChatCreatePoll({
   required BuildContext context,
-  required CometChatColorPalette colorPalette,
-  required CometChatSpacing spacing,
+  required ConvoKitColorPalette colorPalette,
+  required ConvoKitSpacing spacing,
   String? uid,
   String? guid,
   String? title,

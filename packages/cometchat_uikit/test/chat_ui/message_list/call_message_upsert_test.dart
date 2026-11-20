@@ -28,7 +28,7 @@ import 'package:convokit/chat_ui/src/message_list/domain/usecases/mark_as_delive
 import 'package:convokit/chat_ui/src/message_list/domain/usecases/mark_as_read_usecase.dart';
 import 'package:convokit/chat_ui/src/message_list/domain/usecases/mark_as_unread_usecase.dart';
 import 'package:convokit/cometchat_chat_uikit.dart'
-    show CometChatCallEvents, CometChatUIKit;
+    show CometChatCallEvents, ConvoKitUIKit;
 import 'package:convokit/shared_ui/src/clean_architecture/core/result.dart';
 import 'package:cometchat_sdk/cometchat_sdk.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -119,7 +119,7 @@ void main() {
   });
 
   setUp(() {
-    CometChatUIKit.loggedInUser = _meUser;
+    ConvoKitUIKit.loggedInUser = _meUser;
     repo = _MockRepo();
     when(
       () => repo.getLoggedInUser(),
@@ -150,7 +150,7 @@ void main() {
     ).thenAnswer((_) async => const Success(null));
   });
 
-  tearDown(() => CometChatUIKit.loggedInUser = null);
+  tearDown(() => ConvoKitUIKit.loggedInUser = null);
 
   group('a call keeps one bubble while its status moves on', () {
     test(

@@ -46,7 +46,7 @@ final _platform = Group(
   type: GroupTypeConstants.private,
 );
 
-// Fixed, and old enough that CometChatDate never renders them relative to the
+// Fixed, and old enough that ConvoKitDate never renders them relative to the
 // day the test runs. Noon, so no timezone moves them across a day boundary.
 final _march = DateTime(2024, 3, 14, 12);
 final _february = DateTime(2024, 2, 2, 12);
@@ -252,8 +252,8 @@ void _screen(
 }
 
 void main() {
-  setUp(() => CometChatUIKit.loggedInUser = _me);
-  tearDown(() => CometChatUIKit.loggedInUser = null);
+  setUp(() => ConvoKitUIKit.loggedInUser = _me);
+  tearDown(() => ConvoKitUIKit.loggedInUser = null);
 
   AlchemistConfig.runWithConfig(
     config: goldenConfig(),

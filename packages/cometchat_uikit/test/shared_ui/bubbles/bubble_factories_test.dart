@@ -372,7 +372,7 @@ void main() {
       // The factory builds its own Row — Icon, gap, Text — and the Text had no
       // flex factor, so it could not shrink and the Row overflowed.
       //
-      // CometChatDeletedBubble had exactly this layout and exactly this bug;
+      // ConvoKitDeletedBubble had exactly this layout and exactly this bug;
       // 6.2.0 fixed it by wrapping the label in a Flexible (A11Y3). The
       // factory was a second copy of the layout the fix never reached, which
       // mattered because the message list renders deleted messages through the
@@ -700,9 +700,9 @@ void main() {
           context,
           message,
           BubbleAlignment.right,
-          colorPalette: CometChatThemeHelper.getColorPalette(context),
-          typography: CometChatThemeHelper.getTypography(context),
-          spacing: CometChatThemeHelper.getSpacing(context),
+          colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+          typography: ConvoKitThemeHelper.getTypography(context),
+          spacing: ConvoKitThemeHelper.getSpacing(context),
         ),
       );
 

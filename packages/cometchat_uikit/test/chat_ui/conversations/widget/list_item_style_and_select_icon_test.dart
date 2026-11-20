@@ -105,7 +105,7 @@ const _fullItemStyle = ListItemStyle(
   titleStyle: TextStyle(color: _kTitle, fontSize: 19),
 );
 
-final _palette = CometChatColorPalette(
+final _palette = ConvoKitColorPalette(
   primary: const Color(0xFF6852D6),
   textPrimary: const Color(0xFF141414),
   textSecondary: const Color(0xFF727272),
@@ -262,13 +262,13 @@ void main() {
               child: ConversationsList(
                 conversationsBloc: _loadedBloc(),
                 style: const ConvoKitConversationsStyle(),
-                statusStyle: const CometChatStatusIndicatorStyle(),
+                statusStyle: const ConvoKitStatusIndicatorStyle(),
                 typingStyle: const CometChatTypingIndicatorStyle(),
                 receiptStyle: CometChatMessageReceiptStyle(),
-                datesStyle: const CometChatDateStyle(),
+                datesStyle: const ConvoKitDateStyle(),
                 colorPalette: _palette,
-                spacing: CometChatSpacing(),
-                typography: const CometChatTypography(),
+                spacing: ConvoKitSpacing(),
+                typography: const ConvoKitTypography(),
                 listItemStyle: _fullItemStyle,
               ),
             ),

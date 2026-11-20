@@ -143,14 +143,14 @@ class _ConvoKitPinnedMessagesState extends State<ConvoKitPinnedMessages> {
       onUpdated: _applyUpdated,
       onRemoved: _applyRemoved,
     );
-    CometChatMessageEvents.addMessagesListener(_listenerId, _kitEvents);
+    ConvoKitMessageEvents.addMessagesListener(_listenerId, _kitEvents);
     CometChatSdkAdapter.addMessageListener(_listenerId, _sdkEvents);
     _fetchAll();
   }
 
   @override
   void dispose() {
-    CometChatMessageEvents.removeMessagesListener(_listenerId);
+    ConvoKitMessageEvents.removeMessagesListener(_listenerId);
     CometChatSdkAdapter.removeMessageListener(_listenerId);
     super.dispose();
   }
@@ -222,7 +222,7 @@ class _ConvoKitPinnedMessagesState extends State<ConvoKitPinnedMessages> {
   /// ERR_PERMISSION_DENIED, which surfaces as a visible error instead.
   bool get _canUnpin {
     if (widget.hideUnpinOption == true) return false;
-    return CometChatUIKit.loggedInUser != null;
+    return ConvoKitUIKit.loggedInUser != null;
   }
 
   // ── live sync ─────────────────────────────────────────────────────────
@@ -251,7 +251,7 @@ class _ConvoKitPinnedMessagesState extends State<ConvoKitPinnedMessages> {
     }
 
     final peer = user!.uid;
-    final me = CometChatUIKit.loggedInUser?.uid;
+    final me = ConvoKitUIKit.loggedInUser?.uid;
     if (hasReceiver) {
       if (message.receiverType != ReceiverTypeConstants.user) return false;
       final participants = {message.sender?.uid, message.receiverUid};
@@ -310,10 +310,10 @@ class _ConvoKitPinnedMessagesState extends State<ConvoKitPinnedMessages> {
 
   /// Compact Material-style dialog chrome (filled primary confirm button,
   /// reduced sizes) — mirrors the message list's pin/save dialogs.
-  CometChatConfirmDialogStyle _confirmDialogStyle(BuildContext context) {
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final typography = CometChatThemeHelper.getTypography(context);
-    return CometChatConfirmDialogStyle(
+  ConvoKitConfirmDialogStyle _confirmDialogStyle(BuildContext context) {
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
+    return ConvoKitConfirmDialogStyle(
       confirmButtonBackground: colorPalette.primary,
       confirmButtonTextColor: colorPalette.white,
       titleTextStyle: TextStyle(
@@ -347,7 +347,7 @@ class _ConvoKitPinnedMessagesState extends State<ConvoKitPinnedMessages> {
 
   Future<void> _unpin(BaseMessage message) async {
     final translations = Translations.of(context);
-    CometChatConfirmDialog(
+    ConvoKitConfirmDialog(
       context: context,
       style: _confirmDialogStyle(context),
       intentPadding: const EdgeInsets.symmetric(horizontal: 40),
@@ -361,7 +361,7 @@ class _ConvoKitPinnedMessagesState extends State<ConvoKitPinnedMessages> {
             const ConvoKitPinnedMessagesStyle()
                 .merge(widget.style)
                 .unpinIconColor ??
-            CometChatThemeHelper.getColorPalette(context).iconHighlight,
+            ConvoKitThemeHelper.getColorPalette(context).iconHighlight,
         size: 32,
       ),
       title: Text(translations.unpinConfirmTitle, textAlign: TextAlign.center),
@@ -382,7 +382,7 @@ class _ConvoKitPinnedMessagesState extends State<ConvoKitPinnedMessages> {
           },
         );
         if (updated != null) {
-          CometChatMessageEvents.ccMessageUnpinned(updated);
+          ConvoKitMessageEvents.ccMessageUnpinned(updated);
           if (mounted) {
             CometChatThreadToast.show(
               context,
@@ -412,9 +412,9 @@ class _ConvoKitPinnedMessagesState extends State<ConvoKitPinnedMessages> {
 
   @override
   Widget build(BuildContext context) {
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final typography = CometChatThemeHelper.getTypography(context);
-    final spacing = CometChatThemeHelper.getSpacing(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
     final style = const ConvoKitPinnedMessagesStyle().merge(widget.style);
     final translations = Translations.of(context);
 
@@ -481,9 +481,9 @@ class _ConvoKitPinnedMessagesState extends State<ConvoKitPinnedMessages> {
   }
 
   Widget _buildBody(
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
     ConvoKitPinnedMessagesStyle style,
   ) {
     final translations = Translations.of(context);
@@ -562,7 +562,7 @@ class _ConvoKitPinnedMessagesState extends State<ConvoKitPinnedMessages> {
       itemBuilder: (context, index) {
         final message = _messages[index];
         final bool isOutgoing =
-            message.sender?.uid == CometChatUIKit.loggedInUser?.uid;
+            message.sender?.uid == ConvoKitUIKit.loggedInUser?.uid;
         final alignment = isOutgoing
             ? BubbleAlignment.right
             : BubbleAlignment.left;
@@ -636,7 +636,7 @@ class _ConvoKitPinnedMessagesState extends State<ConvoKitPinnedMessages> {
 }
 
 /// Kit-event delegate: reacts to pin/unpin actions taken on this device.
-class _PinnedKitEventsDelegate with CometChatMessageEventListener {
+class _PinnedKitEventsDelegate with ConvoKitMessageEventListener {
   _PinnedKitEventsDelegate({
     required this.onPinned,
     required this.onUnpinned,

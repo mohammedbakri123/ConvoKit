@@ -1045,9 +1045,9 @@ void main() {
                 group ?? c.group,
                 member,
                 context,
-                CometChatThemeHelper.getColorPalette(context),
-                CometChatThemeHelper.getTypography(context),
-                CometChatThemeHelper.getSpacing(context),
+                ConvoKitThemeHelper.getColorPalette(context),
+                ConvoKitThemeHelper.getTypography(context),
+                ConvoKitThemeHelper.getSpacing(context),
               );
               return const SizedBox.shrink();
             },
@@ -1149,9 +1149,9 @@ void main() {
                     c.group,
                     _member('bob'),
                     context,
-                    CometChatThemeHelper.getColorPalette(context),
-                    CometChatThemeHelper.getTypography(context),
-                    CometChatThemeHelper.getSpacing(context),
+                    ConvoKitThemeHelper.getColorPalette(context),
+                    ConvoKitThemeHelper.getTypography(context),
+                    ConvoKitThemeHelper.getSpacing(context),
                   );
                   return const SizedBox.shrink();
                 },
@@ -1183,9 +1183,9 @@ void main() {
                   c.group,
                   _member('bob'),
                   context,
-                  CometChatThemeHelper.getColorPalette(context),
-                  CometChatThemeHelper.getTypography(context),
-                  CometChatThemeHelper.getSpacing(context),
+                  ConvoKitThemeHelper.getColorPalette(context),
+                  ConvoKitThemeHelper.getTypography(context),
+                  ConvoKitThemeHelper.getSpacing(context),
                 );
                 return const SizedBox.shrink();
               },
@@ -1221,9 +1221,9 @@ void main() {
                   c.group,
                   _member('bob'),
                   context,
-                  CometChatThemeHelper.getColorPalette(context),
-                  CometChatThemeHelper.getTypography(context),
-                  CometChatThemeHelper.getSpacing(context),
+                  ConvoKitThemeHelper.getColorPalette(context),
+                  ConvoKitThemeHelper.getTypography(context),
+                  ConvoKitThemeHelper.getSpacing(context),
                 );
                 return const SizedBox.shrink();
               },
@@ -1265,9 +1265,9 @@ void main() {
                   c.group,
                   _member('bob'),
                   context,
-                  CometChatThemeHelper.getColorPalette(context),
-                  CometChatThemeHelper.getTypography(context),
-                  CometChatThemeHelper.getSpacing(context),
+                  ConvoKitThemeHelper.getColorPalette(context),
+                  ConvoKitThemeHelper.getTypography(context),
+                  ConvoKitThemeHelper.getSpacing(context),
                 );
                 return const SizedBox.shrink();
               },
@@ -1299,9 +1299,9 @@ void main() {
               builder: (context) => TextButton(
                 onPressed: () => c.showConfirmDialog(
                   context,
-                  CometChatThemeHelper.getColorPalette(context),
-                  CometChatThemeHelper.getTypography(context),
-                  CometChatThemeHelper.getSpacing(context),
+                  ConvoKitThemeHelper.getColorPalette(context),
+                  ConvoKitThemeHelper.getTypography(context),
+                  ConvoKitThemeHelper.getSpacing(context),
                   title: 'Ban BOB?',
                   messageText: 'Sure?',
                   confirmButtonText: 'BAN',
@@ -1339,9 +1339,9 @@ void main() {
                   c.group,
                   _member('bob'),
                   context,
-                  CometChatThemeHelper.getColorPalette(context),
-                  CometChatThemeHelper.getTypography(context),
-                  CometChatThemeHelper.getSpacing(context),
+                  ConvoKitThemeHelper.getColorPalette(context),
+                  ConvoKitThemeHelper.getTypography(context),
+                  ConvoKitThemeHelper.getSpacing(context),
                 );
                 return const SizedBox.shrink();
               },
@@ -1370,9 +1370,9 @@ void main() {
                 return TextButton(
                   onPressed: () => c.showConfirmDialog(
                     context,
-                    CometChatThemeHelper.getColorPalette(context),
-                    CometChatThemeHelper.getTypography(context),
-                    CometChatThemeHelper.getSpacing(context),
+                    ConvoKitThemeHelper.getColorPalette(context),
+                    ConvoKitThemeHelper.getTypography(context),
+                    ConvoKitThemeHelper.getSpacing(context),
                     title: 'Ban BOB?',
                     messageText: 'Sure?',
                     confirmButtonText: 'BAN',

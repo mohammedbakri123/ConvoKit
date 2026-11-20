@@ -890,9 +890,9 @@ class GroupMembersBloc extends Bloc<GroupMembersEvent, GroupMembersState>
   List<CometChatGroupMemberOption> getDefaultOptions(
     GroupMember member,
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
   ) {
     return DetailUtils.getDefaultGroupMemberOptions(
       loggedInUser: _loggedInUser,

@@ -12,7 +12,7 @@
 library;
 
 import 'package:convokit/cometchat_chat_uikit.dart';
-// The initializer CometChatUIKit.init calls; SchedulerUtils reads this copy
+// The initializer ConvoKitUIKit.init calls; SchedulerUtils reads this copy
 // of the timezone database and nothing else fills it.
 import 'package:convokit/shared_ui/src/utils/timezone_utils/data/latest.dart';
 import 'package:flutter/material.dart';
@@ -874,10 +874,10 @@ void main() {
     final alice = User(uid: 'u1', name: 'Alice');
     final bob = User(uid: 'u2', name: 'Bob');
 
-    tearDown(() => CometChatUIKit.loggedInUser = null);
+    tearDown(() => ConvoKitUIKit.loggedInUser = null);
 
     test('the sender cannot book their own slot by default', () {
-      CometChatUIKit.loggedInUser = alice;
+      ConvoKitUIKit.loggedInUser = alice;
       expect(
         SchedulerUtils.isScheduleButtonDisabled(_scheduler(sender: alice)),
         isTrue,
@@ -885,7 +885,7 @@ void main() {
     });
 
     test('the sender can book it when sender interaction is allowed', () {
-      CometChatUIKit.loggedInUser = alice;
+      ConvoKitUIKit.loggedInUser = alice;
       expect(
         SchedulerUtils.isScheduleButtonDisabled(
           _scheduler(sender: alice, allowSender: true),
@@ -895,7 +895,7 @@ void main() {
     });
 
     test('the recipient can always book it', () {
-      CometChatUIKit.loggedInUser = bob;
+      ConvoKitUIKit.loggedInUser = bob;
       expect(
         SchedulerUtils.isScheduleButtonDisabled(_scheduler(sender: alice)),
         isFalse,
@@ -905,7 +905,7 @@ void main() {
     test('with nobody logged in a senderless message is treated as mine', () {
       // Both sides are null, so they compare equal — pinned because it is a
       // surprising consequence of the uid comparison.
-      CometChatUIKit.loggedInUser = null;
+      ConvoKitUIKit.loggedInUser = null;
       expect(SchedulerUtils.isScheduleButtonDisabled(_scheduler()), isTrue);
     });
   });

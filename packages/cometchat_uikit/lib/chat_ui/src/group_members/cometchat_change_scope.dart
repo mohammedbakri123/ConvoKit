@@ -60,9 +60,9 @@ class _ConvoKitChangeScopeState extends State<ConvoKitChangeScope> {
   List<String> scopes = ['Admin', 'Moderator', 'Participant'];
   late String? selectedScope;
 
-  late CometChatColorPalette colorPalette;
-  late CometChatTypography typography;
-  late CometChatSpacing spacing;
+  late ConvoKitColorPalette colorPalette;
+  late ConvoKitTypography typography;
+  late ConvoKitSpacing spacing;
   late ConvoKitChangeScopeStyle style;
 
   @override
@@ -73,10 +73,10 @@ class _ConvoKitChangeScopeState extends State<ConvoKitChangeScope> {
 
   @override
   void didChangeDependencies() {
-    colorPalette = CometChatThemeHelper.getColorPalette(context);
-    typography = CometChatThemeHelper.getTypography(context);
-    spacing = CometChatThemeHelper.getSpacing(context);
-    style = CometChatThemeHelper.getTheme<ConvoKitChangeScopeStyle>(
+    colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    typography = ConvoKitThemeHelper.getTypography(context);
+    spacing = ConvoKitThemeHelper.getSpacing(context);
+    style = ConvoKitThemeHelper.getTheme<ConvoKitChangeScopeStyle>(
       context: context,
       defaultTheme: ConvoKitChangeScopeStyle.of,
     ).merge(widget.style);
@@ -314,9 +314,9 @@ class _ConvoKitChangeScopeState extends State<ConvoKitChangeScope> {
   Widget _buildScopeTile(
     int index,
     ConvoKitChangeScopeStyle style,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
   ) {
     bool isSelected = scopes[index].toLowerCase() == selectedScope;
     final tile = Container(

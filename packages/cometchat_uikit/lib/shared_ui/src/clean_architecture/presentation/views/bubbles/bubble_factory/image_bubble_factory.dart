@@ -28,9 +28,9 @@ class ImageBubbleFactory extends BubbleFactory<MediaMessage> {
     BuildContext context,
     MediaMessage message,
     BubbleAlignment alignment, {
-    CometChatColorPalette? colorPalette,
-    CometChatTypography? typography,
-    CometChatSpacing? spacing,
+    ConvoKitColorPalette? colorPalette,
+    ConvoKitTypography? typography,
+    ConvoKitSpacing? spacing,
   }) {
     final thumbnailUrl = ThumbnailExtractionUtil.extractFromMetadata(
       message.metadata,

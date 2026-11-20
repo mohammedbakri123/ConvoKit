@@ -7,8 +7,8 @@ enum ChatAlignment { leftAligned, standard }
 enum BubbleAlignment { left, center, right }
 
 ///[TimeAlignment] is an enum that defines the position of the timestamp shown in the message bubble
-///[top] places the timestamp in the header of [CometChatMessageBubble]
-///[bottom] places the timestamp in the footer of [CometChatMessageBubble]
+///[top] places the timestamp in the header of [ConvoKitMessageBubble]
+///[bottom] places the timestamp in the footer of [ConvoKitMessageBubble]
 enum TimeAlignment { top, bottom }
 
 ///[MessageStatus] is an enum that contains the various stages of message delivery
@@ -22,8 +22,8 @@ enum MessageStatus { inProgress, sent, error }
 /// `MessageEntity` declares a different enum that is also called
 /// `MessageStatus`, so `constants.dart` exports this file with
 /// `hide MessageStatus` to keep the barrel unambiguous. That left the enum
-/// used by [CometChatMessageEvents.ccMessageSent] and
-/// [CometChatUIKitHelper.onMessageSent] impossible to name from outside the
+/// used by [ConvoKitMessageEvents.ccMessageSent] and
+/// [ConvoKitUIKitHelper.onMessageSent] impossible to name from outside the
 /// package. This alias is exported normally, so a listener can write
 /// `MessageSendStatus.sent` instead of having to import an internal path.
 typedef MessageSendStatus = MessageStatus;

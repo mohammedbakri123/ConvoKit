@@ -99,9 +99,9 @@ const _seeMore = Color(0xFF91A2B3);
 const _seeMoreStyle = TextStyle(fontSize: 10.75);
 
 const _avatarFill = Color(0xFFA2B3C4);
-const _avatarStyle = CometChatAvatarStyle(backgroundColor: _avatarFill);
+const _avatarStyle = ConvoKitAvatarStyle(backgroundColor: _avatarFill);
 const _badgeFill = Color(0xFFB3C4D5);
-const _badgeStyle = CometChatBadgeStyle(backgroundColor: _badgeFill);
+const _badgeStyle = ConvoKitBadgeStyle(backgroundColor: _badgeFill);
 
 // ─── Fixtures ────────────────────────────────────────────────────────────────
 
@@ -311,7 +311,7 @@ TextStyle? _spanStyle(WidgetTester tester, String text) {
 Set<Color?> _avatarFills(WidgetTester tester) => tester
     .widgetList<Container>(
       find.descendant(
-        of: find.byType(CometChatAvatar),
+        of: find.byType(ConvoKitAvatar),
         matching: find.byType(Container),
       ),
     )
@@ -322,7 +322,7 @@ Color? _badgeColor(WidgetTester tester) =>
     (tester
                 .widget<Container>(
                   find.descendant(
-                    of: find.byType(CometChatBadge),
+                    of: find.byType(ConvoKitBadge),
                     matching: find.byType(Container),
                   ),
                 )
@@ -332,7 +332,7 @@ Color? _badgeColor(WidgetTester tester) =>
 
 // ─── Matrix ──────────────────────────────────────────────────────────────────
 
-final _dateStyleSentinel = CometChatDateStyle(
+final _dateStyleSentinel = ConvoKitDateStyle(
   borderRadius: const BorderRadius.all(Radius.circular(7)),
 );
 const _statusBorderSentinel = Border.fromBorderSide(
@@ -373,7 +373,7 @@ final _cases = <_StyleCase>[
     'the result timestamps',
     _Stage.results,
     probe: (t) => t
-        .widget<CometChatDate>(find.byType(CometChatDate).first)
+        .widget<ConvoKitDate>(find.byType(ConvoKitDate).first)
         .style
         .borderRadius,
     expected: const BorderRadius.all(Radius.circular(7)),
@@ -383,7 +383,7 @@ final _cases = <_StyleCase>[
     'the conversation status dot',
     _Stage.results,
     probe: (t) => t
-        .widget<CometChatListItem>(find.byType(CometChatListItem).first)
+        .widget<ConvoKitListItem>(find.byType(ConvoKitListItem).first)
         .statusIndicatorStyle
         .border,
     expected: _statusBorderSentinel,
@@ -753,7 +753,7 @@ void main() {
                   dateStyle: c.on('dateStyle', _dateStyleSentinel),
                   statusIndicatorStyle: c.on(
                     'statusIndicatorStyle',
-                    const CometChatStatusIndicatorStyle(
+                    const ConvoKitStatusIndicatorStyle(
                       border: _statusBorderSentinel,
                     ),
                   ),

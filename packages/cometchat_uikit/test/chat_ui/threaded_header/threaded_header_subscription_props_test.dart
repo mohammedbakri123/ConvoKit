@@ -284,15 +284,15 @@ final _matrix = <_Case>[
 
 void main() {
   setUp(() {
-    CometChatUIKit.loggedInUser = _me;
+    ConvoKitUIKit.loggedInUser = _me;
     // The follow control is gated behind the thread-subscription feature flag.
-    CometChatUIKit.authenticationSettings =
+    ConvoKitUIKit.authenticationSettings =
         (UIKitSettingsBuilder()..enableThreadSubscription = true).build();
   });
 
   tearDown(() async {
-    CometChatUIKit.authenticationSettings = null;
-    CometChatUIKit.loggedInUser = null;
+    ConvoKitUIKit.authenticationSettings = null;
+    ConvoKitUIKit.loggedInUser = null;
     await sdk.SdkRegistry.clear();
   });
 

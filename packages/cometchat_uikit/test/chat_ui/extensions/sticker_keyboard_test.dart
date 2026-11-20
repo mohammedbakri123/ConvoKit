@@ -103,7 +103,7 @@ void main() {
       await tester.pumpWidget(_wrap(const CometChatStickerKeyboard()));
       await _settle(tester);
 
-      expect(find.byType(CometChatShimmerEffect), findsOneWidget);
+      expect(find.byType(ConvoKitShimmerEffect), findsOneWidget);
       expect(
         find.byType(GridView),
         findsOneWidget,
@@ -118,7 +118,7 @@ void main() {
       });
       await _settle(tester);
 
-      expect(find.byType(CometChatShimmerEffect), findsNothing);
+      expect(find.byType(ConvoKitShimmerEffect), findsNothing);
       expect(_texts(tester), contains('Hands'));
     });
 
@@ -136,7 +136,7 @@ void main() {
       await _settle(tester);
 
       expect(find.text('fetching stickers'), findsOneWidget);
-      expect(find.byType(CometChatShimmerEffect), findsNothing);
+      expect(find.byType(ConvoKitShimmerEffect), findsNothing);
 
       gate.complete(<String, dynamic>{
         'defaultStickers': const <Map<String, dynamic>>[],
@@ -153,7 +153,7 @@ void main() {
       await tester.pumpWidget(_wrap(const CometChatStickerKeyboard()));
       await _settle(tester);
 
-      expect(find.byType(CometChatShimmerEffect), findsNothing);
+      expect(find.byType(ConvoKitShimmerEffect), findsNothing);
       expect(
         find.textContaining('Looks like something went wrong.'),
         findsOneWidget,
@@ -396,7 +396,7 @@ void main() {
       await tester.pumpWidget(_wrap(const CometChatStickerKeyboard()));
       await _settle(tester);
 
-      final palette = CometChatThemeHelper.getColorPalette(
+      final palette = ConvoKitThemeHelper.getColorPalette(
         tester.element(find.byType(CometChatStickerKeyboard)),
       );
       expect(_boxColors(tester), [

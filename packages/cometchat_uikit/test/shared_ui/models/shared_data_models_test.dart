@@ -9,7 +9,7 @@
 ///
 /// Most of them are plain holders, so the tests worth writing are about the
 /// three places behaviour actually lives — `CometChatMessageOption`'s two
-/// converters to `ActionItem`, `CometChatDetailsTemplate`'s options callback,
+/// converters to `ActionItem`, `ConvoKitDetailsTemplate`'s options callback,
 /// and `ActionEntity.fromMap`'s dispatch. The third of those turned out to be
 /// wrong; it is fixed (ENG-39098) and the cases that recorded it now assert
 /// the corrected routing, marked FIXED.
@@ -73,9 +73,9 @@ void main() {
   });
 
   // ---------------------------------------------------------------------------
-  group('CometChatDetailsOption', () {
+  group('ConvoKitDetailsOption', () {
     test('is a CometChatBaseOptions and inherits its fields', () {
-      final option = CometChatDetailsOption(
+      final option = ConvoKitDetailsOption(
         id: 'leave',
         title: 'Leave group',
         icon: 'https://example.com/leave.png',
@@ -94,7 +94,7 @@ void main() {
       const custom = SizedBox(width: 10);
       const tail = Icon(Icons.chevron_right);
 
-      final option = CometChatDetailsOption(
+      final option = ConvoKitDetailsOption(
         id: 'leave',
         customView: custom,
         tail: tail,
@@ -107,7 +107,7 @@ void main() {
     });
 
     test('toString names the option so a details section is debuggable', () {
-      final text = CometChatDetailsOption(
+      final text = ConvoKitDetailsOption(
         id: 'leave',
         title: 'Leave group',
       ).toString();
@@ -118,11 +118,11 @@ void main() {
   });
 
   // ---------------------------------------------------------------------------
-  group('CometChatDetailsTemplate', () {
+  group('ConvoKitDetailsTemplate', () {
     test(
       'requires only an id and defaults every separator control to null',
       () {
-        const template = CometChatDetailsTemplate(id: 'privacy');
+        const template = ConvoKitDetailsTemplate(id: 'privacy');
 
         expect(template.id, 'privacy');
         expect(template.options, isNull);
@@ -140,14 +140,14 @@ void main() {
       Group? seenGroup;
       BuildContext? seenContext;
 
-      final template = CometChatDetailsTemplate(
+      final template = ConvoKitDetailsTemplate(
         id: 'privacy',
         title: 'Privacy',
         options: (user, group, context) {
           seenUser = user;
           seenGroup = group;
           seenContext = context;
-          return [CometChatDetailsOption(id: 'block', title: 'Block')];
+          return [ConvoKitDetailsOption(id: 'block', title: 'Block')];
         },
       );
 
@@ -162,7 +162,7 @@ void main() {
     });
 
     test('the callback may return an empty section', () {
-      final template = CometChatDetailsTemplate(
+      final template = ConvoKitDetailsTemplate(
         id: 'privacy',
         options: (_, _, _) => const [],
       );
@@ -171,7 +171,7 @@ void main() {
     });
 
     test('separator controls survive construction', () {
-      const template = CometChatDetailsTemplate(
+      const template = ConvoKitDetailsTemplate(
         id: 'privacy',
         sectionSeparatorColor: Color(0xFFDCE3E4),
         hideSectionSeparator: true,
@@ -186,7 +186,7 @@ void main() {
     });
 
     test('toString names the template and its title', () {
-      const template = CometChatDetailsTemplate(
+      const template = ConvoKitDetailsTemplate(
         id: 'privacy',
         title: 'Privacy',
       );

@@ -82,13 +82,13 @@ class _CometchatMessageOptionSheetState
   @override
   Widget build(BuildContext context) {
     final optionStyle =
-        CometChatThemeHelper.getTheme<ConvoKitMessageOptionSheetStyle>(
+        ConvoKitThemeHelper.getTheme<ConvoKitMessageOptionSheetStyle>(
           context: context,
           defaultTheme: ConvoKitMessageOptionSheetStyle.of,
         ).merge(widget.messageOptionStyle);
-    final spacing = CometChatThemeHelper.getSpacing(context);
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final typography = CometChatThemeHelper.getTypography(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
 
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
@@ -324,7 +324,7 @@ class _CometchatMessageOptionSheetState
 Future<ActionItem?> showMessageOptionSheet({
   required BuildContext context,
   required List<ActionItem> actionItems,
-  required CometChatColorPalette colorPalette,
+  required ConvoKitColorPalette colorPalette,
   final String? title,
   required final dynamic message,
   final ConvoKitMessageListControllerProtocol? state,

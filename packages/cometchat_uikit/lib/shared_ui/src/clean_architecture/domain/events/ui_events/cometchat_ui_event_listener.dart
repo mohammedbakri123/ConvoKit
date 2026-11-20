@@ -5,7 +5,7 @@ import '../../../core/constants/enums.dart';
 import 'ui_events.dart';
 
 ///Listener class for [ConvoKitConversations]
-mixin CometChatUIEventListener implements UIEventHandler {
+mixin ConvoKitUIEventListener implements UIEventHandler {
   void showPanel(
     Map<String, dynamic>? id,
     CustomUIPosition uiPosition,

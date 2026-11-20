@@ -115,9 +115,9 @@ class _CometChatSearchState extends State<CometChatSearch> {
   late final FocusNode _focusNode;
 
   // Theme caching
-  late CometChatColorPalette colorPalette;
-  late CometChatSpacing spacing;
-  late CometChatTypography typography;
+  late ConvoKitColorPalette colorPalette;
+  late ConvoKitSpacing spacing;
+  late ConvoKitTypography typography;
   late CometChatSearchStyle style;
   bool _themeInitialized = false;
   Brightness? _cachedBrightness;
@@ -160,15 +160,15 @@ class _CometChatSearchState extends State<CometChatSearch> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final currentBrightness = CometChatThemeHelper.getBrightness(context);
+    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
     if (!_themeInitialized || brightnessChanged) {
       _cachedBrightness = currentBrightness;
-      colorPalette = CometChatThemeHelper.getColorPalette(context);
-      spacing = CometChatThemeHelper.getSpacing(context);
-      typography = CometChatThemeHelper.getTypography(context);
-      style = CometChatThemeHelper.getTheme<CometChatSearchStyle>(
+      colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+      spacing = ConvoKitThemeHelper.getSpacing(context);
+      typography = ConvoKitThemeHelper.getTypography(context);
+      style = ConvoKitThemeHelper.getTheme<CometChatSearchStyle>(
         context: context,
         defaultTheme: CometChatSearchStyle.of,
       ).merge(widget.searchStyle);
@@ -286,7 +286,7 @@ class _CometChatSearchState extends State<CometChatSearch> {
         controller: _textController,
         focusNode: _focusNode,
         keyboardAppearance:
-            CometChatThemeHelper.getBrightness(context) == Brightness.dark
+            ConvoKitThemeHelper.getBrightness(context) == Brightness.dark
             ? Brightness.dark
             : Brightness.light,
         onChanged: (val) => _searchBloc.add(SearchTextChanged(val)),
@@ -602,7 +602,7 @@ class _CometChatSearchState extends State<CometChatSearch> {
 
     return GestureDetector(
       onTap: () => _handleConversationTap(conversation),
-      child: CometChatListItem(
+      child: ConvoKitListItem(
         avatarHeight: 48,
         avatarWidth: 48,
         id: conversation.conversationId,
@@ -610,12 +610,12 @@ class _CometChatSearchState extends State<CometChatSearch> {
         avatarURL: conversationWithUser?.avatar ?? conversationWithGroup?.icon,
         title: conversationWithUser?.name ?? conversationWithGroup?.name,
         key: UniqueKey(),
-        avatarStyle: style.avatarStyle ?? const CometChatAvatarStyle(),
+        avatarStyle: style.avatarStyle ?? const ConvoKitAvatarStyle(),
         statusIndicatorColor: statusIndicatorUtils.statusIndicatorColor,
         statusIndicatorIcon: statusIndicatorUtils.icon,
         // The caller's statusIndicatorStyle is merged over the inline default
         // rather than ignored — it was declared and never read. ENG-39121.
-        statusIndicatorStyle: CometChatStatusIndicatorStyle(
+        statusIndicatorStyle: ConvoKitStatusIndicatorStyle(
           border: Border.all(
             width: spacing.spacing ?? 0,
             color: colorPalette.background1 ?? Colors.transparent,
@@ -705,11 +705,11 @@ class _CometChatSearchState extends State<CometChatSearch> {
     final lastMessage = conversation.lastMessage;
     if (lastMessage == null) return null;
     if (lastMessage.deletedAt != null) return null;
-    if (lastMessage.sender?.uid != CometChatUIKit.loggedInUser?.uid) {
+    if (lastMessage.sender?.uid != ConvoKitUIKit.loggedInUser?.uid) {
       return null;
     }
 
-    return CometChatReceipt(
+    return ConvoKitReceipt(
       status: _receiptStatusOf(lastMessage),
       style: style.receiptStyle,
     );
@@ -745,7 +745,7 @@ class _CometChatSearchState extends State<CometChatSearch> {
         children: [
           if (lastMessageTime != null)
             Flexible(
-              child: CometChatDate(
+              child: ConvoKitDate(
                 date: lastMessageTime,
                 padding: const EdgeInsets.all(0),
                 isTransparentBackground: true,
@@ -758,10 +758,10 @@ class _CometChatSearchState extends State<CometChatSearch> {
           const SizedBox(height: 6.5),
           if (unreadCount > 0)
             Flexible(
-              child: CometChatBadge(
+              child: ConvoKitBadge(
                 count: unreadCount,
                 height: 20,
-                style: style.badgeStyle ?? const CometChatBadgeStyle(),
+                style: style.badgeStyle ?? const ConvoKitBadgeStyle(),
               ),
             ),
         ],
@@ -1008,7 +1008,7 @@ class _CometChatSearchState extends State<CometChatSearch> {
     }
 
     // 1:1 conversation — show the "other" party, not whichever side sent it.
-    final loggedInUid = CometChatUIKit.loggedInUser?.uid;
+    final loggedInUid = ConvoKitUIKit.loggedInUser?.uid;
     final senderUid = message.sender?.uid;
     final sentByMe = loggedInUid != null && senderUid == loggedInUid;
 
@@ -1028,7 +1028,7 @@ class _CometChatSearchState extends State<CometChatSearch> {
   String _senderPrefix(BaseMessage message) {
     final sender = message.sender;
     if (sender == null) return '';
-    final loggedInUid = CometChatUIKit.loggedInUser?.uid;
+    final loggedInUid = ConvoKitUIKit.loggedInUser?.uid;
     if (loggedInUid != null && sender.uid == loggedInUid) {
       return '${cc.Translations.of(context).you}:';
     }
@@ -1141,8 +1141,8 @@ class _CometChatSearchState extends State<CometChatSearch> {
   /// style's [CometChatSearchStyle.dateStyle] over them, and the search-specific
   /// date colour and text style over that. With no dateStyle this is exactly
   /// the style the rows always had.
-  CometChatDateStyle _rowDateStyle(Color? defaultTextColor) {
-    final base = CometChatDateStyle(
+  ConvoKitDateStyle _rowDateStyle(Color? defaultTextColor) {
+    final base = ConvoKitDateStyle(
       backgroundColor: colorPalette.transparent,
       textStyle: TextStyle(
         color: defaultTextColor,
@@ -1159,9 +1159,9 @@ class _CometChatSearchState extends State<CometChatSearch> {
     );
   }
 
-  /// Builds a CometChatDate widget for message trailing.
+  /// Builds a ConvoKitDate widget for message trailing.
   Widget _buildMessageDate(BaseMessage message) {
-    return CometChatDate(
+    return ConvoKitDate(
       date: message.sentAt ?? DateTime.now(),
       padding: const EdgeInsets.all(0),
       isTransparentBackground: true,
@@ -1283,14 +1283,14 @@ class _CometChatSearchState extends State<CometChatSearch> {
       final date = messages[index].sentAt ?? DateTime.now();
       return Padding(
         padding: EdgeInsets.fromLTRB(0, spacing.padding2 ?? 0, 0, 0),
-        child: CometChatDate(
+        child: ConvoKitDate(
           date: date,
-          // The label is always resolved here. Handing CometChatDate the
+          // The label is always resolved here. Handing ConvoKitDate the
           // formatter with no pattern made it format the separator as a time
           // of day, so month separators read like "3:45 pm".
           customDateString: _monthSeparatorLabel(date),
           padding: EdgeInsets.zero,
-          style: CometChatDateStyle(
+          style: ConvoKitDateStyle(
             backgroundColor: colorPalette.transparent,
             borderRadius: BorderRadius.zero,
             border: const Border.fromBorderSide(BorderSide.none),
@@ -1396,7 +1396,7 @@ class _CometChatSearchState extends State<CometChatSearch> {
   // ===========================================================================
 
   Widget _buildLoadingView() {
-    return CometChatShimmerEffect(
+    return ConvoKitShimmerEffect(
       colorPalette: colorPalette,
       child: ListView.builder(
         itemCount: 30,

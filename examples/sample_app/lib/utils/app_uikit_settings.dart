@@ -1,7 +1,7 @@
 import 'package:convokit/cometchat_chat_uikit.dart';
 import 'package:sample_app/app_credentials.dart';
 
-/// The [UIKitSettings] for every `CometChatUIKit.init` in this app, built
+/// The [UIKitSettings] for every `ConvoKitUIKit.init` in this app, built
 /// from the current [AppCredentials].
 ///
 /// main.dart inits the UI Kit at launch and AppCredentialsScreen inits it

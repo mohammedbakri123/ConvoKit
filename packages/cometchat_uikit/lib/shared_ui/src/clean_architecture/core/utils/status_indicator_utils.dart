@@ -25,7 +25,7 @@ class StatusIndicatorUtils {
   }) {
     Color? backgroundColor;
     Widget? icon;
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
     //TODO add icons color to other icons when needed
     if (isSelected == true) {
       icon =

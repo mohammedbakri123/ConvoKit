@@ -79,9 +79,9 @@ void main() {
     registerFallbackValue(_alice);
     registerFallbackValue(_group);
     registerFallbackValue(_FakeBuildContext());
-    registerFallbackValue(CometChatColorPalette());
-    registerFallbackValue(CometChatTypography());
-    registerFallbackValue(CometChatSpacing());
+    registerFallbackValue(ConvoKitColorPalette());
+    registerFallbackValue(ConvoKitTypography());
+    registerFallbackValue(ConvoKitSpacing());
   });
 
   group('per-member slot views', () {

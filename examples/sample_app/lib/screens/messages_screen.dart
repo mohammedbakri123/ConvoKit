@@ -143,7 +143,7 @@ class _MessagesScreenState extends State<MessagesScreen>
   void onGroupMemberKicked(
       cc.Action action, User kickedUser, User kickedBy, Group kickedFrom) {
     if (_group != null && kickedFrom.guid == _group!.guid) {
-      final loggedInUid = CometChatUIKit.loggedInUser?.uid;
+      final loggedInUid = ConvoKitUIKit.loggedInUser?.uid;
       if (kickedUser.uid == loggedInUid) {
         setState(() => _kickedOrBanned = true);
       } else {
@@ -157,7 +157,7 @@ class _MessagesScreenState extends State<MessagesScreen>
   void onGroupMemberBanned(
       cc.Action action, User bannedUser, User bannedBy, Group bannedFrom) {
     if (_group != null && bannedFrom.guid == _group!.guid) {
-      final loggedInUid = CometChatUIKit.loggedInUser?.uid;
+      final loggedInUid = ConvoKitUIKit.loggedInUser?.uid;
       if (bannedUser.uid == loggedInUid) {
         setState(() => _kickedOrBanned = true);
       } else {
@@ -231,7 +231,7 @@ class _MessagesScreenState extends State<MessagesScreen>
       String scopeChangedFrom,
       Group group) {
     if (_group != null && group.guid == _group!.guid) {
-      final loggedInUid = CometChatUIKit.loggedInUser?.uid;
+      final loggedInUid = ConvoKitUIKit.loggedInUser?.uid;
       if (updatedUser.uid == loggedInUid) {
         _group!.scope = scopeChangedTo;
         setState(() {});
@@ -581,8 +581,8 @@ class _MessagesScreenState extends State<MessagesScreen>
 
   @override
   Widget build(BuildContext context) {
-    final _colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final _typography = CometChatThemeHelper.getTypography(context);
+    final _colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final _typography = ConvoKitThemeHelper.getTypography(context);
     return Scaffold(
       backgroundColor: _colorPalette.background1,
       appBar: ConvoKitMessageHeader(

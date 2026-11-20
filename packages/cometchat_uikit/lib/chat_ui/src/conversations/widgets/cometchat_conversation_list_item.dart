@@ -13,10 +13,10 @@ import '../utils/conversation_subtitle_utils.dart';
 /// - Trailing view (timestamp and unread count badge)
 /// - Selection mode support with checkbox
 /// - Tap and long-press gesture handling
-/// - Full theme integration with CometChatTheme
+/// - Full theme integration with ConvoKitTheme
 /// - Extensive customization through style objects and individual parameters
 ///
-/// Unlike the generic [CometChatListItem], this widget is specifically designed for conversation
+/// Unlike the generic [ConvoKitListItem], this widget is specifically designed for conversation
 /// display with conversation-specific features like typing indicators, message receipts, and
 /// thread indicators.
 ///
@@ -38,7 +38,7 @@ import '../utils/conversation_subtitle_utils.dart';
 ///   style: ConvoKitConversationListItemStyle(
 ///     backgroundColor: Colors.white,
 ///     titleTextColor: Colors.black,
-///     avatarStyle: CometChatAvatarStyle(
+///     avatarStyle: ConvoKitAvatarStyle(
 ///       borderRadius: BorderRadius.circular(8),
 ///     ),
 ///   ),
@@ -82,7 +82,7 @@ import '../utils/conversation_subtitle_utils.dart';
 /// See also:
 /// - [ConvoKitConversationListItemStyle] for comprehensive styling options
 /// - [ConversationsList] for displaying a list of conversations
-/// - [CometChatListItem] for the generic list item widget
+/// - [ConvoKitListItem] for the generic list item widget
 class ConvoKitConversationListItem extends StatelessWidget {
   const ConvoKitConversationListItem({
     super.key,
@@ -205,19 +205,19 @@ class ConvoKitConversationListItem extends StatelessWidget {
   final ListItemStyle? listItemStyle;
 
   /// [avatarStyle] style configuration for the avatar (overrides style.avatarStyle)
-  final CometChatAvatarStyle? avatarStyle;
+  final ConvoKitAvatarStyle? avatarStyle;
 
   /// [statusIndicatorStyle] style configuration for the status indicator (overrides style.statusIndicatorStyle)
-  final CometChatStatusIndicatorStyle? statusIndicatorStyle;
+  final ConvoKitStatusIndicatorStyle? statusIndicatorStyle;
 
   /// [receiptStyle] style configuration for message receipts (overrides style.receiptStyle)
   final CometChatMessageReceiptStyle? receiptStyle;
 
   /// [dateStyle] style configuration for the date/time (overrides style.dateStyle)
-  final CometChatDateStyle? dateStyle;
+  final ConvoKitDateStyle? dateStyle;
 
   /// [badgeStyle] style configuration for the unread badge (overrides style.badgeStyle)
-  final CometChatBadgeStyle? badgeStyle;
+  final ConvoKitBadgeStyle? badgeStyle;
 
   /// [typingIndicatorStyle] style configuration for typing indicator (overrides style.typingIndicatorStyle)
   final CometChatTypingIndicatorStyle? typingIndicatorStyle;
@@ -291,13 +291,13 @@ class ConvoKitConversationListItem extends StatelessWidget {
   final Widget? Function(Conversation, TypingIndicator?)? trailingView;
 
   /// [colorPalette] custom color palette (overrides theme colors)
-  final CometChatColorPalette? colorPalette;
+  final ConvoKitColorPalette? colorPalette;
 
   /// [spacing] custom spacing configuration (overrides theme spacing)
-  final CometChatSpacing? spacing;
+  final ConvoKitSpacing? spacing;
 
   /// [typography] custom typography configuration (overrides theme typography)
-  final CometChatTypography? typography;
+  final ConvoKitTypography? typography;
 
   /// [privateGroupIcon] custom icon for private group indicator
   final Widget? privateGroupIcon;
@@ -317,11 +317,11 @@ class ConvoKitConversationListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final effectiveColorPalette =
-        colorPalette ?? CometChatThemeHelper.getColorPalette(context);
+        colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
     final effectiveSpacing =
-        spacing ?? CometChatThemeHelper.getSpacing(context);
+        spacing ?? ConvoKitThemeHelper.getSpacing(context);
     final effectiveTypography =
-        typography ?? CometChatThemeHelper.getTypography(context);
+        typography ?? ConvoKitThemeHelper.getTypography(context);
     final effectiveStyle =
         style ??
         ConvoKitConversationListItemStyle.fromTheme(
@@ -470,8 +470,8 @@ class ConvoKitConversationListItem extends StatelessWidget {
 
   Widget _buildSelectionCheckbox(
     ConvoKitConversationListItemStyle effectiveStyle,
-    CometChatColorPalette effectiveColorPalette,
-    CometChatSpacing effectiveSpacing,
+    ConvoKitColorPalette effectiveColorPalette,
+    ConvoKitSpacing effectiveSpacing,
   ) {
     final checkBoxBorderRadius =
         effectiveStyle.checkBoxBorderRadius ??
@@ -551,8 +551,8 @@ class ConvoKitConversationListItem extends StatelessWidget {
   Widget _buildLeadingView(
     BuildContext context,
     ConvoKitConversationListItemStyle effectiveStyle,
-    CometChatColorPalette effectiveColorPalette,
-    CometChatSpacing effectiveSpacing,
+    ConvoKitColorPalette effectiveColorPalette,
+    ConvoKitSpacing effectiveSpacing,
   ) {
     if (leadingView != null) {
       final customView = leadingView!(
@@ -563,14 +563,14 @@ class ConvoKitConversationListItem extends StatelessWidget {
     }
 
     final effectiveTypography =
-        typography ?? CometChatThemeHelper.getTypography(context);
+        typography ?? ConvoKitThemeHelper.getTypography(context);
 
     // Initials default to heading2 bold (the old size). A placeholder text
     // style the caller set is merged over that, not replaced by it.
     final baseAvatarStyle =
         avatarStyle ??
         effectiveStyle.avatarStyle ??
-        const CometChatAvatarStyle();
+        const ConvoKitAvatarStyle();
     final effectiveAvatarStyle = baseAvatarStyle.copyWith(
       placeHolderTextStyle: TextStyle(
         fontSize: effectiveTypography.heading2?.bold?.fontSize,
@@ -583,7 +583,7 @@ class ConvoKitConversationListItem extends StatelessWidget {
       padding: EdgeInsets.only(right: effectiveSpacing.padding3 ?? 12),
       child: Stack(
         children: [
-          CometChatAvatar(
+          ConvoKitAvatar(
             image: _getConversationAvatar(),
             name: _getConversationTitle(),
             height: avatarHeight ?? 48,
@@ -596,11 +596,11 @@ class ConvoKitConversationListItem extends StatelessWidget {
             Positioned(
               right: 0,
               bottom: 0,
-              child: CometChatStatusIndicator(
+              child: ConvoKitStatusIndicator(
                 height: statusIndicatorHeight ?? 14,
                 width: statusIndicatorWidth ?? 14,
                 backgroundImage: _getStatusIndicatorIcon(effectiveColorPalette),
-                style: CometChatStatusIndicatorStyle(
+                style: ConvoKitStatusIndicatorStyle(
                   borderRadius:
                       statusIndicatorBorderRadius ??
                       statusIndicatorStyle?.borderRadius ??
@@ -629,8 +629,8 @@ class ConvoKitConversationListItem extends StatelessWidget {
   Widget _buildTitleView(
     BuildContext context,
     ConvoKitConversationListItemStyle effectiveStyle,
-    CometChatColorPalette effectiveColorPalette,
-    CometChatTypography effectiveTypography,
+    ConvoKitColorPalette effectiveColorPalette,
+    ConvoKitTypography effectiveTypography,
   ) {
     if (titleView != null) {
       final customView = titleView!(
@@ -664,9 +664,9 @@ class ConvoKitConversationListItem extends StatelessWidget {
   Widget _buildSubtitleView(
     BuildContext context,
     ConvoKitConversationListItemStyle effectiveStyle,
-    CometChatColorPalette effectiveColorPalette,
-    CometChatTypography effectiveTypography,
-    CometChatSpacing effectiveSpacing,
+    ConvoKitColorPalette effectiveColorPalette,
+    ConvoKitTypography effectiveTypography,
+    ConvoKitSpacing effectiveSpacing,
   ) {
     if (subtitleView != null) {
       final customView = subtitleView!(
@@ -767,8 +767,8 @@ class ConvoKitConversationListItem extends StatelessWidget {
   Widget _buildLastMessageText(
     BuildContext context,
     ConvoKitConversationListItemStyle effectiveStyle,
-    CometChatColorPalette effectiveColorPalette,
-    CometChatTypography effectiveTypography,
+    ConvoKitColorPalette effectiveColorPalette,
+    ConvoKitTypography effectiveTypography,
   ) {
     TextStyle subtitleStyle =
         TextStyle(
@@ -817,7 +817,7 @@ class ConvoKitConversationListItem extends StatelessWidget {
 
   Widget _buildReceiptIndicator(
     ConvoKitConversationListItemStyle effectiveStyle,
-    CometChatColorPalette effectiveColorPalette,
+    ConvoKitColorPalette effectiveColorPalette,
   ) {
     // The caller's receipt style takes precedence over the palette default for
     // each status. Both this widget's receiptStyle and the one on
@@ -877,9 +877,9 @@ class ConvoKitConversationListItem extends StatelessWidget {
   Widget _buildTrailingView(
     BuildContext context,
     ConvoKitConversationListItemStyle effectiveStyle,
-    CometChatColorPalette effectiveColorPalette,
-    CometChatTypography effectiveTypography,
-    CometChatSpacing effectiveSpacing,
+    ConvoKitColorPalette effectiveColorPalette,
+    ConvoKitTypography effectiveTypography,
+    ConvoKitSpacing effectiveSpacing,
   ) {
     if (trailingView != null) {
       final customView = trailingView!(
@@ -945,23 +945,23 @@ class ConvoKitConversationListItem extends StatelessWidget {
   Widget _buildTimestamp(
     BuildContext context,
     ConvoKitConversationListItemStyle effectiveStyle,
-    CometChatColorPalette effectiveColorPalette,
-    CometChatTypography effectiveTypography,
-    CometChatSpacing effectiveSpacing,
+    ConvoKitColorPalette effectiveColorPalette,
+    ConvoKitTypography effectiveTypography,
+    ConvoKitSpacing effectiveSpacing,
   ) {
     DateTime? lastMessageTime =
         conversation.lastMessage?.updatedAt ?? conversation.lastMessage?.sentAt;
     if (lastMessageTime == null) return const SizedBox();
 
-    return CometChatDate(
+    return ConvoKitDate(
       date: lastMessageTime,
       customDateString: datePattern?.call(conversation),
       height: dateHeight,
       width: dateWidth,
       padding: datePadding ?? EdgeInsets.zero,
       isTransparentBackground: dateBackgroundIsTransparent ?? true,
-      style: CometChatDateStyle(
-        // CometChatDate clears this while isTransparentBackground is on, and
+      style: ConvoKitDateStyle(
+        // ConvoKitDate clears this while isTransparentBackground is on, and
         // falls back to background2 when it is off and nothing is set.
         backgroundColor:
             dateStyle?.backgroundColor ??
@@ -996,7 +996,7 @@ class ConvoKitConversationListItem extends StatelessWidget {
 
   Widget _buildUnreadBadge(ConvoKitConversationListItemStyle effectiveStyle) {
     final count = conversation.unreadMessageCount;
-    return CometChatBadge(
+    return ConvoKitBadge(
       count: count,
       // A fixed 20x20 circle for one digit and auto width for more, unless
       // the caller sizes it.
@@ -1006,7 +1006,7 @@ class ConvoKitConversationListItem extends StatelessWidget {
       style:
           badgeStyle ??
           effectiveStyle.badgeStyle ??
-          const CometChatBadgeStyle(),
+          const ConvoKitBadgeStyle(),
     );
   }
 
@@ -1041,7 +1041,7 @@ class ConvoKitConversationListItem extends StatelessWidget {
   /// then the status indicator style's backgroundColor, then the palette.
   Color? _getStatusIndicatorBackgroundColor(
     ConvoKitConversationListItemStyle effectiveStyle,
-    CometChatColorPalette effectiveColorPalette,
+    ConvoKitColorPalette effectiveColorPalette,
   ) {
     final config = StatusIndicatorHelper.getStatusIndicator(
       conversation: conversation,
@@ -1082,7 +1082,7 @@ class ConvoKitConversationListItem extends StatelessWidget {
     return null;
   }
 
-  Widget? _getStatusIndicatorIcon(CometChatColorPalette effectiveColorPalette) {
+  Widget? _getStatusIndicatorIcon(ConvoKitColorPalette effectiveColorPalette) {
     final config = StatusIndicatorHelper.getStatusIndicator(
       conversation: conversation,
       hideUserStatus: hideUserStatus,
@@ -1125,7 +1125,7 @@ class ConvoKitConversationListItem extends StatelessWidget {
     final lastMessage = conversation.lastMessage;
     if (lastMessage == null) return false;
 
-    final loggedInUser = CometChatUIKit.loggedInUser;
+    final loggedInUser = ConvoKitUIKit.loggedInUser;
     return lastMessage.sender?.uid == loggedInUser?.uid;
   }
 

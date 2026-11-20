@@ -1,5 +1,5 @@
 /// Properties of every place a timestamp becomes a label: the notification
-/// feed's `getRelativeTime` / `groupByTimestamp`, the `CometChatDate` widget
+/// feed's `getRelativeTime` / `groupByTimestamp`, the `ConvoKitDate` widget
 /// used by conversations, messages and search, and the call-log helpers.
 ///
 ///   flutter test test/property/date_label_property_test.dart
@@ -47,7 +47,7 @@ Future<String> _renderedDate(
   DateTime date,
   DateTimePattern pattern,
 ) async {
-  await pumpInApp(tester, CometChatDate(date: date, pattern: pattern));
+  await pumpInApp(tester, ConvoKitDate(date: date, pattern: pattern));
   return tester.widget<Text>(find.byType(Text)).data!;
 }
 

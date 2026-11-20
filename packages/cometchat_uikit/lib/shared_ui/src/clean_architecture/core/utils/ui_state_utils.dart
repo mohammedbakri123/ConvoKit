@@ -10,9 +10,9 @@ import '../../presentation/theme/spacing/cometchat_spacing.dart';
 class UIStateUtils {
   static Center getDefaultErrorStateView(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
     VoidCallback? retryCallBack, {
     String? errorStateText,
     Color? errorStateTextColor,
@@ -36,7 +36,7 @@ class UIStateUtils {
           children: [
             Image.asset(
               AssetConstants(
-                CometChatThemeHelper.getBrightness(context),
+                ConvoKitThemeHelper.getBrightness(context),
               ).messagesError,
               package: UIConstants.packageName,
               height: 120,
@@ -112,9 +112,9 @@ class UIStateUtils {
 
   static Center getDefaultEmptyStateView(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing, {
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing, {
     String? emptyStateText,
     Color? emptyStateTextColor,
     TextStyle? emptyStateTextStyle,

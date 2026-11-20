@@ -99,7 +99,7 @@ class MessageHeaderBloc extends Bloc<MessageHeaderEvent, MessageHeaderState> {
   /// Initialize logged in user and register all SDK listeners
   Future<void> _initializeAndRegisterListeners() async {
     // Use cached logged-in user from UIKit level (avoids redundant platform channel calls)
-    final cachedUser = CometChatUIKit.loggedInUser;
+    final cachedUser = ConvoKitUIKit.loggedInUser;
     if (cachedUser != null && !isClosed) {
       add(InitializeLoggedInUser(cachedUser));
     }

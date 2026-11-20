@@ -58,8 +58,8 @@ class UsersRemoteDataSourceImpl implements UsersRemoteDataSource {
 
   ck.UserRepository? get _convoKitRepository =>
       _repository ??
-      CometChatUIKit.userRepository ??
-      CometChatUIKit.kit?.users;
+      ConvoKitUIKit.userRepository ??
+      ConvoKitUIKit.kit?.users;
 
   static final CometChatUserAdapter _sdkAdapter = CometChatUserAdapter();
 

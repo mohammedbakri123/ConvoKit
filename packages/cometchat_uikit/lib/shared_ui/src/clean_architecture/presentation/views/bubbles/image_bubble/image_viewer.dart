@@ -34,8 +34,8 @@ class _ImageViewerState extends State<ImageViewer> {
   bool _isLoading = true; // Track loading state
 
   late CometChatImageBubbleStyle imageBubbleStyle;
-  late CometChatColorPalette colorPalette;
-  late CometChatSpacing spacing;
+  late ConvoKitColorPalette colorPalette;
+  late ConvoKitSpacing spacing;
 
   @override
   void initState() {
@@ -58,8 +58,8 @@ class _ImageViewerState extends State<ImageViewer> {
 
   @override
   void didChangeDependencies() {
-    colorPalette = CometChatThemeHelper.getColorPalette(context);
-    spacing = CometChatThemeHelper.getSpacing(context);
+    colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    spacing = ConvoKitThemeHelper.getSpacing(context);
     super.didChangeDependencies();
   }
 
@@ -69,7 +69,7 @@ class _ImageViewerState extends State<ImageViewer> {
 
   @override
   Widget build(BuildContext context) {
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
     return Scaffold(
       backgroundColor: colorPalette.background1,
       appBar: AppBar(

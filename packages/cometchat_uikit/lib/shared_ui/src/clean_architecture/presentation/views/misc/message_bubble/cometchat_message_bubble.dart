@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../cometchat_uikit_shared.dart';
 
-///[CometChatMessageBubble] is a widget that provides the skeleton structure for any message bubble
+///[ConvoKitMessageBubble] is a widget that provides the skeleton structure for any message bubble
 ///constructed from a [CometChatMessageTemplate] which doesnt have a `bubbleView`
 ///it binds together the [leadingView], [headerView], [contentView], [footerView], [bottomView],
 ///[threadView] declared in the [CometChatMessageTemplate] to collectively form a message bubble
 ///
 /// ```dart
-///   CometChatMessageBubble(
+///   ConvoKitMessageBubble(
 ///        alignment: BubbleAlignment.center,
 ///        leadingView: Container(),
 ///        headerView: Container(),
@@ -20,7 +20,7 @@ import '../../../../../../cometchat_uikit_shared.dart';
 ///        style: MessageBubbleStyle(),
 ///      );
 /// ```
-class CometChatMessageBubble extends StatefulWidget {
+class ConvoKitMessageBubble extends StatefulWidget {
   // Deprecated in 6.2.0: no effect, removed in 7.0.0.
 
   /// Height of the bubble.
@@ -35,9 +35,9 @@ class CometChatMessageBubble extends StatefulWidget {
   )
   final double? width;
 
-  const CometChatMessageBubble({
+  const ConvoKitMessageBubble({
     super.key,
-    this.style = const CometChatMessageBubbleStyle(),
+    this.style = const ConvoKitMessageBubbleStyle(),
     this.alignment,
     this.contentView,
     this.footerView,
@@ -78,7 +78,7 @@ class CometChatMessageBubble extends StatefulWidget {
   final BubbleAlignment? alignment;
 
   ///[style] styling for the bubble
-  final CometChatMessageBubbleStyle? style;
+  final ConvoKitMessageBubbleStyle? style;
 
   ///[bottomView] widget to be shown at the bottom of the bubble
   final Widget? bottomView;
@@ -90,10 +90,10 @@ class CometChatMessageBubble extends StatefulWidget {
   final EdgeInsetsGeometry? margin;
 
   /// [colorPalette] optional pre-cached color palette to avoid expensive lookups during keyboard animation
-  final CometChatColorPalette? colorPalette;
+  final ConvoKitColorPalette? colorPalette;
 
   /// [spacing] optional pre-cached spacing to avoid expensive lookups during keyboard animation
-  final CometChatSpacing? spacing;
+  final ConvoKitSpacing? spacing;
 
   /// [contentPadding] sets padding inside the bubble container (around content)
   /// Use EdgeInsets.zero for media messages (images, videos) to remove padding
@@ -105,14 +105,14 @@ class CometChatMessageBubble extends StatefulWidget {
   final EdgeInsetsGeometry? outerPadding;
 
   @override
-  State<CometChatMessageBubble> createState() => _CometChatMessageBubbleState();
+  State<ConvoKitMessageBubble> createState() => _ConvoKitMessageBubbleState();
 }
 
-class _CometChatMessageBubbleState extends State<CometChatMessageBubble> {
+class _ConvoKitMessageBubbleState extends State<ConvoKitMessageBubble> {
   // Cached theme values to avoid expensive lookups during rebuilds
-  CometChatMessageBubbleStyle? _messageBubbleStyle;
-  CometChatSpacing? _spacing;
-  CometChatColorPalette? _colorPalette;
+  ConvoKitMessageBubbleStyle? _messageBubbleStyle;
+  ConvoKitSpacing? _spacing;
+  ConvoKitColorPalette? _colorPalette;
   bool _themeInitialized = false;
   Brightness? _cachedBrightness;
 
@@ -120,33 +120,33 @@ class _CometChatMessageBubbleState extends State<CometChatMessageBubble> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Only initialize theme once to avoid expensive lookups during keyboard animation
-    final currentBrightness = CometChatThemeHelper.getBrightness(context);
+    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
     if (!_themeInitialized || brightnessChanged) {
       _cachedBrightness = currentBrightness;
       _messageBubbleStyle =
-          CometChatThemeHelper.getTheme<CometChatMessageBubbleStyle>(
+          ConvoKitThemeHelper.getTheme<ConvoKitMessageBubbleStyle>(
             context: context,
-            defaultTheme: CometChatMessageBubbleStyle.of,
+            defaultTheme: ConvoKitMessageBubbleStyle.of,
           ).merge(widget.style);
       // Use passed values OR fallback to lookup (for standalone usage)
-      _spacing = widget.spacing ?? CometChatThemeHelper.getSpacing(context);
+      _spacing = widget.spacing ?? ConvoKitThemeHelper.getSpacing(context);
       _colorPalette =
-          widget.colorPalette ?? CometChatThemeHelper.getColorPalette(context);
+          widget.colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
       _themeInitialized = true;
     }
   }
 
   @override
-  void didUpdateWidget(CometChatMessageBubble oldWidget) {
+  void didUpdateWidget(ConvoKitMessageBubble oldWidget) {
     super.didUpdateWidget(oldWidget);
     // Update style if it changed
     if (widget.style != oldWidget.style) {
       _messageBubbleStyle =
-          CometChatThemeHelper.getTheme<CometChatMessageBubbleStyle>(
+          ConvoKitThemeHelper.getTheme<ConvoKitMessageBubbleStyle>(
             context: context,
-            defaultTheme: CometChatMessageBubbleStyle.of,
+            defaultTheme: ConvoKitMessageBubbleStyle.of,
           ).merge(widget.style);
     }
     // Update cached theme values if they changed
@@ -297,8 +297,8 @@ class _CometChatMessageBubbleState extends State<CometChatMessageBubble> {
   }
 
   Color? _getBubbleBackgroundColor(
-    CometChatMessageBubbleStyle style,
-    CometChatColorPalette colorPalette,
+    ConvoKitMessageBubbleStyle style,
+    ConvoKitColorPalette colorPalette,
   ) {
     return style.backgroundColor ??
         (widget.alignment == BubbleAlignment.right

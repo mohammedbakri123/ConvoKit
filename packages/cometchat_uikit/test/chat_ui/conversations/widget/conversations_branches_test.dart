@@ -399,8 +399,8 @@ void main() {
     });
 
     testWidgets('a conversation I pinned is offered Unpin', (tester) async {
-      CometChatUIKit.loggedInUser = User(uid: 'u-me', name: 'Me');
-      addTearDown(() => CometChatUIKit.loggedInUser = null);
+      ConvoKitUIKit.loggedInUser = User(uid: 'u-me', name: 'Me');
+      addTearDown(() => ConvoKitUIKit.loggedInUser = null);
 
       await _pump(
         tester,
@@ -422,8 +422,8 @@ void main() {
     ) async {
       // Only the pinner may unpin, so the entry is withheld rather than
       // offered and then rejected by the server.
-      CometChatUIKit.loggedInUser = User(uid: 'u-me', name: 'Me');
-      addTearDown(() => CometChatUIKit.loggedInUser = null);
+      ConvoKitUIKit.loggedInUser = User(uid: 'u-me', name: 'Me');
+      addTearDown(() => ConvoKitUIKit.loggedInUser = null);
 
       await _pump(
         tester,
@@ -521,8 +521,8 @@ void main() {
     });
 
     testWidgets('tapping Unpin also closes the menu cleanly', (tester) async {
-      CometChatUIKit.loggedInUser = User(uid: 'u-me', name: 'Me');
-      addTearDown(() => CometChatUIKit.loggedInUser = null);
+      ConvoKitUIKit.loggedInUser = User(uid: 'u-me', name: 'Me');
+      addTearDown(() => ConvoKitUIKit.loggedInUser = null);
 
       await _pump(
         tester,

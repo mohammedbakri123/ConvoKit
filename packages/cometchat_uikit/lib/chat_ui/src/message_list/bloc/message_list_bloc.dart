@@ -5,15 +5,15 @@ import 'package:cometchat_sdk/cometchat_sdk.dart';
 import '../../../../src/adapters/cometchat_sdk_adapter.dart';
 import 'package:convokit/cometchat_chat_uikit.dart'
     show
-        CometChatMessageEvents,
-        CometChatMessageEventListener,
+        ConvoKitMessageEvents,
+        ConvoKitMessageEventListener,
         ConvoKitGroupEvents,
         ConvoKitGroupEventListener,
         CometChatCallEvents,
         CometChatCallEventListener,
-        CometChatUIKitHelper,
-        CometChatUIKit,
-        CometChatUIEvents,
+        ConvoKitUIKitHelper,
+        ConvoKitUIKit,
+        ConvoKitUIEvents,
         ExtensionType,
         AIConstants,
         Sound;
@@ -785,7 +785,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
     final root = findMessage(threadId);
     if (root != null && root.threadSubscribed) return; // already known
     root?.threadSubscribed = true;
-    CometChatMessageEvents.ccThreadSubscriptionChanged(threadId, true);
+    ConvoKitMessageEvents.ccThreadSubscriptionChanged(threadId, true);
   }
 
   /// Restamps this bloc's copy of a thread root when any surface announces a
@@ -807,7 +807,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
   /// Initialize logged in user and register all SDK listeners
   Future<void> _initializeAndRegisterListeners() async {
     // Use cached logged-in user from UIKit level (avoids redundant platform channel calls)
-    _loggedInUser = CometChatUIKit.loggedInUser;
+    _loggedInUser = ConvoKitUIKit.loggedInUser;
 
     // Register SDK listeners if not disabled
     if (!disableSDKListeners) {
@@ -887,7 +887,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
     );
 
     // Register UI message events listener (for messages sent by logged-in user)
-    CometChatMessageEvents.addMessagesListener(
+    ConvoKitMessageEvents.addMessagesListener(
       _uiMessageListenerId,
       _MessageListUIEventListener(
         onCCMessageSentCallback: _handleCCMessageSent,
@@ -1006,7 +1006,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
     if (isClosed) return;
     // Broadcast to any other UI surface (e.g. the conversation list row) so
     // they can flip their own representation (sent tick → error icon).
-    CometChatMessageEvents.onMessageModerated(message);
+    ConvoKitMessageEvents.onMessageModerated(message);
     add(MessageEdited(message));
   }
 
@@ -1385,7 +1385,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
 
   /// Handle message sent by logged-in user (from UI events)
   ///
-  /// This is called when the composer sends a message via CometChatMessageEvents.ccMessageSent.
+  /// This is called when the composer sends a message via ConvoKitMessageEvents.ccMessageSent.
   /// We add the message to the list immediately for optimistic UI updates.
   ///
   /// The status parameter is dynamic but contains a [core_enums.MessageStatus] enum value.
@@ -1415,7 +1415,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
           final parent = findMessage(message.parentMessageId);
           if (parent != null && !parent.threadSubscribed) {
             parent.threadSubscribed = true;
-            CometChatMessageEvents.ccThreadSubscriptionChanged(
+            ConvoKitMessageEvents.ccThreadSubscriptionChanged(
               message.parentMessageId,
               true,
             );
@@ -1438,7 +1438,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
     Emitter<MessageListState> emit,
   ) async {
     // Use cached logged-in user from UIKit level
-    _loggedInUser ??= CometChatUIKit.loggedInUser;
+    _loggedInUser ??= ConvoKitUIKit.loggedInUser;
     emit(
       state.copyWith(
         status: MessageListStatus.empty,
@@ -1462,7 +1462,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
     Emitter<MessageListState> emit,
   ) async {
     emit(state.copyWith(status: MessageListStatus.loading));
-    _loggedInUser ??= CometChatUIKit.loggedInUser;
+    _loggedInUser ??= ConvoKitUIKit.loggedInUser;
 
     // Step 1: Fetch messages with hideReplies to get parent messages only
     final result = await getMessagesUseCase(
@@ -1499,7 +1499,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
     }
 
     // Step 2: Emit the UI event so the Composer can sync its parentMessageId
-    CometChatUIEvents.ccAgentChatThreadResolved(
+    ConvoKitUIEvents.ccAgentChatThreadResolved(
       receiverId: event.conversationWith,
       parentMessageId: resolvedParentMessageId!,
     );
@@ -1853,7 +1853,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
     emit(state.copyWith(status: MessageListStatus.loading));
 
     // Use cached logged-in user from UIKit level (avoids redundant platform channel calls)
-    _loggedInUser ??= CometChatUIKit.loggedInUser;
+    _loggedInUser ??= ConvoKitUIKit.loggedInUser;
 
     // Call getMessagesUseCase
     final result = await getMessagesUseCase(
@@ -2391,7 +2391,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
     if (convWith == null) return;
 
     // Use cached logged-in user from UIKit level
-    _loggedInUser ??= CometChatUIKit.loggedInUser;
+    _loggedInUser ??= ConvoKitUIKit.loggedInUser;
 
     // 1. Get the target message details first
     BaseMessage? targetMessage;
@@ -2570,7 +2570,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
             true) {
       return;
     }
-    CometChatUIKit.soundManager.play(
+    ConvoKitUIKit.soundManager.play(
       sound: Sound.incomingMessage,
       customSound: customSoundForMessages,
       packageName: customSoundForMessagePackage,
@@ -3017,7 +3017,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
 
     result.fold((failure) {}, (_) {
       // Notify conversations list (and other listeners) so unread count resets
-      CometChatMessageEvents.ccMessageRead(event.message);
+      ConvoKitMessageEvents.ccMessageRead(event.message);
 
       // Also clear the server-side unread count for this conversation.
       // markAsRead marks the individual message but does NOT reset the
@@ -3368,7 +3368,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
       final initiator = call.callInitiator;
       final initiatorUid = initiator is User ? initiator.uid : call.sender?.uid;
       final loggedInUid =
-          state.loggedInUser?.uid ?? CometChatUIKit.loggedInUser?.uid;
+          state.loggedInUser?.uid ?? ConvoKitUIKit.loggedInUser?.uid;
       final targetUid = user!.uid;
       if (call.receiverUid == targetUid) return true;
       if (initiatorUid == targetUid &&
@@ -3678,7 +3678,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
     }
 
     // Remove UI message events listener
-    CometChatMessageEvents.removeMessagesListener(_uiMessageListenerId);
+    ConvoKitMessageEvents.removeMessagesListener(_uiMessageListenerId);
 
     // Remove UI group events listener
     ConvoKitGroupEvents.removeGroupsListener(_uiGroupListenerId);
@@ -3736,7 +3736,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
 
     final result = await markAsUnreadUseCase(message: message);
     result.fold((failure) {}, (conversation) {
-      CometChatUIKitHelper.onConversationUpdate(conversation);
+      ConvoKitUIKitHelper.onConversationUpdate(conversation);
       emit(
         state.copyWith(
           unreadMessageAnchor: message,
@@ -4684,7 +4684,7 @@ class _MessageListConnectionListener with ConnectionListener {
 /// - ccMessageSent: When logged-in user sends a message
 /// - ccMessageEdited: When logged-in user edits a message
 /// - ccMessageDeleted: When logged-in user deletes a message
-class _MessageListUIEventListener with CometChatMessageEventListener {
+class _MessageListUIEventListener with ConvoKitMessageEventListener {
   final void Function(BaseMessage, dynamic) onCCMessageSentCallback;
   final void Function(BaseMessage, dynamic) onCCMessageEditedCallback;
   final void Function(BaseMessage, dynamic) onCCMessageDeletedCallback;

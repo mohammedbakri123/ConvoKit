@@ -28,9 +28,9 @@ class UserInfoScreen extends StatefulWidget {
 
 class _UserInfoScreenState extends State<UserInfoScreen>
     with UserListener, ConvoKitUserEventListener {
-  late CometChatColorPalette _colorPalette;
-  late CometChatTypography _typography;
-  late CometChatSpacing _spacing;
+  late ConvoKitColorPalette _colorPalette;
+  late ConvoKitTypography _typography;
+  late ConvoKitSpacing _spacing;
 
   late User _user;
   Conversation? _conversation;
@@ -74,9 +74,9 @@ class _UserInfoScreenState extends State<UserInfoScreen>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _colorPalette = CometChatThemeHelper.getColorPalette(context);
-    _typography = CometChatThemeHelper.getTypography(context);
-    _spacing = CometChatThemeHelper.getSpacing(context);
+    _colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    _typography = ConvoKitThemeHelper.getTypography(context);
+    _spacing = ConvoKitThemeHelper.getSpacing(context);
   }
 
   // --- SDK Listeners ---
@@ -137,7 +137,7 @@ class _UserInfoScreenState extends State<UserInfoScreen>
   // --- Actions ---
 
   void _showBlockDialog() {
-    CometChatConfirmDialog(
+    ConvoKitConfirmDialog(
       context: context,
       icon: Icon(Icons.block, color: _colorPalette.error, size: 48),
       title: Text(
@@ -162,7 +162,7 @@ class _UserInfoScreenState extends State<UserInfoScreen>
       confirmButtonText: cc.Translations.of(context).blockUser,
       cancelButtonText: cc.Translations.of(context).cancel,
       onConfirm: _blockUser,
-      style: CometChatConfirmDialogStyle(
+      style: ConvoKitConfirmDialogStyle(
         confirmButtonBackground: _colorPalette.error,
         confirmButtonTextColor: _colorPalette.white,
       ),
@@ -170,7 +170,7 @@ class _UserInfoScreenState extends State<UserInfoScreen>
   }
 
   void _showUnblockDialog() {
-    CometChatConfirmDialog(
+    ConvoKitConfirmDialog(
       context: context,
       icon: Icon(Icons.block, color: _colorPalette.error, size: 48),
       title: Text(
@@ -195,7 +195,7 @@ class _UserInfoScreenState extends State<UserInfoScreen>
       confirmButtonText: cc.Translations.of(context).unblockUser,
       cancelButtonText: cc.Translations.of(context).cancel,
       onConfirm: _unblockUser,
-      style: CometChatConfirmDialogStyle(
+      style: ConvoKitConfirmDialogStyle(
         confirmButtonBackground: _colorPalette.error,
         confirmButtonTextColor: _colorPalette.white,
       ),
@@ -245,7 +245,7 @@ class _UserInfoScreenState extends State<UserInfoScreen>
   }
 
   void _showDeleteChatDialog() {
-    CometChatConfirmDialog(
+    ConvoKitConfirmDialog(
       context: context,
       icon: Image.asset(
         AssetConstants.delete,
@@ -276,7 +276,7 @@ class _UserInfoScreenState extends State<UserInfoScreen>
       confirmButtonText: cc.Translations.of(context).deleteAndExit,
       cancelButtonText: cc.Translations.of(context).cancel,
       onConfirm: _deleteChat,
-      style: CometChatConfirmDialogStyle(
+      style: ConvoKitConfirmDialogStyle(
         confirmButtonBackground: _colorPalette.error,
         confirmButtonTextColor: _colorPalette.white,
       ),
@@ -391,12 +391,12 @@ class _UserInfoScreenState extends State<UserInfoScreen>
             // Avatar
             Padding(
               padding: EdgeInsets.only(bottom: _spacing.padding3 ?? 0),
-              child: CometChatAvatar(
+              child: ConvoKitAvatar(
                 height: 120,
                 width: 120,
                 image: _user.avatar ?? '',
                 name: _user.name,
-                style: CometChatAvatarStyle(
+                style: ConvoKitAvatarStyle(
                   placeHolderTextStyle: TextStyle(
                     fontSize: 48,
                     fontWeight: FontWeight.bold,

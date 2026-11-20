@@ -65,9 +65,9 @@ class CometChatAudioPlayer extends StatefulWidget {
   final BubbleAlignment? alignment;
   final int? id;
   final Map<String, dynamic>? metadata;
-  final CometChatColorPalette? colorPalette;
-  final CometChatSpacing? spacing;
-  final CometChatTypography? typography;
+  final ConvoKitColorPalette? colorPalette;
+  final ConvoKitSpacing? spacing;
+  final ConvoKitTypography? typography;
   final int barCount;
 
   @override
@@ -98,9 +98,9 @@ class _CometChatAudioPlayerState extends State<CometChatAudioPlayer> {
 
   // Theme caching
   late CometChatVoiceNoteBubbleStyle _style;
-  late CometChatColorPalette _colorPalette;
-  late CometChatSpacing _spacing;
-  late CometChatTypography _typography;
+  late ConvoKitColorPalette _colorPalette;
+  late ConvoKitSpacing _spacing;
+  late ConvoKitTypography _typography;
   bool _themeInitialized = false;
   Brightness? _cachedBrightness;
 
@@ -126,20 +126,20 @@ class _CometChatAudioPlayerState extends State<CometChatAudioPlayer> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final currentBrightness = CometChatThemeHelper.getBrightness(context);
+    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
     if (!_themeInitialized || brightnessChanged) {
       _cachedBrightness = currentBrightness;
-      _style = CometChatThemeHelper.getTheme<CometChatVoiceNoteBubbleStyle>(
+      _style = ConvoKitThemeHelper.getTheme<CometChatVoiceNoteBubbleStyle>(
         context: context,
         defaultTheme: CometChatVoiceNoteBubbleStyle.of,
       ).merge(widget.style);
       _colorPalette =
-          widget.colorPalette ?? CometChatThemeHelper.getColorPalette(context);
-      _spacing = widget.spacing ?? CometChatThemeHelper.getSpacing(context);
+          widget.colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
+      _spacing = widget.spacing ?? ConvoKitThemeHelper.getSpacing(context);
       _typography =
-          widget.typography ?? CometChatThemeHelper.getTypography(context);
+          widget.typography ?? ConvoKitThemeHelper.getTypography(context);
       _themeInitialized = true;
     }
   }
@@ -148,7 +148,7 @@ class _CometChatAudioPlayerState extends State<CometChatAudioPlayer> {
   void didUpdateWidget(CometChatAudioPlayer oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.style != oldWidget.style) {
-      _style = CometChatThemeHelper.getTheme<CometChatVoiceNoteBubbleStyle>(
+      _style = ConvoKitThemeHelper.getTheme<CometChatVoiceNoteBubbleStyle>(
         context: context,
         defaultTheme: CometChatVoiceNoteBubbleStyle.of,
       ).merge(widget.style);

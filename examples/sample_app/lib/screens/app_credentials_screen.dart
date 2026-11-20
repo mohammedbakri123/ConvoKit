@@ -26,9 +26,9 @@ class AppCredentialsScreen extends StatefulWidget {
 }
 
 class _AppCredentialsScreenState extends State<AppCredentialsScreen> {
-  late CometChatColorPalette _colorPalette;
-  late CometChatTypography _typography;
-  late CometChatSpacing _spacing;
+  late ConvoKitColorPalette _colorPalette;
+  late ConvoKitTypography _typography;
+  late ConvoKitSpacing _spacing;
 
   final _appIdController = TextEditingController();
   final _authKeyController = TextEditingController();
@@ -44,9 +44,9 @@ class _AppCredentialsScreenState extends State<AppCredentialsScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _colorPalette = CometChatThemeHelper.getColorPalette(context);
-    _typography = CometChatThemeHelper.getTypography(context);
-    _spacing = CometChatThemeHelper.getSpacing(context);
+    _colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    _typography = ConvoKitThemeHelper.getTypography(context);
+    _spacing = ConvoKitThemeHelper.getSpacing(context);
   }
 
   @override
@@ -102,7 +102,7 @@ class _AppCredentialsScreenState extends State<AppCredentialsScreen> {
               ..authKey = AppCredentials.authKey)
             .build();
 
-    CometChatUIKit.init(
+    ConvoKitUIKit.init(
       uiKitSettings: uiKitSettings,
       onSuccess: (_) {
         if (!mounted) return;
@@ -416,7 +416,7 @@ class _AppCredentialsScreenState extends State<AppCredentialsScreen> {
       controller: controller,
       focusNode: focusNode,
       obscureText: obscureText,
-      keyboardAppearance: CometChatThemeHelper.getBrightness(context),
+      keyboardAppearance: ConvoKitThemeHelper.getBrightness(context),
       style: TextStyle(
         color: _colorPalette.textPrimary,
         fontSize: _typography.body?.regular?.fontSize,

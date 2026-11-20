@@ -1,7 +1,7 @@
 import "../../../clean_architecture.dart";
 import 'package:flutter/material.dart';
 
-class CometChatTypography extends ThemeExtension<CometChatTypography> {
+class ConvoKitTypography extends ThemeExtension<ConvoKitTypography> {
   ///[heading1] defines the styling for the text displayed in the heading1
   final CometChatTextStyleHeading1? heading1;
 
@@ -32,7 +32,7 @@ class CometChatTypography extends ThemeExtension<CometChatTypography> {
   ///[title] defines the styling for the text displayed in the title
   final CometChatTextStyleTitle? title;
 
-  const CometChatTypography({
+  const ConvoKitTypography({
     this.heading1,
     this.heading2,
     this.heading3,
@@ -45,7 +45,7 @@ class CometChatTypography extends ThemeExtension<CometChatTypography> {
     this.title,
   });
 
-  static CometChatTypography of(BuildContext context) => CometChatTypography(
+  static ConvoKitTypography of(BuildContext context) => ConvoKitTypography(
     heading1: CometChatTextStyleHeading1.of(context),
     heading2: CometChatTextStyleHeading2.of(context),
     heading3: CometChatTextStyleHeading3.of(context),
@@ -59,7 +59,7 @@ class CometChatTypography extends ThemeExtension<CometChatTypography> {
   );
 
   @override
-  CometChatTypography copyWith({
+  ConvoKitTypography copyWith({
     CometChatTextStyleHeading1? heading1,
     CometChatTextStyleHeading2? heading2,
     CometChatTextStyleHeading3? heading3,
@@ -71,7 +71,7 @@ class CometChatTypography extends ThemeExtension<CometChatTypography> {
     CometChatTextStyleLink? link,
     CometChatTextStyleTitle? title,
   }) {
-    return CometChatTypography(
+    return ConvoKitTypography(
       heading1: heading1 ?? this.heading1,
       heading2: heading2 ?? this.heading2,
       heading3: heading3 ?? this.heading3,
@@ -85,7 +85,7 @@ class CometChatTypography extends ThemeExtension<CometChatTypography> {
     );
   }
 
-  CometChatTypography merge(CometChatTypography? style) {
+  ConvoKitTypography merge(ConvoKitTypography? style) {
     if (style == null) return this;
     return copyWith(
       heading1: style.heading1,
@@ -102,14 +102,14 @@ class CometChatTypography extends ThemeExtension<CometChatTypography> {
   }
 
   @override
-  ThemeExtension<CometChatTypography> lerp(
-    ThemeExtension<CometChatTypography>? other,
+  ThemeExtension<ConvoKitTypography> lerp(
+    ThemeExtension<ConvoKitTypography>? other,
     double t,
   ) {
-    if (other is! CometChatTypography) {
+    if (other is! ConvoKitTypography) {
       return this;
     }
-    return CometChatTypography(
+    return ConvoKitTypography(
       heading1: heading1?.lerp(other.heading1, t),
       heading2: heading2?.lerp(other.heading2, t),
       heading3: heading3?.lerp(other.heading3, t),

@@ -8,8 +8,8 @@ abstract class ConvoKitGroupMembersControllerProtocol
     Group group,
     GroupMember member,
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
   );
 }

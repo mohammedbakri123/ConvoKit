@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:convokit/cometchat_chat_uikit.dart'
     show
-        CometChatActionBubble,
+        ConvoKitActionBubble,
         ConvoKitMessageComposer,
         ConvoKitMessageHeader,
         ConvoKitMessageList,
@@ -383,12 +383,12 @@ class ComposerDepthHelper {
       _centerWhere(tester, (w) => w is RichText && _plain(w).contains(text));
 
   /// Centre of a group action bubble ("… added …").
-  /// message_template_utils.dart: `CometChatActionBubble(text: action.message)`.
+  /// message_template_utils.dart: `ConvoKitActionBubble(text: action.message)`.
   static Offset? centerOfActionBubble(WidgetTester tester, String containing) =>
       _centerWhere(
         tester,
         (w) =>
-            w is CometChatActionBubble && (w.text ?? '').contains(containing),
+            w is ConvoKitActionBubble && (w.text ?? '').contains(containing),
       );
 
   /// Global rect of the message list viewport.

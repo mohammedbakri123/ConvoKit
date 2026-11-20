@@ -38,8 +38,8 @@ class MessageComposerAuxiliaryButtons extends StatefulWidget {
   final Color? auxiliaryButtonIconColor;
   final Color? auxiliaryButtonIconBackgroundColor;
   final BorderRadiusGeometry? auxiliaryButtonBorderRadius;
-  final CometChatColorPalette? colorPalette;
-  final CometChatSpacing? spacing;
+  final ConvoKitColorPalette? colorPalette;
+  final ConvoKitSpacing? spacing;
 
   /// When true, renders the mic button BEFORE [auxiliaryOptions] (stickers).
   /// Default false keeps the existing single-line order: `[stickers][mic]`.
@@ -116,7 +116,7 @@ class _MessageComposerAuxiliaryButtonsState
     }
 
     final effectiveColorPalette =
-        widget.colorPalette ?? CometChatThemeHelper.getColorPalette(context);
+        widget.colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
 
     final bool hasAuxOptions = widget.auxiliaryOptions != null;
 
@@ -167,7 +167,7 @@ class _MessageComposerAuxiliaryButtonsState
   /// is invisible, but it is still a focusable, screen-reader-announced
   /// "Record voice message" control that the integrator asked to remove.
   Widget _buildAnimatedVoiceRecordingButton(
-    CometChatColorPalette colorPalette, {
+    ConvoKitColorPalette colorPalette, {
     required double axisAlignment,
     required bool needsLeftMargin,
     EdgeInsetsGeometry? padding,
@@ -201,7 +201,7 @@ class _MessageComposerAuxiliaryButtonsState
   }
 
   Widget _buildVoiceRecordingButton(
-    CometChatColorPalette colorPalette, {
+    ConvoKitColorPalette colorPalette, {
     bool needsLeftMargin = false,
   }) {
     final Color iconColor =

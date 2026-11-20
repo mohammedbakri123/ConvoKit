@@ -57,13 +57,13 @@ class ConversationsSubtitleView extends StatelessWidget {
   final CometChatTypingIndicatorStyle typingStyle;
 
   /// The color palette used for styling.
-  final CometChatColorPalette colorPalette;
+  final ConvoKitColorPalette colorPalette;
 
   /// The spacing configuration for padding and margins.
-  final CometChatSpacing spacing;
+  final ConvoKitSpacing spacing;
 
   /// The typography configuration for text styles.
-  final CometChatTypography typography;
+  final ConvoKitTypography typography;
 
   /// Whether to hide the thread indicator arrow icon.
   /// Defaults to true (hidden).
@@ -104,7 +104,7 @@ class ConversationsSubtitleView extends StatelessWidget {
     if (hideThreadIndicator != null && hideThreadIndicator == false) {
       if (conversation.conversationWith is User) {
         if (conversation.lastMessage?.sender?.uid !=
-            CometChatUIKit.loggedInUser?.uid) {
+            ConvoKitUIKit.loggedInUser?.uid) {
           prefix = "${conversation.lastMessage?.sender?.name}: ";
         } else {
           prefix = "";
@@ -121,7 +121,7 @@ class ConversationsSubtitleView extends StatelessWidget {
         if (hideThreadIndicator != null &&
             hideThreadIndicator == false &&
             conversation.lastMessage?.sender?.uid ==
-                CometChatUIKit.loggedInUser?.uid)
+                ConvoKitUIKit.loggedInUser?.uid)
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -219,14 +219,14 @@ class ConversationsSubtitleView extends StatelessWidget {
         conversation.lastMessage!.deletedAt == null &&
         conversation.lastMessage!.type != "groupMember" &&
         conversation.lastMessage!.sender?.uid ==
-            CometChatUIKit.loggedInUser?.uid) {
+            ConvoKitUIKit.loggedInUser?.uid) {
       ReceiptStatus status = MessageReceiptUtils.getReceiptStatus(
         conversation.lastMessage!,
       );
 
       return Padding(
         padding: EdgeInsets.only(right: spacing.padding1 ?? 0),
-        child: CometChatReceipt(
+        child: ConvoKitReceipt(
           status: status,
           style: receiptStyle,
           deliveredIcon:

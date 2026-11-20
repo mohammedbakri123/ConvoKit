@@ -152,17 +152,17 @@ class ConvoKitConversationsStyle
   ///[typingIndicatorStyle] provides style for typing indicator
   final CometChatTypingIndicatorStyle? typingIndicatorStyle;
 
-  ///[dateStyle] provides styling for CometChatDate
-  final CometChatDateStyle? dateStyle;
+  ///[dateStyle] provides styling for ConvoKitDate
+  final ConvoKitDateStyle? dateStyle;
 
   ///[avatarStyle] set style for avatar
-  final CometChatAvatarStyle? avatarStyle;
+  final ConvoKitAvatarStyle? avatarStyle;
 
   ///[statusIndicatorStyle] set style for status indicator
-  final CometChatStatusIndicatorStyle? statusIndicatorStyle;
+  final ConvoKitStatusIndicatorStyle? statusIndicatorStyle;
 
   ///[badgeStyle] used to customize the unread messages count indicator
-  final CometChatBadgeStyle? badgeStyle;
+  final ConvoKitBadgeStyle? badgeStyle;
 
   ///[receiptStyle] sets the style for the receipts shown in the subtitle
   final CometChatMessageReceiptStyle? receiptStyle;
@@ -171,7 +171,7 @@ class ConvoKitConversationsStyle
   final CometChatMentionsStyle? mentionsStyle;
 
   ///[deleteConversationDialogStyle] sets the style for the dialog for deleting conversation
-  final CometChatConfirmDialogStyle? deleteConversationDialogStyle;
+  final ConvoKitConfirmDialogStyle? deleteConversationDialogStyle;
 
   ///[privateGroupIconBackground] provides background color for private group icon
   final Color? privateGroupIconBackground;
@@ -238,14 +238,14 @@ class ConvoKitConversationsStyle
     Color? messageTypeIconColor,
     double? separatorHeight,
     Color? separatorColor,
-    CometChatAvatarStyle? messageBubbleAvatarStyle,
-    CometChatStatusIndicatorStyle? statusIndicatorStyle,
-    CometChatBadgeStyle? badgeStyle,
+    ConvoKitAvatarStyle? messageBubbleAvatarStyle,
+    ConvoKitStatusIndicatorStyle? statusIndicatorStyle,
+    ConvoKitBadgeStyle? badgeStyle,
     CometChatMessageReceiptStyle? receiptStyle,
     CometChatMentionsStyle? mentionsStyle,
-    CometChatDateStyle? dateStyle,
+    ConvoKitDateStyle? dateStyle,
     CometChatTypingIndicatorStyle? typingIndicatorStyle,
-    CometChatConfirmDialogStyle? deleteConversationDialogStyle,
+    ConvoKitConfirmDialogStyle? deleteConversationDialogStyle,
     Color? privateGroupIconBackground,
     Color? protectedGroupIconBackground,
     BorderSide? checkBoxBorder,

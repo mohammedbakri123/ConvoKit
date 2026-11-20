@@ -20,8 +20,8 @@ import '../../../../shared_ui/src/logging/cometchat_log.dart';
 class MessageTemplateUtils {
   static CometChatMessageOption getEditOption(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
     ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     return CometChatMessageOption(
@@ -50,8 +50,8 @@ class MessageTemplateUtils {
 
   static CometChatMessageOption getDeleteOption(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
     ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     return CometChatMessageOption(
@@ -82,8 +82,8 @@ class MessageTemplateUtils {
 
   static CometChatMessageOption getReplyOption(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
     ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     return CometChatMessageOption(
@@ -112,8 +112,8 @@ class MessageTemplateUtils {
 
   static CometChatMessageOption getReplyInThreadOption(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
     ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     return CometChatMessageOption(
@@ -163,8 +163,8 @@ class MessageTemplateUtils {
   static CometChatMessageOption getThreadSubscriptionOption(
     BuildContext context,
     BaseMessage messageObject,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
     ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     // One option id; the title flips on state (mute vocabulary per the
@@ -212,8 +212,8 @@ class MessageTemplateUtils {
   static CometChatMessageOption getPinOption(
     BuildContext context,
     BaseMessage messageObject,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
     ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     // One surface slot; id and title flip on the message's pin state so the
@@ -250,8 +250,8 @@ class MessageTemplateUtils {
   static CometChatMessageOption getSaveOption(
     BuildContext context,
     BaseMessage messageObject,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
     ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     final bool saved = isMessageSaved(messageObject);
@@ -287,8 +287,8 @@ class MessageTemplateUtils {
 
   static CometChatMessageOption getShareOption(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
     ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     return CometChatMessageOption(
@@ -323,8 +323,8 @@ class MessageTemplateUtils {
   /// while the `message-translation` extension is enabled.
   static CometChatMessageOption getTranslateOption(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
     ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     return CometChatMessageOption(
@@ -355,8 +355,8 @@ class MessageTemplateUtils {
 
   static CometChatMessageOption getCopyOption(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
     ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     return CometChatMessageOption(
@@ -385,8 +385,8 @@ class MessageTemplateUtils {
 
   static CometChatMessageOption getMessageInfo(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
     ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     return CometChatMessageOption(
@@ -423,8 +423,8 @@ class MessageTemplateUtils {
 
   static CometChatMessageOption getSendMessagePrivately(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
     ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     return CometChatMessageOption(
@@ -455,8 +455,8 @@ class MessageTemplateUtils {
 
   static CometChatMessageOption getMarkAsUnreadOption(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
     ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     return CometChatMessageOption(
@@ -489,8 +489,8 @@ class MessageTemplateUtils {
 
   static CometChatMessageOption getReportOption(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
     ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
   ) {
     return CometChatMessageOption(
@@ -525,8 +525,8 @@ class MessageTemplateUtils {
     AdditionalConfigurations? additionalConfigurations,
   ) {
     List<CometChatMessageOption> messageOptionList = [];
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final typography = CometChatThemeHelper.getTypography(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
     final style = additionalConfigurations?.messageOptionSheetStyle;
 
     if (messageObject.sender?.uid == loggedInUser.uid &&
@@ -590,7 +590,7 @@ class MessageTemplateUtils {
     // Follow/unfollow thread — placed directly after Reply in thread so the
     // two thread actions sit together. Feature-gated (default off): with the
     // gate off, neither thread-subscription surface renders.
-    if (CometChatUIKit.authenticationSettings?.enableThreadSubscription ==
+    if (ConvoKitUIKit.authenticationSettings?.enableThreadSubscription ==
             true &&
         additionalConfigurations?.hideThreadSubscriptionOption != true &&
         _validateOption(
@@ -684,7 +684,7 @@ class MessageTemplateUtils {
       );
     }
 
-    if (!CometChatUIKit.isConvoKitMode &&
+    if (!ConvoKitUIKit.isConvoKitMode &&
         additionalConfigurations?.hideEditMessageOption != true &&
         _validateOption(
           loggedInUser,
@@ -851,25 +851,25 @@ class MessageTemplateUtils {
   static Widget getDeleteMessageBubble(
     BaseMessage messageObject,
     BuildContext context,
-    CometChatDeletedBubbleStyle? style,
+    ConvoKitDeletedBubbleStyle? style,
   ) {
-    CometChatColorPalette colorPalette = CometChatThemeHelper.getColorPalette(
+    ConvoKitColorPalette colorPalette = ConvoKitThemeHelper.getColorPalette(
       context,
     );
-    final style0 = CometChatThemeHelper.getTheme<CometChatDeletedBubbleStyle>(
+    final style0 = ConvoKitThemeHelper.getTheme<ConvoKitDeletedBubbleStyle>(
       context: context,
-      defaultTheme: CometChatDeletedBubbleStyle.of,
+      defaultTheme: ConvoKitDeletedBubbleStyle.of,
     ).merge(style);
-    return CometChatDeletedBubble(
-      style: CometChatDeletedBubbleStyle(
+    return ConvoKitDeletedBubble(
+      style: ConvoKitDeletedBubbleStyle(
         iconColor:
             style0.iconColor ??
-            (messageObject.sender?.uid == CometChatUIKit.loggedInUser?.uid
+            (messageObject.sender?.uid == ConvoKitUIKit.loggedInUser?.uid
                 ? colorPalette.white
                 : colorPalette.neutral600),
         textColor:
             style0.textColor ??
-            (messageObject.sender?.uid == CometChatUIKit.loggedInUser?.uid
+            (messageObject.sender?.uid == ConvoKitUIKit.loggedInUser?.uid
                 ? colorPalette.white
                 : colorPalette.neutral600),
       ).merge(style0),
@@ -878,11 +878,11 @@ class MessageTemplateUtils {
 
   static Widget getGroupActionBubble(
     BaseMessage messageObject,
-    CometChatActionBubbleStyle? style,
+    ConvoKitActionBubbleStyle? style,
   ) {
     cc.Action actionMessage = messageObject as cc.Action;
 
-    return CometChatActionBubble(text: actionMessage.message, style: style);
+    return ConvoKitActionBubble(text: actionMessage.message, style: style);
   }
 
   static CometChatMessageTemplate getTextMessageTemplate() {
@@ -1396,7 +1396,7 @@ class MessageTemplateUtils {
         additionalConfigurations,
       );
     }
-    if (CometChatUIKit.isConvoKitMode) {
+    if (ConvoKitUIKit.isConvoKitMode) {
       optionList.removeWhere((opt) => opt.id == MessageOptionConstants.editMessage);
     }
     return optionList;
@@ -1409,7 +1409,7 @@ class MessageTemplateUtils {
     dynamic group,
     String optionId,
   ) {
-    if (CometChatUIKit.isConvoKitMode &&
+    if (ConvoKitUIKit.isConvoKitMode &&
         MessageOptionConstants.editMessage == optionId) {
       return false; // Editing deferred to v1.1 in ConvoKit mode
     }
@@ -1531,8 +1531,8 @@ class MessageTemplateUtils {
     AdditionalConfigurations? additionalConfigurations,
   ) {
     List<CometChatMessageOption> messageOptionList = [];
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final typography = CometChatThemeHelper.getTypography(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
     final style = additionalConfigurations?.messageOptionSheetStyle;
 
     // 🚫 Moderation Disapproved: Only return DELETE if allowed
@@ -1562,7 +1562,7 @@ class MessageTemplateUtils {
     final String? caption = messageObject is MediaMessage
         ? messageObject.caption?.trim()
         : null;
-    if (!CometChatUIKit.isConvoKitMode &&
+    if (!ConvoKitUIKit.isConvoKitMode &&
         additionalConfigurations?.hideEditMessageOption != true &&
         _validateOption(
           loggedInUser,
@@ -1598,7 +1598,7 @@ class MessageTemplateUtils {
     // Follow/unfollow thread — placed directly after Reply in thread so the
     // two thread actions sit together. Feature-gated (default off): with the
     // gate off, neither thread-subscription surface renders.
-    if (CometChatUIKit.authenticationSettings?.enableThreadSubscription ==
+    if (ConvoKitUIKit.authenticationSettings?.enableThreadSubscription ==
             true &&
         additionalConfigurations?.hideThreadSubscriptionOption != true &&
         _validateOption(
@@ -2177,11 +2177,11 @@ class MessageTemplateUtils {
     BaseMessage message,
     BuildContext context,
   ) {
-    CometChatSpacing spacing = CometChatThemeHelper.getSpacing(context);
-    CometChatTypography typography = CometChatThemeHelper.getTypography(
+    ConvoKitSpacing spacing = ConvoKitThemeHelper.getSpacing(context);
+    ConvoKitTypography typography = ConvoKitThemeHelper.getTypography(
       context,
     );
-    CometChatColorPalette colorPalette = CometChatThemeHelper.getColorPalette(
+    ConvoKitColorPalette colorPalette = ConvoKitThemeHelper.getColorPalette(
       context,
     );
     return Container(
@@ -2199,7 +2199,7 @@ class MessageTemplateUtils {
             padding: EdgeInsets.only(right: spacing.padding1 ?? 0),
             child: Icon(
               Icons.block,
-              color: message.sender?.uid == CometChatUIKit.loggedInUser?.uid
+              color: message.sender?.uid == ConvoKitUIKit.loggedInUser?.uid
                   ? colorPalette.white
                   : colorPalette.neutral600,
               size: 16,
@@ -2208,7 +2208,7 @@ class MessageTemplateUtils {
           Text(
             Translations.of(context).unsupportedMessageType,
             style: TextStyle(
-              color: message.sender?.uid == CometChatUIKit.loggedInUser?.uid
+              color: message.sender?.uid == ConvoKitUIKit.loggedInUser?.uid
                   ? colorPalette.white
                   : colorPalette.neutral600,
               fontSize: typography.body?.regular?.fontSize,
@@ -2255,7 +2255,7 @@ class MessageTemplateUtils {
 
             final String pollQuestion = metadata['question']?.toString() ?? '';
             final String loggedInUserUid =
-                CometChatUIKit.loggedInUser?.uid ?? '';
+                ConvoKitUIKit.loggedInUser?.uid ?? '';
 
             // Extract poll results from message metadata injected extensions
             Map<String, dynamic>? pollResults;

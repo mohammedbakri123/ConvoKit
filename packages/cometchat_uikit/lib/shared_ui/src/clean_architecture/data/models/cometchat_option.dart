@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-///[CometChatOption] is a model class which is used to execute any action on a [CometChatListItem]
+///[CometChatOption] is a model class which is used to execute any action on a [ConvoKitListItem]
 ///
 /// ```dart
 ///

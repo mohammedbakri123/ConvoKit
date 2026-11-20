@@ -68,8 +68,8 @@ abstract final class CometChatAttachmentErrorSnackBar {
     final messenger = ScaffoldMessenger.maybeOf(context);
     if (messenger == null) return;
 
-    final colors = CometChatThemeHelper.getColorPalette(context);
-    final typography = CometChatThemeHelper.getTypography(context);
+    final colors = ConvoKitThemeHelper.getColorPalette(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
     final message = tile.errorMessage ?? Translations.of(context).uploadFailed;
 
     messenger.hideCurrentSnackBar();

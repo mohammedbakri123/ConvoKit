@@ -16,7 +16,7 @@ import 'package:convokit/cometchat_chat_uikit.dart';
 // We deliberately build fakes with `lastMessage == null` so that the widget's
 // subtitle-formatter / moderation / mentions chain is not exercised. Those
 // chains reach deep into production infrastructure (CometChatMentionsFormatter,
-// ModerationCheckUtil, CometChatUIKit.loggedInUser, etc.) and pulling all of
+// ModerationCheckUtil, ConvoKitUIKit.loggedInUser, etc.) and pulling all of
 // them into a unit-level golden test would make the tests brittle. The visual
 // states we *do* want to pin (avatar layout, title, status/group indicators,
 // unread badge, selection checkbox) are all independent of last-message content.

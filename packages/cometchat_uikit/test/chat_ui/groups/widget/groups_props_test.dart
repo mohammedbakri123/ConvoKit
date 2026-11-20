@@ -553,7 +553,7 @@ final _cases = <_Case>[
         p.loadingStateView = (context) => const Text('loading-sentinel-9K'),
     observe: (t, _, _) => [
       _count(find.text('loading-sentinel-9K')),
-      _count(find.byType(CometChatShimmerEffect)),
+      _count(find.byType(ConvoKitShimmerEffect)),
     ],
     expected: [1, 0],
     atDefault: [0, 1],
@@ -634,7 +634,7 @@ final _cases = <_Case>[
     apply: (p, _) => p.leadingView = (context, g) => Text('lead-${g.guid}'),
     observe: (t, _, _) => [
       _shown(['lead-g1', 'lead-g2', 'lead-g3']),
-      _count(find.byType(CometChatAvatar)),
+      _count(find.byType(ConvoKitAvatar)),
     ],
     expected: [
       ['lead-g1', 'lead-g2', 'lead-g3'],
@@ -655,7 +655,7 @@ final _cases = <_Case>[
     'groupTypeVisibility',
     'false removes the private and password badges',
     apply: (p, _) => p.groupTypeVisibility = false,
-    observe: (t, _, _) => _count(find.byType(CometChatStatusIndicator)),
+    observe: (t, _, _) => _count(find.byType(ConvoKitStatusIndicator)),
     expected: 0,
     atDefault: 2,
   ),

@@ -83,8 +83,8 @@ _MockMessageInformationBloc _bloc(MessageInformationState state) {
 const _size = goldenScreen;
 
 void main() {
-  setUp(() => CometChatUIKit.loggedInUser = _me);
-  tearDown(() => CometChatUIKit.loggedInUser = null);
+  setUp(() => ConvoKitUIKit.loggedInUser = _me);
+  tearDown(() => ConvoKitUIKit.loggedInUser = null);
 
   AlchemistConfig.runWithConfig(
     config: goldenConfig(),

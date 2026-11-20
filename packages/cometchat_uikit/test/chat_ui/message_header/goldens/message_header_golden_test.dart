@@ -71,7 +71,7 @@ _MockMessageHeaderBloc _bloc({
 /// The header only builds its call buttons when the Kit was initialised with
 /// calls enabled.
 void _setCallsEnabled(bool enabled) {
-  CometChatUIKit.authenticationSettings = enabled
+  ConvoKitUIKit.authenticationSettings = enabled
       ? (UIKitSettingsBuilder()
               ..appId = 'golden-app'
               ..region = 'us'

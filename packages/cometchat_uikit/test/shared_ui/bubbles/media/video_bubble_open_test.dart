@@ -177,25 +177,25 @@ void main() {
     testWidgets('a new colour palette and spacing replace the cached ones', (
       tester,
     ) async {
-      Future<void> pumpWith(CometChatColorPalette palette, double radius) =>
+      Future<void> pumpWith(ConvoKitColorPalette palette, double radius) =>
           pumpBubble(
             tester,
             CometChatVideoBubble(
               videoUrl: 'https://cdn.invalid/clip.mp4',
               colorPalette: palette,
-              spacing: CometChatSpacing(radius3: radius),
+              spacing: ConvoKitSpacing(radius3: radius),
             ),
           );
 
       await pumpWith(
-        CometChatColorPalette(background3: const Color(0xFF333333)),
+        ConvoKitColorPalette(background3: const Color(0xFF333333)),
         4,
       );
       expect(frameDecoration(tester).color, const Color(0xFF333333));
       expect(frameDecoration(tester).borderRadius, BorderRadius.circular(4));
 
       await pumpWith(
-        CometChatColorPalette(background3: const Color(0xFF444444)),
+        ConvoKitColorPalette(background3: const Color(0xFF444444)),
         18,
       );
       expect(frameDecoration(tester).color, const Color(0xFF444444));

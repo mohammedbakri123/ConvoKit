@@ -254,16 +254,16 @@ Future<Object> _resolve(
 }
 
 void main() {
-  group('CometChatTypography', () {
+  group('ConvoKitTypography', () {
     testWidgets('of() collects every role at its own default type', (
       tester,
     ) async {
-      late CometChatTypography typography;
+      late ConvoKitTypography typography;
       await tester.pumpWidget(
         MaterialApp(
           home: Builder(
             builder: (context) {
-              typography = CometChatTypography.of(context);
+              typography = ConvoKitTypography.of(context);
               return const SizedBox.shrink();
             },
           ),
@@ -288,10 +288,10 @@ void main() {
     });
 
     test('copyWith and merge give the argument precedence per role', () {
-      const supplied = CometChatTypography(
+      const supplied = ConvoKitTypography(
         body: CometChatTextStyleBody(bold: TextStyle(fontSize: 31)),
       );
-      const base = CometChatTypography(
+      const base = ConvoKitTypography(
         title: CometChatTextStyleTitle(bold: TextStyle(fontSize: 41)),
       );
 
@@ -303,14 +303,14 @@ void main() {
     });
 
     test('FINDING lerp throws when a role token leaves a slot unset', () {
-      // FINDING: `CometChatTypography.lerp` forwards into each role's lerp,
+      // FINDING: `ConvoKitTypography.lerp` forwards into each role's lerp,
       // and all of them but `body` assert non-null on `TextStyle.lerp`. So
       // lerping two typographies that carry a default-constructed role — what
-      // `CometChatTypography()` with any role set gives you — throws.
+      // `ConvoKitTypography()` with any role set gives you — throws.
       expect(
-        () => const CometChatTypography(heading1: CometChatTextStyleHeading1())
+        () => const ConvoKitTypography(heading1: CometChatTextStyleHeading1())
             .lerp(
-              const CometChatTypography(heading1: CometChatTextStyleHeading1()),
+              const ConvoKitTypography(heading1: CometChatTextStyleHeading1()),
               0.5,
             ),
         throwsA(isA<TypeError>()),
@@ -372,7 +372,7 @@ void main() {
         // null when both sides are null. So lerping two tokens that leave a
         // weight unset — the default-constructed token included — throws a
         // TypeError. `ThemeData.lerp` calls this on every theme animation, and
-        // `CometChatTypography.lerp` forwards into it. Pinned, not fixed.
+        // `ConvoKitTypography.lerp` forwards into it. Pinned, not fixed.
         final empty = role.empty();
         if (role.lerpThrowsOnNullSlot) {
           expect(

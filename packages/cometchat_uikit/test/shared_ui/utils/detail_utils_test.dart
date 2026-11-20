@@ -305,7 +305,7 @@ void main() {
       tester,
     ) async {
       await withContext(tester, (context) {
-        final options = <String, CometChatDetailsOption>{
+        final options = <String, ConvoKitDetailsOption>{
           GroupOptionConstants.viewMembers: DetailUtils.getViewMemberOption(
             context,
           ),

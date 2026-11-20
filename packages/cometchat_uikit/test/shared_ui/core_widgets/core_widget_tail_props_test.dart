@@ -208,9 +208,9 @@ void main() {
             style: const CometChatNewMessageIndicatorStyle(
               backgroundColor: Color(0xFF273030),
             ),
-            colorPalette: CometChatThemeHelper.getColorPalette(context),
-            typography: CometChatThemeHelper.getTypography(context),
-            spacing: CometChatThemeHelper.getSpacing(context),
+            colorPalette: ConvoKitThemeHelper.getColorPalette(context),
+            typography: ConvoKitThemeHelper.getTypography(context),
+            spacing: ConvoKitThemeHelper.getSpacing(context),
           ),
         ),
       ),
@@ -337,16 +337,16 @@ void main() {
     expect(spinner.strokeWidth, 3);
   });
 
-  testWidgets('CometChatStatusIndicator — every property reaches it', (
+  testWidgets('ConvoKitStatusIndicator — every property reaches it', (
     tester,
   ) async {
     _ignorePlatformOnlyErrors();
     await tester.pumpWidget(
       _host(
-        const CometChatStatusIndicator(
+        const ConvoKitStatusIndicator(
           width: 41,
           height: 43,
-          style: CometChatStatusIndicatorStyle(
+          style: ConvoKitStatusIndicatorStyle(
             backgroundColor: Color(0xFF278080),
           ),
         ),
@@ -415,18 +415,18 @@ void main() {
     expect(failed, anyOf(isTrue, isFalse));
   });
 
-  testWidgets('CometChatShimmerEffect — every property reaches the shimmer', (
+  testWidgets('ConvoKitShimmerEffect — every property reaches the shimmer', (
     tester,
   ) async {
     _ignorePlatformOnlyErrors();
     await tester.pumpWidget(
       _host(
         Builder(
-          builder: (context) => CometChatShimmerEffect(
+          builder: (context) => ConvoKitShimmerEffect(
             linearGradient: const LinearGradient(
               colors: [Color(0xFF27A0A0), Color(0xFF27A1A1)],
             ),
-            colorPalette: CometChatThemeHelper.getColorPalette(context),
+            colorPalette: ConvoKitThemeHelper.getColorPalette(context),
             child: const Text('loading'),
           ),
         ),
@@ -488,7 +488,7 @@ void main() {
       _host(
         Builder(
           builder: (context) => ConvoKitEmojiKeyboard(
-            colorPalette: CometChatThemeHelper.getColorPalette(context),
+            colorPalette: ConvoKitThemeHelper.getColorPalette(context),
           ),
         ),
       ),
@@ -496,13 +496,13 @@ void main() {
     await _settle(tester);
     expect(find.byType(ConvoKitEmojiKeyboard), findsOneWidget);
   });
-  testWidgets('CometChatStatusIndicator — backgroundImage reaches it', (
+  testWidgets('ConvoKitStatusIndicator — backgroundImage reaches it', (
     tester,
   ) async {
     _ignorePlatformOnlyErrors();
     await tester.pumpWidget(
       _host(
-        const CometChatStatusIndicator(
+        const ConvoKitStatusIndicator(
           width: 41,
           height: 43,
           backgroundImage: Icon(Icons.circle, key: Key('status-glyph')),

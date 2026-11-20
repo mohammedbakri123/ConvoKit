@@ -237,13 +237,13 @@ class _ConvoKitGroupsState extends State<ConvoKitGroups>
   @override
   bool get wantKeepAlive => true;
 
-  late CometChatColorPalette colorPalette;
-  late CometChatTypography typography;
-  late CometChatSpacing spacing;
+  late ConvoKitColorPalette colorPalette;
+  late ConvoKitTypography typography;
+  late ConvoKitSpacing spacing;
 
   late ConvoKitGroupsStyle style;
-  late CometChatAvatarStyle avatarStyle;
-  late CometChatStatusIndicatorStyle statusIndicatorStyle;
+  late ConvoKitAvatarStyle avatarStyle;
+  late ConvoKitStatusIndicatorStyle statusIndicatorStyle;
 
   @override
   void initState() {
@@ -281,7 +281,7 @@ class _ConvoKitGroupsState extends State<ConvoKitGroups>
 
     // Only initialize theme once to avoid expensive lookups during keyboard animation
     // But re-initialize when brightness changes (dark mode toggle)
-    final currentBrightness = CometChatThemeHelper.getBrightness(context);
+    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
     if (_themeInitialized && !brightnessChanged) return;
@@ -289,9 +289,9 @@ class _ConvoKitGroupsState extends State<ConvoKitGroups>
     _themeInitialized = true;
 
     // Initialize typography, color palette, and spacing
-    typography = CometChatThemeHelper.getTypography(context);
-    colorPalette = CometChatThemeHelper.getColorPalette(context);
-    spacing = CometChatThemeHelper.getSpacing(context);
+    typography = ConvoKitThemeHelper.getTypography(context);
+    colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    spacing = ConvoKitThemeHelper.getSpacing(context);
 
     _resolveStyles();
   }
@@ -307,20 +307,20 @@ class _ConvoKitGroupsState extends State<ConvoKitGroups>
   /// Merges [ConvoKitGroups.groupsStyle] over the theme's groups style, and
   /// the avatar and status indicator styles over theirs.
   void _resolveStyles() {
-    style = CometChatThemeHelper.getTheme<ConvoKitGroupsStyle>(
+    style = ConvoKitThemeHelper.getTheme<ConvoKitGroupsStyle>(
       context: context,
       defaultTheme: ConvoKitGroupsStyle.of,
     ).merge(widget.groupsStyle);
 
-    avatarStyle = CometChatThemeHelper.getTheme<CometChatAvatarStyle>(
+    avatarStyle = ConvoKitThemeHelper.getTheme<ConvoKitAvatarStyle>(
       context: context,
-      defaultTheme: CometChatAvatarStyle.of,
+      defaultTheme: ConvoKitAvatarStyle.of,
     ).merge(style.avatarStyle);
 
     statusIndicatorStyle =
-        CometChatThemeHelper.getTheme<CometChatStatusIndicatorStyle>(
+        ConvoKitThemeHelper.getTheme<ConvoKitStatusIndicatorStyle>(
           context: context,
-          defaultTheme: CometChatStatusIndicatorStyle.of,
+          defaultTheme: ConvoKitStatusIndicatorStyle.of,
         ).merge(style.statusIndicatorStyle);
   }
 

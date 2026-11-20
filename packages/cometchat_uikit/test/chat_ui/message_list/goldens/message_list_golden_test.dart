@@ -1,7 +1,7 @@
 /// Golden pins for the message-list bubble, composed the way
 /// `ConvoKitMessageList._buildMessageItem` composes it: a
-/// [CometChatMessageBubble] carrying a [CometChatTextBubble] as its content
-/// view and a [CometChatReceipt] as its status-info view.
+/// [ConvoKitMessageBubble] carrying a [CometChatTextBubble] as its content
+/// view and a [ConvoKitReceipt] as its status-info view.
 ///
 /// The previous version of this file rendered a bare `Text(message.text)` in a
 /// `Scaffold`, so it was a golden of Flutter's own text layout and would have
@@ -61,7 +61,7 @@ Widget _bubble({
   ReceiptStatus? receipt,
   int emojiCount = 0,
 }) {
-  return CometChatMessageBubble(
+  return ConvoKitMessageBubble(
     alignment: alignment,
     contentPadding: emojiCount > 0 ? EdgeInsets.zero : null,
     contentView: CometChatTextBubble(
@@ -71,7 +71,7 @@ Widget _bubble({
     ),
     statusInfoView: receipt == null
         ? null
-        : CometChatReceipt(status: receipt, size: 16),
+        : ConvoKitReceipt(status: receipt, size: 16),
   );
 }
 

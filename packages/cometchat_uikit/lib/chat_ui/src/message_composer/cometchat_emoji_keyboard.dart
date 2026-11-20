@@ -7,7 +7,7 @@ import '../../../cometchat_chat_uikit.dart';
 /// Opens as a small bottom sheet that doesn't cover the message overlay
 Future<String?> showConvoKitEmojiKeyboard({
   required BuildContext context,
-  required CometChatColorPalette colorPalette,
+  required ConvoKitColorPalette colorPalette,
 }) {
   return showModalBottomSheet(
     backgroundColor: Colors.transparent,
@@ -28,7 +28,7 @@ Future<String?> showConvoKitEmojiKeyboard({
 class ConvoKitEmojiKeyboard extends StatefulWidget {
   const ConvoKitEmojiKeyboard({super.key, required this.colorPalette});
 
-  final CometChatColorPalette colorPalette;
+  final ConvoKitColorPalette colorPalette;
 
   @override
   State<ConvoKitEmojiKeyboard> createState() => _ConvoKitEmojiKeyboardState();
@@ -121,9 +121,9 @@ class _ConvoKitEmojiKeyboardState extends State<ConvoKitEmojiKeyboard> {
 
   @override
   Widget build(BuildContext context) {
-    final typography = CometChatThemeHelper.getTypography(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
     final colorPalette = widget.colorPalette;
-    final spacing = CometChatThemeHelper.getSpacing(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
 
     // Fixed height - approximately 40% of screen height
     final screenHeight = MediaQuery.sizeOf(context).height;
@@ -158,9 +158,9 @@ class _ConvoKitEmojiKeyboardState extends State<ConvoKitEmojiKeyboard> {
   }
 
   Widget _buildHeader(
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
+    ConvoKitTypography typography,
   ) {
     return Padding(
       padding: EdgeInsets.only(
@@ -204,9 +204,9 @@ class _ConvoKitEmojiKeyboardState extends State<ConvoKitEmojiKeyboard> {
   }
 
   Widget _buildEmojiGrid(
-    CometChatColorPalette colorPalette,
-    CometChatTypography typography,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitTypography typography,
+    ConvoKitSpacing spacing,
   ) {
     // Calculate category offsets after first build
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -248,8 +248,8 @@ class _ConvoKitEmojiKeyboardState extends State<ConvoKitEmojiKeyboard> {
   }
 
   Widget _buildCategoryTabs(
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
   ) {
     return Container(
       height: 50,

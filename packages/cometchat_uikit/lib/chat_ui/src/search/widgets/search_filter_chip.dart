@@ -29,9 +29,9 @@ class SearchFilterChip extends StatelessWidget {
   final IconData? icon;
   final bool isSelected;
   final VoidCallback onTap;
-  final CometChatColorPalette colorPalette;
-  final CometChatSpacing spacing;
-  final CometChatTypography typography;
+  final ConvoKitColorPalette colorPalette;
+  final ConvoKitSpacing spacing;
+  final ConvoKitTypography typography;
 
   final Color? selectedColor;
   final Color? unselectedColor;

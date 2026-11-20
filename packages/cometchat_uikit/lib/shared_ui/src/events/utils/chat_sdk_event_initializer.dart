@@ -13,37 +13,37 @@ class ChatSDKEventInitializer with MessageListener {
 
   @override
   void onTextMessageReceived(TextMessage textMessage) {
-    CometChatMessageEvents.onTextMessageReceived(textMessage);
+    ConvoKitMessageEvents.onTextMessageReceived(textMessage);
   }
 
   @override
   void onMediaMessageReceived(MediaMessage mediaMessage) {
-    CometChatMessageEvents.onMediaMessageReceived(mediaMessage);
+    ConvoKitMessageEvents.onMediaMessageReceived(mediaMessage);
   }
 
   @override
   void onCustomMessageReceived(CustomMessage customMessage) {
-    CometChatMessageEvents.onCustomMessageReceived(customMessage);
+    ConvoKitMessageEvents.onCustomMessageReceived(customMessage);
   }
 
   @override
   void onTypingStarted(TypingIndicator typingIndicator) {
-    CometChatMessageEvents.onTypingStarted(typingIndicator);
+    ConvoKitMessageEvents.onTypingStarted(typingIndicator);
   }
 
   @override
   void onTypingEnded(TypingIndicator typingIndicator) {
-    CometChatMessageEvents.onTypingEnded(typingIndicator);
+    ConvoKitMessageEvents.onTypingEnded(typingIndicator);
   }
 
   @override
   void onMessagesDelivered(MessageReceipt messageReceipt) {
-    CometChatMessageEvents.onMessagesDelivered(messageReceipt);
+    ConvoKitMessageEvents.onMessagesDelivered(messageReceipt);
   }
 
   @override
   void onMessagesRead(MessageReceipt messageReceipt) {
-    CometChatMessageEvents.onMessagesRead(messageReceipt);
+    ConvoKitMessageEvents.onMessagesRead(messageReceipt);
   }
 
   @override
@@ -57,7 +57,7 @@ class ChatSDKEventInitializer with MessageListener {
           );
     }
 
-    CometChatMessageEvents.onMessageEdited(interactiveMessage ?? message);
+    ConvoKitMessageEvents.onMessageEdited(interactiveMessage ?? message);
   }
 
   @override
@@ -71,30 +71,30 @@ class ChatSDKEventInitializer with MessageListener {
           );
     }
 
-    CometChatMessageEvents.onMessageDeleted(interactiveMessage ?? message);
+    ConvoKitMessageEvents.onMessageDeleted(interactiveMessage ?? message);
   }
 
   @override
   void onTransientMessageReceived(TransientMessage message) {
-    CometChatMessageEvents.onTransientMessageReceived(message);
+    ConvoKitMessageEvents.onTransientMessageReceived(message);
   }
 
   @override
   void onInteractiveMessageReceived(InteractiveMessage message) {
     if (message.type == MessageTypeConstants.form) {
-      CometChatMessageEvents.onFormMessageReceived(
+      ConvoKitMessageEvents.onFormMessageReceived(
         FormMessage.fromInteractiveMessage(message),
       );
     } else if (message.type == MessageTypeConstants.card) {
-      CometChatMessageEvents.onCardMessageReceived(
+      ConvoKitMessageEvents.onCardMessageReceived(
         legacy.CardMessage.fromInteractiveMessage(message),
       );
     } else if (message.type == MessageTypeConstants.scheduler) {
-      CometChatMessageEvents.onSchedulerMessageReceived(
+      ConvoKitMessageEvents.onSchedulerMessageReceived(
         SchedulerMessage.fromInteractiveMessage(message),
       );
     } else {
-      CometChatMessageEvents.onCustomInteractiveMessageReceived(
+      ConvoKitMessageEvents.onCustomInteractiveMessageReceived(
         CustomInteractiveMessage.fromInteractiveMessage(message),
       );
     }
@@ -102,31 +102,31 @@ class ChatSDKEventInitializer with MessageListener {
 
   @override
   void onInteractionGoalCompleted(InteractionReceipt receipt) {
-    CometChatMessageEvents.onInteractionGoalCompleted(receipt);
+    ConvoKitMessageEvents.onInteractionGoalCompleted(receipt);
   }
 
   @override
   void onMessageReactionAdded(ReactionEvent reactionEvent) {
-    CometChatMessageEvents.onMessageReactionAdded(reactionEvent);
+    ConvoKitMessageEvents.onMessageReactionAdded(reactionEvent);
   }
 
   @override
   void onMessageReactionRemoved(ReactionEvent reactionEvent) {
-    CometChatMessageEvents.onMessageReactionRemoved(reactionEvent);
+    ConvoKitMessageEvents.onMessageReactionRemoved(reactionEvent);
   }
 
   @override
   void onMessagesDeliveredToAll(MessageReceipt messageReceipt) {
-    CometChatMessageEvents.onMessagesDeliveredToAll(messageReceipt);
+    ConvoKitMessageEvents.onMessagesDeliveredToAll(messageReceipt);
   }
 
   @override
   void onMessagesReadByAll(MessageReceipt messageReceipt) {
-    CometChatMessageEvents.onMessagesReadByAll(messageReceipt);
+    ConvoKitMessageEvents.onMessagesReadByAll(messageReceipt);
   }
 
   @override
   void onMessageModerated(BaseMessage message) {
-    CometChatMessageEvents.onMessageModerated(message);
+    ConvoKitMessageEvents.onMessageModerated(message);
   }
 }

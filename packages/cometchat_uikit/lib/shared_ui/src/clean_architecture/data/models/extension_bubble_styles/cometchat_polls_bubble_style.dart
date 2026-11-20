@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../../cometchat_uikit_shared.dart'
-    show CometChatAvatarStyle, CometChatDateStyle, CometChatMessageReceiptStyle;
+    show ConvoKitAvatarStyle, ConvoKitDateStyle, CometChatMessageReceiptStyle;
 
 ///[CometChatPollsBubbleStyle] is a data class that has styling-related properties
 ///to customize the appearance of [CometChatPollsBubble]
@@ -71,13 +71,13 @@ class CometChatPollsBubbleStyle
   final Color? progressBackgroundColor;
 
   ///[voterAvatarStyle] provides style to the voter's avatar
-  final CometChatAvatarStyle? voterAvatarStyle;
+  final ConvoKitAvatarStyle? voterAvatarStyle;
 
   ///[messageBubbleAvatarStyle] provides style to the avatar of the sender
-  final CometChatAvatarStyle? messageBubbleAvatarStyle;
+  final ConvoKitAvatarStyle? messageBubbleAvatarStyle;
 
   ///[messageBubbleDateStyle] provides style to the date of the message bubble
-  final CometChatDateStyle? messageBubbleDateStyle;
+  final ConvoKitDateStyle? messageBubbleDateStyle;
 
   ///[messageBubbleBackgroundImage] provides background image to the message bubble of the sent message
   final DecorationImage? messageBubbleBackgroundImage;
@@ -109,9 +109,9 @@ class CometChatPollsBubbleStyle
     BorderRadiusGeometry? borderRadius,
     Color? progressColor,
     Color? progressBackgroundColor,
-    CometChatAvatarStyle? voterAvatarStyle,
-    CometChatAvatarStyle? messageBubbleAvatarStyle,
-    CometChatDateStyle? messageBubbleDateStyle,
+    ConvoKitAvatarStyle? voterAvatarStyle,
+    ConvoKitAvatarStyle? messageBubbleAvatarStyle,
+    ConvoKitDateStyle? messageBubbleDateStyle,
     DecorationImage? messageBubbleBackgroundImage,
     TextStyle? threadedMessageIndicatorTextStyle,
     Color? threadedMessageIndicatorIconColor,

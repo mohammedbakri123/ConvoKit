@@ -126,13 +126,13 @@ class CometChatVoiceNoteBubble extends StatefulWidget {
   final Map<String, dynamic>? metadata;
 
   /// [colorPalette] optional pre-cached color palette to avoid expensive lookups during keyboard animation
-  final CometChatColorPalette? colorPalette;
+  final ConvoKitColorPalette? colorPalette;
 
   /// [spacing] optional pre-cached spacing to avoid expensive lookups during keyboard animation
-  final CometChatSpacing? spacing;
+  final ConvoKitSpacing? spacing;
 
   /// [typography] optional pre-cached typography to avoid expensive lookups during keyboard animation
-  final CometChatTypography? typography;
+  final ConvoKitTypography? typography;
 
   @override
   State<CometChatVoiceNoteBubble> createState() =>
@@ -254,9 +254,9 @@ class _CometChatVoiceNoteBubbleState extends State<CometChatVoiceNoteBubble>
   }
 
   late CometChatVoiceNoteBubbleStyle audioBubbleStyle;
-  late CometChatColorPalette colorPalette;
-  late CometChatSpacing spacing;
-  late CometChatTypography typography;
+  late ConvoKitColorPalette colorPalette;
+  late ConvoKitSpacing spacing;
+  late ConvoKitTypography typography;
   late List<Widget> audioBars;
   late bool usedByMediaRecorder;
   bool _themeInitialized = false;
@@ -302,22 +302,22 @@ class _CometChatVoiceNoteBubbleState extends State<CometChatVoiceNoteBubble>
   @override
   void didChangeDependencies() {
     // Only initialize theme once to avoid expensive lookups during keyboard animation
-    final currentBrightness = CometChatThemeHelper.getBrightness(context);
+    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
     if (!_themeInitialized || brightnessChanged) {
       _cachedBrightness = currentBrightness;
       audioBubbleStyle =
-          CometChatThemeHelper.getTheme<CometChatVoiceNoteBubbleStyle>(
+          ConvoKitThemeHelper.getTheme<CometChatVoiceNoteBubbleStyle>(
             context: context,
             defaultTheme: CometChatVoiceNoteBubbleStyle.of,
           ).merge(widget.style);
       // Use passed values OR fallback to lookup (for standalone usage)
       colorPalette =
-          widget.colorPalette ?? CometChatThemeHelper.getColorPalette(context);
-      spacing = widget.spacing ?? CometChatThemeHelper.getSpacing(context);
+          widget.colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
+      spacing = widget.spacing ?? ConvoKitThemeHelper.getSpacing(context);
       typography =
-          widget.typography ?? CometChatThemeHelper.getTypography(context);
+          widget.typography ?? ConvoKitThemeHelper.getTypography(context);
       if (widget.metadata != null &&
           widget.metadata!.containsKey(
             AudioBubbleConstants.usedByMediaRecorder,
@@ -339,7 +339,7 @@ class _CometChatVoiceNoteBubbleState extends State<CometChatVoiceNoteBubble>
     // Update style if it changed
     if (widget.style != oldWidget.style) {
       audioBubbleStyle =
-          CometChatThemeHelper.getTheme<CometChatVoiceNoteBubbleStyle>(
+          ConvoKitThemeHelper.getTheme<CometChatVoiceNoteBubbleStyle>(
             context: context,
             defaultTheme: CometChatVoiceNoteBubbleStyle.of,
           ).merge(widget.style);
@@ -642,7 +642,7 @@ class _CometChatVoiceNoteBubbleState extends State<CometChatVoiceNoteBubble>
   Color? getDownloadButtonColor(
     BuildContext context,
     CometChatVoiceNoteBubbleStyle audioBubbleStyle,
-    CometChatColorPalette colorPalette,
+    ConvoKitColorPalette colorPalette,
   ) {
     return audioBubbleStyle.downloadIconColor ??
         (widget.alignment == BubbleAlignment.right

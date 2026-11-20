@@ -663,7 +663,7 @@ void main() {
       await _settle(tester);
       expect(
         tester
-            .widget<CometChatMessageBubble>(find.byType(CometChatMessageBubble))
+            .widget<ConvoKitMessageBubble>(find.byType(ConvoKitMessageBubble))
             .alignment,
         BubbleAlignment.right,
       );
@@ -686,7 +686,7 @@ void main() {
       await _settle(tester);
       expect(
         tester
-            .widget<CometChatMessageBubble>(find.byType(CometChatMessageBubble))
+            .widget<ConvoKitMessageBubble>(find.byType(ConvoKitMessageBubble))
             .alignment,
         BubbleAlignment.left,
       );
@@ -707,7 +707,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatAvatar), findsWidgets);
+      expect(find.byType(ConvoKitAvatar), findsWidgets);
     });
 
     testWidgets('avatarVisibility false hides the sender avatar', (
@@ -725,7 +725,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatAvatar), findsNothing);
+      expect(find.byType(ConvoKitAvatar), findsNothing);
     });
 
     testWidgets('hideTimestamp removes the bubble timestamp', (tester) async {
@@ -833,7 +833,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatReceipt), findsWidgets);
+      expect(find.byType(ConvoKitReceipt), findsWidgets);
     });
 
     testWidgets('receiptsVisibility false renders no receipt', (tester) async {
@@ -849,7 +849,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatReceipt), findsNothing);
+      expect(find.byType(ConvoKitReceipt), findsNothing);
     });
   });
 
@@ -1415,7 +1415,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatDate), findsNothing);
+      expect(find.byType(ConvoKitDate), findsNothing);
     });
 
     testWidgets('hideDateSeparator false keeps the day separator', (
@@ -1434,7 +1434,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatDate), findsWidgets);
+      expect(find.byType(ConvoKitDate), findsWidgets);
     });
 
     testWidgets('dateSeparatorPattern rewrites the separator label', (
@@ -1459,7 +1459,7 @@ void main() {
     testWidgets('dateSeparatorStyle reaches the separator widget', (
       tester,
     ) async {
-      const style = CometChatDateStyle(textStyle: TextStyle(fontSize: 27));
+      const style = ConvoKitDateStyle(textStyle: TextStyle(fontSize: 27));
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -1475,7 +1475,7 @@ void main() {
       await _settle(tester);
       expect(
         tester
-            .widget<CometChatDate>(find.byType(CometChatDate).first)
+            .widget<ConvoKitDate>(find.byType(ConvoKitDate).first)
             .style
             .textStyle
             ?.fontSize,
@@ -1502,7 +1502,7 @@ void main() {
       await _settle(tester);
       expect(
         tester
-            .widget<CometChatDate>(find.byType(CometChatDate).first)
+            .widget<ConvoKitDate>(find.byType(ConvoKitDate).first)
             .dateTimeFormatterCallback,
         same(formatter),
       );
@@ -1524,7 +1524,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatDate), findsNothing);
+      expect(find.byType(ConvoKitDate), findsNothing);
     });
 
     testWidgets('hideGroupActionMessages collapses group action messages', (
@@ -1552,7 +1552,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsNothing);
+      expect(find.byType(ConvoKitMessageBubble), findsNothing);
     });
   });
 
@@ -1579,8 +1579,8 @@ void main() {
         ),
       );
       await _settle(tester);
-      final receipt = tester.widget<CometChatReceipt>(
-        find.byType(CometChatReceipt).first,
+      final receipt = tester.widget<ConvoKitReceipt>(
+        find.byType(ConvoKitReceipt).first,
       );
       expect(receipt.sentIcon, same(sent));
       expect(receipt.deliveredIcon, same(delivered));
@@ -1891,7 +1891,7 @@ void main() {
       await _settle(tester);
       expect(
         tester
-            .widget<CometChatMessageBubble>(find.byType(CometChatMessageBubble))
+            .widget<ConvoKitMessageBubble>(find.byType(ConvoKitMessageBubble))
             .threadView,
         isNull,
       );
@@ -1914,7 +1914,7 @@ void main() {
       await _settle(tester);
       expect(
         tester
-            .widget<CometChatMessageBubble>(find.byType(CometChatMessageBubble))
+            .widget<ConvoKitMessageBubble>(find.byType(ConvoKitMessageBubble))
             .threadView,
         isNotNull,
       );
@@ -1938,7 +1938,7 @@ void main() {
       );
       await _settle(tester);
       final threadTap = find.descendant(
-        of: find.byType(CometChatMessageBubble),
+        of: find.byType(ConvoKitMessageBubble),
         matching: find.byWidgetPredicate(
           (w) => w is GestureDetector && w.onTap != null,
         ),

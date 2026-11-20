@@ -142,8 +142,8 @@ void main() {
     registerFallbackValue(const LoadMoreConversationResults());
   });
 
-  setUp(() => CometChatUIKit.loggedInUser = _me);
-  tearDown(() => CometChatUIKit.loggedInUser = null);
+  setUp(() => ConvoKitUIKit.loggedInUser = _me);
+  tearDown(() => ConvoKitUIKit.loggedInUser = null);
 
   // =========================================================================
   group('conversations-only section states', () {
@@ -584,7 +584,7 @@ void main() {
       );
 
       expect(find.byType(CometChatImageBubble), findsNothing);
-      expect(find.byType(CometChatDate), findsWidgets);
+      expect(find.byType(ConvoKitDate), findsWidgets);
     });
 
     testWidgets('a second attachment adds a +N overflow scrim', (tester) async {
@@ -710,8 +710,8 @@ void main() {
           ),
         );
 
-        final receipt = tester.widget<CometChatReceipt>(
-          find.byType(CometChatReceipt),
+        final receipt = tester.widget<ConvoKitReceipt>(
+          find.byType(ConvoKitReceipt),
         );
         expect(receipt.status, ReceiptStatus.delivered);
       },
@@ -736,7 +736,7 @@ void main() {
       );
 
       expect(
-        tester.widget<CometChatReceipt>(find.byType(CometChatReceipt)).status,
+        tester.widget<ConvoKitReceipt>(find.byType(ConvoKitReceipt)).status,
         ReceiptStatus.read,
       );
     });
@@ -753,7 +753,7 @@ void main() {
         ),
       );
 
-      expect(find.byType(CometChatReceipt), findsNothing);
+      expect(find.byType(ConvoKitReceipt), findsNothing);
     });
   });
 }

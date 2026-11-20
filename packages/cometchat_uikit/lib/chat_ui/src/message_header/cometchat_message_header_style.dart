@@ -80,13 +80,13 @@ class ConvoKitMessageHeaderStyle
   final Color? groupIconBackgroundColor;
 
   ///[avatarStyle] set style for avatar
-  final CometChatAvatarStyle? avatarStyle;
+  final ConvoKitAvatarStyle? avatarStyle;
 
   ///[callButtonsStyle] set style for call buttons
   final CometChatCallButtonsStyle? callButtonsStyle;
 
   ///[statusIndicatorStyle] set style for status indicator
-  final CometChatStatusIndicatorStyle? statusIndicatorStyle;
+  final ConvoKitStatusIndicatorStyle? statusIndicatorStyle;
 
   ///[newChatIconColor] provides color to the new chat icon
   final Color? newChatIconColor;
@@ -120,9 +120,9 @@ class ConvoKitMessageHeaderStyle
     Color? privateGroupBadgeIconColor,
     Color? passwordProtectedGroupBadgeIconColor,
     Color? groupIconBackgroundColor,
-    CometChatAvatarStyle? avatarStyle,
+    ConvoKitAvatarStyle? avatarStyle,
     CometChatCallButtonsStyle? callButtonsStyle,
-    CometChatStatusIndicatorStyle? statusIndicatorStyle,
+    ConvoKitStatusIndicatorStyle? statusIndicatorStyle,
     Color? newChatIconColor,
     Color? chatHistoryIconColor,
     Color? menuIconColor,

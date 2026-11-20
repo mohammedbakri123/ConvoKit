@@ -168,11 +168,11 @@ void main() {
   setUp(() {
     // The group-call subtitle branches on this static; without it every
     // meeting message reads as though someone else started the call.
-    CometChatUIKit.loggedInUser = _alice;
+    ConvoKitUIKit.loggedInUser = _alice;
   });
 
   tearDown(() {
-    CometChatUIKit.loggedInUser = null;
+    ConvoKitUIKit.loggedInUser = null;
   });
 
   // ==========================================================================
@@ -574,7 +574,7 @@ void main() {
         options = ConversationUtils.getDefaultOptionsWithCallback(
           conversation: conversation,
           context: context,
-          colorPalette: CometChatThemeHelper.getColorPalette(context),
+          colorPalette: ConvoKitThemeHelper.getColorPalette(context),
           onDelete: deleted.add,
         )!;
       });
@@ -594,10 +594,10 @@ void main() {
     testWidgets('the delete option is tinted with the error colour', (
       tester,
     ) async {
-      late CometChatColorPalette palette;
+      late ConvoKitColorPalette palette;
       late CometChatOption option;
       await withContext(tester, (context) {
-        palette = CometChatThemeHelper.getColorPalette(context);
+        palette = ConvoKitThemeHelper.getColorPalette(context);
         option = ConversationUtils.getDefaultOptionsWithCallback(
           conversation: _conversation(_text('bye')),
           context: context,
@@ -617,7 +617,7 @@ void main() {
         option = ConversationUtils.getDefaultOptionsWithCallback(
           conversation: _conversation(_text('bye')),
           context: context,
-          colorPalette: CometChatThemeHelper.getColorPalette(context),
+          colorPalette: ConvoKitThemeHelper.getColorPalette(context),
           onDelete: null,
         )!.single;
       });
@@ -638,7 +638,7 @@ void main() {
           _conversation(_text('bye')),
           null,
           context,
-          CometChatThemeHelper.getColorPalette(context),
+          ConvoKitThemeHelper.getColorPalette(context),
         )!;
       });
       expect(legacy, hasLength(1));
@@ -1079,7 +1079,7 @@ void main() {
     ) async {
       late Color? expected;
       final w = await pumpBuilt(tester, (context) {
-        expected = CometChatThemeHelper.getColorPalette(context).iconSecondary;
+        expected = ConvoKitThemeHelper.getColorPalette(context).iconSecondary;
         return ConversationUtils.getLastMessageWidget(
           _conversation(_withInjected(_linkPreview(['https://example.com']))),
           context,
@@ -1137,7 +1137,7 @@ void main() {
     ) async {
       late Color? expected;
       final w = await pumpBuilt(tester, (context) {
-        expected = CometChatThemeHelper.getColorPalette(context).iconSecondary;
+        expected = ConvoKitThemeHelper.getColorPalette(context).iconSecondary;
         return ConversationUtils.getLastCustomWidget(
           _conversation(_custom(ExtensionType.extensionPoll)),
           context,

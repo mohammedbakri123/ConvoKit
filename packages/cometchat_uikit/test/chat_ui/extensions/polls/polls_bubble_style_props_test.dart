@@ -138,8 +138,8 @@ Future<void> _settle(WidgetTester tester) async {
   }
 }
 
-CometChatMessageBubble _messageBubble(WidgetTester tester) => tester
-    .widget<CometChatMessageBubble>(find.byType(CometChatMessageBubble).first);
+ConvoKitMessageBubble _messageBubble(WidgetTester tester) => tester
+    .widget<ConvoKitMessageBubble>(find.byType(ConvoKitMessageBubble).first);
 
 /// A 1x1 transparent PNG — enough for a DecorationImage that never paints.
 final _pixel = base64Decode(
@@ -149,8 +149,8 @@ final _pixel = base64Decode(
 
 void main() {
   setUpAll(() => registerFallbackValue(_poll()));
-  setUp(() => CometChatUIKit.loggedInUser = _me);
-  tearDown(() => CometChatUIKit.loggedInUser = null);
+  setUp(() => ConvoKitUIKit.loggedInUser = _me);
+  tearDown(() => ConvoKitUIKit.loggedInUser = null);
 
   group('the poll bubble itself', () {
     testWidgets('backgroundColor', (tester) async {
@@ -320,7 +320,7 @@ void main() {
       await tester.pumpWidget(
         _bubble(
           CometChatPollsBubbleStyle(
-            voterAvatarStyle: CometChatAvatarStyle(
+            voterAvatarStyle: ConvoKitAvatarStyle(
               backgroundColor: Color(0xFF140A0A),
             ),
           ),
@@ -329,7 +329,7 @@ void main() {
       await tester.pump();
       expect(
         tester
-            .widgetList<CometChatAvatar>(find.byType(CometChatAvatar))
+            .widgetList<ConvoKitAvatar>(find.byType(ConvoKitAvatar))
             .map((a) => a.style?.backgroundColor),
         contains(const Color(0xFF140A0A)),
       );
@@ -353,21 +353,21 @@ void main() {
       await tester.pumpWidget(
         _list(
           CometChatPollsBubbleStyle(
-            messageBubbleAvatarStyle: CometChatAvatarStyle(
+            messageBubbleAvatarStyle: ConvoKitAvatarStyle(
               backgroundColor: Color(0xFF140B0B),
             ),
           ),
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('messageBubbleDateStyle', (tester) async {
       await tester.pumpWidget(
         _list(
           CometChatPollsBubbleStyle(
-            messageBubbleDateStyle: CometChatDateStyle(
+            messageBubbleDateStyle: ConvoKitDateStyle(
               textStyle: TextStyle(color: Color(0xFF140C0C)),
             ),
           ),
@@ -403,7 +403,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('threadedMessageIndicatorIconColor', (tester) async {
@@ -415,7 +415,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
   });
 
@@ -432,7 +432,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
   });
 

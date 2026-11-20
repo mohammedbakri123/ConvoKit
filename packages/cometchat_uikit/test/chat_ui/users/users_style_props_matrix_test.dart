@@ -417,8 +417,8 @@ void main() {
             ConvoKitUsers(
               usersBloc: _loaded(),
               usersStyle: const ConvoKitUsersStyle(
-                avatarStyle: CometChatAvatarStyle(backgroundColor: _c3),
-                statusIndicatorStyle: CometChatStatusIndicatorStyle(
+                avatarStyle: ConvoKitAvatarStyle(backgroundColor: _c3),
+                statusIndicatorStyle: ConvoKitStatusIndicatorStyle(
                   backgroundColor: _c4,
                 ),
               ),
@@ -428,15 +428,15 @@ void main() {
       );
       await tester.pump();
 
-      final avatars = tester.widgetList<CometChatAvatar>(
-        find.byType(CometChatAvatar),
+      final avatars = tester.widgetList<ConvoKitAvatar>(
+        find.byType(ConvoKitAvatar),
       );
       expect(avatars, isNotEmpty);
       expect(avatars.first.style?.backgroundColor, _c3);
 
       // Alice is online, so exactly one presence dot paints the status colour.
-      final dots = tester.widgetList<CometChatStatusIndicator>(
-        find.byType(CometChatStatusIndicator),
+      final dots = tester.widgetList<ConvoKitStatusIndicator>(
+        find.byType(ConvoKitStatusIndicator),
       );
       expect(dots, isNotEmpty);
     });

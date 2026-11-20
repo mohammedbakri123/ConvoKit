@@ -4,7 +4,7 @@ import '../../../../cometchat_chat_uikit.dart';
 /// Style configuration for [ConvoKitConversationListItem] component.
 ///
 /// This class encapsulates all visual styling properties for the conversation list item,
-/// integrating with the CometChatTheme system for consistent styling.
+/// integrating with the ConvoKitTheme system for consistent styling.
 class ConvoKitConversationListItemStyle {
   /// Icon shown inside the selection checkbox when the row is selected, in
   /// place of the default tick. [checkBoxSelectIconTint] tints it unless the
@@ -66,16 +66,16 @@ class ConvoKitConversationListItemStyle {
   final Color? checkBoxSelectIconTint;
 
   /// Style configuration for the avatar component.
-  final CometChatAvatarStyle? avatarStyle;
+  final ConvoKitAvatarStyle? avatarStyle;
 
   /// Style configuration for the status indicator.
-  final CometChatStatusIndicatorStyle? statusIndicatorStyle;
+  final ConvoKitStatusIndicatorStyle? statusIndicatorStyle;
 
   /// Style configuration for the date component.
-  final CometChatDateStyle? dateStyle;
+  final ConvoKitDateStyle? dateStyle;
 
   /// Style configuration for the unread badge component.
-  final CometChatBadgeStyle? badgeStyle;
+  final ConvoKitBadgeStyle? badgeStyle;
 
   /// Style configuration for message receipts.
   final CometChatMessageReceiptStyle? receiptStyle;
@@ -116,20 +116,20 @@ class ConvoKitConversationListItemStyle {
     this.separatorHeight,
   });
 
-  /// Creates a default style with values sourced from CometChatTheme.
+  /// Creates a default style with values sourced from ConvoKitTheme.
   ///
   /// [colorPalette], [typography] and [spacing] replace the theme's own when
   /// given, so an item built with its own palette takes its defaults from it.
   factory ConvoKitConversationListItemStyle.fromTheme(
     BuildContext context, {
-    CometChatColorPalette? colorPalette,
-    CometChatTypography? typography,
-    CometChatSpacing? spacing,
+    ConvoKitColorPalette? colorPalette,
+    ConvoKitTypography? typography,
+    ConvoKitSpacing? spacing,
   }) {
     final palette =
-        colorPalette ?? CometChatThemeHelper.getColorPalette(context);
-    final type = typography ?? CometChatThemeHelper.getTypography(context);
-    final space = spacing ?? CometChatThemeHelper.getSpacing(context);
+        colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
+    final type = typography ?? ConvoKitThemeHelper.getTypography(context);
+    final space = spacing ?? ConvoKitThemeHelper.getSpacing(context);
 
     return ConvoKitConversationListItemStyle(
       backgroundColor: palette.background1,
@@ -144,13 +144,13 @@ class ConvoKitConversationListItemStyle {
       checkBoxStrokeColor: palette.borderDefault,
       checkBoxBackgroundColor: Colors.transparent,
       checkBoxCheckedBackgroundColor: palette.primary,
-      avatarStyle: const CometChatAvatarStyle(),
-      statusIndicatorStyle: const CometChatStatusIndicatorStyle(),
-      dateStyle: CometChatDateStyle(
+      avatarStyle: const ConvoKitAvatarStyle(),
+      statusIndicatorStyle: const ConvoKitStatusIndicatorStyle(),
+      dateStyle: ConvoKitDateStyle(
         textColor: palette.textSecondary,
         textStyle: type.caption1?.regular,
       ),
-      badgeStyle: CometChatBadgeStyle(
+      badgeStyle: ConvoKitBadgeStyle(
         borderRadius: BorderRadius.circular(space.radius3?.toDouble() ?? 12),
       ),
       receiptStyle: CometChatMessageReceiptStyle(),
@@ -216,10 +216,10 @@ class ConvoKitConversationListItemStyle {
     Color? checkBoxBackgroundColor,
     Color? checkBoxCheckedBackgroundColor,
     Color? checkBoxSelectIconTint,
-    CometChatAvatarStyle? avatarStyle,
-    CometChatStatusIndicatorStyle? statusIndicatorStyle,
-    CometChatDateStyle? dateStyle,
-    CometChatBadgeStyle? badgeStyle,
+    ConvoKitAvatarStyle? avatarStyle,
+    ConvoKitStatusIndicatorStyle? statusIndicatorStyle,
+    ConvoKitDateStyle? dateStyle,
+    ConvoKitBadgeStyle? badgeStyle,
     CometChatMessageReceiptStyle? receiptStyle,
     CometChatTypingIndicatorStyle? typingIndicatorStyle,
     Color? privateGroupIconBackground,

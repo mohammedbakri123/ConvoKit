@@ -158,9 +158,9 @@ class _CometChatStickerKeyboardState extends State<CometChatStickerKeyboard> {
 
   Widget _getOnError(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
+    ConvoKitTypography typography,
     CometChatStickerKeyboardStyle style,
     double keyboardHeight,
   ) {
@@ -220,9 +220,9 @@ class _CometChatStickerKeyboardState extends State<CometChatStickerKeyboard> {
 
   Widget _getEmptyView(
     BuildContext context,
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
+    ConvoKitTypography typography,
     CometChatStickerKeyboardStyle style,
     double keyboardHeight,
   ) {
@@ -321,9 +321,9 @@ class _CometChatStickerKeyboardState extends State<CometChatStickerKeyboard> {
   }
 
   Widget _getLoadingIndicator(
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
+    ConvoKitTypography typography,
     CometChatStickerKeyboardStyle style,
     double keyboardHeight,
   ) {
@@ -334,7 +334,7 @@ class _CometChatStickerKeyboardState extends State<CometChatStickerKeyboard> {
         height: keyboardHeight,
         width: double.infinity,
         color: style.backgroundColor ?? colorPalette.background1,
-        child: CometChatShimmerEffect(
+        child: ConvoKitShimmerEffect(
           colorPalette: colorPalette,
           child: Padding(
             padding: EdgeInsets.symmetric(
@@ -388,10 +388,10 @@ class _CometChatStickerKeyboardState extends State<CometChatStickerKeyboard> {
 
   @override
   Widget build(BuildContext context) {
-    final typography = CometChatThemeHelper.getTypography(context);
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final spacing = CometChatThemeHelper.getSpacing(context);
-    final style = CometChatThemeHelper.getTheme<CometChatStickerKeyboardStyle>(
+    final typography = ConvoKitThemeHelper.getTypography(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
+    final style = ConvoKitThemeHelper.getTheme<CometChatStickerKeyboardStyle>(
       context: context,
       defaultTheme: CometChatStickerKeyboardStyle.of,
     ).merge(widget.style);

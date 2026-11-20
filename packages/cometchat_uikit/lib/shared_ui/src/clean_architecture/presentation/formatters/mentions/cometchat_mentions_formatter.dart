@@ -401,7 +401,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
                     lastCursorPos =
                         cursorPos - mentionTracker.length + mention.length + 1;
                     resetMentionsTracker();
-                    CometChatUIEvents.hidePanel(
+                    ConvoKitUIEvents.hidePanel(
                       composerId,
                       CustomUIPosition.composerPreview,
                     );
@@ -422,12 +422,12 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
             if (onSearch != null) {
               onSearch!(null);
             }
-            // CometChatUIEvents.hidePanel(
+            // ConvoKitUIEvents.hidePanel(
             //     composerId, CustomUIPosition.composerPreview);
           }
         } else {
           if (listItems.isEmpty && disableMentionAll && suggestions.isEmpty) {
-            CometChatUIEvents.hidePanel(
+            ConvoKitUIEvents.hidePanel(
               composerId,
               CustomUIPosition.composerPreview,
             );
@@ -555,7 +555,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
                           mention.length +
                           1;
                       resetMentionsTracker();
-                      CometChatUIEvents.hidePanel(
+                      ConvoKitUIEvents.hidePanel(
                         composerId,
                         CustomUIPosition.composerPreview,
                       );
@@ -595,7 +595,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
     List<cc.User> mentionedUsers = const [],
   }) {
     if (mentionCount.length == mentionsLimit || listItems.isNotEmpty) {
-      CometChatUIEvents.hidePanel(composerId, CustomUIPosition.composerTop);
+      ConvoKitUIEvents.hidePanel(composerId, CustomUIPosition.composerTop);
     }
     mentionCount.clear();
     mentionedUsersMap.clear();
@@ -893,7 +893,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
           }
         }
         lastCursorPos = cursorPosition;
-        CometChatUIEvents.hidePanel(
+        ConvoKitUIEvents.hidePanel(
           composerId,
           CustomUIPosition.composerPreview,
         );
@@ -915,7 +915,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
     //first we check if the current text has any part matching the regex pattern
     if (mentionCount.length < mentionsLimit) {
       // Add this condition to hide the panel when mentions drop below limit
-      CometChatUIEvents.hidePanel(composerId, CustomUIPosition.composerTop);
+      ConvoKitUIEvents.hidePanel(composerId, CustomUIPosition.composerTop);
     }
 
     //the following logic is for when copy paste is involved
@@ -925,7 +925,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
           textEditingController.text.length - previousText.length;
       if (listItems.isNotEmpty) {
         resetMentionsTracker();
-        CometChatUIEvents.hidePanel(
+        ConvoKitUIEvents.hidePanel(
           composerId,
           CustomUIPosition.composerPreview,
         );
@@ -981,7 +981,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
           // if cursor position is at the start of the mentionTracker
           // it means the @ the tracking character is removed by the user
           resetMentionsTracker();
-          CometChatUIEvents.hidePanel(
+          ConvoKitUIEvents.hidePanel(
             composerId,
             CustomUIPosition.composerPreview,
           );
@@ -1045,7 +1045,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
               //if there has been a jump in the cursor position
               //we reset the mentionTracker
               // we first hide the panel
-              CometChatUIEvents.hidePanel(
+              ConvoKitUIEvents.hidePanel(
                 composerId,
                 CustomUIPosition.composerPreview,
               );
@@ -1173,7 +1173,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
             //if there has been a jump in the cursor position
             //we reset the mentionTracker
             // we first hide the panel
-            CometChatUIEvents.hidePanel(
+            ConvoKitUIEvents.hidePanel(
               composerId,
               CustomUIPosition.composerPreview,
             );
@@ -1217,18 +1217,18 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
         onSearch!(null);
       }
 
-      CometChatUIEvents.hidePanel(composerId, CustomUIPosition.composerPreview);
+      ConvoKitUIEvents.hidePanel(composerId, CustomUIPosition.composerPreview);
     } else if (mentionTracker.isNotEmpty) {
       //if 10 users have been mentioned then we will show a message to the user
       //that the maximum limit of mentions has been reached'
 
       if (mentionCount.length >= mentionsLimit) {
-        CometChatUIEvents.showPanel(composerId, CustomUIPosition.composerTop, (
+        ConvoKitUIEvents.showPanel(composerId, CustomUIPosition.composerTop, (
           context,
         ) {
-          final colorPalette = CometChatThemeHelper.getColorPalette(context);
-          final spacing = CometChatThemeHelper.getSpacing(context);
-          final typography = CometChatThemeHelper.getTypography(context);
+          final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+          final spacing = ConvoKitThemeHelper.getSpacing(context);
+          final typography = ConvoKitThemeHelper.getTypography(context);
           return Container(
             height: 40,
             color: colorPalette.error,
@@ -1291,7 +1291,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
         }
 
         if (listItems.isEmpty) {
-          CometChatUIEvents.showPanel(
+          ConvoKitUIEvents.showPanel(
             composerId,
             CustomUIPosition.composerPreview,
             (context) => getLoadingIndicator(context),
@@ -1358,14 +1358,14 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
     this.context = context;
 
     List<AttributedText> attributedTexts = [];
-    final mentionsStyle = CometChatThemeHelper.getTheme<CometChatMentionsStyle>(
+    final mentionsStyle = ConvoKitThemeHelper.getTheme<CometChatMentionsStyle>(
       context: context,
       defaultTheme: CometChatMentionsStyle.of,
     ).merge(this.style);
-    CometChatColorPalette colorPalette = CometChatThemeHelper.getColorPalette(
+    ConvoKitColorPalette colorPalette = ConvoKitThemeHelper.getColorPalette(
       context,
     );
-    CometChatSpacing spacing = CometChatThemeHelper.getSpacing(context);
+    ConvoKitSpacing spacing = ConvoKitThemeHelper.getSpacing(context);
 
     // Use position-based tracking instead of pattern matching
     trackedMentionPositions.forEach((startPos, mentionText) {
@@ -1381,7 +1381,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
         if (!isAllMention && mentionedUsersMap.containsKey(mentionText)) {
           final users = mentionedUsersMap[mentionText]!;
           for (var user in users) {
-            if (user != null && user.uid == CometChatUIKit.loggedInUser?.uid) {
+            if (user != null && user.uid == ConvoKitUIKit.loggedInUser?.uid) {
               isLoggedInUser = true;
               break;
             }
@@ -1463,14 +1463,14 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
       );
     } else {
       final mentionsStyle =
-          CometChatThemeHelper.getTheme<CometChatMentionsStyle>(
+          ConvoKitThemeHelper.getTheme<CometChatMentionsStyle>(
             context: context,
             defaultTheme: CometChatMentionsStyle.of,
           ).merge(style);
-      CometChatColorPalette colorPalette = CometChatThemeHelper.getColorPalette(
+      ConvoKitColorPalette colorPalette = ConvoKitThemeHelper.getColorPalette(
         context,
       );
-      CometChatTypography typography = CometChatThemeHelper.getTypography(
+      ConvoKitTypography typography = ConvoKitThemeHelper.getTypography(
         context,
       );
 
@@ -1515,14 +1515,14 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
       return messageInputTextStyle!(context);
     } else {
       final mentionsStyle =
-          CometChatThemeHelper.getTheme<CometChatMentionsStyle>(
+          ConvoKitThemeHelper.getTheme<CometChatMentionsStyle>(
             context: context,
             defaultTheme: CometChatMentionsStyle.of,
           ).merge(style);
-      CometChatColorPalette colorPalette = CometChatThemeHelper.getColorPalette(
+      ConvoKitColorPalette colorPalette = ConvoKitThemeHelper.getColorPalette(
         context,
       );
-      CometChatTypography typography = CometChatThemeHelper.getTypography(
+      ConvoKitTypography typography = ConvoKitThemeHelper.getTypography(
         context,
       );
       // if user is logged in user then we will show the text in bold
@@ -1622,19 +1622,19 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
             : match.group(0) ?? '';
         isLoggedInUser =
             userIndex != -1 &&
-            mentionedUsers[userIndex].uid == CometChatUIKit.loggedInUser?.uid;
+            mentionedUsers[userIndex].uid == ConvoKitUIKit.loggedInUser?.uid;
       }
 
       // Only create AttributedText if we should format this mention
       if (shouldCreateAttributedText) {
         final mentionsStyle =
-            CometChatThemeHelper.getTheme<CometChatMentionsStyle>(
+            ConvoKitThemeHelper.getTheme<CometChatMentionsStyle>(
               context: context,
               defaultTheme: CometChatMentionsStyle.of,
             ).merge(style);
-        CometChatColorPalette colorPalette =
-            CometChatThemeHelper.getColorPalette(context);
-        CometChatSpacing spacing = CometChatThemeHelper.getSpacing(context);
+        ConvoKitColorPalette colorPalette =
+            ConvoKitThemeHelper.getColorPalette(context);
+        ConvoKitSpacing spacing = ConvoKitThemeHelper.getSpacing(context);
 
         attributedTexts.add(
           AttributedText(
@@ -1679,7 +1679,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
                     );
                   } else {
                     // Default: fire openChat UI event so apps can navigate
-                    CometChatUIEvents.openChat(mentionedUsers[userIndex], null);
+                    ConvoKitUIEvents.openChat(mentionedUsers[userIndex], null);
                   }
                 }
               }
@@ -1804,7 +1804,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
 
       // Reset tracker and hide panel since we just deleted a formatted mention
       resetMentionsTracker();
-      CometChatUIEvents.hidePanel(composerId, CustomUIPosition.composerPreview);
+      ConvoKitUIEvents.hidePanel(composerId, CustomUIPosition.composerPreview);
 
       // Recalculate delta based on the FULL deletion
       int totalDelta = newText.length - previousText.length;

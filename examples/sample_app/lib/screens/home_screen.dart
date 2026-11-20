@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
 
   final _toggles = ComponentToggles.instance;
-  late CometChatColorPalette _colorPalette;
+  late ConvoKitColorPalette _colorPalette;
 
   // UI event listener for mention tap → open chat navigation
   final String _uiListenerId =
@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
 
     // Listen for openChat UI events (e.g., mention tap → navigate to user's chat)
-    CometChatUIEvents.addUiListener(
+    ConvoKitUIEvents.addUiListener(
         _uiListenerId,
         _HomeScreenUIEventListener(
           onOpenChat: (user, group) {
@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _colorPalette = CometChatThemeHelper.getColorPalette(context);
+    _colorPalette = ConvoKitThemeHelper.getColorPalette(context);
     return Scaffold(
       backgroundColor: _colorPalette.background1,
       appBar: AppBar(
@@ -124,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
       final receiver = message.receiver;
       if (receiver is Group) group = receiver;
     } else {
-      final loggedInUid = CometChatUIKit.loggedInUser?.uid;
+      final loggedInUid = ConvoKitUIKit.loggedInUser?.uid;
       final sender = message.sender;
       final receiver = message.receiver;
       if (sender != null && sender.uid != loggedInUid) {
@@ -166,9 +166,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildProfileMenu() {
-    final loggedInUser = CometChatUIKit.loggedInUser;
-    final typography = CometChatThemeHelper.getTypography(context);
-    final spacing = CometChatThemeHelper.getSpacing(context);
+    final loggedInUser = ConvoKitUIKit.loggedInUser;
+    final typography = ConvoKitThemeHelper.getTypography(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
 
     return PopupMenuButton<String>(
       shape: RoundedRectangleBorder(
@@ -187,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
           left: spacing.padding3 ?? 0,
           right: spacing.padding4 ?? 0,
         ),
-        child: CometChatAvatar(
+        child: ConvoKitAvatar(
           width: 40,
           height: 40,
           image: loggedInUser?.avatar ?? '',
@@ -212,7 +212,7 @@ class _HomeScreenState extends State<HomeScreen> {
             );
             break;
           case '/logout':
-            await CometChatUIKit.logout(
+            await ConvoKitUIKit.logout(
               onSuccess: (_) {
                 Navigator.pushAndRemoveUntil(
                   context,
@@ -490,7 +490,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   User? threadUser;
                   Group? threadGroup;
                   if (parent.receiverType == ReceiverTypeConstants.user) {
-                    final loggedInUid = CometChatUIKit.loggedInUser?.uid;
+                    final loggedInUid = ConvoKitUIKit.loggedInUser?.uid;
                     threadUser = (parent.sender?.uid == loggedInUid)
                         ? parent.receiver as User?
                         : parent.sender;
@@ -515,7 +515,7 @@ class _HomeScreenState extends State<HomeScreen> {
             }
 
             if (receiverType == ReceiverTypeConstants.user) {
-              final loggedInUid = CometChatUIKit.loggedInUser?.uid;
+              final loggedInUid = ConvoKitUIKit.loggedInUser?.uid;
               final otherUid =
                   (sender?.uid == loggedInUid) ? receiverUid : sender?.uid;
               if (otherUid != null) {
@@ -824,13 +824,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    CometChatUIEvents.removeUiListener(_uiListenerId);
+    ConvoKitUIEvents.removeUiListener(_uiListenerId);
     super.dispose();
   }
 }
 
 /// Listener for CometChat UI events in HomeScreen
-class _HomeScreenUIEventListener with CometChatUIEventListener {
+class _HomeScreenUIEventListener with ConvoKitUIEventListener {
   final void Function(User? user, Group? group) onOpenChat;
   final void Function(BaseMessage message, dynamic action)? onCardActionClicked;
 

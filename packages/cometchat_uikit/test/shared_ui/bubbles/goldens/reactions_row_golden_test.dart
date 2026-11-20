@@ -1,6 +1,6 @@
 /// Golden pins for the reactions row under a bubble — the real
 /// [CometChatReactions] in the `footerView` slot of a real
-/// [CometChatMessageBubble], lifted 5dp the way
+/// [ConvoKitMessageBubble], lifted 5dp the way
 /// `ConvoKitMessageList._getReactionsView` lifts it so the chips overlap the
 /// bubble's bottom edge.
 ///
@@ -36,7 +36,7 @@ void _reactions(
     description,
     size: const Size(375, 130),
     alignment: goldenRowAlignment(alignment),
-    build: () => CometChatMessageBubble(
+    build: () => ConvoKitMessageBubble(
       alignment: alignment,
       contentView: CometChatTextBubble(
         text: 'Release is tagged and out the door',

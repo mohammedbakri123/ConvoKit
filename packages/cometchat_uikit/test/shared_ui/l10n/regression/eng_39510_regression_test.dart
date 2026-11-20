@@ -1,15 +1,15 @@
 /// ENG-39510: the Flutter UI Kit localizes through `Translations` and exports
-/// no `CometChatLocalize`, the class every other UI Kit family (React,
+/// no `ConvoKitLocalize`, the class every other UI Kit family (React,
 /// Angular, iOS, Android) localizes through. Code written against the
-/// cross-platform `CometChatLocalize` API therefore does not compile, and
+/// cross-platform `ConvoKitLocalize` API therefore does not compile, and
 /// `Translations` carries no `@Deprecated` pointer to its replacement.
 ///
 /// Acceptance criteria (ticket):
-///   * `CometChatLocalize` is exported from `cometchat_chat_uikit`.
+///   * `ConvoKitLocalize` is exported from `cometchat_chat_uikit`.
 ///   * `Translations` is marked `@Deprecated` with a pointer to
-///     `CometChatLocalize`, and keeps working.
+///     `ConvoKitLocalize`, and keeps working.
 ///
-/// A test that names `CometChatLocalize` directly would not compile today, so
+/// A test that names `ConvoKitLocalize` directly would not compile today, so
 /// these tests read the package's public export graph from source instead:
 /// they follow every `export` directive (honouring `show`/`hide`) from the
 /// public barrel and look for the declaration.
@@ -117,21 +117,21 @@ String _headerOf(String file, String name) {
 }
 
 void main() {
-  test('CometChatLocalize is exported from package:convokit', () {
+  test('ConvoKitLocalize is exported from package:convokit', () {
     expect(File(_barrel).existsSync(), isTrue, reason: 'run from chat_uikit');
     expect(
-      _exportingFile(_barrel, 'CometChatLocalize'),
+      _exportingFile(_barrel, 'ConvoKitLocalize'),
       isNotNull,
       reason:
-          'ENG-39510: no CometChatLocalize class is reachable from '
+          'ENG-39510: no ConvoKitLocalize class is reachable from '
           '$_barrel, so code written against the cross-platform '
-          'CometChatLocalize localization API does not compile against '
+          'ConvoKitLocalize localization API does not compile against '
           'cometchat_chat_uikit',
     );
   });
 
   test('Translations is still exported and is @Deprecated with a pointer to '
-      'CometChatLocalize', () {
+      'ConvoKitLocalize', () {
     final String? translationsFile = _exportingFile(_barrel, 'Translations');
     expect(
       translationsFile,
@@ -149,14 +149,14 @@ void main() {
       isNotNull,
       reason:
           'ENG-39510: Translations ($translationsFile) carries no '
-          '@Deprecated annotation pointing integrators to CometChatLocalize',
+          '@Deprecated annotation pointing integrators to ConvoKitLocalize',
     );
     expect(
       deprecated!.group(1),
-      contains('CometChatLocalize'),
+      contains('ConvoKitLocalize'),
       reason:
           'ENG-39510: the @Deprecated message on Translations must name '
-          'CometChatLocalize as its replacement',
+          'ConvoKitLocalize as its replacement',
     );
   });
 }

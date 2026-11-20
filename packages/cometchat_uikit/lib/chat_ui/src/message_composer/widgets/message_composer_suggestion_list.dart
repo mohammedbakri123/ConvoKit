@@ -56,28 +56,28 @@ class MessageComposerSuggestionList extends StatelessWidget {
   final ConvoKitSuggestionListStyle? style;
 
   /// Color palette for theming.
-  /// If not provided, uses CometChatThemeHelper.getColorPalette(context).
-  final CometChatColorPalette? colorPalette;
+  /// If not provided, uses ConvoKitThemeHelper.getColorPalette(context).
+  final ConvoKitColorPalette? colorPalette;
 
   /// Spacing configuration.
-  /// If not provided, uses CometChatThemeHelper.getSpacing(context).
-  final CometChatSpacing? spacing;
+  /// If not provided, uses ConvoKitThemeHelper.getSpacing(context).
+  final ConvoKitSpacing? spacing;
 
   /// Typography configuration.
-  /// If not provided, uses CometChatThemeHelper.getTypography(context).
-  final CometChatTypography? typography;
+  /// If not provided, uses ConvoKitThemeHelper.getTypography(context).
+  final ConvoKitTypography? typography;
 
   @override
   Widget build(BuildContext context) {
     final effectiveColorPalette =
-        colorPalette ?? CometChatThemeHelper.getColorPalette(context);
+        colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
     final effectiveSpacing =
-        spacing ?? CometChatThemeHelper.getSpacing(context);
+        spacing ?? ConvoKitThemeHelper.getSpacing(context);
     final effectiveTypography =
-        typography ?? CometChatThemeHelper.getTypography(context);
+        typography ?? ConvoKitThemeHelper.getTypography(context);
 
     final effectiveStyle =
-        CometChatThemeHelper.getTheme<ConvoKitSuggestionListStyle>(
+        ConvoKitThemeHelper.getTheme<ConvoKitSuggestionListStyle>(
           context: context,
           defaultTheme: ConvoKitSuggestionListStyle.of,
         ).merge(style);
@@ -157,9 +157,9 @@ class MessageComposerSuggestionList extends StatelessWidget {
 
   Widget _buildSuggestionItem(
     SuggestionListItem item,
-    CometChatColorPalette colorPalette,
-    CometChatSpacing spacing,
-    CometChatTypography typography,
+    ConvoKitColorPalette colorPalette,
+    ConvoKitSpacing spacing,
+    ConvoKitTypography typography,
     ConvoKitSuggestionListStyle effectiveStyle,
   ) {
     // Use GestureDetector instead of ListTile to prevent focus stealing.
@@ -181,7 +181,7 @@ class MessageComposerSuggestionList extends StatelessWidget {
               if (item.avatarName != null || item.avatarUrl != null)
                 Padding(
                   padding: EdgeInsets.only(right: spacing.padding3 ?? 12),
-                  child: CometChatAvatar(
+                  child: ConvoKitAvatar(
                     name: item.avatarName,
                     image: item.avatarUrl,
                     style: effectiveStyle.avatarStyle,

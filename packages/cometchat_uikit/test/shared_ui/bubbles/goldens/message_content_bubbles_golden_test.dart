@@ -1,7 +1,7 @@
 /// Golden pins for the non-grid message-content bubbles: file, voice note,
 /// multi-file, multi-audio, deleted, the image/video placeholder state, and a
 /// text bubble carrying a mention. Each renders the real Kit widget as the
-/// content view of a real [CometChatMessageBubble], incoming and outgoing,
+/// content view of a real [ConvoKitMessageBubble], incoming and outgoing,
 /// the way `ConvoKitMessageList` composes it.
 ///
 /// Nothing here reaches the network: media bubbles are given no URL (their
@@ -42,7 +42,7 @@ Widget _bubble(
   BubbleAlignment alignment, {
   EdgeInsetsGeometry? contentPadding,
 }) {
-  return CometChatMessageBubble(
+  return ConvoKitMessageBubble(
     alignment: alignment,
     contentPadding: contentPadding,
     contentView: content,
@@ -115,8 +115,8 @@ TextMessage _mentionMessage() => TextMessage(
 );
 
 void main() {
-  setUp(() => CometChatUIKit.loggedInUser = _me);
-  tearDown(() => CometChatUIKit.loggedInUser = null);
+  setUp(() => ConvoKitUIKit.loggedInUser = _me);
+  tearDown(() => ConvoKitUIKit.loggedInUser = null);
 
   AlchemistConfig.runWithConfig(
     config: goldenConfig(),

@@ -23,7 +23,7 @@ import 'package:convokit/cometchat_chat_uikit.dart';
 ///        ),
 ///        webViewBackIconColor: Colors.white,
 ///      ),
-///      theme: CometChatTheme.light(),
+///      theme: ConvoKitTheme.light(),
 ///    );
 ///
 /// ```
@@ -59,7 +59,7 @@ class CometChatCollaborativeBubble extends StatelessWidget {
   final CometChatCollaborativeBubbleStyle? style;
 
   ///[theme] sets custom theme
-  // final CometChatTheme? theme;
+  // final ConvoKitTheme? theme;
 
   ///[alignment] provides alignment to the link preview bubble
   final BubbleAlignment? alignment;
@@ -70,14 +70,14 @@ class CometChatCollaborativeBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final style =
-        CometChatThemeHelper.getTheme<CometChatCollaborativeBubbleStyle>(
+        ConvoKitThemeHelper.getTheme<CometChatCollaborativeBubbleStyle>(
           context: context,
           defaultTheme: CometChatCollaborativeBubbleStyle.of,
         ).merge(this.style);
 
-    final typography = CometChatThemeHelper.getTypography(context);
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final spacing = CometChatThemeHelper.getSpacing(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
 
     return Container(
       constraints: const BoxConstraints(maxWidth: 246),

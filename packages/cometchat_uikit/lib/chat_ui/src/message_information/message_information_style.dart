@@ -93,7 +93,7 @@ class CometChatMessageInformationStyle
   final Color? backgroundHighLightColor;
 
   ///[avatarStyle] to style the avatar
-  final CometChatAvatarStyle? avatarStyle;
+  final ConvoKitAvatarStyle? avatarStyle;
 
   ///[messageReceiptStyle] to get the message receipt
   final CometChatMessageReceiptStyle? messageReceiptStyle;
@@ -118,7 +118,7 @@ class CometChatMessageInformationStyle
     Color? nameTextColor,
     Color? readDateTextColor,
     Color? readTextColor,
-    CometChatAvatarStyle? messageBubbleAvatarStyle,
+    ConvoKitAvatarStyle? messageBubbleAvatarStyle,
     Color? backgroundHighLightColor,
     CometChatMessageReceiptStyle? messageReceiptStyle,
   }) {

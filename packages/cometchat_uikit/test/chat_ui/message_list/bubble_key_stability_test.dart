@@ -84,8 +84,8 @@ List<GlobalKey> _bubbleKeys(WidgetTester tester) => tester
 
 void main() {
   setUpAll(() => registerFallbackValue(_text()));
-  setUp(() => CometChatUIKit.loggedInUser = _me);
-  tearDown(() => CometChatUIKit.loggedInUser = null);
+  setUp(() => ConvoKitUIKit.loggedInUser = _me);
+  tearDown(() => ConvoKitUIKit.loggedInUser = null);
 
   testWidgets('a bubble keeps the same GlobalKey across rebuilds — ENG-39490', (
     tester,

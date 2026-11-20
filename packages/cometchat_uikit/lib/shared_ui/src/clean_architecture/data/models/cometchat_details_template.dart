@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
 import 'cometchat_details_option.dart';
 
-///[CometChatDetailsTemplate] is the section of options displayed in `CometChatDetails`
+///[ConvoKitDetailsTemplate] is the section of options displayed in `ConvoKitDetails`
 ///
 /// ```dart
 ///
-/// CometChatDetailsTemplate(
+/// ConvoKitDetailsTemplate(
 ///   id: "user-details",
 ///   options: (user, group, context, theme) {
 ///     return [
-///       CometChatDetailsOption(
+///       ConvoKitDetailsOption(
 ///         id: "user-details-name",
 ///         title: "Name",
 ///         customView: Text(user?.name ?? ""),
 ///       ),
-///       CometChatDetailsOption(
+///       ConvoKitDetailsOption(
 ///         id: "user-details-username",
 ///         title: "Username",
 ///         customView: Text(user?.name ?? ""),
@@ -34,22 +34,22 @@ import 'cometchat_details_option.dart';
 /// )
 ///
 /// ```
-class CometChatDetailsTemplate {
-  ///[id] is unique identifier for every [CometChatDetailsTemplate]
+class ConvoKitDetailsTemplate {
+  ///[id] is unique identifier for every [ConvoKitDetailsTemplate]
   final String id;
 
-  ///[options] is a function which returns list of [CometChatDetailsOption] for every [CometChatDetailsTemplate]
-  final List<CometChatDetailsOption> Function(
+  ///[options] is a function which returns list of [ConvoKitDetailsOption] for every [ConvoKitDetailsTemplate]
+  final List<ConvoKitDetailsOption> Function(
     User? user,
     Group? group,
     BuildContext? context,
   )?
   options;
 
-  ///[title] is the title of [CometChatDetailsTemplate]
+  ///[title] is the title of [ConvoKitDetailsTemplate]
   final String? title;
 
-  ///[titleStyle] is the style of [title] of [CometChatDetailsTemplate]
+  ///[titleStyle] is the style of [title] of [ConvoKitDetailsTemplate]
   final TextStyle? titleStyle;
 
   ///[sectionSeparatorColor] is the color of section separator
@@ -64,8 +64,8 @@ class CometChatDetailsTemplate {
   ///[hideItemSeparator] is a boolean which decides whether to hide item separator or not
   final bool? hideItemSeparator;
 
-  ///[CometChatDetailsTemplate] constructor requires [id] and [options] while initializing.
-  const CometChatDetailsTemplate({
+  ///[ConvoKitDetailsTemplate] constructor requires [id] and [options] while initializing.
+  const ConvoKitDetailsTemplate({
     required this.id,
     this.options,
     this.title,
@@ -78,6 +78,6 @@ class CometChatDetailsTemplate {
 
   @override
   String toString() {
-    return 'CometChatDetailsTemplate{id: $id, options: $options, title: $title, titleStyle: $titleStyle, sectionSeparatorColor: $sectionSeparatorColor, hideSectionSeparator: $hideSectionSeparator, itemSeparatorColor: $itemSeparatorColor, hideItemSeparator: $hideItemSeparator}';
+    return 'ConvoKitDetailsTemplate{id: $id, options: $options, title: $title, titleStyle: $titleStyle, sectionSeparatorColor: $sectionSeparatorColor, hideSectionSeparator: $hideSectionSeparator, itemSeparatorColor: $itemSeparatorColor, hideItemSeparator: $hideItemSeparator}';
   }
 }

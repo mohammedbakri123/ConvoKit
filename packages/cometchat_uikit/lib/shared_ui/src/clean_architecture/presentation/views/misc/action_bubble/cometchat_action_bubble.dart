@@ -4,9 +4,9 @@ import '../../../../../../cometchat_uikit_shared.dart';
 ///creates a widget that gives group action bubble
 ///
 /// ```dart
-///  CometChatActionBubble(
+///  ConvoKitActionBubble(
 ///            text: 'Group created',
-///            style: CometChatActionBubbleStyle(
+///            style: ConvoKitActionBubbleStyle(
 ///            backgroundColor: Colors.green,
 ///            textStyle: TextStyle(
 ///            color: Colors.white,
@@ -17,8 +17,8 @@ import '../../../../../../cometchat_uikit_shared.dart';
 ///        )
 ///  ```
 ///
-class CometChatActionBubble extends StatefulWidget {
-  const CometChatActionBubble({
+class ConvoKitActionBubble extends StatefulWidget {
+  const ConvoKitActionBubble({
     super.key,
     this.message,
     required this.text,
@@ -36,7 +36,7 @@ class CometChatActionBubble extends StatefulWidget {
   final String? text;
 
   ///[style] group action bubble styling properties
-  final CometChatActionBubbleStyle? style;
+  final ConvoKitActionBubbleStyle? style;
 
   ///[leadingIcon] leading icon to the action bubble
   final Widget? leadingIcon;
@@ -51,14 +51,14 @@ class CometChatActionBubble extends StatefulWidget {
   final EdgeInsetsGeometry? padding;
 
   @override
-  State<CometChatActionBubble> createState() => _CometChatActionBubbleState();
+  State<ConvoKitActionBubble> createState() => _ConvoKitActionBubbleState();
 }
 
-class _CometChatActionBubbleState extends State<CometChatActionBubble> {
-  late CometChatActionBubbleStyle actionBubbleStyle;
-  late CometChatColorPalette colorPalette;
-  late CometChatSpacing spacing;
-  late CometChatTypography typography;
+class _ConvoKitActionBubbleState extends State<ConvoKitActionBubble> {
+  late ConvoKitActionBubbleStyle actionBubbleStyle;
+  late ConvoKitColorPalette colorPalette;
+  late ConvoKitSpacing spacing;
+  late ConvoKitTypography typography;
 
   // Cached values to avoid MediaQuery in build()
   double _cachedMaxWidth = 300;
@@ -68,7 +68,7 @@ class _CometChatActionBubbleState extends State<CometChatActionBubble> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final currentBrightness = CometChatThemeHelper.getBrightness(context);
+    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
     if (!_themeInitialized || brightnessChanged) {
@@ -76,26 +76,26 @@ class _CometChatActionBubbleState extends State<CometChatActionBubble> {
       _themeInitialized = true;
       // Cache theme values
       actionBubbleStyle =
-          CometChatThemeHelper.getTheme<CometChatActionBubbleStyle>(
+          ConvoKitThemeHelper.getTheme<ConvoKitActionBubbleStyle>(
             context: context,
-            defaultTheme: CometChatActionBubbleStyle.of,
+            defaultTheme: ConvoKitActionBubbleStyle.of,
           ).merge(widget.style);
-      colorPalette = CometChatThemeHelper.getColorPalette(context);
-      spacing = CometChatThemeHelper.getSpacing(context);
-      typography = CometChatThemeHelper.getTypography(context);
+      colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+      spacing = ConvoKitThemeHelper.getSpacing(context);
+      typography = ConvoKitThemeHelper.getTypography(context);
       // Cache width to avoid MediaQuery in build()
       _cachedMaxWidth = MediaQuery.sizeOf(context).width * 0.85;
     }
   }
 
   @override
-  void didUpdateWidget(CometChatActionBubble oldWidget) {
+  void didUpdateWidget(ConvoKitActionBubble oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.style != oldWidget.style && widget.style != null) {
       actionBubbleStyle =
-          CometChatThemeHelper.getTheme<CometChatActionBubbleStyle>(
+          ConvoKitThemeHelper.getTheme<ConvoKitActionBubbleStyle>(
             context: context,
-            defaultTheme: CometChatActionBubbleStyle.of,
+            defaultTheme: ConvoKitActionBubbleStyle.of,
           ).merge(widget.style);
     }
   }

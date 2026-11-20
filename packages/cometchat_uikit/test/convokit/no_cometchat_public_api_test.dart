@@ -51,9 +51,9 @@ void main() {
 
         // Must not contain CometChat names or legacy concepts
         expect(
-          text.contains('CometChatUIKit'),
+          text.contains('ConvoKitUIKit'),
           isFalse,
-          reason: '${file.path} must not contain CometChatUIKit',
+          reason: '${file.path} must not contain ConvoKitUIKit',
         );
         expect(
           text.contains('muid'),

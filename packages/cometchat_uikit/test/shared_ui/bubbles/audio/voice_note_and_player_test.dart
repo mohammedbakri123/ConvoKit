@@ -448,10 +448,10 @@ void main() {
       tester,
     ) async {
       const key = ValueKey('themed');
-      final paletteA = CometChatColorPalette(primary: const Color(0xFF010203));
-      final paletteB = CometChatColorPalette(primary: const Color(0xFF040506));
+      final paletteA = ConvoKitColorPalette(primary: const Color(0xFF010203));
+      final paletteB = ConvoKitColorPalette(primary: const Color(0xFF040506));
 
-      Widget withPalette(CometChatColorPalette palette) => MaterialApp(
+      Widget withPalette(ConvoKitColorPalette palette) => MaterialApp(
         localizationsDelegates: Translations.localizationsDelegates,
         supportedLocales: const [Locale('en')],
         home: Scaffold(
@@ -464,8 +464,8 @@ void main() {
               alignment: BubbleAlignment.left,
               id: 4200,
               colorPalette: palette,
-              spacing: CometChatSpacing(padding1: 4),
-              typography: CometChatTypography(),
+              spacing: ConvoKitSpacing(padding1: 4),
+              typography: ConvoKitTypography(),
               metadata: const {},
             ),
           ),
@@ -660,7 +660,7 @@ void main() {
       const key = ValueKey('player-themed');
       Widget build(
         CometChatVoiceNoteBubbleStyle style,
-        CometChatColorPalette palette,
+        ConvoKitColorPalette palette,
       ) => MaterialApp(
         localizationsDelegates: Translations.localizationsDelegates,
         supportedLocales: const [Locale('en')],
@@ -677,8 +677,8 @@ void main() {
                 id: 4300,
                 style: style,
                 colorPalette: palette,
-                spacing: CometChatSpacing(padding2: 8),
-                typography: CometChatTypography(),
+                spacing: ConvoKitSpacing(padding2: 8),
+                typography: ConvoKitTypography(),
                 metadata: const {},
               ),
             ),
@@ -689,7 +689,7 @@ void main() {
       await tester.pumpWidget(
         build(
           const CometChatVoiceNoteBubbleStyle(playIconColor: Color(0xFF010203)),
-          CometChatColorPalette(white: const Color(0xFFF0F0F0)),
+          ConvoKitColorPalette(white: const Color(0xFFF0F0F0)),
         ),
       );
       await tester.pump();
@@ -701,7 +701,7 @@ void main() {
       await tester.pumpWidget(
         build(
           const CometChatVoiceNoteBubbleStyle(playIconColor: Color(0xFF040506)),
-          CometChatColorPalette(white: const Color(0xFF0F0F0F)),
+          ConvoKitColorPalette(white: const Color(0xFF0F0F0F)),
         ),
       );
       await tester.pump();

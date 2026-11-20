@@ -97,7 +97,7 @@ const kCometChatSupportedLanguage = {
 };
 
 @Deprecated(
-  'Use CometChatLocalize instead, and CometChatLocalizations to name the '
+  'Use ConvoKitLocalize instead, and CometChatLocalizations to name the '
   'strings type. Translations remains available and keeps working for the '
   'rest of the v6 line.',
 )
@@ -2976,11 +2976,11 @@ class _TranslationsDelegate extends LocalizationsDelegate<Translations> {
   @override
   Future<Translations> load(Locale locale) {
     assert(isSupported(locale), '');
-    // Through CometChatLocalize's delegate, which serves the strings the app
+    // Through ConvoKitLocalize's delegate, which serves the strings the app
     // registered with registerTranslations before the built-in ones: an app
     // that has not moved off Translations.delegate must not silently lose its
     // overrides while it migrates.
-    return CometChatLocalize.delegate.load(locale);
+    return ConvoKitLocalize.delegate.load(locale);
   }
 
   @override

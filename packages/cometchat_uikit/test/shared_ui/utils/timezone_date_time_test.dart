@@ -43,7 +43,7 @@ Location _fixed(String name, int hours) =>
     Location(name, [minTime], [0], [_zone(hours, name)]);
 
 void main() {
-  // The database `CometChatUIKit.init` fills; `getLocation` needs it.
+  // The database `ConvoKitUIKit.init` fills; `getLocation` needs it.
   setUpAll(initializeTimeZones);
 
   // "Local" is a mutable global in this library and defaults to UTC. Pin it to

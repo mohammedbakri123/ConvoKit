@@ -154,8 +154,8 @@ bool _hasOption(WidgetTester tester, String id) =>
 
 void main() {
   setUpAll(() => registerFallbackValue(_text()));
-  setUp(() => CometChatUIKit.loggedInUser = _me);
-  tearDown(() => CometChatUIKit.loggedInUser = null);
+  setUp(() => ConvoKitUIKit.loggedInUser = _me);
+  tearDown(() => ConvoKitUIKit.loggedInUser = null);
 
   group('message-option flags', () {
     // (property, option id it gates, whether true hides or shows)
@@ -578,7 +578,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('videoBubbleStyle reaches the video bubble', (tester) async {
@@ -598,7 +598,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('fileBubbleStyle reaches the file bubble', (tester) async {
@@ -618,7 +618,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('voiceNoteBubbleStyle reaches the audio bubble', (
@@ -640,7 +640,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets(
@@ -662,7 +662,7 @@ void main() {
           ),
         );
         await _settle(tester);
-        expect(find.byType(CometChatMessageBubble), findsWidgets);
+        expect(find.byType(ConvoKitMessageBubble), findsWidgets);
       },
     );
 
@@ -676,7 +676,7 @@ void main() {
                 _text(byMe: false, deletedAt: DateTime(2024, 1, 1)),
               ),
               additionalConfigurations: AdditionalConfigurations(
-                deletedBubbleStyle: const CometChatDeletedBubbleStyle(
+                deletedBubbleStyle: const ConvoKitDeletedBubbleStyle(
                   backgroundColor: Color(0xFF130909),
                 ),
               ),
@@ -685,7 +685,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('linkPreviewBubbleStyle reaches a link message', (
@@ -709,7 +709,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('voiceCallBubbleStyle reaches an audio call bubble', (
@@ -731,7 +731,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('videoCallBubbleStyle reaches a video call bubble', (
@@ -753,7 +753,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('actionBubbleStyle reaches an action message', (tester) async {
@@ -764,7 +764,7 @@ void main() {
               user: _them,
               messageListBloc: _bloc(_text(byMe: false)),
               additionalConfigurations: AdditionalConfigurations(
-                actionBubbleStyle: const CometChatActionBubbleStyle(
+                actionBubbleStyle: const ConvoKitActionBubbleStyle(
                   backgroundColor: Color(0xFF130D0D),
                 ),
               ),
@@ -773,7 +773,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      expect(find.byType(CometChatMessageBubble), findsWidgets);
+      expect(find.byType(ConvoKitMessageBubble), findsWidgets);
     });
 
     testWidgets('enableMultipleAttachments picks the gallery bubble', (

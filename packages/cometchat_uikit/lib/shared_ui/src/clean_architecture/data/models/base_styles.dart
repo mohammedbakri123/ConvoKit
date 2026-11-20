@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-///[BaseStyles] is the base style class for most style classes provided by [CometChatUIKit]
+///[BaseStyles] is the base style class for most style classes provided by [ConvoKitUIKit]
 ///
 /// ```dart
 ///

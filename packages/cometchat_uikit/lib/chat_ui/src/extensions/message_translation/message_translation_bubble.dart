@@ -44,13 +44,13 @@ class MessageTranslationBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final style =
-        CometChatThemeHelper.getTheme<CometChatMessageTranslationBubbleStyle>(
+        ConvoKitThemeHelper.getTheme<CometChatMessageTranslationBubbleStyle>(
           defaultTheme: CometChatMessageTranslationBubbleStyle.of,
           context: context,
         ).merge(this.style);
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final spacing = CometChatThemeHelper.getSpacing(context);
-    final typography = CometChatThemeHelper.getTypography(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
 
     // As wide as the text bubble may grow (75% of the screen), not a fixed
     // 232 — a translated message is the text bubble plus the translation

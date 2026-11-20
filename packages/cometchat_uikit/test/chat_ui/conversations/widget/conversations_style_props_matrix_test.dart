@@ -367,8 +367,8 @@ void main() {
             ConvoKitConversations(
               conversationsBloc: _loaded(selected: const {}),
               conversationsStyle: const ConvoKitConversationsStyle(
-                avatarStyle: CometChatAvatarStyle(backgroundColor: _c4),
-                badgeStyle: CometChatBadgeStyle(backgroundColor: _c5),
+                avatarStyle: ConvoKitAvatarStyle(backgroundColor: _c4),
+                badgeStyle: ConvoKitBadgeStyle(backgroundColor: _c5),
               ),
             ),
           ),
@@ -376,14 +376,14 @@ void main() {
         await tester.pump();
       });
 
-      final avatars = tester.widgetList<CometChatAvatar>(
-        find.byType(CometChatAvatar),
+      final avatars = tester.widgetList<ConvoKitAvatar>(
+        find.byType(ConvoKitAvatar),
       );
       expect(avatars, isNotEmpty);
       expect(avatars.first.style?.backgroundColor, _c4);
 
-      final badges = tester.widgetList<CometChatBadge>(
-        find.byType(CometChatBadge),
+      final badges = tester.widgetList<ConvoKitBadge>(
+        find.byType(ConvoKitBadge),
       );
       expect(badges, isNotEmpty);
       expect(badges.first.style.backgroundColor, _c5);
@@ -398,7 +398,7 @@ void main() {
             ConvoKitConversations(
               conversationsBloc: _loaded(selected: const {}),
               conversationsStyle: ConvoKitConversationsStyle(
-                statusIndicatorStyle: const CometChatStatusIndicatorStyle(
+                statusIndicatorStyle: const ConvoKitStatusIndicatorStyle(
                   backgroundColor: _c1,
                 ),
                 typingIndicatorStyle: const CometChatTypingIndicatorStyle(
@@ -409,7 +409,7 @@ void main() {
                 // with copyWith — copyWith does not register as passing the
                 // prop to the construction under test.
                 receiptStyle: CometChatMessageReceiptStyle(readIconColor: _c2),
-                dateStyle: const CometChatDateStyle(textColor: _c3),
+                dateStyle: const ConvoKitDateStyle(textColor: _c3),
               ),
             ),
           ),
@@ -554,7 +554,7 @@ void main() {
             ConvoKitConversations(
               conversationsBloc: _loaded(selected: const {}),
               conversationsStyle: const ConvoKitConversationsStyle(
-                deleteConversationDialogStyle: CometChatConfirmDialogStyle(
+                deleteConversationDialogStyle: ConvoKitConfirmDialogStyle(
                   backgroundColor: _c6,
                 ),
               ),

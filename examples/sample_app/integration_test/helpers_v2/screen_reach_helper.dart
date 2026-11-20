@@ -349,7 +349,7 @@ class ScreenReach {
 
   /// Every plain `Text` string inside the nearest enclosing [T] of the widget
   /// that renders [text] under [within] — e.g. all captions of the
-  /// `CometChatMessageBubble` that holds a given message. Null when [text] is
+  /// `ConvoKitMessageBubble` that holds a given message. Null when [text] is
   /// not rendered or has no [T] ancestor.
   static List<String>? textsInEnclosing<T extends Widget>(
     WidgetTester tester,

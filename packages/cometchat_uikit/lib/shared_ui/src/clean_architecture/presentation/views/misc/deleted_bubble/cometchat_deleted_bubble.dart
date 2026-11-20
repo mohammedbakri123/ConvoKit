@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import '../../../../../../cometchat_uikit_shared.dart';
 
-///[CometChatDeletedBubble] is a widget that provides a placeholder for messages thave been deleted
+///[ConvoKitDeletedBubble] is a widget that provides a placeholder for messages thave been deleted
 ///
 ///a [BaseMessage] is considered deleted if the value of its `deletedAt` property is not null
 /// ```dart
 /// CometChatDeleteMessageBubble(
-///      style: CometChatDeletedBubbleStyle(
+///      style: ConvoKitDeletedBubbleStyle(
 ///           backgroundColor: Colors.white,
 ///           border: Border.all(color: Colors.red),
 ///           borderRadius: BorderRadius.circular(10),
@@ -15,7 +15,7 @@ import '../../../../../../cometchat_uikit_shared.dart';
 ///      ),
 /// )
 /// ```
-class CometChatDeletedBubble extends StatelessWidget {
+class ConvoKitDeletedBubble extends StatelessWidget {
   // Deprecated in 6.2.0: no effect, removed in 7.0.0.
 
   /// Height of the widget.
@@ -30,7 +30,7 @@ class CometChatDeletedBubble extends StatelessWidget {
   )
   final double? width;
 
-  const CometChatDeletedBubble({
+  const ConvoKitDeletedBubble({
     super.key,
     this.style,
     this.padding,
@@ -46,22 +46,22 @@ class CometChatDeletedBubble extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
 
   ///[style] contains properties that affects the appearance of this widget
-  final CometChatDeletedBubbleStyle? style;
+  final ConvoKitDeletedBubbleStyle? style;
 
   @override
   Widget build(BuildContext context) {
-    CometChatDeletedBubbleStyle deletedBubbleStyle;
+    ConvoKitDeletedBubbleStyle deletedBubbleStyle;
     if (style == null) {
       deletedBubbleStyle =
-          CometChatThemeHelper.getTheme<CometChatDeletedBubbleStyle>(
+          ConvoKitThemeHelper.getTheme<ConvoKitDeletedBubbleStyle>(
             context: context,
-            defaultTheme: CometChatDeletedBubbleStyle.of,
+            defaultTheme: ConvoKitDeletedBubbleStyle.of,
           ).merge(style);
     } else {
       deletedBubbleStyle = style!;
     }
-    CometChatSpacing spacing = CometChatThemeHelper.getSpacing(context);
-    CometChatTypography typography = CometChatThemeHelper.getTypography(
+    ConvoKitSpacing spacing = ConvoKitThemeHelper.getSpacing(context);
+    ConvoKitTypography typography = ConvoKitThemeHelper.getTypography(
       context,
     );
     return Container(

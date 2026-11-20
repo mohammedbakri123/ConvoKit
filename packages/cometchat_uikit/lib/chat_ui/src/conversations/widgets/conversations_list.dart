@@ -88,7 +88,7 @@ class ConversationsList extends StatelessWidget {
   final ConvoKitConversationsStyle style;
 
   /// The style configuration for the status indicator.
-  final CometChatStatusIndicatorStyle statusStyle;
+  final ConvoKitStatusIndicatorStyle statusStyle;
 
   /// The style configuration for typing indicator.
   final CometChatTypingIndicatorStyle typingStyle;
@@ -97,16 +97,16 @@ class ConversationsList extends StatelessWidget {
   final CometChatMessageReceiptStyle receiptStyle;
 
   /// The style configuration for the date widget.
-  final CometChatDateStyle datesStyle;
+  final ConvoKitDateStyle datesStyle;
 
   /// The color palette used for styling.
-  final CometChatColorPalette colorPalette;
+  final ConvoKitColorPalette colorPalette;
 
   /// The spacing configuration for padding and margins.
-  final CometChatSpacing spacing;
+  final ConvoKitSpacing spacing;
 
   /// The typography configuration for text styles.
-  final CometChatTypography typography;
+  final ConvoKitTypography typography;
 
   /// Optional scroll controller for the list.
   final ScrollController? scrollController;

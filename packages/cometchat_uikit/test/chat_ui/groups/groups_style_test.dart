@@ -292,7 +292,7 @@ final _listRows = <_Row>[
   _Row(
     'avatarStyle',
     _S.avatar,
-    (t) => _firstBox(t, find.byType(CometChatAvatar).first)?.color,
+    (t) => _firstBox(t, find.byType(ConvoKitAvatar).first)?.color,
   ),
   // DEFECT (partial): CometChatGroupListItem rebuilds the dot's style from
   // statusIndicatorStyle.border alone (cometchat_group_list_item.dart:355), so
@@ -300,7 +300,7 @@ final _listRows = <_Row>[
   _Row(
     'statusIndicatorStyle',
     _S.statusBorder,
-    (t) => _firstBox(t, find.byType(CometChatStatusIndicator).first)?.border,
+    (t) => _firstBox(t, find.byType(ConvoKitStatusIndicator).first)?.border,
   ),
   _Row('searchBackgroundColor', _S.searchFill, (t) => _search(t).fillColor),
   _Row('searchBorder', _S.searchBorder, (t) => _searchOutline(t)?.borderSide),
@@ -343,14 +343,14 @@ final _listRows = <_Row>[
 ];
 
 /// The status dot in the row for [group], if it shows one.
-CometChatStatusIndicator? _dotOf(WidgetTester t, String group) {
+ConvoKitStatusIndicator? _dotOf(WidgetTester t, String group) {
   final dot = find.descendant(
     of: find.widgetWithText(CometChatGroupListItem, group),
-    matching: find.byType(CometChatStatusIndicator),
+    matching: find.byType(ConvoKitStatusIndicator),
   );
   return dot.evaluate().isEmpty
       ? null
-      : t.widget<CometChatStatusIndicator>(dot.first);
+      : t.widget<ConvoKitStatusIndicator>(dot.first);
 }
 
 final _emptyRows = <_Row>[
@@ -796,7 +796,7 @@ void main() {
       );
       await tester.pump();
 
-      final palette = CometChatThemeHelper.getColorPalette(
+      final palette = ConvoKitThemeHelper.getColorPalette(
         tester.element(find.byType(ConvoKitGroups)),
       );
       // Non-null, so the comparisons below cannot pass as null == null.
@@ -856,8 +856,8 @@ void main() {
                 itemTitleTextColor: _S.itemTitle,
                 itemSubtitleTextStyle: TextStyle(fontSize: _S.itemSubtitleSize),
                 itemSubtitleTextColor: _S.itemSubtitle,
-                avatarStyle: CometChatAvatarStyle(backgroundColor: _S.avatar),
-                statusIndicatorStyle: CometChatStatusIndicatorStyle(
+                avatarStyle: ConvoKitAvatarStyle(backgroundColor: _S.avatar),
+                statusIndicatorStyle: ConvoKitStatusIndicatorStyle(
                   border: _S.statusBorder,
                 ),
                 searchBackgroundColor: _S.searchFill,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../../../cometchat_uikit_shared.dart';
 
 ///[ListItemStyle] is a data class that has styling-related properties
-///to customize the appearance of [CometChatListItem]
+///to customize the appearance of [ConvoKitListItem]
 
 class ListItemStyle extends BaseStyles {
   const ListItemStyle({
@@ -28,7 +28,7 @@ class ListItemStyle extends BaseStyles {
   /// placed inside this padding
   final EdgeInsetsGeometry? padding;
 
-  /// Empty space to surround the [CometChatListItem].
+  /// Empty space to surround the [ConvoKitListItem].
   final EdgeInsetsGeometry? margin;
 
   ListItemStyle copyWith({

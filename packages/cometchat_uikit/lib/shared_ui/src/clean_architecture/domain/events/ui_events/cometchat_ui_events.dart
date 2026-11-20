@@ -3,12 +3,12 @@ import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
 import '../../../core/constants/enums.dart';
 import 'ui_events.dart';
 
-class CometChatUIEvents {
-  static Map<String, CometChatUIEventListener> uiListener = {};
+class ConvoKitUIEvents {
+  static Map<String, ConvoKitUIEventListener> uiListener = {};
 
   static void addUiListener(
     String listenerId,
-    CometChatUIEventListener listenerClass,
+    ConvoKitUIEventListener listenerClass,
   ) {
     uiListener[listenerId] = listenerClass;
   }

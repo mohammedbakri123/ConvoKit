@@ -10,7 +10,7 @@ void removeFocus(BuildContext context, FocusNode focusNode) {
 }
 
 void showErrorSnackBar(BuildContext context, String message,
-    CometChatTypography typography, CometChatColorPalette colorPalette) {
+    ConvoKitTypography typography, ConvoKitColorPalette colorPalette) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(

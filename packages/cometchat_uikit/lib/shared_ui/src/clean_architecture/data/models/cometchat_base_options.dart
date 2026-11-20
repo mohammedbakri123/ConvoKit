@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-///[CometChatBaseOptions] is a model class which contains a set of properties that is be used by [CometChatDetailsOption], [CometChatGroupMemberOption] thus forming a common base class for both
+///[CometChatBaseOptions] is a model class which contains a set of properties that is be used by [ConvoKitDetailsOption], [CometChatGroupMemberOption] thus forming a common base class for both
 ///
 /// ```dart
 ///

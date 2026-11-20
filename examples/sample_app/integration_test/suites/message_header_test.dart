@@ -87,8 +87,8 @@ void main() {
       await NavigationHelper.openUserBConversation(tester);
       AssertionHelper.expectOnMessagesScreen();
 
-      expect(hasType('CometChatAvatar'), isTrue,
-          reason: '1TO1-007: a CometChatAvatar should render in the header');
+      expect(hasType('ConvoKitAvatar'), isTrue,
+          reason: '1TO1-007: a ConvoKitAvatar should render in the header');
     });
 
     // E2E-026: 1:1 chat header shows both name and avatar together.
@@ -105,7 +105,7 @@ void main() {
               );
       expect(nameVisible, isTrue,
           reason: 'E2E-026: header should show the peer name');
-      expect(hasType('CometChatAvatar'), isTrue,
+      expect(hasType('ConvoKitAvatar'), isTrue,
           reason: 'E2E-026: header should show the peer avatar');
     });
   });

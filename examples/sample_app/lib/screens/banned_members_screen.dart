@@ -14,9 +14,9 @@ class BannedMembersScreen extends StatefulWidget {
 
 class _BannedMembersScreenState extends State<BannedMembersScreen>
     with GroupListener, ConvoKitGroupEventListener {
-  late CometChatColorPalette _colorPalette;
-  late CometChatTypography _typography;
-  late CometChatSpacing _spacing;
+  late ConvoKitColorPalette _colorPalette;
+  late ConvoKitTypography _typography;
+  late ConvoKitSpacing _spacing;
 
   User? _loggedInUser;
   Conversation? _conversation;
@@ -49,9 +49,9 @@ class _BannedMembersScreenState extends State<BannedMembersScreen>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _colorPalette = CometChatThemeHelper.getColorPalette(context);
-    _typography = CometChatThemeHelper.getTypography(context);
-    _spacing = CometChatThemeHelper.getSpacing(context);
+    _colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    _typography = ConvoKitThemeHelper.getTypography(context);
+    _spacing = ConvoKitThemeHelper.getSpacing(context);
   }
 
   @override
@@ -146,7 +146,7 @@ class _BannedMembersScreenState extends State<BannedMembersScreen>
   // ── Unban ────────────────────────────────────────────────────────
 
   void _unbanMember(GroupMember member) {
-    CometChatConfirmDialog(
+    ConvoKitConfirmDialog(
       context: context,
       icon: Icon(Icons.not_interested, size: 48, color: _colorPalette.error),
       title: Text(
@@ -171,7 +171,7 @@ class _BannedMembersScreenState extends State<BannedMembersScreen>
       ),
       confirmButtonText: cc.Translations.of(context).unban.toUpperCase(),
       cancelButtonText: cc.Translations.of(context).cancel,
-      style: CometChatConfirmDialogStyle(
+      style: ConvoKitConfirmDialogStyle(
         confirmButtonBackground: _colorPalette.error,
         confirmButtonTextColor: _colorPalette.white,
       ),
@@ -286,7 +286,7 @@ class _BannedMembersScreenState extends State<BannedMembersScreen>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              AssetConstants(CometChatThemeHelper.getBrightness(context))
+              AssetConstants(ConvoKitThemeHelper.getBrightness(context))
                   .emptyUserList,
               package: UIConstants.packageName,
               width: 120,
@@ -315,7 +315,7 @@ class _BannedMembersScreenState extends State<BannedMembersScreen>
           return _buildShimmer();
         }
         final member = _bannedMembers[index];
-        return CometChatListItem(
+        return ConvoKitListItem(
           key: ValueKey(member.uid),
           id: member.uid,
           avatarName: member.name,
@@ -345,7 +345,7 @@ class _BannedMembersScreenState extends State<BannedMembersScreen>
   }
 
   Widget _buildShimmer() {
-    return CometChatShimmerEffect(
+    return ConvoKitShimmerEffect(
       colorPalette: _colorPalette,
       child: ListView.builder(
         shrinkWrap: true,

@@ -10,7 +10,7 @@ import '../../../data/models/interactive_message/custom_interactive_message.dart
 
 enum LiveReactionType { liveReaction }
 
-mixin CometChatMessageEventListener implements UIEventHandler {
+mixin ConvoKitMessageEventListener implements UIEventHandler {
   //---composer events---
   //event for message sent by logged-in user
   void ccMessageSent(BaseMessage message, MessageStatus messageStatus) {}

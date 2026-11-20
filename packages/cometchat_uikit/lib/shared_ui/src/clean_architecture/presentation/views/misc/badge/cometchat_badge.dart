@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import '../../../../../../cometchat_uikit_shared.dart';
 
-///[CometChatBadge] is a widget to display a small amount of information about its a component like a count or status
+///[ConvoKitBadge] is a widget to display a small amount of information about its a component like a count or status
 /// ```dart
-///       CometChatBadge(
+///       ConvoKitBadge(
 ///          count: 1,
 ///          style: BadgeStyle(
 ///            background: Colors.teal,
 ///          ),
 ///        );
 /// ```
-class CometChatBadge extends StatelessWidget {
+class ConvoKitBadge extends StatelessWidget {
   /// Creates a widget that that gives  date UI.
-  const CometChatBadge({
+  const ConvoKitBadge({
     super.key,
     required this.count,
-    this.style = const CometChatBadgeStyle(),
+    this.style = const ConvoKitBadgeStyle(),
     this.width,
     this.height,
     this.padding,
@@ -26,7 +26,7 @@ class CometChatBadge extends StatelessWidget {
   final int count;
 
   ///[style] contains properties that affects the appearance of this widget
-  final CometChatBadgeStyle style;
+  final ConvoKitBadgeStyle style;
 
   ///[width] provides width to the widget
   final double? width;
@@ -39,13 +39,13 @@ class CometChatBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final badgeStyle = CometChatThemeHelper.getTheme<CometChatBadgeStyle>(
+    final badgeStyle = ConvoKitThemeHelper.getTheme<ConvoKitBadgeStyle>(
       context: context,
-      defaultTheme: CometChatBadgeStyle.of,
+      defaultTheme: ConvoKitBadgeStyle.of,
     ).merge(style);
-    final typography = CometChatThemeHelper.getTypography(context);
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final spacing = CometChatThemeHelper.getSpacing(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
 
     return count > 0
         ? Container(

@@ -66,7 +66,7 @@ class AppLauncher {
     // Best-effort: there may be no session to end, and a failure here must
     // not mask the assertion the caller is about to make.
     try {
-      await CometChatUIKit.logout();
+      await ConvoKitUIKit.logout();
     } catch (_) {
       // No active session, or the SDK was never initialised.
     }

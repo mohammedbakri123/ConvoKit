@@ -324,8 +324,8 @@ Widget _wrap(Widget child, {Key? key}) => MaterialApp(
 BuildContext _ctx(WidgetTester tester) =>
     tester.element(find.byType(Scaffold).first);
 
-CometChatColorPalette _palette(WidgetTester tester) =>
-    CometChatThemeHelper.getColorPalette(_ctx(tester));
+ConvoKitColorPalette _palette(WidgetTester tester) =>
+    ConvoKitThemeHelper.getColorPalette(_ctx(tester));
 
 /// The list item that draws [name].
 Finder _row(String name) => find.ancestor(
@@ -344,8 +344,8 @@ Color? _rowFill(WidgetTester tester, String name) =>
     tester.widget<Container>(_in(name, find.byType(Container)).first).color;
 
 Color? _dotFill(WidgetTester tester, String name) => tester
-    .widget<CometChatStatusIndicator>(
-      _in(name, find.byType(CometChatStatusIndicator)),
+    .widget<ConvoKitStatusIndicator>(
+      _in(name, find.byType(ConvoKitStatusIndicator)),
     )
     .style
     ?.backgroundColor;
@@ -358,7 +358,7 @@ BoxDecoration _dateBox(WidgetTester tester) =>
             .widget<Container>(
               find
                   .descendant(
-                    of: find.byType(CometChatDate),
+                    of: find.byType(ConvoKitDate),
                     matching: find.byType(Container),
                   )
                   .first,
@@ -371,9 +371,9 @@ BoxDecoration _dateBox(WidgetTester tester) =>
 void main() {
   User? previousUser;
 
-  setUp(() => previousUser = CometChatUIKit.loggedInUser);
+  setUp(() => previousUser = ConvoKitUIKit.loggedInUser);
 
-  tearDown(() => CometChatUIKit.loggedInUser = previousUser);
+  tearDown(() => ConvoKitUIKit.loggedInUser = previousUser);
 
   group('ConvoKitConversationsStyle fields the rows now receive', () {
     testWidgets('listItemSelectedBackgroundColor paints a selected row', (
@@ -496,7 +496,7 @@ void main() {
               .borderRadius,
         );
       }
-      final radius1 = CometChatThemeHelper.getSpacing(_ctx(tester)).radius1;
+      final radius1 = ConvoKitThemeHelper.getSpacing(_ctx(tester)).radius1;
       expect(readings, [
         BorderRadius.circular(radius1 ?? 4),
         const BorderRadius.only(topLeft: Radius.circular(3.5)),
@@ -593,7 +593,7 @@ void main() {
     });
 
     testWidgets('receiptStyle colours the read and sent ticks', (tester) async {
-      CometChatUIKit.loggedInUser = _me;
+      ConvoKitUIKit.loggedInUser = _me;
       final readings = <List<Color?>>[];
       for (final value in <CometChatMessageReceiptStyle?>[
         null,
@@ -707,7 +707,7 @@ void main() {
     });
 
     testWidgets('receiptStyle colours the read ticks', (tester) async {
-      CometChatUIKit.loggedInUser = _me;
+      ConvoKitUIKit.loggedInUser = _me;
       final readings = <Color?>[];
       for (final value in <CometChatMessageReceiptStyle?>[
         null,
@@ -784,7 +784,7 @@ void main() {
 
   group('ConvoKitConversationListItem reads it used to overwrite', () {
     testWidgets('receiptStyle colours the read ticks', (tester) async {
-      CometChatUIKit.loggedInUser = _me;
+      ConvoKitUIKit.loggedInUser = _me;
       final readings = <Color?>[];
       for (final value in <CometChatMessageReceiptStyle?>[
         null,
@@ -878,7 +878,7 @@ void main() {
               ConvoKitConversationListItem(
                 conversation: _aliceFromBob(),
                 onItemClick: (_) {},
-                statusIndicatorStyle: CometChatStatusIndicatorStyle(
+                statusIndicatorStyle: ConvoKitStatusIndicatorStyle(
                   backgroundColor: value,
                 ),
               ),
@@ -898,9 +898,9 @@ void main() {
       'dateStyle background and border reach a non-transparent timestamp',
       (tester) async {
         final readings = <List<Object?>>[];
-        for (final value in <CometChatDateStyle?>[
+        for (final value in <ConvoKitDateStyle?>[
           null,
-          CometChatDateStyle(
+          ConvoKitDateStyle(
             backgroundColor: _kDateFill,
             border: Border.all(color: _kDateBorder, width: 1.25),
           ),
@@ -936,9 +936,9 @@ void main() {
       tester,
     ) async {
       final readings = <List<Object?>>[];
-      for (final value in <CometChatAvatarStyle?>[
+      for (final value in <ConvoKitAvatarStyle?>[
         null,
-        const CometChatAvatarStyle(
+        const ConvoKitAvatarStyle(
           placeHolderTextStyle: TextStyle(fontSize: 33.5, color: _kInitials),
         ),
       ]) {
@@ -958,14 +958,14 @@ void main() {
         final initials = tester.widget<Text>(
           find
               .descendant(
-                of: find.byType(CometChatAvatar),
+                of: find.byType(ConvoKitAvatar),
                 matching: find.byType(Text),
               )
               .first,
         );
         readings.add([initials.style?.fontSize, initials.style?.color]);
       }
-      final heading2 = CometChatThemeHelper.getTypography(
+      final heading2 = ConvoKitThemeHelper.getTypography(
         _ctx(tester),
       ).heading2?.bold?.fontSize;
       expect(readings.first.first, heading2);
@@ -976,9 +976,9 @@ void main() {
       tester,
     ) async {
       final readings = <List<Color?>>[];
-      for (final value in <CometChatColorPalette?>[
+      for (final value in <ConvoKitColorPalette?>[
         null,
-        CometChatColorPalette(
+        ConvoKitColorPalette(
           background1: _kPaletteBackground,
           textPrimary: _kPaletteText,
         ),
@@ -1012,9 +1012,9 @@ void main() {
       tester,
     ) async {
       final readings = <double?>[];
-      for (final value in <CometChatTypography?>[
+      for (final value in <ConvoKitTypography?>[
         null,
-        const CometChatTypography(
+        const ConvoKitTypography(
           heading4: CometChatTextStyleHeading4(
             medium: TextStyle(fontSize: 21.5),
           ),
@@ -1035,7 +1035,7 @@ void main() {
         await tester.pump();
         readings.add(tester.widget<Text>(find.text('Alice')).style?.fontSize);
       }
-      final heading4 = CometChatThemeHelper.getTypography(
+      final heading4 = ConvoKitThemeHelper.getTypography(
         _ctx(tester),
       ).heading4?.medium?.fontSize;
       expect(readings, [heading4, 21.5]);
@@ -1118,15 +1118,15 @@ void main() {
                   style: custom
                       ? ConvoKitConversationListItemStyle.fromTheme(
                           context,
-                          colorPalette: CometChatColorPalette(
+                          colorPalette: ConvoKitColorPalette(
                             background4: _kPaletteBackground,
                           ),
-                          typography: const CometChatTypography(
+                          typography: const ConvoKitTypography(
                             heading4: CometChatTextStyleHeading4(
                               medium: TextStyle(fontSize: 21.5),
                             ),
                           ),
-                          spacing: CometChatSpacing(radius1: 6.5),
+                          spacing: ConvoKitSpacing(radius1: 6.5),
                         )
                       : ConvoKitConversationListItemStyle.fromTheme(context),
                 ),
@@ -1146,12 +1146,12 @@ void main() {
       final context = _ctx(tester);
       expect(readings, [
         [
-          CometChatThemeHelper.getColorPalette(context).background4,
-          CometChatThemeHelper.getTypography(
+          ConvoKitThemeHelper.getColorPalette(context).background4,
+          ConvoKitThemeHelper.getTypography(
             context,
           ).heading4?.medium?.fontSize,
           BorderRadius.circular(
-            CometChatThemeHelper.getSpacing(context).radius1 ?? 4,
+            ConvoKitThemeHelper.getSpacing(context).radius1 ?? 4,
           ),
         ],
         [_kPaletteBackground, 21.5, BorderRadius.circular(6.5)],

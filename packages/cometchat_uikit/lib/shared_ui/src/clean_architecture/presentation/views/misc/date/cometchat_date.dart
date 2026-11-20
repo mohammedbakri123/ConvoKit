@@ -4,20 +4,20 @@ import 'package:intl/intl.dart';
 
 enum DateTimePattern { timeFormat, dayDateFormat, dayDateTimeFormat }
 
-///[CometChatDate] is a widget that provides a customizable container to display date and time
+///[ConvoKitDate] is a widget that provides a customizable container to display date and time
 /// ```dart
-///   CometChatDate(
+///   ConvoKitDate(
 ///    date: DateTime.now(),
 ///    customDateString: "some custom text to show in place of date",
 ///    pattern: DateTimePattern.dayDateTimeFormat,
 ///  );
 /// ```
-class CometChatDate extends StatelessWidget {
-  const CometChatDate({
+class ConvoKitDate extends StatelessWidget {
+  const ConvoKitDate({
     super.key,
     this.date,
     this.pattern,
-    this.style = const CometChatDateStyle(),
+    this.style = const ConvoKitDateStyle(),
     this.customDateString,
     this.height,
     this.padding,
@@ -33,7 +33,7 @@ class CometChatDate extends StatelessWidget {
   final DateTimePattern? pattern;
 
   ///[style] contains properties that affects the appearance of this widget
-  final CometChatDateStyle style;
+  final ConvoKitDateStyle style;
 
   ///[customDateString] if not null is shown instead of date from DateTime object
   final String? customDateString;
@@ -71,7 +71,7 @@ class CometChatDate extends StatelessWidget {
           DateFormat(timeFormatter).format(date);
     } else {
       formattedTime =
-          CometChatUIKit.authenticationSettings?.dateTimeFormatterCallback
+          ConvoKitUIKit.authenticationSettings?.dateTimeFormatterCallback
               ?.time(date.millisecondsSinceEpoch) ??
           DateFormat(timeFormatter).format(date);
     }
@@ -84,7 +84,7 @@ class CometChatDate extends StatelessWidget {
       return dateTimeFormatterCallback?.today(date.millisecondsSinceEpoch) ??
           Translations.of(context).today;
     } else {
-      return CometChatUIKit.authenticationSettings?.dateTimeFormatterCallback
+      return ConvoKitUIKit.authenticationSettings?.dateTimeFormatterCallback
               ?.today(date.millisecondsSinceEpoch) ??
           Translations.of(context).today;
     }
@@ -98,7 +98,7 @@ class CometChatDate extends StatelessWidget {
           ) ??
           Translations.of(context).yesterday;
     } else {
-      return CometChatUIKit.authenticationSettings?.dateTimeFormatterCallback
+      return ConvoKitUIKit.authenticationSettings?.dateTimeFormatterCallback
               ?.yesterday(date.millisecondsSinceEpoch) ??
           Translations.of(context).yesterday;
     }
@@ -114,7 +114,7 @@ class CometChatDate extends StatelessWidget {
       return dateTimeFormatterCallback?.lastWeek(date.millisecondsSinceEpoch) ??
           DateFormat(weekFormatter).format(date);
     } else {
-      return CometChatUIKit.authenticationSettings?.dateTimeFormatterCallback
+      return ConvoKitUIKit.authenticationSettings?.dateTimeFormatterCallback
               ?.lastWeek(date.millisecondsSinceEpoch) ??
           DateFormat(dateFormatter).format(date);
     }
@@ -128,7 +128,7 @@ class CometChatDate extends StatelessWidget {
           ) ??
           DateFormat(dateFormatter).format(date);
     } else {
-      return CometChatUIKit.authenticationSettings?.dateTimeFormatterCallback
+      return ConvoKitUIKit.authenticationSettings?.dateTimeFormatterCallback
               ?.otherDays(date.millisecondsSinceEpoch) ??
           DateFormat(dateFormatter).format(date);
     }
@@ -215,13 +215,13 @@ class CometChatDate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dateStyle = CometChatThemeHelper.getTheme<CometChatDateStyle>(
+    final dateStyle = ConvoKitThemeHelper.getTheme<ConvoKitDateStyle>(
       context: context,
-      defaultTheme: CometChatDateStyle.of,
+      defaultTheme: ConvoKitDateStyle.of,
     ).merge(style);
-    final typography = CometChatThemeHelper.getTypography(context);
-    final colorPalette = CometChatThemeHelper.getColorPalette(context);
-    final spacing = CometChatThemeHelper.getSpacing(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
+    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
 
     String date;
 

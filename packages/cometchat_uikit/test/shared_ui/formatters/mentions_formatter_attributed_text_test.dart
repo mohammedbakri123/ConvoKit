@@ -69,7 +69,7 @@ CometChatMentionsFormatter _formatter(
 );
 
 /// Records the openChat events the default mention tap raises.
-class _OpenChatSpy with CometChatUIEventListener {
+class _OpenChatSpy with ConvoKitUIEventListener {
   final List<cc.User?> opened = [];
 
   @override
@@ -79,11 +79,11 @@ class _OpenChatSpy with CometChatUIEventListener {
 void main() {
   setUp(() {
     // The "is this me" branch reads the UIKit's static.
-    CometChatUIKit.loggedInUser = _me;
+    ConvoKitUIKit.loggedInUser = _me;
   });
 
   tearDown(() {
-    CometChatUIKit.loggedInUser = null;
+    ConvoKitUIKit.loggedInUser = null;
   });
 
   // ==========================================================================
@@ -277,10 +277,10 @@ void main() {
 
     setUp(() {
       spy = _OpenChatSpy();
-      CometChatUIEvents.addUiListener('mentions-tap-test', spy);
+      ConvoKitUIEvents.addUiListener('mentions-tap-test', spy);
     });
 
-    tearDown(() => CometChatUIEvents.removeUiListener('mentions-tap-test'));
+    tearDown(() => ConvoKitUIEvents.removeUiListener('mentions-tap-test'));
 
     testWidgets('an onMentionTap callback receives the tapped text, the user '
         'and the message', (tester) async {

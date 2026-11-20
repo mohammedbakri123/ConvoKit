@@ -160,7 +160,7 @@ class _Fixture {
   /// paints no unique text.
   Finder get target => switch (type) {
     _Type.text => find.text(_body, findRichText: true),
-    _Type.file => find.byType(CometChatMessageBubble),
+    _Type.file => find.byType(ConvoKitMessageBubble),
   };
 }
 
@@ -188,9 +188,9 @@ void _tallView(WidgetTester tester) {
 /// Sets the thread-subscription feature gate for this test and restores
 /// whatever was there before.
 void _threadGate(bool on) {
-  final previous = CometChatUIKit.authenticationSettings;
-  addTearDown(() => CometChatUIKit.authenticationSettings = previous);
-  CometChatUIKit.authenticationSettings =
+  final previous = ConvoKitUIKit.authenticationSettings;
+  addTearDown(() => ConvoKitUIKit.authenticationSettings = previous);
+  ConvoKitUIKit.authenticationSettings =
       (UIKitSettingsBuilder()..enableThreadSubscription = on).build();
 }
 
@@ -237,7 +237,7 @@ Future<List<Object>> _jump(
       .whereType<JumpToMessage>()
       .where((e) => e.messageId == _unloadedMessageId)
       .length;
-  final shimmers = find.byType(CometChatShimmerEffect).evaluate().length;
+  final shimmers = find.byType(ConvoKitShimmerEffect).evaluate().length;
   // Drain the list's five-second give-up timer so none outlives the test.
   await tester.pump(const Duration(seconds: 6));
   return [accepted, jumps, shimmers];

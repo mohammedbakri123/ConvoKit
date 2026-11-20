@@ -162,7 +162,7 @@ const _kMappedRead = Color(0xFF2B8A5E);
 const _kItemSent = Color(0xFF8A5E2B);
 const _kTint = Color(0xFFEE22CC);
 
-final _palette = CometChatColorPalette(
+final _palette = ConvoKitColorPalette(
   primary: const Color(0xFF6852D6),
   textPrimary: const Color(0xFF141414),
   textSecondary: const Color(0xFF727272),
@@ -246,9 +246,9 @@ void _expectPlainRow(WidgetTester tester, String name) {
 void main() {
   User? previousUser;
 
-  setUp(() => previousUser = CometChatUIKit.loggedInUser);
+  setUp(() => previousUser = ConvoKitUIKit.loggedInUser);
 
-  tearDown(() => CometChatUIKit.loggedInUser = previousUser);
+  tearDown(() => ConvoKitUIKit.loggedInUser = previousUser);
 
   group('ConvoKitConversationListItemStyle separator', () {
     testWidgets('separatorColor draws a 1 px line along the bottom', (
@@ -454,13 +454,13 @@ void main() {
                     separatorColor: _kSeparator,
                   ),
                 ),
-                statusStyle: const CometChatStatusIndicatorStyle(),
+                statusStyle: const ConvoKitStatusIndicatorStyle(),
                 typingStyle: const CometChatTypingIndicatorStyle(),
                 receiptStyle: CometChatMessageReceiptStyle(),
-                datesStyle: const CometChatDateStyle(),
+                datesStyle: const ConvoKitDateStyle(),
                 colorPalette: _palette,
-                spacing: CometChatSpacing(),
-                typography: const CometChatTypography(),
+                spacing: ConvoKitSpacing(),
+                typography: const ConvoKitTypography(),
               ),
             ),
           ),
@@ -552,7 +552,7 @@ void main() {
     testWidgets('its receiptStyle fills colours the list receiptStyle leaves', (
       tester,
     ) async {
-      CometChatUIKit.loggedInUser = _me;
+      ConvoKitUIKit.loggedInUser = _me;
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(

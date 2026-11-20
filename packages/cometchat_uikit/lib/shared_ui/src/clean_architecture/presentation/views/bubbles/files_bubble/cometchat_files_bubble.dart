@@ -53,7 +53,7 @@ class CometChatFilesBubble extends StatelessWidget {
     // user's text — render the caption on its own instead.
     if (attachments.isEmpty && !hasCaption) return const SizedBox.shrink();
 
-    final resolved = CometChatThemeHelper.getTheme<CometChatFilesBubbleStyle>(
+    final resolved = ConvoKitThemeHelper.getTheme<CometChatFilesBubbleStyle>(
       context: context,
       defaultTheme: CometChatFilesBubbleStyle.of,
     ).merge(style);
@@ -130,7 +130,7 @@ class _FileListState extends State<_FileList> {
     final files = widget.files;
     final collapsible = files.length >= 4;
     final visible = (collapsible && !_expanded) ? files.sublist(0, 3) : files;
-    final colors = CometChatThemeHelper.getColorPalette(context);
+    final colors = ConvoKitThemeHelper.getColorPalette(context);
     final sent = widget.alignment == BubbleAlignment.right;
     // Contrast against the bubble background (white on the primary-coloured
     // outgoing bubble, dark on the neutral incoming bubble).
@@ -347,8 +347,8 @@ class _FileCardState extends State<_FileCard> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = CometChatThemeHelper.getColorPalette(context);
-    final typography = CometChatThemeHelper.getTypography(context);
+    final colors = ConvoKitThemeHelper.getColorPalette(context);
+    final typography = ConvoKitThemeHelper.getTypography(context);
 
     final cardBg =
         widget.style?.backgroundColor ??

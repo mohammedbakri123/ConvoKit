@@ -21,274 +21,274 @@ import '../../helpers/style_contract.dart';
 void main() {
   group('theme token contracts', () {
     test(
-      'CometChatColorPalette keeps every field through copyWith/merge/lerp',
+      'ConvoKitColorPalette keeps every field through copyWith/merge/lerp',
       () {
-        expectStyleContract<CometChatColorPalette>(
-          label: 'CometChatColorPalette',
-          empty: CometChatColorPalette(),
+        expectStyleContract<ConvoKitColorPalette>(
+          label: 'ConvoKitColorPalette',
+          empty: ConvoKitColorPalette(),
           copyWithNothing: (s) => s.copyWith(),
           lerp: (s, o, t) => s.lerp(o, t),
           fields: [
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'primary',
               const Color(0xFF1B1614),
               const Color(0xFF251B17),
               (s, v) => s.copyWith(primary: v),
               (s) => s.primary,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'extendedPrimary50',
               const Color(0xFF2F201A),
               const Color(0xFF39251D),
               (s, v) => s.copyWith(extendedPrimary50: v),
               (s) => s.extendedPrimary50,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'neutral50',
               const Color(0xFF432A20),
               const Color(0xFF4D2F23),
               (s, v) => s.copyWith(neutral50: v),
               (s) => s.neutral50,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'neutral100',
               const Color(0xFF573426),
               const Color(0xFF613929),
               (s, v) => s.copyWith(neutral100: v),
               (s) => s.neutral100,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'neutral200',
               const Color(0xFF6B3E2C),
               const Color(0xFF75432F),
               (s, v) => s.copyWith(neutral200: v),
               (s) => s.neutral200,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'neutral300',
               const Color(0xFF7F4832),
               const Color(0xFF894D35),
               (s, v) => s.copyWith(neutral300: v),
               (s) => s.neutral300,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'neutral400',
               const Color(0xFF935238),
               const Color(0xFF9D573B),
               (s, v) => s.copyWith(neutral400: v),
               (s) => s.neutral400,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'neutral500',
               const Color(0xFFA75C3E),
               const Color(0xFFB16141),
               (s, v) => s.copyWith(neutral500: v),
               (s) => s.neutral500,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'neutral600',
               const Color(0xFFBB6644),
               const Color(0xFFC56B47),
               (s, v) => s.copyWith(neutral600: v),
               (s) => s.neutral600,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'neutral700',
               const Color(0xFFCF704A),
               const Color(0xFFD9754D),
               (s, v) => s.copyWith(neutral700: v),
               (s) => s.neutral700,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'neutral800',
               const Color(0xFFE37A50),
               const Color(0xFFED7F53),
               (s, v) => s.copyWith(neutral800: v),
               (s) => s.neutral800,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'neutral900',
               const Color(0xFFF78456),
               const Color(0xFF018959),
               (s, v) => s.copyWith(neutral900: v),
               (s) => s.neutral900,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'info',
               const Color(0xFF0B8E5C),
               const Color(0xFF15935F),
               (s, v) => s.copyWith(info: v),
               (s) => s.info,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'warning',
               const Color(0xFF1F9862),
               const Color(0xFF299D65),
               (s, v) => s.copyWith(warning: v),
               (s) => s.warning,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'error',
               const Color(0xFF33A268),
               const Color(0xFF3DA76B),
               (s, v) => s.copyWith(error: v),
               (s) => s.error,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'success',
               const Color(0xFF47AC6E),
               const Color(0xFF51B171),
               (s, v) => s.copyWith(success: v),
               (s) => s.success,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'error100',
               const Color(0xFF5BB674),
               const Color(0xFF65BB77),
               (s, v) => s.copyWith(error100: v),
               (s) => s.error100,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'background1',
               const Color(0xFF6FC07A),
               const Color(0xFF79C57D),
               (s, v) => s.copyWith(background1: v),
               (s) => s.background1,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'background2',
               const Color(0xFF83CA80),
               const Color(0xFF8DCF83),
               (s, v) => s.copyWith(background2: v),
               (s) => s.background2,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'background3',
               const Color(0xFF97D486),
               const Color(0xFFA1D989),
               (s, v) => s.copyWith(background3: v),
               (s) => s.background3,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'background4',
               const Color(0xFFABDE8C),
               const Color(0xFFB5E38F),
               (s, v) => s.copyWith(background4: v),
               (s) => s.background4,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'textPrimary',
               const Color(0xFFBFE892),
               const Color(0xFFC9ED95),
               (s, v) => s.copyWith(textPrimary: v),
               (s) => s.textPrimary,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'textSecondary',
               const Color(0xFFD3F298),
               const Color(0xFFDDF79B),
               (s, v) => s.copyWith(textSecondary: v),
               (s) => s.textSecondary,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'textTertiary',
               const Color(0xFFE7FC9E),
               const Color(0xFFF201A1),
               (s, v) => s.copyWith(textTertiary: v),
               (s) => s.textTertiary,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'textDisabled',
               const Color(0xFFFC06A4),
               const Color(0xFF060BA7),
               (s, v) => s.copyWith(textDisabled: v),
               (s) => s.textDisabled,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'textWhite',
               const Color(0xFF1010AA),
               const Color(0xFF1A15AD),
               (s, v) => s.copyWith(textWhite: v),
               (s) => s.textWhite,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'textHighlight',
               const Color(0xFF241AB0),
               const Color(0xFF2E1FB3),
               (s, v) => s.copyWith(textHighlight: v),
               (s) => s.textHighlight,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'borderLight',
               const Color(0xFF3824B6),
               const Color(0xFF4229B9),
               (s, v) => s.copyWith(borderLight: v),
               (s) => s.borderLight,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'borderDefault',
               const Color(0xFF4C2EBC),
               const Color(0xFF5633BF),
               (s, v) => s.copyWith(borderDefault: v),
               (s) => s.borderDefault,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'borderDark',
               const Color(0xFF6038C2),
               const Color(0xFF6A3DC5),
               (s, v) => s.copyWith(borderDark: v),
               (s) => s.borderDark,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'borderHighlight',
               const Color(0xFF7442C8),
               const Color(0xFF7E47CB),
               (s, v) => s.copyWith(borderHighlight: v),
               (s) => s.borderHighlight,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'iconPrimary',
               const Color(0xFF884CCE),
               const Color(0xFF9251D1),
               (s, v) => s.copyWith(iconPrimary: v),
               (s) => s.iconPrimary,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'iconSecondary',
               const Color(0xFF9C56D4),
               const Color(0xFFA65BD7),
               (s, v) => s.copyWith(iconSecondary: v),
               (s) => s.iconSecondary,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'iconTertiary',
               const Color(0xFFB060DA),
               const Color(0xFFBA65DD),
               (s, v) => s.copyWith(iconTertiary: v),
               (s) => s.iconTertiary,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'iconWhite',
               const Color(0xFFC46AE0),
               const Color(0xFFCE6FE3),
               (s, v) => s.copyWith(iconWhite: v),
               (s) => s.iconWhite,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'iconHighlight',
               const Color(0xFFD874E6),
               const Color(0xFFE279E9),
               (s, v) => s.copyWith(iconHighlight: v),
               (s) => s.iconHighlight,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'shimmerBackground',
               const Color(0xFFEC7EEC),
               const Color(0xFFF683EF),
               (s, v) => s.copyWith(shimmerBackground: v),
               (s) => s.shimmerBackground,
             ),
-            Fld<CometChatColorPalette, Gradient>(
+            Fld<ConvoKitColorPalette, Gradient>(
               'shimmerGradient',
               LinearGradient(
                 colors: [const Color(0xFF0A8DF5), const Color(0xFF1492F8)],
@@ -300,70 +300,70 @@ void main() {
               (s) => s.shimmerGradient,
               lerpsByValue: false,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'buttonBackground',
               const Color(0xFF3CA704),
               const Color(0xFF46AC07),
               (s, v) => s.copyWith(buttonBackground: v),
               (s) => s.buttonBackground,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'secondaryButtonBackground',
               const Color(0xFF50B10A),
               const Color(0xFF5AB60D),
               (s, v) => s.copyWith(secondaryButtonBackground: v),
               (s) => s.secondaryButtonBackground,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'buttonIconColor',
               const Color(0xFF64BB10),
               const Color(0xFF6EC013),
               (s, v) => s.copyWith(buttonIconColor: v),
               (s) => s.buttonIconColor,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'buttonText',
               const Color(0xFF78C516),
               const Color(0xFF82CA19),
               (s, v) => s.copyWith(buttonText: v),
               (s) => s.buttonText,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'secondaryButtonIcon',
               const Color(0xFF8CCF1C),
               const Color(0xFF96D41F),
               (s, v) => s.copyWith(secondaryButtonIcon: v),
               (s) => s.secondaryButtonIcon,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'secondaryButtonText',
               const Color(0xFFA0D922),
               const Color(0xFFAADE25),
               (s, v) => s.copyWith(secondaryButtonText: v),
               (s) => s.secondaryButtonText,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'white',
               const Color(0xFFB4E328),
               const Color(0xFFBEE82B),
               (s, v) => s.copyWith(white: v),
               (s) => s.white,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'transparent',
               const Color(0xFFC8ED2E),
               const Color(0xFFD2F231),
               (s, v) => s.copyWith(transparent: v),
               (s) => s.transparent,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'black',
               const Color(0xFFDCF734),
               const Color(0xFFE6FC37),
               (s, v) => s.copyWith(black: v),
               (s) => s.black,
             ),
-            Fld<CometChatColorPalette, Color>(
+            Fld<ConvoKitColorPalette, Color>(
               'messageSeen',
               const Color(0xFFF1013A),
               const Color(0xFFFB063D),
@@ -375,15 +375,15 @@ void main() {
       },
     );
 
-    test('CometChatSpacing keeps every field through copyWith/merge/lerp', () {
-      expectStyleContract<CometChatSpacing>(
-        label: 'CometChatSpacing',
-        empty: CometChatSpacing(),
+    test('ConvoKitSpacing keeps every field through copyWith/merge/lerp', () {
+      expectStyleContract<ConvoKitSpacing>(
+        label: 'ConvoKitSpacing',
+        empty: ConvoKitSpacing(),
         copyWithNothing: (s) => s.copyWith(),
         merge: (s, o) => s.merge(o),
         lerp: (s, o, t) => s.lerp(o, t),
         fields: [
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'spacing',
             104.5,
             105.5,
@@ -391,427 +391,427 @@ void main() {
             (s) => s.spacing,
             lerpsByValue: false,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'spacing1',
             106.5,
             107.5,
             (s, v) => s.copyWith(spacing1: v),
             (s) => s.spacing1,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'spacing2',
             108.5,
             109.5,
             (s, v) => s.copyWith(spacing2: v),
             (s) => s.spacing2,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'spacing3',
             110.5,
             111.5,
             (s, v) => s.copyWith(spacing3: v),
             (s) => s.spacing3,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'spacing4',
             112.5,
             113.5,
             (s, v) => s.copyWith(spacing4: v),
             (s) => s.spacing4,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'spacing5',
             114.5,
             115.5,
             (s, v) => s.copyWith(spacing5: v),
             (s) => s.spacing5,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'spacing6',
             116.5,
             117.5,
             (s, v) => s.copyWith(spacing6: v),
             (s) => s.spacing6,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'spacing7',
             118.5,
             119.5,
             (s, v) => s.copyWith(spacing7: v),
             (s) => s.spacing7,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'spacing8',
             120.5,
             121.5,
             (s, v) => s.copyWith(spacing8: v),
             (s) => s.spacing8,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'spacing9',
             122.5,
             123.5,
             (s, v) => s.copyWith(spacing9: v),
             (s) => s.spacing9,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'spacing10',
             124.5,
             125.5,
             (s, v) => s.copyWith(spacing10: v),
             (s) => s.spacing10,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'spacing11',
             126.5,
             127.5,
             (s, v) => s.copyWith(spacing11: v),
             (s) => s.spacing11,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'spacing12',
             128.5,
             129.5,
             (s, v) => s.copyWith(spacing12: v),
             (s) => s.spacing12,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'spacing13',
             130.5,
             131.5,
             (s, v) => s.copyWith(spacing13: v),
             (s) => s.spacing13,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'spacing14',
             132.5,
             133.5,
             (s, v) => s.copyWith(spacing14: v),
             (s) => s.spacing14,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'spacing15',
             134.5,
             135.5,
             (s, v) => s.copyWith(spacing15: v),
             (s) => s.spacing15,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'spacing16',
             136.5,
             137.5,
             (s, v) => s.copyWith(spacing16: v),
             (s) => s.spacing16,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'spacing17',
             138.5,
             139.5,
             (s, v) => s.copyWith(spacing17: v),
             (s) => s.spacing17,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'spacing18',
             140.5,
             141.5,
             (s, v) => s.copyWith(spacing18: v),
             (s) => s.spacing18,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'spacing19',
             142.5,
             143.5,
             (s, v) => s.copyWith(spacing19: v),
             (s) => s.spacing19,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'spacing20',
             144.5,
             145.5,
             (s, v) => s.copyWith(spacing20: v),
             (s) => s.spacing20,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'spacingMax',
             146.5,
             147.5,
             (s, v) => s.copyWith(spacingMax: v),
             (s) => s.spacingMax,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'padding',
             148.5,
             149.5,
             (s, v) => s.copyWith(padding: v),
             (s) => s.padding,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'padding1',
             150.5,
             151.5,
             (s, v) => s.copyWith(padding1: v),
             (s) => s.padding1,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'padding2',
             152.5,
             153.5,
             (s, v) => s.copyWith(padding2: v),
             (s) => s.padding2,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'padding3',
             154.5,
             155.5,
             (s, v) => s.copyWith(padding3: v),
             (s) => s.padding3,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'padding4',
             156.5,
             157.5,
             (s, v) => s.copyWith(padding4: v),
             (s) => s.padding4,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'padding5',
             158.5,
             159.5,
             (s, v) => s.copyWith(padding5: v),
             (s) => s.padding5,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'padding6',
             160.5,
             161.5,
             (s, v) => s.copyWith(padding6: v),
             (s) => s.padding6,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'padding7',
             162.5,
             163.5,
             (s, v) => s.copyWith(padding7: v),
             (s) => s.padding7,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'padding8',
             164.5,
             165.5,
             (s, v) => s.copyWith(padding8: v),
             (s) => s.padding8,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'padding9',
             166.5,
             167.5,
             (s, v) => s.copyWith(padding9: v),
             (s) => s.padding9,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'padding10',
             168.5,
             169.5,
             (s, v) => s.copyWith(padding10: v),
             (s) => s.padding10,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'margin',
             170.5,
             171.5,
             (s, v) => s.copyWith(margin: v),
             (s) => s.margin,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'margin1',
             172.5,
             173.5,
             (s, v) => s.copyWith(margin1: v),
             (s) => s.margin1,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'margin2',
             174.5,
             175.5,
             (s, v) => s.copyWith(margin2: v),
             (s) => s.margin2,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'margin3',
             176.5,
             177.5,
             (s, v) => s.copyWith(margin3: v),
             (s) => s.margin3,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'margin4',
             178.5,
             179.5,
             (s, v) => s.copyWith(margin4: v),
             (s) => s.margin4,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'margin5',
             180.5,
             181.5,
             (s, v) => s.copyWith(margin5: v),
             (s) => s.margin5,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'margin6',
             182.5,
             183.5,
             (s, v) => s.copyWith(margin6: v),
             (s) => s.margin6,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'margin7',
             184.5,
             185.5,
             (s, v) => s.copyWith(margin7: v),
             (s) => s.margin7,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'margin8',
             186.5,
             187.5,
             (s, v) => s.copyWith(margin8: v),
             (s) => s.margin8,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'margin9',
             188.5,
             189.5,
             (s, v) => s.copyWith(margin9: v),
             (s) => s.margin9,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'margin10',
             190.5,
             191.5,
             (s, v) => s.copyWith(margin10: v),
             (s) => s.margin10,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'margin11',
             192.5,
             193.5,
             (s, v) => s.copyWith(margin11: v),
             (s) => s.margin11,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'margin12',
             194.5,
             195.5,
             (s, v) => s.copyWith(margin12: v),
             (s) => s.margin12,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'margin13',
             196.5,
             197.5,
             (s, v) => s.copyWith(margin13: v),
             (s) => s.margin13,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'margin14',
             198.5,
             199.5,
             (s, v) => s.copyWith(margin14: v),
             (s) => s.margin14,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'margin15',
             200.5,
             201.5,
             (s, v) => s.copyWith(margin15: v),
             (s) => s.margin15,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'margin16',
             202.5,
             203.5,
             (s, v) => s.copyWith(margin16: v),
             (s) => s.margin16,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'margin17',
             204.5,
             205.5,
             (s, v) => s.copyWith(margin17: v),
             (s) => s.margin17,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'margin18',
             206.5,
             207.5,
             (s, v) => s.copyWith(margin18: v),
             (s) => s.margin18,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'margin19',
             208.5,
             209.5,
             (s, v) => s.copyWith(margin19: v),
             (s) => s.margin19,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'margin20',
             210.5,
             211.5,
             (s, v) => s.copyWith(margin20: v),
             (s) => s.margin20,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'radius',
             212.5,
             213.5,
             (s, v) => s.copyWith(radius: v),
             (s) => s.radius,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'radius1',
             214.5,
             215.5,
             (s, v) => s.copyWith(radius1: v),
             (s) => s.radius1,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'radius2',
             216.5,
             217.5,
             (s, v) => s.copyWith(radius2: v),
             (s) => s.radius2,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'radius3',
             218.5,
             219.5,
             (s, v) => s.copyWith(radius3: v),
             (s) => s.radius3,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'radius4',
             220.5,
             221.5,
             (s, v) => s.copyWith(radius4: v),
             (s) => s.radius4,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'radius5',
             222.5,
             223.5,
             (s, v) => s.copyWith(radius5: v),
             (s) => s.radius5,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'radius6',
             224.5,
             225.5,
             (s, v) => s.copyWith(radius6: v),
             (s) => s.radius6,
           ),
-          Fld<CometChatSpacing, double>(
+          Fld<ConvoKitSpacing, double>(
             'radiusMax',
             226.5,
             227.5,
@@ -823,15 +823,15 @@ void main() {
     });
 
     test(
-      'CometChatTypography keeps every field through copyWith/merge/lerp',
+      'ConvoKitTypography keeps every field through copyWith/merge/lerp',
       () {
-        expectStyleContract<CometChatTypography>(
-          label: 'CometChatTypography',
-          empty: const CometChatTypography(),
+        expectStyleContract<ConvoKitTypography>(
+          label: 'ConvoKitTypography',
+          empty: const ConvoKitTypography(),
           copyWithNothing: (s) => s.copyWith(),
           merge: (s, o) => s.merge(o),
           fields: [
-            Fld<CometChatTypography, CometChatTextStyleHeading1>(
+            Fld<ConvoKitTypography, CometChatTextStyleHeading1>(
               'heading1',
               CometChatTextStyleHeading1(),
               CometChatTextStyleHeading1(),
@@ -839,7 +839,7 @@ void main() {
               (s) => s.heading1,
               lerpsByValue: false,
             ),
-            Fld<CometChatTypography, CometChatTextStyleHeading2>(
+            Fld<ConvoKitTypography, CometChatTextStyleHeading2>(
               'heading2',
               CometChatTextStyleHeading2(),
               CometChatTextStyleHeading2(),
@@ -847,7 +847,7 @@ void main() {
               (s) => s.heading2,
               lerpsByValue: false,
             ),
-            Fld<CometChatTypography, CometChatTextStyleHeading3>(
+            Fld<ConvoKitTypography, CometChatTextStyleHeading3>(
               'heading3',
               CometChatTextStyleHeading3(),
               CometChatTextStyleHeading3(),
@@ -855,7 +855,7 @@ void main() {
               (s) => s.heading3,
               lerpsByValue: false,
             ),
-            Fld<CometChatTypography, CometChatTextStyleHeading4>(
+            Fld<ConvoKitTypography, CometChatTextStyleHeading4>(
               'heading4',
               CometChatTextStyleHeading4(),
               CometChatTextStyleHeading4(),
@@ -863,7 +863,7 @@ void main() {
               (s) => s.heading4,
               lerpsByValue: false,
             ),
-            Fld<CometChatTypography, CometChatTextStyleBody>(
+            Fld<ConvoKitTypography, CometChatTextStyleBody>(
               'body',
               CometChatTextStyleBody(),
               CometChatTextStyleBody(),
@@ -871,7 +871,7 @@ void main() {
               (s) => s.body,
               lerpsByValue: false,
             ),
-            Fld<CometChatTypography, CometChatTextStyleCaption1>(
+            Fld<ConvoKitTypography, CometChatTextStyleCaption1>(
               'caption1',
               CometChatTextStyleCaption1(),
               CometChatTextStyleCaption1(),
@@ -879,7 +879,7 @@ void main() {
               (s) => s.caption1,
               lerpsByValue: false,
             ),
-            Fld<CometChatTypography, CometChatTextStyleCaption2>(
+            Fld<ConvoKitTypography, CometChatTextStyleCaption2>(
               'caption2',
               CometChatTextStyleCaption2(),
               CometChatTextStyleCaption2(),
@@ -887,7 +887,7 @@ void main() {
               (s) => s.caption2,
               lerpsByValue: false,
             ),
-            Fld<CometChatTypography, CometChatTextStyleButton>(
+            Fld<ConvoKitTypography, CometChatTextStyleButton>(
               'button',
               CometChatTextStyleButton(),
               CometChatTextStyleButton(),
@@ -895,7 +895,7 @@ void main() {
               (s) => s.button,
               lerpsByValue: false,
             ),
-            Fld<CometChatTypography, CometChatTextStyleLink>(
+            Fld<ConvoKitTypography, CometChatTextStyleLink>(
               'link',
               CometChatTextStyleLink(),
               CometChatTextStyleLink(),
@@ -903,7 +903,7 @@ void main() {
               (s) => s.link,
               lerpsByValue: false,
             ),
-            Fld<CometChatTypography, CometChatTextStyleTitle>(
+            Fld<ConvoKitTypography, CometChatTextStyleTitle>(
               'title',
               CometChatTextStyleTitle(),
               CometChatTextStyleTitle(),

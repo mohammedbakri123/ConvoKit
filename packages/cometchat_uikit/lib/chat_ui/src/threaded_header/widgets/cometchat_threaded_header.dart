@@ -81,13 +81,13 @@ class ConvoKitThreadedHeader extends StatefulWidget {
   final List<CometChatTextFormatter>? textFormatters;
 
   /// [colorPalette] optional pre-cached color palette for optimization
-  final CometChatColorPalette? colorPalette;
+  final ConvoKitColorPalette? colorPalette;
 
   /// [typography] optional pre-cached typography for optimization
-  final CometChatTypography? typography;
+  final ConvoKitTypography? typography;
 
   /// [spacing] optional pre-cached spacing for optimization
-  final CometChatSpacing? spacing;
+  final ConvoKitSpacing? spacing;
 
   ///[threadedHeaderBloc] Optional external ThreadedHeaderBloc instance.
   ///If provided, it is used instead of creating one internally and the widget
@@ -107,9 +107,9 @@ class _ConvoKitThreadedHeaderState extends State<ConvoKitThreadedHeader> {
   bool _isExternalBloc = false;
 
   /// Theme caching - initialized once in didChangeDependencies
-  late CometChatColorPalette _colorPalette;
-  late CometChatTypography _typography;
-  late CometChatSpacing _spacing;
+  late ConvoKitColorPalette _colorPalette;
+  late ConvoKitTypography _typography;
+  late ConvoKitSpacing _spacing;
   bool _themeInitialized = false;
   Brightness? _cachedBrightness;
 
@@ -181,21 +181,21 @@ class _ConvoKitThreadedHeaderState extends State<ConvoKitThreadedHeader> {
     super.didChangeDependencies();
 
     // Only initialize theme once to avoid expensive lookups during rebuilds
-    final currentBrightness = CometChatThemeHelper.getBrightness(context);
+    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
     if (!_themeInitialized || brightnessChanged) {
       _cachedBrightness = currentBrightness;
       // Use passed values or fallback to lookups (for standalone usage)
       _colorPalette =
-          widget.colorPalette ?? CometChatThemeHelper.getColorPalette(context);
+          widget.colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
       _typography =
-          widget.typography ?? CometChatThemeHelper.getTypography(context);
-      _spacing = widget.spacing ?? CometChatThemeHelper.getSpacing(context);
+          widget.typography ?? ConvoKitThemeHelper.getTypography(context);
+      _spacing = widget.spacing ?? ConvoKitThemeHelper.getSpacing(context);
 
       // Merge style with theme
       _threadedHeaderStyle =
-          CometChatThemeHelper.getTheme<ConvoKitThreadedHeaderStyle>(
+          ConvoKitThemeHelper.getTheme<ConvoKitThreadedHeaderStyle>(
             context: context,
             defaultTheme: ConvoKitThreadedHeaderStyle.of,
           ).merge(widget.style);
@@ -227,7 +227,7 @@ class _ConvoKitThreadedHeaderState extends State<ConvoKitThreadedHeader> {
     // Update style if it changed
     if (widget.style != oldWidget.style) {
       _threadedHeaderStyle =
-          CometChatThemeHelper.getTheme<ConvoKitThreadedHeaderStyle>(
+          ConvoKitThemeHelper.getTheme<ConvoKitThreadedHeaderStyle>(
             context: context,
             defaultTheme: ConvoKitThreadedHeaderStyle.of,
           ).merge(widget.style);
@@ -274,7 +274,7 @@ class _ConvoKitThreadedHeaderState extends State<ConvoKitThreadedHeader> {
   /// Whether the follow control should render: feature gate on (default off)
   /// AND the per-component visibility flag not disabled.
   bool get _showThreadSubscriptionControl =>
-      CometChatUIKit.authenticationSettings?.enableThreadSubscription == true &&
+      ConvoKitUIKit.authenticationSettings?.enableThreadSubscription == true &&
       widget.threadSubscriptionVisibility != false;
 
   /// Shows one of the thread toasts as a dark pill centered within the
@@ -315,7 +315,7 @@ class _ConvoKitThreadedHeaderState extends State<ConvoKitThreadedHeader> {
 
       if (result != null) {
         // Keep the action-sheet surface (and integrator lists) in agreement.
-        CometChatMessageEvents.ccThreadSubscriptionChanged(
+        ConvoKitMessageEvents.ccThreadSubscriptionChanged(
           parentMessageId,
           target,
         );

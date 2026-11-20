@@ -17,8 +17,8 @@ import '../../../../shared_ui/src/clean_architecture/core/utils/ui_event_target.
 class MessageComposerBloc
     extends Bloc<MessageComposerEvent, MessageComposerState>
     with
-        CometChatMessageEventListener,
-        CometChatUIEventListener,
+        ConvoKitMessageEventListener,
+        ConvoKitUIEventListener,
         ConvoKitUserEventListener,
         CometChatStreamCallbackListener {
   // ============================================================================
@@ -221,7 +221,7 @@ class MessageComposerBloc
     parentMessageId: parentMessageId,
   );
 
-  /// A null id stays a broadcast here: `CometChatUIKitHelper.showPanel` lets an
+  /// A null id stays a broadcast here: `ConvoKitUIKitHelper.showPanel` lets an
   /// integrator raise a panel without naming a conversation, and single-composer
   /// apps rely on that.
   bool _isForThisWidget(Map<String, dynamic>? id) =>
@@ -265,7 +265,7 @@ class MessageComposerBloc
   /// [UIKitSettings.enableThreadSubscription] so an app that does not ship
   /// follow/unfollow doesn't quietly start creating subscriptions.
   void _subscribeSenderToOwnThread(BaseMessage sentMessage) {
-    if (CometChatUIKit.authenticationSettings?.enableThreadSubscription !=
+    if (ConvoKitUIKit.authenticationSettings?.enableThreadSubscription !=
         true) {
       return;
     }
@@ -281,7 +281,7 @@ class MessageComposerBloc
             sentMessage.threadSubscribed = true;
             // Restamp the bells, the threaded header and the list bloc's copy
             // of the thread root, the same way the manual toggle does.
-            CometChatMessageEvents.ccThreadSubscriptionChanged(threadId, true);
+            ConvoKitMessageEvents.ccThreadSubscriptionChanged(threadId, true);
           })
           .catchError((Object e) {
             // The message is sent; the user can still follow it by hand.
@@ -292,7 +292,7 @@ class MessageComposerBloc
 
   void _playSound() {
     if (!disableSoundForMessages) {
-      CometChatUIKit.soundManager.play(
+      ConvoKitUIKit.soundManager.play(
         sound: Sound.outgoingMessage,
         customSound: customSoundForMessage,
         packageName:
@@ -313,8 +313,8 @@ class MessageComposerBloc
     _uiEventListenerKey = '${dateString}bloc_ui_event_listener';
     _userEventListenerKey = '${dateString}bloc_user_event_listener';
 
-    CometChatMessageEvents.addMessagesListener(_messageListenerKey, this);
-    CometChatUIEvents.addUiListener(_uiEventListenerKey, this);
+    ConvoKitMessageEvents.addMessagesListener(_messageListenerKey, this);
+    ConvoKitUIEvents.addUiListener(_uiEventListenerKey, this);
     ConvoKitUserEvents.addUsersListener(_userEventListenerKey, this);
     CometChatStreamCallBackEvents.addStreamCallBackListener(
       _uiEventListenerKey,
@@ -456,7 +456,7 @@ class MessageComposerBloc
     }
 
     // Emit in-progress event
-    CometChatMessageEvents.ccMessageSent(
+    ConvoKitMessageEvents.ccMessageSent(
       textMessage,
       core_enums.MessageStatus.inProgress,
     );
@@ -470,7 +470,7 @@ class MessageComposerBloc
         } else {
           textMessage.metadata = {'error': failure.message};
         }
-        CometChatMessageEvents.ccMessageSent(
+        ConvoKitMessageEvents.ccMessageSent(
           textMessage,
           core_enums.MessageStatus.error,
         );
@@ -497,7 +497,7 @@ class MessageComposerBloc
           sentMessage.muid = textMessage.muid;
         }
         _subscribeSenderToOwnThread(sentMessage);
-        CometChatMessageEvents.ccMessageSent(
+        ConvoKitMessageEvents.ccMessageSent(
           sentMessage,
           core_enums.MessageStatus.sent,
         );
@@ -601,7 +601,7 @@ class MessageComposerBloc
     );
 
     // Emit in-progress event
-    CometChatMessageEvents.ccMessageSent(
+    ConvoKitMessageEvents.ccMessageSent(
       mediaMessage,
       core_enums.MessageStatus.inProgress,
     );
@@ -614,7 +614,7 @@ class MessageComposerBloc
         } else {
           mediaMessage.metadata = {'error': failure.message};
         }
-        CometChatMessageEvents.ccMessageSent(
+        ConvoKitMessageEvents.ccMessageSent(
           mediaMessage,
           core_enums.MessageStatus.error,
         );
@@ -647,7 +647,7 @@ class MessageComposerBloc
           sentMessage.metadata = {...event.metadata!, ...?sentMessage.metadata};
         }
         _subscribeSenderToOwnThread(sentMessage);
-        CometChatMessageEvents.ccMessageSent(
+        ConvoKitMessageEvents.ccMessageSent(
           sentMessage,
           core_enums.MessageStatus.sent,
         );
@@ -738,7 +738,7 @@ class MessageComposerBloc
     );
 
     // Emit in-progress event
-    CometChatMessageEvents.ccMessageSent(
+    ConvoKitMessageEvents.ccMessageSent(
       customMessage,
       core_enums.MessageStatus.inProgress,
     );
@@ -751,7 +751,7 @@ class MessageComposerBloc
         } else {
           customMessage.metadata = {'error': failure.message};
         }
-        CometChatMessageEvents.ccMessageSent(
+        ConvoKitMessageEvents.ccMessageSent(
           customMessage,
           core_enums.MessageStatus.error,
         );
@@ -776,7 +776,7 @@ class MessageComposerBloc
           sentMessage.muid = customMessage.muid;
         }
         _subscribeSenderToOwnThread(sentMessage);
-        CometChatMessageEvents.ccMessageSent(
+        ConvoKitMessageEvents.ccMessageSent(
           sentMessage,
           core_enums.MessageStatus.sent,
         );
@@ -902,7 +902,7 @@ class MessageComposerBloc
     // (We fire `success`, not `inProgress` — `inProgress` means "populate the
     // composer to edit this message", which would re-enter edit mode here.)
     editedMessage.editedAt = DateTime.now();
-    CometChatMessageEvents.ccMessageEdited(
+    ConvoKitMessageEvents.ccMessageEdited(
       editedMessage,
       MessageEditStatus.success,
     );
@@ -911,7 +911,7 @@ class MessageComposerBloc
     result.fold(
       (failure) {
         // Revert the optimistic edit — restore the original message in the list.
-        CometChatMessageEvents.ccMessageEdited(
+        ConvoKitMessageEvents.ccMessageEdited(
           original,
           MessageEditStatus.success,
         );
@@ -920,7 +920,7 @@ class MessageComposerBloc
         } else {
           editedMessage.metadata = {'error': failure.message};
         }
-        CometChatMessageEvents.ccMessageSent(
+        ConvoKitMessageEvents.ccMessageSent(
           editedMessage,
           core_enums.MessageStatus.error,
         );
@@ -943,7 +943,7 @@ class MessageComposerBloc
         ccLog(
           '[MessageComposerBloc] Edit success, firing ccMessageEdited with message.id=${updatedMessage.id}',
         );
-        CometChatMessageEvents.ccMessageEdited(
+        ConvoKitMessageEvents.ccMessageEdited(
           updatedMessage,
           MessageEditStatus.success,
         );
@@ -1332,8 +1332,8 @@ class MessageComposerBloc
   @override
   Future<void> close() {
     // Remove SDK listeners
-    CometChatMessageEvents.removeMessagesListener(_messageListenerKey);
-    CometChatUIEvents.removeUiListener(_uiEventListenerKey);
+    ConvoKitMessageEvents.removeMessagesListener(_messageListenerKey);
+    ConvoKitUIEvents.removeUiListener(_uiEventListenerKey);
     ConvoKitUserEvents.removeUsersListener(_userEventListenerKey);
     CometChatStreamCallBackEvents.removeStreamCallBackListener(
       _uiEventListenerKey,
