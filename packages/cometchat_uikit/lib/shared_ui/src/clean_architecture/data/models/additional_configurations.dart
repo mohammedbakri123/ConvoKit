@@ -52,19 +52,19 @@ class AdditionalConfigurations {
 
   /// Style for the call buttons.
   @Deprecated(
-    'Has no effect. Style the call buttons through CometChatMessageHeaderStyle.callButtonsStyle. Will be removed in 7.0.0.',
+    'Has no effect. Style the call buttons through ConvoKitMessageHeaderStyle.callButtonsStyle. Will be removed in 7.0.0.',
   )
   final CometChatCallButtonsStyle? callButtonsStyle;
 
   /// Whether the video call button is hidden.
   @Deprecated(
-    'Has no effect. Use CometChatMessageHeader.hideVideoCallButton. Will be removed in 7.0.0.',
+    'Has no effect. Use ConvoKitMessageHeader.hideVideoCallButton. Will be removed in 7.0.0.',
   )
   final bool? hideVideoCallButton;
 
   /// Whether the voice call button is hidden.
   @Deprecated(
-    'Has no effect. Use CometChatMessageHeader.hideVoiceCallButton. Will be removed in 7.0.0.',
+    'Has no effect. Use ConvoKitMessageHeader.hideVoiceCallButton. Will be removed in 7.0.0.',
   )
   final bool? hideVoiceCallButton;
 

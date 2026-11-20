@@ -39,7 +39,7 @@ import '../sdk_user_b/block_actions.dart';
 ///     the message and asserts it appears + the indicator clears.
 ///   • "B types, A observes" cases (1TO1-054 / 1TO1-055 / RT-TYPE-002 /
 ///     RT-TYPE-004): cannot be triggered via REST. These are verified
-///     STRUCTURALLY — we confirm the CometChatMessageHeader / conversation row
+///     STRUCTURALLY — we confirm the ConvoKitMessageHeader / conversation row
 ///     component is mounted, shows User B's name ("Nancy Grace"), and remains
 ///     stable (no spurious "Typing..." appears, the screen stays alive). The
 ///     header is the component that WOULD render "Typing..." given a real
@@ -169,7 +169,7 @@ void main() {
       await NavigationHelper.openUserBConversation(tester);
       AssertionHelper.expectOnMessagesScreen();
 
-      // The CometChatMessageHeader is rendering (shows the peer's name).
+      // The ConvoKitMessageHeader is rendering (shows the peer's name).
       AssertionHelper.expectHeaderName('Nancy Grace');
 
       // B sends a real message (the closest REST-triggerable event). The

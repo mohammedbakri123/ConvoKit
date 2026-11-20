@@ -174,7 +174,7 @@ void main() {
           blocks.map((b) => _findWidgetName(source, b.offset)).toList();
       expect(widgetNames, contains('ConvoKitMessageList'));
       expect(widgetNames, contains('ConvoKitMessageComposer'));
-      expect(widgetNames, contains('CometChatThreadedHeader'));
+      expect(widgetNames, contains('ConvoKitThreadedHeader'));
     });
   });
 }

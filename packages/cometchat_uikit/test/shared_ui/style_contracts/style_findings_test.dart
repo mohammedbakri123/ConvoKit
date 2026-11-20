@@ -241,7 +241,7 @@ void main() {
         _a,
       );
       expect(
-        const CometChatMessageHeaderStyle()
+        const ConvoKitMessageHeaderStyle()
             .copyWith(backButtonIconTint: _a)
             .backIconColor,
         isNull,

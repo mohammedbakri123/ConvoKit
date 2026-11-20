@@ -1,4 +1,4 @@
-/// Render-verified prop matrix for the two [CometChatThreadedHeader] props new
+/// Render-verified prop matrix for the two [ConvoKitThreadedHeader] props new
 /// in 6.1.1 — Track 3 PROP1 (ENG-38688, coverage part 2, round 2):
 /// threadSubscriptionVisibility and onThreadSubscriptionChange. The other 13
 /// are covered by preview_and_threaded_style_props_test.dart and
@@ -303,7 +303,7 @@ void main() {
     });
   });
 
-  group('CometChatThreadedHeader 6.1.1 prop matrix', () {
+  group('ConvoKitThreadedHeader 6.1.1 prop matrix', () {
     for (final c in _matrix) {
       testWidgets('${c.prop} ${c.effect}', (tester) async {
         final observed = <_Run, Object?>{};
@@ -315,7 +315,7 @@ void main() {
           final p = run == _Run.subject ? c.subject(log) : const _Props();
           final parent = _parent(subscribed: c.subscribed);
 
-          final header = CometChatThreadedHeader(
+          final header = ConvoKitThreadedHeader(
             parentMessage: parent,
             loggedInUser: _me,
             threadedHeaderBloc: _headerBloc(parent),
@@ -366,7 +366,7 @@ void main() {
     await mockNetworkImagesFor(() async {
       await tester.pumpWidget(
         _wrap(
-          CometChatThreadedHeader(
+          ConvoKitThreadedHeader(
             parentMessage: parent,
             loggedInUser: _me,
             threadedHeaderBloc: _headerBloc(parent),
@@ -401,7 +401,7 @@ void main() {
 
     Widget header(BaseMessage root, _Log log, {ThreadedHeaderBloc? bloc}) =>
         _wrap(
-          CometChatThreadedHeader(
+          ConvoKitThreadedHeader(
             parentMessage: root,
             loggedInUser: _me,
             threadedHeaderBloc: bloc,

@@ -51,12 +51,12 @@ export 'chat_ui/src/groups/widgets/widgets.dart';
 export 'chat_ui/src/groups/bloc/bloc.dart';
 export 'chat_ui/src/groups/di/di.dart';
 
-//CometChatMessageHeader
+//ConvoKitMessageHeader
 export 'chat_ui/src/message_header/cometchat_message_header.dart';
 // export 'chat_ui/src/message_header/cometchat_message_header_controller.dart';
 export 'chat_ui/src/message_header/cometchat_message_header_style.dart';
 // ENG-39106, same shape: MessageHeaderBloc is named by
-// CometChatMessageHeader.messageHeaderBloc and exported by nothing.
+// ConvoKitMessageHeader.messageHeaderBloc and exported by nothing.
 // `InitializeLoggedInUser` is already owned on this barrel by the groups
 // event of the same name — see ENG-39100.
 export 'chat_ui/src/message_header/bloc/message_header_bloc.dart';

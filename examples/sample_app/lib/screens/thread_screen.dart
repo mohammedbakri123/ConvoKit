@@ -44,7 +44,7 @@ class _ThreadScreenState extends State<ThreadScreen> {
       resizeToAvoidBottomInset: true,
       appBar: widget.hideAppBar
           ? null
-          : CometChatMessageHeader(
+          : ConvoKitMessageHeader(
               user: widget.user,
               group: widget.group,
               onBack: () => Navigator.pop(context),
@@ -81,7 +81,7 @@ class _ThreadScreenState extends State<ThreadScreen> {
                   ],
                 );
               },
-              messageHeaderStyle: CometChatMessageHeaderStyle(
+              messageHeaderStyle: ConvoKitMessageHeaderStyle(
                 backIconColor: colorPalette.iconPrimary,
                 backgroundColor: colorPalette.background1,
                 border: Border(
@@ -97,7 +97,7 @@ class _ThreadScreenState extends State<ThreadScreen> {
           color: colorPalette.background3,
           child: Column(
             children: [
-              CometChatThreadedHeader(
+              ConvoKitThreadedHeader(
                 parentMessage: widget.message,
                 loggedInUser: CometChatUIKit.loggedInUser!,
                 template: widget.template,

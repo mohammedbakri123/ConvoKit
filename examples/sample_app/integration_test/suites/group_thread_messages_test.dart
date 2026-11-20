@@ -156,7 +156,7 @@ void main() {
     });
 
     // ── GRP-046 ───────────────────────────────────────────────────────────────
-    // The thread header (CometChatThreadedHeader(parentMessage:...)) shows the
+    // The thread header (ConvoKitThreadedHeader(parentMessage:...)) shows the
     // parent message inside the thread. After opening, the parent text should be
     // present in the thread tree.
     testWidgets('GRP-046: Thread header shows the parent message',

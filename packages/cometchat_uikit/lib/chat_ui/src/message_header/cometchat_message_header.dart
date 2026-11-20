@@ -6,12 +6,12 @@ import '../../../shared_ui/src/clean_architecture/core/utils/thread_toast.dart';
 import '../../../src/adapters/cometchat_sdk_adapter.dart';
 import 'package:intl/intl.dart';
 
-/// [CometChatMessageHeader] is a widget which shows [user]/[group] details using [CometChatListItem]
+/// [ConvoKitMessageHeader] is a widget which shows [user]/[group] details using [CometChatListItem]
 /// if its being shown for an [User] then the name of the user will be in the [CometChatListItem.title] of [CometChatListItem] and their online/offline status will be in the [subtitleView]
 /// if its being shown for an [Group] then the name of the group will be in the [CometChatListItem.title] of [CometChatListItem] and their member count will be in the [subtitleView]
 ///
 /// ```dart
-/// CometChatMessageHeader(
+/// ConvoKitMessageHeader(
 ///   user: <user>,
 ///   messageHeaderStyle: MessageHeaderStyle(),
 /// );
@@ -19,15 +19,15 @@ import 'package:intl/intl.dart';
 /// ```
 /// For Group
 /// ```dart
-/// CometChatMessageHeader(
+/// ConvoKitMessageHeader(
 ///   group: <group>,
 ///  messageHeaderStyle: MessageHeaderStyle(),
 /// );
 ///
 /// ```
-class CometChatMessageHeader extends StatefulWidget
+class ConvoKitMessageHeader extends StatefulWidget
     implements PreferredSizeWidget {
-  const CometChatMessageHeader({
+  const ConvoKitMessageHeader({
     super.key,
     this.backButton,
     this.messageHeaderStyle,
@@ -96,8 +96,8 @@ class CometChatMessageHeader extends StatefulWidget
   final Widget Function(Group? group, User? user, BuildContext context)?
   listItemView;
 
-  /// [CometChatMessageHeaderStyle] set styling props for message header
-  final CometChatMessageHeaderStyle? messageHeaderStyle;
+  /// [ConvoKitMessageHeaderStyle] set styling props for message header
+  final ConvoKitMessageHeaderStyle? messageHeaderStyle;
 
   /// [showBackButton] toggle visibility for back button
   final bool? showBackButton;
@@ -217,7 +217,7 @@ class CometChatMessageHeader extends StatefulWidget
   final IconData? chatHistoryIcon;
 
   @override
-  State<CometChatMessageHeader> createState() => _CometChatMessageHeaderState();
+  State<ConvoKitMessageHeader> createState() => _ConvoKitMessageHeaderState();
 
   @override
   Size get preferredSize {
@@ -225,9 +225,9 @@ class CometChatMessageHeader extends StatefulWidget
   }
 }
 
-class _CometChatMessageHeaderState extends State<CometChatMessageHeader> {
+class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
   /// Whether the thread notification bell should render: a root message to
-  /// act on ([CometChatMessageHeader.parentMessage]), visibility not turned
+  /// act on ([ConvoKitMessageHeader.parentMessage]), visibility not turned
   /// off, and the thread-subscription feature gate on.
   bool get _showThreadBell =>
       widget.parentMessage != null &&
@@ -308,7 +308,7 @@ class _CometChatMessageHeaderState extends State<CometChatMessageHeader> {
   /// theme instead of being hand-rolled. Same presentation on every platform
   /// (Flutter's Cupertino library has no anchored menu widget).
   Widget _buildOverflowMenu(
-    CometChatMessageHeaderStyle headerStyle,
+    ConvoKitMessageHeaderStyle headerStyle,
     CometChatColorPalette colorPalette,
   ) {
     final entries = _overflowEntries;
@@ -383,7 +383,7 @@ class _CometChatMessageHeaderState extends State<CometChatMessageHeader> {
 
   late MessageHeaderBloc _bloc;
   bool _isExternalBloc = false;
-  late CometChatMessageHeaderStyle headerStyle;
+  late ConvoKitMessageHeaderStyle headerStyle;
   late CometChatColorPalette colorPalette;
   late CometChatTypography typography;
   late CometChatSpacing spacing;
@@ -429,9 +429,9 @@ class _CometChatMessageHeaderState extends State<CometChatMessageHeader> {
     // Cache width to avoid MediaQuery in build()
     _cachedWidth = MediaQuery.sizeOf(context).width;
 
-    headerStyle = CometChatThemeHelper.getTheme<CometChatMessageHeaderStyle>(
+    headerStyle = CometChatThemeHelper.getTheme<ConvoKitMessageHeaderStyle>(
       context: context,
-      defaultTheme: CometChatMessageHeaderStyle.of,
+      defaultTheme: ConvoKitMessageHeaderStyle.of,
     ).merge(widget.messageHeaderStyle);
     statusIndicatorStyle =
         CometChatThemeHelper.getTheme<CometChatStatusIndicatorStyle>(
@@ -444,7 +444,7 @@ class _CometChatMessageHeaderState extends State<CometChatMessageHeader> {
   }
 
   @override
-  void didUpdateWidget(CometChatMessageHeader oldWidget) {
+  void didUpdateWidget(ConvoKitMessageHeader oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     // Update bloc if user/group changed
@@ -526,7 +526,7 @@ class _CometChatMessageHeaderState extends State<CometChatMessageHeader> {
   // Back Button view
   Widget _getBackButtonView(
     BuildContext context,
-    CometChatMessageHeaderStyle style,
+    ConvoKitMessageHeaderStyle style,
     CometChatColorPalette colorPalette,
   ) {
     if (widget.showBackButton == true) {
@@ -616,7 +616,7 @@ class _CometChatMessageHeaderState extends State<CometChatMessageHeader> {
   Widget? _getSubtitleView(
     BuildContext context,
     MessageHeaderState state,
-    CometChatMessageHeaderStyle style,
+    ConvoKitMessageHeaderStyle style,
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
   ) {
@@ -700,7 +700,7 @@ class _CometChatMessageHeaderState extends State<CometChatMessageHeader> {
   Widget? _getAuxiliaryButtonView(
     BuildContext context,
     MessageHeaderState state,
-    CometChatMessageHeaderStyle style,
+    ConvoKitMessageHeaderStyle style,
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
     CometChatSpacing spacing,
@@ -716,7 +716,7 @@ class _CometChatMessageHeaderState extends State<CometChatMessageHeader> {
   List<Widget>? _getTrailingView(
     BuildContext context,
     MessageHeaderState state,
-    CometChatMessageHeaderStyle style,
+    ConvoKitMessageHeaderStyle style,
   ) {
     if (widget.trailingView != null) {
       return widget.trailingView!(state.user, state.group, context);
@@ -1091,8 +1091,8 @@ class _CometChatMessageHeaderState extends State<CometChatMessageHeader> {
   }
 }
 
-/// Thread mute/unmute notification bell rendered by [CometChatMessageHeader]
-/// when [CometChatMessageHeader.showThreadNotificationButton] is on.
+/// Thread mute/unmute notification bell rendered by [ConvoKitMessageHeader]
+/// when [ConvoKitMessageHeader.showThreadNotificationButton] is on.
 ///
 /// State: the root message's [BaseMessage.threadSubscribed] is the truth
 /// (stateless redesign — the SDK keeps no cache); kept in sync with every

@@ -1,4 +1,4 @@
-/// Render-verified prop matrix for the nine [CometChatMessageHeader] props new
+/// Render-verified prop matrix for the nine [ConvoKitMessageHeader] props new
 /// in 6.1.1 — Track 3 PROP1 (ENG-38688, coverage part 2, round 2).
 ///
 /// The other 28 props are covered by message_header_props_test.dart. These
@@ -583,7 +583,7 @@ void main() {
     });
   });
 
-  group('CometChatMessageHeader 6.1.1 prop matrix', () {
+  group('ConvoKitMessageHeader 6.1.1 prop matrix', () {
     for (final c in _matrix) {
       testWidgets('${c.prop} ${c.effect}', (tester) async {
         final observed = <_Run, Object?>{};
@@ -594,7 +594,7 @@ void main() {
           sdk.SdkRegistry.register(_FakeSdkClient(backend));
           final p = run == _Run.subject ? c.subject(log) : c.context(log);
 
-          final header = CometChatMessageHeader(
+          final header = ConvoKitMessageHeader(
             user: _peer,
             messageHeaderBloc: _headerBloc(),
             onHeaderTap: p.onHeaderTap,
@@ -650,7 +650,7 @@ void main() {
     await mockNetworkImagesFor(() async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageHeader(user: _peer, messageHeaderBloc: _headerBloc()),
+          ConvoKitMessageHeader(user: _peer, messageHeaderBloc: _headerBloc()),
         ),
       );
       await _settle(tester);
@@ -659,7 +659,7 @@ void main() {
       await tester.pumpWidget(const SizedBox.shrink());
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageHeader(
+          ConvoKitMessageHeader(
             user: _peer,
             messageHeaderBloc: _headerBloc(),
             parentMessage: _root(),
@@ -699,7 +699,7 @@ void main() {
       sentAt: _sentAt,
     )..threadSubscribed = false;
     Widget header(BaseMessage root) => _wrap(
-      CometChatMessageHeader(
+      ConvoKitMessageHeader(
         user: _peer,
         messageHeaderBloc: bloc,
         parentMessage: root,
@@ -737,7 +737,7 @@ void main() {
     await mockNetworkImagesFor(() async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageHeader(
+          ConvoKitMessageHeader(
             user: _peer,
             messageHeaderBloc: _headerBloc(),
             listItemView: (group, user, context) =>

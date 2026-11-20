@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:convokit/cometchat_chat_uikit.dart';
 
-///[CometChatMessageHeaderStyle] is a data class that has styling-related properties
-///to customize the appearance of [CometChatMessageHeader]
-class CometChatMessageHeaderStyle
-    extends ThemeExtension<CometChatMessageHeaderStyle> {
+///[ConvoKitMessageHeaderStyle] is a data class that has styling-related properties
+///to customize the appearance of [ConvoKitMessageHeader]
+class ConvoKitMessageHeaderStyle
+    extends ThemeExtension<ConvoKitMessageHeaderStyle> {
   ///message header style components
-  const CometChatMessageHeaderStyle({
+  const ConvoKitMessageHeaderStyle({
     this.onlineStatusColor,
     this.subtitleTextStyle,
     this.typingIndicatorTextStyle,
@@ -98,11 +98,11 @@ class CometChatMessageHeaderStyle
   ///to [backIconColor], then to the palette's primary icon colour.
   final Color? menuIconColor;
 
-  static CometChatMessageHeaderStyle of(BuildContext context) =>
-      const CometChatMessageHeaderStyle();
+  static ConvoKitMessageHeaderStyle of(BuildContext context) =>
+      const ConvoKitMessageHeaderStyle();
 
   @override
-  CometChatMessageHeaderStyle copyWith({
+  ConvoKitMessageHeaderStyle copyWith({
     Color? backButtonIconTint,
     TextStyle? typingIndicatorTextStyle,
     TextStyle? subtitleTextStyle,
@@ -127,7 +127,7 @@ class CometChatMessageHeaderStyle
     Color? chatHistoryIconColor,
     Color? menuIconColor,
   }) {
-    return CometChatMessageHeaderStyle(
+    return ConvoKitMessageHeaderStyle(
       typingIndicatorTextStyle:
           typingIndicatorTextStyle ?? this.typingIndicatorTextStyle,
       subtitleTextStyle: subtitleTextStyle ?? this.subtitleTextStyle,
@@ -161,7 +161,7 @@ class CometChatMessageHeaderStyle
     );
   }
 
-  CometChatMessageHeaderStyle merge(CometChatMessageHeaderStyle? style) {
+  ConvoKitMessageHeaderStyle merge(ConvoKitMessageHeaderStyle? style) {
     if (style == null) return this;
     return copyWith(
       typingIndicatorTextStyle: style.typingIndicatorTextStyle,
@@ -191,11 +191,11 @@ class CometChatMessageHeaderStyle
   }
 
   @override
-  CometChatMessageHeaderStyle lerp(
-    CometChatMessageHeaderStyle? other,
+  ConvoKitMessageHeaderStyle lerp(
+    ConvoKitMessageHeaderStyle? other,
     double t,
   ) {
-    return CometChatMessageHeaderStyle(
+    return ConvoKitMessageHeaderStyle(
       typingIndicatorTextStyle: TextStyle.lerp(
         typingIndicatorTextStyle,
         other?.typingIndicatorTextStyle,

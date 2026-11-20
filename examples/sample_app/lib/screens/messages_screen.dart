@@ -585,7 +585,7 @@ class _MessagesScreenState extends State<MessagesScreen>
     final _typography = CometChatThemeHelper.getTypography(context);
     return Scaffold(
       backgroundColor: _colorPalette.background1,
-      appBar: CometChatMessageHeader(
+      appBar: ConvoKitMessageHeader(
         user: _user,
         group: _group,
         showBackButton: !widget.hideBackButton,
@@ -615,7 +615,7 @@ class _MessagesScreenState extends State<MessagesScreen>
         onInfoTap: _openInfoScreen,
         onSearchTap: _openSearchScreen,
         onHeaderTap: _openInfoScreen,
-        messageHeaderStyle: CometChatMessageHeaderStyle(
+        messageHeaderStyle: ConvoKitMessageHeaderStyle(
           backgroundColor: _colorPalette.background1,
           border: Border(
             bottom: BorderSide(

@@ -114,7 +114,7 @@ class ScreenReach {
     String entry,
   ) async {
     final more = find.descendant(
-      of: find.byType(CometChatMessageHeader),
+      of: find.byType(ConvoKitMessageHeader),
       matching: find.byTooltip('More'),
     );
     if (!await pumpUntilFound(tester, more)) {

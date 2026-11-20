@@ -4,7 +4,7 @@ import 'package:convokit/cometchat_chat_uikit.dart'
     show
         CometChatActionBubble,
         ConvoKitMessageComposer,
-        CometChatMessageHeader,
+        ConvoKitMessageHeader,
         ConvoKitMessageList,
         ConvoKitMessagePreview,
         ConvoKitRichTextToolbar,
@@ -60,7 +60,7 @@ class ComposerDepthHelper {
   /// Text inside the chat header only. The peer's name is ALWAYS in the header,
   /// so suites must never treat "name is on screen" as proof of anything else.
   static Finder headerText(String text) => find.descendant(
-    of: find.byType(CometChatMessageHeader),
+    of: find.byType(ConvoKitMessageHeader),
     matching: find.text(text),
   );
 
@@ -80,7 +80,7 @@ class ComposerDepthHelper {
     if (headerText(TestCredentials.userBName).evaluate().isEmpty) {
       fail(
         'Expected the chat with ${TestCredentials.userBName} to be open '
-        '(name not found in CometChatMessageHeader)',
+        '(name not found in ConvoKitMessageHeader)',
       );
     }
     if (composer().evaluate().isEmpty) {
@@ -104,7 +104,7 @@ class ComposerDepthHelper {
   /// the sample app passes `showBackButton: false`).
   static Future<bool> leaveChat(WidgetTester tester) async {
     final back = find.descendant(
-      of: find.byType(CometChatMessageHeader),
+      of: find.byType(ConvoKitMessageHeader),
       matching: find.byWidgetPredicate(
         (w) => w is Semantics && w.properties.label == 'Back',
       ),

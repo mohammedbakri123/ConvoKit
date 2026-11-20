@@ -1,4 +1,4 @@
-/// Golden pins for [CometChatThreadedHeader], the parent-message header above
+/// Golden pins for [ConvoKitThreadedHeader], the parent-message header above
 /// a thread.
 ///
 /// The real header is rendered, held in its loaded state through its
@@ -77,7 +77,7 @@ void main() {
         size: _size,
         builder: () {
           final parent = _parent(sender: _peer, replies: 3);
-          return CometChatThreadedHeader(
+          return ConvoKitThreadedHeader(
             parentMessage: parent,
             loggedInUser: _me,
             threadedHeaderBloc: _bloc(parent),
@@ -91,7 +91,7 @@ void main() {
         size: _size,
         builder: () {
           final parent = _parent(sender: _me, replies: 1);
-          return CometChatThreadedHeader(
+          return ConvoKitThreadedHeader(
             parentMessage: parent,
             loggedInUser: _me,
             threadedHeaderBloc: _bloc(parent),

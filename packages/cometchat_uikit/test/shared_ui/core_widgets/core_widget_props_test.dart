@@ -132,13 +132,13 @@ void main() {
     });
   });
 
-  group('CometChatThreadedHeader', () {
+  group('ConvoKitThreadedHeader', () {
     testWidgets('every property reaches the header', (tester) async {
       _ignorePlatformOnlyErrors();
       await tester.pumpWidget(
         _host(
           Builder(
-            builder: (context) => CometChatThreadedHeader(
+            builder: (context) => ConvoKitThreadedHeader(
               parentMessage: _message(),
               loggedInUser: _me,
               threadedHeaderBloc: _threadBloc(),
@@ -152,7 +152,7 @@ void main() {
               colorPalette: CometChatThemeHelper.getColorPalette(context),
               spacing: CometChatThemeHelper.getSpacing(context),
               typography: CometChatThemeHelper.getTypography(context),
-              style: const CometChatThreadedHeaderStyle(
+              style: const ConvoKitThreadedHeaderStyle(
                 bubbleContainerBackGroundColor: Color(0xFF261010),
               ),
             ),

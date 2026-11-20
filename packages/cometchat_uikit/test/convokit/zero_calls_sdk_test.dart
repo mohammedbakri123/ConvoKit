@@ -133,7 +133,7 @@ void main() {
       );
     });
 
-    testWidgets('CometChatMessageHeader renders no call buttons or call icons', (tester) async {
+    testWidgets('ConvoKitMessageHeader renders no call buttons or call icons', (tester) async {
       final user = User(uid: 'u_alice', name: 'Alice', status: 'online');
 
       await tester.pumpWidget(
@@ -141,7 +141,7 @@ void main() {
           localizationsDelegates: Translations.localizationsDelegates,
           supportedLocales: const [Locale('en')],
           home: Scaffold(
-            appBar: CometChatMessageHeader(
+            appBar: ConvoKitMessageHeader(
               user: user,
             ),
           ),

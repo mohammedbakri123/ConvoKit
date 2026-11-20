@@ -131,11 +131,11 @@ void main() {
     });
   });
 
-  group('CometChatMessageHeader.pinnedMessagesVisibility', () {
+  group('ConvoKitMessageHeader.pinnedMessagesVisibility', () {
     Widget host({required bool visible, BaseMessage? parentMessage}) {
       return MaterialApp(
         home: Scaffold(
-          appBar: CometChatMessageHeader(
+          appBar: ConvoKitMessageHeader(
             group: Group(guid: 'g1', name: 'G', type: 'public'),
             pinnedMessagesVisibility: visible,
             parentMessage: parentMessage,

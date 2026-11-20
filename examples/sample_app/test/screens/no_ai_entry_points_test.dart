@@ -33,7 +33,7 @@ void main() {
           localizationsDelegates: Translations.localizationsDelegates,
           supportedLocales: const [Locale('en')],
           home: Scaffold(
-            appBar: CometChatMessageHeader(
+            appBar: ConvoKitMessageHeader(
               user: testUser,
               hideNewChatButton: true,
               hideChatHistoryButton: true,
@@ -57,7 +57,7 @@ void main() {
           localizationsDelegates: Translations.localizationsDelegates,
           supportedLocales: const [Locale('en')],
           home: Scaffold(
-            appBar: CometChatMessageHeader(
+            appBar: ConvoKitMessageHeader(
               user: aiUser,
               hideNewChatButton: true,
               hideChatHistoryButton: true,

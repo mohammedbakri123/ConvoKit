@@ -1,5 +1,5 @@
 /// Render-verified prop matrix for ConvoKitMessagePreviewStyle and
-/// CometChatThreadedHeaderStyle — Track 3 PROP2 (ENG-38961).
+/// ConvoKitThreadedHeaderStyle — Track 3 PROP2 (ENG-38961).
 ///
 ///   flutter test test/chat_ui/preview_and_threaded_style_props_test.dart
 library;
@@ -128,9 +128,9 @@ void main() {
   });
 
   // -------------------------------------------------------------------------
-  // CometChatThreadedHeaderStyle — 10 props via CometChatThreadedHeader.
+  // ConvoKitThreadedHeaderStyle — 10 props via ConvoKitThreadedHeader.
   // -------------------------------------------------------------------------
-  group('CometChatThreadedHeaderStyle', () {
+  group('ConvoKitThreadedHeaderStyle', () {
     testWidgets('count chip, bubble container and constraints all apply', (
       tester,
     ) async {
@@ -146,11 +146,11 @@ void main() {
 
         await tester.pumpWidget(
           _wrap(
-            CometChatThreadedHeader(
+            ConvoKitThreadedHeader(
               parentMessage: _parent(),
               loggedInUser: _me,
               threadedHeaderBloc: bloc,
-              style: const CometChatThreadedHeaderStyle(
+              style: const ConvoKitThreadedHeaderStyle(
                 countContainerBackGroundColor: Color(0xFF212223),
                 countContainerBorder: Border.fromBorderSide(
                   BorderSide(color: Color(0xFF242526), width: 2),
@@ -228,8 +228,8 @@ void main() {
           reason: 'countTextColor',
         );
 
-        final header = tester.widget<CometChatThreadedHeader>(
-          find.byType(CometChatThreadedHeader),
+        final header = tester.widget<ConvoKitThreadedHeader>(
+          find.byType(ConvoKitThreadedHeader),
         );
         expect(
           header.style?.incomingMessageBubbleStyle,

@@ -1,4 +1,4 @@
-/// Render-verified prop matrix for [CometChatMessageHeader] — Track 3 PROP1
+/// Render-verified prop matrix for [ConvoKitMessageHeader] — Track 3 PROP1
 /// (ENG-38921).
 ///
 /// Uses the `messageHeaderBloc` seam added alongside this work.
@@ -69,7 +69,7 @@ void main() {
     testWidgets('user drives the header', (tester) async {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
-          _wrap(CometChatMessageHeader(user: _bob, messageHeaderBloc: _mock())),
+          _wrap(ConvoKitMessageHeader(user: _bob, messageHeaderBloc: _mock())),
         );
         await _settle(tester);
       });
@@ -80,7 +80,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               group: _team,
               messageHeaderBloc: _mock(group: _team),
             ),
@@ -97,7 +97,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               user: _bob,
               usersStatusVisibility: false,
               messageHeaderBloc: _mock(),
@@ -108,7 +108,7 @@ void main() {
       });
       expect(
         tester
-            .widget<CometChatMessageHeader>(find.byType(CometChatMessageHeader))
+            .widget<ConvoKitMessageHeader>(find.byType(ConvoKitMessageHeader))
             .usersStatusVisibility,
         isFalse,
       );
@@ -120,7 +120,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               user: _bob,
               messageHeaderBloc: _mock(),
               listItemView: (user, group, context) => const Text('ROW_SLOT'),
@@ -137,7 +137,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               user: _bob,
               messageHeaderBloc: _mock(),
               leadingStateView: (user, group, context) => const Text('LEAD'),
@@ -165,7 +165,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               user: _bob,
               messageHeaderBloc: _mock(),
               showBackButton: true,
@@ -186,7 +186,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               user: _bob,
               messageHeaderBloc: _mock(),
               showBackButton: true,
@@ -205,7 +205,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               user: _bob,
               messageHeaderBloc: _mock(),
               height: 88,
@@ -224,7 +224,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               user: _bob,
               messageHeaderBloc: _mock(),
               avatarHeight: 51,
@@ -245,7 +245,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               user: _bob,
               messageHeaderBloc: _mock(),
               listItemStyle: const ListItemStyle(
@@ -272,7 +272,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               user: _bob,
               messageHeaderBloc: _mock(),
             ),
@@ -289,7 +289,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               user: _ai,
               messageHeaderBloc: _mock(user: _ai),
               hideNewChatButton: true,
@@ -310,7 +310,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               // The AI controls only render for an agentic user.
               user: _ai,
               messageHeaderBloc: _mock(user: _ai),
@@ -346,7 +346,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               user: _bob,
               messageHeaderBloc: _mock(),
               dateTimeFormatterCallback: formatter,
@@ -357,7 +357,7 @@ void main() {
       });
       expect(
         tester
-            .widget<CometChatMessageHeader>(find.byType(CometChatMessageHeader))
+            .widget<ConvoKitMessageHeader>(find.byType(ConvoKitMessageHeader))
             .dateTimeFormatterCallback,
         same(formatter),
       );
@@ -371,10 +371,10 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               user: _bob,
               messageHeaderBloc: _mock(),
-              messageHeaderStyle: const CometChatMessageHeaderStyle(
+              messageHeaderStyle: const ConvoKitMessageHeaderStyle(
                 backgroundColor: Color(0xFFF10101),
                 titleTextColor: Color(0xFFF20202),
                 titleTextStyle: TextStyle(fontSize: 17),
@@ -400,10 +400,10 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               user: _bob,
               messageHeaderBloc: _mock(),
-              messageHeaderStyle: CometChatMessageHeaderStyle(
+              messageHeaderStyle: ConvoKitMessageHeaderStyle(
                 backgroundColor: const Color(0xFFF50505),
                 border: border,
                 borderRadius: BorderRadius.circular(19),
@@ -434,11 +434,11 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               user: _bob,
               messageHeaderBloc: _mock(),
               showBackButton: true,
-              messageHeaderStyle: const CometChatMessageHeaderStyle(
+              messageHeaderStyle: const ConvoKitMessageHeaderStyle(
                 backIcon: Icon(Icons.chevron_left, key: Key('BACK_ICON')),
                 backIconColor: Color(0xFFF60606),
               ),
@@ -460,12 +460,12 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               key: const ValueKey('without'),
               user: _bob,
               messageHeaderBloc: _mock(),
               onInfoTap: () {},
-              messageHeaderStyle: const CometChatMessageHeaderStyle(
+              messageHeaderStyle: const ConvoKitMessageHeaderStyle(
                 backIconColor: back,
               ),
             ),
@@ -478,12 +478,12 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               key: const ValueKey('with'),
               user: _bob,
               messageHeaderBloc: _mock(),
               onInfoTap: () {},
-              messageHeaderStyle: const CometChatMessageHeaderStyle(
+              messageHeaderStyle: const ConvoKitMessageHeaderStyle(
                 backIconColor: back,
                 menuIconColor: menu,
               ),
@@ -501,10 +501,10 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               group: _team,
               messageHeaderBloc: _mock(group: _team),
-              messageHeaderStyle: const CometChatMessageHeaderStyle(
+              messageHeaderStyle: const ConvoKitMessageHeaderStyle(
                 avatarStyle: CometChatAvatarStyle(
                   borderRadius: BorderRadius.all(Radius.circular(9)),
                 ),
@@ -527,10 +527,10 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               user: _bob,
               messageHeaderBloc: _mock(),
-              messageHeaderStyle: const CometChatMessageHeaderStyle(
+              messageHeaderStyle: const ConvoKitMessageHeaderStyle(
                 statusIndicatorStyle: CometChatStatusIndicatorStyle(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                 ),
@@ -556,10 +556,10 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               group: _team,
               messageHeaderBloc: _mock(group: _team),
-              messageHeaderStyle: const CometChatMessageHeaderStyle(
+              messageHeaderStyle: const ConvoKitMessageHeaderStyle(
                 privateGroupBadgeIcon: Icon(Icons.lock, key: Key('PRIVATE')),
                 privateGroupBadgeIconColor: Color(0xFFF90909),
               ),
@@ -582,10 +582,10 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               group: locked,
               messageHeaderBloc: _mock(group: locked),
-              messageHeaderStyle: const CometChatMessageHeaderStyle(
+              messageHeaderStyle: const ConvoKitMessageHeaderStyle(
                 passwordProtectedGroupBadgeIcon: Icon(
                   Icons.key,
                   key: Key('LOCK'),
@@ -604,10 +604,10 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               user: _bob,
               messageHeaderBloc: _mock(),
-              messageHeaderStyle: const CometChatMessageHeaderStyle(
+              messageHeaderStyle: const ConvoKitMessageHeaderStyle(
                 callButtonsStyle: CometChatCallButtonsStyle(
                   voiceCallIconColor: Color(0xFFFB0B0B),
                 ),
@@ -617,10 +617,10 @@ void main() {
         );
         await _settle(tester);
       });
-      expect(find.byType(CometChatMessageHeader), findsOneWidget);
+      expect(find.byType(ConvoKitMessageHeader), findsOneWidget);
       expect(
         tester
-            .widget<CometChatMessageHeader>(find.byType(CometChatMessageHeader))
+            .widget<ConvoKitMessageHeader>(find.byType(ConvoKitMessageHeader))
             .messageHeaderStyle
             ?.callButtonsStyle
             ?.voiceCallIconColor,
@@ -633,12 +633,12 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               user: _ai,
               messageHeaderBloc: _mock(user: _ai),
               hideNewChatButton: false,
               hideChatHistoryButton: false,
-              messageHeaderStyle: const CometChatMessageHeaderStyle(
+              messageHeaderStyle: const ConvoKitMessageHeaderStyle(
                 newChatIconColor: Color(0xFFFC0C0C),
                 chatHistoryIconColor: Color(0xFFFD0D0D),
               ),
@@ -657,10 +657,10 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               user: _bob,
               messageHeaderBloc: _mock(isTyping: true),
-              messageHeaderStyle: const CometChatMessageHeaderStyle(
+              messageHeaderStyle: const ConvoKitMessageHeaderStyle(
                 typingIndicatorTextStyle: TextStyle(fontSize: 13),
               ),
             ),
@@ -677,10 +677,10 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageHeader(
+            ConvoKitMessageHeader(
               group: _team,
               messageHeaderBloc: _mock(group: _team),
-              messageHeaderStyle: const CometChatMessageHeaderStyle(
+              messageHeaderStyle: const ConvoKitMessageHeaderStyle(
                 subtitleTextColor: Color(0xFFFE0E0E),
                 subtitleTextStyle: TextStyle(fontSize: 14),
               ),

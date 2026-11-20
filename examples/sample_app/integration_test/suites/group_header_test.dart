@@ -27,7 +27,7 @@ import '../sdk_user_b/group_actions.dart';
 ///   GRP-058  Back from group details returns to the messages screen
 ///
 /// Widget facts confirmed against the codebase:
-///   - CometChatMessageHeader sets title = group.name and a
+///   - ConvoKitMessageHeader sets title = group.name and a
 ///     "{memberCount} Members" subtitle (cometchat_message_header.dart L399),
 ///     and renders a CometChatAvatar via CometChatListItem.
 ///   - auxiliaryButtonView -> _buildCallButtons renders CometChatCallButtons
@@ -141,10 +141,10 @@ void main() {
       await openHeaderGroup(tester);
 
       // Strongest deterministic signal: the header rendered (composer present)
-      // and a CometChatMessageHeader is in the tree.
+      // and a ConvoKitMessageHeader is in the tree.
       AssertionHelper.expectOnMessagesScreen();
-      expect(hasType('CometChatMessageHeader'), isTrue,
-          reason: 'GRP-054: a CometChatMessageHeader should render for a group');
+      expect(hasType('ConvoKitMessageHeader'), isTrue,
+          reason: 'GRP-054: a ConvoKitMessageHeader should render for a group');
 
       // Best-effort: poll for the "{n} Members" subtitle. Non-fatal — wording
       // and load timing vary across versions / server propagation.

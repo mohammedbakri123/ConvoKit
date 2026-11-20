@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:convokit/cometchat_chat_uikit.dart';
 
-///[CometChatThreadedHeaderStyle] is a data class that has styling-related properties
-///to customize the appearance of [CometChatThreadedHeader]
-class CometChatThreadedHeaderStyle
-    extends ThemeExtension<CometChatThreadedHeaderStyle> {
-  const CometChatThreadedHeaderStyle({
+///[ConvoKitThreadedHeaderStyle] is a data class that has styling-related properties
+///to customize the appearance of [ConvoKitThreadedHeader]
+class ConvoKitThreadedHeaderStyle
+    extends ThemeExtension<ConvoKitThreadedHeaderStyle> {
+  const ConvoKitThreadedHeaderStyle({
     this.bubbleContainerBackGroundColor,
     this.bubbleContainerBorder,
     this.bubbleContainerBorderRadius,
@@ -48,11 +48,11 @@ class CometChatThreadedHeaderStyle
   ///[outgoingMessageBubbleStyle] sets style for outgoing message bubble
   final CometChatOutgoingMessageBubbleStyle? outgoingMessageBubbleStyle;
 
-  static CometChatThreadedHeaderStyle of(BuildContext context) =>
-      const CometChatThreadedHeaderStyle();
+  static ConvoKitThreadedHeaderStyle of(BuildContext context) =>
+      const ConvoKitThreadedHeaderStyle();
 
   @override
-  CometChatThreadedHeaderStyle copyWith({
+  ConvoKitThreadedHeaderStyle copyWith({
     Color? bubbleContainerBackGroundColor,
     BoxBorder? bubbleContainerBorder,
     BorderRadiusGeometry? bubbleContainerBorderRadius,
@@ -64,7 +64,7 @@ class CometChatThreadedHeaderStyle
     CometChatIncomingMessageBubbleStyle? incomingMessageBubbleStyle,
     CometChatOutgoingMessageBubbleStyle? outgoingMessageBubbleStyle,
   }) {
-    return CometChatThreadedHeaderStyle(
+    return ConvoKitThreadedHeaderStyle(
       bubbleContainerBackGroundColor:
           bubbleContainerBackGroundColor ?? this.bubbleContainerBackGroundColor,
       bubbleContainerBorder:
@@ -84,7 +84,7 @@ class CometChatThreadedHeaderStyle
     );
   }
 
-  CometChatThreadedHeaderStyle merge(CometChatThreadedHeaderStyle? style) {
+  ConvoKitThreadedHeaderStyle merge(ConvoKitThreadedHeaderStyle? style) {
     if (style == null) return this;
     return copyWith(
       bubbleContainerBackGroundColor: style.bubbleContainerBackGroundColor,
@@ -101,14 +101,14 @@ class CometChatThreadedHeaderStyle
   }
 
   @override
-  CometChatThreadedHeaderStyle lerp(
-    ThemeExtension<CometChatThreadedHeaderStyle>? other,
+  ConvoKitThreadedHeaderStyle lerp(
+    ThemeExtension<ConvoKitThreadedHeaderStyle>? other,
     double t,
   ) {
-    if (other is! CometChatThreadedHeaderStyle) {
+    if (other is! ConvoKitThreadedHeaderStyle) {
       return this;
     }
-    return CometChatThreadedHeaderStyle(
+    return ConvoKitThreadedHeaderStyle(
       bubbleContainerBackGroundColor: Color.lerp(
         bubbleContainerBackGroundColor,
         other.bubbleContainerBackGroundColor,

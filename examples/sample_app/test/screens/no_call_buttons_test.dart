@@ -6,7 +6,7 @@ import 'package:sample_app/screens/user_info_screen.dart';
 
 void main() {
   group('Phase 4: Sample app exposes no call buttons or call UI', () {
-    testWidgets('CometChatMessageHeader exposes no call buttons or call action items', (tester) async {
+    testWidgets('ConvoKitMessageHeader exposes no call buttons or call action items', (tester) async {
       final testUser = User(uid: 'u_tester', name: 'Tester', status: 'online');
 
       await tester.pumpWidget(
@@ -14,7 +14,7 @@ void main() {
           localizationsDelegates: Translations.localizationsDelegates,
           supportedLocales: const [Locale('en')],
           home: Scaffold(
-            appBar: CometChatMessageHeader(
+            appBar: ConvoKitMessageHeader(
               user: testUser,
             ),
           ),

@@ -157,7 +157,7 @@ void main() {
     );
   });
 
-  group('CometChatMessageHeader.threadSubscriptionVisibility', () {
+  group('ConvoKitMessageHeader.threadSubscriptionVisibility', () {
     BaseMessage rootMessage() => BaseMessage(
       id: 42,
       receiverUid: 'g1',
@@ -170,7 +170,7 @@ void main() {
           (UIKitSettingsBuilder()..enableThreadSubscription = gateOn).build();
       return MaterialApp(
         home: Scaffold(
-          appBar: CometChatMessageHeader(
+          appBar: ConvoKitMessageHeader(
             group: Group(guid: 'g1', name: 'G', type: 'public'),
             threadSubscriptionVisibility: show,
             parentMessage: rootMessage(),

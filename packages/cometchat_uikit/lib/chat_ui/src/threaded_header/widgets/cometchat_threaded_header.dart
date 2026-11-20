@@ -6,7 +6,7 @@ import '../../../../cometchat_chat_uikit.dart';
 import '../../../../cometchat_chat_uikit.dart' as cc;
 import '../../../../shared_ui/src/clean_architecture/core/utils/thread_toast.dart';
 
-/// [CometChatThreadedHeader] is a widget that displays a parent message
+/// [ConvoKitThreadedHeader] is a widget that displays a parent message
 /// and its reply count in a threaded conversation view.
 ///
 /// This widget uses BLoC for state management and follows Clean Architecture
@@ -14,13 +14,13 @@ import '../../../../shared_ui/src/clean_architecture/core/utils/thread_toast.dar
 /// and parent message changes (edit/delete).
 ///
 /// ```dart
-/// CometChatThreadedHeader(
+/// ConvoKitThreadedHeader(
 ///   parentMessage: BaseMessage(),
 ///   loggedInUser: User(),
 /// );
 /// ```
-class CometChatThreadedHeader extends StatefulWidget {
-  const CometChatThreadedHeader({
+class ConvoKitThreadedHeader extends StatefulWidget {
+  const ConvoKitThreadedHeader({
     super.key,
     required this.parentMessage,
     this.messageActionView,
@@ -47,7 +47,7 @@ class CometChatThreadedHeader extends StatefulWidget {
   final Function(BaseMessage message, BuildContext context)? messageActionView;
 
   /// [style] style parameter
-  final CometChatThreadedHeaderStyle? style;
+  final ConvoKitThreadedHeaderStyle? style;
 
   /// [loggedInUser] get logged in user
   final User loggedInUser;
@@ -97,11 +97,11 @@ class CometChatThreadedHeader extends StatefulWidget {
   final ThreadedHeaderBloc? threadedHeaderBloc;
 
   @override
-  State<CometChatThreadedHeader> createState() =>
-      _CometChatThreadedHeaderState();
+  State<ConvoKitThreadedHeader> createState() =>
+      _ConvoKitThreadedHeaderState();
 }
 
-class _CometChatThreadedHeaderState extends State<CometChatThreadedHeader> {
+class _ConvoKitThreadedHeaderState extends State<ConvoKitThreadedHeader> {
   /// BLoC for managing threaded header state
   late ThreadedHeaderBloc _bloc;
   bool _isExternalBloc = false;
@@ -114,7 +114,7 @@ class _CometChatThreadedHeaderState extends State<CometChatThreadedHeader> {
   Brightness? _cachedBrightness;
 
   /// Merged style
-  late CometChatThreadedHeaderStyle _threadedHeaderStyle;
+  late ConvoKitThreadedHeaderStyle _threadedHeaderStyle;
 
   /// Message template for rendering the parent message bubble
   late CometChatMessageTemplate _messageTemplate;
@@ -195,9 +195,9 @@ class _CometChatThreadedHeaderState extends State<CometChatThreadedHeader> {
 
       // Merge style with theme
       _threadedHeaderStyle =
-          CometChatThemeHelper.getTheme<CometChatThreadedHeaderStyle>(
+          CometChatThemeHelper.getTheme<ConvoKitThreadedHeaderStyle>(
             context: context,
-            defaultTheme: CometChatThreadedHeaderStyle.of,
+            defaultTheme: ConvoKitThreadedHeaderStyle.of,
           ).merge(widget.style);
 
       // Cache screen height so build() doesn't subscribe to MediaQuery
@@ -208,7 +208,7 @@ class _CometChatThreadedHeaderState extends State<CometChatThreadedHeader> {
   }
 
   @override
-  void didUpdateWidget(CometChatThreadedHeader oldWidget) {
+  void didUpdateWidget(ConvoKitThreadedHeader oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     // Update cached theme values if they changed
@@ -227,9 +227,9 @@ class _CometChatThreadedHeaderState extends State<CometChatThreadedHeader> {
     // Update style if it changed
     if (widget.style != oldWidget.style) {
       _threadedHeaderStyle =
-          CometChatThemeHelper.getTheme<CometChatThreadedHeaderStyle>(
+          CometChatThemeHelper.getTheme<ConvoKitThreadedHeaderStyle>(
             context: context,
-            defaultTheme: CometChatThreadedHeaderStyle.of,
+            defaultTheme: ConvoKitThreadedHeaderStyle.of,
           ).merge(widget.style);
     }
 

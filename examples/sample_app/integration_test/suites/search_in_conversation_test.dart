@@ -55,7 +55,7 @@ import '../sdk_user_b/messaging_actions.dart';
 ///     pushes `CometChatSearch` (scope: conversations + messages). A message
 ///     tap resolves the peer and pushes `MessagesScreen(goToMessageId: id)`.
 ///   * In-conversation — messages_screen.dart passes `onSearchTap` to
-///     `CometChatMessageHeader`, which adds a "Search" entry to the header's
+///     `ConvoKitMessageHeader`, which adds a "Search" entry to the header's
 ///     ⋯ (`Icons.more_vert`) `MenuAnchor`; `_openSearchScreen` pushes
 ///     `CometChatSearch(user:, searchIn: [SearchScope.messages])`.
 ///
@@ -188,7 +188,7 @@ void main() {
     // cometchat_message_header.dart `_buildOverflowMenu` — IconButton with
     // Icons.more_vert opening a MenuAnchor of MenuItemButtons.
     final overflow = find.descendant(
-      of: find.byType(CometChatMessageHeader),
+      of: find.byType(ConvoKitMessageHeader),
       matching: find.byIcon(Icons.more_vert),
     );
     expect(

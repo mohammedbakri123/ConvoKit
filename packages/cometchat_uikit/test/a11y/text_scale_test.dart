@@ -507,7 +507,7 @@ void main() {
 
     testWidgets('message header', (WidgetTester tester) async {
       await check(tester, 'message header', () {
-        return CometChatMessageHeader(
+        return ConvoKitMessageHeader(
           user: _FakeUser(
             name: 'Alexandra Constantinou',
             uid: 'alex',

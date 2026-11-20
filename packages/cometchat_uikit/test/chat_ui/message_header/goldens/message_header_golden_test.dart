@@ -1,4 +1,4 @@
-/// Golden pins for [CometChatMessageHeader], the bar above every chat.
+/// Golden pins for [ConvoKitMessageHeader], the bar above every chat.
 ///
 /// The real header is rendered, held in a fixed state through its
 /// `messageHeaderBloc` seam (the same mock the prop tests use). Nothing here
@@ -97,7 +97,7 @@ void main() {
         settle: false,
         builder: () {
           final user = _online();
-          return CometChatMessageHeader(
+          return ConvoKitMessageHeader(
             user: user,
             messageHeaderBloc: _bloc(user: user),
           );
@@ -111,7 +111,7 @@ void main() {
         settle: false,
         builder: () {
           final user = _lastSeen();
-          return CometChatMessageHeader(
+          return ConvoKitMessageHeader(
             user: user,
             messageHeaderBloc: _bloc(user: user),
           );
@@ -125,7 +125,7 @@ void main() {
         settle: false,
         builder: () {
           final group = _group();
-          return CometChatMessageHeader(
+          return ConvoKitMessageHeader(
             group: group,
             messageHeaderBloc: _bloc(group: group),
           );
@@ -139,7 +139,7 @@ void main() {
         settle: false,
         builder: () {
           final user = _online();
-          return CometChatMessageHeader(
+          return ConvoKitMessageHeader(
             user: user,
             messageHeaderBloc: _bloc(user: user, isTyping: true),
           );
@@ -153,7 +153,7 @@ void main() {
         settle: false,
         builder: () {
           final group = _group();
-          return CometChatMessageHeader(
+          return ConvoKitMessageHeader(
             group: group,
             messageHeaderBloc: _bloc(
               group: group,
