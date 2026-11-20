@@ -52,10 +52,15 @@ class FakeChatBackend {
   // Failure simulation hooks
   bool failNextUpload = false;
   bool failNextSend = false;
+  bool returnOutcomeUnknownNextSend = false;
+  bool nullCheckpoint = false;
 
-  // Call counters for verifying retry behavior
+  // Call counters for verifying retry and lifecycle behavior
   int uploadCallCount = 0;
   int sendCallCount = 0;
+  int connectCount = 0;
+  int disconnectCount = 0;
+  int reconnectCount = 0;
 
   FakeChatBackend({int seededMessageCount = 105}) {
     _initData(seededMessageCount);
@@ -65,7 +70,144 @@ class FakeChatBackend {
     _messages = _FakeMessageRepository(this);
     _groups = _FakeGroupRepository(this);
     _media = _FakeMediaProvider(this);
-    _events = _FakeEventSource();
+    _events = _FakeEventSource(this);
+  }
+
+  void updateUser(ChatUser? user) => _session.updateUser(user);
+
+  void injectMessage(ChatMessage message) {
+    final list = messagesByConversation.putIfAbsent(
+      message.conversationId,
+      () => [],
+    );
+    list.add(message);
+
+    final convIdx =
+        conversationsList.indexWhere((c) => c.id == message.conversationId);
+    if (convIdx != -1) {
+      final old = conversationsList[convIdx];
+      final updated = old.peer != null
+          ? ChatConversation.direct(
+              id: old.id,
+              peer: old.peer!,
+              lastMessage: message,
+              unreadCount: old.unreadCount + 1,
+              updatedAt: message.createdAt,
+            )
+          : ChatConversation.group(
+              id: old.id,
+              group: old.group!,
+              lastMessage: message,
+              unreadCount: old.unreadCount + 1,
+              updatedAt: message.createdAt,
+            );
+      conversationsList[convIdx] = updated;
+      _events.emitEvent(
+        ConversationUpdated(
+          conversation: updated,
+          receivedAt: DateTime.now(),
+        ),
+      );
+    }
+
+    _events.emitEvent(
+      MessageReceived(message: message, receivedAt: DateTime.now()),
+    );
+  }
+
+  void injectStatusChange(
+    String conversationId,
+    String messageId,
+    DeliveryState deliveryState,
+  ) {
+    final list = messagesByConversation[conversationId];
+    if (list != null) {
+      final idx = list.indexWhere(
+        (m) => m.id == messageId || m.localId == messageId,
+      );
+      if (idx != -1) {
+        list[idx] = list[idx].copyWithDeliveryState(deliveryState);
+      }
+    }
+    _events.emitEvent(
+      MessageStatusChanged(
+        conversationId: conversationId,
+        messageId: messageId,
+        deliveryState: deliveryState,
+        receivedAt: DateTime.now(),
+      ),
+    );
+  }
+
+  void injectTyping(String conversationId, ChatUser user, bool isTyping) {
+    _events.emitEvent(
+      TypingChanged(
+        conversationId: conversationId,
+        user: user,
+        isTyping: isTyping,
+        receivedAt: DateTime.now(),
+      ),
+    );
+  }
+
+  void injectPresence(ChatUser user, UserPresence presence) {
+    final idx = allUsers.indexWhere((u) => u.id == user.id);
+    if (idx != -1) {
+      allUsers[idx] = ChatUser(
+        id: user.id,
+        name: user.name,
+        avatarUrl: user.avatarUrl,
+        presence: presence,
+        isBlocked: user.isBlocked,
+      );
+    }
+    _events.emitEvent(
+      PresenceChanged(
+        user: user,
+        presence: presence,
+        receivedAt: DateTime.now(),
+      ),
+    );
+  }
+
+  void injectMessageDeleted(String conversationId, String messageId) {
+    final list = messagesByConversation[conversationId];
+    list?.removeWhere((m) => m.id == messageId || m.localId == messageId);
+    _events.emitEvent(
+      MessageDeleted(
+        conversationId: conversationId,
+        messageId: messageId,
+        receivedAt: DateTime.now(),
+      ),
+    );
+  }
+
+  void simulateDisconnect({ChatError? error}) {
+    _events._connectionController.add(
+      ConnectionStatus(ConnectionState.disconnected, error: error),
+    );
+  }
+
+  void simulateConnect() {
+    _events._connectionController.add(
+      const ConnectionStatus(ConnectionState.connected),
+    );
+  }
+
+  void simulateEventsStreamError(Object error) {
+    _events.emitError(error);
+  }
+
+  void simulateEventsStreamDone() {
+    _events.closeEventsStream();
+  }
+
+  void simulateSessionStreamError(Object error) {
+    _session.emitError(error);
+  }
+
+  void simulateSessionStreamDone() {
+    _session.closeStream();
   }
 
   void _initData(int seededMessageCount) {
@@ -179,7 +321,8 @@ class FakeChatBackend {
 
 class _FakeSession implements ChatSession {
   ChatUser? _current;
-  final _controller = StreamController<ChatUser?>.broadcast();
+  StreamController<ChatUser?> _controller =
+      StreamController<ChatUser?>.broadcast();
 
   _FakeSession(ChatUser initialUser) : _current = initialUser;
 
@@ -187,11 +330,28 @@ class _FakeSession implements ChatSession {
   ChatUser? get currentUser => _current;
 
   @override
-  Stream<ChatUser?> get currentUserStream => _controller.stream;
+  Stream<ChatUser?> get currentUserStream {
+    if (_controller.isClosed) {
+      _controller = StreamController<ChatUser?>.broadcast();
+    }
+    return _controller.stream;
+  }
 
   void updateUser(ChatUser? user) {
     _current = user;
-    _controller.add(user);
+    if (!_controller.isClosed) {
+      _controller.add(user);
+    }
+  }
+
+  void emitError(Object error) {
+    if (!_controller.isClosed) {
+      _controller.addError(error);
+    }
+  }
+
+  void closeStream() {
+    _controller.close();
   }
 }
 
@@ -354,6 +514,21 @@ class _FakeMessageRepository implements MessageRepository {
           olderCursor: olderCursor,
         ),
       );
+    } else if (request.direction == MessagePageDirection.latest) {
+      final startIndex = (list.length - request.limit).clamp(0, list.length);
+      final items = list.sublist(startIndex, list.length);
+      final olderCursor = startIndex > 0 ? items.first.id : null;
+      final newerCheckpoint = _backend.nullCheckpoint
+          ? null
+          : (items.isNotEmpty ? items.last.id : null);
+
+      return ChatResult.success(
+        ChatPage<ChatMessage>(
+          items: items,
+          olderCursor: olderCursor,
+          newerCheckpoint: newerCheckpoint,
+        ),
+      );
     } else {
       int startIndex = 0;
       if (request.cursor != null) {
@@ -362,13 +537,18 @@ class _FakeMessageRepository implements MessageRepository {
           startIndex = cursorIdx + 1;
         }
       }
-      final endIndex = (startIndex + request.limit).clamp(startIndex, list.length);
+      final endIndex =
+          (startIndex + request.limit).clamp(startIndex, list.length);
       final items = list.sublist(startIndex, endIndex);
-      final newerCheckpoint = endIndex < list.length ? items.last.id : null;
+      final newerCursor = endIndex < list.length ? items.last.id : null;
+      final newerCheckpoint = _backend.nullCheckpoint
+          ? null
+          : (items.isNotEmpty ? items.last.id : null);
 
       return ChatResult.success(
         ChatPage<ChatMessage>(
           items: items,
+          newerCursor: newerCursor,
           newerCheckpoint: newerCheckpoint,
         ),
       );
@@ -383,6 +563,17 @@ class _FakeMessageRepository implements MessageRepository {
       return ChatResult.failure(
         const ChatError(ChatErrorCode.sendFailed, 'Injected send failure'),
       );
+    }
+
+    final list = _backend.messagesByConversation.putIfAbsent(
+      message.conversationId,
+      () => [],
+    );
+
+    // Idempotency: duplicate localId returns already persisted message
+    final existingIdx = list.indexWhere((m) => m.localId == message.localId);
+    if (existingIdx != -1) {
+      return ChatResult.success(list[existingIdx]);
     }
 
     final confirmed = switch (message) {
@@ -426,18 +617,19 @@ class _FakeMessageRepository implements MessageRepository {
         ),
     };
 
-    final list = _backend.messagesByConversation.putIfAbsent(
-      message.conversationId,
-      () => [],
-    );
+    list.add(confirmed);
 
-    // Idempotency: duplicate localId returns already persisted message
-    final existingIdx = list.indexWhere((m) => m.localId == message.localId);
-    if (existingIdx != -1) {
-      return ChatResult.success(list[existingIdx]);
+    if (_backend.returnOutcomeUnknownNextSend) {
+      _backend.returnOutcomeUnknownNextSend = false;
+      return const ChatResult.failure(
+        ChatError(
+          ChatErrorCode.unknown,
+          'Lost response',
+          outcomeUnknown: true,
+        ),
+      );
     }
 
-    list.add(confirmed);
     return ChatResult.success(confirmed);
   }
 
@@ -591,40 +783,77 @@ class _FakeMediaProvider implements ChatMediaProvider {
 }
 
 class _FakeEventSource implements ChatEventSource {
-  final _eventController = StreamController<ChatEvent>.broadcast();
-  final _connectionController = StreamController<ConnectionStatus>.broadcast();
+  final FakeChatBackend _backend;
+  StreamController<ChatEvent> _eventController =
+      StreamController<ChatEvent>.broadcast();
+  StreamController<ConnectionStatus> _connectionController =
+      StreamController<ConnectionStatus>.broadcast();
 
-  _FakeEventSource() {
-    _connectionController.add(const ConnectionStatus(ConnectionState.connected));
+  _FakeEventSource(this._backend) {
+    _connectionController.add(
+      const ConnectionStatus(ConnectionState.connected),
+    );
   }
 
   @override
-  Stream<ChatEvent> get events => _eventController.stream;
+  Stream<ChatEvent> get events {
+    if (_eventController.isClosed) {
+      _eventController = StreamController<ChatEvent>.broadcast();
+    }
+    return _eventController.stream;
+  }
 
   @override
-  Stream<ConnectionStatus> get connectionState => _connectionController.stream;
+  Stream<ConnectionStatus> get connectionState {
+    if (_connectionController.isClosed) {
+      _connectionController = StreamController<ConnectionStatus>.broadcast();
+    }
+    return _connectionController.stream;
+  }
 
   @override
   Future<ChatResult<void>> connect() async {
-    _connectionController.add(const ConnectionStatus(ConnectionState.connected));
-    return ChatResult.ok();
-  }
-
-  @override
-  Future<ChatResult<void>> disconnect() async {
+    _backend.connectCount++;
+    if (_connectionController.isClosed) {
+      _connectionController = StreamController<ConnectionStatus>.broadcast();
+    }
     _connectionController.add(
-      const ConnectionStatus(ConnectionState.disconnected),
+      const ConnectionStatus(ConnectionState.connected),
     );
     return ChatResult.ok();
   }
 
   @override
+  Future<ChatResult<void>> disconnect() async {
+    _backend.disconnectCount++;
+    if (!_connectionController.isClosed) {
+      _connectionController.add(
+        const ConnectionStatus(ConnectionState.disconnected),
+      );
+    }
+    return ChatResult.ok();
+  }
+
+  @override
   Future<ChatResult<void>> reconnect() async {
+    _backend.reconnectCount++;
     await disconnect();
     return connect();
   }
 
   void emitEvent(ChatEvent event) {
-    _eventController.add(event);
+    if (!_eventController.isClosed) {
+      _eventController.add(event);
+    }
+  }
+
+  void emitError(Object error) {
+    if (!_eventController.isClosed) {
+      _eventController.addError(error);
+    }
+  }
+
+  void closeEventsStream() {
+    _eventController.close();
   }
 }
