@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:convokit/cometchat_chat_uikit.dart';
 
-/// [CometChatMessagePreview] is a component that provides a bubble consisting of text
+/// [ConvoKitMessagePreview] is a component that provides a bubble consisting of text
 /// that can be appended to the message composer, message bubble or any other component as desired.
 /// The appearance is similar to a quote block of markdown files.
-class CometChatMessagePreview extends StatelessWidget {
-  const CometChatMessagePreview({
+class ConvoKitMessagePreview extends StatelessWidget {
+  const ConvoKitMessagePreview({
     super.key,
     required this.messagePreviewTitle,
     required this.messagePreviewSubtitle,
@@ -28,7 +28,7 @@ class CometChatMessagePreview extends StatelessWidget {
   final Icon? messagePreviewCloseButtonIcon;
 
   /// [messagePreviewStyle] alters styling properties
-  final CometChatMessagePreviewStyle? messagePreviewStyle;
+  final ConvoKitMessagePreviewStyle? messagePreviewStyle;
 
   /// [onCloseClick] callback invoked when the close button is tapped
   final Function()? onCloseClick;
@@ -55,10 +55,10 @@ class CometChatMessagePreview extends StatelessWidget {
     CometChatTypography typography = CometChatThemeHelper.getTypography(
       context,
     );
-    CometChatMessagePreviewStyle style =
-        CometChatThemeHelper.getTheme<CometChatMessagePreviewStyle>(
+    ConvoKitMessagePreviewStyle style =
+        CometChatThemeHelper.getTheme<ConvoKitMessagePreviewStyle>(
           context: context,
-          defaultTheme: CometChatMessagePreviewStyle.of,
+          defaultTheme: ConvoKitMessagePreviewStyle.of,
         ).merge(messagePreviewStyle);
 
     return ClipRRect(
@@ -195,9 +195,9 @@ class CometChatMessagePreview extends StatelessWidget {
 }
 
 @immutable
-class CometChatMessagePreviewStyle
-    extends ThemeExtension<CometChatMessagePreviewStyle> {
-  const CometChatMessagePreviewStyle({
+class ConvoKitMessagePreviewStyle
+    extends ThemeExtension<ConvoKitMessagePreviewStyle> {
+  const ConvoKitMessagePreviewStyle({
     this.messagePreviewBackground,
     this.messagePreviewBorder,
     this.messagePreviewBorderRadius,
@@ -221,12 +221,12 @@ class CometChatMessagePreviewStyle
   /// Color for the media type icon shown next to the subtitle for non-text messages
   final Color? replyMessagePreviewCloseIconColor;
 
-  static CometChatMessagePreviewStyle of(BuildContext context) =>
-      const CometChatMessagePreviewStyle();
+  static ConvoKitMessagePreviewStyle of(BuildContext context) =>
+      const ConvoKitMessagePreviewStyle();
 
-  CometChatMessagePreviewStyle merge(CometChatMessagePreviewStyle? other) {
+  ConvoKitMessagePreviewStyle merge(ConvoKitMessagePreviewStyle? other) {
     if (other == null) return this;
-    return CometChatMessagePreviewStyle(
+    return ConvoKitMessagePreviewStyle(
       messagePreviewBackground:
           other.messagePreviewBackground ?? messagePreviewBackground,
       messagePreviewBorder: other.messagePreviewBorder ?? messagePreviewBorder,
@@ -248,7 +248,7 @@ class CometChatMessagePreviewStyle
   }
 
   @override
-  CometChatMessagePreviewStyle copyWith({
+  ConvoKitMessagePreviewStyle copyWith({
     Color? messagePreviewBackground,
     BoxBorder? messagePreviewBorder,
     BorderRadius? messagePreviewBorderRadius,
@@ -259,7 +259,7 @@ class CometChatMessagePreviewStyle
     Color? closeIconColor,
     Color? replyMessagePreviewCloseIconColor,
   }) {
-    return CometChatMessagePreviewStyle(
+    return ConvoKitMessagePreviewStyle(
       messagePreviewBackground:
           messagePreviewBackground ?? this.messagePreviewBackground,
       messagePreviewBorder: messagePreviewBorder ?? this.messagePreviewBorder,
@@ -281,12 +281,12 @@ class CometChatMessagePreviewStyle
   }
 
   @override
-  CometChatMessagePreviewStyle lerp(
-    ThemeExtension<CometChatMessagePreviewStyle>? other,
+  ConvoKitMessagePreviewStyle lerp(
+    ThemeExtension<ConvoKitMessagePreviewStyle>? other,
     double t,
   ) {
-    if (other is! CometChatMessagePreviewStyle) return this;
-    return CometChatMessagePreviewStyle(
+    if (other is! ConvoKitMessagePreviewStyle) return this;
+    return ConvoKitMessagePreviewStyle(
       messagePreviewBackground: Color.lerp(
         messagePreviewBackground,
         other.messagePreviewBackground,

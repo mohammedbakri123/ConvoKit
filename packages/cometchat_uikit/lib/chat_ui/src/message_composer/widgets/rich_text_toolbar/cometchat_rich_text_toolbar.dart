@@ -4,7 +4,7 @@ import '../../../../../../shared_ui/src/rich_text_formatting/domain/entities/for
 import '../../../../../../shared_ui/src/rich_text_formatting/domain/entities/format_compatibility.dart';
 import 'cometchat_rich_text_toolbar_style.dart';
 
-/// [CometChatRichTextToolbar] is a widget that displays a horizontal row of
+/// [ConvoKitRichTextToolbar] is a widget that displays a horizontal row of
 /// formatting buttons for rich text editing.
 ///
 /// The toolbar supports various text formatting options including bold, italic,
@@ -16,25 +16,25 @@ import 'cometchat_rich_text_toolbar_style.dart';
 /// disables all other formats).
 ///
 /// ```dart
-/// CometChatRichTextToolbar(
+/// ConvoKitRichTextToolbar(
 ///   onFormatTap: (formatType) {
 ///     // Handle format button tap
 ///   },
 ///   activeFormats: {FormatType.bold, FormatType.italic},
 ///   hiddenFormats: {FormatType.codeBlock},
-///   style: CometChatRichTextToolbarStyle(
+///   style: ConvoKitRichTextToolbarStyle(
 ///     backgroundColor: Colors.white,
 ///     buttonIconColor: Colors.grey,
 ///     activeButtonIconColor: Colors.blue,
 ///   ),
 /// );
 /// ```
-class CometChatRichTextToolbar extends StatelessWidget {
+class ConvoKitRichTextToolbar extends StatelessWidget {
   /// Creates a rich text formatting toolbar.
   ///
   /// The [onFormatTap] callback is required and will be invoked when any
   /// format button is tapped.
-  const CometChatRichTextToolbar({
+  const ConvoKitRichTextToolbar({
     super.key,
     required this.onFormatTap,
     this.activeFormats = const {},
@@ -63,7 +63,7 @@ class CometChatRichTextToolbar extends StatelessWidget {
   /// Style configuration for the toolbar appearance.
   ///
   /// If not provided, default theme values will be used.
-  final CometChatRichTextToolbarStyle? style;
+  final ConvoKitRichTextToolbarStyle? style;
 
   /// Consumer actions appended at the trailing end of the toolbar, after a
   /// UIKit-owned divider matching the group dividers (Trailing Toolbar
@@ -72,7 +72,7 @@ class CometChatRichTextToolbar extends StatelessWidget {
   /// sheet concerns and are ignored here) and fires [onToolbarTap] with
   /// [trailingTapController]. Empty by default — the toolbar renders
   /// byte-identical to a toolbar without the feature.
-  final List<CometChatMessageComposerAction> trailingActions;
+  final List<ConvoKitMessageComposerAction> trailingActions;
 
   /// The live text controller handed to [trailingActions] taps. When null,
   /// trailing taps are inert — hosts should pass the composer's
@@ -81,7 +81,7 @@ class CometChatRichTextToolbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final toolbarStyle = CometChatRichTextToolbarStyle.of(context).merge(style);
+    final toolbarStyle = ConvoKitRichTextToolbarStyle.of(context).merge(style);
     final colorPalette = CometChatThemeHelper.getColorPalette(context);
     final spacing = CometChatThemeHelper.getSpacing(context);
 
@@ -125,7 +125,7 @@ class CometChatRichTextToolbar extends StatelessWidget {
   /// Builds the list of toolbar buttons with dividers between groups.
   List<Widget> _buildToolbarButtons(
     BuildContext context,
-    CometChatRichTextToolbarStyle toolbarStyle,
+    ConvoKitRichTextToolbarStyle toolbarStyle,
     CometChatColorPalette colorPalette,
     CometChatSpacing spacing,
     Set<FormatType> disabledFormats,
@@ -208,8 +208,8 @@ class CometChatRichTextToolbar extends StatelessWidget {
   /// built-in format buttons so it reads as part of the toolbar.
   Widget _buildTrailingActionButton(
     BuildContext context,
-    CometChatMessageComposerAction action,
-    CometChatRichTextToolbarStyle toolbarStyle,
+    ConvoKitMessageComposerAction action,
+    ConvoKitRichTextToolbarStyle toolbarStyle,
     CometChatColorPalette colorPalette,
     CometChatSpacing spacing,
   ) {
@@ -267,7 +267,7 @@ class CometChatRichTextToolbar extends StatelessWidget {
   List<Widget> _buildButtonGroup(
     BuildContext context,
     List<FormatType> formats,
-    CometChatRichTextToolbarStyle toolbarStyle,
+    ConvoKitRichTextToolbarStyle toolbarStyle,
     CometChatColorPalette colorPalette,
     CometChatSpacing spacing,
     Set<FormatType> disabledFormats,
@@ -297,7 +297,7 @@ class CometChatRichTextToolbar extends StatelessWidget {
   Widget _buildFormatButton(
     BuildContext context,
     FormatType formatType,
-    CometChatRichTextToolbarStyle toolbarStyle,
+    ConvoKitRichTextToolbarStyle toolbarStyle,
     CometChatColorPalette colorPalette,
     CometChatSpacing spacing,
     Set<FormatType> disabledFormats, {
@@ -375,7 +375,7 @@ class CometChatRichTextToolbar extends StatelessWidget {
 
   /// Builds a vertical divider between button groups.
   Widget _buildDivider(
-    CometChatRichTextToolbarStyle toolbarStyle,
+    ConvoKitRichTextToolbarStyle toolbarStyle,
     CometChatColorPalette colorPalette,
     CometChatSpacing spacing,
   ) {

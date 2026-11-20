@@ -3,11 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:convokit/cometchat_chat_uikit.dart'
     show
         CometChatActionBubble,
-        CometChatMessageComposer,
+        ConvoKitMessageComposer,
         CometChatMessageHeader,
         ConvoKitMessageList,
-        CometChatMessagePreview,
-        CometChatRichTextToolbar,
+        ConvoKitMessagePreview,
+        ConvoKitRichTextToolbar,
         FormatType,
         FormatTypeExtension;
 
@@ -84,7 +84,7 @@ class ComposerDepthHelper {
       );
     }
     if (composer().evaluate().isEmpty) {
-      fail('CometChatMessageComposer is not on screen after opening the chat');
+      fail('ConvoKitMessageComposer is not on screen after opening the chat');
     }
   }
 
@@ -121,7 +121,7 @@ class ComposerDepthHelper {
 
   // ─── Composer input ────────────────────────────────────────────────────────
 
-  static Finder composer() => find.byType(CometChatMessageComposer);
+  static Finder composer() => find.byType(ConvoKitMessageComposer);
 
   /// Prose input. segment_composer_widget.dart `_NormalSegmentWidget` builds a
   /// `TextFormField` (→ `TextField`) with the body text style; the code segment
@@ -243,7 +243,7 @@ class ComposerDepthHelper {
   /// cometchat_rich_text_toolbar.dart — the stacked toolbar widget.
   static Finder toolbar() => find.descendant(
     of: composer(),
-    matching: find.byType(CometChatRichTextToolbar),
+    matching: find.byType(ConvoKitRichTextToolbar),
   );
 
   /// A format button. cometchat_rich_text_toolbar.dart `_buildFormatButton`:
@@ -259,7 +259,7 @@ class ComposerDepthHelper {
   /// scrolled into view first.
   static Future<void> tapFormat(WidgetTester tester, FormatType format) async {
     if (toolbar().evaluate().isEmpty) {
-      fail('CometChatRichTextToolbar is not rendered in the composer');
+      fail('ConvoKitRichTextToolbar is not rendered in the composer');
     }
     final button = formatButton(format);
     if (button.evaluate().isEmpty) {
@@ -433,14 +433,14 @@ class ComposerDepthHelper {
   );
 
   /// The reply preview ABOVE THE INPUT. cometchat_message_composer.dart
-  /// `_buildInlinePreview` builds a `CometChatMessagePreview` with the close
+  /// `_buildInlinePreview` builds a `ConvoKitMessagePreview` with the close
   /// button; the quoted block inside a sent bubble is the same widget with
   /// `hideCloseButton: true` (cometchat_message_list.dart), so the flag is
   /// what tells the two apart.
   static Finder composerReplyPreview() => find.descendant(
     of: composer(),
     matching: find.byWidgetPredicate(
-      (w) => w is CometChatMessagePreview && !w.hideCloseButton,
+      (w) => w is ConvoKitMessagePreview && !w.hideCloseButton,
     ),
   );
 
@@ -467,7 +467,7 @@ class ComposerDepthHelper {
     final out = <String>[];
     _walkList(tester, (e) {
       final w = e.widget;
-      if (w is CometChatMessagePreview && w.hideCloseButton) {
+      if (w is ConvoKitMessagePreview && w.hideCloseButton) {
         final parts = <String>[];
         void collect(Element c) {
           final cw = c.widget;

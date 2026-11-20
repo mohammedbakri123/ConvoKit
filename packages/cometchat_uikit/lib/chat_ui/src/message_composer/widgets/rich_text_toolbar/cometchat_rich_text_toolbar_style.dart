@@ -4,9 +4,9 @@ import '../../../../../../shared_ui/cometchat_uikit_shared.dart';
 
 /// Style configuration for the rich text formatting toolbar
 @immutable
-class CometChatRichTextToolbarStyle
-    extends ThemeExtension<CometChatRichTextToolbarStyle> {
-  const CometChatRichTextToolbarStyle({
+class ConvoKitRichTextToolbarStyle
+    extends ThemeExtension<ConvoKitRichTextToolbarStyle> {
+  const ConvoKitRichTextToolbarStyle({
     this.backgroundColor,
     this.buttonColor,
     this.activeButtonColor,
@@ -66,11 +66,11 @@ class CometChatRichTextToolbarStyle
   final Color? dividerColor;
 
   /// Factory for theme-based defaults
-  static CometChatRichTextToolbarStyle of(BuildContext context) {
+  static ConvoKitRichTextToolbarStyle of(BuildContext context) {
     final colorPalette = CometChatThemeHelper.getColorPalette(context);
     final spacing = CometChatThemeHelper.getSpacing(context);
 
-    return CometChatRichTextToolbarStyle(
+    return ConvoKitRichTextToolbarStyle(
       backgroundColor: colorPalette.background2,
       buttonColor: Colors.transparent,
       activeButtonColor:
@@ -95,7 +95,7 @@ class CometChatRichTextToolbarStyle
   }
 
   /// Merge with another style
-  CometChatRichTextToolbarStyle merge(CometChatRichTextToolbarStyle? other) {
+  ConvoKitRichTextToolbarStyle merge(ConvoKitRichTextToolbarStyle? other) {
     if (other == null) return this;
     return copyWith(
       backgroundColor: other.backgroundColor,
@@ -116,7 +116,7 @@ class CometChatRichTextToolbarStyle
   }
 
   @override
-  CometChatRichTextToolbarStyle copyWith({
+  ConvoKitRichTextToolbarStyle copyWith({
     Color? backgroundColor,
     Color? buttonColor,
     Color? activeButtonColor,
@@ -132,7 +132,7 @@ class CometChatRichTextToolbarStyle
     double? iconSize,
     Color? dividerColor,
   }) {
-    return CometChatRichTextToolbarStyle(
+    return ConvoKitRichTextToolbarStyle(
       backgroundColor: backgroundColor ?? this.backgroundColor,
       buttonColor: buttonColor ?? this.buttonColor,
       activeButtonColor: activeButtonColor ?? this.activeButtonColor,
@@ -153,11 +153,11 @@ class CometChatRichTextToolbarStyle
   }
 
   @override
-  CometChatRichTextToolbarStyle lerp(
-    CometChatRichTextToolbarStyle? other,
+  ConvoKitRichTextToolbarStyle lerp(
+    ConvoKitRichTextToolbarStyle? other,
     double t,
   ) {
-    return CometChatRichTextToolbarStyle(
+    return ConvoKitRichTextToolbarStyle(
       backgroundColor: Color.lerp(backgroundColor, other?.backgroundColor, t),
       buttonColor: Color.lerp(buttonColor, other?.buttonColor, t),
       activeButtonColor: Color.lerp(

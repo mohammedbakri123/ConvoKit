@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 ///to customize the functionality and appearance of `StickersExtension`
 ///
 ///Has no effect in v6. Set the sticker button on the composer instead:
-///`CometChatMessageComposer.stickerIcon` and
-///`CometChatMessageComposer.stickerActiveIcon` replace [stickerButtonIcon]
+///`ConvoKitMessageComposer.stickerIcon` and
+///`ConvoKitMessageComposer.stickerActiveIcon` replace [stickerButtonIcon]
 ///and [keyboardButtonIcon];
-///`CometChatMessageComposerStyle.stickerIconColor` and
-///`CometChatMessageComposerStyle.stickerActiveIconColor` replace
+///`ConvoKitMessageComposerStyle.stickerIconColor` and
+///`ConvoKitMessageComposerStyle.stickerActiveIconColor` replace
 ///[stickerIconTint] and [keyboardIconTint]. Style the sticker keyboard with
-///`CometChatMessageComposerStyle.stickerKeyboardStyle` or a
+///`ConvoKitMessageComposerStyle.stickerKeyboardStyle` or a
 ///`CometChatStickerKeyboardStyle` theme extension.
 ///[errorIcon], [errorStateText] and [emptyStateText] have no replacement.
 ///
@@ -32,10 +32,10 @@ import 'package:flutter/material.dart';
 /// ```
 @Deprecated(
   'Has no effect: no API in v6 accepts an extension configuration object. '
-  'Use CometChatMessageComposer.stickerIcon / stickerActiveIcon for the '
-  'sticker button icons, CometChatMessageComposerStyle.stickerIconColor / '
+  'Use ConvoKitMessageComposer.stickerIcon / stickerActiveIcon for the '
+  'sticker button icons, ConvoKitMessageComposerStyle.stickerIconColor / '
   'stickerActiveIconColor for their tints, and '
-  'CometChatMessageComposerStyle.stickerKeyboardStyle or the '
+  'ConvoKitMessageComposerStyle.stickerKeyboardStyle or the '
   'CometChatStickerKeyboardStyle theme extension for the sticker keyboard, '
   'and stickerBubbleStyle on CometChatIncomingMessageBubbleStyle / '
   'CometChatOutgoingMessageBubbleStyle for the sticker bubble. Custom '

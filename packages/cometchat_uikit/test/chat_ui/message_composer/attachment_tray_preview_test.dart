@@ -23,7 +23,7 @@ UploadFile _file(String name, String mime, {String? path}) => UploadFile(
 Widget _host(AttachmentTrayController controller) => MaterialApp(
   localizationsDelegates: Translations.localizationsDelegates,
   supportedLocales: const [Locale('en')],
-  home: Scaffold(body: CometChatAttachmentTray(controller: controller)),
+  home: Scaffold(body: ConvoKitAttachmentTray(controller: controller)),
 );
 
 void main() {
@@ -55,7 +55,7 @@ void main() {
       final c = controller();
       addTearDown(c.dispose);
       await tester.pumpWidget(_host(c));
-      expect(find.byType(CometChatAttachmentTile), findsNothing);
+      expect(find.byType(ConvoKitAttachmentTile), findsNothing);
       expect(find.byType(ListView), findsNothing);
     });
 
@@ -116,7 +116,7 @@ void main() {
       await tester.pumpWidget(_host(c));
       await tester.pump();
 
-      await tester.tap(find.byType(CometChatAttachmentTile).last);
+      await tester.tap(find.byType(ConvoKitAttachmentTile).last);
       await tester.pumpAndSettle();
 
       final viewer = tester.widget<CometChatMediaViewer>(
@@ -141,7 +141,7 @@ void main() {
       await tester.pumpWidget(_host(c));
       await tester.pump();
 
-      await tester.tap(find.byType(CometChatAttachmentTile));
+      await tester.tap(find.byType(ConvoKitAttachmentTile));
       await tester.pumpAndSettle();
 
       final viewer = tester.widget<CometChatMediaViewer>(
@@ -164,7 +164,7 @@ void main() {
 
       await tester.pumpWidget(_host(c));
       await tester.pump();
-      await tester.tap(find.byType(CometChatAttachmentTile));
+      await tester.tap(find.byType(ConvoKitAttachmentTile));
       await tester.pumpAndSettle();
 
       expect(find.byType(CometChatMediaViewer), findsNothing);

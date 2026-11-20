@@ -4,7 +4,7 @@ import '../../../../cometchat_chat_uikit.dart';
 import '../../../../shared_ui/src/clean_architecture/core/utils/ui_event_target.dart';
 
 ///[StickerAuxiliaryButton] is the widget that represents the `StickersExtension`
-///in the auxiliary button view of the [CometChatMessageComposer].
+///in the auxiliary button view of the [ConvoKitMessageComposer].
 ///
 ///While the sticker panel is closed it shows [stickerButtonIcon], or the
 ///outline sticker icon tinted with [stickerIconTint] (secondary icon colour by

@@ -1,5 +1,5 @@
-/// Render-verified prop matrix for [CometChatAttachmentTrayStyle],
-/// [CometChatAttachmentTile] and [CometChatAttachmentTray] — Track 3
+/// Render-verified prop matrix for [ConvoKitAttachmentTrayStyle],
+/// [ConvoKitAttachmentTile] and [ConvoKitAttachmentTray] — Track 3
 /// PROP1/PROP2 (ENG-38929).
 ///
 /// The tile renders one of three layouts depending on the staged file's mime
@@ -32,12 +32,12 @@ AttachmentTile _tile(
   errorMessage: errorMessage,
 );
 
-Widget _host(AttachmentTile tile, CometChatAttachmentTrayStyle style) =>
+Widget _host(AttachmentTile tile, ConvoKitAttachmentTrayStyle style) =>
     MaterialApp(
       home: Scaffold(
         body: SizedBox(
           height: 200,
-          child: CometChatAttachmentTile(
+          child: ConvoKitAttachmentTile(
             tile: tile,
             onCancelOrRemove: () {},
             style: style,
@@ -88,7 +88,7 @@ void main() {
       await tester.pumpWidget(
         _host(
           _tile('application/pdf'),
-          const CometChatAttachmentTrayStyle(tileBorderRadius: 41),
+          const ConvoKitAttachmentTrayStyle(tileBorderRadius: 41),
         ),
       );
       await tester.pump();
@@ -99,7 +99,7 @@ void main() {
       await tester.pumpWidget(
         _host(
           _tile('application/pdf'),
-          const CometChatAttachmentTrayStyle(
+          const ConvoKitAttachmentTrayStyle(
             tileBorderColor: Color(0xFF160101),
           ),
         ),
@@ -116,7 +116,7 @@ void main() {
             status: AttachmentTileStatus.failed,
             errorMessage: 'too big',
           ),
-          const CometChatAttachmentTrayStyle(
+          const ConvoKitAttachmentTrayStyle(
             errorBorderColor: Color(0xFF160202),
           ),
         ),
@@ -129,7 +129,7 @@ void main() {
       await tester.pumpWidget(
         _host(
           _tile('application/pdf'),
-          const CometChatAttachmentTrayStyle(
+          const ConvoKitAttachmentTrayStyle(
             nameTextStyle: TextStyle(fontSize: 31),
           ),
         ),
@@ -142,7 +142,7 @@ void main() {
       await tester.pumpWidget(
         _host(
           _tile('application/pdf'),
-          const CometChatAttachmentTrayStyle(
+          const ConvoKitAttachmentTrayStyle(
             subtitleTextStyle: TextStyle(fontSize: 17),
           ),
         ),
@@ -159,7 +159,7 @@ void main() {
             status: AttachmentTileStatus.failed,
             errorMessage: 'too big',
           ),
-          const CometChatAttachmentTrayStyle(
+          const ConvoKitAttachmentTrayStyle(
             errorTextStyle: TextStyle(fontSize: 19),
           ),
         ),
@@ -172,7 +172,7 @@ void main() {
       await tester.pumpWidget(
         _host(
           _tile('application/pdf'),
-          const CometChatAttachmentTrayStyle(iconBorderRadius: 43),
+          const ConvoKitAttachmentTrayStyle(iconBorderRadius: 43),
         ),
       );
       await tester.pump();
@@ -185,7 +185,7 @@ void main() {
       await tester.pumpWidget(
         _host(
           _tile('image/png', status: AttachmentTileStatus.uploading),
-          const CometChatAttachmentTrayStyle(scrimColor: Color(0xFF160303)),
+          const ConvoKitAttachmentTrayStyle(scrimColor: Color(0xFF160303)),
         ),
       );
       await tester.pump();
@@ -196,7 +196,7 @@ void main() {
       await tester.pumpWidget(
         _host(
           _tile('image/png', status: AttachmentTileStatus.uploading),
-          const CometChatAttachmentTrayStyle(progressColor: Color(0xFF160404)),
+          const ConvoKitAttachmentTrayStyle(progressColor: Color(0xFF160404)),
         ),
       );
       await tester.pump();
@@ -215,7 +215,7 @@ void main() {
       await tester.pumpWidget(
         _host(
           _tile('image/png'),
-          const CometChatAttachmentTrayStyle(
+          const ConvoKitAttachmentTrayStyle(
             removeBadgeBackgroundColor: Color(0xFF160505),
           ),
         ),
@@ -228,7 +228,7 @@ void main() {
       await tester.pumpWidget(
         _host(
           _tile('image/png'),
-          const CometChatAttachmentTrayStyle(
+          const ConvoKitAttachmentTrayStyle(
             removeBadgeIconColor: Color(0xFF160606),
           ),
         ),
@@ -243,7 +243,7 @@ void main() {
       await tester.pumpWidget(
         _host(
           _tile('video/mp4'),
-          const CometChatAttachmentTrayStyle(
+          const ConvoKitAttachmentTrayStyle(
             durationChipBackgroundColor: Color(0xFF160707),
           ),
         ),
@@ -256,7 +256,7 @@ void main() {
       await tester.pumpWidget(
         _host(
           _tile('video/mp4'),
-          const CometChatAttachmentTrayStyle(
+          const ConvoKitAttachmentTrayStyle(
             durationChipTextStyle: TextStyle(fontSize: 21),
           ),
         ),
@@ -269,7 +269,7 @@ void main() {
       await tester.pumpWidget(
         _host(
           _tile('video/mp4'),
-          const CometChatAttachmentTrayStyle(showVideoDuration: false),
+          const ConvoKitAttachmentTrayStyle(showVideoDuration: false),
         ),
       );
       await tester.pump();
@@ -283,7 +283,7 @@ void main() {
       await tester.pumpWidget(
         _host(
           _tile('audio/mpeg'),
-          const CometChatAttachmentTrayStyle(
+          const ConvoKitAttachmentTrayStyle(
             sliderActiveColor: Color(0xFF160808),
           ),
         ),
@@ -301,7 +301,7 @@ void main() {
       await tester.pumpWidget(
         _host(
           _tile('audio/mpeg'),
-          const CometChatAttachmentTrayStyle(
+          const ConvoKitAttachmentTrayStyle(
             sliderInactiveColor: Color(0xFF160909),
           ),
         ),
@@ -319,7 +319,7 @@ void main() {
       await tester.pumpWidget(
         _host(
           _tile('audio/mpeg'),
-          const CometChatAttachmentTrayStyle(
+          const ConvoKitAttachmentTrayStyle(
             clockTextStyle: TextStyle(color: Color(0xFF160D0D)),
           ),
         ),
@@ -332,7 +332,7 @@ void main() {
       await tester.pumpWidget(
         _host(
           _tile('audio/mpeg'),
-          const CometChatAttachmentTrayStyle(
+          const ConvoKitAttachmentTrayStyle(
             playButtonColor: Color(0xFF160A0A),
           ),
         ),
@@ -345,7 +345,7 @@ void main() {
       await tester.pumpWidget(
         _host(
           _tile('audio/mpeg'),
-          const CometChatAttachmentTrayStyle(playIconColor: Color(0xFF160B0B)),
+          const ConvoKitAttachmentTrayStyle(playIconColor: Color(0xFF160B0B)),
         ),
       );
       await tester.pump();
@@ -356,7 +356,7 @@ void main() {
       await tester.pumpWidget(
         _host(
           _tile('audio/mpeg'),
-          const CometChatAttachmentTrayStyle(
+          const ConvoKitAttachmentTrayStyle(
             tileBackgroundColor: Color(0xFF160C0C),
           ),
         ),
@@ -366,18 +366,18 @@ void main() {
     });
   });
 
-  group('CometChatAttachmentTile own props', () {
+  group('ConvoKitAttachmentTile own props', () {
     testWidgets('tile, height and style shape the card', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: SizedBox(
               height: 200,
-              child: CometChatAttachmentTile(
+              child: ConvoKitAttachmentTile(
                 tile: _tile('application/pdf'),
                 onCancelOrRemove: () {},
                 height: 91,
-                style: const CometChatAttachmentTrayStyle(
+                style: const ConvoKitAttachmentTrayStyle(
                   tileBackgroundColor: Color(0xFF161010),
                 ),
               ),
@@ -402,7 +402,7 @@ void main() {
           home: Scaffold(
             body: SizedBox(
               height: 200,
-              child: CometChatAttachmentTile(
+              child: ConvoKitAttachmentTile(
                 tile: _tile('image/png'),
                 onCancelOrRemove: () {},
                 onTap: () => tapped = true,
@@ -424,7 +424,7 @@ void main() {
           home: Scaffold(
             body: SizedBox(
               height: 200,
-              child: CometChatAttachmentTile(
+              child: ConvoKitAttachmentTile(
                 tile: _tile('image/png'),
                 onCancelOrRemove: () => removed = true,
               ),
@@ -448,7 +448,7 @@ void main() {
           home: Scaffold(
             body: SizedBox(
               height: 200,
-              child: CometChatAttachmentTile(
+              child: ConvoKitAttachmentTile(
                 tile: _tile(
                   'image/png',
                   status: AttachmentTileStatus.failed,
@@ -469,7 +469,7 @@ void main() {
     });
   });
 
-  group('CometChatAttachmentTray own props', () {
+  group('ConvoKitAttachmentTray own props', () {
     /// The controller is a ChangeNotifier the tray listens to; a rejected tile
     /// can be added without touching the SDK, which is enough to make the tray
     /// render something.
@@ -493,24 +493,24 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: CometChatAttachmentTray(
+              body: ConvoKitAttachmentTray(
                 controller: AttachmentTrayController(),
               ),
             ),
           ),
         );
         await tester.pump();
-        expect(find.byType(CometChatAttachmentTile), findsNothing);
+        expect(find.byType(ConvoKitAttachmentTile), findsNothing);
 
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: CometChatAttachmentTray(controller: controllerWithTile()),
+              body: ConvoKitAttachmentTray(controller: controllerWithTile()),
             ),
           ),
         );
         await tester.pump();
-        expect(find.byType(CometChatAttachmentTile), findsOneWidget);
+        expect(find.byType(ConvoKitAttachmentTile), findsOneWidget);
       },
     );
 
@@ -518,9 +518,9 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatAttachmentTray(
+            body: ConvoKitAttachmentTray(
               controller: controllerWithTile(),
-              style: const CometChatAttachmentTrayStyle(
+              style: const ConvoKitAttachmentTrayStyle(
                 tileBackgroundColor: Color(0xFF161111),
               ),
             ),
@@ -537,7 +537,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatAttachmentTray(
+            body: ConvoKitAttachmentTray(
               controller: controllerWithTile(),
               attachmentErrorSnackBarBuilder: (context, tile) =>
                   const SnackBar(content: Text('custom error')),
@@ -546,7 +546,7 @@ void main() {
         ),
       );
       await tester.pump();
-      await tester.tap(find.byType(CometChatAttachmentTile));
+      await tester.tap(find.byType(ConvoKitAttachmentTile));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 300));
       expect(find.text('custom error'), findsOneWidget);
@@ -559,7 +559,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatAttachmentTray(
+            body: ConvoKitAttachmentTray(
               controller: controllerWithTile(),
               onAttachmentErrorTap: (context, tile) => seen = tile,
             ),
@@ -567,7 +567,7 @@ void main() {
         ),
       );
       await tester.pump();
-      await tester.tap(find.byType(CometChatAttachmentTile));
+      await tester.tap(find.byType(ConvoKitAttachmentTile));
       await tester.pump();
       expect(seen?.name, 'clip.pdf');
     });
@@ -578,7 +578,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatAttachmentTray(
+            body: ConvoKitAttachmentTray(
               controller: controllerWithTile(),
               attachmentErrorAlertStyle:
                   const CometChatAttachmentErrorAlertStyle(
@@ -589,10 +589,10 @@ void main() {
         ),
       );
       await tester.pump();
-      await tester.tap(find.byType(CometChatAttachmentTile));
+      await tester.tap(find.byType(ConvoKitAttachmentTile));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 300));
-      expect(find.byType(CometChatAttachmentTile), findsOneWidget);
+      expect(find.byType(ConvoKitAttachmentTile), findsOneWidget);
     });
   });
 }

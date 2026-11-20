@@ -162,7 +162,7 @@ void main() {
       final widgetNames =
           blocks.map((b) => _findWidgetName(source, b.offset)).toList();
       expect(widgetNames, contains('ConvoKitMessageList'));
-      expect(widgetNames, contains('CometChatMessageComposer'));
+      expect(widgetNames, contains('ConvoKitMessageComposer'));
     });
 
     test(
@@ -173,7 +173,7 @@ void main() {
       final widgetNames =
           blocks.map((b) => _findWidgetName(source, b.offset)).toList();
       expect(widgetNames, contains('ConvoKitMessageList'));
-      expect(widgetNames, contains('CometChatMessageComposer'));
+      expect(widgetNames, contains('ConvoKitMessageComposer'));
       expect(widgetNames, contains('CometChatThreadedHeader'));
     });
   });

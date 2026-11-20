@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-///[CometChatAttachmentTrayStyle] styles the composer's attachment staging tray
+///[ConvoKitAttachmentTrayStyle] styles the composer's attachment staging tray
 ///and its tiles (media thumbnails, the audio player card and the file card).
 ///All fields are optional — null falls back to the tray's theme-driven
 ///defaults. Supports [merge] like every other UIKit style class.
 /// ```dart
-/// CometChatAttachmentTrayStyle(
+/// ConvoKitAttachmentTrayStyle(
 ///   tileBackgroundColor: Colors.white,
 ///   errorBorderColor: Colors.red,
 /// );
 /// ```
-class CometChatAttachmentTrayStyle
-    extends ThemeExtension<CometChatAttachmentTrayStyle> {
-  const CometChatAttachmentTrayStyle({
+class ConvoKitAttachmentTrayStyle
+    extends ThemeExtension<ConvoKitAttachmentTrayStyle> {
+  const ConvoKitAttachmentTrayStyle({
     this.tileBackgroundColor,
     this.tileBorderColor,
     this.errorBorderColor,
@@ -95,11 +95,11 @@ class CometChatAttachmentTrayStyle
   ///[showVideoDuration] hides the video m:ss pill when false (default true).
   final bool? showVideoDuration;
 
-  static CometChatAttachmentTrayStyle of(BuildContext context) =>
-      const CometChatAttachmentTrayStyle();
+  static ConvoKitAttachmentTrayStyle of(BuildContext context) =>
+      const ConvoKitAttachmentTrayStyle();
 
   @override
-  CometChatAttachmentTrayStyle copyWith({
+  ConvoKitAttachmentTrayStyle copyWith({
     Color? tileBackgroundColor,
     Color? tileBorderColor,
     Color? errorBorderColor,
@@ -121,7 +121,7 @@ class CometChatAttachmentTrayStyle
     TextStyle? durationChipTextStyle,
     bool? showVideoDuration,
   }) {
-    return CometChatAttachmentTrayStyle(
+    return ConvoKitAttachmentTrayStyle(
       tileBackgroundColor: tileBackgroundColor ?? this.tileBackgroundColor,
       tileBorderColor: tileBorderColor ?? this.tileBorderColor,
       errorBorderColor: errorBorderColor ?? this.errorBorderColor,
@@ -148,7 +148,7 @@ class CometChatAttachmentTrayStyle
     );
   }
 
-  CometChatAttachmentTrayStyle merge(CometChatAttachmentTrayStyle? style) {
+  ConvoKitAttachmentTrayStyle merge(ConvoKitAttachmentTrayStyle? style) {
     if (style == null) return this;
     return copyWith(
       tileBackgroundColor: style.tileBackgroundColor,
@@ -175,12 +175,12 @@ class CometChatAttachmentTrayStyle
   }
 
   @override
-  CometChatAttachmentTrayStyle lerp(
-    ThemeExtension<CometChatAttachmentTrayStyle>? other,
+  ConvoKitAttachmentTrayStyle lerp(
+    ThemeExtension<ConvoKitAttachmentTrayStyle>? other,
     double t,
   ) {
-    if (other is! CometChatAttachmentTrayStyle) return this;
-    return CometChatAttachmentTrayStyle(
+    if (other is! ConvoKitAttachmentTrayStyle) return this;
+    return ConvoKitAttachmentTrayStyle(
       tileBackgroundColor: Color.lerp(
         tileBackgroundColor,
         other.tileBackgroundColor,

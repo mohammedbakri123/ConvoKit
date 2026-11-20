@@ -28,11 +28,11 @@ import '../../../../shared_ui/src/logging/cometchat_log.dart';
 import '../../../../shared_ui/src/clean_architecture/core/utils/ui_event_target.dart';
 
 ///
-/// [CometChatMessageComposer] component allows users to
+/// [ConvoKitMessageComposer] component allows users to
 /// send messages and attachments to the chat, participating in the conversation.
 ///
 /// ```dart
-///  CometChatMessageComposer(
+///  ConvoKitMessageComposer(
 ///        user: User(uid: 'uid', name: 'name'),
 ///        group: Group(guid: 'guid', name: 'name', type: 'public'),
 ///        messageComposerStyle: MessageComposerStyle(),
@@ -53,7 +53,7 @@ import '../../../../shared_ui/src/clean_architecture/core/utils/ui_event_target.
 ///   field on its own row and buttons on a second row below a divider.
 ///
 /// ```dart
-/// CometChatMessageComposer(
+/// ConvoKitMessageComposer(
 ///   user: User(uid: 'uid', name: 'name'),
 ///   layout: CometChatComposerLayout.doubleLine,
 /// );
@@ -61,7 +61,7 @@ import '../../../../shared_ui/src/clean_architecture/core/utils/ui_event_target.
 ///
 ///
 ///
-class CometChatMessageComposer extends StatefulWidget {
+class ConvoKitMessageComposer extends StatefulWidget {
   // Deprecated in 6.2.0: no effect, removed in 7.0.0.
 
   /// Custom AI icon.
@@ -82,7 +82,7 @@ class CometChatMessageComposer extends StatefulWidget {
   )
   final String? aiIconPackageName;
 
-  const CometChatMessageComposer({
+  const ConvoKitMessageComposer({
     super.key,
     this.user,
     this.group,
@@ -224,7 +224,7 @@ class CometChatMessageComposer extends StatefulWidget {
   onAttachmentErrorTap;
 
   ///[messageComposerStyle] message composer style
-  final CometChatMessageComposerStyle? messageComposerStyle;
+  final ConvoKitMessageComposerStyle? messageComposerStyle;
 
   ///[auxiliaryButtonView] ui component to be forwarded to message input component
   final ComposerWidgetBuilder? auxiliaryButtonView;
@@ -304,7 +304,7 @@ class CometChatMessageComposer extends StatefulWidget {
   ///[richTextToolbarActions] appends consumer actions at the trailing end of
   ///the rich-text formatting toolbar, after a UIKit-owned divider (Trailing
   ///Toolbar Buttons DD). Same builder shape as [attachmentOptions]; each
-  ///action's [CometChatMessageComposerAction.onToolbarTap] receives the live
+  ///action's [ConvoKitMessageComposerAction.onToolbarTap] receives the live
   ///[RichTextEditingController], so it can read `text`/`selection` and call
   ///`applyFormat`/`applyInlineStyle`. Rendered in both composer layouts, and
   ///only while the rich-text toolbar itself is visible.
@@ -354,12 +354,12 @@ class CometChatMessageComposer extends StatefulWidget {
 
   ///[stickerIcon] replaces the sticker button's icon while the sticker
   ///keyboard is closed. Shown as given — tint it yourself; the default icon is
-  ///tinted with [CometChatMessageComposerStyle.stickerIconColor].
+  ///tinted with [ConvoKitMessageComposerStyle.stickerIconColor].
   final Widget? stickerIcon;
 
   ///[stickerActiveIcon] replaces the sticker button's icon while the sticker
   ///keyboard is open. Shown as given — tint it yourself; the default icon is
-  ///tinted with [CometChatMessageComposerStyle.stickerActiveIconColor].
+  ///tinted with [ConvoKitMessageComposerStyle.stickerActiveIconColor].
   final Widget? stickerActiveIcon;
 
   ///[hideImageAttachmentOption] is a [bool] that can be used to hide/display image attachment option
@@ -486,11 +486,11 @@ class CometChatMessageComposer extends StatefulWidget {
   final CometChatKeyboardDiagnosticsCallback? onKeyboardDiagnostics;
 
   @override
-  State<CometChatMessageComposer> createState() =>
-      _CometChatMessageComposerState();
+  State<ConvoKitMessageComposer> createState() =>
+      _ConvoKitMessageComposerState();
 }
 
-class _CometChatMessageComposerState extends State<CometChatMessageComposer>
+class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer>
     with WidgetsBindingObserver, TickerProviderStateMixin {
   // ============================================================================
   // BLoC and State Management
@@ -501,11 +501,11 @@ class _CometChatMessageComposerState extends State<CometChatMessageComposer>
   // ============================================================================
   // Theme and Styling
   // ============================================================================
-  late CometChatMessageComposerStyle _style;
+  late ConvoKitMessageComposerStyle _style;
   late CometChatColorPalette _colorPalette;
   late CometChatSpacing _spacing;
   late CometChatTypography _typography;
-  late CometChatSuggestionListStyle _suggestionListStyle;
+  late ConvoKitSuggestionListStyle _suggestionListStyle;
 
   // ============================================================================
   // Text Editing and Formatters
@@ -633,7 +633,7 @@ class _CometChatMessageComposerState extends State<CometChatMessageComposer>
   // ============================================================================
   // Reply/Edit Preview Animation
   // ============================================================================
-  /// Composer-owned staging tray (created when [CometChatMessageComposer
+  /// Composer-owned staging tray (created when [ConvoKitMessageComposer
   /// .enableMultipleAttachments] is on and no external controller was given).
   AttachmentTrayController? _internalTrayController;
 
@@ -1120,15 +1120,15 @@ class _CometChatMessageComposerState extends State<CometChatMessageComposer>
     _colorPalette = CometChatThemeHelper.getColorPalette(context);
     _typography = CometChatThemeHelper.getTypography(context);
     _spacing = CometChatThemeHelper.getSpacing(context);
-    _style = CometChatThemeHelper.getTheme<CometChatMessageComposerStyle>(
+    _style = CometChatThemeHelper.getTheme<ConvoKitMessageComposerStyle>(
       context: context,
-      defaultTheme: CometChatMessageComposerStyle.of,
+      defaultTheme: ConvoKitMessageComposerStyle.of,
     ).merge(widget.messageComposerStyle);
 
     _suggestionListStyle =
-        CometChatThemeHelper.getTheme<CometChatSuggestionListStyle>(
+        CometChatThemeHelper.getTheme<ConvoKitSuggestionListStyle>(
           context: context,
-          defaultTheme: CometChatSuggestionListStyle.of,
+          defaultTheme: ConvoKitSuggestionListStyle.of,
         ).merge(_style.suggestionListStyle);
 
     // Initialize BLoC
@@ -1190,7 +1190,7 @@ class _CometChatMessageComposerState extends State<CometChatMessageComposer>
   }
 
   @override
-  void didUpdateWidget(covariant CometChatMessageComposer oldWidget) {
+  void didUpdateWidget(covariant ConvoKitMessageComposer oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     // A conversation switch on a REUSED composer instance must not carry staged
@@ -1208,9 +1208,9 @@ class _CometChatMessageComposerState extends State<CometChatMessageComposer>
 
     // Reinitialize style if messageComposerStyle changed
     if (widget.messageComposerStyle != oldWidget.messageComposerStyle) {
-      _style = CometChatThemeHelper.getTheme<CometChatMessageComposerStyle>(
+      _style = CometChatThemeHelper.getTheme<ConvoKitMessageComposerStyle>(
         context: context,
-        defaultTheme: CometChatMessageComposerStyle.of,
+        defaultTheme: ConvoKitMessageComposerStyle.of,
       ).merge(widget.messageComposerStyle);
 
       // Reinitialize auxiliary options since they depend on style
@@ -1861,10 +1861,10 @@ class _CometChatMessageComposerState extends State<CometChatMessageComposer>
         ).merge(_style.attachmentOptionSheetStyle);
 
     if (widget.attachmentOptions != null) {
-      List<CometChatMessageComposerAction> actionList =
+      List<ConvoKitMessageComposerAction> actionList =
           widget.attachmentOptions!(context, widget.user, widget.group, {});
 
-      for (CometChatMessageComposerAction attachmentOption in actionList) {
+      for (ConvoKitMessageComposerAction attachmentOption in actionList) {
         _actionStyle = CometChatAttachmentOptionSheetStyle(
           border:
               attachmentOption.style?.border ??
@@ -1933,7 +1933,7 @@ class _CometChatMessageComposerState extends State<CometChatMessageComposer>
       _composerId,
       additionalConfigurations,
     );
-    for (CometChatMessageComposerAction defaultAttachmentOptions
+    for (ConvoKitMessageComposerAction defaultAttachmentOptions
         in defaultOptions) {
       _actionStyle = CometChatAttachmentOptionSheetStyle(
         border: defaultAttachmentOptions.style?.border,
@@ -3970,7 +3970,7 @@ class _CometChatMessageComposerState extends State<CometChatMessageComposer>
     // Get hidden formats from configuration
     final hiddenFormats = _getHiddenFormats();
 
-    return CometChatRichTextToolbar(
+    return ConvoKitRichTextToolbar(
       onFormatTap: _applyToolbarFormat,
       activeFormats: activeFormats,
       hiddenFormats: hiddenFormats,
@@ -4225,7 +4225,7 @@ class _CometChatMessageComposerState extends State<CometChatMessageComposer>
   /// Resolves the effective auxiliary buttons alignment used internally.
   ///
   /// Rules:
-  /// 1. If the caller passed [CometChatMessageComposer.auxiliaryButtonsAlignment],
+  /// 1. If the caller passed [ConvoKitMessageComposer.auxiliaryButtonsAlignment],
   ///    that wins.
   /// 2. Otherwise, in [CometChatComposerLayout.doubleLine] the auxiliary
   ///    cluster (mic + stickers) defaults to the LEFT side of the toolbar row
@@ -4817,13 +4817,13 @@ class _CometChatMessageComposerState extends State<CometChatMessageComposer>
                       ),
                     ),
                     padding: EdgeInsets.all(_spacing.padding1 ?? 4),
-                    child: CometChatMessagePreview(
+                    child: ConvoKitMessagePreview(
                       messagePreviewTitle: title,
                       messagePreviewSubtitle: subtitle,
                       subtitleWidget: subtitleWidget,
                       message: message,
                       onCloseClick: _onMessagePreviewClose,
-                      messagePreviewStyle: CometChatMessagePreviewStyle(
+                      messagePreviewStyle: ConvoKitMessagePreviewStyle(
                         closeIconColor:
                             _style.closeIconTint ?? _colorPalette.iconPrimary,
                       ),
@@ -5126,7 +5126,7 @@ class _CometChatMessageComposerState extends State<CometChatMessageComposer>
         mainAxisSize: MainAxisSize.min,
         children: [
           _buildMessageInput(state),
-          CometChatAttachmentTray(
+          ConvoKitAttachmentTray(
             controller: _tray!,
             style: _style.attachmentTrayStyle,
             attachmentErrorAlertStyle: widget.attachmentErrorAlertStyle,
@@ -5199,7 +5199,7 @@ class _CometChatMessageComposerState extends State<CometChatMessageComposer>
               // the formatting toolbar (on by default via
               // enableMultipleAttachments).
               if (_tray != null)
-                CometChatAttachmentTray(
+                ConvoKitAttachmentTray(
                   controller: _tray!,
                   style: _style.attachmentTrayStyle,
                   attachmentErrorAlertStyle: widget.attachmentErrorAlertStyle,
@@ -5281,15 +5281,15 @@ class _CometChatMessageComposerState extends State<CometChatMessageComposer>
         (widget.richTextToolbarActions != null &&
             controller is RichTextEditingController)
         ? widget.richTextToolbarActions!(context, widget.user, widget.group, {})
-        : const <CometChatMessageComposerAction>[];
+        : const <ConvoKitMessageComposerAction>[];
 
-    return CometChatRichTextToolbar(
+    return ConvoKitRichTextToolbar(
       onFormatTap: _applyToolbarFormat,
       activeFormats: activeFormats,
       hiddenFormats: _getHiddenFormats(),
       trailingActions: trailingActions,
       trailingTapController: controller,
-      style: CometChatRichTextToolbarStyle(
+      style: ConvoKitRichTextToolbarStyle(
         backgroundColor: Colors.transparent,
         border: null,
         borderRadius: BorderRadius.zero,
@@ -5448,7 +5448,7 @@ class _CometChatMessageComposerState extends State<CometChatMessageComposer>
   ///
   /// Returns the union of:
   /// * formats the user explicitly hid via
-  ///   [CometChatMessageComposer.hideRichTextFormattingOptions], AND
+  ///   [ConvoKitMessageComposer.hideRichTextFormattingOptions], AND
   /// * formats implicitly disabled by [enableRichTextFormatting] being off
   ///   (in that case everything is hidden — but the toolbar itself is also
   ///   not rendered, so the set is academic).

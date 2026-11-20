@@ -480,21 +480,21 @@ void main() {
     },
   );
 
-  testWidgets('CometChatEmojiKeyboard — colorPalette reaches the keyboard', (
+  testWidgets('ConvoKitEmojiKeyboard — colorPalette reaches the keyboard', (
     tester,
   ) async {
     _ignorePlatformOnlyErrors();
     await tester.pumpWidget(
       _host(
         Builder(
-          builder: (context) => CometChatEmojiKeyboard(
+          builder: (context) => ConvoKitEmojiKeyboard(
             colorPalette: CometChatThemeHelper.getColorPalette(context),
           ),
         ),
       ),
     );
     await _settle(tester);
-    expect(find.byType(CometChatEmojiKeyboard), findsOneWidget);
+    expect(find.byType(ConvoKitEmojiKeyboard), findsOneWidget);
   });
   testWidgets('CometChatStatusIndicator — backgroundImage reaches it', (
     tester,

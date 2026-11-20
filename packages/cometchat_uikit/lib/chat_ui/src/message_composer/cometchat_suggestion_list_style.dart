@@ -1,9 +1,9 @@
 import 'package:convokit/cometchat_chat_uikit.dart';
 import 'package:flutter/material.dart';
 
-class CometChatSuggestionListStyle
-    extends ThemeExtension<CometChatSuggestionListStyle> {
-  const CometChatSuggestionListStyle({
+class ConvoKitSuggestionListStyle
+    extends ThemeExtension<ConvoKitSuggestionListStyle> {
+  const ConvoKitSuggestionListStyle({
     this.backgroundColor,
     this.border,
     this.borderRadius,
@@ -30,8 +30,8 @@ class CometChatSuggestionListStyle
   ///[avatarStyle] sets the avatar style of the suggestion list
   final CometChatAvatarStyle? avatarStyle;
 
-  CometChatSuggestionListStyle merge(CometChatSuggestionListStyle? style) {
-    return CometChatSuggestionListStyle(
+  ConvoKitSuggestionListStyle merge(ConvoKitSuggestionListStyle? style) {
+    return ConvoKitSuggestionListStyle(
       backgroundColor: style?.backgroundColor ?? backgroundColor,
       border: style?.border ?? border,
       borderRadius: style?.borderRadius ?? borderRadius,
@@ -42,7 +42,7 @@ class CometChatSuggestionListStyle
   }
 
   @override
-  CometChatSuggestionListStyle copyWith({
+  ConvoKitSuggestionListStyle copyWith({
     Color? backgroundColor,
     BoxBorder? border,
     BorderRadius? borderRadius,
@@ -50,7 +50,7 @@ class CometChatSuggestionListStyle
     Color? textColor,
     CometChatAvatarStyle? messageBubbleAvatarStyle,
   }) {
-    return CometChatSuggestionListStyle(
+    return ConvoKitSuggestionListStyle(
       backgroundColor: backgroundColor ?? this.backgroundColor,
       border: border ?? this.border,
       borderRadius: borderRadius ?? this.borderRadius,
@@ -61,11 +61,11 @@ class CometChatSuggestionListStyle
   }
 
   @override
-  CometChatSuggestionListStyle lerp(
-    CometChatSuggestionListStyle? other,
+  ConvoKitSuggestionListStyle lerp(
+    ConvoKitSuggestionListStyle? other,
     double t,
   ) {
-    return CometChatSuggestionListStyle(
+    return ConvoKitSuggestionListStyle(
       backgroundColor: Color.lerp(backgroundColor, other?.backgroundColor, t),
       border: BoxBorder.lerp(border, other?.border, t),
       borderRadius: BorderRadius.lerp(borderRadius, other?.borderRadius, t),
@@ -75,6 +75,6 @@ class CometChatSuggestionListStyle
     );
   }
 
-  static CometChatSuggestionListStyle of(BuildContext context) =>
-      const CometChatSuggestionListStyle();
+  static ConvoKitSuggestionListStyle of(BuildContext context) =>
+      const ConvoKitSuggestionListStyle();
 }

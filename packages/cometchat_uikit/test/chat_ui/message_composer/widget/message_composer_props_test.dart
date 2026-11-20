@@ -1,4 +1,4 @@
-/// Table-driven prop matrix for [CometChatMessageComposer] — Track 3 PROP1.
+/// Table-driven prop matrix for [ConvoKitMessageComposer] — Track 3 PROP1.
 ///
 /// One test per prop. Every case constructs the composer *inline* inside
 /// pumpWidget and asserts a rendered consequence after the pump, which is what
@@ -226,20 +226,20 @@ void main() {
   group('Receiver', () {
     testWidgets('user renders the composer', (tester) async {
       await tester.pumpWidget(
-        _wrap(CometChatMessageComposer(user: FakeUser())),
+        _wrap(ConvoKitMessageComposer(user: FakeUser())),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       expect(find.byType(EditableText), findsWidgets);
       await _drain(tester);
     });
 
     testWidgets('group renders the composer', (tester) async {
       await tester.pumpWidget(
-        _wrap(CometChatMessageComposer(group: FakeGroup())),
+        _wrap(ConvoKitMessageComposer(group: FakeGroup())),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       expect(find.byType(EditableText), findsWidgets);
       await _drain(tester);
     });
@@ -252,7 +252,7 @@ void main() {
     testWidgets('headerView renders its widget', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             headerView: _slotBuilder(),
           ),
@@ -266,7 +266,7 @@ void main() {
     testWidgets('footerView renders its widget', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             footerView: _slotBuilder(),
           ),
@@ -280,7 +280,7 @@ void main() {
     testWidgets('auxiliaryButtonView renders its widget', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             auxiliaryButtonView: _slotBuilder(),
           ),
@@ -294,7 +294,7 @@ void main() {
     testWidgets('secondaryButtonView renders its widget', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             secondaryButtonView: _slotBuilder(),
           ),
@@ -308,7 +308,7 @@ void main() {
     testWidgets('sendButtonView replaces the send button', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(user: FakeUser(), sendButtonView: _slot()),
+          ConvoKitMessageComposer(user: FakeUser(), sendButtonView: _slot()),
         ),
       );
       await tester.pump();
@@ -319,7 +319,7 @@ void main() {
     testWidgets('richTextToolbarView renders', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             richTextToolbarView: (_, _) => _slot(),
             enableRichTextFormatting: true,
@@ -328,7 +328,7 @@ void main() {
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
   });
@@ -340,7 +340,7 @@ void main() {
     testWidgets('attachmentIcon renders', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(user: FakeUser(), attachmentIcon: _icon()),
+          ConvoKitMessageComposer(user: FakeUser(), attachmentIcon: _icon()),
         ),
       );
       await tester.pump();
@@ -351,7 +351,7 @@ void main() {
     testWidgets('sendButtonIcon renders', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(user: FakeUser(), sendButtonIcon: _icon()),
+          ConvoKitMessageComposer(user: FakeUser(), sendButtonIcon: _icon()),
         ),
       );
       await tester.pump();
@@ -362,7 +362,7 @@ void main() {
     testWidgets('voiceRecordingIcon renders', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             voiceRecordingIcon: _icon(),
             hideVoiceRecordingButton: false,
@@ -382,7 +382,7 @@ void main() {
     testWidgets('placeholderText labels the input', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             placeholderText: 'Say something nice',
           ),
@@ -396,7 +396,7 @@ void main() {
     testWidgets('text is wired into the rendered input', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             text: 'draft body',
             enableRichTextFormatting: false,
@@ -414,7 +414,7 @@ void main() {
     testWidgets('maxLine caps the rendered input', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             maxLine: 3,
             enableRichTextFormatting: false,
@@ -434,7 +434,7 @@ void main() {
       addTearDown(controller.dispose);
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             textEditingController: controller,
             enableRichTextFormatting: false,
@@ -455,7 +455,7 @@ void main() {
       addTearDown(controller.dispose);
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             textEditingController: controller,
             onChange: (v) => seen = v,
@@ -473,7 +473,7 @@ void main() {
     testWidgets('textFormatters reach the rendered input', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             textFormatters: <CometChatTextFormatter>[],
             enableRichTextFormatting: false,
@@ -481,7 +481,7 @@ void main() {
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
@@ -490,7 +490,7 @@ void main() {
     testWidgets('textFormatters accepts a const list', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             textFormatters: const [],
             enableRichTextFormatting: false,
@@ -498,7 +498,7 @@ void main() {
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
   });
@@ -510,7 +510,7 @@ void main() {
     testWidgets('hideSendButton removes the send button', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             sendButtonIcon: _icon(),
             hideSendButton: false,
@@ -523,7 +523,7 @@ void main() {
 
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             sendButtonIcon: _icon(),
             hideSendButton: true,
@@ -540,7 +540,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             attachmentIcon: _icon(),
             hideAttachmentButton: false,
@@ -553,7 +553,7 @@ void main() {
 
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             attachmentIcon: _icon(),
             hideAttachmentButton: true,
@@ -573,7 +573,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             voiceRecordingIcon: _icon(),
             hideVoiceRecordingButton: true,
@@ -588,11 +588,11 @@ void main() {
     testWidgets('hideStickersButton renders both ways', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(user: FakeUser(), hideStickersButton: true),
+          ConvoKitMessageComposer(user: FakeUser(), hideStickersButton: true),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
   });
@@ -604,7 +604,7 @@ void main() {
     testWidgets('hideTakePhotoOption removes "Camera"', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             attachmentIcon: _icon(),
             hideTakePhotoOption: false,
@@ -620,7 +620,7 @@ void main() {
 
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             attachmentIcon: _icon(),
             hideTakePhotoOption: true,
@@ -640,7 +640,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             attachmentIcon: _icon(),
             hideImageAttachmentOption: false,
@@ -656,7 +656,7 @@ void main() {
 
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             attachmentIcon: _icon(),
             hideImageAttachmentOption: true,
@@ -676,7 +676,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             attachmentIcon: _icon(),
             hideVideoAttachmentOption: false,
@@ -692,7 +692,7 @@ void main() {
 
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             attachmentIcon: _icon(),
             hideVideoAttachmentOption: true,
@@ -712,7 +712,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             attachmentIcon: _icon(),
             hideAudioAttachmentOption: false,
@@ -728,7 +728,7 @@ void main() {
 
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             attachmentIcon: _icon(),
             hideAudioAttachmentOption: true,
@@ -748,7 +748,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             attachmentIcon: _icon(),
             hideFileAttachmentOption: false,
@@ -764,7 +764,7 @@ void main() {
 
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             attachmentIcon: _icon(),
             hideFileAttachmentOption: true,
@@ -784,7 +784,7 @@ void main() {
       (tester) async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageComposer(
+            ConvoKitMessageComposer(
               user: FakeUser(),
               attachmentIcon: _icon(),
               hideCollaborativeDocumentOption: false,
@@ -800,7 +800,7 @@ void main() {
 
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageComposer(
+            ConvoKitMessageComposer(
               user: FakeUser(),
               attachmentIcon: _icon(),
               hideCollaborativeDocumentOption: true,
@@ -821,7 +821,7 @@ void main() {
       (tester) async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageComposer(
+            ConvoKitMessageComposer(
               user: FakeUser(),
               attachmentIcon: _icon(),
               hideCollaborativeWhiteboardOption: false,
@@ -837,7 +837,7 @@ void main() {
 
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageComposer(
+            ConvoKitMessageComposer(
               user: FakeUser(),
               attachmentIcon: _icon(),
               hideCollaborativeWhiteboardOption: true,
@@ -856,7 +856,7 @@ void main() {
     testWidgets('hidePollsOption removes "Poll"', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             attachmentIcon: _icon(),
             hidePollsOption: false,
@@ -872,7 +872,7 @@ void main() {
 
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             attachmentIcon: _icon(),
             hidePollsOption: true,
@@ -890,11 +890,11 @@ void main() {
     testWidgets('attachmentOptions replaces the default list', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             attachmentIcon: _icon(),
             attachmentOptions: (context, user, group, id) => [
-              CometChatMessageComposerAction(
+              ConvoKitMessageComposerAction(
                 id: 'custom',
                 title: 'Send a carrier pigeon',
                 onItemClick: (_, _, _) {},
@@ -921,7 +921,7 @@ void main() {
         'every supplied icon', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             voiceRecordingIcon: _icon(),
             useInlineAudioRecorder: false,
@@ -975,7 +975,7 @@ void main() {
       MessageComposerBloc? handed;
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             stateCallBack: (bloc) => handed = bloc,
           ),
@@ -994,7 +994,7 @@ void main() {
       addTearDown(controller.dispose);
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             textEditingController: controller,
             sendButtonIcon: _icon(),
@@ -1014,10 +1014,10 @@ void main() {
 
     testWidgets('onError is accepted and the composer renders', (tester) async {
       await tester.pumpWidget(
-        _wrap(CometChatMessageComposer(user: FakeUser(), onError: (_) {})),
+        _wrap(ConvoKitMessageComposer(user: FakeUser(), onError: (_) {})),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
@@ -1026,7 +1026,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             onKeyboardDiagnostics: (_) {},
             resizeToAvoidBottomInset: false,
@@ -1034,7 +1034,7 @@ void main() {
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
@@ -1043,7 +1043,7 @@ void main() {
       (tester) async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageComposer(
+            ConvoKitMessageComposer(
               user: FakeUser(),
               onRichTextFormatApplied: (_) {},
               enableRichTextFormatting: true,
@@ -1051,7 +1051,7 @@ void main() {
           ),
         );
         await tester.pump();
-        expect(find.byType(CometChatMessageComposer), findsOneWidget);
+        expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
         await _drain(tester);
       },
     );
@@ -1061,7 +1061,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             onAttachmentTrayAdd: () {},
             enableMultipleAttachments: true,
@@ -1069,7 +1069,7 @@ void main() {
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
@@ -1078,7 +1078,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             onAttachmentTraySend: () {},
             enableMultipleAttachments: true,
@@ -1086,7 +1086,7 @@ void main() {
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
@@ -1095,14 +1095,14 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             onAttachmentErrorTap: (_, _) {},
           ),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
   });
@@ -1114,7 +1114,7 @@ void main() {
     testWidgets('padding is applied around the composer', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             padding: const EdgeInsets.all(24),
           ),
@@ -1133,7 +1133,7 @@ void main() {
     testWidgets('messageInputPadding is applied to the input', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             messageInputPadding: const EdgeInsets.all(19),
           ),
@@ -1152,28 +1152,28 @@ void main() {
     testWidgets('layout singleLine renders', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             layout: CometChatComposerLayout.singleLine,
           ),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
     testWidgets('layout doubleLine renders', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             layout: CometChatComposerLayout.doubleLine,
           ),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
@@ -1182,7 +1182,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             auxiliaryButtonView: _slotBuilder(),
             auxiliaryButtonsAlignment: AuxiliaryButtonsAlignment.left,
@@ -1197,25 +1197,25 @@ void main() {
     testWidgets('hideBottomSafeArea renders', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(user: FakeUser(), hideBottomSafeArea: true),
+          ConvoKitMessageComposer(user: FakeUser(), hideBottomSafeArea: true),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
     testWidgets('resizeToAvoidBottomInset renders', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             resizeToAvoidBottomInset: false,
           ),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
   });
@@ -1229,9 +1229,9 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
-            messageComposerStyle: const CometChatMessageComposerStyle(
+            messageComposerStyle: const ConvoKitMessageComposerStyle(
               backgroundColor: Color(0xFF102030),
             ),
           ),
@@ -1255,7 +1255,7 @@ void main() {
       (tester) async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageComposer(
+            ConvoKitMessageComposer(
               user: FakeUser(),
               attachmentErrorAlertStyle:
                   const CometChatAttachmentErrorAlertStyle(),
@@ -1263,7 +1263,7 @@ void main() {
           ),
         );
         await tester.pump();
-        expect(find.byType(CometChatMessageComposer), findsOneWidget);
+        expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
         await _drain(tester);
       },
     );
@@ -1273,7 +1273,7 @@ void main() {
       (tester) async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageComposer(
+            ConvoKitMessageComposer(
               user: FakeUser(),
               attachmentErrorSnackBarBuilder: (_, _) =>
                   const SnackBar(content: Text('nope')),
@@ -1281,7 +1281,7 @@ void main() {
           ),
         );
         await tester.pump();
-        expect(find.byType(CometChatMessageComposer), findsOneWidget);
+        expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
         await _drain(tester);
       },
     );
@@ -1294,39 +1294,39 @@ void main() {
     testWidgets('disableTypingEvents renders when enabled', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(user: FakeUser(), disableTypingEvents: true),
+          ConvoKitMessageComposer(user: FakeUser(), disableTypingEvents: true),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
     testWidgets('disableTypingEvents renders when disabled', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             disableTypingEvents: false,
           ),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
     testWidgets('disableSoundForMessages renders when enabled', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             disableSoundForMessages: true,
           ),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
@@ -1335,36 +1335,36 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             disableSoundForMessages: false,
           ),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
     testWidgets('disableMentionAll renders when enabled', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(user: FakeUser(), disableMentionAll: true),
+          ConvoKitMessageComposer(user: FakeUser(), disableMentionAll: true),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
     testWidgets('disableMentionAll renders when disabled', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(user: FakeUser(), disableMentionAll: false),
+          ConvoKitMessageComposer(user: FakeUser(), disableMentionAll: false),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
@@ -1373,14 +1373,14 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             enableRichTextFormatting: true,
           ),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
@@ -1389,14 +1389,14 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             enableRichTextFormatting: false,
           ),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
@@ -1405,14 +1405,14 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             showRichTextFormattingOptions: true,
           ),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
@@ -1421,14 +1421,14 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             showRichTextFormattingOptions: false,
           ),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
@@ -1437,14 +1437,14 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             enableMultipleAttachments: true,
           ),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
@@ -1453,80 +1453,80 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             enableMultipleAttachments: false,
           ),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
     testWidgets('disableImagePaste renders when enabled', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(user: FakeUser(), disableImagePaste: true),
+          ConvoKitMessageComposer(user: FakeUser(), disableImagePaste: true),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
     testWidgets('disableImagePaste renders when disabled', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(user: FakeUser(), disableImagePaste: false),
+          ConvoKitMessageComposer(user: FakeUser(), disableImagePaste: false),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
     testWidgets('disableDragAndDrop renders when enabled', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(user: FakeUser(), disableDragAndDrop: true),
+          ConvoKitMessageComposer(user: FakeUser(), disableDragAndDrop: true),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
     testWidgets('disableDragAndDrop renders when disabled', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(user: FakeUser(), disableDragAndDrop: false),
+          ConvoKitMessageComposer(user: FakeUser(), disableDragAndDrop: false),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
     testWidgets('disableMentions renders when enabled', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(user: FakeUser(), disableMentions: true),
+          ConvoKitMessageComposer(user: FakeUser(), disableMentions: true),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
     testWidgets('disableMentions renders when disabled', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(user: FakeUser(), disableMentions: false),
+          ConvoKitMessageComposer(user: FakeUser(), disableMentions: false),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
@@ -1535,7 +1535,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             hideRichTextFormattingOptions: const {FormatType.codeBlock},
             enableRichTextFormatting: true,
@@ -1543,7 +1543,7 @@ void main() {
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
@@ -1552,7 +1552,7 @@ void main() {
       (tester) async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageComposer(
+            ConvoKitMessageComposer(
               user: FakeUser(),
               attachmentTrayController: AttachmentTrayController(),
               enableMultipleAttachments: true,
@@ -1560,25 +1560,25 @@ void main() {
           ),
         );
         await tester.pump();
-        expect(find.byType(CometChatMessageComposer), findsOneWidget);
+        expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
         await _drain(tester);
       },
     );
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // CometChatMessageComposerStyle — every field asserted on what it reaches
+  // ConvoKitMessageComposerStyle — every field asserted on what it reaches
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  group('CometChatMessageComposerStyle', () {
+  group('ConvoKitMessageComposerStyle', () {
     testWidgets('backgroundColor paints the composer container', (
       tester,
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
-            messageComposerStyle: const CometChatMessageComposerStyle(
+            messageComposerStyle: const ConvoKitMessageComposerStyle(
               backgroundColor: Color(0xFF102030),
             ),
           ),
@@ -1594,9 +1594,9 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
-            messageComposerStyle: const CometChatMessageComposerStyle(
+            messageComposerStyle: const ConvoKitMessageComposerStyle(
               border: Border.fromBorderSide(
                 BorderSide(color: Color(0xFF203040), width: 3),
               ),
@@ -1622,10 +1622,10 @@ void main() {
     testWidgets('filledColor reaches the rendered input', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             enableRichTextFormatting: false,
-            messageComposerStyle: const CometChatMessageComposerStyle(
+            messageComposerStyle: const ConvoKitMessageComposerStyle(
               filledColor: Color(0xFF304050),
             ),
           ),
@@ -1641,10 +1641,10 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             enableRichTextFormatting: false,
-            messageComposerStyle: const CometChatMessageComposerStyle(
+            messageComposerStyle: const ConvoKitMessageComposerStyle(
               dividerColor: Color(0xFF405060),
               dividerHeight: 5,
             ),
@@ -1661,10 +1661,10 @@ void main() {
     testWidgets('textStyle and textColor style the input text', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             enableRichTextFormatting: false,
-            messageComposerStyle: const CometChatMessageComposerStyle(
+            messageComposerStyle: const ConvoKitMessageComposerStyle(
               textStyle: TextStyle(fontSize: 29),
               textColor: Color(0xFF506070),
             ),
@@ -1683,11 +1683,11 @@ void main() {
       (tester) async {
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageComposer(
+            ConvoKitMessageComposer(
               user: FakeUser(),
               placeholderText: 'Say something',
               enableRichTextFormatting: false,
-              messageComposerStyle: const CometChatMessageComposerStyle(
+              messageComposerStyle: const ConvoKitMessageComposerStyle(
                 placeHolderTextStyle: TextStyle(fontSize: 31),
                 placeHolderTextColor: Color(0xFF607080),
               ),
@@ -1705,9 +1705,9 @@ void main() {
     testWidgets('send button styling reaches the send button', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
-            messageComposerStyle: const CometChatMessageComposerStyle(
+            messageComposerStyle: const ConvoKitMessageComposerStyle(
               sendButtonIconColor: Color(0xFF708090),
               sendButtonIconBackgroundColor: Color(0xFF8090A0),
               sendButtonBorderRadius: BorderRadius.all(Radius.circular(17)),
@@ -1731,9 +1731,9 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
-            messageComposerStyle: const CometChatMessageComposerStyle(
+            messageComposerStyle: const ConvoKitMessageComposerStyle(
               secondaryButtonIconColor: Color(0xFF90A0B0),
               secondaryButtonIconBackgroundColor: Color(0xFFA0B0C0),
               secondaryButtonBorderRadius: BorderRadius.all(
@@ -1759,9 +1759,9 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
-            messageComposerStyle: const CometChatMessageComposerStyle(
+            messageComposerStyle: const ConvoKitMessageComposerStyle(
               auxiliaryButtonIconColor: Color(0xFFB0C0D0),
               auxiliaryButtonIconBackgroundColor: Color(0xFFC0D0E0),
               auxiliaryButtonBorderRadius: BorderRadius.all(
@@ -1787,11 +1787,11 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             voiceRecordingIcon: _icon(),
             useInlineAudioRecorder: false,
-            messageComposerStyle: CometChatMessageComposerStyle(
+            messageComposerStyle: ConvoKitMessageComposerStyle(
               mediaRecorderStyle: CometChatMediaRecorderStyle(
                 backgroundColor: Color(0xFFD0E0F0),
               ),
@@ -1816,10 +1816,10 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             attachmentIcon: _icon(),
-            messageComposerStyle: CometChatMessageComposerStyle(
+            messageComposerStyle: ConvoKitMessageComposerStyle(
               attachmentOptionSheetStyle:
                   const CometChatAttachmentOptionSheetStyle(
                     titleColor: Color(0xFFE0F0FF),
@@ -1850,10 +1850,10 @@ void main() {
       MessageComposerBloc? bloc;
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             stateCallBack: (b) => bloc = b,
-            messageComposerStyle: const CometChatMessageComposerStyle(
+            messageComposerStyle: const ConvoKitMessageComposerStyle(
               closeIconTint: Color(0xFF3C2A1B),
             ),
           ),
@@ -1867,8 +1867,8 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 400));
 
-      final preview = tester.widget<CometChatMessagePreview>(
-        find.byType(CometChatMessagePreview),
+      final preview = tester.widget<ConvoKitMessagePreview>(
+        find.byType(ConvoKitMessagePreview),
       );
       expect(
         preview.messagePreviewStyle?.closeIconColor,
@@ -1883,12 +1883,12 @@ void main() {
       final formatter = TestSuggestionFormatter();
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             textFormatters: [formatter],
             enableRichTextFormatting: false,
-            messageComposerStyle: CometChatMessageComposerStyle(
-              suggestionListStyle: const CometChatSuggestionListStyle(
+            messageComposerStyle: ConvoKitMessageComposerStyle(
+              suggestionListStyle: const ConvoKitSuggestionListStyle(
                 backgroundColor: Color(0xFF2B4C6F),
               ),
             ),
@@ -1913,13 +1913,13 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             enableRichTextFormatting: true,
             showRichTextFormattingOptions: true,
             layout: CometChatComposerLayout.singleLine,
-            messageComposerStyle: CometChatMessageComposerStyle(
-              richTextToolbarStyle: CometChatRichTextToolbarStyle(
+            messageComposerStyle: ConvoKitMessageComposerStyle(
+              richTextToolbarStyle: ConvoKitRichTextToolbarStyle(
                 backgroundColor: const Color(0xFFF0D0C0),
               ),
             ),
@@ -1928,8 +1928,8 @@ void main() {
       );
       await tester.pump();
 
-      final toolbar = tester.widget<CometChatRichTextToolbar>(
-        find.byType(CometChatRichTextToolbar),
+      final toolbar = tester.widget<ConvoKitRichTextToolbar>(
+        find.byType(ConvoKitRichTextToolbar),
       );
       expect(toolbar.style?.backgroundColor, const Color(0xFFF0D0C0));
       await _drain(tester);
@@ -1940,11 +1940,11 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             enableMultipleAttachments: true,
-            messageComposerStyle: CometChatMessageComposerStyle(
-              attachmentTrayStyle: CometChatAttachmentTrayStyle(
+            messageComposerStyle: ConvoKitMessageComposerStyle(
+              attachmentTrayStyle: ConvoKitAttachmentTrayStyle(
                 tileBackgroundColor: const Color(0xFFC0D0F0),
               ),
             ),
@@ -1953,8 +1953,8 @@ void main() {
       );
       await tester.pump();
 
-      final tray = tester.widget<CometChatAttachmentTray>(
-        find.byType(CometChatAttachmentTray),
+      final tray = tester.widget<ConvoKitAttachmentTray>(
+        find.byType(ConvoKitAttachmentTray),
       );
       expect(tray.style?.tileBackgroundColor, const Color(0xFFC0D0F0));
       await _drain(tester);
@@ -1963,10 +1963,10 @@ void main() {
     testWidgets('mentionsStyle reaches the mentions formatter', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             enableRichTextFormatting: false,
-            messageComposerStyle: CometChatMessageComposerStyle(
+            messageComposerStyle: ConvoKitMessageComposerStyle(
               mentionsStyle: CometChatMentionsStyle(
                 mentionTextColor: const Color(0xFFAB12CD),
               ),
@@ -1995,11 +1995,11 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             voiceRecordingIcon: _icon(),
             useInlineAudioRecorder: true,
-            messageComposerStyle: CometChatMessageComposerStyle(
+            messageComposerStyle: ConvoKitMessageComposerStyle(
               inlineAudioRecorderStyle: CometChatInlineAudioRecorderStyle(
                 backgroundColor: const Color(0xFF1A2B3C),
               ),
@@ -2036,7 +2036,7 @@ void main() {
         await _fakeStickerFetch();
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageComposer(
+            ConvoKitMessageComposer(
               user: FakeUser(),
               stickerIcon: const Icon(Icons.abc, key: closedKey),
               stickerActiveIcon: const Icon(Icons.keyboard, key: openKey),
@@ -2074,7 +2074,7 @@ void main() {
       await _fakeStickerFetch();
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             stickerIcon: const Icon(Icons.abc, key: closedKey),
           ),
@@ -2097,7 +2097,7 @@ void main() {
       final user = FakeUser();
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: user,
             stickerIcon: const Icon(Icons.abc, key: closedKey),
           ),
@@ -2108,7 +2108,7 @@ void main() {
 
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: user,
             stickerIcon: const Icon(Icons.keyboard, key: openKey),
           ),
@@ -2127,9 +2127,9 @@ void main() {
         await _fakeStickerFetch();
         await tester.pumpWidget(
           _wrap(
-            CometChatMessageComposer(
+            ConvoKitMessageComposer(
               user: FakeUser(),
-              messageComposerStyle: const CometChatMessageComposerStyle(
+              messageComposerStyle: const ConvoKitMessageComposerStyle(
                 stickerIconColor: Color(0xFF13579B),
                 stickerActiveIconColor: Color(0xFF2468AC),
                 // Loses to stickerIconColor for the sticker button.
@@ -2160,9 +2160,9 @@ void main() {
         'stickerIconColor is unset', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
-            messageComposerStyle: const CometChatMessageComposerStyle(
+            messageComposerStyle: const ConvoKitMessageComposerStyle(
               auxiliaryButtonIconColor: Color(0xFF3579BD),
             ),
           ),
@@ -2183,9 +2183,9 @@ void main() {
       await _fakeStickerFetch();
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
-            messageComposerStyle: const CometChatMessageComposerStyle(
+            messageComposerStyle: const ConvoKitMessageComposerStyle(
               stickerKeyboardStyle: CometChatStickerKeyboardStyle(
                 backgroundColor: Color(0xFF6A7B8C),
                 errorStateTextColor: Color(0xFF7B8C9D),
@@ -2234,13 +2234,13 @@ void main() {
           supportedLocales: const [Locale('en')],
           theme: ThemeData(
             extensions: const [
-              CometChatMessageComposerStyle(
+              ConvoKitMessageComposerStyle(
                 stickerIconColor: Color(0xFF4680BE),
                 stickerActiveIconColor: Color(0xFF5791CF),
               ),
             ],
           ),
-          home: Scaffold(body: CometChatMessageComposer(user: FakeUser())),
+          home: Scaffold(body: ConvoKitMessageComposer(user: FakeUser())),
         ),
       );
       await tester.pump();
@@ -2261,17 +2261,17 @@ void main() {
   group('Threading, sound and labels', () {
     testWidgets('parentMessageId renders a thread composer', (tester) async {
       await tester.pumpWidget(
-        _wrap(CometChatMessageComposer(user: FakeUser(), parentMessageId: 42)),
+        _wrap(ConvoKitMessageComposer(user: FakeUser(), parentMessageId: 42)),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
     testWidgets('customSoundForMessage and its package render', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             customSoundForMessage: 'assets/ping.wav',
             customSoundForMessagePackage: 'cometchat_chat_uikit',
@@ -2279,14 +2279,14 @@ void main() {
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
     testWidgets('mentionAllLabel and mentionAllLabelId render', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             mentionAllLabel: 'Everyone',
             mentionAllLabelId: 'all',
@@ -2294,21 +2294,21 @@ void main() {
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
 
     testWidgets('attachmentIconURL renders', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             attachmentIconURL: 'assets/attach.svg',
           ),
         ),
       );
       await tester.pump();
-      expect(find.byType(CometChatMessageComposer), findsOneWidget);
+      expect(find.byType(ConvoKitMessageComposer), findsOneWidget);
       await _drain(tester);
     });
   });
@@ -2323,7 +2323,7 @@ void main() {
       final formatter = TestSuggestionFormatter();
       await tester.pumpWidget(
         _wrap(
-          CometChatMessageComposer(
+          ConvoKitMessageComposer(
             user: FakeUser(),
             textFormatters: [formatter],
           ),

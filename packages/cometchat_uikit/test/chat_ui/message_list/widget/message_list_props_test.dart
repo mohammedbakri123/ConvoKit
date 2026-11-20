@@ -2295,7 +2295,7 @@ void main() {
         ..quotedMessageId = 1
         ..quotedMessage = _text('lunch?', id: 1, sender: _bob);
 
-      Future<void> pump({CometChatMessagePreviewStyle? previewStyle}) async {
+      Future<void> pump({ConvoKitMessagePreviewStyle? previewStyle}) async {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
@@ -2319,7 +2319,7 @@ void main() {
       Iterable<Color?> previewBackgrounds() => tester
           .widgetList<Container>(
             find.descendant(
-              of: find.byType(CometChatMessagePreview),
+              of: find.byType(ConvoKitMessagePreview),
               matching: find.byType(Container),
             ),
           )
@@ -2328,7 +2328,7 @@ void main() {
       Color? previewTitleColor() => tester
           .widget<Text>(
             find.descendant(
-              of: find.byType(CometChatMessagePreview),
+              of: find.byType(ConvoKitMessagePreview),
               matching: find.text('Bob'),
             ),
           )
@@ -2336,12 +2336,12 @@ void main() {
           ?.color;
 
       await pump();
-      expect(find.byType(CometChatMessagePreview), findsOneWidget);
+      expect(find.byType(ConvoKitMessagePreview), findsOneWidget);
       expect(previewBackgrounds(), isNot(contains(background)));
       expect(previewTitleColor(), isNot(titleColor));
 
       await pump(
-        previewStyle: const CometChatMessagePreviewStyle(
+        previewStyle: const ConvoKitMessagePreviewStyle(
           messagePreviewBackground: background,
           // A colour inside the text style beats the default white.
           messagePreviewTitleStyle: TextStyle(color: titleColor),

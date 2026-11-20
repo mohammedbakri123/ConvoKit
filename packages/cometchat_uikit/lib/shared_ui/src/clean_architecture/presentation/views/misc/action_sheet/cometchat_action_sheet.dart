@@ -5,7 +5,7 @@ import '../../../../../../cometchat_uikit_shared.dart';
 /// ```dart
 /// CometChatAttachmentOptionSheet(
 ///  actionItems: [
-///  CometChatMessageComposerAction(
+///  ConvoKitMessageComposerAction(
 ///  id: "example",
 ///  title: "Example Action",
 ///  icon: Icon(Icons.example),
@@ -184,7 +184,7 @@ class _CometChatAttachmentOptionSheetState
 /// showCometChatAttachmentOptionSheet(
 ///  context: context,
 ///  actionItems: [
-///  CometChatMessageComposerAction(
+///  ConvoKitMessageComposerAction(
 ///  id: "example",
 ///  title: "Example Action",
 ///  icon: Icon(Icons.example),

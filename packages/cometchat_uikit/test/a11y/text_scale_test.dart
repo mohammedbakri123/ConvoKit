@@ -397,7 +397,7 @@ void main() {
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: <Widget>[
-              CometChatAttachmentTile(
+              ConvoKitAttachmentTile(
                 tile: AttachmentTile(
                   fileId: 'f1',
                   name: 'Q3-platform-readiness-review-final-v2.pdf',
@@ -407,7 +407,7 @@ void main() {
                 ),
                 onCancelOrRemove: () {},
               ),
-              CometChatAttachmentTile(
+              ConvoKitAttachmentTile(
                 tile: AttachmentTile(
                   fileId: 'f2',
                   name: 'coverage.xlsx',

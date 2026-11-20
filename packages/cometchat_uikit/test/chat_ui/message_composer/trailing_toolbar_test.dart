@@ -252,14 +252,14 @@ void main() {
     });
   });
 
-  group('CometChatRichTextToolbar trailing slot (DD §8.1 structural)', () {
+  group('ConvoKitRichTextToolbar trailing slot (DD §8.1 structural)', () {
     Widget host(Widget child) => MaterialApp(home: Scaffold(body: child));
 
     testWidgets('no trailing actions → no trailing divider or buttons', (
       tester,
     ) async {
       await tester.pumpWidget(
-        host(CometChatRichTextToolbar(onFormatTap: (_) {})),
+        host(ConvoKitRichTextToolbar(onFormatTap: (_) {})),
       );
       // Baseline divider count: exactly the two group dividers.
       final dividers = find.byWidgetPredicate(
@@ -269,7 +269,7 @@ void main() {
 
       await tester.pumpWidget(
         host(
-          CometChatRichTextToolbar(
+          ConvoKitRichTextToolbar(
             onFormatTap: (_) {},
             trailingActions: const [],
           ),
@@ -290,11 +290,11 @@ void main() {
 
         await tester.pumpWidget(
           host(
-            CometChatRichTextToolbar(
+            ConvoKitRichTextToolbar(
               onFormatTap: (_) {},
               trailingTapController: controller,
               trailingActions: [
-                CometChatMessageComposerAction(
+                ConvoKitMessageComposerAction(
                   id: 'demo',
                   title: 'Demo action',
                   icon: const Icon(Icons.palette, key: Key('trailing_demo')),
@@ -321,10 +321,10 @@ void main() {
       var fired = false;
       await tester.pumpWidget(
         host(
-          CometChatRichTextToolbar(
+          ConvoKitRichTextToolbar(
             onFormatTap: (_) {},
             trailingActions: [
-              CometChatMessageComposerAction(
+              ConvoKitMessageComposerAction(
                 id: 'demo',
                 title: 'Demo action',
                 icon: const Icon(Icons.palette, key: Key('trailing_demo')),

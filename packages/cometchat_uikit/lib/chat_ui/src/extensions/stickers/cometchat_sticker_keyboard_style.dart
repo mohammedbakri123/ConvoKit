@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 ///keeps the keyboard's theme-driven default.
 ///
 ///Pass it to `CometChatStickerKeyboard.style`, to
-///`CometChatMessageComposerStyle.stickerKeyboardStyle` for the keyboard the
+///`ConvoKitMessageComposerStyle.stickerKeyboardStyle` for the keyboard the
 ///composer opens, or register it as a [ThemeExtension]; the widget-level style
 ///wins over the theme, field by field.
 /// ```dart

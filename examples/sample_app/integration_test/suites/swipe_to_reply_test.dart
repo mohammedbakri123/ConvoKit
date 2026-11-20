@@ -40,7 +40,7 @@ import '../sdk_user_b/messaging_actions.dart';
 ///     messages; enabled by default in the sample app
 ///     (`component_toggles.dart`: `enableSwipeToReply = true`).
 ///   * Swipe fires `CometChatMessageEvents.ccReplyToMessage`; the composer
-///     shows `CometChatMessagePreview` (with a close button) in
+///     shows `ConvoKitMessagePreview` (with a close button) in
 ///     `_buildInlinePreview`. A sent reply's bubble reuses the same widget
 ///     with `hideCloseButton: true` for the quoted block.
 ///   * The long-press options are a separate non-opaque route

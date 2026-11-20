@@ -15,7 +15,7 @@ import '../sdk_user_b/group_actions.dart';
 /// Drives User A's real message composer inside a GROUP conversation. Every
 /// test opens a throwaway group that User A created this run (so A is the
 /// owner/admin), via messages_screen._buildComposer() which renders
-/// `CometChatMessageComposer(group: _group)` with
+/// `ConvoKitMessageComposer(group: _group)` with
 /// `CometChatMentionsFormatter(group: _group)` wired in. User B is added as a
 /// real group member via REST where a member is required (mentions / @all).
 ///

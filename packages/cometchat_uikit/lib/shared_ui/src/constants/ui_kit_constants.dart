@@ -183,7 +183,7 @@ typedef ComposerWidgetBuilder =
     );
 
 typedef ComposerActionsBuilder =
-    List<CometChatMessageComposerAction> Function(
+    List<ConvoKitMessageComposerAction> Function(
       BuildContext context,
       User? user,
       Group? group,

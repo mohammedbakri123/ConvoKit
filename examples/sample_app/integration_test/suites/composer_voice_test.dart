@@ -17,7 +17,7 @@ import '../helpers_v2/cleanup_helper.dart';
 /// Behaviour under test (from the codebase-feasibility pass):
 /// The sample app's composer (messages_screen.dart `_buildComposer`) leaves
 /// `hideVoiceRecordingButton` at its default (false) and uses the inline audio
-/// recorder (CometChatMessageComposer.useInlineAudioRecorder defaults true). So:
+/// recorder (ConvoKitMessageComposer.useInlineAudioRecorder defaults true). So:
 ///   - The composer renders a voice/mic affordance while EMPTY — a
 ///     `Semantics(label: 'Record voice message')` wrapping an `IconButton`
 ///     whose icon is `Image.asset('assets/icons/mic_no_fill.png')`. (Once text

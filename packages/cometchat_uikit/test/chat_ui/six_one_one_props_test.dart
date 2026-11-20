@@ -1,7 +1,7 @@
 /// Render-verified prop matrix for the three public props new in 6.1.1 —
 /// ENG-38688, coverage part 2, round 2.
 ///
-///   CometChatMessageComposer.richTextToolbarActions
+///   ConvoKitMessageComposer.richTextToolbarActions
 ///   StickerAuxiliaryButton.composerId
 ///   CometChatConversations.pinConversationOptionVisibility
 ///
@@ -100,7 +100,7 @@ Widget _wrap(Widget child) => MaterialApp(
 );
 
 // ═════════════════════════════════════════════════════════════════════════════
-// CometChatMessageComposer.richTextToolbarActions
+// ConvoKitMessageComposer.richTextToolbarActions
 // ═════════════════════════════════════════════════════════════════════════════
 
 const _probeKey = Key('six-one-one-trailing-probe');
@@ -118,7 +118,7 @@ ComposerActionsBuilder _probeActions(_ToolbarLog log) =>
     (context, user, group, id) {
       log.builtFor = user;
       return [
-        CometChatMessageComposerAction(
+        ConvoKitMessageComposerAction(
           id: 'probe-6.1.1',
           title: 'Probe action 6.1.1',
           icon: const Icon(Icons.colorize, key: _probeKey),
@@ -182,7 +182,7 @@ Future<Map<String, Object?>> _observeTrailing(
   WidgetTester tester,
   _ToolbarLog log,
 ) async {
-  final toolbar = find.byType(CometChatRichTextToolbar);
+  final toolbar = find.byType(ConvoKitRichTextToolbar);
   final probe = find.descendant(of: toolbar, matching: find.byKey(_probeKey));
   final trailing = probe.evaluate().length;
   // The field the draft was typed into. The doc promises the action the LIVE
@@ -191,7 +191,7 @@ Future<Map<String, Object?>> _observeTrailing(
   final field = tester.widget<TextField>(
     find
         .descendant(
-          of: find.byType(CometChatMessageComposer),
+          of: find.byType(ConvoKitMessageComposer),
           matching: find.byType(TextField),
         )
         .first,
@@ -365,7 +365,7 @@ List<String> _menuLabels(WidgetTester tester) => tester
 // ─── Tests ───────────────────────────────────────────────────────────────────
 
 void main() {
-  group('CometChatMessageComposer richTextToolbarActions matrix', () {
+  group('ConvoKitMessageComposer richTextToolbarActions matrix', () {
     late _MockComposerRepository repo;
 
     setUp(() {
@@ -396,7 +396,7 @@ void main() {
         final observed = <_Run, Map<String, Object?>>{};
         for (final run in _Run.values) {
           final log = _ToolbarLog();
-          final composer = CometChatMessageComposer(
+          final composer = ConvoKitMessageComposer(
             user: _FakeUser(),
             layout: c.layout,
             richTextToolbarActions: run == _Run.subject

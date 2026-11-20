@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import "../../../../clean_architecture.dart";
 
-///[CometChatMessageInput] is a component that provides a skeleton layout for contents of [CometChatMessageComposer] like TextField, auxiliary options, primary button view and attachment options.
+///[CometChatMessageInput] is a component that provides a skeleton layout for contents of [ConvoKitMessageComposer] like TextField, auxiliary options, primary button view and attachment options.
 ///
 /// Two layout modes are supported, controlled by [layout]:
 ///

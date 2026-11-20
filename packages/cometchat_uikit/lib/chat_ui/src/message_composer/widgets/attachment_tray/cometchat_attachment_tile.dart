@@ -12,7 +12,7 @@ import '../../../../../shared_ui/src/clean_architecture/core/utils/platform_util
 import '../../../../../shared_ui/src/clean_architecture/core/utils/platform_utils/platform_image_utils.dart'
     as platform_image;
 
-/// One staged item in the [CometChatAttachmentTray]. Renders in one of three
+/// One staged item in the [ConvoKitAttachmentTray]. Renders in one of three
 /// modes:
 ///   • image / video → **square thumbnail** with a whole-tile status scrim
 ///   • audio         → **inline player card** — circular play button + seek
@@ -35,8 +35,8 @@ import '../../../../../shared_ui/src/clean_architecture/core/utils/platform_util
 /// An errored tile shows its reason two ways: on a hover-capable web browser,
 /// hovering reveals a plain [Tooltip]; tapping (any platform) surfaces the
 /// full actionable error snackbar (which carries the retry action).
-class CometChatAttachmentTile extends StatefulWidget {
-  const CometChatAttachmentTile({
+class ConvoKitAttachmentTile extends StatefulWidget {
+  const ConvoKitAttachmentTile({
     super.key,
     required this.tile,
     required this.onCancelOrRemove,
@@ -67,14 +67,14 @@ class CometChatAttachmentTile extends StatefulWidget {
   final double height;
 
   ///[style] customizes the tile — null fields fall back to theme defaults.
-  final CometChatAttachmentTrayStyle? style;
+  final ConvoKitAttachmentTrayStyle? style;
 
   @override
-  State<CometChatAttachmentTile> createState() =>
-      _CometChatAttachmentTileState();
+  State<ConvoKitAttachmentTile> createState() =>
+      _ConvoKitAttachmentTileState();
 }
 
-class _CometChatAttachmentTileState extends State<CometChatAttachmentTile> {
+class _ConvoKitAttachmentTileState extends State<ConvoKitAttachmentTile> {
   // Aliases so the render helpers below read the same as when this was a
   // StatelessWidget.
   AttachmentTile get tile => widget.tile;
@@ -87,7 +87,7 @@ class _CometChatAttachmentTileState extends State<CometChatAttachmentTile> {
   /// meta lines overflow the tile by 8px at 200%.
   double heightFor(BuildContext context) =>
       scaledDimension(context, widget.height);
-  CometChatAttachmentTrayStyle? get style => widget.style;
+  ConvoKitAttachmentTrayStyle? get style => widget.style;
 
   // Hover-capable only on a DESKTOP web browser. Native mobile and web opened
   // in a mobile browser (kIsWeb true but defaultTargetPlatform reports the
@@ -605,7 +605,7 @@ class _AudioTileCard extends StatefulWidget {
 
   final AttachmentTile tile;
   final double height;
-  final CometChatAttachmentTrayStyle? style;
+  final ConvoKitAttachmentTrayStyle? style;
 
   @override
   State<_AudioTileCard> createState() => _AudioTileCardState();
@@ -623,7 +623,7 @@ class _AudioTileCardState extends State<_AudioTileCard> {
   StreamSubscription<AudioBubbleEvents>? _eventSub;
 
   AttachmentTile get tile => widget.tile;
-  CometChatAttachmentTrayStyle? get style => widget.style;
+  ConvoKitAttachmentTrayStyle? get style => widget.style;
 
   @override
   void initState() {

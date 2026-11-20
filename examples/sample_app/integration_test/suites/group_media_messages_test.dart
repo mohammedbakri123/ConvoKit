@@ -39,7 +39,7 @@ import '../sdk_user_b/group_test_actions.dart';
 /// for each is the inverse path: B posts that media type into the group and A's
 /// list renders the corresponding bubble.
 ///
-/// The group chat reuses the exact same CometChatMessageComposer + attachment
+/// The group chat reuses the exact same ConvoKitMessageComposer + attachment
 /// sheet as the 1:1 chat, so the finder strategies from media_messages_test.dart
 /// (findAttachmentButton / openAttachmentSheet / assetImageFinder) work
 /// identically once a group conversation is open.

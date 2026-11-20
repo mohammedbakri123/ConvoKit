@@ -3,11 +3,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:convokit/cometchat_chat_uikit.dart';
 
-///[CometChatMessageComposerStyle] is a data class that has styling-related properties
-///to customize the appearance of [CometChatMessageComposer]
-class CometChatMessageComposerStyle
-    extends ThemeExtension<CometChatMessageComposerStyle> {
-  const CometChatMessageComposerStyle({
+///[ConvoKitMessageComposerStyle] is a data class that has styling-related properties
+///to customize the appearance of [ConvoKitMessageComposer]
+class ConvoKitMessageComposerStyle
+    extends ThemeExtension<ConvoKitMessageComposerStyle> {
+  const ConvoKitMessageComposerStyle({
     this.closeIconTint,
     this.backgroundColor,
     this.border,
@@ -85,12 +85,12 @@ class CometChatMessageComposerStyle
   ///[stickerIconColor] tints the default sticker button icon while the
   ///sticker keyboard is closed. Falls back to [auxiliaryButtonIconColor],
   ///then to the palette's `iconSecondary`. A custom
-  ///[CometChatMessageComposer.stickerIcon] is shown untinted.
+  ///[ConvoKitMessageComposer.stickerIcon] is shown untinted.
   final Color? stickerIconColor;
 
   ///[stickerActiveIconColor] tints the default sticker button icon while the
   ///sticker keyboard is open. Falls back to the palette's `primary`. A custom
-  ///[CometChatMessageComposer.stickerActiveIcon] is shown untinted.
+  ///[ConvoKitMessageComposer.stickerActiveIcon] is shown untinted.
   final Color? stickerActiveIconColor;
 
   ///[textStyle] sets the style of the text
@@ -115,7 +115,7 @@ class CometChatMessageComposerStyle
   final CometChatMentionsStyle? mentionsStyle;
 
   ///[suggestionListStyle] provides style to the mentions
-  final CometChatSuggestionListStyle? suggestionListStyle;
+  final ConvoKitSuggestionListStyle? suggestionListStyle;
 
   ///[mediaRecorderStyle] provides style to the media recorder
   final CometChatMediaRecorderStyle? mediaRecorderStyle;
@@ -124,13 +124,13 @@ class CometChatMessageComposerStyle
   final Color? filledColor;
 
   ///[richTextToolbarStyle] provides style to the rich text formatting toolbar
-  final CometChatRichTextToolbarStyle? richTextToolbarStyle;
+  final ConvoKitRichTextToolbarStyle? richTextToolbarStyle;
 
   ///[inlineAudioRecorderStyle] provides style to the inline audio recorder
   final CometChatInlineAudioRecorderStyle? inlineAudioRecorderStyle;
 
   ///[attachmentTrayStyle] styles the multi-attachment staging tray tiles
-  final CometChatAttachmentTrayStyle? attachmentTrayStyle;
+  final ConvoKitAttachmentTrayStyle? attachmentTrayStyle;
 
   ///[stickerKeyboardStyle] styles the sticker keyboard the composer opens.
   ///Its non-null fields win over a [CometChatStickerKeyboardStyle] registered
@@ -138,7 +138,7 @@ class CometChatMessageComposerStyle
   final CometChatStickerKeyboardStyle? stickerKeyboardStyle;
 
   @override
-  CometChatMessageComposerStyle copyWith({
+  ConvoKitMessageComposerStyle copyWith({
     Color? closeIconTint,
     Color? backgroundColor,
     BoxBorder? border,
@@ -162,15 +162,15 @@ class CometChatMessageComposerStyle
     Color? placeHolderTextColor,
     CometChatAttachmentOptionSheetStyle? attachmentOptionSheetStyle,
     CometChatMentionsStyle? mentionsStyle,
-    CometChatSuggestionListStyle? suggestionListStyle,
+    ConvoKitSuggestionListStyle? suggestionListStyle,
     CometChatMediaRecorderStyle? mediaRecorderStyle,
     Color? filledColor,
-    CometChatRichTextToolbarStyle? richTextToolbarStyle,
+    ConvoKitRichTextToolbarStyle? richTextToolbarStyle,
     CometChatInlineAudioRecorderStyle? inlineAudioRecorderStyle,
-    CometChatAttachmentTrayStyle? attachmentTrayStyle,
+    ConvoKitAttachmentTrayStyle? attachmentTrayStyle,
     CometChatStickerKeyboardStyle? stickerKeyboardStyle,
   }) {
-    return CometChatMessageComposerStyle(
+    return ConvoKitMessageComposerStyle(
       closeIconTint: closeIconTint ?? this.closeIconTint,
       backgroundColor: backgroundColor ?? this.backgroundColor,
       border: border ?? this.border,
@@ -217,10 +217,10 @@ class CometChatMessageComposerStyle
     );
   }
 
-  static CometChatMessageComposerStyle of(BuildContext context) =>
-      const CometChatMessageComposerStyle();
+  static ConvoKitMessageComposerStyle of(BuildContext context) =>
+      const ConvoKitMessageComposerStyle();
 
-  CometChatMessageComposerStyle merge(CometChatMessageComposerStyle? style) {
+  ConvoKitMessageComposerStyle merge(ConvoKitMessageComposerStyle? style) {
     if (style == null) return this;
     return copyWith(
       closeIconTint: style.closeIconTint,
@@ -259,11 +259,11 @@ class CometChatMessageComposerStyle
   }
 
   @override
-  CometChatMessageComposerStyle lerp(
-    CometChatMessageComposerStyle? other,
+  ConvoKitMessageComposerStyle lerp(
+    ConvoKitMessageComposerStyle? other,
     double t,
   ) {
-    return CometChatMessageComposerStyle(
+    return ConvoKitMessageComposerStyle(
       closeIconTint: Color.lerp(closeIconTint, other?.closeIconTint, t),
       backgroundColor: Color.lerp(backgroundColor, other?.backgroundColor, t),
       border: BoxBorder.lerp(border, other?.border, t),

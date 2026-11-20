@@ -82,7 +82,7 @@ void main() {
     });
   });
 
-  group('CometChatSuggestionListStyle', () {
+  group('ConvoKitSuggestionListStyle', () {
     testWidgets('every property reaches the suggestion rows', (tester) async {
       final controller = ScrollController();
       addTearDown(controller.dispose);
@@ -93,7 +93,7 @@ void main() {
             onItemTap: (_) {},
             onScrollToBottom: () {},
             scrollController: controller,
-            style: const CometChatSuggestionListStyle(
+            style: const ConvoKitSuggestionListStyle(
               backgroundColor: Color(0xFF215050),
               border: Border.fromBorderSide(
                 BorderSide(color: Color(0xFF215151), width: 3),

@@ -1,4 +1,4 @@
-/// Golden pins for [CometChatMessageComposer] in its resting states.
+/// Golden pins for [ConvoKitMessageComposer] in its resting states.
 ///
 /// The real composer is rendered. Its only outside dependency, the
 /// repository behind `MessageComposerServiceLocator`, is mocked the way the
@@ -78,7 +78,7 @@ void main() {
         size: _size,
         alignment: _alignment,
         drain: _drain,
-        builder: () => CometChatMessageComposer(user: _peer),
+        builder: () => ConvoKitMessageComposer(user: _peer),
       );
 
       lightDarkGolden(
@@ -87,7 +87,7 @@ void main() {
         size: _size,
         alignment: _alignment,
         drain: _drain,
-        builder: () => CometChatMessageComposer(user: _peer),
+        builder: () => ConvoKitMessageComposer(user: _peer),
         // Typed, not passed as `text`: the send button follows what the user
         // types, and a prefilled draft alone does not enable it.
         interact: (tester) async {
@@ -106,7 +106,7 @@ void main() {
         size: _size,
         alignment: _alignment,
         drain: _drain,
-        builder: () => CometChatMessageComposer(
+        builder: () => ConvoKitMessageComposer(
           user: _peer,
           enableRichTextFormatting: false,
         ),
@@ -144,7 +144,7 @@ void _previewGolden(
     alignment: _alignment,
     drain: _drain,
     builder: () =>
-        CometChatMessageComposer(user: _peer, stateCallBack: blocs.add),
+        ConvoKitMessageComposer(user: _peer, stateCallBack: blocs.add),
     interact: (tester) async {
       for (final bloc in blocs) {
         bloc.add(event());

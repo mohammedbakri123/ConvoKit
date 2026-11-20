@@ -167,14 +167,14 @@ void main() {
     });
   });
 
-  group('CometChatRichTextToolbarStyle', () {
+  group('ConvoKitRichTextToolbarStyle', () {
     testWidgets('every property reaches the toolbar buttons', (tester) async {
       await tester.pumpWidget(
         _host(
-          CometChatRichTextToolbar(
+          ConvoKitRichTextToolbar(
             onFormatTap: (_) {},
             activeFormats: const {FormatType.bold},
-            style: const CometChatRichTextToolbarStyle(
+            style: const ConvoKitRichTextToolbarStyle(
               backgroundColor: Color(0xFF222020),
               border: Border.fromBorderSide(
                 BorderSide(color: Color(0xFF222121), width: 3),
@@ -297,11 +297,11 @@ void _remainingStyles() {
     });
   });
 
-  group('CometChatRichTextToolbar', () {
+  group('ConvoKitRichTextToolbar', () {
     testWidgets('hiddenFormats removes those buttons', (tester) async {
       await tester.pumpWidget(
         _host(
-          CometChatRichTextToolbar(
+          ConvoKitRichTextToolbar(
             onFormatTap: (_) {},
             hiddenFormats: const {FormatType.bold},
           ),
@@ -317,7 +317,7 @@ void _remainingStyles() {
       await tester.pumpWidget(const SizedBox());
       await tester.pump();
       await tester.pumpWidget(
-        _host(CometChatRichTextToolbar(onFormatTap: (_) {})),
+        _host(ConvoKitRichTextToolbar(onFormatTap: (_) {})),
       );
       await tester.pump();
       expect(find.byType(Icon).evaluate().length, greaterThan(withHidden));

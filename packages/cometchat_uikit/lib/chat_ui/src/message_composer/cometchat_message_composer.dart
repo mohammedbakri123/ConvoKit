@@ -1,6 +1,6 @@
 /// Re-export file for backward compatibility.
 ///
-/// This file re-exports the CometChatMessageComposer widget from its new
+/// This file re-exports the ConvoKitMessageComposer widget from its new
 /// location in the widgets directory. This ensures existing imports continue
 /// to work without modification.
 ///

@@ -5,7 +5,7 @@ import '../../../cometchat_chat_uikit.dart';
 
 /// Public function to show emoji keyboard, returns the tapped emoji
 /// Opens as a small bottom sheet that doesn't cover the message overlay
-Future<String?> showCometChatEmojiKeyboard({
+Future<String?> showConvoKitEmojiKeyboard({
   required BuildContext context,
   required CometChatColorPalette colorPalette,
 }) {
@@ -20,21 +20,21 @@ Future<String?> showCometChatEmojiKeyboard({
       borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
     ),
     builder: (context) {
-      return CometChatEmojiKeyboard(colorPalette: colorPalette);
+      return ConvoKitEmojiKeyboard(colorPalette: colorPalette);
     },
   );
 }
 
-class CometChatEmojiKeyboard extends StatefulWidget {
-  const CometChatEmojiKeyboard({super.key, required this.colorPalette});
+class ConvoKitEmojiKeyboard extends StatefulWidget {
+  const ConvoKitEmojiKeyboard({super.key, required this.colorPalette});
 
   final CometChatColorPalette colorPalette;
 
   @override
-  State<CometChatEmojiKeyboard> createState() => _CometChatEmojiKeyboardState();
+  State<ConvoKitEmojiKeyboard> createState() => _ConvoKitEmojiKeyboardState();
 }
 
-class _CometChatEmojiKeyboardState extends State<CometChatEmojiKeyboard> {
+class _ConvoKitEmojiKeyboardState extends State<ConvoKitEmojiKeyboard> {
   int _currentCategory = 0;
   late ScrollController _scrollController;
 

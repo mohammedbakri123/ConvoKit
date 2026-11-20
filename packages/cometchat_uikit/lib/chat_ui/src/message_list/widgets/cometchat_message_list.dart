@@ -2144,14 +2144,14 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList>
       onTap: repliedMessageId != null && repliedMessageId > 0
           ? () => _jumpToMessage(repliedMessageId)
           : null,
-      child: CometChatMessagePreview(
+      child: ConvoKitMessagePreview(
         messagePreviewTitle: title,
         messagePreviewSubtitle: subtitle,
         subtitleWidget: formattedSubtitleWidget,
         message: repliedMessage,
         hideCloseButton: true,
         stickerUrl: stickerUrl,
-        messagePreviewStyle: CometChatMessagePreviewStyle(
+        messagePreviewStyle: ConvoKitMessagePreviewStyle(
           messagePreviewBackground: bgColor,
           messagePreviewBorder: isOutgoing
               ? Border(

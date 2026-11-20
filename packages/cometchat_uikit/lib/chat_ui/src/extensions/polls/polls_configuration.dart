@@ -6,7 +6,7 @@ import 'package:convokit/cometchat_chat_uikit.dart';
 /// deprecation message names the components that now configure what it
 /// described.
 @Deprecated(
-  'No API in v6 accepts an extension configuration object; the polls extension is enabled from the CometChat Dashboard. Style the poll bubble with pollsBubbleStyle on CometChatIncomingMessageBubbleStyle and CometChatOutgoingMessageBubbleStyle, replace or hide the composer\'s poll option with CometChatMessageComposer.attachmentOptions (id ExtensionType.extensionPoll) or hidePollsOption, and style the option sheet with CometChatMessageComposerStyle.attachmentOptionSheetStyle. The create-poll sheet\'s title, placeholder and help texts and its icons have no replacement. Will be removed in 7.0.0.',
+  'No API in v6 accepts an extension configuration object; the polls extension is enabled from the CometChat Dashboard. Style the poll bubble with pollsBubbleStyle on CometChatIncomingMessageBubbleStyle and CometChatOutgoingMessageBubbleStyle, replace or hide the composer\'s poll option with ConvoKitMessageComposer.attachmentOptions (id ExtensionType.extensionPoll) or hidePollsOption, and style the option sheet with ConvoKitMessageComposerStyle.attachmentOptionSheetStyle. The create-poll sheet\'s title, placeholder and help texts and its icons have no replacement. Will be removed in 7.0.0.',
 )
 class PollsConfiguration {
   /// Creates a [PollsConfiguration].

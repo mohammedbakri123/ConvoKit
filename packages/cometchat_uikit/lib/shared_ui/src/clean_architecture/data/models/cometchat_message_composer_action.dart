@@ -3,11 +3,11 @@ import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
 import '../../../../cometchat_uikit_shared.dart'
     show CometChatAttachmentOptionSheetStyle;
 
-///[CometChatMessageComposerAction] is the type of menu items allowed to be displayed `CometChatMessageComposer`
+///[ConvoKitMessageComposerAction] is the type of menu items allowed to be displayed `ConvoKitMessageComposer`
 ///
 /// ```dart
 ///
-/// final CometChatMessageComposerAction exampleMessageComposerAction = CometChatMessageComposerAction(
+/// final ConvoKitMessageComposerAction exampleMessageComposerAction = ConvoKitMessageComposerAction(
 ///   id: "example",
 ///   title: "Example Action",
 ///   icon: Icon(Icons.example),
@@ -20,9 +20,9 @@ import '../../../../cometchat_uikit_shared.dart'
 /// );
 ///
 /// ```
-class CometChatMessageComposerAction {
-  ///[CometChatMessageComposerAction] constructor requires [id] and [title] while initializing.
-  const CometChatMessageComposerAction({
+class ConvoKitMessageComposerAction {
+  ///[ConvoKitMessageComposerAction] constructor requires [id] and [title] while initializing.
+  const ConvoKitMessageComposerAction({
     required this.id,
     required this.title,
     this.icon,
@@ -61,6 +61,6 @@ class CometChatMessageComposerAction {
 
   @override
   String toString() {
-    return 'CometChatMessageComposerOption{id: $id, title: $title,icon: $icon, style: $style,}';
+    return 'ConvoKitMessageComposerOption{id: $id, title: $title,icon: $icon, style: $style,}';
   }
 }

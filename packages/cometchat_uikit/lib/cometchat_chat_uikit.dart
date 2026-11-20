@@ -137,10 +137,10 @@ export 'chat_ui/src/message_composer/cometchat_suggestion_list_style.dart';
 
 // Rich Text Formatting
 export 'chat_ui/src/message_composer/widgets/rich_text_toolbar/rich_text_toolbar.dart';
-// FormatType and friends: CometChatMessageComposer.hideRichTextFormattingOptions
-// and CometChatRichTextToolbar both take them, so they have to be nameable.
+// FormatType and friends: ConvoKitMessageComposer.hideRichTextFormattingOptions
+// and ConvoKitRichTextToolbar both take them, so they have to be nameable.
 export 'shared_ui/src/rich_text_formatting/domain/entities/entities.dart';
-// CometChatMessageComposerStyle.inlineAudioRecorderStyle is public, so its type
+// ConvoKitMessageComposerStyle.inlineAudioRecorderStyle is public, so its type
 // has to be too.
 export 'chat_ui/src/message_composer/widgets/inline_audio_recorder/inline_audio_recorder.dart';
 

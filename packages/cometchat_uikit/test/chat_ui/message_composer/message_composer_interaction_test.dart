@@ -193,7 +193,7 @@ MessageComposerBloc _makeBloc(
 }
 
 // ---------------------------------------------------------------------------
-// Tests — Kotlin CometChatMessageComposerInteractionTest equivalent
+// Tests — Kotlin ConvoKitMessageComposerInteractionTest equivalent
 // ---------------------------------------------------------------------------
 
 void main() {

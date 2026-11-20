@@ -70,7 +70,7 @@ class AdditionalConfigurations {
 
   /// Whether the stickers button is hidden.
   @Deprecated(
-    'Has no effect. Use CometChatMessageComposer.hideStickersButton. Will be removed in 7.0.0.',
+    'Has no effect. Use ConvoKitMessageComposer.hideStickersButton. Will be removed in 7.0.0.',
   )
   final bool? hideStickersButton;
 

@@ -203,13 +203,13 @@ void main() {
       );
     });
   });
-  group('CometChatMessagePreview', () {
+  group('ConvoKitMessagePreview', () {
     testWidgets('every property reaches the preview', (tester) async {
       _ignorePlatformOnlyErrors();
       var closed = false;
       await tester.pumpWidget(
         _host(
-          CometChatMessagePreview(
+          ConvoKitMessagePreview(
             messagePreviewTitle: 'Replying to Alice',
             messagePreviewSubtitle: 'hello',
             message: _message(),
@@ -221,7 +221,7 @@ void main() {
             ),
             hideCloseButton: false,
             onCloseClick: () => closed = true,
-            messagePreviewStyle: const CometChatMessagePreviewStyle(
+            messagePreviewStyle: const ConvoKitMessagePreviewStyle(
               messagePreviewTitleStyle: TextStyle(fontSize: 27),
             ),
           ),
@@ -256,7 +256,7 @@ void main() {
     testWidgets('hideCloseButton removes the close control', (tester) async {
       await tester.pumpWidget(
         _host(
-          const CometChatMessagePreview(
+          const ConvoKitMessagePreview(
             messagePreviewTitle: 'Replying to Alice',
             messagePreviewSubtitle: 'hello',
             hideCloseButton: true,

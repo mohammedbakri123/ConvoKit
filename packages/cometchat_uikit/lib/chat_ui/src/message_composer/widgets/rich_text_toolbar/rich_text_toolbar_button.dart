@@ -28,14 +28,14 @@ class RichTextToolbarButton extends StatelessWidget {
   final bool isDisabled;
 
   /// Custom styling for the button
-  final CometChatRichTextToolbarStyle? style;
+  final ConvoKitRichTextToolbarStyle? style;
 
   /// Focus order for keyboard navigation
   final int? focusOrder;
 
   @override
   Widget build(BuildContext context) {
-    final effectiveStyle = CometChatRichTextToolbarStyle.of(
+    final effectiveStyle = ConvoKitRichTextToolbarStyle.of(
       context,
     ).merge(style);
 

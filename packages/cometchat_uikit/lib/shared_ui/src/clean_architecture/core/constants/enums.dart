@@ -47,10 +47,10 @@ enum SelectionMode { single, multiple, none }
 ///[ActivateSelection] is an enum that controls on what gesture selection will work
 enum ActivateSelection { onClick, onLongClick }
 
-///[AuxiliaryButtonsAlignment] is an enum that defines the position of the auxiliary buttons in the [CometChatMessageComposer]
+///[AuxiliaryButtonsAlignment] is an enum that defines the position of the auxiliary buttons in the [ConvoKitMessageComposer]
 enum AuxiliaryButtonsAlignment { left, right }
 
-/// [CometChatComposerLayout] controls the skeleton layout of [CometChatMessageComposer].
+/// [CometChatComposerLayout] controls the skeleton layout of [ConvoKitMessageComposer].
 ///
 /// * [singleLine] (default) — text field and all buttons share a single row,
 ///   matching the v6 default layout.
@@ -63,7 +63,7 @@ enum AuxiliaryButtonsAlignment { left, right }
 /// preview) — all existing props continue to work in both layouts.
 enum CometChatComposerLayout { singleLine, doubleLine }
 
-///[PreviewMessageMode] is an enum that defines the nature of the message preview that needs to be shown in the [CometChatMessageComposer]
+///[PreviewMessageMode] is an enum that defines the nature of the message preview that needs to be shown in the [ConvoKitMessageComposer]
 enum PreviewMessageMode { edit, reply, none }
 
 enum TabVisibility { users, groups, usersAndGroups }

@@ -358,11 +358,11 @@ void main() {
 
       await tester.tap(find.byIcon(Icons.add_circle_outline));
       await tester.pumpAndSettle();
-      expect(find.byType(CometChatEmojiKeyboard), findsOneWidget);
+      expect(find.byType(ConvoKitEmojiKeyboard), findsOneWidget);
 
       // Pick an emoji: the keyboard resolves its sheet with the chosen one.
       Navigator.of(
-        tester.element(find.byType(CometChatEmojiKeyboard)),
+        tester.element(find.byType(ConvoKitEmojiKeyboard)),
       ).pop('🚀');
       await tester.pumpAndSettle();
 
@@ -377,7 +377,7 @@ void main() {
       await tester.tap(find.byIcon(Icons.add_circle_outline));
       await tester.pumpAndSettle();
 
-      Navigator.of(tester.element(find.byType(CometChatEmojiKeyboard))).pop();
+      Navigator.of(tester.element(find.byType(ConvoKitEmojiKeyboard))).pop();
       await tester.pumpAndSettle();
 
       expect(reacted, isNull);

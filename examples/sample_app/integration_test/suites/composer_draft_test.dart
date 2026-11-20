@@ -18,7 +18,7 @@ import '../sdk_user_b/group_actions.dart';
 /// is no draft store anywhere under `chat_uikit/lib` or `master_app/lib`
 /// (a case-insensitive search for "draft" finds nothing), the composer owns its
 /// text controllers and disposes them with the route, and
-/// `messages_screen.dart` never passes `CometChatMessageComposer.text`. So
+/// `messages_screen.dart` never passes `ConvoKitMessageComposer.text`. So
 /// unsent text is lost on navigation — same as iOS, which raised it as a
 /// product question. E2E-113 pins today's behaviour strictly; if drafts are
 /// added on purpose, this is the test to flip (expect the draft to come back),

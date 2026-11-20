@@ -134,7 +134,7 @@ class _ThreadScreenState extends State<ThreadScreen> {
                   ),
                 ),
               ),
-              CometChatMessageComposer(
+              ConvoKitMessageComposer(
                 user: widget.user,
                 group: widget.group,
                 parentMessageId: widget.message.id,

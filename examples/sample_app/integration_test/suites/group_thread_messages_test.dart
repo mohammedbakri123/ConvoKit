@@ -140,7 +140,7 @@ void main() {
 
       final opened = await openThread(tester, parent);
       if (opened) {
-        // The thread view (ThreadScreen) has its own CometChatMessageComposer,
+        // The thread view (ThreadScreen) has its own ConvoKitMessageComposer,
         // which renders a TextFormField. The "Thread" title is also present.
         final composer = MessageHelper.findComposer();
         expect(composer.evaluate().isNotEmpty, isTrue,
@@ -187,7 +187,7 @@ void main() {
 
     // ── GRP-047 ───────────────────────────────────────────────────────────────
     // Send a reply from the GROUP thread's own composer
-    // (CometChatMessageComposer(group:_group, parentMessageId:...)). The reply
+    // (ConvoKitMessageComposer(group:_group, parentMessageId:...)). The reply
     // should appear in the thread list.
     testWidgets('GRP-047: Send a reply in a group thread', (tester) async {
       await openGroup(tester);

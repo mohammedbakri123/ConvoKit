@@ -580,7 +580,7 @@ class _CometChatMessageActionOverlayState
     return GestureDetector(
       onTap: () async {
         // Show emoji keyboard and wait for selection
-        final selectedEmoji = await showCometChatEmojiKeyboard(
+        final selectedEmoji = await showConvoKitEmojiKeyboard(
           context: context,
           colorPalette: colorPalette,
         );

@@ -1,4 +1,4 @@
-/// Thumbnail routing and live-player behaviour of [CometChatAttachmentTile].
+/// Thumbnail routing and live-player behaviour of [ConvoKitAttachmentTile].
 ///
 /// `attachment_tile_test.dart` covers the file/audio cards' *status* matrix with
 /// no preview source and no player. This file covers the other half: which
@@ -73,13 +73,13 @@ Finder _svgBadge(String asset) => find.byWidgetPredicate(
 );
 
 void main() {
-  group('CometChatAttachmentTile — thumbnail source routing', () {
+  group('ConvoKitAttachmentTile — thumbnail source routing', () {
     testWidgets('an image with no source shows the placeholder art only', (
       tester,
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatAttachmentTile(
+          ConvoKitAttachmentTile(
             tile: _tile(name: 'pic.png', mime: 'image/png'),
             onCancelOrRemove: () {},
           ),
@@ -95,7 +95,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatAttachmentTile(
+          ConvoKitAttachmentTile(
             tile: _tile(name: 'pic.png', mime: 'image/png', thumbUrl: ''),
             onCancelOrRemove: () {},
           ),
@@ -111,7 +111,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatAttachmentTile(
+          ConvoKitAttachmentTile(
             tile: _tile(
               name: 'pic.png',
               mime: 'image/png',
@@ -138,7 +138,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatAttachmentTile(
+          ConvoKitAttachmentTile(
             tile: _tile(
               name: 'pic.png',
               mime: 'image/png',
@@ -160,7 +160,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatAttachmentTile(
+          ConvoKitAttachmentTile(
             tile: _tile(
               name: 'pic.png',
               mime: 'image/png',
@@ -180,7 +180,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatAttachmentTile(
+          ConvoKitAttachmentTile(
             tile: _tile(
               name: 'pic.png',
               mime: 'image/png',
@@ -212,7 +212,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatAttachmentTile(
+          ConvoKitAttachmentTile(
             tile: _tile(
               name: 'clip.mp4',
               mime: 'video/mp4',
@@ -245,7 +245,7 @@ void main() {
       // source and no image kind.
       await tester.pumpWidget(
         _wrap(
-          CometChatAttachmentTile(
+          ConvoKitAttachmentTile(
             tile: _tile(
               name: 'clip.mkv',
               mime: 'video/x-matroska',
@@ -266,7 +266,7 @@ void main() {
       // the layout) but the thumbnail falls to the audio glyph.
       await tester.pumpWidget(
         _wrap(
-          CometChatAttachmentTile(
+          ConvoKitAttachmentTile(
             tile: _tile(
               name: 'song.mp3',
               mime: 'image/png',
@@ -282,13 +282,13 @@ void main() {
     });
   });
 
-  group('CometChatAttachmentTile — media status scrim', () {
+  group('ConvoKitAttachmentTile — media status scrim', () {
     testWidgets('uploading shows a determinate ring once progress arrives', (
       tester,
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatAttachmentTile(
+          ConvoKitAttachmentTile(
             tile: _tile(
               name: 'pic.png',
               mime: 'image/png',
@@ -312,7 +312,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatAttachmentTile(
+          ConvoKitAttachmentTile(
             tile: _tile(
               name: 'pic.png',
               mime: 'image/png',
@@ -334,7 +334,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatAttachmentTile(
+          ConvoKitAttachmentTile(
             tile: _tile(
               name: 'pic.png',
               mime: 'image/png',
@@ -359,7 +359,7 @@ void main() {
       var retried = false;
       await tester.pumpWidget(
         _wrap(
-          CometChatAttachmentTile(
+          ConvoKitAttachmentTile(
             tile: _tile(
               name: 'pic.png',
               mime: 'image/png',
@@ -385,7 +385,7 @@ void main() {
       var retried = false;
       await tester.pumpWidget(
         _wrap(
-          CometChatAttachmentTile(
+          ConvoKitAttachmentTile(
             tile: _tile(
               name: 'pic.png',
               mime: 'image/png',
@@ -409,7 +409,7 @@ void main() {
       var opened = false;
       await tester.pumpWidget(
         _wrap(
-          CometChatAttachmentTile(
+          ConvoKitAttachmentTile(
             tile: _tile(name: 'pic.png', mime: 'image/png'),
             onCancelOrRemove: () {},
             onTap: () => opened = true,
@@ -423,7 +423,7 @@ void main() {
     });
   });
 
-  group('CometChatAttachmentTile — staged audio with a live player', () {
+  group('ConvoKitAttachmentTile — staged audio with a live player', () {
     late FakeVideoPlayerPlatform platform;
 
     setUp(() {
@@ -441,7 +441,7 @@ void main() {
     }) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatAttachmentTile(
+          ConvoKitAttachmentTile(
             tile: _tile(
               name: 'voice.m4a',
               mime: 'audio/mp4',
@@ -564,7 +564,7 @@ void main() {
 
       await tester.pumpWidget(
         _wrap(
-          CometChatAttachmentTile(
+          ConvoKitAttachmentTile(
             tile: _tile(
               name: 'voice.m4a',
               mime: 'audio/mp4',

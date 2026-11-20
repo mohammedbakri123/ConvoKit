@@ -20,7 +20,7 @@ import '../../../../../cometchat_uikit_shared.dart'
         CometChatCallBubbleStyle,
         CometChatModerationStyle;
 import '../../../../../../chat_ui/src/message_composer/cometchat_message_preview.dart'
-    show CometChatMessagePreviewStyle;
+    show ConvoKitMessagePreviewStyle;
 
 ///[CometChatOutgoingMessageBubbleStyle] is a data class that has styling-related properties
 ///to customize the appearance of the outgoing message bubble
@@ -44,13 +44,13 @@ class CometChatOutgoingMessageBubbleStyle
     extends ThemeExtension<CometChatOutgoingMessageBubbleStyle> {
   /// Style for the quoted-message preview inside an outgoing bubble that is
   /// a reply. Each property set here overrides the kit's default for it.
-  final CometChatMessagePreviewStyle? messagePreviewStyle;
+  final ConvoKitMessagePreviewStyle? messagePreviewStyle;
 
   // Deprecated in 6.2.0: no effect, removed in 7.0.0.
 
   /// Style for the exception view of a sent message.
   @Deprecated(
-    'Has no effect. The outgoing bubble has no exception view: style the moderation banner with moderationStyle, and attachment-size errors surface in the composer (CometChatMessageComposer.attachmentErrorAlertStyle). Will be removed in 7.0.0.',
+    'Has no effect. The outgoing bubble has no exception view: style the moderation banner with moderationStyle, and attachment-size errors surface in the composer (ConvoKitMessageComposer.attachmentErrorAlertStyle). Will be removed in 7.0.0.',
   )
   final CometChatExceptionStyle? exceptionStyle;
 
@@ -204,7 +204,7 @@ class CometChatOutgoingMessageBubbleStyle
     CometChatCallBubbleStyle? voiceCallBubbleStyle,
     CometChatCallBubbleStyle? videoCallBubbleStyle,
     CometChatModerationStyle? moderationStyle,
-    CometChatMessagePreviewStyle? messagePreviewStyle,
+    ConvoKitMessagePreviewStyle? messagePreviewStyle,
   }) {
     return CometChatOutgoingMessageBubbleStyle(
       messageBubbleBackgroundImage:

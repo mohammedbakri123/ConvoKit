@@ -544,7 +544,7 @@ class _MessagesScreenState extends State<MessagesScreen>
 
   Widget _buildComposer() {
     final t = _toggles;
-    return CometChatMessageComposer(
+    return ConvoKitMessageComposer(
       user: _user,
       group: _group,
       parentMessageId: widget.parentMessage?.id ?? 0,
@@ -567,7 +567,7 @@ class _MessagesScreenState extends State<MessagesScreen>
       // All colour logic is consumer code (§1.1.1): the kit only exposes the
       // slot, the controller, and getMentionRanges.
       richTextToolbarActions: (context, user, group, id) => [
-        CometChatMessageComposerAction(
+        ConvoKitMessageComposerAction(
           id: 'text_color',
           title: 'Text colour',
           icon: const Icon(Icons.palette_outlined),

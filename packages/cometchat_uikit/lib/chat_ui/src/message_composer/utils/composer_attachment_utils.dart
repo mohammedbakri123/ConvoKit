@@ -5,13 +5,13 @@ import '../../../../shared_ui/cometchat_uikit_shared.dart';
 /// Utility class for message composer attachment options.
 /// These methods are only used by the composer.
 class ComposerAttachmentUtils {
-  static CometChatMessageComposerAction takePhotoOption(
+  static ConvoKitMessageComposerAction takePhotoOption(
     BuildContext context,
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
     CometChatAttachmentOptionSheetStyle? style,
   ) {
-    return CometChatMessageComposerAction(
+    return ConvoKitMessageComposerAction(
       id: MessageTypeConstants.takePhoto,
       title: Translations.of(context).camera,
       icon: Icon(
@@ -35,13 +35,13 @@ class ComposerAttachmentUtils {
     );
   }
 
-  static CometChatMessageComposerAction attachPhoto(
+  static ConvoKitMessageComposerAction attachPhoto(
     BuildContext context,
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
     CometChatAttachmentOptionSheetStyle? style,
   ) {
-    return CometChatMessageComposerAction(
+    return ConvoKitMessageComposerAction(
       id: MessageTypeConstants.attachPhoto,
       title: Translations.of(context).attachImage,
       icon: Icon(
@@ -65,13 +65,13 @@ class ComposerAttachmentUtils {
     );
   }
 
-  static CometChatMessageComposerAction attachVideo(
+  static ConvoKitMessageComposerAction attachVideo(
     BuildContext context,
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
     CometChatAttachmentOptionSheetStyle? style,
   ) {
-    return CometChatMessageComposerAction(
+    return ConvoKitMessageComposerAction(
       id: MessageTypeConstants.attachVideo,
       title: Translations.of(context).attachVideo,
       icon: Icon(
@@ -95,13 +95,13 @@ class ComposerAttachmentUtils {
     );
   }
 
-  static CometChatMessageComposerAction audioAttachmentOption(
+  static ConvoKitMessageComposerAction audioAttachmentOption(
     BuildContext context,
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
     CometChatAttachmentOptionSheetStyle? style,
   ) {
-    return CometChatMessageComposerAction(
+    return ConvoKitMessageComposerAction(
       id: MessageTypeConstants.audio,
       title: Translations.of(context).attachAudio,
       icon: Icon(
@@ -125,13 +125,13 @@ class ComposerAttachmentUtils {
     );
   }
 
-  static CometChatMessageComposerAction fileAttachmentOption(
+  static ConvoKitMessageComposerAction fileAttachmentOption(
     BuildContext context,
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
     CometChatAttachmentOptionSheetStyle? style,
   ) {
-    return CometChatMessageComposerAction(
+    return ConvoKitMessageComposerAction(
       id: MessageTypeConstants.file,
       title: Translations.of(context).attachDocument,
       icon: Icon(
@@ -155,13 +155,13 @@ class ComposerAttachmentUtils {
     );
   }
 
-  static CometChatMessageComposerAction collaborativeDocumentOption(
+  static ConvoKitMessageComposerAction collaborativeDocumentOption(
     BuildContext context,
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
     CometChatAttachmentOptionSheetStyle? style,
   ) {
-    return CometChatMessageComposerAction(
+    return ConvoKitMessageComposerAction(
       id: ExtensionType.document,
       title: Translations.of(context).collaborativeDocument,
       icon: Image.asset(
@@ -187,13 +187,13 @@ class ComposerAttachmentUtils {
     );
   }
 
-  static CometChatMessageComposerAction collaborativeWhiteboardOption(
+  static ConvoKitMessageComposerAction collaborativeWhiteboardOption(
     BuildContext context,
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
     CometChatAttachmentOptionSheetStyle? style,
   ) {
-    return CometChatMessageComposerAction(
+    return ConvoKitMessageComposerAction(
       id: ExtensionType.whiteboard,
       title: Translations.of(context).collaborativeWhiteboard,
       icon: Image.asset(
@@ -220,13 +220,13 @@ class ComposerAttachmentUtils {
     );
   }
 
-  static CometChatMessageComposerAction pollsOption(
+  static ConvoKitMessageComposerAction pollsOption(
     BuildContext context,
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
     CometChatAttachmentOptionSheetStyle? style,
   ) {
-    return CometChatMessageComposerAction(
+    return ConvoKitMessageComposerAction(
       id: ExtensionType.extensionPoll,
       title: Translations.of(context).poll,
       icon: Image.asset(
@@ -252,7 +252,7 @@ class ComposerAttachmentUtils {
     );
   }
 
-  static List<CometChatMessageComposerAction> getAttachmentOptions(
+  static List<ConvoKitMessageComposerAction> getAttachmentOptions(
     BuildContext context,
     Map<String, dynamic>? id,
     AdditionalConfigurations? additionalConfigurations,
@@ -260,7 +260,7 @@ class ComposerAttachmentUtils {
     final colorPalette = CometChatThemeHelper.getColorPalette(context);
     final typography = CometChatThemeHelper.getTypography(context);
     final style = additionalConfigurations?.attachmentOptionSheetStyle;
-    List<CometChatMessageComposerAction> actions = [];
+    List<ConvoKitMessageComposerAction> actions = [];
 
     if (additionalConfigurations?.hideTakPhotoOption != true && !kIsWeb) {
       actions.add(takePhotoOption(context, colorPalette, typography, style));

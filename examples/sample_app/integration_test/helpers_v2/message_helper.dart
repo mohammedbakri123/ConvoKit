@@ -6,7 +6,7 @@ import 'pump_helper.dart';
 /// Helpers for interacting with the message composer and message list.
 ///
 /// These operate on the MessagesScreen's UI elements:
-///   - CometChatMessageComposer: text input + send button
+///   - ConvoKitMessageComposer: text input + send button
 ///   - ConvoKitMessageList: message bubbles
 ///   - Action sheet: long-press options (edit, delete, react, thread)
 class MessageHelper {

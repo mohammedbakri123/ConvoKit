@@ -36,14 +36,14 @@ BoxBorder? _cardBorder(WidgetTester tester) {
 }
 
 void main() {
-  group('CometChatAttachmentTile — file card states', () {
+  group('ConvoKitAttachmentTile — file card states', () {
     testWidgets('done: name + type subtitle, type glyph, no spinner, badge', (
       tester,
     ) async {
       var removed = false;
       await tester.pumpWidget(
         _wrap(
-          CometChatAttachmentTile(
+          ConvoKitAttachmentTile(
             tile: _pdfTile(AttachmentTileStatus.done),
             onCancelOrRemove: () => removed = true,
           ),
@@ -68,7 +68,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatAttachmentTile(
+          ConvoKitAttachmentTile(
             tile: _pdfTile(AttachmentTileStatus.uploading),
             onCancelOrRemove: () {},
           ),
@@ -90,7 +90,7 @@ void main() {
         var errorTapped = false;
         await tester.pumpWidget(
           _wrap(
-            CometChatAttachmentTile(
+            ConvoKitAttachmentTile(
               tile: _pdfTile(AttachmentTileStatus.failed),
               onCancelOrRemove: () {},
               onErrorInteract: () => errorTapped = true,
@@ -123,7 +123,7 @@ void main() {
         var errorTapped = false;
         await tester.pumpWidget(
           _wrap(
-            CometChatAttachmentTile(
+            ConvoKitAttachmentTile(
               tile: _pdfTile(AttachmentTileStatus.rejected),
               onCancelOrRemove: () {},
               onErrorInteract: () => errorTapped = true,
@@ -154,7 +154,7 @@ void main() {
       var errorTapped = false;
       await tester.pumpWidget(
         _wrap(
-          CometChatAttachmentTile(
+          ConvoKitAttachmentTile(
             tile: _pdfTile(AttachmentTileStatus.failed),
             onCancelOrRemove: () => removed = true,
             onErrorInteract: () => errorTapped = true,
@@ -179,7 +179,7 @@ void main() {
         status: AttachmentTileStatus.done,
       );
       await tester.pumpWidget(
-        _wrap(CometChatAttachmentTile(tile: tile, onCancelOrRemove: () {})),
+        _wrap(ConvoKitAttachmentTile(tile: tile, onCancelOrRemove: () {})),
       );
 
       expect(tester.takeException(), isNull);
@@ -198,7 +198,7 @@ void main() {
           status: AttachmentTileStatus.done,
         );
         await tester.pumpWidget(
-          _wrap(CometChatAttachmentTile(tile: tile, onCancelOrRemove: () {})),
+          _wrap(ConvoKitAttachmentTile(tile: tile, onCancelOrRemove: () {})),
         );
 
         expect(find.text('FILE'), findsOneWidget);
@@ -207,7 +207,7 @@ void main() {
     );
   });
 
-  group('CometChatAttachmentTile — video duration pill', () {
+  group('ConvoKitAttachmentTile — video duration pill', () {
     testWidgets('shows m:ss when a video tile has a known duration', (
       tester,
     ) async {
@@ -220,7 +220,7 @@ void main() {
         durationMillis: 65 * 1000, // 1:05
       );
       await tester.pumpWidget(
-        _wrap(CometChatAttachmentTile(tile: tile, onCancelOrRemove: () {})),
+        _wrap(ConvoKitAttachmentTile(tile: tile, onCancelOrRemove: () {})),
       );
       expect(find.text('1:05'), findsOneWidget);
     });
@@ -236,13 +236,13 @@ void main() {
         status: AttachmentTileStatus.done,
       );
       await tester.pumpWidget(
-        _wrap(CometChatAttachmentTile(tile: tile, onCancelOrRemove: () {})),
+        _wrap(ConvoKitAttachmentTile(tile: tile, onCancelOrRemove: () {})),
       );
       expect(find.textContaining(':'), findsNothing);
     });
   });
 
-  group('CometChatAttachmentTile — GIF tag', () {
+  group('ConvoKitAttachmentTile — GIF tag', () {
     testWidgets('gif image tile shows the GIF corner tag', (tester) async {
       final tile = AttachmentTile(
         fileId: 'g1',
@@ -252,7 +252,7 @@ void main() {
         status: AttachmentTileStatus.done,
       );
       await tester.pumpWidget(
-        _wrap(CometChatAttachmentTile(tile: tile, onCancelOrRemove: () {})),
+        _wrap(ConvoKitAttachmentTile(tile: tile, onCancelOrRemove: () {})),
       );
       expect(find.text('GIF'), findsOneWidget);
     });
@@ -266,13 +266,13 @@ void main() {
         status: AttachmentTileStatus.done,
       );
       await tester.pumpWidget(
-        _wrap(CometChatAttachmentTile(tile: tile, onCancelOrRemove: () {})),
+        _wrap(ConvoKitAttachmentTile(tile: tile, onCancelOrRemove: () {})),
       );
       expect(find.text('GIF'), findsNothing);
     });
   });
 
-  group('CometChatAttachmentTile — tray sizing', () {
+  group('ConvoKitAttachmentTile — tray sizing', () {
     testWidgets(
       'media overlay stays within the 64px body under tray constraints',
       (tester) async {
@@ -293,7 +293,7 @@ void main() {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
-                  CometChatAttachmentTile(tile: tile, onCancelOrRemove: () {}),
+                  ConvoKitAttachmentTile(tile: tile, onCancelOrRemove: () {}),
                 ],
               ),
             ),
@@ -313,7 +313,7 @@ void main() {
     );
   });
 
-  group('CometChatAttachmentTile — audio player card states', () {
+  group('ConvoKitAttachmentTile — audio player card states', () {
     // thumbUrl deliberately null: no VideoPlayerController is created, so the
     // card renders its inert-player UI (zeroed slider + placeholder clock).
     AttachmentTile audioTile(AttachmentTileStatus status) => AttachmentTile(
@@ -332,7 +332,7 @@ void main() {
       var removed = false;
       await tester.pumpWidget(
         _wrap(
-          CometChatAttachmentTile(
+          ConvoKitAttachmentTile(
             tile: audioTile(AttachmentTileStatus.done),
             onCancelOrRemove: () => removed = true,
           ),
@@ -356,7 +356,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatAttachmentTile(
+          ConvoKitAttachmentTile(
             tile: audioTile(AttachmentTileStatus.uploading),
             onCancelOrRemove: () {},
           ),
@@ -377,7 +377,7 @@ void main() {
         var errorTapped = false;
         await tester.pumpWidget(
           _wrap(
-            CometChatAttachmentTile(
+            ConvoKitAttachmentTile(
               tile: audioTile(AttachmentTileStatus.failed),
               onCancelOrRemove: () {},
               onErrorInteract: () => errorTapped = true,
@@ -409,7 +409,7 @@ void main() {
         var errorTapped = false;
         await tester.pumpWidget(
           _wrap(
-            CometChatAttachmentTile(
+            ConvoKitAttachmentTile(
               tile: audioTile(AttachmentTileStatus.rejected),
               onCancelOrRemove: () {},
               onErrorInteract: () => errorTapped = true,

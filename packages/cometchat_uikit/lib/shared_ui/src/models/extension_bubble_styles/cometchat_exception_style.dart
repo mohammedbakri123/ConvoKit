@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 ///[CometChatExceptionStyle] is a data class that has styling-related properties for exception view
 @Deprecated(
-  'Nothing reads it; the outgoing bubble has no exception view. Style the moderation banner with CometChatModerationStyle (or moderationStyle on CometChatOutgoingMessageBubbleStyle); an attachment that is too large is rejected in the composer, styled by CometChatMessageComposer.attachmentErrorAlertStyle. Will be removed in 7.0.0.',
+  'Nothing reads it; the outgoing bubble has no exception view. Style the moderation banner with CometChatModerationStyle (or moderationStyle on CometChatOutgoingMessageBubbleStyle); an attachment that is too large is rejected in the composer, styled by ConvoKitMessageComposer.attachmentErrorAlertStyle. Will be removed in 7.0.0.',
 )
 class CometChatExceptionStyle extends ThemeExtension<CometChatExceptionStyle> {
   /// Creates a [CometChatExceptionStyle].

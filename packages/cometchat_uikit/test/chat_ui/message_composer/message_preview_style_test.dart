@@ -1,4 +1,4 @@
-/// [CometChatMessagePreviewStyle]'s three theme-extension operations —
+/// [ConvoKitMessagePreviewStyle]'s three theme-extension operations —
 /// `merge`, `copyWith` and `lerp` — plus the default close button that only
 /// renders when the host supplies no icon of its own.
 ///
@@ -12,8 +12,8 @@ import 'package:flutter_test/flutter_test.dart';
 const _a = Color(0xFF000000);
 const _b = Color(0xFFFFFFFF);
 
-CometChatMessagePreviewStyle _full({Color color = _a, double fontSize = 10}) =>
-    CometChatMessagePreviewStyle(
+ConvoKitMessagePreviewStyle _full({Color color = _a, double fontSize = 10}) =>
+    ConvoKitMessagePreviewStyle(
       messagePreviewBackground: color,
       messagePreviewBorder: Border.all(color: color),
       messagePreviewBorderRadius: BorderRadius.circular(fontSize),
@@ -26,9 +26,9 @@ CometChatMessagePreviewStyle _full({Color color = _a, double fontSize = 10}) =>
     );
 
 void main() {
-  group('CometChatMessagePreviewStyle — defaults', () {
+  group('ConvoKitMessagePreviewStyle — defaults', () {
     test('every field starts null', () {
-      const style = CometChatMessagePreviewStyle();
+      const style = ConvoKitMessagePreviewStyle();
       expect(style.messagePreviewBackground, isNull);
       expect(style.messagePreviewBorder, isNull);
       expect(style.messagePreviewBorderRadius, isNull);
@@ -41,7 +41,7 @@ void main() {
     });
   });
 
-  group('CometChatMessagePreviewStyle — merge', () {
+  group('ConvoKitMessagePreviewStyle — merge', () {
     test('merging null keeps this style untouched', () {
       final style = _full();
       expect(style.merge(null), same(style));
@@ -50,7 +50,7 @@ void main() {
     test('the other style wins field by field, null falls back', () {
       final base = _full();
       final merged = base.merge(
-        const CometChatMessagePreviewStyle(closeIconColor: _b),
+        const ConvoKitMessagePreviewStyle(closeIconColor: _b),
       );
       expect(merged.closeIconColor, _b, reason: 'overridden');
       expect(merged.messagePreviewBackground, _a, reason: 'kept');
@@ -58,7 +58,7 @@ void main() {
     });
   });
 
-  group('CometChatMessagePreviewStyle — copyWith', () {
+  group('ConvoKitMessagePreviewStyle — copyWith', () {
     test('no arguments leaves every field as it was', () {
       final style = _full();
       final copy = style.copyWith();
@@ -150,7 +150,7 @@ void main() {
     });
   });
 
-  group('CometChatMessagePreviewStyle — lerp', () {
+  group('ConvoKitMessagePreviewStyle — lerp', () {
     test('lerping against a foreign extension returns this', () {
       final style = _full();
       expect(style.lerp(null, 0.5), same(style));
@@ -186,10 +186,10 @@ void main() {
     });
 
     test('the border snaps at the midpoint instead of interpolating', () {
-      final from = CometChatMessagePreviewStyle(
+      final from = ConvoKitMessagePreviewStyle(
         messagePreviewBorder: Border.all(color: _a),
       );
-      final to = CometChatMessagePreviewStyle(
+      final to = ConvoKitMessagePreviewStyle(
         messagePreviewBorder: Border.all(color: _b),
       );
       expect(
@@ -200,19 +200,19 @@ void main() {
     });
   });
 
-  group('CometChatMessagePreview — the default close button', () {
+  group('ConvoKitMessagePreview — the default close button', () {
     Widget host({Icon? icon, bool hide = false, VoidCallback? onClose}) =>
         MaterialApp(
           localizationsDelegates: Translations.localizationsDelegates,
           supportedLocales: const [Locale('en')],
           home: Scaffold(
-            body: CometChatMessagePreview(
+            body: ConvoKitMessagePreview(
               messagePreviewTitle: 'Alice',
               messagePreviewSubtitle: 'see you there',
               messagePreviewCloseButtonIcon: icon,
               hideCloseButton: hide,
               onCloseClick: onClose,
-              messagePreviewStyle: const CometChatMessagePreviewStyle(
+              messagePreviewStyle: const ConvoKitMessagePreviewStyle(
                 closeIconColor: Color(0xFF00FF00),
               ),
             ),
@@ -248,7 +248,7 @@ void main() {
           supportedLocales: const [Locale('en')],
           home: Scaffold(
             body: Builder(
-              builder: (context) => CometChatMessagePreview(
+              builder: (context) => ConvoKitMessagePreview(
                 messagePreviewTitle: 'Alice',
                 messagePreviewSubtitle: 'see you there',
                 onCloseClick: () {},

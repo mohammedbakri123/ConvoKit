@@ -252,7 +252,7 @@ void main() {
             isActive: true,
             isDisabled: false,
             focusOrder: 3,
-            style: const CometChatRichTextToolbarStyle(
+            style: const ConvoKitRichTextToolbarStyle(
               activeButtonIconColor: Color(0xFF2211AA),
             ),
           ),
@@ -289,7 +289,7 @@ void main() {
             formatType: FormatType.italic,
             onTap: () => tapped = true,
             isDisabled: true,
-            style: const CometChatRichTextToolbarStyle(
+            style: const ConvoKitRichTextToolbarStyle(
               disabledButtonIconColor: Color(0xFF778899),
             ),
           ),

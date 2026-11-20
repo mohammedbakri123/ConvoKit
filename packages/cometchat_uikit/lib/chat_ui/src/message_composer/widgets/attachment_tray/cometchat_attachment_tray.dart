@@ -3,13 +3,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 /// The composer strip that shows staged attachment tiles, rendered directly
-/// above the input row. One [CometChatAttachmentTile] per `fileId` (square
+/// above the input row. One [ConvoKitAttachmentTile] per `fileId` (square
 /// thumbnails for image/video, an inline player card for audio, and a
 /// state-driven wide card for files — upload status inside the leading
 /// icon plus a status subtitle). Driven by an
 /// [AttachmentTrayController]; rebuilds as upload events arrive and renders
 /// nothing while empty. Sending is handled by the composer's own send button.
-class CometChatAttachmentTray extends StatelessWidget {
+class ConvoKitAttachmentTray extends StatelessWidget {
   // Deprecated in 6.2.0: no effect, removed in 7.0.0.
 
   /// Add hook.
@@ -24,7 +24,7 @@ class CometChatAttachmentTray extends StatelessWidget {
   )
   final VoidCallback? onSend;
 
-  const CometChatAttachmentTray({
+  const ConvoKitAttachmentTray({
     super.key,
     required this.controller,
     this.style,
@@ -39,8 +39,8 @@ class CometChatAttachmentTray extends StatelessWidget {
 
   ///[style] customizes the tray's tiles — null fields fall back to theme
   ///defaults. Also reachable via
-  ///[CometChatMessageComposerStyle.attachmentTrayStyle].
-  final CometChatAttachmentTrayStyle? style;
+  ///[ConvoKitMessageComposerStyle.attachmentTrayStyle].
+  final ConvoKitAttachmentTrayStyle? style;
 
   ///[attachmentErrorAlertStyle] styles the alert shown when tapping a tile that
   ///was rejected. Not raised on desktop web, where hovering already reveals a
@@ -130,7 +130,7 @@ class CometChatAttachmentTray extends StatelessWidget {
                 itemBuilder: (context, i) {
                   final t = tiles[i];
                   final previewable = t.isImage || t.isVideo;
-                  return CometChatAttachmentTile(
+                  return ConvoKitAttachmentTile(
                     tile: t,
                     onCancelOrRemove: () => controller.cancelOrRemove(t.fileId),
                     onTap: previewable ? () => _openPreview(context, t) : null,

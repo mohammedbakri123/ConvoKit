@@ -167,7 +167,7 @@ MessageComposerBloc _makeBloc(
 }
 
 // ---------------------------------------------------------------------------
-// Tests — Kotlin CometChatMessageComposerRenderingTest equivalent
+// Tests — Kotlin ConvoKitMessageComposerRenderingTest equivalent
 // State transitions: idle, editing, replying, recording, error, success
 // ---------------------------------------------------------------------------
 

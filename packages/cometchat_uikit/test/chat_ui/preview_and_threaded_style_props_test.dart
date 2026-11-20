@@ -1,4 +1,4 @@
-/// Render-verified prop matrix for CometChatMessagePreviewStyle and
+/// Render-verified prop matrix for ConvoKitMessagePreviewStyle and
 /// CometChatThreadedHeaderStyle — Track 3 PROP2 (ENG-38961).
 ///
 ///   flutter test test/chat_ui/preview_and_threaded_style_props_test.dart
@@ -37,18 +37,18 @@ void main() {
   });
 
   // -------------------------------------------------------------------------
-  // CometChatMessagePreviewStyle — 9 props via CometChatMessagePreview.
+  // ConvoKitMessagePreviewStyle — 9 props via ConvoKitMessagePreview.
   // -------------------------------------------------------------------------
-  group('CometChatMessagePreviewStyle', () {
+  group('ConvoKitMessagePreviewStyle', () {
     testWidgets('surface, title, subtitle and close icon colours all apply', (
       tester,
     ) async {
       await tester.pumpWidget(
         _wrap(
-          const CometChatMessagePreview(
+          const ConvoKitMessagePreview(
             messagePreviewTitle: 'Replying to Bob',
             messagePreviewSubtitle: 'the quoted text',
-            messagePreviewStyle: CometChatMessagePreviewStyle(
+            messagePreviewStyle: ConvoKitMessagePreviewStyle(
               messagePreviewBackground: Color(0xFF101112),
               messagePreviewBorderRadius: BorderRadius.all(Radius.circular(23)),
               messagePreviewBorder: Border.fromBorderSide(

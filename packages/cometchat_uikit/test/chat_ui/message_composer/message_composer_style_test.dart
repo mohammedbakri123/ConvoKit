@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:convokit/chat_ui/src/message_composer/cometchat_message_composer_style.dart';
 
 // ---------------------------------------------------------------------------
-// Tests — Kotlin CometChatMessageComposerStyleTest equivalent
+// Tests — Kotlin ConvoKitMessageComposerStyleTest equivalent
 // Tests: defaults, custom values, copyWith, merge, equality, lerp
 // ---------------------------------------------------------------------------
 
@@ -15,7 +15,7 @@ void main() {
 
   group('Default values', () {
     test('default constructor has all null properties', () {
-      const style = CometChatMessageComposerStyle();
+      const style = ConvoKitMessageComposerStyle();
 
       expect(style.closeIconTint, isNull);
       expect(style.backgroundColor, isNull);
@@ -46,9 +46,9 @@ void main() {
     });
 
     test('of() returns default style', () {
-      // CometChatMessageComposerStyle.of() is a static factory
+      // ConvoKitMessageComposerStyle.of() is a static factory
       // that returns a const default instance
-      final style = CometChatMessageComposerStyle.of(_FakeBuildContext());
+      final style = ConvoKitMessageComposerStyle.of(_FakeBuildContext());
       expect(style.backgroundColor, isNull);
       expect(style.sendButtonIconColor, isNull);
     });
@@ -60,7 +60,7 @@ void main() {
 
   group('Custom values', () {
     test('constructor accepts all custom values', () {
-      const style = CometChatMessageComposerStyle(
+      const style = ConvoKitMessageComposerStyle(
         closeIconTint: Colors.red,
         backgroundColor: Colors.white,
         border: Border(bottom: BorderSide(color: Colors.grey)),
@@ -97,14 +97,14 @@ void main() {
     });
 
     test('borderRadius is correctly stored', () {
-      const style = CometChatMessageComposerStyle(
+      const style = ConvoKitMessageComposerStyle(
         borderRadius: BorderRadius.all(Radius.circular(16)),
       );
       expect(style.borderRadius, const BorderRadius.all(Radius.circular(16)));
     });
 
     test('textStyle is correctly stored', () {
-      const style = CometChatMessageComposerStyle(
+      const style = ConvoKitMessageComposerStyle(
         textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       );
       expect(style.textStyle?.fontSize, 18);
@@ -118,7 +118,7 @@ void main() {
 
   group('copyWith', () {
     test('copyWith with no arguments returns equivalent style', () {
-      const original = CometChatMessageComposerStyle(
+      const original = ConvoKitMessageComposerStyle(
         backgroundColor: Colors.white,
         sendButtonIconColor: Colors.blue,
         textColor: Colors.black,
@@ -131,7 +131,7 @@ void main() {
     });
 
     test('copyWith replaces specified fields only', () {
-      const original = CometChatMessageComposerStyle(
+      const original = ConvoKitMessageComposerStyle(
         backgroundColor: Colors.white,
         sendButtonIconColor: Colors.blue,
         textColor: Colors.black,
@@ -150,7 +150,7 @@ void main() {
     });
 
     test('copyWith can set all color properties', () {
-      const original = CometChatMessageComposerStyle();
+      const original = ConvoKitMessageComposerStyle();
       final copied = original.copyWith(
         closeIconTint: Colors.red,
         backgroundColor: Colors.white,
@@ -181,7 +181,7 @@ void main() {
     });
 
     test('copyWith preserves border radius types', () {
-      const original = CometChatMessageComposerStyle(
+      const original = ConvoKitMessageComposerStyle(
         sendButtonBorderRadius: BorderRadius.all(Radius.circular(20)),
       );
       final copied = original.copyWith(
@@ -207,7 +207,7 @@ void main() {
 
   group('merge', () {
     test('merge with null returns this', () {
-      const style = CometChatMessageComposerStyle(
+      const style = ConvoKitMessageComposerStyle(
         backgroundColor: Colors.white,
         sendButtonIconColor: Colors.blue,
       );
@@ -218,12 +218,12 @@ void main() {
     });
 
     test('merge applies other style properties', () {
-      const base = CometChatMessageComposerStyle(
+      const base = ConvoKitMessageComposerStyle(
         backgroundColor: Colors.white,
         sendButtonIconColor: Colors.blue,
         textColor: Colors.black,
       );
-      const overlay = CometChatMessageComposerStyle(
+      const overlay = ConvoKitMessageComposerStyle(
         backgroundColor: Colors.grey,
         dividerHeight: 3.0,
       );
@@ -238,11 +238,11 @@ void main() {
     });
 
     test('merge with fully populated style replaces all', () {
-      const base = CometChatMessageComposerStyle(
+      const base = ConvoKitMessageComposerStyle(
         backgroundColor: Colors.white,
         sendButtonIconColor: Colors.blue,
       );
-      const overlay = CometChatMessageComposerStyle(
+      const overlay = ConvoKitMessageComposerStyle(
         backgroundColor: Colors.black,
         sendButtonIconColor: Colors.red,
         closeIconTint: Colors.green,
@@ -257,10 +257,10 @@ void main() {
     });
 
     test('merge is not commutative (order matters)', () {
-      const styleA = CometChatMessageComposerStyle(
+      const styleA = ConvoKitMessageComposerStyle(
         backgroundColor: Colors.white,
       );
-      const styleB = CometChatMessageComposerStyle(
+      const styleB = ConvoKitMessageComposerStyle(
         backgroundColor: Colors.black,
       );
 
@@ -278,11 +278,11 @@ void main() {
 
   group('lerp', () {
     test('lerp at t=0 returns start values', () {
-      const start = CometChatMessageComposerStyle(
+      const start = ConvoKitMessageComposerStyle(
         backgroundColor: Colors.white,
         dividerHeight: 1.0,
       );
-      const end = CometChatMessageComposerStyle(
+      const end = ConvoKitMessageComposerStyle(
         backgroundColor: Colors.black,
         dividerHeight: 4.0,
       );
@@ -293,11 +293,11 @@ void main() {
     });
 
     test('lerp at t=1 returns end values', () {
-      const start = CometChatMessageComposerStyle(
+      const start = ConvoKitMessageComposerStyle(
         backgroundColor: Colors.white,
         dividerHeight: 1.0,
       );
-      const end = CometChatMessageComposerStyle(
+      const end = ConvoKitMessageComposerStyle(
         backgroundColor: Colors.black,
         dividerHeight: 4.0,
       );
@@ -308,11 +308,11 @@ void main() {
     });
 
     test('lerp at t=0.5 interpolates colors', () {
-      const start = CometChatMessageComposerStyle(
+      const start = ConvoKitMessageComposerStyle(
         backgroundColor: Color(0xFF000000), // black
         sendButtonIconColor: Color(0xFF000000),
       );
-      const end = CometChatMessageComposerStyle(
+      const end = ConvoKitMessageComposerStyle(
         backgroundColor: Color(0xFFFFFFFF), // white
         sendButtonIconColor: Color(0xFFFFFFFF),
       );
@@ -326,7 +326,7 @@ void main() {
     });
 
     test('lerp with null other interpolates toward null (transparent)', () {
-      const style = CometChatMessageComposerStyle(
+      const style = ConvoKitMessageComposerStyle(
         backgroundColor: Colors.white,
       );
       final result = style.lerp(null, 0.5);
@@ -337,8 +337,8 @@ void main() {
     });
 
     test('lerp interpolates dividerHeight', () {
-      const start = CometChatMessageComposerStyle(dividerHeight: 0.0);
-      const end = CometChatMessageComposerStyle(dividerHeight: 10.0);
+      const start = ConvoKitMessageComposerStyle(dividerHeight: 0.0);
+      const end = ConvoKitMessageComposerStyle(dividerHeight: 10.0);
       final result = start.lerp(end, 0.3);
 
       expect(result.dividerHeight, closeTo(3.0, 0.01));
@@ -351,23 +351,23 @@ void main() {
 
   group('ThemeExtension compliance', () {
     test('style is a ThemeExtension', () {
-      const style = CometChatMessageComposerStyle();
-      expect(style, isA<ThemeExtension<CometChatMessageComposerStyle>>());
+      const style = ConvoKitMessageComposerStyle();
+      expect(style, isA<ThemeExtension<ConvoKitMessageComposerStyle>>());
     });
 
-    test('copyWith returns CometChatMessageComposerStyle type', () {
-      const style = CometChatMessageComposerStyle();
+    test('copyWith returns ConvoKitMessageComposerStyle type', () {
+      const style = ConvoKitMessageComposerStyle();
       final copied = style.copyWith(backgroundColor: Colors.red);
-      expect(copied, isA<CometChatMessageComposerStyle>());
+      expect(copied, isA<ConvoKitMessageComposerStyle>());
     });
 
-    test('lerp returns CometChatMessageComposerStyle type', () {
-      const style = CometChatMessageComposerStyle();
+    test('lerp returns ConvoKitMessageComposerStyle type', () {
+      const style = ConvoKitMessageComposerStyle();
       final lerped = style.lerp(
-        const CometChatMessageComposerStyle(backgroundColor: Colors.blue),
+        const ConvoKitMessageComposerStyle(backgroundColor: Colors.blue),
         0.5,
       );
-      expect(lerped, isA<CometChatMessageComposerStyle>());
+      expect(lerped, isA<ConvoKitMessageComposerStyle>());
     });
   });
 }

@@ -100,7 +100,7 @@ void main() {
     late MessageComposerBloc bloc;
     await tester.pumpWidget(
       _wrap(
-        CometChatMessageComposer(
+        ConvoKitMessageComposer(
           user: _FakeUser(),
           stateCallBack: (b) => bloc = b,
         ),

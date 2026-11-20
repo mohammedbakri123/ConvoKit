@@ -75,10 +75,10 @@ class ScreenReach {
       );
     }
     await tester.tap(row.first);
-    // CometChatMessageComposer is the one widget only a messages screen has.
+    // ConvoKitMessageComposer is the one widget only a messages screen has.
     if (!await pumpUntilFound(
       tester,
-      find.byType(CometChatMessageComposer),
+      find.byType(ConvoKitMessageComposer),
       timeout: const Duration(seconds: 15),
     )) {
       fail('Tapping the "$name" conversation did not open a messages screen.');

@@ -53,7 +53,7 @@ class MessageComposerSuggestionList extends StatelessWidget {
   final bool hasMore;
 
   /// Style configuration for the suggestion list.
-  final CometChatSuggestionListStyle? style;
+  final ConvoKitSuggestionListStyle? style;
 
   /// Color palette for theming.
   /// If not provided, uses CometChatThemeHelper.getColorPalette(context).
@@ -77,9 +77,9 @@ class MessageComposerSuggestionList extends StatelessWidget {
         typography ?? CometChatThemeHelper.getTypography(context);
 
     final effectiveStyle =
-        CometChatThemeHelper.getTheme<CometChatSuggestionListStyle>(
+        CometChatThemeHelper.getTheme<ConvoKitSuggestionListStyle>(
           context: context,
-          defaultTheme: CometChatSuggestionListStyle.of,
+          defaultTheme: ConvoKitSuggestionListStyle.of,
         ).merge(style);
 
     return Semantics(
@@ -160,7 +160,7 @@ class MessageComposerSuggestionList extends StatelessWidget {
     CometChatColorPalette colorPalette,
     CometChatSpacing spacing,
     CometChatTypography typography,
-    CometChatSuggestionListStyle effectiveStyle,
+    ConvoKitSuggestionListStyle effectiveStyle,
   ) {
     // Use GestureDetector instead of ListTile to prevent focus stealing.
     // ListTile's internal InkWell requests focus on tap, which causes

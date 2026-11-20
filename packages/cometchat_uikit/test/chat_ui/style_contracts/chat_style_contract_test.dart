@@ -626,149 +626,149 @@ void main() {
     );
 
     test(
-      'CometChatAttachmentTrayStyle keeps every field through copyWith/merge/lerp',
+      'ConvoKitAttachmentTrayStyle keeps every field through copyWith/merge/lerp',
       () {
-        expectStyleContract<CometChatAttachmentTrayStyle>(
-          label: 'CometChatAttachmentTrayStyle',
-          empty: const CometChatAttachmentTrayStyle(),
+        expectStyleContract<ConvoKitAttachmentTrayStyle>(
+          label: 'ConvoKitAttachmentTrayStyle',
+          empty: const ConvoKitAttachmentTrayStyle(),
           copyWithNothing: (s) => s.copyWith(),
           merge: (s, o) => s.merge(o),
           lerp: (s, o, t) => s.lerp(o, t),
           fields: [
-            Fld<CometChatAttachmentTrayStyle, Color>(
+            Fld<ConvoKitAttachmentTrayStyle, Color>(
               'tileBackgroundColor',
               const Color(0xFF7241FA),
               const Color(0xFF7C46FD),
               (s, v) => s.copyWith(tileBackgroundColor: v),
               (s) => s.tileBackgroundColor,
             ),
-            Fld<CometChatAttachmentTrayStyle, Color>(
+            Fld<ConvoKitAttachmentTrayStyle, Color>(
               'tileBorderColor',
               const Color(0xFF864C00),
               const Color(0xFF905103),
               (s, v) => s.copyWith(tileBorderColor: v),
               (s) => s.tileBorderColor,
             ),
-            Fld<CometChatAttachmentTrayStyle, Color>(
+            Fld<ConvoKitAttachmentTrayStyle, Color>(
               'errorBorderColor',
               const Color(0xFF9A5606),
               const Color(0xFFA45B09),
               (s, v) => s.copyWith(errorBorderColor: v),
               (s) => s.errorBorderColor,
             ),
-            Fld<CometChatAttachmentTrayStyle, double>(
+            Fld<ConvoKitAttachmentTrayStyle, double>(
               'tileBorderRadius',
               172.5,
               173.5,
               (s, v) => s.copyWith(tileBorderRadius: v),
               (s) => s.tileBorderRadius,
             ),
-            Fld<CometChatAttachmentTrayStyle, double>(
+            Fld<ConvoKitAttachmentTrayStyle, double>(
               'iconBorderRadius',
               174.5,
               175.5,
               (s, v) => s.copyWith(iconBorderRadius: v),
               (s) => s.iconBorderRadius,
             ),
-            Fld<CometChatAttachmentTrayStyle, TextStyle>(
+            Fld<ConvoKitAttachmentTrayStyle, TextStyle>(
               'nameTextStyle',
               const TextStyle(fontSize: 176.5),
               const TextStyle(fontSize: 177.5),
               (s, v) => s.copyWith(nameTextStyle: v),
               (s) => s.nameTextStyle,
             ),
-            Fld<CometChatAttachmentTrayStyle, TextStyle>(
+            Fld<ConvoKitAttachmentTrayStyle, TextStyle>(
               'subtitleTextStyle',
               const TextStyle(fontSize: 178.5),
               const TextStyle(fontSize: 179.5),
               (s, v) => s.copyWith(subtitleTextStyle: v),
               (s) => s.subtitleTextStyle,
             ),
-            Fld<CometChatAttachmentTrayStyle, TextStyle>(
+            Fld<ConvoKitAttachmentTrayStyle, TextStyle>(
               'errorTextStyle',
               const TextStyle(fontSize: 180.5),
               const TextStyle(fontSize: 181.5),
               (s, v) => s.copyWith(errorTextStyle: v),
               (s) => s.errorTextStyle,
             ),
-            Fld<CometChatAttachmentTrayStyle, Color>(
+            Fld<ConvoKitAttachmentTrayStyle, Color>(
               'scrimColor',
               const Color(0xFF12922A),
               const Color(0xFF1C972D),
               (s, v) => s.copyWith(scrimColor: v),
               (s) => s.scrimColor,
             ),
-            Fld<CometChatAttachmentTrayStyle, Color>(
+            Fld<ConvoKitAttachmentTrayStyle, Color>(
               'progressColor',
               const Color(0xFF269C30),
               const Color(0xFF30A133),
               (s, v) => s.copyWith(progressColor: v),
               (s) => s.progressColor,
             ),
-            Fld<CometChatAttachmentTrayStyle, Color>(
+            Fld<ConvoKitAttachmentTrayStyle, Color>(
               'removeBadgeBackgroundColor',
               const Color(0xFF3AA636),
               const Color(0xFF44AB39),
               (s, v) => s.copyWith(removeBadgeBackgroundColor: v),
               (s) => s.removeBadgeBackgroundColor,
             ),
-            Fld<CometChatAttachmentTrayStyle, Color>(
+            Fld<ConvoKitAttachmentTrayStyle, Color>(
               'removeBadgeIconColor',
               const Color(0xFF4EB03C),
               const Color(0xFF58B53F),
               (s, v) => s.copyWith(removeBadgeIconColor: v),
               (s) => s.removeBadgeIconColor,
             ),
-            Fld<CometChatAttachmentTrayStyle, Color>(
+            Fld<ConvoKitAttachmentTrayStyle, Color>(
               'playButtonColor',
               const Color(0xFF62BA42),
               const Color(0xFF6CBF45),
               (s, v) => s.copyWith(playButtonColor: v),
               (s) => s.playButtonColor,
             ),
-            Fld<CometChatAttachmentTrayStyle, Color>(
+            Fld<ConvoKitAttachmentTrayStyle, Color>(
               'playIconColor',
               const Color(0xFF76C448),
               const Color(0xFF80C94B),
               (s, v) => s.copyWith(playIconColor: v),
               (s) => s.playIconColor,
             ),
-            Fld<CometChatAttachmentTrayStyle, Color>(
+            Fld<ConvoKitAttachmentTrayStyle, Color>(
               'sliderActiveColor',
               const Color(0xFF8ACE4E),
               const Color(0xFF94D351),
               (s, v) => s.copyWith(sliderActiveColor: v),
               (s) => s.sliderActiveColor,
             ),
-            Fld<CometChatAttachmentTrayStyle, Color>(
+            Fld<ConvoKitAttachmentTrayStyle, Color>(
               'sliderInactiveColor',
               const Color(0xFF9ED854),
               const Color(0xFFA8DD57),
               (s, v) => s.copyWith(sliderInactiveColor: v),
               (s) => s.sliderInactiveColor,
             ),
-            Fld<CometChatAttachmentTrayStyle, TextStyle>(
+            Fld<ConvoKitAttachmentTrayStyle, TextStyle>(
               'clockTextStyle',
               const TextStyle(fontSize: 198.5),
               const TextStyle(fontSize: 199.5),
               (s, v) => s.copyWith(clockTextStyle: v),
               (s) => s.clockTextStyle,
             ),
-            Fld<CometChatAttachmentTrayStyle, Color>(
+            Fld<ConvoKitAttachmentTrayStyle, Color>(
               'durationChipBackgroundColor',
               const Color(0xFFC6EC60),
               const Color(0xFFD0F163),
               (s, v) => s.copyWith(durationChipBackgroundColor: v),
               (s) => s.durationChipBackgroundColor,
             ),
-            Fld<CometChatAttachmentTrayStyle, TextStyle>(
+            Fld<ConvoKitAttachmentTrayStyle, TextStyle>(
               'durationChipTextStyle',
               const TextStyle(fontSize: 202.5),
               const TextStyle(fontSize: 203.5),
               (s, v) => s.copyWith(durationChipTextStyle: v),
               (s) => s.durationChipTextStyle,
             ),
-            Fld<CometChatAttachmentTrayStyle, bool>(
+            Fld<ConvoKitAttachmentTrayStyle, bool>(
               'showVideoDuration',
               true,
               false,
@@ -1538,108 +1538,108 @@ void main() {
     );
 
     test(
-      'CometChatRichTextToolbarStyle keeps every field through copyWith/merge/lerp',
+      'ConvoKitRichTextToolbarStyle keeps every field through copyWith/merge/lerp',
       () {
-        expectStyleContract<CometChatRichTextToolbarStyle>(
-          label: 'CometChatRichTextToolbarStyle',
-          empty: const CometChatRichTextToolbarStyle(),
+        expectStyleContract<ConvoKitRichTextToolbarStyle>(
+          label: 'ConvoKitRichTextToolbarStyle',
+          empty: const ConvoKitRichTextToolbarStyle(),
           copyWithNothing: (s) => s.copyWith(),
           merge: (s, o) => s.merge(o),
           lerp: (s, o, t) => s.lerp(o, t),
           lerpNullReturnsSelf: false,
           fields: [
-            Fld<CometChatRichTextToolbarStyle, Color>(
+            Fld<ConvoKitRichTextToolbarStyle, Color>(
               'backgroundColor',
               const Color(0xFF2B9F30),
               const Color(0xFF35A433),
               (s, v) => s.copyWith(backgroundColor: v),
               (s) => s.backgroundColor,
             ),
-            Fld<CometChatRichTextToolbarStyle, Color>(
+            Fld<ConvoKitRichTextToolbarStyle, Color>(
               'buttonColor',
               const Color(0xFF3FA936),
               const Color(0xFF49AE39),
               (s, v) => s.copyWith(buttonColor: v),
               (s) => s.buttonColor,
             ),
-            Fld<CometChatRichTextToolbarStyle, Color>(
+            Fld<ConvoKitRichTextToolbarStyle, Color>(
               'activeButtonColor',
               const Color(0xFF53B33C),
               const Color(0xFF5DB83F),
               (s, v) => s.copyWith(activeButtonColor: v),
               (s) => s.activeButtonColor,
             ),
-            Fld<CometChatRichTextToolbarStyle, Color>(
+            Fld<ConvoKitRichTextToolbarStyle, Color>(
               'disabledButtonColor',
               const Color(0xFF67BD42),
               const Color(0xFF71C245),
               (s, v) => s.copyWith(disabledButtonColor: v),
               (s) => s.disabledButtonColor,
             ),
-            Fld<CometChatRichTextToolbarStyle, Color>(
+            Fld<ConvoKitRichTextToolbarStyle, Color>(
               'buttonIconColor',
               const Color(0xFF7BC748),
               const Color(0xFF85CC4B),
               (s, v) => s.copyWith(buttonIconColor: v),
               (s) => s.buttonIconColor,
             ),
-            Fld<CometChatRichTextToolbarStyle, Color>(
+            Fld<ConvoKitRichTextToolbarStyle, Color>(
               'activeButtonIconColor',
               const Color(0xFF8FD14E),
               const Color(0xFF99D651),
               (s, v) => s.copyWith(activeButtonIconColor: v),
               (s) => s.activeButtonIconColor,
             ),
-            Fld<CometChatRichTextToolbarStyle, Color>(
+            Fld<ConvoKitRichTextToolbarStyle, Color>(
               'disabledButtonIconColor',
               const Color(0xFFA3DB54),
               const Color(0xFFADE057),
               (s, v) => s.copyWith(disabledButtonIconColor: v),
               (s) => s.disabledButtonIconColor,
             ),
-            Fld<CometChatRichTextToolbarStyle, BorderRadiusGeometry>(
+            Fld<ConvoKitRichTextToolbarStyle, BorderRadiusGeometry>(
               'borderRadius',
               BorderRadius.circular(454.5),
               BorderRadius.circular(455.5),
               (s, v) => s.copyWith(borderRadius: v),
               (s) => s.borderRadius,
             ),
-            Fld<CometChatRichTextToolbarStyle, BoxBorder>(
+            Fld<ConvoKitRichTextToolbarStyle, BoxBorder>(
               'border',
               Border.all(width: 456.5),
               Border.all(width: 457.5),
               (s, v) => s.copyWith(border: v),
               (s) => s.border,
             ),
-            Fld<CometChatRichTextToolbarStyle, double>(
+            Fld<ConvoKitRichTextToolbarStyle, double>(
               'buttonSpacing',
               458.5,
               459.5,
               (s, v) => s.copyWith(buttonSpacing: v),
               (s) => s.buttonSpacing,
             ),
-            Fld<CometChatRichTextToolbarStyle, EdgeInsetsGeometry>(
+            Fld<ConvoKitRichTextToolbarStyle, EdgeInsetsGeometry>(
               'padding',
               const EdgeInsets.all(460.5),
               const EdgeInsets.all(461.5),
               (s, v) => s.copyWith(padding: v),
               (s) => s.padding,
             ),
-            Fld<CometChatRichTextToolbarStyle, double>(
+            Fld<ConvoKitRichTextToolbarStyle, double>(
               'buttonSize',
               462.5,
               463.5,
               (s, v) => s.copyWith(buttonSize: v),
               (s) => s.buttonSize,
             ),
-            Fld<CometChatRichTextToolbarStyle, double>(
+            Fld<ConvoKitRichTextToolbarStyle, double>(
               'iconSize',
               464.5,
               465.5,
               (s, v) => s.copyWith(iconSize: v),
               (s) => s.iconSize,
             ),
-            Fld<CometChatRichTextToolbarStyle, Color>(
+            Fld<ConvoKitRichTextToolbarStyle, Color>(
               'dividerColor',
               const Color(0xFF30217E),
               const Color(0xFF3A2681),
@@ -1745,53 +1745,53 @@ void main() {
     );
 
     test(
-      'CometChatSuggestionListStyle keeps every field through copyWith/merge/lerp',
+      'ConvoKitSuggestionListStyle keeps every field through copyWith/merge/lerp',
       () {
-        expectStyleContract<CometChatSuggestionListStyle>(
-          label: 'CometChatSuggestionListStyle',
-          empty: const CometChatSuggestionListStyle(),
+        expectStyleContract<ConvoKitSuggestionListStyle>(
+          label: 'ConvoKitSuggestionListStyle',
+          empty: const ConvoKitSuggestionListStyle(),
           copyWithNothing: (s) => s.copyWith(),
           merge: (s, o) => s.merge(o),
           mergeNullReturnsSelf: false,
           lerp: (s, o, t) => s.lerp(o, t),
           lerpNullReturnsSelf: false,
           fields: [
-            Fld<CometChatSuggestionListStyle, Color>(
+            Fld<ConvoKitSuggestionListStyle, Color>(
               'backgroundColor',
               const Color(0xFF0C8FC0),
               const Color(0xFF1694C3),
               (s, v) => s.copyWith(backgroundColor: v),
               (s) => s.backgroundColor,
             ),
-            Fld<CometChatSuggestionListStyle, BoxBorder>(
+            Fld<ConvoKitSuggestionListStyle, BoxBorder>(
               'border',
               Border.all(width: 490.5),
               Border.all(width: 491.5),
               (s, v) => s.copyWith(border: v),
               (s) => s.border,
             ),
-            Fld<CometChatSuggestionListStyle, BorderRadius>(
+            Fld<ConvoKitSuggestionListStyle, BorderRadius>(
               'borderRadius',
               BorderRadius.circular(492.5),
               BorderRadius.circular(493.5),
               (s, v) => s.copyWith(borderRadius: v),
               (s) => s.borderRadius,
             ),
-            Fld<CometChatSuggestionListStyle, TextStyle>(
+            Fld<ConvoKitSuggestionListStyle, TextStyle>(
               'textStyle',
               const TextStyle(fontSize: 494.5),
               const TextStyle(fontSize: 495.5),
               (s, v) => s.copyWith(textStyle: v),
               (s) => s.textStyle,
             ),
-            Fld<CometChatSuggestionListStyle, Color>(
+            Fld<ConvoKitSuggestionListStyle, Color>(
               'textColor',
               const Color(0xFF5CB7D8),
               const Color(0xFF66BCDB),
               (s, v) => s.copyWith(textColor: v),
               (s) => s.textColor,
             ),
-            Fld<CometChatSuggestionListStyle, CometChatAvatarStyle>(
+            Fld<ConvoKitSuggestionListStyle, CometChatAvatarStyle>(
               'avatarStyle',
               CometChatAvatarStyle(),
               CometChatAvatarStyle(),
@@ -1805,143 +1805,143 @@ void main() {
     );
 
     test(
-      'CometChatMessageComposerStyle keeps every field through copyWith/merge/lerp',
+      'ConvoKitMessageComposerStyle keeps every field through copyWith/merge/lerp',
       () {
-        expectStyleContract<CometChatMessageComposerStyle>(
-          label: 'CometChatMessageComposerStyle',
-          empty: const CometChatMessageComposerStyle(),
+        expectStyleContract<ConvoKitMessageComposerStyle>(
+          label: 'ConvoKitMessageComposerStyle',
+          empty: const ConvoKitMessageComposerStyle(),
           copyWithNothing: (s) => s.copyWith(),
           merge: (s, o) => s.merge(o),
           lerp: (s, o, t) => s.lerp(o, t),
           lerpNullReturnsSelf: false,
           fields: [
-            Fld<CometChatMessageComposerStyle, Color>(
+            Fld<ConvoKitMessageComposerStyle, Color>(
               'closeIconTint',
               const Color(0xFF84CBE4),
               const Color(0xFF8ED0E7),
               (s, v) => s.copyWith(closeIconTint: v),
               (s) => s.closeIconTint,
             ),
-            Fld<CometChatMessageComposerStyle, Color>(
+            Fld<ConvoKitMessageComposerStyle, Color>(
               'backgroundColor',
               const Color(0xFF98D5EA),
               const Color(0xFFA2DAED),
               (s, v) => s.copyWith(backgroundColor: v),
               (s) => s.backgroundColor,
             ),
-            Fld<CometChatMessageComposerStyle, BoxBorder>(
+            Fld<ConvoKitMessageComposerStyle, BoxBorder>(
               'border',
               Border.all(width: 504.5),
               Border.all(width: 505.5),
               (s, v) => s.copyWith(border: v),
               (s) => s.border,
             ),
-            Fld<CometChatMessageComposerStyle, BorderRadiusGeometry>(
+            Fld<ConvoKitMessageComposerStyle, BorderRadiusGeometry>(
               'borderRadius',
               BorderRadius.circular(506.5),
               BorderRadius.circular(507.5),
               (s, v) => s.copyWith(borderRadius: v),
               (s) => s.borderRadius,
             ),
-            Fld<CometChatMessageComposerStyle, Color>(
+            Fld<ConvoKitMessageComposerStyle, Color>(
               'dividerColor',
               const Color(0xFFD4F3FC),
               const Color(0xFFDEF8FF),
               (s, v) => s.copyWith(dividerColor: v),
               (s) => s.dividerColor,
             ),
-            Fld<CometChatMessageComposerStyle, double>(
+            Fld<ConvoKitMessageComposerStyle, double>(
               'dividerHeight',
               510.5,
               511.5,
               (s, v) => s.copyWith(dividerHeight: v),
               (s) => s.dividerHeight,
             ),
-            Fld<CometChatMessageComposerStyle, Color>(
+            Fld<ConvoKitMessageComposerStyle, Color>(
               'sendButtonIconColor',
               const Color(0xFFFD0808),
               const Color(0xFF070D0B),
               (s, v) => s.copyWith(sendButtonIconColor: v),
               (s) => s.sendButtonIconColor,
             ),
-            Fld<CometChatMessageComposerStyle, Color>(
+            Fld<ConvoKitMessageComposerStyle, Color>(
               'sendButtonIconBackgroundColor',
               const Color(0xFF11120E),
               const Color(0xFF1B1711),
               (s, v) => s.copyWith(sendButtonIconBackgroundColor: v),
               (s) => s.sendButtonIconBackgroundColor,
             ),
-            Fld<CometChatMessageComposerStyle, BorderRadiusGeometry>(
+            Fld<ConvoKitMessageComposerStyle, BorderRadiusGeometry>(
               'sendButtonBorderRadius',
               BorderRadius.circular(516.5),
               BorderRadius.circular(517.5),
               (s, v) => s.copyWith(sendButtonBorderRadius: v),
               (s) => s.sendButtonBorderRadius,
             ),
-            Fld<CometChatMessageComposerStyle, Color>(
+            Fld<ConvoKitMessageComposerStyle, Color>(
               'secondaryButtonIconColor',
               const Color(0xFF39261A),
               const Color(0xFF432B1D),
               (s, v) => s.copyWith(secondaryButtonIconColor: v),
               (s) => s.secondaryButtonIconColor,
             ),
-            Fld<CometChatMessageComposerStyle, Color>(
+            Fld<ConvoKitMessageComposerStyle, Color>(
               'secondaryButtonIconBackgroundColor',
               const Color(0xFF4D3020),
               const Color(0xFF573523),
               (s, v) => s.copyWith(secondaryButtonIconBackgroundColor: v),
               (s) => s.secondaryButtonIconBackgroundColor,
             ),
-            Fld<CometChatMessageComposerStyle, BorderRadiusGeometry>(
+            Fld<ConvoKitMessageComposerStyle, BorderRadiusGeometry>(
               'secondaryButtonBorderRadius',
               BorderRadius.circular(522.5),
               BorderRadius.circular(523.5),
               (s, v) => s.copyWith(secondaryButtonBorderRadius: v),
               (s) => s.secondaryButtonBorderRadius,
             ),
-            Fld<CometChatMessageComposerStyle, Color>(
+            Fld<ConvoKitMessageComposerStyle, Color>(
               'auxiliaryButtonIconColor',
               const Color(0xFF75442C),
               const Color(0xFF7F492F),
               (s, v) => s.copyWith(auxiliaryButtonIconColor: v),
               (s) => s.auxiliaryButtonIconColor,
             ),
-            Fld<CometChatMessageComposerStyle, Color>(
+            Fld<ConvoKitMessageComposerStyle, Color>(
               'auxiliaryButtonIconBackgroundColor',
               const Color(0xFF894E32),
               const Color(0xFF935335),
               (s, v) => s.copyWith(auxiliaryButtonIconBackgroundColor: v),
               (s) => s.auxiliaryButtonIconBackgroundColor,
             ),
-            Fld<CometChatMessageComposerStyle, BorderRadiusGeometry>(
+            Fld<ConvoKitMessageComposerStyle, BorderRadiusGeometry>(
               'auxiliaryButtonBorderRadius',
               BorderRadius.circular(528.5),
               BorderRadius.circular(529.5),
               (s, v) => s.copyWith(auxiliaryButtonBorderRadius: v),
               (s) => s.auxiliaryButtonBorderRadius,
             ),
-            Fld<CometChatMessageComposerStyle, TextStyle>(
+            Fld<ConvoKitMessageComposerStyle, TextStyle>(
               'textStyle',
               const TextStyle(fontSize: 530.5),
               const TextStyle(fontSize: 531.5),
               (s, v) => s.copyWith(textStyle: v),
               (s) => s.textStyle,
             ),
-            Fld<CometChatMessageComposerStyle, Color>(
+            Fld<ConvoKitMessageComposerStyle, Color>(
               'textColor',
               const Color(0xFFC56C44),
               const Color(0xFFCF7147),
               (s, v) => s.copyWith(textColor: v),
               (s) => s.textColor,
             ),
-            Fld<CometChatMessageComposerStyle, TextStyle>(
+            Fld<ConvoKitMessageComposerStyle, TextStyle>(
               'placeHolderTextStyle',
               const TextStyle(fontSize: 534.5),
               const TextStyle(fontSize: 535.5),
               (s, v) => s.copyWith(placeHolderTextStyle: v),
               (s) => s.placeHolderTextStyle,
             ),
-            Fld<CometChatMessageComposerStyle, Color>(
+            Fld<ConvoKitMessageComposerStyle, Color>(
               'placeHolderTextColor',
               const Color(0xFFED8050),
               const Color(0xFFF78553),
@@ -1949,7 +1949,7 @@ void main() {
               (s) => s.placeHolderTextColor,
             ),
             Fld<
-              CometChatMessageComposerStyle,
+              ConvoKitMessageComposerStyle,
               CometChatAttachmentOptionSheetStyle
             >(
               'attachmentOptionSheetStyle',
@@ -1959,7 +1959,7 @@ void main() {
               (s) => s.attachmentOptionSheetStyle,
               lerpsByValue: false,
             ),
-            Fld<CometChatMessageComposerStyle, CometChatMentionsStyle>(
+            Fld<ConvoKitMessageComposerStyle, CometChatMentionsStyle>(
               'mentionsStyle',
               CometChatMentionsStyle(),
               CometChatMentionsStyle(),
@@ -1967,15 +1967,15 @@ void main() {
               (s) => s.mentionsStyle,
               lerpsByValue: false,
             ),
-            Fld<CometChatMessageComposerStyle, CometChatSuggestionListStyle>(
+            Fld<ConvoKitMessageComposerStyle, ConvoKitSuggestionListStyle>(
               'suggestionListStyle',
-              CometChatSuggestionListStyle(),
-              CometChatSuggestionListStyle(),
+              ConvoKitSuggestionListStyle(),
+              ConvoKitSuggestionListStyle(),
               (s, v) => s.copyWith(suggestionListStyle: v),
               (s) => s.suggestionListStyle,
               lerpsByValue: false,
             ),
-            Fld<CometChatMessageComposerStyle, CometChatMediaRecorderStyle>(
+            Fld<ConvoKitMessageComposerStyle, CometChatMediaRecorderStyle>(
               'mediaRecorderStyle',
               CometChatMediaRecorderStyle(),
               CometChatMediaRecorderStyle(),
@@ -1983,23 +1983,23 @@ void main() {
               (s) => s.mediaRecorderStyle,
               lerpsByValue: false,
             ),
-            Fld<CometChatMessageComposerStyle, Color>(
+            Fld<ConvoKitMessageComposerStyle, Color>(
               'filledColor',
               const Color(0xFF51B26E),
               const Color(0xFF5BB771),
               (s, v) => s.copyWith(filledColor: v),
               (s) => s.filledColor,
             ),
-            Fld<CometChatMessageComposerStyle, CometChatRichTextToolbarStyle>(
+            Fld<ConvoKitMessageComposerStyle, ConvoKitRichTextToolbarStyle>(
               'richTextToolbarStyle',
-              CometChatRichTextToolbarStyle(),
-              CometChatRichTextToolbarStyle(),
+              ConvoKitRichTextToolbarStyle(),
+              ConvoKitRichTextToolbarStyle(),
               (s, v) => s.copyWith(richTextToolbarStyle: v),
               (s) => s.richTextToolbarStyle,
               lerpsByValue: false,
             ),
             Fld<
-              CometChatMessageComposerStyle,
+              ConvoKitMessageComposerStyle,
               CometChatInlineAudioRecorderStyle
             >(
               'inlineAudioRecorderStyle',
@@ -2009,10 +2009,10 @@ void main() {
               (s) => s.inlineAudioRecorderStyle,
               lerpsByValue: false,
             ),
-            Fld<CometChatMessageComposerStyle, CometChatAttachmentTrayStyle>(
+            Fld<ConvoKitMessageComposerStyle, ConvoKitAttachmentTrayStyle>(
               'attachmentTrayStyle',
-              CometChatAttachmentTrayStyle(),
-              CometChatAttachmentTrayStyle(),
+              ConvoKitAttachmentTrayStyle(),
+              ConvoKitAttachmentTrayStyle(),
               (s, v) => s.copyWith(attachmentTrayStyle: v),
               (s) => s.attachmentTrayStyle,
               lerpsByValue: false,
