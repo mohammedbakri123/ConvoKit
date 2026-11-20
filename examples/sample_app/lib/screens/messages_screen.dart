@@ -598,6 +598,8 @@ class _MessagesScreenState extends State<MessagesScreen>
             _isUserBlocked || _toggles.hideVideoCallButton.value,
         hideVoiceCallButton:
             _isUserBlocked || _toggles.hideVoiceCallButton.value,
+        hideNewChatButton: true,
+        hideChatHistoryButton: true,
         usersStatusVisibility: _toggles.headerUsersStatusVisibility.value,
         // Pin & Save: the header ⋯ menu opens the conversation's pinned
         // list; tapping a row jumps to that message (replies open their
