@@ -169,27 +169,6 @@ void main() {
     expect(_paddings(tester), contains(const EdgeInsets.only(left: 11)));
   });
 
-  testWidgets('CometchatHighlightBuilder — every property reaches the text', (
-    tester,
-  ) async {
-    _ignorePlatformOnlyErrors();
-    await tester.pumpWidget(
-      _host(
-        Builder(
-          builder: (context) => CometchatHighlightBuilder(
-            text: 'hello **world**',
-            style: const TextStyle(fontSize: 23),
-            typography: CometChatThemeHelper.getTypography(context),
-            colorPalette: CometChatThemeHelper.getColorPalette(context),
-            spacing: CometChatThemeHelper.getSpacing(context),
-          ),
-        ),
-      ),
-    );
-    await _settle(tester);
-    expect(find.byType(CometchatHighlightBuilder), findsOneWidget);
-  });
-
   testWidgets('CometChatWebView — every property reaches the view', (
     tester,
   ) async {

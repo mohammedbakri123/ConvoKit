@@ -424,56 +424,6 @@ void main() {
     );
 
     test(
-      'CometChatAiOptionSheetStyle keeps every field through copyWith/merge/lerp',
-      () {
-        expectStyleContract<CometChatAiOptionSheetStyle>(
-          label: 'CometChatAiOptionSheetStyle',
-          empty: const CometChatAiOptionSheetStyle(),
-          copyWithNothing: (s) => s.copyWith(),
-          merge: (s, o) => s.merge(o),
-          lerp: (s, o, t) => s.lerp(o, t),
-          fields: [
-            Fld<CometChatAiOptionSheetStyle, Color>(
-              'backgroundColor',
-              const Color(0xFF5E37F4),
-              const Color(0xFF683CF7),
-              (s, v) => s.copyWith(backgroundColor: v),
-              (s) => s.backgroundColor,
-            ),
-            Fld<CometChatAiOptionSheetStyle, BorderRadiusGeometry>(
-              'borderRadius',
-              BorderRadius.circular(166.5),
-              BorderRadius.circular(167.5),
-              (s, v) => s.copyWith(borderRadius: v),
-              (s) => s.borderRadius,
-            ),
-            Fld<CometChatAiOptionSheetStyle, BorderSide>(
-              'border',
-              const BorderSide(width: 168.5),
-              const BorderSide(width: 169.5),
-              (s, v) => s.copyWith(border: v),
-              (s) => s.border,
-            ),
-            Fld<CometChatAiOptionSheetStyle, Color>(
-              'iconColor',
-              const Color(0xFF9A5606),
-              const Color(0xFFA45B09),
-              (s, v) => s.copyWith(iconColor: v),
-              (s) => s.iconColor,
-            ),
-            Fld<CometChatAiOptionSheetStyle, TextStyle>(
-              'textStyle',
-              const TextStyle(fontSize: 172.5),
-              const TextStyle(fontSize: 173.5),
-              (s, v) => s.copyWith(textStyle: v),
-              (s) => s.textStyle,
-            ),
-          ],
-        );
-      },
-    );
-
-    test(
       'CometChatMessageInputStyle keeps every field through copyWith/merge/lerp',
       () {
         expectStyleContract<CometChatMessageInputStyle>(

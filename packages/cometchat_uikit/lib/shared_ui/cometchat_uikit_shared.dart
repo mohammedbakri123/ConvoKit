@@ -169,7 +169,3 @@ export 'src/cometchat_message_list/widgets/cometchat_new_message_indicator.dart'
 export 'src/cometchat_message_list/widgets/cometchat_new_message_indicator_style.dart';
 export 'src/cometchat_message_list/utils/keyboard_mixin.dart';
 export 'src/cometchat_message_list/utils/composer_height_notifier.dart';
-
-// AI Option Sheet
-export 'src/views/ai_option_sheet/cometchat_ai_option_sheet.dart';
-export 'src/views/ai_option_sheet/cometchat_ai_option_sheet_style.dart';
