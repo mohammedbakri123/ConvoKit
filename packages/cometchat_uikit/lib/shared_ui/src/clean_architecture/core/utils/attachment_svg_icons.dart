@@ -6,7 +6,7 @@ import 'file_type_styles.dart';
 /// Package that owns the attachment type-badge SVGs — needed for
 /// [SvgPicture.asset]'s `package:` argument when the assets are consumed inside
 /// the UIKit package.
-const String kAttachmentIconPackage = 'cometchat_chat_uikit';
+const String kAttachmentIconPackage = 'convokit';
 
 const String _base = 'assets/icons/svg/attachments';
 

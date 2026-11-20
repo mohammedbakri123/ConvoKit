@@ -161,7 +161,7 @@ void main() {
           const ImageViewer(
             imageUrl: 'https://cdn.test/full.png',
             placeholderImage: 'assets/icons/file_unknown.png',
-            placeHolderImagePackageName: 'cometchat_chat_uikit',
+            placeHolderImagePackageName: 'convokit',
           ),
         ),
       );
@@ -305,7 +305,7 @@ void main() {
           ImageViewer(
             imageUrl: path,
             placeholderImage: 'assets/icons/file_unknown.png',
-            placeHolderImagePackageName: 'cometchat_chat_uikit',
+            placeHolderImagePackageName: 'convokit',
           ),
         ),
       );
