@@ -36,6 +36,13 @@ class CometChatUIKit {
   static contracts.ChatMediaProvider? mediaProvider;
   static ConvoKit? kit;
 
+  /// Whether ConvoKit mode is active (contracts/kit configured by host).
+  static bool get isConvoKitMode =>
+      kit != null ||
+      session != null ||
+      conversationRepository != null ||
+      messageRepository != null;
+
   /// Host-supplied read-only [ChatSession] replacing the static facade.
   static ChatSession? session;
 

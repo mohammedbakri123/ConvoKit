@@ -2752,8 +2752,98 @@ class _CometChatMessageComposerState extends State<CometChatMessageComposer>
 
   void _previewMessage(BaseMessage message, PreviewMessageMode mode) {
     if (mode == PreviewMessageMode.edit) {
-      // Editing deferred to v1.1 per decisions list
-      return;
+      if (CometChatUIKit.isConvoKitMode) {
+        // Editing deferred to v1.1 in ConvoKit UI
+        return;
+      }
+      _bloc.add(SetEditMessage(message));
+      _overlayPortalController.show();
+
+      if (message is TextMessage) {
+        int mentionFormatterIndex = _formatters.indexWhere(
+          (element) => element is CometChatMentionsFormatter,
+        );
+
+        // In segment mode, populate the segment controller with the edit text
+        if (_useSegmentBasedCodeBlocks && _segmentComposerController != null) {
+          String editText = message.text;
+          if (mentionFormatterIndex != -1) {
+            // Process mentions for display
+            editText = _processEditText(editText, message);
+          }
+          // Clear and populate segment controller
+          _segmentComposerController!.clear();
+          // Set the text in the first normal segment, hydrating any markdown
+          // links into FormatType.link spans so the URL is preserved.
+          final segments = _segmentComposerController!.segments;
+          if (segments.isNotEmpty) {
+            final segController = segments.first.controller;
+            if (segController is RichTextEditingController) {
+              segController.hydrateFromMarkdown(editText);
+            } else {
+              segController.text = editText;
+            }
+            _previousText = segController.text;
+          }
+        } else if (mentionFormatterIndex != -1) {
+          CometChatMentionsFormatter mentionsFormatter =
+              _formatters[mentionFormatterIndex] as CometChatMentionsFormatter;
+
+          // Hydrate markdown links ([text](url)) into FormatType.link spans so
+          // the URL portion doesn't disappear into hidden markers. Falls back
+          // to a plain text assignment for non-rich controllers.
+          final controller = _textEditingController;
+          if (controller is RichTextEditingController) {
+            controller.hydrateFromMarkdown(message.text);
+          } else {
+            controller?.text = message.text;
+          }
+          _previousText = _textEditingController!.text;
+
+          mentionsFormatter.onMessageEdit(
+            _textEditingController!,
+            mentionedUsers: message.mentionedUsers,
+          );
+
+          _previousText = _textEditingController!.text;
+        } else {
+          String editText = message.text;
+          editText = _processEditText(editText, message);
+          final controller = _textEditingController;
+          if (controller is RichTextEditingController) {
+            controller.hydrateFromMarkdown(editText);
+          } else {
+            controller?.text = editText;
+          }
+          _previousText = _textEditingController?.text ?? editText;
+        }
+      } else if (message is MediaMessage) {
+        // Text sent alongside attachments lives in the caption — load it into
+        // the composer so it can be edited (mirrors the plain-text edit path,
+        // hydrating any markdown into rich spans).
+        final editText = message.caption ?? '';
+        if (_useSegmentBasedCodeBlocks && _segmentComposerController != null) {
+          _segmentComposerController!.clear();
+          final segments = _segmentComposerController!.segments;
+          if (segments.isNotEmpty) {
+            final segController = segments.first.controller;
+            if (segController is RichTextEditingController) {
+              segController.hydrateFromMarkdown(editText);
+            } else {
+              segController.text = editText;
+            }
+            _previousText = segController.text;
+          }
+        } else {
+          final controller = _textEditingController;
+          if (controller is RichTextEditingController) {
+            controller.hydrateFromMarkdown(editText);
+          } else {
+            controller?.text = editText;
+          }
+          _previousText = _textEditingController?.text ?? editText;
+        }
+      }
     } else if (mode == PreviewMessageMode.reply) {
       _bloc.add(SetReplyMessage(message));
       _overlayPortalController.show();
@@ -4282,7 +4372,9 @@ class _CometChatMessageComposerState extends State<CometChatMessageComposer>
   }
 
   String _getMessagePreviewTitle(MessageComposerState state) {
-    if (state.isReplyMode && state.replyMessage != null) {
+    if (state.isEditMode) {
+      return Translations.of(context).editMessage;
+    } else if (state.isReplyMode && state.replyMessage != null) {
       return state.replyMessage!.sender?.name ?? '';
     }
     return '';
@@ -4431,9 +4523,12 @@ class _CometChatMessageComposerState extends State<CometChatMessageComposer>
                       );
                     }
 
-                    // Drive reply preview animation (editing deferred to v1.1)
+                    // Drive reply/edit preview animation
                     final hasPreview =
-                        state.isReplyMode && state.replyMessage != null;
+                        (state.isEditMode &&
+                            state.editMessage != null &&
+                            !CometChatUIKit.isConvoKitMode) ||
+                        (state.isReplyMode && state.replyMessage != null);
                     if (hasPreview && !_previewVisible) {
                       _previewVisible = true;
                       _previewAnimController.forward(from: 0.0);

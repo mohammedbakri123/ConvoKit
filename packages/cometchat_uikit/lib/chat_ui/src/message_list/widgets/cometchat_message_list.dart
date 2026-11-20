@@ -2730,7 +2730,21 @@ class _CometChatMessageListState extends State<CometChatMessageList>
       return template!.footerView!(message, context, alignment);
     }
 
-    // Reactions deferred to v1.1 per decisions list
+    // In ConvoKit mode, reactions are deferred to v1.1
+    if (CometChatUIKit.isConvoKitMode) {
+      return null;
+    }
+
+    // Hide reactions for moderated messages — v5 parity.
+    final isModerated = _isMessageModerated(message);
+
+    // Show reactions if available
+    if (widget.disableReactions != true &&
+        message.reactions.isNotEmpty &&
+        !isModerated) {
+      return _getReactionsView(message, alignment);
+    }
+
     return null;
   }
 
@@ -3400,7 +3414,10 @@ class _CometChatMessageListState extends State<CometChatMessageList>
       heroTag: heroTag,
       bubbleSize: bubbleSize,
       favoriteReactions: widget.favoriteReactions,
-      hideReactions: true,
+      hideReactions: CometChatUIKit.isConvoKitMode
+          ? true
+          : (widget.disableReactions == true ||
+              widget.hideReactionOption == true),
       onReactionTap: (msg, reaction) {
         _handleReactionTap(msg, reaction);
       },
@@ -3456,7 +3473,9 @@ class _CometChatMessageListState extends State<CometChatMessageList>
         case MessageOptionConstants.deleteMessage:
           return widget.hideDeleteMessageOption != true;
         case MessageOptionConstants.editMessage:
-          return false; // Message editing deferred to v1.1
+          return CometChatUIKit.isConvoKitMode
+              ? false
+              : widget.hideEditMessageOption != true;
         case MessageOptionConstants.messageInformation:
           return widget.hideMessageInfoOption != true;
         case MessageOptionConstants.sendMessagePrivately:
@@ -3602,8 +3621,13 @@ class _CometChatMessageListState extends State<CometChatMessageList>
             return;
           }
 
-          // Handle edit message option (deferred to v1.1 per decisions list)
+          // Handle edit message option
           if (option.id == MessageOptionConstants.editMessage) {
+            if (CometChatUIKit.isConvoKitMode) return;
+            CometChatMessageEvents.ccMessageEdited(
+              message,
+              MessageEditStatus.inProgress,
+            );
             return;
           }
 

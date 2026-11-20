@@ -696,7 +696,19 @@ class MessageTemplateUtils {
       );
     }
 
-    // Message editing is deferred to v1.1 per decisions list
+    if (!CometChatUIKit.isConvoKitMode &&
+        additionalConfigurations?.hideEditMessageOption != true &&
+        _validateOption(
+          loggedInUser,
+          messageObject,
+          context,
+          group,
+          MessageOptionConstants.editMessage,
+        )) {
+      messageOptionList.add(
+        getEditOption(context, colorPalette, typography, style),
+      );
+    }
 
     if (additionalConfigurations?.hideMessageInfoOption != true &&
         _validateOption(
@@ -1414,7 +1426,9 @@ class MessageTemplateUtils {
         additionalConfigurations,
       );
     }
-    optionList.removeWhere((opt) => opt.id == MessageOptionConstants.editMessage);
+    if (CometChatUIKit.isConvoKitMode) {
+      optionList.removeWhere((opt) => opt.id == MessageOptionConstants.editMessage);
+    }
     return optionList;
   }
 
@@ -1425,8 +1439,9 @@ class MessageTemplateUtils {
     dynamic group,
     String optionId,
   ) {
-    if (MessageOptionConstants.editMessage == optionId) {
-      return false; // Editing deferred to v1.1
+    if (CometChatUIKit.isConvoKitMode &&
+        MessageOptionConstants.editMessage == optionId) {
+      return false; // Editing deferred to v1.1 in ConvoKit mode
     }
     if (MessageOptionConstants.replyInThreadMessage == optionId &&
         messageObject.parentMessageId == 0) {
@@ -1577,7 +1592,19 @@ class MessageTemplateUtils {
     final String? caption = messageObject is MediaMessage
         ? messageObject.caption?.trim()
         : null;
-    // Message editing is deferred to v1.1 per decisions list
+    if (!CometChatUIKit.isConvoKitMode &&
+        additionalConfigurations?.hideEditMessageOption != true &&
+        _validateOption(
+          loggedInUser,
+          messageObject,
+          context,
+          group,
+          MessageOptionConstants.editMessage,
+        )) {
+      messageOptionList.add(
+        getEditOption(context, colorPalette, typography, style),
+      );
+    }
 
     if (additionalConfigurations?.hideReplyOption != true) {
       messageOptionList.add(
