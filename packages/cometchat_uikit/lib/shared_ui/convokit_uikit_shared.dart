@@ -1,8 +1,8 @@
-/// The `cometchat_uikit_shared` library.
+/// The `convokit_uikit_shared` library.
 ///
-/// This library provides shared utilities for the CometChat UIKit. It consolidates
+/// This library provides shared utilities for ConvoKit. It consolidates
 /// various resources, constants, events, utilities, and views required for
-/// CometChat to function.
+/// ConvoKit to function.
 
 library;
 

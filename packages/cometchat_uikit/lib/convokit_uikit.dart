@@ -43,7 +43,7 @@ export 'chat_ui/src/group_members/cometchat_change_scope_style.dart';
 // rename that would remove the need for this.
 export 'chat_ui/src/group_members/bloc/bloc.dart' hide GetLoggedInUserUseCase;
 
-//CometChat Groups
+//ConvoKitGroups
 export 'chat_ui/src/groups/cometchat_groups.dart';
 export 'chat_ui/src/groups/groups_builder_protocol.dart';
 export 'chat_ui/src/groups/widgets/widgets.dart';

@@ -376,7 +376,7 @@ class ConvoKitUIKit {
   /// getLoggedInUser() method to check if there is any existing session in the SDK.
   /// This method should return the details of the logged-in user.
   ///
-  /// [Create an Auth Token](https://www.cometchat.com/docs/chat-apis/ref#createauthtoken) via the CometChat API
+  /// Create an auth token via the backend API
   /// for the new user every time the user logs in to your app
   ///
   /// With `UIKitSettings.enableCalls`, [onSuccess] is called once the Calls
