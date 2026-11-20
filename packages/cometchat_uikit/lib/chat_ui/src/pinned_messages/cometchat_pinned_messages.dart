@@ -1,3 +1,4 @@
+import 'package:cometchat_chat_uikit/src/adapters/cometchat_sdk_adapter.dart';
 import 'package:flutter/material.dart';
 
 import '../../../shared_ui/cometchat_uikit_shared.dart';
@@ -143,14 +144,14 @@ class _CometChatPinnedMessagesState extends State<CometChatPinnedMessages> {
       onRemoved: _applyRemoved,
     );
     CometChatMessageEvents.addMessagesListener(_listenerId, _kitEvents);
-    CometChat.addMessageListener(_listenerId, _sdkEvents);
+    CometChatSdkAdapter.addMessageListener(_listenerId, _sdkEvents);
     _fetchAll();
   }
 
   @override
   void dispose() {
     CometChatMessageEvents.removeMessagesListener(_listenerId);
-    CometChat.removeMessageListener(_listenerId);
+    CometChatSdkAdapter.removeMessageListener(_listenerId);
     super.dispose();
   }
 
@@ -372,7 +373,7 @@ class _CometChatPinnedMessagesState extends State<CometChatPinnedMessages> {
       cancelButtonText: translations.cancel,
       onConfirm: (dialogContext) async {
         Navigator.of(dialogContext).pop();
-        final updated = await CometChat.unpinMessage(
+        final updated = await CometChatSdkAdapter.unpinMessage(
           message.id,
           onError: (error) {
             if (mounted) {

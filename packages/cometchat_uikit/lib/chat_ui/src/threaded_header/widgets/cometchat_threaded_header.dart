@@ -1,3 +1,4 @@
+import 'package:cometchat_chat_uikit/src/adapters/cometchat_sdk_adapter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -309,8 +310,8 @@ class _CometChatThreadedHeaderState extends State<CometChatThreadedHeader> {
 
     try {
       final result = target
-          ? await CometChat.subscribeToThread(parentMessageId)
-          : await CometChat.unsubscribeFromThread(parentMessageId);
+          ? await CometChatSdkAdapter.subscribeToThread(parentMessageId)
+          : await CometChatSdkAdapter.unsubscribeFromThread(parentMessageId);
 
       if (result != null) {
         // Keep the action-sheet surface (and integrator lists) in agreement.

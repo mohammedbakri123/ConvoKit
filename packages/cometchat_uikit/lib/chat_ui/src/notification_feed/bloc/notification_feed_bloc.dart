@@ -1,3 +1,4 @@
+import 'package:cometchat_chat_uikit/src/adapters/cometchat_sdk_adapter.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -136,10 +137,10 @@ class NotificationFeedBloc
 
     // Register real-time listener (skip in tests)
     if (!disableSDKListeners) {
-      CometChat.addNotificationFeedListener(_feedListenerKey, this);
+      CometChatSdkAdapter.addNotificationFeedListener(_feedListenerKey, this);
 
       // Register connection listener
-      CometChat.addConnectionListener(
+      CometChatSdkAdapter.addConnectionListener(
         _connectionListenerKey,
         _NotificationFeedConnectionListener(
           onConnectedCallback: () {
@@ -773,8 +774,8 @@ class NotificationFeedBloc
   Future<void> close() {
     _unreadCountTimer?.cancel();
     if (!disableSDKListeners) {
-      CometChat.removeNotificationFeedListener(_feedListenerKey);
-      CometChat.removeConnectionListener(_connectionListenerKey);
+      CometChatSdkAdapter.removeNotificationFeedListener(_feedListenerKey);
+      CometChatSdkAdapter.removeConnectionListener(_connectionListenerKey);
     }
     return super.close();
   }

@@ -1,3 +1,4 @@
+import 'package:cometchat_chat_uikit/src/adapters/cometchat_sdk_adapter.dart';
 import 'dart:async';
 import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
 import 'package:flutter/material.dart';
@@ -65,7 +66,7 @@ class ActionElementUtils {
 
       if (response != null) {
         if (response.statusCode == 200) {
-          await CometChat.markAsInteracted(
+          await CometChatSdkAdapter.markAsInteracted(
             messageId,
             element.elementId,
             onSuccess: (String res) {},

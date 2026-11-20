@@ -1,3 +1,4 @@
+import 'package:cometchat_chat_uikit/src/adapters/cometchat_sdk_adapter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../../cometchat_uikit_shared.dart';
@@ -113,7 +114,7 @@ class _CometChatAIConversationSummaryViewState
       receiverType = CometChatReceiverType.group;
     }
 
-    await CometChat.getConversationSummary(
+    await CometChatSdkAdapter.getConversationSummary(
       receiverId,
       receiverType,
       configuration: widget.apiConfiguration,

@@ -1,3 +1,4 @@
+import 'package:cometchat_chat_uikit/src/adapters/cometchat_sdk_adapter.dart';
 import '../../cometchat_uikit_shared.dart';
 import '../clean_architecture/data/models/interactive_message/card_message.dart'
     as legacy;
@@ -10,7 +11,7 @@ class SDKMethods {
   }) async {
     InteractiveMessage interactiveMessage = message.toInteractiveMessage();
     FormMessage? formMessage;
-    await CometChat.sendInteractiveMessage(
+    await CometChatSdkAdapter.sendInteractiveMessage(
       interactiveMessage,
       onSuccess: (InteractiveMessage returnedMessage) {
         formMessage = FormMessage.fromInteractiveMessage(returnedMessage);
@@ -30,7 +31,7 @@ class SDKMethods {
   }) async {
     InteractiveMessage interactiveMessage = message.toInteractiveMessage();
     legacy.CardMessage? cardMessage;
-    await CometChat.sendInteractiveMessage(
+    await CometChatSdkAdapter.sendInteractiveMessage(
       interactiveMessage,
       onSuccess: (InteractiveMessage message) {
         cardMessage = legacy.CardMessage.fromInteractiveMessage(message);
@@ -50,7 +51,7 @@ class SDKMethods {
   }) async {
     InteractiveMessage interactiveMessage = message.toInteractiveMessage();
     SchedulerMessage? meetingMessage;
-    await CometChat.sendInteractiveMessage(
+    await CometChatSdkAdapter.sendInteractiveMessage(
       interactiveMessage,
       onSuccess: (InteractiveMessage returnedMessage) {
         meetingMessage = SchedulerMessage.fromInteractiveMessage(

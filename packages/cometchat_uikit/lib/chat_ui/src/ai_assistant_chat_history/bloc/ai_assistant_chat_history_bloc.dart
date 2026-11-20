@@ -1,3 +1,4 @@
+import 'package:cometchat_chat_uikit/src/adapters/cometchat_sdk_adapter.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -343,13 +344,13 @@ class AIAssistantChatHistoryBloc
 
   void _registerListeners() {
     // Message listeners
-    CometChat.addMessageListener(
+    CometChatSdkAdapter.addMessageListener(
       _messageListenerId,
       _AIAssistantMessageListener(this),
     );
 
     // Connection listener
-    CometChat.addConnectionListener(
+    CometChatSdkAdapter.addConnectionListener(
       _connectionListenerId,
       _AIAssistantConnectionListener(this),
     );
@@ -362,8 +363,8 @@ class AIAssistantChatHistoryBloc
   }
 
   void _removeListeners() {
-    CometChat.removeMessageListener(_messageListenerId);
-    CometChat.removeConnectionListener(_connectionListenerId);
+    CometChatSdkAdapter.removeMessageListener(_messageListenerId);
+    CometChatSdkAdapter.removeConnectionListener(_connectionListenerId);
     CometChatMessageEvents.removeMessagesListener(_ccMessageListenerId);
   }
 

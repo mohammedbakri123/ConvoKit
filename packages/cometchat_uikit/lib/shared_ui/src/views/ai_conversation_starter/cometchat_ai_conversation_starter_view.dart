@@ -1,3 +1,4 @@
+import 'package:cometchat_chat_uikit/src/adapters/cometchat_sdk_adapter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../../cometchat_uikit_shared.dart';
@@ -73,7 +74,7 @@ class _CometChatAIConversationStarterViewState
       receiverType = CometChatReceiverType.group;
     }
 
-    await CometChat.getConversationStarter(
+    await CometChatSdkAdapter.getConversationStarter(
       receiverId,
       receiverType,
       configuration: widget.apiConfiguration,

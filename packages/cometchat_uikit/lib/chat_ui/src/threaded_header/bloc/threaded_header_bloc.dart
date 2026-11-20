@@ -1,3 +1,4 @@
+import 'package:cometchat_chat_uikit/src/adapters/cometchat_sdk_adapter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../shared_ui/cometchat_uikit_shared.dart';
@@ -132,7 +133,7 @@ class ThreadedHeaderBloc
   /// Register all CometChat SDK listeners for real-time updates
   void _registerSDKListeners() {
     // Register SDK message listener
-    CometChat.addMessageListener(
+    CometChatSdkAdapter.addMessageListener(
       _messageListenerKey,
       _ThreadedHeaderMessageListener(
         onTextMessageReceivedCallback: _handleMessageReceived,
@@ -262,7 +263,7 @@ class ThreadedHeaderBloc
   @override
   Future<void> close() {
     // Remove all SDK listeners to prevent memory leaks
-    CometChat.removeMessageListener(_messageListenerKey);
+    CometChatSdkAdapter.removeMessageListener(_messageListenerKey);
     CometChatMessageEvents.removeMessagesListener(_uiMessageListenerKey);
     CometChatGroupEvents.removeGroupsListener(_uiGroupListenerKey);
     return super.close();

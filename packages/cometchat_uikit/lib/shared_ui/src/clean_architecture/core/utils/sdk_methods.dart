@@ -1,3 +1,4 @@
+import 'package:cometchat_chat_uikit/src/adapters/cometchat_sdk_adapter.dart';
 import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
 import '../../data/models/interactive_message/form_message.dart';
 import '../../data/models/interactive_message/card_message.dart';
@@ -11,7 +12,7 @@ class SDKMethods {
   }) async {
     InteractiveMessage interactiveMessage = message.toInteractiveMessage();
     FormMessage? formMessage;
-    await CometChat.sendInteractiveMessage(
+    await CometChatSdkAdapter.sendInteractiveMessage(
       interactiveMessage,
       onSuccess: (InteractiveMessage returnedMessage) {
         formMessage = FormMessage.fromInteractiveMessage(returnedMessage);
@@ -31,7 +32,7 @@ class SDKMethods {
   }) async {
     InteractiveMessage interactiveMessage = message.toInteractiveMessage();
     CardMessage? cardMessage;
-    await CometChat.sendInteractiveMessage(
+    await CometChatSdkAdapter.sendInteractiveMessage(
       interactiveMessage,
       onSuccess: (InteractiveMessage message) {
         cardMessage = CardMessage.fromInteractiveMessage(message);
@@ -51,7 +52,7 @@ class SDKMethods {
   }) async {
     InteractiveMessage interactiveMessage = message.toInteractiveMessage();
     SchedulerMessage? meetingMessage;
-    await CometChat.sendInteractiveMessage(
+    await CometChatSdkAdapter.sendInteractiveMessage(
       interactiveMessage,
       onSuccess: (InteractiveMessage returnedMessage) {
         meetingMessage = SchedulerMessage.fromInteractiveMessage(

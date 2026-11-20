@@ -486,13 +486,13 @@ class CometChatSdkAdapter {
   static Future<dynamic> markAsInteracted(
     int messageId,
     String interactionGoal, {
-    void Function(dynamic)? onSuccess,
+    void Function(String)? onSuccess,
     void Function(cc.CometChatException)? onError,
   }) =>
       cc.CometChat.markAsInteracted(
         messageId,
         interactionGoal,
-        onSuccess: onSuccess,
+        onSuccess: onSuccess != null ? (dynamic res) => onSuccess(res.toString()) : null,
         onError: onError,
       );
 
@@ -625,6 +625,81 @@ class CometChatSdkAdapter {
     );
     return completer.future;
   }
+
+  static Future<List<cc.MessageReceipt>?> getMessageReceipts(
+    int messageId, {
+    void Function(List<cc.MessageReceipt>)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.getMessageReceipts(
+        messageId,
+        onSuccess: onSuccess,
+        onError: onError,
+      );
+
+  static void addNotificationFeedListener(
+    String key,
+    cc.NotificationFeedListener listener,
+  ) =>
+      cc.CometChat.addNotificationFeedListener(key, listener);
+
+  static void removeNotificationFeedListener(String key) =>
+      cc.CometChat.removeNotificationFeedListener(key);
+
+  static Future<void> markFeedItemAsDelivered(
+    cc.NotificationFeedItem item, {
+    void Function(dynamic)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.markFeedItemAsDelivered(
+        item,
+        onSuccess: onSuccess,
+        onError: onError,
+      );
+
+  static Future<void> markFeedItemAsRead(
+    cc.NotificationFeedItem item, {
+    void Function(dynamic)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.markFeedItemAsRead(
+        item,
+        onSuccess: onSuccess,
+        onError: onError,
+      );
+
+  static Future<void> reportFeedEngagement(
+    cc.NotificationFeedItem item,
+    String action, {
+    void Function(dynamic)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.reportFeedEngagement(
+        item,
+        action,
+        onSuccess: onSuccess,
+        onError: onError,
+      );
+
+  static Future<dynamic> getNotificationFeedUnreadCount({
+    void Function(int)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.getNotificationFeedUnreadCount(
+        onSuccess: onSuccess,
+        onError: onError,
+      );
+
+  static Future<dynamic> getNotificationFeedItem(
+    String id, {
+    void Function(cc.NotificationFeedItem)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.getNotificationFeedItem(
+        id,
+        onSuccess: onSuccess,
+        onError: onError,
+      );
 }
 
 class _SdkUploadListener extends cc.UploadFileListener {

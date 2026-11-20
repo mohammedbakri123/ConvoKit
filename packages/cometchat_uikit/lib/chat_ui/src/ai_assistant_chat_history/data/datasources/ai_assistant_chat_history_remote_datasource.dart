@@ -1,3 +1,4 @@
+import 'package:cometchat_chat_uikit/src/adapters/cometchat_sdk_adapter.dart';
 import 'dart:async';
 import 'package:cometchat_sdk/cometchat_sdk.dart' hide CardMessage;
 import '../../../../../../shared_ui/src/clean_architecture/core/result.dart';
@@ -44,7 +45,7 @@ class AIAssistantChatHistoryRemoteDataSourceImpl
   Future<Result<BaseMessage>> deleteMessage(int messageId) async {
     final completer = Completer<Result<BaseMessage>>();
     unawaited(
-      CometChat.deleteMessage(
+      CometChatSdkAdapter.deleteMessage(
         messageId,
         onSuccess: (BaseMessage updatedMessage) {
           completer.complete(Success(updatedMessage));
@@ -65,7 +66,7 @@ class AIAssistantChatHistoryRemoteDataSourceImpl
   @override
   Future<Result<User?>> getLoggedInUser() async {
     try {
-      final user = await CometChat.getLoggedInUser();
+      final user = await CometChatSdkAdapter.getLoggedInUser();
       return Success(user);
     } on CometChatException catch (e) {
       return Failure(
@@ -84,7 +85,7 @@ class AIAssistantChatHistoryRemoteDataSourceImpl
   ) async {
     final completer = Completer<Result<Conversation?>>();
     unawaited(
-      CometChat.getConversation(
+      CometChatSdkAdapter.getConversation(
         conversationWith,
         conversationType,
         onSuccess: (Conversation conversation) {

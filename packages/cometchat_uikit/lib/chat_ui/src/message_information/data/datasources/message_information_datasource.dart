@@ -1,3 +1,4 @@
+import 'package:cometchat_chat_uikit/src/adapters/cometchat_sdk_adapter.dart';
 import 'dart:async';
 
 import '../../../../../cometchat_chat_uikit.dart';
@@ -37,7 +38,7 @@ class MessageInformationDataSourceImpl implements MessageInformationDataSource {
   Future<List<MessageReceipt>> fetchMessageReceipts(int messageId) async {
     final completer = Completer<List<MessageReceipt>>();
     unawaited(
-      CometChat.getMessageReceipts(
+      CometChatSdkAdapter.getMessageReceipts(
         messageId,
         onSuccess: (receipts) => completer.complete(receipts),
         onError: (error) => completer.completeError(

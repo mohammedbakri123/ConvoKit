@@ -1,3 +1,4 @@
+import 'package:cometchat_chat_uikit/src/adapters/cometchat_sdk_adapter.dart';
 import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -272,7 +273,7 @@ class ReactionListBloc extends Bloc<ReactionListEvent, ReactionListState>
 
     // Make API call
     unawaited(
-      CometChat.removeReaction(
+      CometChatSdkAdapter.removeReaction(
         event.reaction.messageId!,
         event.reaction.reaction!,
         onSuccess: (reactedMessage) {

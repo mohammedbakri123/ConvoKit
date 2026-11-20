@@ -1,3 +1,4 @@
+import 'package:cometchat_chat_uikit/src/adapters/cometchat_sdk_adapter.dart';
 import '../../../cometchat_uikit_shared.dart';
 import '../../clean_architecture/data/models/interactive_message/card_message.dart'
     as legacy;
@@ -7,7 +8,7 @@ class ChatSDKEventInitializer with MessageListener {
   final String _listenerId = "__CometChatConstantListenerID__";
 
   ChatSDKEventInitializer() {
-    CometChat.addMessageListener(_listenerId, this);
+    CometChatSdkAdapter.addMessageListener(_listenerId, this);
   }
 
   @override

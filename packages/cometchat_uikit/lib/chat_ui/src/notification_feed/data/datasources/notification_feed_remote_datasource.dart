@@ -1,3 +1,4 @@
+import 'package:cometchat_chat_uikit/src/adapters/cometchat_sdk_adapter.dart';
 import 'dart:async';
 import 'package:cometchat_sdk/cometchat_sdk.dart' hide CardMessage;
 
@@ -137,7 +138,7 @@ class NotificationFeedRemoteDataSourceImpl
       final completer = Completer<void>();
 
       unawaited(
-        CometChat.markFeedItemAsDelivered(
+        CometChatSdkAdapter.markFeedItemAsDelivered(
           feedItem,
           onSuccess: (dynamic result) {
             if (!completer.isCompleted) {
@@ -177,7 +178,7 @@ class NotificationFeedRemoteDataSourceImpl
       final completer = Completer<void>();
 
       unawaited(
-        CometChat.markFeedItemAsRead(
+        CometChatSdkAdapter.markFeedItemAsRead(
           feedItem,
           onSuccess: (dynamic result) {
             if (!completer.isCompleted) {
@@ -219,7 +220,7 @@ class NotificationFeedRemoteDataSourceImpl
       final completer = Completer<void>();
 
       unawaited(
-        CometChat.reportFeedEngagement(
+        CometChatSdkAdapter.reportFeedEngagement(
           feedItem,
           interactionString,
           onSuccess: (dynamic result) {
@@ -259,7 +260,7 @@ class NotificationFeedRemoteDataSourceImpl
       final completer = Completer<int>();
 
       unawaited(
-        CometChat.getNotificationFeedUnreadCount(
+        CometChatSdkAdapter.getNotificationFeedUnreadCount(
           onSuccess: (int count) {
             if (!completer.isCompleted) {
               completer.complete(count);
@@ -296,7 +297,7 @@ class NotificationFeedRemoteDataSourceImpl
       final completer = Completer<NotificationFeedItem>();
 
       unawaited(
-        CometChat.getNotificationFeedItem(
+        CometChatSdkAdapter.getNotificationFeedItem(
           id,
           onSuccess: (NotificationFeedItem feedItem) {
             if (!completer.isCompleted) {

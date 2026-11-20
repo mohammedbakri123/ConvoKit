@@ -1,3 +1,4 @@
+import 'package:cometchat_chat_uikit/src/adapters/cometchat_sdk_adapter.dart';
 import 'package:flutter/foundation.dart';
 import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
 
@@ -20,7 +21,7 @@ class InteractiveMessageUtils {
     required Function(bool matched) onSuccess,
     Function(CometChatException excep)? onError,
   }) async {
-    await CometChat.markAsInteracted(
+    await CometChatSdkAdapter.markAsInteracted(
       message.id,
       interactiveElement.elementId,
       onSuccess: (String returnedString) {

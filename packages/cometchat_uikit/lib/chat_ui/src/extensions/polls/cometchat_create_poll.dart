@@ -1,3 +1,4 @@
+import 'package:cometchat_chat_uikit/src/adapters/cometchat_sdk_adapter.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
@@ -729,7 +730,7 @@ class _CometChatCreatePollState extends State<CometChatCreatePoll> {
     });
 
     unawaited(
-      CometChat.callExtension(
+      CometChatSdkAdapter.callExtension(
         ExtensionConstants.polls,
         "POST",
         ExtensionUrls.createPoll,

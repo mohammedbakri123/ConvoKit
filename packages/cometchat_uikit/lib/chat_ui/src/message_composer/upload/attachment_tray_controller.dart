@@ -89,7 +89,7 @@ class AttachmentTile {
 }
 
 /// Owns the composer's staging model and drives the SDK's multi-upload surface:
-/// a per-composer [UploadFileRequest] (`CometChat.createUploadFileRequest`).
+/// a per-composer [UploadFileRequest] (`CometChatSdkAdapter.createUploadFileRequest`).
 ///
 /// One controller per composer instance. The controller **supplies each file's
 /// id**, so a tile is rendered at 0% the instant a file is staged — no waiting

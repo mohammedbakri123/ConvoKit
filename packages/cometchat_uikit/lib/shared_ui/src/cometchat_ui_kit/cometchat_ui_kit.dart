@@ -1,3 +1,4 @@
+import 'package:cometchat_chat_uikit/src/adapters/cometchat_sdk_adapter.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
@@ -135,7 +136,7 @@ class CometChatUIKit {
       ),
     );
 
-    // Follows a host's direct CometChat.login/logout, so call handling is
+    // Follows a host's direct login/logout, so call handling is
     // started and stopped for the right user even when CometChatUIKit is
     // bypassed. It only acts when enableCalls is on. Idempotent.
     CallsLifecycle.attachLoginListener();
@@ -221,7 +222,7 @@ class CometChatUIKit {
     );
 
     unawaited(
-      CometChat.setSource(
+      CometChatSdkAdapter.setSource(
         chat_ui_kit_constants.SetSourceConstant.uiKitVersion,
         kIsWeb ? 'web' : _nativePlatformName(),
         chat_ui_kit_constants.SetSourceConstant.platform,
@@ -328,7 +329,7 @@ class CometChatUIKit {
         fromSettings: true,
         onSuccess: (String successMessage) {
           // Mark integration source as ai-agent for file-based init
-          CometChat.setIntegrationSource('ai-agent');
+          CometChatSdkAdapter.setIntegrationSource('ai-agent');
           if (onSuccess != null) onSuccess(successMessage);
         },
         onError: onError,
@@ -409,7 +410,7 @@ class CometChatUIKit {
   ///
   /// The CometChat SDK maintains the session of the logged in user within the SDK.
   /// Thus you do not need to call the login method for every session. You can use the
-  /// CometChat.getLoggedInUser() method to check if there is any existing session in the SDK.
+  /// getLoggedInUser() method to check if there is any existing session in the SDK.
   /// This method should return the details of the logged-in user.
   ///
   /// [Create an Auth Token](https://www.cometchat.com/docs/chat-apis/ref#createauthtoken) via the CometChat API
@@ -595,7 +596,7 @@ class CometChatUIKit {
 
     User? resultUser;
 
-    resultUser = await CometChat.createUser(
+    resultUser = await CometChatSdkAdapter.createUser(
       user,
       authenticationSettings!.authKey!,
       onSuccess: onSuccess,
@@ -618,7 +619,7 @@ class CometChatUIKit {
 
     User? user0;
 
-    user0 = await CometChat.updateUser(
+    user0 = await CometChatSdkAdapter.updateUser(
       user,
       authenticationSettings!.authKey!,
       onSuccess: onSuccess,
@@ -762,7 +763,7 @@ class CometChatUIKit {
       message,
       core_enums.MessageStatus.inProgress,
     );
-    CustomMessage? result = await CometChat.sendCustomMessage(
+    CustomMessage? result = await CometChatSdkAdapter.sendCustomMessage(
       message,
       onSuccess: (CustomMessage sentMessage) {
         //executing the custom onSuccess handler
@@ -836,7 +837,7 @@ class CometChatUIKit {
       message,
       core_enums.MessageStatus.inProgress,
     );
-    TextMessage? result = await CometChat.sendMessage(
+    TextMessage? result = await CometChatSdkAdapter.sendMessage(
       message,
       onSuccess: (TextMessage sentMessage) {
         //executing the custom onSuccess handler
@@ -939,7 +940,7 @@ class CometChatUIKit {
       );
     }
 
-    MediaMessage? result = await CometChat.sendMediaMessage(
+    MediaMessage? result = await CometChatSdkAdapter.sendMediaMessage(
       mediaMessage2 ?? message,
       onSuccess: (MediaMessage sentMessage) {
         //executing the custom onSuccess handler
@@ -1304,7 +1305,7 @@ class CometChatUIKit {
     dynamic Function(BaseMessage)? onSuccess,
     dynamic Function(CometChatException)? onError,
   }) async {
-    final message = await CometChat.addReaction(
+    final message = await CometChatSdkAdapter.addReaction(
       messageId,
       reaction,
       onSuccess: (reactedMessage) {
@@ -1348,7 +1349,7 @@ class CometChatUIKit {
     dynamic Function(BaseMessage)? onSuccess,
     dynamic Function(CometChatException)? onError,
   }) async {
-    final message = await CometChat.removeReaction(
+    final message = await CometChatSdkAdapter.removeReaction(
       messageId,
       reaction,
       onSuccess: (reactedMessage) {
@@ -1386,7 +1387,7 @@ class CometChatUIKit {
   }
 
   static void getConversationUpdateSettings() async {
-    await CometChat.getConversationUpdateSettings(
+    await CometChatSdkAdapter.getConversationUpdateSettings(
       onSuccess: (settings) {
         conversationUpdateSettings = settings;
       },
@@ -1418,7 +1419,7 @@ class CometChatUIKit {
       core_enums.MessageStatus.inProgress,
     );
 
-    InteractiveMessage? result = await CometChat.sendInteractiveMessage(
+    InteractiveMessage? result = await CometChatSdkAdapter.sendInteractiveMessage(
       message,
       onSuccess: (InteractiveMessage sentMessage) {
         //executing the custom onSuccess handler
