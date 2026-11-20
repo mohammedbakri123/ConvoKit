@@ -1,75 +1,93 @@
-<p align="center">
-  <img alt="CometChat" src="https://assets.cometchat.io/website/images/logos/banner.png">
-</p>
+# ConvoKit for Flutter
 
-# CometChat UIKit for Flutter
+ConvoKit is a backend-agnostic Flutter chat UI library. It provides high-performance, customizable chat widgets with optimistic messaging, client-side lifecycle management, and clear contract boundaries.
 
-CometChat UIKit for Flutter provides pre-built UI components to quickly add chat, voice, and video calling features to your Flutter application.
+## Architecture & State Management
 
-<p align="center">
-  <img src="images/overview_cometchat_screens.png" alt="CometChat UIKit Screens">
-</p>
+### Agnostic Public API
+ConvoKit's public API is 100% plain Dart contracts, models, streams, and widgets (`ConvoKitScope`, `ConversationsView`, `MessageListView`). Consumers are free to use any state management system (Riverpod, Provider, signals, or plain widgets). The library does not expose or force any BLoC types in its public API.
+
+### Honest Dependency Position: `flutter_bloc` in v1
+In v1, `flutter_bloc` **remains an internal direct dependency** of the `convokit` package, used internally by legacy adapter blocs. While BLoC is completely absent from the public API and host applications never need to use or configure `BlocProvider`, the package itself still directly depends on `flutter_bloc`. Full removal of the internal `flutter_bloc` dependency in favor of direct Core store observation is planned for Phase 7.
+
+## Installation
+
+Add ConvoKit to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  convokit: ^0.1.0
+```
+
+## Quick Start (Host Integration Example)
+
+ConvoKit uses host-driven dependency injection via plain Dart composition roots. To integrate with your backend (or a local in-memory fake):
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:convokit/convokit.dart';
+
+void main() {
+  // 1. Build your backend providers implementing the ConvoKit contracts
+  final fakeBackend = InMemoryChatBackend();
+
+  // 2. Assemble the ConvoKit composition root
+  final kit = ConvoKit(
+    session: fakeBackend.session,
+    users: fakeBackend.users,
+    conversations: fakeBackend.conversations,
+    messages: fakeBackend.messages,
+    events: fakeBackend.events,
+    groups: fakeBackend.groups,       // nullable: omit if unsupported
+    media: fakeBackend.media,         // nullable: omit if unsupported
+    capabilities: ChatCapabilities.basic(),
+  );
+
+  runApp(
+    MaterialApp(
+      home: ConvoKitScope(
+        kit: kit,
+        child: const ChatHomeScreen(),
+      ),
+    ),
+  );
+}
+
+class ChatHomeScreen extends StatelessWidget {
+  const ChatHomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Conversations')),
+      body: ConversationsView(
+        onConversationTap: (conversation) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => Scaffold(
+                appBar: AppBar(title: Text(conversation.peer?.name ?? conversation.id)),
+                body: MessageListView(conversationId: conversation.id),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+```
 
 ## Repository Structure
 
 | Directory | Description |
 |-----------|-------------|
-| [packages/cometchat_uikit](packages/cometchat_uikit#readme) | The open source UIKit package (local setup, structure, tests) |
-| [packages/cometchat_uikit/skills](packages/cometchat_uikit/skills#readme) | Kiro AI skills for consumers and contributors |
-| [examples/sample_app](examples/sample_app#readme) | Sample app demonstrating UIKit usage |
-| [examples/ai_sample_app](examples/ai_sample_app#readme) | AI-powered sample app with CometChat AI agents |
+| `packages/cometchat_uikit` | The `convokit` library package (contracts, core, UI components, tests) |
+| `examples/sample_app` | Full offline sample app running against an in-memory backend |
+| `examples/clean_consumer` | Pure Riverpod consumer app with zero BLoC usage |
+| `skills/` | Agent guidance for integrating and customizing ConvoKit |
 
-## Prerequisites
+## License & Attribution
 
-- Flutter SDK >= 3.38.9
-- Dart SDK >= 3.10.8
-- iOS 16.0+ / Android 5.0+
-- A [CometChat](https://app.cometchat.com/) account with App ID and Auth Key
-
-## Getting Started
-
-1. Sign up at the [CometChat Dashboard](https://app.cometchat.com/) and create a new app.
-2. Note your App ID, Region, and Auth Key from the dashboard.
-3. Clone this repository and navigate to the sample app:
-
-```bash
-git clone https://github.com/cometchat/cometchat-uikit-flutter.git
-cd cometchat-uikit-flutter/examples/sample_app
-flutter pub get
-flutter run
-```
-
-4. On first launch, enter your App ID, Region, and Auth Key in the credentials screen.
-
-## Installation
-
-Add the UIKit to your project's `pubspec.yaml`:
-
-```yaml
-dependencies:
-  cometchat_chat_uikit: ^6.1.0
-```
-
-Then run:
-
-```bash
-flutter pub get
-```
-
-## Documentation
-
-Refer to our [official documentation](https://www.cometchat.com/docs/ui-kit/flutter/v6/overview) for detailed setup and usage guides.
-
-## Help and Support
-
-For bugs and feature requests in the UIKit itself, open an issue on this repository.
-
-For account, billing, or integration questions, consult our [documentation](https://www.cometchat.com/docs/ui-kit/flutter/v6/overview), create a [support ticket](https://help.cometchat.com/hc/en-us), or seek real-time support via the [CometChat Dashboard](https://app.cometchat.com/).
-
-## Security
-
-To report a security vulnerability, email security@cometchat.com. Please do not open a public issue for security reports.
-
-## License
-
-This project is licensed under the terms of the [LICENSE](LICENSE) file.
+ConvoKit is licensed under the MIT License.
+Based on CometChat UIKit for Flutter, © CometChat, MIT.
