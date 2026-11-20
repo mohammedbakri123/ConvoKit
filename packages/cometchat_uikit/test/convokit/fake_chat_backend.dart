@@ -54,6 +54,8 @@ class FakeChatBackend {
   bool failNextSend = false;
   bool returnOutcomeUnknownNextSend = false;
   bool nullCheckpoint = false;
+  Duration connectDelay = Duration.zero;
+  Duration disconnectDelay = Duration.zero;
 
   // Call counters for verifying retry and lifecycle behavior
   int uploadCallCount = 0;
@@ -816,6 +818,9 @@ class _FakeEventSource implements ChatEventSource {
   @override
   Future<ChatResult<void>> connect() async {
     _backend.connectCount++;
+    if (_backend.connectDelay > Duration.zero) {
+      await Future<void>.delayed(_backend.connectDelay);
+    }
     if (_connectionController.isClosed) {
       _connectionController = StreamController<ConnectionStatus>.broadcast();
     }
@@ -828,6 +833,9 @@ class _FakeEventSource implements ChatEventSource {
   @override
   Future<ChatResult<void>> disconnect() async {
     _backend.disconnectCount++;
+    if (_backend.disconnectDelay > Duration.zero) {
+      await Future<void>.delayed(_backend.disconnectDelay);
+    }
     if (!_connectionController.isClosed) {
       _connectionController.add(
         const ConnectionStatus(ConnectionState.disconnected),
