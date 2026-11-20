@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../src/adapters/cometchat_sdk_adapter.dart';
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import '../../../../shared_ui/src/logging/cometchat_log.dart';
 import '../../../../shared_ui/src/clean_architecture/core/utils/platform_utils/platform_file_utils.dart'
@@ -274,7 +275,7 @@ class MessageComposerBloc
     if (threadId <= 0) return;
 
     unawaited(
-      CometChat.subscribeToThread(threadId)
+      CometChatSdkAdapter.subscribeToThread(threadId)
           .then((result) {
             if (result == null) return;
             sentMessage.threadSubscribed = true;
@@ -668,7 +669,7 @@ class MessageComposerBloc
   /// so there is no second upload. Throws the SDK's [CometChatException] on a
   /// rejected or failed upload.
   Future<Attachment> _uploadRecordingBytes(SendMediaMessage event) {
-    final request = CometChat.createUploadFileRequest(
+    final request = CometChatSdkAdapter.createUploadFileRequest(
       state.receiverId,
       state.receiverType,
     );

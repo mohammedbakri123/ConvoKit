@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../src/adapters/cometchat_sdk_adapter.dart';
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart' as cc;
 import '../../../../shared_ui/src/keyboard_height/keyboard_height_plugin.dart';
@@ -2680,7 +2681,7 @@ class _CometChatMessageComposerState extends State<CometChatMessageComposer>
   /// caller can serialize sends.
   Future<void> _sendOneBatchMessage(MediaMessage msg) {
     final completer = Completer<void>();
-    CometChat.sendMediaMessage(
+    CometChatSdkAdapter.sendMediaMessage(
       msg,
       onSuccess: (MediaMessage sent) {
         if (sent.muid.isEmpty) sent.muid = msg.muid;
@@ -3485,7 +3486,7 @@ class _CometChatMessageComposerState extends State<CometChatMessageComposer>
       body['quotedMessageId'] = replyMessage.id;
     }
 
-    CometChat.callExtension(
+    CometChatSdkAdapter.callExtension(
       ExtensionConstants.document,
       'POST',
       ExtensionUrls.document,
@@ -3520,7 +3521,7 @@ class _CometChatMessageComposerState extends State<CometChatMessageComposer>
       body['quotedMessageId'] = replyMessage.id;
     }
 
-    CometChat.callExtension(
+    CometChatSdkAdapter.callExtension(
       ExtensionConstants.whiteboard,
       'POST',
       ExtensionUrls.whiteboard,

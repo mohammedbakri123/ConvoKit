@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'package:cometchat_sdk/cometchat_sdk.dart';
 import 'package:flutter/foundation.dart';
+import '../../../../src/adapters/cometchat_sdk_adapter.dart';
 
 import '../../../../shared_ui/src/clean_architecture/core/utils/attachment_utils.dart';
 import '../../../../shared_ui/src/logging/cometchat_log.dart';
@@ -139,7 +140,7 @@ class AttachmentTrayController extends ChangeNotifier {
   /// (`file.count.max`); the SDK default is 10.
   int get maxFileCount {
     try {
-      return CometChat.getMaxAttachmentCount();
+      return CometChatSdkAdapter.getMaxAttachmentCount();
     } catch (_) {
       return 10;
     }
@@ -171,7 +172,7 @@ class AttachmentTrayController extends ChangeNotifier {
   /// Max size per file in bytes (`file.size.max`; SDK default 100 MB).
   int get maxFileSize {
     try {
-      return CometChat.getMaxAttachmentSize();
+      return CometChatSdkAdapter.getMaxAttachmentSize();
     } catch (_) {
       return 100 * 1024 * 1024;
     }
@@ -206,7 +207,7 @@ class AttachmentTrayController extends ChangeNotifier {
   /// The controller registers itself as the batch's global listener, so every
   /// per-file event lands here.
   UploadFileRequest _ensureRequest() {
-    final req = _request ??= CometChat.createUploadFileRequest(
+    final req = _request ??= CometChatSdkAdapter.createUploadFileRequest(
       receiverId!,
       receiverType!,
     )..addUploadListener(_listener);
