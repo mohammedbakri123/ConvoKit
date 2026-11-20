@@ -5,6 +5,7 @@ import '../domain/usecases/load_more_groups_usecase.dart';
 import '../domain/usecases/get_logged_in_user_usecase.dart';
 import '../di/groups_service_locator.dart';
 import '../../../../shared_ui/cometchat_uikit_shared.dart';
+import '../../../../src/adapters/cometchat_sdk_adapter.dart';
 import '../../shared/list_base.dart';
 import 'groups_event.dart';
 import 'groups_state.dart';
@@ -257,7 +258,7 @@ class GroupsBloc extends Bloc<GroupsEvent, GroupsState> with ListBase<Group> {
   /// Requirements: 1.6
   void _registerSDKListeners() {
     // Register SDK GroupListener for real-time group member events
-    CometChat.addGroupListener(
+    CometChatSdkAdapter.addGroupListener(
       _groupListenerKey,
       _GroupsGroupListener(
         onGroupMemberJoinedCallback: _handleGroupMemberJoined,
@@ -272,7 +273,7 @@ class GroupsBloc extends Bloc<GroupsEvent, GroupsState> with ListBase<Group> {
     );
 
     // Register ConnectionListener for reconnection handling
-    CometChat.addConnectionListener(
+    CometChatSdkAdapter.addConnectionListener(
       _connectionListenerKey,
       _GroupsConnectionListener(
         onConnectedCallback: _handleConnected,
@@ -1034,8 +1035,8 @@ class GroupsBloc extends Bloc<GroupsEvent, GroupsState> with ListBase<Group> {
 
     // Remove SDK listeners (Requirement 1.7)
     if (!disableSDKListeners) {
-      CometChat.removeGroupListener(_groupListenerKey);
-      CometChat.removeConnectionListener(_connectionListenerKey);
+      CometChatSdkAdapter.removeGroupListener(_groupListenerKey);
+      CometChatSdkAdapter.removeConnectionListener(_connectionListenerKey);
       CometChatGroupEvents.removeGroupsListener(_ccGroupListenerKey);
     }
 

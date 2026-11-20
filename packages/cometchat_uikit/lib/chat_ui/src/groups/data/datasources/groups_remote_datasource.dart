@@ -1,5 +1,10 @@
 import 'dart:async';
-import 'package:cometchat_sdk/cometchat_sdk.dart' hide CardMessage;
+import 'package:cometchat_sdk/cometchat_sdk.dart' as cc hide CardMessage;
+
+import 'package:cometchat_chat_uikit/convokit.dart' as ck;
+import '../../../../../shared_ui/src/cometchat_ui_kit/cometchat_ui_kit.dart';
+import '../../../../../src/adapters/cometchat_group_adapter.dart';
+import '../../../../../src/adapters/cometchat_sdk_adapter.dart';
 
 /// Exception thrown when remote data source operations fail
 class GroupsRemoteDataSourceException implements Exception {
@@ -22,54 +27,46 @@ class GroupsRemoteDataSourceException implements Exception {
 /// Handles all interactions with CometChat SDK for groups
 abstract class GroupsRemoteDataSource {
   /// Get groups with optional pagination and search.
-  /// On the first call (or after [resetRequest]) a new SDK request is built;
-  /// subsequent calls reuse the same request so the SDK cursor advances.
-  ///
-  /// [limit] - Maximum number of groups to fetch (default: 30)
-  /// [searchKeyword] - Optional keyword to filter groups by name
-  /// [joinedOnly] - If true, only returns groups the user has joined
-  ///
-  /// The signature is 6.1.1's, so an app's own implementation keeps
-  /// compiling. [GroupsRemoteDataSourceImpl.getGroups] also takes a
-  /// `groupsRequestBuilder` to build the first request from.
-  Future<List<Group>> getGroups({
+  Future<List<cc.Group>> getGroups({
     int limit = 30,
     String? searchKeyword,
     bool? joinedOnly,
   });
 
   /// Reset the internal SDK request so the next [getGroups] call starts fresh.
-  /// Call this when doing a fresh load or when the search keyword changes.
   void resetRequest();
 
   /// Get a specific group by GUID
-  ///
-  /// [guid] - The unique identifier of the group
-  Future<Group> getGroupById(String guid);
+  Future<cc.Group> getGroupById(String guid);
 
   /// Join a group
-  ///
-  /// [guid] - The unique identifier of the group to join
-  /// [groupType] - The type of group (public, private, password)
-  /// [password] - Required for password-protected groups
-  Future<Group> joinGroup({
+  Future<cc.Group> joinGroup({
     required String guid,
     required String groupType,
     String? password,
   });
 
   /// Leave a group
-  ///
-  /// [guid] - The unique identifier of the group to leave
   Future<void> leaveGroup(String guid);
 
   /// Get the currently logged in user
-  Future<User?> getLoggedInUser();
+  Future<cc.User?> getLoggedInUser();
 }
 
-/// Implementation of GroupsRemoteDataSource using CometChat SDK
+/// Implementation of GroupsRemoteDataSource using ConvoKit contracts with SDK fallback
 class GroupsRemoteDataSourceImpl implements GroupsRemoteDataSource {
-  GroupsRequest? _currentRequest;
+  final ck.GroupRepository? _repository;
+  cc.GroupsRequest? _currentRequest;
+
+  GroupsRemoteDataSourceImpl({ck.GroupRepository? repository})
+      : _repository = repository;
+
+  ck.GroupRepository? get _convoKitRepository =>
+      _repository ??
+      CometChatUIKit.groupRepository ??
+      CometChatUIKit.kit?.groups;
+
+  static final CometChatGroupAdapter _sdkAdapter = CometChatGroupAdapter();
 
   @override
   void resetRequest() {
@@ -77,62 +74,71 @@ class GroupsRemoteDataSourceImpl implements GroupsRemoteDataSource {
   }
 
   @override
-  Future<List<Group>> getGroups({
+  Future<List<cc.Group>> getGroups({
     int limit = 30,
     String? searchKeyword,
     bool? joinedOnly,
-    GroupsRequestBuilder? groupsRequestBuilder,
+    cc.GroupsRequestBuilder? groupsRequestBuilder,
   }) async {
+    final repo = _convoKitRepository;
+    if (repo != null) {
+      final result = await repo.listGroups(limit: limit);
+      return result.fold(
+        onSuccess: (page) {
+          var items = page.items;
+          if (searchKeyword != null && searchKeyword.isNotEmpty) {
+            items = items
+                .where((g) =>
+                    g.name.toLowerCase().contains(searchKeyword.toLowerCase()))
+                .toList();
+          }
+          return items.map(CometChatGroupAdapter.toSdkGroup).toList();
+        },
+        onFailure: (err) => throw GroupsRemoteDataSourceException(
+          message: err.message,
+          code: err.code.name,
+        ),
+      );
+    }
+
     try {
-      // Build a new request only if we don't have one yet (first call or after reset)
       if (_currentRequest == null) {
         if (groupsRequestBuilder != null) {
-          _currentRequest = _buildFromAppBuilder(
-            groupsRequestBuilder,
-            limit: limit,
-            searchKeyword: searchKeyword,
-            joinedOnly: joinedOnly,
-          );
+          final appLimit = groupsRequestBuilder.limit;
+          final appSearchKeyword = groupsRequestBuilder.searchKeyword;
+          final appJoinedOnly = groupsRequestBuilder.joinedOnly;
+          try {
+            groupsRequestBuilder.limit = appLimit ?? limit;
+            if (searchKeyword != null && searchKeyword.isNotEmpty) {
+              groupsRequestBuilder.searchKeyword = searchKeyword;
+            }
+            if (joinedOnly != null) groupsRequestBuilder.joinedOnly = joinedOnly;
+            _currentRequest = groupsRequestBuilder.build();
+          } finally {
+            groupsRequestBuilder
+              ..limit = appLimit
+              ..searchKeyword = appSearchKeyword
+              ..joinedOnly = appJoinedOnly;
+          }
         } else {
-          final requestBuilder = GroupsRequestBuilder()..limit = limit;
-
+          final requestBuilder = cc.GroupsRequestBuilder()..limit = limit;
           if (searchKeyword != null && searchKeyword.isNotEmpty) {
             requestBuilder.searchKeyword = searchKeyword;
           }
-
           if (joinedOnly != null) {
             requestBuilder.joinedOnly = joinedOnly;
           }
-
           _currentRequest = requestBuilder.build();
         }
       }
 
-      final completer = Completer<List<Group>>();
-
-      unawaited(
-        _currentRequest!.fetchNext(
-          onSuccess: (List<Group> groups) {
-            if (!completer.isCompleted) {
-              completer.complete(groups);
-            }
-          },
-          onError: (CometChatException exception) {
-            if (!completer.isCompleted) {
-              completer.completeError(
-                GroupsRemoteDataSourceException(
-                  message: exception.message ?? 'Failed to fetch groups',
-                  code: exception.code,
-                  originalException: exception,
-                ),
-              );
-            }
-          },
-        ),
+      return await _sdkAdapter.getSdkGroups(
+        limit: limit,
+        searchKeyword: searchKeyword,
+        joinedOnly: joinedOnly,
+        existingRequest: _currentRequest,
       );
-
-      return await completer.future;
-    } on CometChatException catch (e) {
+    } on cc.CometChatException catch (e) {
       throw GroupsRemoteDataSourceException(
         message: e.message ?? 'Failed to fetch groups',
         code: e.code,
@@ -146,63 +152,23 @@ class GroupsRemoteDataSourceImpl implements GroupsRemoteDataSource {
     }
   }
 
-  /// Builds the request from the app's own [builder], with the search box's
-  /// keyword and [joinedOnly] on top, then puts the builder back as it was.
-  ///
-  /// The builder is the app's object and outlives this request: writing into
-  /// it and leaving the values there overwrote the app's limit with the kit's
-  /// page size, and left a cleared search's keyword filtering every later
-  /// load. It cannot be copied instead — its page is private — so its fields
-  /// are set only for the synchronous `build()`, which copies them into the
-  /// request, and restored in `finally`. The app's limit wins; [limit] fills
-  /// in only when the app set none.
-  GroupsRequest _buildFromAppBuilder(
-    GroupsRequestBuilder builder, {
-    required int limit,
-    String? searchKeyword,
-    bool? joinedOnly,
-  }) {
-    final appLimit = builder.limit;
-    final appSearchKeyword = builder.searchKeyword;
-    final appJoinedOnly = builder.joinedOnly;
-    try {
-      builder.limit = appLimit ?? limit;
-      if (searchKeyword != null && searchKeyword.isNotEmpty) {
-        builder.searchKeyword = searchKeyword;
-      }
-      if (joinedOnly != null) builder.joinedOnly = joinedOnly;
-      return builder.build();
-    } finally {
-      builder
-        ..limit = appLimit
-        ..searchKeyword = appSearchKeyword
-        ..joinedOnly = appJoinedOnly;
-    }
-  }
-
   @override
-  Future<Group> getGroupById(String guid) async {
-    try {
-      final completer = Completer<Group>();
-
-      await CometChat.getGroup(
-        guid,
-        onSuccess: (Group group) {
-          completer.complete(group);
-        },
-        onError: (CometChatException exception) {
-          completer.completeError(
-            GroupsRemoteDataSourceException(
-              message: exception.message ?? 'Failed to get group',
-              code: exception.code,
-              originalException: exception,
-            ),
-          );
-        },
+  Future<cc.Group> getGroupById(String guid) async {
+    final repo = _convoKitRepository;
+    if (repo != null) {
+      final result = await repo.getGroup(guid);
+      return result.fold(
+        onSuccess: CometChatGroupAdapter.toSdkGroup,
+        onFailure: (err) => throw GroupsRemoteDataSourceException(
+          message: err.message,
+          code: err.code.name,
+        ),
       );
+    }
 
-      return await completer.future;
-    } on CometChatException catch (e) {
+    try {
+      return await _sdkAdapter.getSdkGroup(guid);
+    } on cc.CometChatException catch (e) {
       throw GroupsRemoteDataSourceException(
         message: e.message ?? 'Failed to get group',
         code: e.code,
@@ -217,34 +183,30 @@ class GroupsRemoteDataSourceImpl implements GroupsRemoteDataSource {
   }
 
   @override
-  Future<Group> joinGroup({
+  Future<cc.Group> joinGroup({
     required String guid,
     required String groupType,
     String? password,
   }) async {
-    try {
-      final completer = Completer<Group>();
-
-      await CometChat.joinGroup(
-        guid,
-        groupType,
-        password: password ?? '',
-        onSuccess: (Group group) {
-          completer.complete(group);
-        },
-        onError: (CometChatException exception) {
-          completer.completeError(
-            GroupsRemoteDataSourceException(
-              message: exception.message ?? 'Failed to join group',
-              code: exception.code,
-              originalException: exception,
-            ),
-          );
-        },
+    final repo = _convoKitRepository;
+    if (repo != null) {
+      final result = await repo.joinGroup(guid);
+      return result.fold(
+        onSuccess: (_) => getGroupById(guid),
+        onFailure: (err) => throw GroupsRemoteDataSourceException(
+          message: err.message,
+          code: err.code.name,
+        ),
       );
+    }
 
-      return await completer.future;
-    } on CometChatException catch (e) {
+    try {
+      return await _sdkAdapter.joinSdkGroup(
+        guid: guid,
+        groupType: groupType,
+        password: password,
+      );
+    } on cc.CometChatException catch (e) {
       throw GroupsRemoteDataSourceException(
         message: e.message ?? 'Failed to join group',
         code: e.code,
@@ -260,27 +222,21 @@ class GroupsRemoteDataSourceImpl implements GroupsRemoteDataSource {
 
   @override
   Future<void> leaveGroup(String guid) async {
-    try {
-      final completer = Completer<void>();
-
-      await CometChat.leaveGroup(
-        guid,
-        onSuccess: (String response) {
-          completer.complete();
-        },
-        onError: (CometChatException exception) {
-          completer.completeError(
-            GroupsRemoteDataSourceException(
-              message: exception.message ?? 'Failed to leave group',
-              code: exception.code,
-              originalException: exception,
-            ),
-          );
-        },
+    final repo = _convoKitRepository;
+    if (repo != null) {
+      final result = await repo.leaveGroup(guid);
+      return result.fold(
+        onSuccess: (_) {},
+        onFailure: (err) => throw GroupsRemoteDataSourceException(
+          message: err.message,
+          code: err.code.name,
+        ),
       );
+    }
 
-      return await completer.future;
-    } on CometChatException catch (e) {
+    try {
+      await _sdkAdapter.leaveSdkGroup(guid);
+    } on cc.CometChatException catch (e) {
       throw GroupsRemoteDataSourceException(
         message: e.message ?? 'Failed to leave group',
         code: e.code,
@@ -295,38 +251,7 @@ class GroupsRemoteDataSourceImpl implements GroupsRemoteDataSource {
   }
 
   @override
-  Future<User?> getLoggedInUser() async {
-    try {
-      final completer = Completer<User?>();
-
-      await CometChat.getLoggedInUser(
-        onSuccess: (User user) {
-          completer.complete(user);
-        },
-        onError: (CometChatException exception) {
-          completer.completeError(
-            GroupsRemoteDataSourceException(
-              message: exception.message ?? 'Failed to get logged in user',
-              code: exception.code,
-              originalException: exception,
-            ),
-          );
-        },
-      );
-
-      return await completer.future;
-    } on CometChatException catch (e) {
-      throw GroupsRemoteDataSourceException(
-        message: e.message ?? 'Failed to get logged in user',
-        code: e.code,
-        originalException: e,
-      );
-    } catch (e) {
-      throw GroupsRemoteDataSourceException(
-        message:
-            'Unexpected error while getting logged in user: ${e.toString()}',
-        originalException: e is Exception ? e : null,
-      );
-    }
+  Future<cc.User?> getLoggedInUser() async {
+    return CometChatSdkAdapter.getLoggedInUser();
   }
 }

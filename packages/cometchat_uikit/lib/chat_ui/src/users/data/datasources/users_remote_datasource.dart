@@ -1,5 +1,9 @@
 import 'dart:async';
-import 'package:cometchat_sdk/cometchat_sdk.dart' hide CardMessage;
+import 'package:cometchat_sdk/cometchat_sdk.dart' as cc hide CardMessage;
+
+import 'package:cometchat_chat_uikit/convokit.dart' as ck;
+import '../../../../../shared_ui/src/cometchat_ui_kit/cometchat_ui_kit.dart';
+import '../../../../../src/adapters/cometchat_user_adapter.dart';
 
 /// Exception thrown when remote data source operations fail
 class UsersRemoteDataSourceException implements Exception {
@@ -24,10 +28,10 @@ abstract class UsersRemoteDataSource {
   /// Get users with optional pagination and search.
   /// On the first call (or after [resetRequest]) a new SDK request is built;
   /// subsequent calls reuse the same request so the SDK cursor advances.
-  Future<List<User>> getUsers({
+  Future<List<cc.User>> getUsers({
     int limit = 30,
     String? searchKeyword,
-    UsersRequestBuilder? usersRequestBuilder,
+    cc.UsersRequestBuilder? usersRequestBuilder,
   });
 
   /// Reset the internal SDK request so the next [getUsers] call starts fresh.
@@ -35,7 +39,7 @@ abstract class UsersRemoteDataSource {
   void resetRequest();
 
   /// Get a specific user by UID
-  Future<User> getUser(String uid);
+  Future<cc.User> getUser(String uid);
 
   /// Block a user
   Future<void> blockUser(String uid);
@@ -44,9 +48,20 @@ abstract class UsersRemoteDataSource {
   Future<void> unblockUser(String uid);
 }
 
-/// Implementation of UsersRemoteDataSource using CometChat SDK
+/// Implementation of UsersRemoteDataSource using ConvoKit contracts with SDK fallback
 class UsersRemoteDataSourceImpl implements UsersRemoteDataSource {
-  UsersRequest? _currentRequest;
+  final ck.UserRepository? _repository;
+  cc.UsersRequest? _currentRequest;
+
+  UsersRemoteDataSourceImpl({ck.UserRepository? repository})
+      : _repository = repository;
+
+  ck.UserRepository? get _convoKitRepository =>
+      _repository ??
+      CometChatUIKit.userRepository ??
+      CometChatUIKit.kit?.users;
+
+  static final CometChatUserAdapter _sdkAdapter = CometChatUserAdapter();
 
   @override
   void resetRequest() {
@@ -54,55 +69,56 @@ class UsersRemoteDataSourceImpl implements UsersRemoteDataSource {
   }
 
   @override
-  Future<List<User>> getUsers({
+  Future<List<cc.User>> getUsers({
     int limit = 30,
     String? searchKeyword,
-    UsersRequestBuilder? usersRequestBuilder,
+    cc.UsersRequestBuilder? usersRequestBuilder,
   }) async {
+    final repo = _convoKitRepository;
+    if (repo != null) {
+      final ck.ChatResult<ck.ChatPage<ck.ChatUser>> result;
+      if (searchKeyword != null && searchKeyword.isNotEmpty) {
+        result = await repo.searchUsers(searchKeyword, limit: limit);
+      } else {
+        result = await repo.listUsers(limit: limit);
+      }
+
+      return result.fold(
+        onSuccess: (page) => page.items.map(CometChatUserAdapter.toSdkUser).toList(),
+        onFailure: (err) => throw UsersRemoteDataSourceException(
+          message: err.message,
+          code: err.code.name,
+        ),
+      );
+    }
+
     try {
-      // Build a new request only if we don't have one yet (first call or after reset)
       if (_currentRequest == null) {
         if (usersRequestBuilder != null) {
-          _currentRequest = _buildFromAppBuilder(
-            usersRequestBuilder,
-            searchKeyword: searchKeyword,
-          );
+          final appSearchKeyword = usersRequestBuilder.searchKeyword;
+          try {
+            if (searchKeyword != null && searchKeyword.isNotEmpty) {
+              usersRequestBuilder.searchKeyword = searchKeyword;
+            }
+            _currentRequest = usersRequestBuilder.build();
+          } finally {
+            usersRequestBuilder.searchKeyword = appSearchKeyword;
+          }
         } else {
-          final requestBuilder = UsersRequestBuilder()..limit = limit;
-
+          final requestBuilder = cc.UsersRequestBuilder()..limit = limit;
           if (searchKeyword != null && searchKeyword.isNotEmpty) {
             requestBuilder.searchKeyword = searchKeyword;
           }
-
           _currentRequest = requestBuilder.build();
         }
       }
 
-      final completer = Completer<List<User>>();
-
-      unawaited(
-        _currentRequest!.fetchNext(
-          onSuccess: (List<User> users) {
-            if (!completer.isCompleted) {
-              completer.complete(users);
-            }
-          },
-          onError: (CometChatException exception) {
-            if (!completer.isCompleted) {
-              completer.completeError(
-                UsersRemoteDataSourceException(
-                  message: exception.message ?? 'Failed to fetch users',
-                  code: exception.code,
-                  originalException: exception,
-                ),
-              );
-            }
-          },
-        ),
+      return await _sdkAdapter.getSdkUsers(
+        limit: limit,
+        searchKeyword: searchKeyword,
+        existingRequest: _currentRequest,
       );
-
-      return await completer.future;
-    } on CometChatException catch (e) {
+    } on cc.CometChatException catch (e) {
       throw UsersRemoteDataSourceException(
         message: e.message ?? 'Failed to fetch users',
         code: e.code,
@@ -116,54 +132,31 @@ class UsersRemoteDataSourceImpl implements UsersRemoteDataSource {
     }
   }
 
-  /// Builds the request from the app's own [builder], with the search box's
-  /// keyword on top, then puts the builder's keyword back.
-  ///
-  /// The builder is the app's object and outlives this request: writing into
-  /// it and leaving the values there overwrote the app's limit with the kit's
-  /// page size, and left a cleared search's keyword filtering every later
-  /// load. It cannot be copied instead — its page is private — so the keyword
-  /// is set only for the synchronous `build()`, which copies it into the
-  /// request, and restored in `finally`. The builder's limit is its own and
-  /// is not touched.
-  UsersRequest _buildFromAppBuilder(
-    UsersRequestBuilder builder, {
-    String? searchKeyword,
-  }) {
-    final appSearchKeyword = builder.searchKeyword;
-    try {
-      if (searchKeyword != null && searchKeyword.isNotEmpty) {
-        builder.searchKeyword = searchKeyword;
-      }
-      return builder.build();
-    } finally {
-      builder.searchKeyword = appSearchKeyword;
-    }
-  }
-
   @override
-  Future<User> getUser(String uid) async {
-    try {
-      final completer = Completer<User>();
-
-      await CometChat.getUser(
-        uid,
-        onSuccess: (User user) {
-          completer.complete(user);
-        },
-        onError: (CometChatException exception) {
-          completer.completeError(
-            UsersRemoteDataSourceException(
-              message: exception.message ?? 'Failed to get user',
-              code: exception.code,
-              originalException: exception,
-            ),
-          );
-        },
+  Future<cc.User> getUser(String uid) async {
+    final repo = _convoKitRepository;
+    if (repo != null) {
+      final result = await repo.getUser(uid);
+      return result.fold(
+        onSuccess: CometChatUserAdapter.toSdkUser,
+        onFailure: (err) => throw UsersRemoteDataSourceException(
+          message: err.message,
+          code: err.code.name,
+        ),
       );
+    }
 
-      return await completer.future;
-    } on CometChatException catch (e) {
+    try {
+      final result = await _sdkAdapter.getUser(uid);
+      final user = result.fold(
+        onSuccess: CometChatUserAdapter.toSdkUser,
+        onFailure: (err) => throw UsersRemoteDataSourceException(
+          message: err.message,
+          code: err.code.name,
+        ),
+      );
+      return user;
+    } on cc.CometChatException catch (e) {
       throw UsersRemoteDataSourceException(
         message: e.message ?? 'Failed to get user',
         code: e.code,
@@ -180,26 +173,8 @@ class UsersRemoteDataSourceImpl implements UsersRemoteDataSource {
   @override
   Future<void> blockUser(String uid) async {
     try {
-      final completer = Completer<void>();
-
-      await CometChat.blockUser(
-        [uid],
-        onSuccess: (Map<String, dynamic> result) {
-          completer.complete();
-        },
-        onError: (CometChatException exception) {
-          completer.completeError(
-            UsersRemoteDataSourceException(
-              message: exception.message ?? 'Failed to block user',
-              code: exception.code,
-              originalException: exception,
-            ),
-          );
-        },
-      );
-
-      return await completer.future;
-    } on CometChatException catch (e) {
+      await _sdkAdapter.blockSdkUser(uid);
+    } on cc.CometChatException catch (e) {
       throw UsersRemoteDataSourceException(
         message: e.message ?? 'Failed to block user',
         code: e.code,
@@ -216,26 +191,8 @@ class UsersRemoteDataSourceImpl implements UsersRemoteDataSource {
   @override
   Future<void> unblockUser(String uid) async {
     try {
-      final completer = Completer<void>();
-
-      await CometChat.unblockUser(
-        [uid],
-        onSuccess: (Map<String, dynamic> result) {
-          completer.complete();
-        },
-        onError: (CometChatException exception) {
-          completer.completeError(
-            UsersRemoteDataSourceException(
-              message: exception.message ?? 'Failed to unblock user',
-              code: exception.code,
-              originalException: exception,
-            ),
-          );
-        },
-      );
-
-      return await completer.future;
-    } on CometChatException catch (e) {
+      await _sdkAdapter.unblockSdkUser(uid);
+    } on cc.CometChatException catch (e) {
       throw UsersRemoteDataSourceException(
         message: e.message ?? 'Failed to unblock user',
         code: e.code,

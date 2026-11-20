@@ -1,5 +1,6 @@
 import 'package:cometchat_sdk/cometchat_sdk.dart' hide CardMessage;
 import '../../../../../shared_ui/src/clean_architecture/core/result.dart';
+import '../../../../../src/adapters/cometchat_sdk_adapter.dart';
 import '../../domain/repositories/users_repository.dart';
 import '../datasources/users_remote_datasource.dart';
 import '../datasources/users_local_datasource.dart';
@@ -91,7 +92,7 @@ class UsersRepositoryImpl implements UsersRepository {
   @override
   Future<Result<User?>> getLoggedInUser() async {
     try {
-      final user = await CometChat.getLoggedInUser();
+      final user = await CometChatSdkAdapter.getLoggedInUser();
       return Success(user);
     } on CometChatException catch (e) {
       return Failure(

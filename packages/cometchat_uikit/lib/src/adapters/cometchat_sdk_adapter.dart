@@ -70,6 +70,110 @@ class CometChatSdkAdapter {
     );
   }
 
+  static Future<cc.User?> getUser(
+    String uid, {
+    void Function(cc.User)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.getUser(uid, onSuccess: onSuccess, onError: onError);
+
+  static Future<Map<String, dynamic>?> blockUser(
+    List<String> uids, {
+    void Function(Map<String, dynamic>)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.blockUser(uids, onSuccess: onSuccess, onError: onError);
+
+  static Future<Map<String, dynamic>?> unblockUser(
+    List<String> uids, {
+    void Function(Map<String, dynamic>)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.unblockUser(uids, onSuccess: onSuccess, onError: onError);
+
+  static Future<cc.Group?> getGroup(
+    String guid, {
+    void Function(cc.Group)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.getGroup(guid, onSuccess: onSuccess, onError: onError);
+
+  static Future<cc.Group?> joinGroup(
+    String guid,
+    String groupType, {
+    String? password,
+    void Function(cc.Group)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.joinGroup(
+        guid,
+        groupType,
+        password: password ?? '',
+        onSuccess: onSuccess,
+        onError: onError,
+      );
+
+  static Future<void> leaveGroup(
+    String guid, {
+    void Function(String)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.leaveGroup(guid, onSuccess: onSuccess, onError: onError);
+
+  static Future<Map<String?, String?>?> addMembersToGroup({
+    required String guid,
+    required List<cc.GroupMember> groupMembers,
+    void Function(Map<String?, String?>)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.addMembersToGroup(
+        guid: guid,
+        groupMembers: groupMembers,
+        onSuccess: onSuccess,
+        onError: onError,
+      );
+
+  static Future<String?> kickGroupMember({
+    required String guid,
+    required String uid,
+    void Function(String)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.kickGroupMember(
+        guid: guid,
+        uid: uid,
+        onSuccess: onSuccess,
+        onError: onError,
+      );
+
+  static Future<String?> banGroupMember({
+    required String guid,
+    required String uid,
+    void Function(String)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.banGroupMember(
+        guid: guid,
+        uid: uid,
+        onSuccess: onSuccess,
+        onError: onError,
+      );
+
+  static Future<String?> updateGroupMemberScope({
+    required String guid,
+    required String uid,
+    required String scope,
+    void Function(String)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) =>
+      cc.CometChat.updateGroupMemberScope(
+        guid: guid,
+        uid: uid,
+        scope: scope,
+        onSuccess: onSuccess,
+        onError: onError,
+      );
+
   static void addMessageListener(String id, cc.MessageListener listener) =>
       cc.CometChat.addMessageListener(id, listener);
 

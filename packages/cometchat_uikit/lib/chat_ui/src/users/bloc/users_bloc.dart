@@ -6,6 +6,7 @@ import '../di/users_service_locator.dart';
 import 'users_event.dart';
 import 'users_state.dart';
 import '../../../../shared_ui/cometchat_uikit_shared.dart';
+import '../../../../src/adapters/cometchat_sdk_adapter.dart';
 import '../../shared/list_base.dart';
 
 /// BLoC for managing users list
@@ -222,7 +223,7 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> with ListBase<User> {
 
   void _registerSDKListeners() {
     if (usersStatusVisibility) {
-      CometChat.addUserListener(
+      CometChatSdkAdapter.addUserListener(
         _userListenerKey,
         _UsersUserListener(
           onUserOnlineCallback: _handleUserOnline,
@@ -231,7 +232,7 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> with ListBase<User> {
       );
     }
 
-    CometChat.addConnectionListener(
+    CometChatSdkAdapter.addConnectionListener(
       _connectionListenerKey,
       _UsersConnectionListener(
         onConnectedCallback: _handleConnected,
@@ -631,8 +632,8 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> with ListBase<User> {
     // Cancel search debounce timer
     _searchDebounceTimer?.cancel();
 
-    CometChat.removeUserListener(_userListenerKey);
-    CometChat.removeConnectionListener(_connectionListenerKey);
+    CometChatSdkAdapter.removeUserListener(_userListenerKey);
+    CometChatSdkAdapter.removeConnectionListener(_connectionListenerKey);
     CometChatUserEvents.removeUsersListener(_ccUserListenerKey);
 
     // Dispose all status notifiers

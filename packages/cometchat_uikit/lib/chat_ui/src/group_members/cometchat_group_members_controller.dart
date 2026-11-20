@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../cometchat_chat_uikit.dart';
 import '../../../cometchat_chat_uikit.dart' as cc;
 import '../../../shared_ui/src/logging/cometchat_log.dart';
+import '../../../src/adapters/cometchat_sdk_adapter.dart';
 
 ///[CometChatGroupMembersController] is the view model for [CometChatGroupMembers]
 ///it contains all the business logic involved in changing the state of the UI of [CometChatGroupMembers]
@@ -65,19 +66,19 @@ class CometChatGroupMembersController
   //initialization functions
   @override
   void onInit() {
-    CometChat.addGroupListener(groupSDKListenerID, this);
+    CometChatSdkAdapter.addGroupListener(groupSDKListenerID, this);
     CometChatGroupEvents.addGroupsListener(groupUIListenerID, this);
 
     if (usersStatusVisibility == true) {
       //Adding listener when presence is needed
-      CometChat.addUserListener(userSDKListenerID, this);
+      CometChatSdkAdapter.addUserListener(userSDKListenerID, this);
     }
     initializeInternalDependencies();
     super.onInit();
   }
 
   void initializeInternalDependencies() async {
-    _conversation ??= (await CometChat.getConversation(
+    _conversation ??= (await CometChatSdkAdapter.getConversation(
       group.guid,
       ConversationType.group,
       onSuccess: (conversation) {
@@ -90,10 +91,10 @@ class CometChatGroupMembersController
 
   @override
   void onClose() {
-    CometChat.removeGroupListener(groupSDKListenerID);
+    CometChatSdkAdapter.removeGroupListener(groupSDKListenerID);
     CometChatGroupEvents.removeGroupsListener(groupUIListenerID);
     if (usersStatusVisibility == true) {
-      CometChat.removeUserListener(userSDKListenerID);
+      CometChatSdkAdapter.removeUserListener(userSDKListenerID);
     }
 
     super.onClose();
@@ -220,7 +221,7 @@ class CometChatGroupMembersController
     String newScope,
     String oldScope,
   ) async {
-    await CometChat.updateGroupMemberScope(
+    await CometChatSdkAdapter.updateGroupMemberScope(
       guid: group.guid,
       uid: member.uid,
       scope: newScope,
@@ -285,7 +286,7 @@ class CometChatGroupMembersController
   @override
   loadMoreElements({bool Function(GroupMember element)? isIncluded}) async {
     if (loggedInUser == null) {
-      loggedInUser = await CometChat.getLoggedInUser();
+      loggedInUser = await CometChatSdkAdapter.getLoggedInUser();
       if (loggedInUser?.uid == group.owner) {
         isOwner = true;
       }
@@ -375,7 +376,7 @@ class CometChatGroupMembersController
                 "${cc.Translations.of(context).areYouSureBan} ${member.name} ${cc.Translations.of(context).from} ${group.name}?",
             onConfirm: (dialogContext) {
               isActionRunning.value = true;
-              CometChat.banGroupMember(
+              CometChatSdkAdapter.banGroupMember(
                 guid: group.guid,
                 uid: member.uid,
                 onSuccess: (String result) async {
@@ -431,7 +432,7 @@ class CometChatGroupMembersController
                 "${cc.Translations.of(context).areYouSureRemove} ${member.name} ${cc.Translations.of(context).from} ${group.name}?",
             onConfirm: (dialogContext) {
               isActionRunning.value = true;
-              CometChat.kickGroupMember(
+              CometChatSdkAdapter.kickGroupMember(
                 guid: group.guid,
                 uid: member.uid,
                 onSuccess: (String result) async {

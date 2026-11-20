@@ -19,6 +19,7 @@ import '../../../../shared_ui/src/clean_architecture/presentation/theme/typograp
 import '../../../../shared_ui/src/clean_architecture/presentation/theme/spacing/cometchat_spacing.dart';
 import '../../../../shared_ui/src/events/group_events/cometchat_group_events.dart';
 import '../../../../shared_ui/src/constants/ui_kit_constants.dart';
+import '../../../../../src/adapters/cometchat_sdk_adapter.dart';
 import 'group_members_event.dart';
 import 'group_members_state.dart';
 
@@ -398,7 +399,7 @@ class GroupMembersBloc extends Bloc<GroupMembersEvent, GroupMembersState>
 
   void _registerSDKListeners() {
     // Register group listener for real-time member events
-    CometChat.addGroupListener(
+    CometChatSdkAdapter.addGroupListener(
       _groupListenerKey,
       _GroupMembersGroupListener(
         onGroupMemberJoinedCallback: _handleMemberJoined,
@@ -413,7 +414,7 @@ class GroupMembersBloc extends Bloc<GroupMembersEvent, GroupMembersState>
 
     // Register user listener for online/offline status updates
     if (usersStatusVisibility) {
-      CometChat.addUserListener(
+      CometChatSdkAdapter.addUserListener(
         _userListenerKey,
         _GroupMembersUserListener(
           onUserOnlineCallback: _handleUserOnline,
@@ -423,7 +424,7 @@ class GroupMembersBloc extends Bloc<GroupMembersEvent, GroupMembersState>
     }
 
     // Register connection listener for reconnection handling
-    CometChat.addConnectionListener(
+    CometChatSdkAdapter.addConnectionListener(
       _connectionListenerKey,
       _GroupMembersConnectionListener(
         onConnectedCallback: _handleConnected,
@@ -1289,9 +1290,9 @@ class GroupMembersBloc extends Bloc<GroupMembersEvent, GroupMembersState>
     _searchDebounceTimer?.cancel();
 
     // Remove SDK listeners
-    CometChat.removeGroupListener(_groupListenerKey);
-    CometChat.removeUserListener(_userListenerKey);
-    CometChat.removeConnectionListener(_connectionListenerKey);
+    CometChatSdkAdapter.removeGroupListener(_groupListenerKey);
+    CometChatSdkAdapter.removeUserListener(_userListenerKey);
+    CometChatSdkAdapter.removeConnectionListener(_connectionListenerKey);
 
     // Dispose all status notifiers
     for (final notifier in _statusNotifiers.values) {
