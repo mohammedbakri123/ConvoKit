@@ -14,11 +14,43 @@ import '../constants/ui_kit_constants.dart' as chat_ui_kit_constants;
 import '../logging/cometchat_log.dart';
 import '../clean_architecture/data/models/interactive_message/card_message.dart'
     as legacy_card;
+import '../../../../src/contracts/session.dart';
+import '../../../../src/adapters/cometchat_session_adapter.dart';
 
 class CometChatUIKit {
   static UIKitSettings? authenticationSettings;
 
-  static User? loggedInUser;
+  /// Host-supplied read-only [ChatSession] replacing the static facade.
+  static ChatSession? session;
+
+  static final CometChatSessionAdapter _sdkAdapter = CometChatSessionAdapter();
+
+  static User? _legacyLoggedInUser;
+
+  /// Effective [ChatSession]. If a host-supplied session is configured, returns it;
+  /// otherwise returns the internal SDK adapter keeping existing behavior working.
+  static ChatSession get effectiveSession => session ?? _sdkAdapter;
+
+  /// Returns the currently logged-in user.
+  ///
+  /// If a host-supplied [ChatSession] is present, it returns an adapted [User]
+  /// reflecting [ChatSession.currentUser]. Otherwise, falls back to the internal state.
+  static User? get loggedInUser {
+    final cur = session?.currentUser;
+    if (cur != null) {
+      return User(
+        uid: cur.id,
+        name: cur.name,
+        avatar: cur.avatarUrl,
+      );
+    }
+    return _legacyLoggedInUser;
+  }
+
+  static set loggedInUser(User? user) {
+    _legacyLoggedInUser = user;
+    _sdkAdapter.updateUser(user);
+  }
 
   static String localTimeZoneIdentifier = "";
 
