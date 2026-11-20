@@ -68,7 +68,7 @@ class _FormatterBlock {
 String _findWidgetName(String source, int offset) {
   // Scan backwards to find `CometChat...(\n` or similar widget constructor
   final preceding = source.substring(0, offset);
-  final widgetPattern = RegExp(r'(CometChat\w+)\s*\(', multiLine: true);
+  final widgetPattern = RegExp(r'((?:ConvoKit|CometChat)\w+)\s*\(', multiLine: true);
   final matches = widgetPattern.allMatches(preceding).toList();
   if (matches.isEmpty) return 'Unknown';
   return matches.last.group(1) ?? 'Unknown';
