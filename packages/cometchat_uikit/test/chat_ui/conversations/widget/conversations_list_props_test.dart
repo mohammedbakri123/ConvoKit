@@ -1,9 +1,9 @@
 /// Render-verified prop matrix for [ConversationsList] — Track 3 PROP1
 /// (ENG-38688, coverage part 2).
 ///
-/// [ConversationsList] is the body of CometChatConversations: it takes the
+/// [ConversationsList] is the body of ConvoKitConversations: it takes the
 /// bloc and the already-resolved style tokens and renders one
-/// [CometChatConversationListItem] per conversation, or a state view. The
+/// [ConvoKitConversationListItem] per conversation, or a state view. The
 /// matrix drives it directly with a mocked bloc seeded into a chosen state
 /// and asserts on the child each prop is handed to.
 ///
@@ -327,7 +327,7 @@ ConversationsState Function() _only(Conversation Function() conversation) =>
     () => ConversationsLoaded(conversations: [conversation()]);
 
 // Baseline tokens: what every row renders with unless it overrides one.
-const _style = CometChatConversationsStyle();
+const _style = ConvoKitConversationsStyle();
 const _statusStyle = CometChatStatusIndicatorStyle();
 const _typingStyle = CometChatTypingIndicatorStyle();
 const _datesStyle = CometChatDateStyle();
@@ -451,7 +451,7 @@ class _Props {
     this.statusIndicatorBorderRadius,
   });
 
-  final CometChatConversationsStyle? style;
+  final ConvoKitConversationsStyle? style;
   final CometChatStatusIndicatorStyle? statusStyle;
   final CometChatTypingIndicatorStyle? typingStyle;
   final CometChatDateStyle? datesStyle;
@@ -713,14 +713,14 @@ final _matrix = <_Row>[
     'style',
     'itemTitleTextColor and backgroundColor reach every row',
     set: (r) => const _Props(
-      style: CometChatConversationsStyle(
+      style: ConvoKitConversationsStyle(
         itemTitleTextColor: _kTitle,
         backgroundColor: _kRowBackground,
       ),
     ),
     probe: (t, r) => [
       _textStyle(t, 'Alice')?.color,
-      _box(t, CometChatConversationListItem).color,
+      _box(t, ConvoKitConversationListItem).color,
     ],
     expected: [_kTitle, _kRowBackground],
   ),
@@ -728,7 +728,7 @@ final _matrix = <_Row>[
     'style',
     'itemTitleTextStyle and the item subtitle style reach every row',
     set: (r) => const _Props(
-      style: CometChatConversationsStyle(
+      style: ConvoKitConversationsStyle(
         itemTitleTextStyle: TextStyle(fontSize: 19.25),
         itemSubtitleTextStyle: TextStyle(fontSize: 13.25),
         itemSubtitleTextColor: _kSubtitle,
@@ -749,7 +749,7 @@ final _matrix = <_Row>[
     'style',
     'avatarStyle and badgeStyle reach the avatar and the unread badge',
     set: (r) => const _Props(
-      style: CometChatConversationsStyle(
+      style: ConvoKitConversationsStyle(
         avatarStyle: CometChatAvatarStyle(backgroundColor: _kAvatarBackground),
         badgeStyle: CometChatBadgeStyle(backgroundColor: _kBadgeBackground),
       ),
@@ -765,7 +765,7 @@ final _matrix = <_Row>[
     'emptyStateTextColor reaches the empty view',
     state: _empty,
     set: (r) => const _Props(
-      style: CometChatConversationsStyle(emptyStateTextColor: _kEmptyTitle),
+      style: ConvoKitConversationsStyle(emptyStateTextColor: _kEmptyTitle),
     ),
     probe: (t, r) => _textStyle(t, _tr(t).noConversationsYet)?.color,
     expected: _kEmptyTitle,
@@ -775,7 +775,7 @@ final _matrix = <_Row>[
     'errorStateTextColor reaches the error view',
     state: _error,
     set: (r) => const _Props(
-      style: CometChatConversationsStyle(errorStateTextColor: _kErrorTitle),
+      style: ConvoKitConversationsStyle(errorStateTextColor: _kErrorTitle),
     ),
     probe: (t, r) => _textStyle(t, _tr(t).oops)?.color,
     expected: _kErrorTitle,
@@ -791,7 +791,7 @@ final _matrix = <_Row>[
     ),
     probe: (t, r) => [
       _textStyle(t, 'Alice')?.color,
-      _box(t, CometChatConversationListItem).color,
+      _box(t, ConvoKitConversationListItem).color,
     ],
     expected: [_kPaletteText, _kPaletteBackground],
   ),
@@ -799,7 +799,7 @@ final _matrix = <_Row>[
     'spacing',
     'padding4 and padding3 inset every row',
     set: (r) => _Props(spacing: _spacing.copyWith(padding3: 9, padding4: 17)),
-    probe: (t, r) => _box(t, CometChatConversationListItem).padding,
+    probe: (t, r) => _box(t, ConvoKitConversationListItem).padding,
     expected: const EdgeInsets.symmetric(horizontal: 17, vertical: 9),
   ),
   _Row(
@@ -908,7 +908,7 @@ final _matrix = <_Row>[
     set: (r) => _Props(listItemView: (c) => Text('row-${c.conversationId}')),
     probe: (t, r) => [
       ..._textsStartingWith(t, 'row-'),
-      _count(find.byType(CometChatConversationListItem)),
+      _count(find.byType(ConvoKitConversationListItem)),
     ],
     expected: ['row-user_u1', 'row-user_u2', 'row-group_g1', 0],
   ),
@@ -1182,7 +1182,7 @@ final _matrix = <_Row>[
         _count(
           find.descendant(
             of: find.byKey(ValueKey('wrap-$id')),
-            matching: find.byType(CometChatConversationListItem),
+            matching: find.byType(ConvoKitConversationListItem),
           ),
         ),
       _count(
@@ -1568,13 +1568,13 @@ void main() {
     });
   });
 
-  group('CometChatConversationListItem takes the props ConversationsList '
+  group('ConvoKitConversationListItem takes the props ConversationsList '
       'forwards', () {
     testWidgets('typingIndicatorText replaces the typing line', (tester) async {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: _three().first,
               onItemClick: (_) {},
               typingIndicators: [
@@ -1596,7 +1596,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: _three().first,
               onItemClick: (_) {},
               datePattern: (c) => 'item-when-${c.conversationId}',
@@ -1611,7 +1611,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: _three().first,
               onItemClick: (_) {},
               datePadding: const EdgeInsets.all(9),
@@ -1627,7 +1627,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: _three().first,
               onItemClick: (_) {},
               dateHeight: 33,
@@ -1643,7 +1643,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: _three().first,
               onItemClick: (_) {},
               dateWidth: 59,
@@ -1661,7 +1661,7 @@ void main() {
         await mockNetworkImagesFor(
           () => tester.pumpWidget(
             _wrap(
-              CometChatConversationListItem(
+              ConvoKitConversationListItem(
                 conversation: _three().first,
                 onItemClick: (_) {},
                 dateBackgroundIsTransparent: false,
@@ -1692,7 +1692,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: _three().first,
               onItemClick: (_) {},
               badgeWidth: 43,
@@ -1708,7 +1708,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: _three().first,
               onItemClick: (_) {},
               badgeHeight: 29,
@@ -1724,7 +1724,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: _three().first,
               onItemClick: (_) {},
               badgePadding: const EdgeInsets.all(6),
@@ -1742,7 +1742,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: _three().first,
               onItemClick: (_) {},
               statusIndicatorBorderRadius: const BorderRadius.all(

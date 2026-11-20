@@ -1,4 +1,4 @@
-/// Render-verified prop matrix for [CometChatConversationListItem] — Track 3
+/// Render-verified prop matrix for [ConvoKitConversationListItem] — Track 3
 /// PROP1 (ENG-38688, coverage part 2).
 ///
 /// How the matrix works. [_matrix] is a table. Each row names the prop it
@@ -449,7 +449,7 @@ class _Props {
   final VoidCallback? onSelectionToggle;
   final List<CometChatTextFormatter>? textFormatters;
   final DateTimeFormatterCallback? dateTimeFormatterCallback;
-  final CometChatConversationListItemStyle? style;
+  final ConvoKitConversationListItemStyle? style;
   final CometChatAvatarStyle? avatarStyle;
   final CometChatStatusIndicatorStyle? statusIndicatorStyle;
   final CometChatDateStyle? dateStyle;
@@ -559,7 +559,7 @@ class _Row {
     this.act,
   });
 
-  /// The [CometChatConversationListItem] parameter this row verifies.
+  /// The [ConvoKitConversationListItem] parameter this row verifies.
   final String prop;
 
   /// What the row claims, in words. Becomes the test name.
@@ -1055,9 +1055,9 @@ final _matrix = <_Row>[
   _Row(
     'colorPalette',
     'fills in the row, title, preview and date colours a style leaves out',
-    base: (r) => const _Props(style: CometChatConversationListItemStyle()),
+    base: (r) => const _Props(style: ConvoKitConversationListItemStyle()),
     set: (r) => _Props(
-      style: const CometChatConversationListItemStyle(),
+      style: const ConvoKitConversationListItemStyle(),
       colorPalette: CometChatColorPalette(
         background1: _kRowBackground,
         textPrimary: _kTitle,
@@ -1086,9 +1086,9 @@ final _matrix = <_Row>[
     conversation: _photo,
     selectionMode: SelectionMode.multiple,
     selected: true,
-    base: (r) => const _Props(style: CometChatConversationListItemStyle()),
+    base: (r) => const _Props(style: ConvoKitConversationListItemStyle()),
     set: (r) => _Props(
-      style: const CometChatConversationListItemStyle(),
+      style: const ConvoKitConversationListItemStyle(),
       colorPalette: CometChatColorPalette(
         background4: _kSelectedBackground,
         iconSecondary: _kTypeIcon,
@@ -1128,9 +1128,9 @@ final _matrix = <_Row>[
     set: (r) => _Props(spacing: CometChatSpacing(padding4: 29, padding3: 13)),
     probe: (t, r) => [
       t.getTopLeft(find.byType(CometChatAvatar)).dx -
-          t.getTopLeft(find.byType(CometChatConversationListItem)).dx,
+          t.getTopLeft(find.byType(ConvoKitConversationListItem)).dx,
       t.getTopLeft(_in(InkWell, Row).first).dy -
-          t.getTopLeft(find.byType(CometChatConversationListItem)).dy,
+          t.getTopLeft(find.byType(ConvoKitConversationListItem)).dy,
       t.getTopLeft(find.text('Alice')).dx -
           t.getTopRight(find.byType(CometChatAvatar)).dx,
     ],
@@ -1198,14 +1198,14 @@ final _matrix = <_Row>[
     'spacing',
     'padding3 and padding2 place the checkbox; radius1 rounds it',
     selectionMode: SelectionMode.multiple,
-    base: (r) => const _Props(style: CometChatConversationListItemStyle()),
+    base: (r) => const _Props(style: ConvoKitConversationListItemStyle()),
     set: (r) => _Props(
-      style: const CometChatConversationListItemStyle(),
+      style: const ConvoKitConversationListItemStyle(),
       spacing: CometChatSpacing(padding3: 11, padding2: 6, radius1: 2.5),
     ),
     probe: (t, r) => [
       t.getTopLeft(find.byType(Checkbox)).dx -
-          t.getTopLeft(find.byType(CometChatConversationListItem)).dx,
+          t.getTopLeft(find.byType(ConvoKitConversationListItem)).dx,
       t.getTopLeft(find.byType(CometChatAvatar)).dx -
           t.getTopRight(find.byType(Checkbox)).dx,
       (_checkbox(t).shape! as RoundedRectangleBorder).borderRadius,
@@ -1249,9 +1249,9 @@ final _matrix = <_Row>[
   _Row(
     'typography',
     'sizes the title, preview and date when a style leaves them out',
-    base: (r) => const _Props(style: CometChatConversationListItemStyle()),
+    base: (r) => const _Props(style: ConvoKitConversationListItemStyle()),
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(),
+      style: ConvoKitConversationListItemStyle(),
       typography: CometChatTypography(
         heading4: CometChatTextStyleHeading4(medium: TextStyle(fontSize: 19.5)),
         body: CometChatTextStyleBody(regular: TextStyle(fontSize: 15.5)),
@@ -1278,9 +1278,9 @@ final _matrix = <_Row>[
     'typography',
     'body.regular sizes the typing line when a style leaves it out',
     typing: _bobTyping,
-    base: (r) => const _Props(style: CometChatConversationListItemStyle()),
+    base: (r) => const _Props(style: ConvoKitConversationListItemStyle()),
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(),
+      style: ConvoKitConversationListItemStyle(),
       typography: CometChatTypography(
         body: CometChatTextStyleBody(regular: TextStyle(fontSize: 15.5)),
       ),
@@ -1295,7 +1295,7 @@ final _matrix = <_Row>[
     'style',
     'backgroundColor paints the row',
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         backgroundColor: _kRowBackground,
       ),
     ),
@@ -1308,7 +1308,7 @@ final _matrix = <_Row>[
     'selectedBackgroundColor paints a selected row',
     selected: true,
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         selectedBackgroundColor: _kSelectedBackground,
       ),
     ),
@@ -1320,7 +1320,7 @@ final _matrix = <_Row>[
     'style',
     'titleTextColor colours the title',
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(titleTextColor: _kTitle),
+      style: ConvoKitConversationListItemStyle(titleTextColor: _kTitle),
     ),
     probe: (t, r) => _titleStyle(t)?.color,
     unset: _FromTheme((c) => _palette(c).textPrimary),
@@ -1330,7 +1330,7 @@ final _matrix = <_Row>[
     'style',
     'titleTextStyle sizes the title',
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         titleTextStyle: TextStyle(fontSize: 21.5),
       ),
     ),
@@ -1342,7 +1342,7 @@ final _matrix = <_Row>[
     'style',
     'subtitleTextColor colours the last-message preview',
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(subtitleTextColor: _kSubtitle),
+      style: ConvoKitConversationListItemStyle(subtitleTextColor: _kSubtitle),
     ),
     probe: (t, r) => _subtitleStyle(t)?.color,
     unset: _FromTheme((c) => _palette(c).textSecondary),
@@ -1352,7 +1352,7 @@ final _matrix = <_Row>[
     'style',
     'subtitleTextStyle sizes the last-message preview',
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         subtitleTextStyle: TextStyle(fontSize: 13.5),
       ),
     ),
@@ -1364,7 +1364,7 @@ final _matrix = <_Row>[
     'style',
     'subtitleTextColor outranks a colour inside subtitleTextStyle',
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         subtitleTextStyle: TextStyle(color: _kOutranked),
         subtitleTextColor: _kSubtitle,
       ),
@@ -1378,7 +1378,7 @@ final _matrix = <_Row>[
     'messageTypeIconTint tints the photo glyph',
     conversation: _photo,
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         messageTypeIconTint: _kTypeIcon,
       ),
     ),
@@ -1392,7 +1392,7 @@ final _matrix = <_Row>[
     selectionMode: SelectionMode.multiple,
     selected: true,
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         checkBoxCheckedBackgroundColor: _kCheckFill,
       ),
     ),
@@ -1405,7 +1405,7 @@ final _matrix = <_Row>[
     'checkBoxBackgroundColor fills an empty checkbox',
     selectionMode: SelectionMode.multiple,
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         checkBoxBackgroundColor: _kCheckEmpty,
       ),
     ),
@@ -1418,7 +1418,7 @@ final _matrix = <_Row>[
     'checkBoxStrokeColor and checkBoxStrokeWidth draw the checkbox edge',
     selectionMode: SelectionMode.multiple,
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         checkBoxStrokeColor: _kCheckStroke,
         checkBoxStrokeWidth: 2.75,
       ),
@@ -1432,7 +1432,7 @@ final _matrix = <_Row>[
     'checkBoxBorderRadius rounds the checkbox',
     selectionMode: SelectionMode.multiple,
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         checkBoxBorderRadius: _kCheckRadius,
       ),
     ),
@@ -1445,7 +1445,7 @@ final _matrix = <_Row>[
     'style',
     'avatarStyle fills the avatar',
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         avatarStyle: CometChatAvatarStyle(backgroundColor: _kAvatar),
       ),
     ),
@@ -1457,7 +1457,7 @@ final _matrix = <_Row>[
     'style',
     'statusIndicatorStyle.border edges the presence dot',
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         statusIndicatorStyle: CometChatStatusIndicatorStyle(
           border: _kDotBorder,
         ),
@@ -1476,7 +1476,7 @@ final _matrix = <_Row>[
     'style',
     'statusIndicatorStyle.borderRadius rounds the presence dot',
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         statusIndicatorStyle: CometChatStatusIndicatorStyle(
           borderRadius: _kDotRadius,
         ),
@@ -1490,7 +1490,7 @@ final _matrix = <_Row>[
     'style',
     'dateStyle colours the timestamp',
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         dateStyle: CometChatDateStyle(textColor: _kDateText),
       ),
     ),
@@ -1502,7 +1502,7 @@ final _matrix = <_Row>[
     'style',
     'dateStyle.textStyle sizes the timestamp',
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         dateStyle: CometChatDateStyle(textStyle: TextStyle(fontSize: 11.5)),
       ),
     ),
@@ -1514,7 +1514,7 @@ final _matrix = <_Row>[
     'style',
     'dateStyle.borderRadius rounds the timestamp box',
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         dateStyle: CometChatDateStyle(borderRadius: _kDateRadius),
       ),
     ),
@@ -1528,7 +1528,7 @@ final _matrix = <_Row>[
     'style',
     'badgeStyle fills the unread badge',
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         badgeStyle: CometChatBadgeStyle(backgroundColor: _kBadge),
       ),
     ),
@@ -1541,7 +1541,7 @@ final _matrix = <_Row>[
     'typingIndicatorStyle sizes the typing line',
     typing: _bobTyping,
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         typingIndicatorStyle: CometChatTypingIndicatorStyle(
           textStyle: TextStyle(fontSize: 17.5),
         ),
@@ -1567,12 +1567,12 @@ final _matrix = <_Row>[
     'avatarStyle',
     'outranks style.avatarStyle',
     base: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         avatarStyle: CometChatAvatarStyle(backgroundColor: _kOutranked),
       ),
     ),
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         avatarStyle: CometChatAvatarStyle(backgroundColor: _kOutranked),
       ),
       avatarStyle: CometChatAvatarStyle(backgroundColor: _kAvatar),
@@ -1612,14 +1612,14 @@ final _matrix = <_Row>[
     'statusIndicatorStyle',
     'outranks style.statusIndicatorStyle',
     base: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         statusIndicatorStyle: CometChatStatusIndicatorStyle(
           border: _kOutrankedBorder,
         ),
       ),
     ),
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         statusIndicatorStyle: CometChatStatusIndicatorStyle(
           border: _kOutrankedBorder,
         ),
@@ -1664,12 +1664,12 @@ final _matrix = <_Row>[
     'dateStyle',
     'outranks style.dateStyle',
     base: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         dateStyle: CometChatDateStyle(textColor: _kOutranked),
       ),
     ),
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         dateStyle: CometChatDateStyle(textColor: _kOutranked),
       ),
       dateStyle: CometChatDateStyle(textColor: _kDateText),
@@ -1700,12 +1700,12 @@ final _matrix = <_Row>[
     'badgeStyle',
     'outranks style.badgeStyle',
     base: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         badgeStyle: CometChatBadgeStyle(backgroundColor: _kOutranked),
       ),
     ),
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         badgeStyle: CometChatBadgeStyle(backgroundColor: _kOutranked),
       ),
       badgeStyle: CometChatBadgeStyle(backgroundColor: _kBadge),
@@ -1732,14 +1732,14 @@ final _matrix = <_Row>[
     'outranks style.typingIndicatorStyle',
     typing: _bobTyping,
     base: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         typingIndicatorStyle: CometChatTypingIndicatorStyle(
           textStyle: TextStyle(fontSize: 9.5),
         ),
       ),
     ),
     set: (r) => const _Props(
-      style: CometChatConversationListItemStyle(
+      style: ConvoKitConversationListItemStyle(
         typingIndicatorStyle: CometChatTypingIndicatorStyle(
           textStyle: TextStyle(fontSize: 9.5),
         ),
@@ -1757,7 +1757,7 @@ final _matrix = <_Row>[
 // ─── Tests ───────────────────────────────────────────────────────────────────
 
 void main() {
-  group('CometChatConversationListItem prop matrix', () {
+  group('ConvoKitConversationListItem prop matrix', () {
     for (final row in _matrix) {
       testWidgets('${row.prop}: ${row.claim}', (tester) async {
         if (row.signedIn) {
@@ -1783,30 +1783,30 @@ void main() {
                   // A flag row passes its flag alone, so the base side, which
                   // takes the last branch, leaves every flag at its default.
                   _Props(hideUserStatus: final bool v) =>
-                    CometChatConversationListItem(
+                    ConvoKitConversationListItem(
                       conversation: conversation,
                       onItemClick: onItemClick,
                       hideUserStatus: v,
                     ),
                   _Props(hideGroupType: final bool v) =>
-                    CometChatConversationListItem(
+                    ConvoKitConversationListItem(
                       conversation: conversation,
                       onItemClick: onItemClick,
                       hideGroupType: v,
                     ),
                   _Props(hideReceipts: final bool v) =>
-                    CometChatConversationListItem(
+                    ConvoKitConversationListItem(
                       conversation: conversation,
                       onItemClick: onItemClick,
                       hideReceipts: v,
                     ),
                   _Props(hideThreadIndicator: final bool v) =>
-                    CometChatConversationListItem(
+                    ConvoKitConversationListItem(
                       conversation: conversation,
                       onItemClick: onItemClick,
                       hideThreadIndicator: v,
                     ),
-                  _ => CometChatConversationListItem(
+                  _ => ConvoKitConversationListItem(
                     conversation: conversation,
                     onItemClick: onItemClick,
                     isSelected: row.selected,

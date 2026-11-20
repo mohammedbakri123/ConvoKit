@@ -219,7 +219,7 @@ void main() {
 
     // RT-TYPE-004: Typing indicator on the conversation list.
     // B->A typing can't be pushed via REST. Verify the conversation row
-    // component (CometChatConversations) is mounted on the Chats tab and
+    // component (ConvoKitConversations) is mounted on the Chats tab and
     // shows no spurious "Typing..." subtitle while A stays on the list.
     testWidgets('RT-TYPE-004: conversation list stable, no spurious typing',
         (tester) async {

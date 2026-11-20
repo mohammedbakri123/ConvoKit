@@ -3,7 +3,7 @@
 ///
 ///   ConvoKitMessageComposer.richTextToolbarActions
 ///   StickerAuxiliaryButton.composerId
-///   CometChatConversations.pinConversationOptionVisibility
+///   ConvoKitConversations.pinConversationOptionVisibility
 ///
 /// Same shape as the CometChatSearch matrix: one table per class, and every
 /// case renders its unit twice inside one test body — once with the prop
@@ -279,7 +279,7 @@ String _stickerState(WidgetTester tester) {
 }
 
 // ═════════════════════════════════════════════════════════════════════════════
-// CometChatConversations.pinConversationOptionVisibility
+// ConvoKitConversations.pinConversationOptionVisibility
 // ═════════════════════════════════════════════════════════════════════════════
 
 class _PinCase {
@@ -513,7 +513,7 @@ void main() {
     }
   });
 
-  group('CometChatConversations pinConversationOptionVisibility matrix', () {
+  group('ConvoKitConversations pinConversationOptionVisibility matrix', () {
     setUp(() => CometChatUIKit.loggedInUser = _FakeUser(uid: _me, name: 'Me'));
     tearDown(() => CometChatUIKit.loggedInUser = null);
 
@@ -528,14 +528,14 @@ void main() {
             await tester.pumpWidget(
               _wrap(
                 run == _Run.subject
-                    ? CometChatConversations(
+                    ? ConvoKitConversations(
                         conversationsBloc: _loadedConversationsBloc(
                           pinnedBy: c.pinnedBy,
                         ),
                         deleteConversationOptionVisibility: c.deleteVisible,
                         pinConversationOptionVisibility: c.subject,
                       )
-                    : CometChatConversations(
+                    : ConvoKitConversations(
                         conversationsBloc: _loadedConversationsBloc(
                           pinnedBy: c.pinnedBy,
                         ),

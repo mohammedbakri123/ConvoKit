@@ -1,4 +1,4 @@
-/// The branches of [CometChatConversations] the prop matrix does not reach:
+/// The branches of [ConvoKitConversations] the prop matrix does not reach:
 /// the long-press context menu, the selection chrome, the delete confirmation
 /// and the route-visibility hooks.
 ///
@@ -133,7 +133,7 @@ void main() {
       await _pump(
         tester,
         _wrap(
-          CometChatConversations(
+          ConvoKitConversations(
             conversationsBloc: _loaded(),
             deleteConversationOptionVisibility: false,
           ),
@@ -150,7 +150,7 @@ void main() {
       await _pump(
         tester,
         _wrap(
-          CometChatConversations(
+          ConvoKitConversations(
             conversationsBloc: _loaded(),
             deleteConversationOptionVisibility: true,
           ),
@@ -167,7 +167,7 @@ void main() {
       await _pump(
         tester,
         _wrap(
-          CometChatConversations(
+          ConvoKitConversations(
             conversationsBloc: _loaded(),
             deleteConversationOptionVisibility: true,
             addOptions: (_, _, _) => [
@@ -191,7 +191,7 @@ void main() {
       await _pump(
         tester,
         _wrap(
-          CometChatConversations(
+          ConvoKitConversations(
             conversationsBloc: _loaded(),
             deleteConversationOptionVisibility: true,
             setOptions: (_, _, _) => [
@@ -212,7 +212,7 @@ void main() {
       await _pump(
         tester,
         _wrap(
-          CometChatConversations(
+          ConvoKitConversations(
             conversationsBloc: _loaded(),
             deleteConversationOptionVisibility: false,
             setOptions: (_, _, _) => null,
@@ -233,7 +233,7 @@ void main() {
       await _pump(
         tester,
         _wrap(
-          CometChatConversations(
+          ConvoKitConversations(
             conversationsBloc: _loaded(),
             setOptions: (_, _, _) => [
               CometChatOption(
@@ -261,7 +261,7 @@ void main() {
       await _pump(
         tester,
         _wrap(
-          CometChatConversations(
+          ConvoKitConversations(
             conversationsBloc: _loaded(),
             setOptions: (_, _, _) => [
               CometChatOption(
@@ -284,7 +284,7 @@ void main() {
       await _pump(
         tester,
         _wrap(
-          CometChatConversations(
+          ConvoKitConversations(
             conversationsBloc: _loaded(),
             setOptions: (_, _, _) => [
               CometChatOption(id: 'x', title: 'Archive', icon: ''),
@@ -310,7 +310,7 @@ void main() {
       await _pump(
         tester,
         _wrap(
-          CometChatConversations(
+          ConvoKitConversations(
             conversationsBloc: _loaded(),
             setOptions: (_, _, _) => [
               CometChatOption(
@@ -342,7 +342,7 @@ void main() {
       await _pump(
         tester,
         _wrap(
-          CometChatConversations(
+          ConvoKitConversations(
             conversationsBloc: _loaded(),
             deleteConversationOptionVisibility: true,
           ),
@@ -363,7 +363,7 @@ void main() {
       await _pump(
         tester,
         _wrap(
-          CometChatConversations(
+          ConvoKitConversations(
             conversationsBloc: _loaded(),
             deleteConversationOptionVisibility: true,
             onItemTap: (c) => tapped = c,
@@ -390,7 +390,7 @@ void main() {
     testWidgets('an unpinned conversation is offered Pin', (tester) async {
       await _pump(
         tester,
-        _wrap(CometChatConversations(conversationsBloc: _loaded())),
+        _wrap(ConvoKitConversations(conversationsBloc: _loaded())),
       );
       await _openMenu(tester);
 
@@ -405,7 +405,7 @@ void main() {
       await _pump(
         tester,
         _wrap(
-          CometChatConversations(
+          ConvoKitConversations(
             conversationsBloc: _loaded(
               conversations: [FakeConversation(pinnedBy: 'u-me')],
             ),
@@ -428,7 +428,7 @@ void main() {
       await _pump(
         tester,
         _wrap(
-          CometChatConversations(
+          ConvoKitConversations(
             conversationsBloc: _loaded(
               conversations: [FakeConversation(pinnedBy: 'someone-else')],
             ),
@@ -449,7 +449,7 @@ void main() {
       await _pump(
         tester,
         _wrap(
-          CometChatConversations(
+          ConvoKitConversations(
             conversationsBloc: _loaded(),
             pinConversationOptionVisibility: false,
             deleteConversationOptionVisibility: true,
@@ -470,7 +470,7 @@ void main() {
       // appearing pinned.
       await _pump(
         tester,
-        _wrap(CometChatConversations(conversationsBloc: _loaded())),
+        _wrap(ConvoKitConversations(conversationsBloc: _loaded())),
       );
       await _openMenu(tester);
 
@@ -498,7 +498,7 @@ void main() {
       await _pump(
         tester,
         _wrap(
-          CometChatConversations(
+          ConvoKitConversations(
             conversationsBloc: _loaded(conversations: [_GroupConversation()]),
           ),
         ),
@@ -527,7 +527,7 @@ void main() {
       await _pump(
         tester,
         _wrap(
-          CometChatConversations(
+          ConvoKitConversations(
             conversationsBloc: _loaded(
               conversations: [FakeConversation(pinnedBy: 'u-me')],
             ),
@@ -556,7 +556,7 @@ void main() {
         mockNetworkImagesFor(() async {
           await tester.pumpWidget(
             _wrap(
-              CometChatConversations(
+              ConvoKitConversations(
                 conversationsBloc: bloc,
                 deleteConversationOptionVisibility: true,
               ),
@@ -622,7 +622,7 @@ void main() {
       await _pump(
         tester,
         _wrap(
-          CometChatConversations(
+          ConvoKitConversations(
             conversationsBloc: bloc,
             showBackButton: true,
             selectionMode: SelectionMode.multiple,
@@ -645,7 +645,7 @@ void main() {
       await _pump(
         tester,
         _wrap(
-          CometChatConversations(
+          ConvoKitConversations(
             conversationsBloc: _loaded(selected: const {'user_u2'}),
             selectionMode: SelectionMode.multiple,
             onSelection: (c) => submitted = c,
@@ -663,7 +663,7 @@ void main() {
       await _pump(
         tester,
         _wrap(
-          CometChatConversations(
+          ConvoKitConversations(
             conversationsBloc: _loaded(),
             selectionMode: SelectionMode.multiple,
             onSelection: (_) {},
@@ -689,7 +689,7 @@ void main() {
             supportedLocales: const [Locale('en')],
             navigatorObservers: [observer],
             home: Scaffold(
-              body: CometChatConversations(
+              body: ConvoKitConversations(
                 conversationsBloc: _loaded(),
                 routeObserver: observer,
               ),
@@ -700,7 +700,7 @@ void main() {
         await tester.pump(const Duration(milliseconds: 300));
       });
 
-      final state = tester.state(find.byType(CometChatConversations));
+      final state = tester.state(find.byType(ConvoKitConversations));
       expect(state, isA<RouteAware>());
       expect(find.text('Alice'), findsOneWidget);
 
@@ -739,7 +739,7 @@ void main() {
                   onPressed: () => Navigator.of(context).push(
                     MaterialPageRoute<void>(
                       builder: (_) => Scaffold(
-                        body: CometChatConversations(
+                        body: ConvoKitConversations(
                           conversationsBloc: _loaded(),
                           routeObserver: observer,
                         ),
@@ -763,7 +763,7 @@ void main() {
       while (tester.takeException() != null) {}
 
       expect(find.text('go'), findsOneWidget);
-      expect(find.byType(CometChatConversations), findsNothing);
+      expect(find.byType(ConvoKitConversations), findsNothing);
     });
 
     testWidgets('without a routeObserver the list still renders', (
@@ -771,7 +771,7 @@ void main() {
     ) async {
       await _pump(
         tester,
-        _wrap(CometChatConversations(conversationsBloc: _loaded())),
+        _wrap(ConvoKitConversations(conversationsBloc: _loaded())),
       );
 
       expect(find.text('Alice'), findsOneWidget);

@@ -1,7 +1,7 @@
 /// Render-verified prop matrix for the two list-item style classes — Track 3
 /// PROP1.
 ///
-/// [CometChatConversationListItemStyle] (19 props) and
+/// [ConvoKitConversationListItemStyle] (19 props) and
 /// [CometChatGroupListItemStyle] (14). Both are exported and both were at
 /// 0 render-verified: the component-level matrices reach them only through a
 /// mapping, so setting a prop there proves the mapping, not the paint.
@@ -179,15 +179,15 @@ Set<Color> _backgrounds(WidgetTester tester) {
 
 void main() {
   // ===========================================================================
-  group('CometChatConversationListItemStyle', () {
+  group('ConvoKitConversationListItemStyle', () {
     testWidgets('title and subtitle text props apply', (tester) async {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: FakeConversation(),
               onItemClick: (_) {},
-              style: const CometChatConversationListItemStyle(
+              style: const ConvoKitConversationListItemStyle(
                 titleTextColor: _c1,
                 titleTextStyle: TextStyle(fontSize: 23),
                 subtitleTextColor: _c2,
@@ -207,10 +207,10 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: FakeConversation(),
               onItemClick: (_) {},
-              style: const CometChatConversationListItemStyle(
+              style: const ConvoKitConversationListItemStyle(
                 backgroundColor: _c3,
               ),
             ),
@@ -228,12 +228,12 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: FakeConversation(),
               onItemClick: (_) {},
               isSelected: true,
               selectionMode: SelectionMode.multiple,
-              style: const CometChatConversationListItemStyle(
+              style: const ConvoKitConversationListItemStyle(
                 backgroundColor: _c3,
                 selectedBackgroundColor: _c4,
               ),
@@ -252,12 +252,12 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: FakeConversation(),
               onItemClick: (_) {},
               isSelected: true,
               selectionMode: SelectionMode.multiple,
-              style: const CometChatConversationListItemStyle(
+              style: const ConvoKitConversationListItemStyle(
                 checkBoxBackgroundColor: _c1,
                 checkBoxCheckedBackgroundColor: _c2,
                 checkBoxBorderRadius: BorderRadius.all(Radius.circular(7)),
@@ -298,10 +298,10 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: FakeConversation(),
               onItemClick: (_) {},
-              style: const CometChatConversationListItemStyle(
+              style: const ConvoKitConversationListItemStyle(
                 avatarStyle: CometChatAvatarStyle(backgroundColor: _c1),
                 statusIndicatorStyle: CometChatStatusIndicatorStyle(
                   borderRadius: BorderRadius.all(Radius.circular(6)),
@@ -343,10 +343,10 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: FakeConversation(),
               onItemClick: (_) {},
-              style: const CometChatConversationListItemStyle(
+              style: const ConvoKitConversationListItemStyle(
                 dateStyle: CometChatDateStyle(
                   textColor: _c5,
                   textStyle: TextStyle(fontSize: 9),
@@ -367,11 +367,11 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: FakeConversation(),
               onItemClick: (_) {},
               typingIndicators: [_FakeTyping()],
-              style: const CometChatConversationListItemStyle(
+              style: const ConvoKitConversationListItemStyle(
                 typingIndicatorStyle: CometChatTypingIndicatorStyle(
                   textStyle: TextStyle(fontSize: 31),
                 ),
@@ -395,10 +395,10 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: FakeConversation(),
               onItemClick: (_) {},
-              style: const CometChatConversationListItemStyle(
+              style: const ConvoKitConversationListItemStyle(
                 messageTypeIconTint: _c6,
                 subtitleTextColor: _c2,
                 subtitleTextStyle: TextStyle(fontSize: 13),
@@ -425,14 +425,14 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: FakeConversation(
                 last: FakeTextMessage(
                   readAt: DateTime.fromMillisecondsSinceEpoch(1700000002000),
                 ),
               ),
               onItemClick: (_) {},
-              style: const CometChatConversationListItemStyle(
+              style: const ConvoKitConversationListItemStyle(
                 receiptStyle: null,
               ),
               receiptStyle: CometChatMessageReceiptStyle(readIconColor: _c7),

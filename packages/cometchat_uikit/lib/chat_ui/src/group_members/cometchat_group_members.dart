@@ -65,7 +65,7 @@ class CometChatGroupMembers extends StatefulWidget {
   ///[groupMembersBloc] Optional external GroupMembersBloc instance.
   ///If provided, this bloc is used instead of creating one internally, and the
   ///widget will not close it on dispose. Mirrors
-  ///[CometChatConversations.conversationsBloc]; it is the seam that lets a test
+  ///[ConvoKitConversations.conversationsBloc]; it is the seam that lets a test
   ///supply member data without a live SDK.
   final GroupMembersBloc? groupMembersBloc;
 
@@ -1077,7 +1077,7 @@ class _CometChatGroupMembersState extends State<CometChatGroupMembers> {
     } else if (state is GroupMembersEmpty) {
       return _buildEmpty(style);
     } else if (state is GroupMembersError) {
-      // hideError suppresses the error view, as on CometChatConversations.
+      // hideError suppresses the error view, as on ConvoKitConversations.
       if (widget.hideError == true) return const SizedBox.shrink();
       return _buildError(style);
     } else if (state is GroupMembersLoaded) {

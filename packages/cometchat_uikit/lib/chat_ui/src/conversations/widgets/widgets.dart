@@ -1,7 +1,7 @@
 /// Barrel export file for conversations widgets.
 ///
 /// This file exports all modular widget components extracted from
-/// the CometChatConversations widget for better maintainability
+/// the ConvoKitConversations widget for better maintainability
 /// and reusability.
 library;
 

@@ -9,7 +9,7 @@ import 'helpers/seed_data.dart';
 
 /// E2E test for the Conversations flow.
 ///
-/// Uses tester.runAsync + pump loop to handle CometChatConversations' perpetual
+/// Uses tester.runAsync + pump loop to handle ConvoKitConversations' perpetual
 /// SDK listeners that prevent pumpAndSettle from ever completing.
 ///
 /// Screenshots saved to master_app/integration_test/screenshots/
@@ -95,7 +95,7 @@ void main() {
         MaterialApp(
           localizationsDelegates: Translations.localizationsDelegates,
           supportedLocales: const [Locale('en')],
-          home: const Scaffold(body: CometChatConversations()),
+          home: const Scaffold(body: ConvoKitConversations()),
         ),
       );
 
@@ -125,7 +125,7 @@ void main() {
           localizationsDelegates: Translations.localizationsDelegates,
           supportedLocales: const [Locale('en')],
           home: Scaffold(
-            body: CometChatConversations(
+            body: ConvoKitConversations(
               onItemTap: (conversation) {
                 tapped = true;
                 debugPrint('onItemTap fired: ${conversation.conversationId}');
@@ -154,7 +154,7 @@ void main() {
         MaterialApp(
           localizationsDelegates: Translations.localizationsDelegates,
           supportedLocales: const [Locale('en')],
-          home: const Scaffold(body: CometChatConversations()),
+          home: const Scaffold(body: ConvoKitConversations()),
         ),
       );
 
@@ -174,7 +174,7 @@ void main() {
         } else {
           debugPrint(
             'INFO: Delete icon not found after long-press. '
-            'CometChatConversations may use a different delete UX.',
+            'ConvoKitConversations may use a different delete UX.',
           );
         }
       } else {
@@ -192,7 +192,7 @@ void main() {
           localizationsDelegates: Translations.localizationsDelegates,
           supportedLocales: const [Locale('en')],
           home: Scaffold(
-            body: CometChatConversations(conversationsRequestBuilder: builder),
+            body: ConvoKitConversations(conversationsRequestBuilder: builder),
           ),
         ),
       );
@@ -229,7 +229,7 @@ void main() {
             localizationsDelegates: Translations.localizationsDelegates,
             supportedLocales: const [Locale('en')],
             home: Scaffold(
-              body: CometChatConversations(conversationsProtocol: protocol),
+              body: ConvoKitConversations(conversationsProtocol: protocol),
             ),
           ),
         );
@@ -262,7 +262,7 @@ void main() {
           localizationsDelegates: Translations.localizationsDelegates,
           supportedLocales: const [Locale('en')],
           home: Scaffold(
-            body: CometChatConversations(
+            body: ConvoKitConversations(
               listItemView: (conv) => Container(
                 key: const Key('e2e_custom_list_item'),
                 padding: const EdgeInsets.all(16),
@@ -306,7 +306,7 @@ void main() {
           localizationsDelegates: Translations.localizationsDelegates,
           supportedLocales: const [Locale('en')],
           home: Scaffold(
-            body: CometChatConversations(
+            body: ConvoKitConversations(
               subtitleView: (context, conv) => Text(
                 'Custom subtitle for ${conv.conversationId}',
                 key: const Key('e2e_custom_subtitle'),
@@ -343,9 +343,9 @@ void main() {
           localizationsDelegates: Translations.localizationsDelegates,
           supportedLocales: const [Locale('en')],
           home: Scaffold(
-            body: CometChatConversations(
+            body: ConvoKitConversations(
               title: 'My Custom Chats',
-              conversationsStyle: const CometChatConversationsStyle(
+              conversationsStyle: const ConvoKitConversationsStyle(
                 titleTextStyle: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.w900,
@@ -375,7 +375,7 @@ void main() {
           localizationsDelegates: Translations.localizationsDelegates,
           supportedLocales: const [Locale('en')],
           home: Scaffold(
-            body: CometChatConversations(
+            body: ConvoKitConversations(
               trailingView: (conv) => Container(
                 key: const Key('e2e_custom_trailing'),
                 padding: const EdgeInsets.all(4),
@@ -426,7 +426,7 @@ void main() {
         MaterialApp(
           localizationsDelegates: Translations.localizationsDelegates,
           supportedLocales: const [Locale('en')],
-          home: const Scaffold(body: CometChatConversations()),
+          home: const Scaffold(body: ConvoKitConversations()),
         ),
       );
 

@@ -1,6 +1,6 @@
-/// Comprehensive prop tests for CometChatConversations widget.
+/// Comprehensive prop tests for ConvoKitConversations widget.
 ///
-/// Tests every public prop/parameter of CometChatConversations to verify
+/// Tests every public prop/parameter of ConvoKitConversations to verify
 /// it is correctly wired and affects the rendered output.
 ///
 /// 69 props are in scope, 66 render-verified. The three that remain:
@@ -298,7 +298,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: bloc,
               onItemTap: (c) => tapped = c,
             ),
@@ -328,7 +328,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: bloc,
               onItemLongPress: (c) => longPressed = c,
             ),
@@ -355,7 +355,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: bloc,
               showBackButton: true,
               onBack: () => backFired = true,
@@ -389,7 +389,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: bloc,
               onLoad: (conversations) => loadedList = conversations,
             ),
@@ -412,7 +412,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: bloc,
               onEmpty: () => emptyFired = true,
             ),
@@ -432,7 +432,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: bloc,
               onError: (e) => errorMsg = e.toString(),
             ),
@@ -457,7 +457,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(conversationsBloc: bloc, hideAppbar: true),
+            ConvoKitConversations(conversationsBloc: bloc, hideAppbar: true),
           ),
         );
         await tester.pump();
@@ -474,7 +474,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: bloc,
               showBackButton: true,
             ),
@@ -502,7 +502,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: bloc,
               showBackButton: false,
             ),
@@ -521,7 +521,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(conversationsBloc: bloc, hideSearch: true),
+            ConvoKitConversations(conversationsBloc: bloc, hideSearch: true),
           ),
         );
         await tester.pump();
@@ -537,7 +537,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(conversationsBloc: bloc, hideError: true),
+            ConvoKitConversations(conversationsBloc: bloc, hideError: true),
           ),
         );
         await tester.pump();
@@ -562,7 +562,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: bloc,
               listItemView: (conv) => Container(
                 key: Key('custom-item-${conv.conversationId}'),
@@ -586,7 +586,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: bloc,
               subtitleView: (ctx, conv) => Text(
                 'Sub: ${conv.conversationId}',
@@ -608,7 +608,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: bloc,
               emptyStateView: (ctx) => const Center(
                 key: Key('custom-empty'),
@@ -631,7 +631,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: bloc,
               errorStateView: (ctx) => const Center(
                 key: Key('custom-error'),
@@ -663,7 +663,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: bloc,
               loadingStateView: (ctx) => const Center(
                 key: Key('custom-loading'),
@@ -686,7 +686,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: bloc,
               trailingView: (conv) =>
                   const Icon(Icons.star, key: Key('custom-trailing')),
@@ -708,7 +708,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: bloc,
               showBackButton: true,
               backButton: const Icon(Icons.close, key: Key('custom-back')),
@@ -728,7 +728,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: bloc,
               appBarOptions: [
                 IconButton(
@@ -759,7 +759,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: bloc,
               title: 'My Conversations',
             ),
@@ -777,7 +777,7 @@ void main() {
 
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
-          _wrap(CometChatConversations(conversationsBloc: bloc)),
+          _wrap(ConvoKitConversations(conversationsBloc: bloc)),
         );
         await tester.pump();
         await tester.pump(const Duration(milliseconds: 300));
@@ -798,7 +798,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: bloc,
               selectionMode: SelectionMode.multiple,
               activateSelection: ActivateSelection.onClick,
@@ -828,7 +828,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: bloc,
               selectionMode: SelectionMode.multiple,
               activateSelection: ActivateSelection.onClick,
@@ -879,7 +879,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: bloc,
               protectedGroupIcon: const Icon(
                 Icons.lock,
@@ -921,7 +921,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: bloc,
               privateGroupIcon: const Icon(
                 Icons.shield,
@@ -948,7 +948,7 @@ void main() {
 
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
-          _wrap(CometChatConversations(conversationsBloc: bloc)),
+          _wrap(ConvoKitConversations(conversationsBloc: bloc)),
         );
         await tester.pump();
         await tester.pump(const Duration(milliseconds: 300));
@@ -976,7 +976,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: bloc,
               searchReadOnly: true,
             ),
@@ -1006,7 +1006,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: bloc,
               avatarWidth: 60,
               avatarHeight: 60,
@@ -1027,7 +1027,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: bloc,
               badgeWidth: 24,
               badgeHeight: 24,
@@ -1054,7 +1054,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loadedBloc(),
               avatarPadding: const EdgeInsets.all(7),
               avatarMargin: const EdgeInsets.all(3),
@@ -1078,7 +1078,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loadedBloc(),
               statusIndicatorHeight: 20,
               statusIndicatorWidth: 22,
@@ -1109,7 +1109,7 @@ void main() {
 
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
-          _wrap(CometChatConversations(conversationsBloc: _loadedBloc())),
+          _wrap(ConvoKitConversations(conversationsBloc: _loadedBloc())),
         );
         await tester.pump();
       });
@@ -1118,7 +1118,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loadedBloc(),
               usersStatusVisibility: false,
             ),
@@ -1134,7 +1134,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loadedBloc(),
               groupTypeVisibility: false,
             ),
@@ -1165,7 +1165,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loadedBloc(),
               deliveredIcon: const Text('delivered-glyph'),
             ),
@@ -1181,7 +1181,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loadedBloc(),
               deliveredIcon: const Text('delivered-glyph'),
               receiptsVisibility: false,
@@ -1205,7 +1205,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loadedBloc(),
               readIcon: const Text('read-glyph'),
               sentIcon: const Text('sent-glyph'),
@@ -1228,7 +1228,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loadedBloc(),
               leadingView: (context, conversation) =>
                   Text('lead-${conversation.conversationId}'),
@@ -1246,7 +1246,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loadedBloc(),
               titleView: (context, conversation) =>
                   Text('title-${conversation.conversationId}'),
@@ -1264,7 +1264,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loadedBloc(),
               textFormatters: const <CometChatTextFormatter>[],
             ),
@@ -1286,7 +1286,7 @@ void main() {
         await mockNetworkImagesFor(() async {
           await tester.pumpWidget(
             _wrap(
-              CometChatConversations(
+              ConvoKitConversations(
                 key: UniqueKey(),
                 conversationsBloc: _allMentionBloc('all'),
                 mentionAllLabel: label,
@@ -1316,7 +1316,7 @@ void main() {
         await mockNetworkImagesFor(() async {
           await tester.pumpWidget(
             _wrap(
-              CometChatConversations(
+              ConvoKitConversations(
                 key: UniqueKey(),
                 conversationsBloc: _allMentionBloc('engineering'),
                 mentionAllLabelId: labelId,
@@ -1341,7 +1341,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loadedBloc(),
               dateTimeFormatterCallback: _StubDateFormatter(),
             ),
@@ -1364,7 +1364,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loadedBloc(),
               // hideSearch defaults to TRUE on Conversations
               // (cometchat_conversations.dart:547), unlike Users and Groups
@@ -1387,7 +1387,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loadedBloc(),
               hideSearch: false,
               searchPadding: const EdgeInsets.all(11),
@@ -1413,7 +1413,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loadedBloc(),
               hideSearch: false,
               onSearchTap: () => taps++,
@@ -1435,7 +1435,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _selectedBloc(),
               selectionMode: SelectionMode.multiple,
               submitIcon: const Text('done-glyph'),
@@ -1457,7 +1457,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loadedBloc(),
               deleteConversationOptionVisibility: true,
             ),
@@ -1478,7 +1478,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loadedBloc(),
               deleteConversationOptionVisibility: false,
               // The wrapper also carries the pin affordance on this branch, so
@@ -1505,9 +1505,9 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loadedBloc(),
-              conversationsStyle: const CometChatConversationsStyle(
+              conversationsStyle: const ConvoKitConversationsStyle(
                 backgroundColor: Color(0xFFEDF2F2),
               ),
             ),
@@ -1529,7 +1529,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loadedBloc(),
               scrollController: controller,
             ),
@@ -1554,7 +1554,7 @@ void main() {
             supportedLocales: const [Locale('en')],
             navigatorObservers: [observer],
             home: Scaffold(
-              body: CometChatConversations(
+              body: ConvoKitConversations(
                 conversationsBloc: _loadedBloc(),
                 routeObserver: observer,
               ),
@@ -1581,7 +1581,7 @@ void main() {
     // without inflating the render-verified numerator.
 
     test('conversationsRequestBuilder is carried on the constructor', () {
-      final widget = CometChatConversations(
+      final widget = ConvoKitConversations(
         conversationsRequestBuilder: ConversationsRequestBuilder()..limit = 12,
       );
 
@@ -1590,7 +1590,7 @@ void main() {
     });
 
     test('customSoundForMessages is carried on the constructor', () {
-      const widget = CometChatConversations(
+      const widget = ConvoKitConversations(
         customSoundForMessages: 'assets/ping.wav',
       );
 
@@ -1598,7 +1598,7 @@ void main() {
     });
 
     test('conversationsProtocol is carried on the constructor', () {
-      const widget = CometChatConversations();
+      const widget = ConvoKitConversations();
 
       expect(widget.conversationsProtocol, isNull);
     });
@@ -1614,7 +1614,7 @@ void main() {
         await mockNetworkImagesFor(() async {
           await tester.pumpWidget(
             _wrap(
-              CometChatConversations(
+              ConvoKitConversations(
                 conversationsBloc: _loadedBloc(),
                 datePattern: (conversation) =>
                     'pinned-${conversation.conversationId}',
@@ -1633,7 +1633,7 @@ void main() {
         await mockNetworkImagesFor(() async {
           await tester.pumpWidget(
             _wrap(
-              CometChatConversations(
+              ConvoKitConversations(
                 conversationsBloc: _loadedBloc(),
                 datePadding: const EdgeInsets.all(5),
                 dateHeight: 30,
@@ -1658,7 +1658,7 @@ void main() {
         await mockNetworkImagesFor(() async {
           await tester.pumpWidget(
             _wrap(
-              CometChatConversations(
+              ConvoKitConversations(
                 conversationsBloc: _loadedBloc(),
                 dateBackgroundIsTransparent: false,
               ),
@@ -1679,7 +1679,7 @@ void main() {
         await mockNetworkImagesFor(() async {
           await tester.pumpWidget(
             _wrap(
-              CometChatConversations(
+              ConvoKitConversations(
                 conversationsBloc: _loadedBloc(),
                 badgePadding: const EdgeInsets.all(4),
               ),
@@ -1703,7 +1703,7 @@ void main() {
         await mockNetworkImagesFor(() async {
           await tester.pumpWidget(
             _wrap(
-              CometChatConversations(
+              ConvoKitConversations(
                 conversationsBloc: bloc,
                 typingIndicatorText: 'scribbling…',
               ),
@@ -1721,7 +1721,7 @@ void main() {
         await mockNetworkImagesFor(() async {
           await tester.pumpWidget(
             _wrap(
-              CometChatConversations(
+              ConvoKitConversations(
                 conversationsBloc: _loadedBloc(),
                 statusIndicatorBorderRadius: const BorderRadius.all(
                   Radius.circular(9),
@@ -1751,7 +1751,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loadedBloc(),
               deleteConversationOptionVisibility: true,
               setOptions: (conversation, bloc, context) => [
@@ -1776,7 +1776,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loadedBloc(),
               deleteConversationOptionVisibility: true,
               // 'Pin' would collide with this branch's own built-in pin
@@ -1804,7 +1804,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loadedBloc(),
               setOptions: (conversation, bloc, context) {
                 seen = conversation;
@@ -1836,7 +1836,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loadedBloc(),
               deleteConversationOptionVisibility: false,
             ),

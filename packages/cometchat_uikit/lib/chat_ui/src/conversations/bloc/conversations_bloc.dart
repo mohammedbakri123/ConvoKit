@@ -535,7 +535,7 @@ class ConversationsBloc extends Bloc<ConversationsEvent, ConversationsState>
       ),
     );
 
-    CometChatConversationEvents.addConversationListListener(
+    ConvoKitConversationEvents.addConversationListListener(
       _ccConversationListenerKey,
       _CCConversationEventListener(
         onCCConversationDeletedCallback: _handleCCConversationDeleted,
@@ -2142,7 +2142,7 @@ class ConversationsBloc extends Bloc<ConversationsEvent, ConversationsState>
     // Remove CC UI Event listeners
     CometChatMessageEvents.removeMessagesListener(_ccMessageListenerKey);
     CometChatGroupEvents.removeGroupsListener(_ccGroupListenerKey);
-    CometChatConversationEvents.removeConversationListListener(
+    ConvoKitConversationEvents.removeConversationListListener(
       _ccConversationListenerKey,
     );
     CometChatCallEvents.removeCallEventsListener(_ccCallListenerKey);
@@ -2741,7 +2741,7 @@ class _CCGroupEventListener with CometChatGroupEventListener {
 }
 
 /// CC Conversation event listener for UI-triggered conversation events
-class _CCConversationEventListener with CometChatConversationEventListener {
+class _CCConversationEventListener with ConvoKitConversationEventListener {
   final void Function(Conversation) onCCConversationDeletedCallback;
   final void Function(Conversation)? onCCConversationUpdatedCallback;
 

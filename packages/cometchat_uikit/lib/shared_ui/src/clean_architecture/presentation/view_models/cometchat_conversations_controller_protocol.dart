@@ -1,6 +1,6 @@
 import '../../../../cometchat_uikit_shared.dart';
 
-mixin CometChatConversationsControllerProtocol
+mixin ConvoKitConversationsControllerProtocol
     implements CometChatListProtocol<Conversation> {
   void updateUserStatus(User user, String status);
 

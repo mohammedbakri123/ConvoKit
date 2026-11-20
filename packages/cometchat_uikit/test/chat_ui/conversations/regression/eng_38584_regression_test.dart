@@ -1,10 +1,10 @@
-/// ENG-38584: CometChatConversationEvents.ccUpdateConversation must merge the
+/// ENG-38584: ConvoKitConversationEvents.ccUpdateConversation must merge the
 /// supplied conversation into the list, not only its unread count and last
 /// message.
 ///
 /// The event takes a whole Conversation, but the conversations bloc kept only
 /// `unreadMessageCount` and `lastMessage`, so a refreshed Group (for example
-/// with new metadata) never reached CometChatConversations.
+/// with new metadata) never reached ConvoKitConversations.
 ///
 /// Expected merge (same as Android, ENG-38583, uikit-android#893 and #897):
 /// non-null reference fields (`conversationWith`, `lastMessage`, `tags`) are
@@ -27,7 +27,7 @@ import 'package:convokit/chat_ui/src/conversations/domain/usecases/get_logged_in
 import 'package:convokit/chat_ui/src/conversations/domain/usecases/load_more_conversations_usecase.dart';
 import 'package:convokit/chat_ui/src/conversations/domain/usecases/mark_as_delivered_usecase.dart';
 import 'package:convokit/cometchat_chat_uikit.dart'
-    show CometChatConversationEvents;
+    show ConvoKitConversationEvents;
 import 'package:convokit/shared_ui/src/clean_architecture/core/result.dart';
 import 'package:convokit/src/chat_sdk_listeners.dart';
 import 'package:cometchat_sdk/cometchat_sdk.dart';
@@ -154,7 +154,7 @@ void main() {
 
       // What an integrator sends: the same conversation, a refreshed Group,
       // the row's unread count, and no last message.
-      CometChatConversationEvents.ccUpdateConversation(
+      ConvoKitConversationEvents.ccUpdateConversation(
         Conversation(
           conversationId: _groupConversationId,
           conversationType: 'group',
@@ -170,7 +170,7 @@ void main() {
         {'marker': 'USAGE2-PROOF'},
         reason:
             'ENG-38584: ccUpdateConversation dropped conversationWith; the '
-            'refreshed Group never reached CometChatConversations',
+            'refreshed Group never reached ConvoKitConversations',
       );
       expect(updated.unreadMessageCount, 3);
       expect(updated.lastMessage, same(_existingGroupLastMessage));
@@ -188,7 +188,7 @@ void main() {
     final bloc = await loaded();
 
     final newUpdatedAt = DateTime(2026, 10, 2, 8);
-    CometChatConversationEvents.ccUpdateConversation(
+    ConvoKitConversationEvents.ccUpdateConversation(
       Conversation(
         conversationId: _groupConversationId,
         conversationType: 'group',

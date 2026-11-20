@@ -487,7 +487,7 @@ class _GroupRecorder with CometChatGroupEventListener {
 
 class _SilentGroupListener with CometChatGroupEventListener {}
 
-class _ConversationRecorder with CometChatConversationEventListener {
+class _ConversationRecorder with ConvoKitConversationEventListener {
   final List<_Call> calls = [];
 
   @override
@@ -499,7 +499,7 @@ class _ConversationRecorder with CometChatConversationEventListener {
       calls.add(_Call('ccUpdateConversation', [conversation]));
 }
 
-class _SilentConversationListener with CometChatConversationEventListener {}
+class _SilentConversationListener with ConvoKitConversationEventListener {}
 
 class _AiRecorder with CometChatAIAssistantEventsListener {
   final List<_Call> calls = [];
@@ -1290,15 +1290,15 @@ void main() {
   });
 
   // ===========================================================================
-  group('CometChatConversationEvents', () {
+  group('ConvoKitConversationEvents', () {
     late _ConversationRecorder rec;
     late Conversation conversation;
 
     setUp(() {
-      CometChatConversationEvents.conversationListListener.clear();
+      ConvoKitConversationEvents.conversationListListener.clear();
       rec = _ConversationRecorder();
-      CometChatConversationEvents.addConversationListListener('rec', rec);
-      CometChatConversationEvents.addConversationListListener(
+      ConvoKitConversationEvents.addConversationListListener('rec', rec);
+      ConvoKitConversationEvents.addConversationListListener(
         'silent',
         _SilentConversationListener(),
       );
@@ -1311,25 +1311,25 @@ void main() {
     });
 
     tearDown(
-      () => CometChatConversationEvents.conversationListListener.clear(),
+      () => ConvoKitConversationEvents.conversationListListener.clear(),
     );
 
     test('addConversationListListener stores under the id it was given', () {
       expect(
-        CometChatConversationEvents.conversationListListener['rec'],
+        ConvoKitConversationEvents.conversationListListener['rec'],
         same(rec),
       );
     });
 
     test('a removed listener stops receiving', () {
-      CometChatConversationEvents.removeConversationListListener('rec');
-      CometChatConversationEvents.ccConversationDeleted(conversation);
+      ConvoKitConversationEvents.removeConversationListListener('rec');
+      ConvoKitConversationEvents.ccConversationDeleted(conversation);
       expect(rec.calls, isEmpty);
     });
 
     test('deleted and updated stay distinct and carry the conversation', () {
-      CometChatConversationEvents.ccConversationDeleted(conversation);
-      CometChatConversationEvents.ccUpdateConversation(conversation);
+      ConvoKitConversationEvents.ccConversationDeleted(conversation);
+      ConvoKitConversationEvents.ccUpdateConversation(conversation);
       expect(rec.calls.map((c) => c.name), [
         'ccConversationDeleted',
         'ccUpdateConversation',

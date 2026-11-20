@@ -195,7 +195,7 @@ class _GroupRec with CometChatGroupEventListener, _Records {
       calls.add(_Call('ccOwnershipChanged', [group, newOwner]));
 }
 
-class _ConvRec with CometChatConversationEventListener, _Records {
+class _ConvRec with ConvoKitConversationEventListener, _Records {
   @override
   void ccConversationDeleted(Conversation conversation) =>
       calls.add(_Call('ccConversationDeleted', [conversation]));
@@ -254,7 +254,7 @@ void main() {
     CometChatMessageEvents.messagesListener.clear();
     CometChatUserEvents.usersListener.clear();
     CometChatGroupEvents.groupsListener.clear();
-    CometChatConversationEvents.conversationListListener.clear();
+    ConvoKitConversationEvents.conversationListListener.clear();
     CometChatUIEvents.uiListener.clear();
 
     msg = _MsgRec();
@@ -266,7 +266,7 @@ void main() {
     CometChatMessageEvents.addMessagesListener('rec', msg);
     CometChatUserEvents.addUsersListener('rec', usr);
     CometChatGroupEvents.addGroupsListener('rec', grp);
-    CometChatConversationEvents.addConversationListListener('rec', conv);
+    ConvoKitConversationEvents.addConversationListListener('rec', conv);
     CometChatUIEvents.addUiListener('rec', ui);
   });
 
@@ -274,7 +274,7 @@ void main() {
     CometChatMessageEvents.messagesListener.clear();
     CometChatUserEvents.usersListener.clear();
     CometChatGroupEvents.groupsListener.clear();
-    CometChatConversationEvents.conversationListListener.clear();
+    ConvoKitConversationEvents.conversationListListener.clear();
     CometChatUIEvents.uiListener.clear();
   });
 
@@ -561,7 +561,7 @@ void main() {
 
     test('with no listener registered the helper is still harmless', () {
       CometChatGroupEvents.groupsListener.clear();
-      CometChatConversationEvents.conversationListListener.clear();
+      ConvoKitConversationEvents.conversationListListener.clear();
 
       expect(() => CometChatUIKitHelper.onGroupCreated(_team), returnsNormally);
       expect(

@@ -259,7 +259,7 @@ void main() {
           _host(
             (context) => ConversationsTrailingView(
               conversation: FakeConversation(),
-              style: const CometChatConversationsStyle(),
+              style: const ConvoKitConversationsStyle(),
               datesStyle: const CometChatDateStyle(textColor: _c1),
               colorPalette: CometChatThemeHelper.getColorPalette(context),
               spacing: CometChatThemeHelper.getSpacing(context),
@@ -299,7 +299,7 @@ void main() {
           _host(
             (context) => ConversationsTrailingView(
               conversation: FakeConversation(),
-              style: const CometChatConversationsStyle(
+              style: const ConvoKitConversationsStyle(
                 badgeStyle: CometChatBadgeStyle(backgroundColor: _c2),
               ),
               datesStyle: const CometChatDateStyle(textColor: _c1),
@@ -333,7 +333,7 @@ void main() {
           _host(
             (context) => ConversationsSubtitleView(
               conversation: FakeConversation(),
-              style: const CometChatConversationsStyle(),
+              style: const ConvoKitConversationsStyle(),
               receiptStyle: CometChatMessageReceiptStyle(sentIconColor: _c1),
               typingStyle: const CometChatTypingIndicatorStyle(),
               colorPalette: CometChatThemeHelper.getColorPalette(context),
@@ -365,7 +365,7 @@ void main() {
           _host(
             (context) => ConversationsSubtitleView(
               conversation: FakeConversation(),
-              style: const CometChatConversationsStyle(),
+              style: const ConvoKitConversationsStyle(),
               receiptStyle: CometChatMessageReceiptStyle(),
               typingStyle: const CometChatTypingIndicatorStyle(),
               colorPalette: CometChatThemeHelper.getColorPalette(context),
@@ -389,7 +389,7 @@ void main() {
           _host(
             (context) => ConversationsSubtitleView(
               conversation: FakeConversation(),
-              style: const CometChatConversationsStyle(),
+              style: const ConvoKitConversationsStyle(),
               receiptStyle: CometChatMessageReceiptStyle(),
               typingStyle: const CometChatTypingIndicatorStyle(
                 textStyle: TextStyle(fontSize: 31),
@@ -421,7 +421,7 @@ void main() {
           _host(
             (context) => ConversationsSubtitleView(
               conversation: FakeConversation(),
-              style: const CometChatConversationsStyle(
+              style: const ConvoKitConversationsStyle(
                 itemSubtitleTextColor: _c3,
                 itemSubtitleTextStyle: TextStyle(fontSize: 13),
               ),

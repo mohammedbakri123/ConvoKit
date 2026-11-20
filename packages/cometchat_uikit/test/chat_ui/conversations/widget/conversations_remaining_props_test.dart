@@ -1,4 +1,4 @@
-/// Render-verified prop matrix for the CometChatConversations props that
+/// Render-verified prop matrix for the ConvoKitConversations props that
 /// conversations_props_test.dart leaves uncovered — Track 3 PROP1
 /// (ENG-38688, coverage part 2).
 ///
@@ -601,7 +601,7 @@ class _Props {
   final EdgeInsetsGeometry? badgePadding;
   final ConversationsBuilderProtocol? conversationsProtocol;
   final ConversationsRequestBuilder? conversationsRequestBuilder;
-  final CometChatConversationsStyle? conversationsStyle;
+  final ConvoKitConversationsStyle? conversationsStyle;
   final double? dateHeight;
   final EdgeInsets? datePadding;
   final String Function(Conversation conversation)? datePattern;
@@ -777,7 +777,7 @@ class _Row {
     this.title,
   });
 
-  /// The CometChatConversations parameter this row verifies.
+  /// The ConvoKitConversations parameter this row verifies.
   final String prop;
 
   /// What the row claims, in words. Becomes the test name.
@@ -821,7 +821,7 @@ class _Row {
 int _count(Finder finder) => finder.evaluate().length;
 
 BuildContext _ctx(WidgetTester tester) =>
-    tester.element(find.byType(CometChatConversations, skipOffstage: false));
+    tester.element(find.byType(ConvoKitConversations, skipOffstage: false));
 
 Translations _tr(WidgetTester tester) => Translations.of(_ctx(tester));
 
@@ -869,7 +869,7 @@ Color? _glyphColor(WidgetTester tester, IconData icon) => tester
         find.descendant(
           of: find.ancestor(
             of: find.text(name),
-            matching: find.byType(CometChatConversationListItem),
+            matching: find.byType(ConvoKitConversationListItem),
           ),
           matching: find.byType(Icon),
         ),
@@ -1622,7 +1622,7 @@ final _matrix = <_Row>[
     probe: (t, r) => [
       r.observedBeforeDispose,
       r.observer.debugObservingRoute(r.route!),
-      _count(find.byType(CometChatConversations, skipOffstage: false)),
+      _count(find.byType(ConvoKitConversations, skipOffstage: false)),
     ],
     unset: [false, false, 0],
     set: _Side('set', (r) => _Props(routeObserver: r.observer), [
@@ -1649,7 +1649,7 @@ final _matrix = <_Row>[
     set: _Side(
       'set',
       (r) => const _Props(
-        conversationsStyle: CometChatConversationsStyle(
+        conversationsStyle: ConvoKitConversationsStyle(
           titleTextColor: _kTitle,
         ),
       ),
@@ -1670,13 +1670,13 @@ final _matrix = <_Row>[
                 .first,
           )
           .color,
-      _box(t, CometChatConversationListItem).color,
+      _box(t, ConvoKitConversationListItem).color,
     ],
     unset: _FromTheme((p, s) => [p.background1, p.background1]),
     set: _Side(
       'set',
       (r) => const _Props(
-        conversationsStyle: CometChatConversationsStyle(
+        conversationsStyle: ConvoKitConversationsStyle(
           backgroundColor: _kBackground,
         ),
       ),
@@ -1692,7 +1692,7 @@ final _matrix = <_Row>[
     set: _Side(
       'set',
       (r) => const _Props(
-        conversationsStyle: CometChatConversationsStyle(
+        conversationsStyle: ConvoKitConversationsStyle(
           backIconColor: _kBackIcon,
         ),
       ),
@@ -1711,7 +1711,7 @@ final _matrix = <_Row>[
     set: _Side(
       'set',
       (r) => const _Props(
-        conversationsStyle: CometChatConversationsStyle(
+        conversationsStyle: ConvoKitConversationsStyle(
           backIconColor: _kBackIcon,
         ),
       ),
@@ -1730,7 +1730,7 @@ final _matrix = <_Row>[
     set: _Side(
       'set',
       (r) => const _Props(
-        conversationsStyle: CometChatConversationsStyle(
+        conversationsStyle: ConvoKitConversationsStyle(
           searchBackgroundColor: _kSearchFill,
           searchIconColor: _kSearchIcon,
         ),
@@ -1750,7 +1750,7 @@ final _matrix = <_Row>[
     set: _Side(
       'set',
       (r) => const _Props(
-        conversationsStyle: CometChatConversationsStyle(
+        conversationsStyle: ConvoKitConversationsStyle(
           separatorColor: _kSeparator,
           separatorHeight: 2.5,
         ),
@@ -1767,7 +1767,7 @@ final _matrix = <_Row>[
     set: _Side(
       'set',
       (r) => const _Props(
-        conversationsStyle: CometChatConversationsStyle(
+        conversationsStyle: ConvoKitConversationsStyle(
           submitIconColor: _kSubmit,
         ),
       ),
@@ -1782,7 +1782,7 @@ final _matrix = <_Row>[
     set: _Side(
       'set',
       (r) => const _Props(
-        conversationsStyle: CometChatConversationsStyle(
+        conversationsStyle: ConvoKitConversationsStyle(
           itemTitleTextColor: _kItemTitle,
         ),
       ),
@@ -1885,7 +1885,7 @@ void main() {
     await sdk.SdkRegistry.clear();
   });
 
-  group('CometChatConversations remaining prop matrix', () {
+  group('ConvoKitConversations remaining prop matrix', () {
     for (final row in _matrix) {
       testWidgets('${row.prop}: ${row.claim}', (tester) async {
         final sides = [_Side.unset(row.unset), row.set, ...row.more];
@@ -1935,7 +1935,7 @@ void main() {
                     rec.rebuild = setState;
                     if (rec.gone) return const SizedBox();
                     return side.bare
-                        ? CometChatConversations(
+                        ? ConvoKitConversations(
                             conversationsBloc: bloc,
                             title: rec.title,
                             hideSearch: row.hideSearch,
@@ -1944,7 +1944,7 @@ void main() {
                             backButton: row.backButton,
                             onItemTap: rec.tap,
                           )
-                        : CometChatConversations(
+                        : ConvoKitConversations(
                             conversationsBloc: bloc,
                             title: rec.title,
                             hideSearch: row.hideSearch,
@@ -1960,7 +1960,7 @@ void main() {
                                 p.conversationsRequestBuilder,
                             conversationsStyle:
                                 p.conversationsStyle ??
-                                const CometChatConversationsStyle(),
+                                const ConvoKitConversationsStyle(),
                             dateHeight: p.dateHeight,
                             datePadding: p.datePadding,
                             datePattern: p.datePattern,

@@ -5,18 +5,18 @@
 /// with a sentinel no theme produces, and asserts both readings. Reverting
 /// the fix makes the second reading match the first, so the test fails.
 ///
-/// * CometChatConversationsStyle: ConversationsList now passes the selection,
+/// * ConvoKitConversationsStyle: ConversationsList now passes the selection,
 ///   checkbox, message-type icon and group-dot fields to each row, and the
 ///   row reads receiptStyle.
-/// * CometChatConversationListItemStyle: checkBoxSelectIconTint,
+/// * ConvoKitConversationListItemStyle: checkBoxSelectIconTint,
 ///   receiptStyle, and the two group-dot backgrounds it gained.
-/// * CometChatConversationListItem: receiptStyle, and the reads it used to
+/// * ConvoKitConversationListItem: receiptStyle, and the reads it used to
 ///   overwrite: the title colour inside titleTextStyle, the typing colour,
 ///   the status dot background, the date background and border, the avatar
 ///   placeholder style, colorPalette and typography without a style, media
 ///   captions, and the deleted-message icon.
 ///
-/// mentionsStyle on CometChatConversationsStyle is still never read, pending
+/// mentionsStyle on ConvoKitConversationsStyle is still never read, pending
 /// a product decision, so it is left out.
 ///
 ///   flutter test test/chat_ui/conversations/widget/conversations_family_fixes_test.dart
@@ -330,7 +330,7 @@ CometChatColorPalette _palette(WidgetTester tester) =>
 /// The list item that draws [name].
 Finder _row(String name) => find.ancestor(
   of: find.text(name),
-  matching: find.byType(CometChatConversationListItem),
+  matching: find.byType(ConvoKitConversationListItem),
 );
 
 Finder _in(String name, Finder matching) =>
@@ -375,7 +375,7 @@ void main() {
 
   tearDown(() => CometChatUIKit.loggedInUser = previousUser);
 
-  group('CometChatConversationsStyle fields the rows now receive', () {
+  group('ConvoKitConversationsStyle fields the rows now receive', () {
     testWidgets('listItemSelectedBackgroundColor paints a selected row', (
       tester,
     ) async {
@@ -384,13 +384,13 @@ void main() {
         await mockNetworkImagesFor(
           () => tester.pumpWidget(
             _wrap(
-              CometChatConversations(
+              ConvoKitConversations(
                 conversationsBloc: _bloc(
                   [_aliceFromBob()],
                   selected: {'user_u1'},
                 ),
                 selectionMode: SelectionMode.multiple,
-                conversationsStyle: CometChatConversationsStyle(
+                conversationsStyle: ConvoKitConversationsStyle(
                   listItemSelectedBackgroundColor: value,
                 ),
               ),
@@ -413,13 +413,13 @@ void main() {
         await mockNetworkImagesFor(
           () => tester.pumpWidget(
             _wrap(
-              CometChatConversations(
+              ConvoKitConversations(
                 conversationsBloc: _bloc(
                   [_aliceFromBob(), _bobQuiet()],
                   selected: {'user_u1'},
                 ),
                 selectionMode: SelectionMode.multiple,
-                conversationsStyle: CometChatConversationsStyle(
+                conversationsStyle: ConvoKitConversationsStyle(
                   checkBoxBackgroundColor: value,
                 ),
               ),
@@ -442,13 +442,13 @@ void main() {
         await mockNetworkImagesFor(
           () => tester.pumpWidget(
             _wrap(
-              CometChatConversations(
+              ConvoKitConversations(
                 conversationsBloc: _bloc(
                   [_aliceFromBob()],
                   selected: {'user_u1'},
                 ),
                 selectionMode: SelectionMode.multiple,
-                conversationsStyle: CometChatConversationsStyle(
+                conversationsStyle: ConvoKitConversationsStyle(
                   checkBoxCheckedBackgroundColor: value,
                 ),
               ),
@@ -476,13 +476,13 @@ void main() {
         await mockNetworkImagesFor(
           () => tester.pumpWidget(
             _wrap(
-              CometChatConversations(
+              ConvoKitConversations(
                 conversationsBloc: _bloc(
                   [_aliceFromBob()],
                   selected: {'user_u1'},
                 ),
                 selectionMode: SelectionMode.multiple,
-                conversationsStyle: CometChatConversationsStyle(
+                conversationsStyle: ConvoKitConversationsStyle(
                   checkBoxBorderRadius: value,
                 ),
               ),
@@ -513,13 +513,13 @@ void main() {
         await mockNetworkImagesFor(
           () => tester.pumpWidget(
             _wrap(
-              CometChatConversations(
+              ConvoKitConversations(
                 conversationsBloc: _bloc(
                   [_aliceFromBob(), _bobQuiet()],
                   selected: {'user_u1'},
                 ),
                 selectionMode: SelectionMode.multiple,
-                conversationsStyle: CometChatConversationsStyle(
+                conversationsStyle: ConvoKitConversationsStyle(
                   checkBoxBorder: value,
                 ),
               ),
@@ -546,13 +546,13 @@ void main() {
         await mockNetworkImagesFor(
           () => tester.pumpWidget(
             _wrap(
-              CometChatConversations(
+              ConvoKitConversations(
                 conversationsBloc: _bloc(
                   [_aliceFromBob()],
                   selected: {'user_u1'},
                 ),
                 selectionMode: SelectionMode.multiple,
-                conversationsStyle: CometChatConversationsStyle(
+                conversationsStyle: ConvoKitConversationsStyle(
                   checkboxSelectedIconColor: value,
                 ),
               ),
@@ -575,9 +575,9 @@ void main() {
         await mockNetworkImagesFor(
           () => tester.pumpWidget(
             _wrap(
-              CometChatConversations(
+              ConvoKitConversations(
                 conversationsBloc: _bloc([_aliceDeleted()]),
-                conversationsStyle: CometChatConversationsStyle(
+                conversationsStyle: ConvoKitConversationsStyle(
                   messageTypeIconColor: value,
                 ),
               ),
@@ -605,9 +605,9 @@ void main() {
         await mockNetworkImagesFor(
           () => tester.pumpWidget(
             _wrap(
-              CometChatConversations(
+              ConvoKitConversations(
                 conversationsBloc: _bloc([_aliceMineRead(), _bobMineSent()]),
-                conversationsStyle: CometChatConversationsStyle(
+                conversationsStyle: ConvoKitConversationsStyle(
                   receiptStyle: value,
                 ),
               ),
@@ -637,9 +637,9 @@ void main() {
         await mockNetworkImagesFor(
           () => tester.pumpWidget(
             _wrap(
-              CometChatConversations(
+              ConvoKitConversations(
                 conversationsBloc: _bloc([_group('g1', 'Dev Team', 'private')]),
-                conversationsStyle: CometChatConversationsStyle(
+                conversationsStyle: ConvoKitConversationsStyle(
                   privateGroupIconBackground: value,
                 ),
               ),
@@ -662,9 +662,9 @@ void main() {
         await mockNetworkImagesFor(
           () => tester.pumpWidget(
             _wrap(
-              CometChatConversations(
+              ConvoKitConversations(
                 conversationsBloc: _bloc([_group('g2', 'Vault', 'password')]),
-                conversationsStyle: CometChatConversationsStyle(
+                conversationsStyle: ConvoKitConversationsStyle(
                   protectedGroupIconBackground: value,
                 ),
               ),
@@ -680,19 +680,19 @@ void main() {
     });
   });
 
-  group('CometChatConversationListItemStyle fields the item now reads', () {
+  group('ConvoKitConversationListItemStyle fields the item now reads', () {
     testWidgets('checkBoxSelectIconTint colours the tick', (tester) async {
       final readings = <Color?>[];
       for (final value in <Color?>[null, _kTick]) {
         await mockNetworkImagesFor(
           () => tester.pumpWidget(
             _wrap(
-              CometChatConversationListItem(
+              ConvoKitConversationListItem(
                 conversation: _aliceFromBob(),
                 onItemClick: (_) {},
                 isSelected: true,
                 selectionMode: SelectionMode.multiple,
-                style: CometChatConversationListItemStyle(
+                style: ConvoKitConversationListItemStyle(
                   checkBoxSelectIconTint: value,
                 ),
               ),
@@ -716,10 +716,10 @@ void main() {
         await mockNetworkImagesFor(
           () => tester.pumpWidget(
             _wrap(
-              CometChatConversationListItem(
+              ConvoKitConversationListItem(
                 conversation: _aliceMineRead(),
                 onItemClick: (_) {},
-                style: CometChatConversationListItemStyle(receiptStyle: value),
+                style: ConvoKitConversationListItemStyle(receiptStyle: value),
               ),
               key: ValueKey(value),
             ),
@@ -739,10 +739,10 @@ void main() {
         await mockNetworkImagesFor(
           () => tester.pumpWidget(
             _wrap(
-              CometChatConversationListItem(
+              ConvoKitConversationListItem(
                 conversation: _group('g1', 'Dev Team', 'private'),
                 onItemClick: (_) {},
-                style: CometChatConversationListItemStyle(
+                style: ConvoKitConversationListItemStyle(
                   privateGroupIconBackground: value,
                 ),
               ),
@@ -764,10 +764,10 @@ void main() {
         await mockNetworkImagesFor(
           () => tester.pumpWidget(
             _wrap(
-              CometChatConversationListItem(
+              ConvoKitConversationListItem(
                 conversation: _group('g2', 'Vault', 'password'),
                 onItemClick: (_) {},
-                style: CometChatConversationListItemStyle(
+                style: ConvoKitConversationListItemStyle(
                   protectedGroupIconBackground: value,
                 ),
               ),
@@ -782,7 +782,7 @@ void main() {
     });
   });
 
-  group('CometChatConversationListItem reads it used to overwrite', () {
+  group('ConvoKitConversationListItem reads it used to overwrite', () {
     testWidgets('receiptStyle colours the read ticks', (tester) async {
       CometChatUIKit.loggedInUser = _me;
       final readings = <Color?>[];
@@ -793,7 +793,7 @@ void main() {
         await mockNetworkImagesFor(
           () => tester.pumpWidget(
             _wrap(
-              CometChatConversationListItem(
+              ConvoKitConversationListItem(
                 conversation: _aliceMineRead(),
                 onItemClick: (_) {},
                 receiptStyle: value,
@@ -816,10 +816,10 @@ void main() {
         await mockNetworkImagesFor(
           () => tester.pumpWidget(
             _wrap(
-              CometChatConversationListItem(
+              ConvoKitConversationListItem(
                 conversation: _aliceFromBob(),
                 onItemClick: (_) {},
-                style: CometChatConversationListItemStyle(
+                style: ConvoKitConversationListItemStyle(
                   titleTextStyle: TextStyle(color: value),
                 ),
               ),
@@ -841,7 +841,7 @@ void main() {
         await mockNetworkImagesFor(
           () => tester.pumpWidget(
             _wrap(
-              CometChatConversationListItem(
+              ConvoKitConversationListItem(
                 conversation: _aliceFromBob(),
                 onItemClick: (_) {},
                 typingIndicators: [
@@ -875,7 +875,7 @@ void main() {
         await mockNetworkImagesFor(
           () => tester.pumpWidget(
             _wrap(
-              CometChatConversationListItem(
+              ConvoKitConversationListItem(
                 conversation: _aliceFromBob(),
                 onItemClick: (_) {},
                 statusIndicatorStyle: CometChatStatusIndicatorStyle(
@@ -908,7 +908,7 @@ void main() {
           await mockNetworkImagesFor(
             () => tester.pumpWidget(
               _wrap(
-                CometChatConversationListItem(
+                ConvoKitConversationListItem(
                   conversation: _aliceFromBob(),
                   onItemClick: (_) {},
                   dateBackgroundIsTransparent: false,
@@ -945,7 +945,7 @@ void main() {
         await mockNetworkImagesFor(
           () => tester.pumpWidget(
             _wrap(
-              CometChatConversationListItem(
+              ConvoKitConversationListItem(
                 conversation: _aliceFromBob(),
                 onItemClick: (_) {},
                 avatarStyle: value,
@@ -986,7 +986,7 @@ void main() {
         await mockNetworkImagesFor(
           () => tester.pumpWidget(
             _wrap(
-              CometChatConversationListItem(
+              ConvoKitConversationListItem(
                 conversation: _aliceFromBob(),
                 onItemClick: (_) {},
                 colorPalette: value,
@@ -1023,7 +1023,7 @@ void main() {
         await mockNetworkImagesFor(
           () => tester.pumpWidget(
             _wrap(
-              CometChatConversationListItem(
+              ConvoKitConversationListItem(
                 conversation: _aliceFromBob(),
                 onItemClick: (_) {},
                 typography: value,
@@ -1050,7 +1050,7 @@ void main() {
         await mockNetworkImagesFor(
           () => tester.pumpWidget(
             _wrap(
-              CometChatConversationListItem(
+              ConvoKitConversationListItem(
                 conversation: _aliceCaptioned(),
                 onItemClick: (_) {},
                 textFormatters: value,
@@ -1083,10 +1083,10 @@ void main() {
         await mockNetworkImagesFor(
           () => tester.pumpWidget(
             _wrap(
-              CometChatConversationListItem(
+              ConvoKitConversationListItem(
                 conversation: _aliceDeleted(),
                 onItemClick: (_) {},
-                style: CometChatConversationListItemStyle(
+                style: ConvoKitConversationListItemStyle(
                   messageTypeIconTint: value,
                 ),
               ),
@@ -1101,7 +1101,7 @@ void main() {
     });
   });
 
-  group('CometChatConversationListItemStyle.fromTheme', () {
+  group('ConvoKitConversationListItemStyle.fromTheme', () {
     testWidgets('takes its defaults from the palette, typography and spacing '
         'it is given', (tester) async {
       final readings = <List<Object?>>[];
@@ -1110,13 +1110,13 @@ void main() {
           () => tester.pumpWidget(
             _wrap(
               Builder(
-                builder: (context) => CometChatConversationListItem(
+                builder: (context) => ConvoKitConversationListItem(
                   conversation: _aliceFromBob(),
                   onItemClick: (_) {},
                   isSelected: true,
                   selectionMode: SelectionMode.multiple,
                   style: custom
-                      ? CometChatConversationListItemStyle.fromTheme(
+                      ? ConvoKitConversationListItemStyle.fromTheme(
                           context,
                           colorPalette: CometChatColorPalette(
                             background4: _kPaletteBackground,
@@ -1128,7 +1128,7 @@ void main() {
                           ),
                           spacing: CometChatSpacing(radius1: 6.5),
                         )
-                      : CometChatConversationListItemStyle.fromTheme(context),
+                      : ConvoKitConversationListItemStyle.fromTheme(context),
                 ),
               ),
               key: ValueKey(custom),

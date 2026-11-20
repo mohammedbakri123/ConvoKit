@@ -1,7 +1,7 @@
 /// Render-verified prop matrix for [CometChatSearch] — Track 3 PROP1
 /// (ENG-38688, coverage part 2).
 ///
-/// Unlike CometChatConversations and CometChatUsers, CometChatSearch has no
+/// Unlike ConvoKitConversations and CometChatUsers, CometChatSearch has no
 /// bloc parameter: it builds its own SearchBloc in initState, and that bloc
 /// reaches the network through ConversationsRequest.fetchNext and
 /// MessagesRequest.fetchPrevious. So this matrix runs the real widget and the

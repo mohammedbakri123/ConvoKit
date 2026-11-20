@@ -101,7 +101,7 @@ void _verifyFile(String filePath, String screenName) {
 
 void main() {
   group('Text formatters audit — all 5 formatters passed to every widget', () {
-    test('home_screen.dart → CometChatConversations has all 5 formatters', () {
+    test('home_screen.dart → ConvoKitConversations has all 5 formatters', () {
       _verifyFile(
         'lib/screens/home_screen.dart',
         'home_screen',

@@ -3,17 +3,17 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:convokit/cometchat_chat_uikit.dart';
 
-///[CometChatConversationsStyle] is a data class that has styling-related properties
-///to customize the appearance of [CometChatConversations]
+///[ConvoKitConversationsStyle] is a data class that has styling-related properties
+///to customize the appearance of [ConvoKitConversations]
 ///``` dart
-///CometChatConversationsStyle(
+///ConvoKitConversationsStyle(
 /// backgroundColor: Colors.white,
 /// border: Border.all(color: Colors.white, width: 0),
 /// );
 /// ```
-class CometChatConversationsStyle
-    extends ThemeExtension<CometChatConversationsStyle> {
-  const CometChatConversationsStyle({
+class ConvoKitConversationsStyle
+    extends ThemeExtension<ConvoKitConversationsStyle> {
+  const ConvoKitConversationsStyle({
     this.backgroundColor,
     this.border,
     this.borderRadius,
@@ -141,12 +141,12 @@ class CometChatConversationsStyle
 
   ///[separatorHeight] provides height for the separator under the app bar.
   ///For the line between conversation rows, use
-  ///[CometChatConversationListItemStyle.separatorHeight] on [itemStyle].
+  ///[ConvoKitConversationListItemStyle.separatorHeight] on [itemStyle].
   final double? separatorHeight;
 
   ///[separatorColor] provides color for the separator under the app bar.
   ///For the line between conversation rows, use
-  ///[CometChatConversationListItemStyle.separatorColor] on [itemStyle].
+  ///[ConvoKitConversationListItemStyle.separatorColor] on [itemStyle].
   final Color? separatorColor;
 
   ///[typingIndicatorStyle] provides style for typing indicator
@@ -198,8 +198,8 @@ class CometChatConversationsStyle
   final BorderSide? checkBoxBorder;
 
   /// Style for every conversation row, including the separator line between
-  /// rows ([CometChatConversationListItemStyle.separatorColor] and
-  /// [CometChatConversationListItemStyle.separatorHeight]), which is off by
+  /// rows ([ConvoKitConversationListItemStyle.separatorColor] and
+  /// [ConvoKitConversationListItemStyle.separatorHeight]), which is off by
   /// default and never drawn after the last row.
   ///
   /// The row fields this style also carries win over it where both are set:
@@ -209,13 +209,13 @@ class CometChatConversationsStyle
   /// fields, [privateGroupIconBackground] and [protectedGroupIconBackground].
   /// So do [avatarStyle], [badgeStyle], [statusIndicatorStyle],
   /// [receiptStyle], [dateStyle] and [typingIndicatorStyle].
-  final CometChatConversationListItemStyle? itemStyle;
+  final ConvoKitConversationListItemStyle? itemStyle;
 
-  static CometChatConversationsStyle of(BuildContext context) =>
-      const CometChatConversationsStyle();
+  static ConvoKitConversationsStyle of(BuildContext context) =>
+      const ConvoKitConversationsStyle();
 
   @override
-  CometChatConversationsStyle copyWith({
+  ConvoKitConversationsStyle copyWith({
     Color? backgroundColor,
     Border? border,
     BorderRadiusGeometry? borderRadius,
@@ -260,9 +260,9 @@ class CometChatConversationsStyle
     BorderRadius? searchBorderRadius,
     TextStyle? searchPlaceHolderTextStyle,
     Color? searchPlaceHolderTextColor,
-    CometChatConversationListItemStyle? itemStyle,
+    ConvoKitConversationListItemStyle? itemStyle,
   }) {
-    return CometChatConversationsStyle(
+    return ConvoKitConversationsStyle(
       backgroundColor: backgroundColor ?? this.backgroundColor,
       border: border ?? this.border,
       borderRadius: borderRadius ?? this.borderRadius,
@@ -328,7 +328,7 @@ class CometChatConversationsStyle
     );
   }
 
-  CometChatConversationsStyle merge(CometChatConversationsStyle? style) {
+  ConvoKitConversationsStyle merge(ConvoKitConversationsStyle? style) {
     if (style == null) return this;
     return copyWith(
       errorStateTextColor: style.errorStateTextColor,
@@ -380,14 +380,14 @@ class CometChatConversationsStyle
   }
 
   @override
-  CometChatConversationsStyle lerp(
-    ThemeExtension<CometChatConversationsStyle>? other,
+  ConvoKitConversationsStyle lerp(
+    ThemeExtension<ConvoKitConversationsStyle>? other,
     double t,
   ) {
-    if (other is! CometChatConversationsStyle) {
+    if (other is! ConvoKitConversationsStyle) {
       return this;
     }
-    return CometChatConversationsStyle(
+    return ConvoKitConversationsStyle(
       backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t),
       border: Border.lerp(border, other.border, t),
       borderRadius: BorderRadiusGeometry.lerp(

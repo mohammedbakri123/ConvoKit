@@ -61,14 +61,14 @@ class _FakeConversation extends Fake implements Conversation {
 }
 
 void main() {
-  group('CometChatConversationListItem', () {
+  group('ConvoKitConversationListItem', () {
     testWidgets('renders the user name as the title', (tester) async {
       final conv = _FakeConversation(user: _FakeUser(name: 'Alice'));
 
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: conv,
               onItemClick: (_) {},
             ),
@@ -87,14 +87,14 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: conv,
               onItemClick: (c) => tappedConv = c,
             ),
           ),
         );
         await tester.pump();
-        await tester.tap(find.byType(CometChatConversationListItem));
+        await tester.tap(find.byType(ConvoKitConversationListItem));
         await tester.pump();
       });
 
@@ -108,7 +108,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: conv,
               onItemClick: (_) {},
               onItemLongClick: (c) => longPressedConv = c,
@@ -116,7 +116,7 @@ void main() {
           ),
         );
         await tester.pump();
-        await tester.longPress(find.byType(CometChatConversationListItem));
+        await tester.longPress(find.byType(ConvoKitConversationListItem));
         await tester.pump();
       });
 
@@ -131,7 +131,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: conv,
               onItemClick: (_) {},
               selectionMode: SelectionMode.multiple,
@@ -153,7 +153,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: conv,
               onItemClick: (_) {},
               selectionMode: SelectionMode.multiple,
@@ -174,7 +174,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: conv,
               onItemClick: (_) {},
               leadingView: (_, _) => const SizedBox(
@@ -197,7 +197,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: conv,
               onItemClick: (_) {},
               titleView: (_, _) =>
@@ -221,7 +221,7 @@ void main() {
         await mockNetworkImagesFor(() async {
           await tester.pumpWidget(
             _wrap(
-              CometChatConversationListItem(
+              ConvoKitConversationListItem(
                 conversation: conv,
                 onItemClick: (_) {},
                 isSelected: true,

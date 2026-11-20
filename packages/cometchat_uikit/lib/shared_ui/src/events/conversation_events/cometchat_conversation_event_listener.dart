@@ -1,7 +1,7 @@
 import '../../../cometchat_uikit_shared.dart';
 
-///Listener class for [CometChatConversations]
-mixin CometChatConversationEventListener implements UIEventHandler {
+///Listener class for [ConvoKitConversations]
+mixin ConvoKitConversationEventListener implements UIEventHandler {
   ///[ccConversationDeleted] is used to inform the listeners
   ///when the logged-in user deletes a conversation
   void ccConversationDeleted(Conversation conversation) {}

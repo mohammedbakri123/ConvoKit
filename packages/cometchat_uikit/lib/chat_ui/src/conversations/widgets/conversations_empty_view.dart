@@ -26,7 +26,7 @@ class ConversationsEmptyView extends StatelessWidget {
 
   /// The style configuration for the conversations widget.
   /// Used to apply custom text styles and colors for the empty state.
-  final CometChatConversationsStyle style;
+  final ConvoKitConversationsStyle style;
 
   /// The color palette used for styling text colors.
   final CometChatColorPalette colorPalette;

@@ -9,7 +9,7 @@ import '../../../../cometchat_chat_uikit.dart';
 /// - [ConversationsLoading] → [ConversationsLoadingView]
 /// - [ConversationsEmpty] → [ConversationsEmptyView]
 /// - [ConversationsError] → [ConversationsErrorView]
-/// - [ConversationsLoaded] → ListView.builder with [CometChatConversationListItem]
+/// - [ConversationsLoaded] → ListView.builder with [ConvoKitConversationListItem]
 ///
 /// The widget handles pagination by dispatching [LoadMoreConversations] event
 /// when the user scrolls to the bottom of the list.
@@ -19,7 +19,7 @@ import '../../../../cometchat_chat_uikit.dart';
 /// typing status changes.
 class ConversationsList extends StatelessWidget {
   /// Generic list-item style applied to every row; see
-  /// [CometChatConversationListItem.listItemStyle].
+  /// [ConvoKitConversationListItem.listItemStyle].
   final ListItemStyle? listItemStyle;
 
   const ConversationsList({
@@ -85,7 +85,7 @@ class ConversationsList extends StatelessWidget {
   final ConversationsBloc conversationsBloc;
 
   /// The style configuration for the conversations widget.
-  final CometChatConversationsStyle style;
+  final ConvoKitConversationsStyle style;
 
   /// The style configuration for the status indicator.
   final CometChatStatusIndicatorStyle statusStyle;
@@ -398,12 +398,12 @@ class ConversationsList extends StatelessWidget {
     // The last message has a parentMessageId (is a reply in a thread)
     final shouldHideThreadIndicator = _shouldHideThreadIndicator(conversation);
 
-    // The row style: CometChatConversationsStyle.itemStyle, under the
-    // item-level fields CometChatConversationsStyle carries itself. merge
+    // The row style: ConvoKitConversationsStyle.itemStyle, under the
+    // item-level fields ConvoKitConversationsStyle carries itself. merge
     // lets only the non-null ones win, so an unset field keeps itemStyle's.
     final rowStyle =
-        (style.itemStyle ?? const CometChatConversationListItemStyle()).merge(
-          CometChatConversationListItemStyle(
+        (style.itemStyle ?? const ConvoKitConversationListItemStyle()).merge(
+          ConvoKitConversationListItemStyle(
             titleTextStyle: style.itemTitleTextStyle,
             titleTextColor: style.itemTitleTextColor,
             subtitleTextStyle: style.itemSubtitleTextStyle,
@@ -426,7 +426,7 @@ class ConversationsList extends StatelessWidget {
           ),
         );
 
-    return CometChatConversationListItem(
+    return ConvoKitConversationListItem(
       conversation: conversation,
       onItemClick: (conv) => _handleItemTap(conv, selectedConversations),
       onItemLongClick:
@@ -485,7 +485,7 @@ class ConversationsList extends StatelessWidget {
       colorPalette: colorPalette,
       spacing: spacing,
       typography: typography,
-      // Pass nested styles from CometChatConversationsStyle to the list item
+      // Pass nested styles from ConvoKitConversationsStyle to the list item
       avatarStyle: style.avatarStyle,
       statusIndicatorStyle: statusStyle,
       receiptStyle: receiptStyle,

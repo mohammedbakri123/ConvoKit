@@ -1,8 +1,8 @@
-/// Render-verified prop matrix for [CometChatConversationListItemStyle] —
+/// Render-verified prop matrix for [ConvoKitConversationListItemStyle] —
 /// Track 3 PROP1 (ENG-38688, coverage part 2).
 ///
 /// A style class has no pixels of its own, so every row is verified through
-/// the widget that paints it: a [CometChatConversationListItem] given the
+/// the widget that paints it: a [ConvoKitConversationListItem] given the
 /// style through `style:`. None of the item's per-prop overrides (avatarStyle,
 /// dateStyle, badgeStyle, ...) is passed, so a sentinel that reaches the
 /// screen can only have come from the style. The item is given an explicit
@@ -258,7 +258,7 @@ const _kBadge = Color(0xFFD6E7F8);
 // ─── Probes ──────────────────────────────────────────────────────────────────
 
 BuildContext _ctx(WidgetTester t) =>
-    t.element(find.byType(CometChatConversationListItem));
+    t.element(find.byType(ConvoKitConversationListItem));
 
 Translations _tr(WidgetTester t) => Translations.of(_ctx(t));
 
@@ -298,11 +298,11 @@ Checkbox _checkbox(WidgetTester t) => t.widget<Checkbox>(find.byType(Checkbox));
 /// A style constructed with [fields] as its only arguments. Every other prop
 /// is left out of the call, not passed as null, so it takes whatever default
 /// the constructor declares. This is the unset side of every row.
-CometChatConversationListItemStyle _omitting(Map<String, Object?> fields) =>
-    Function.apply(CometChatConversationListItemStyle.new, const [], {
+ConvoKitConversationListItemStyle _omitting(Map<String, Object?> fields) =>
+    Function.apply(ConvoKitConversationListItemStyle.new, const [], {
           for (final e in fields.entries) Symbol(e.key): e.value,
         })
-        as CometChatConversationListItemStyle;
+        as ConvoKitConversationListItemStyle;
 
 Widget _wrap(Widget child, {Key? key}) => MaterialApp(
   key: key,
@@ -313,7 +313,7 @@ Widget _wrap(Widget child, {Key? key}) => MaterialApp(
 
 // ─── The matrix ──────────────────────────────────────────────────────────────
 
-/// Every prop on [CometChatConversationListItemStyle]. The guard test holds
+/// Every prop on [ConvoKitConversationListItemStyle]. The guard test holds
 /// each to a row or to [_elsewhere].
 const _allProps = {
   'backgroundColor',
@@ -391,7 +391,7 @@ final _matrix = <_Row>[
     'backgroundColor',
     'paints the row box of an unselected item',
     value: _kBackground,
-    probe: (t) => _box(t, CometChatConversationListItem).color,
+    probe: (t) => _box(t, ConvoKitConversationListItem).color,
     unset: (t) => _palette.background1,
     expected: _kBackground,
   ),
@@ -400,7 +400,7 @@ final _matrix = <_Row>[
     'paints the row box of a selected item',
     isSelected: true,
     value: _kSelected,
-    probe: (t) => _box(t, CometChatConversationListItem).color,
+    probe: (t) => _box(t, ConvoKitConversationListItem).color,
     unset: (t) => _palette.background4,
     expected: _kSelected,
   ),
@@ -616,7 +616,7 @@ final _matrix = <_Row>[
 // ─── Tests ───────────────────────────────────────────────────────────────────
 
 void main() {
-  group('CometChatConversationListItemStyle prop matrix', () {
+  group('ConvoKitConversationListItemStyle prop matrix', () {
     for (final row in _matrix) {
       testWidgets('${row.prop}: ${row.claim}', (tester) async {
         final readings = <Object?>[];
@@ -630,7 +630,7 @@ void main() {
           await mockNetworkImagesFor(
             () => tester.pumpWidget(
               _wrap(
-                CometChatConversationListItem(
+                ConvoKitConversationListItem(
                   conversation: row.conversation(),
                   onItemClick: (_) {},
                   isSelected: row.isSelected,
@@ -648,7 +648,7 @@ void main() {
                   typography: _typography,
                   style: side == 'unset'
                       ? _omitting(row.base)
-                      : CometChatConversationListItemStyle(
+                      : ConvoKitConversationListItemStyle(
                           backgroundColor: v['backgroundColor'] as Color?,
                           selectedBackgroundColor:
                               v['selectedBackgroundColor'] as Color?,

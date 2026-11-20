@@ -4,7 +4,7 @@
 /// These were previously out of reach: the component built its bloc in
 /// initState with no way to supply one, so a test could only ever observe the
 /// error state. ENG-38797 added a `groupMembersBloc` parameter mirroring
-/// [CometChatConversations.conversationsBloc]; this file uses it, so no SDK is
+/// [ConvoKitConversations.conversationsBloc]; this file uses it, so no SDK is
 /// touched and no `runZonedGuarded` is needed.
 ///
 /// The chrome-only matrix stays in group_members_props_test.dart.

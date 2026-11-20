@@ -5,7 +5,7 @@ import '../../../cometchat_chat_uikit.dart' as cc;
 import '../../../shared_ui/src/clean_architecture/core/utils/thread_toast.dart';
 import '../../../src/adapters/cometchat_sdk_adapter.dart';
 
-///[CometChatConversations] is a component that shows all conversations involving the logged in user with the help of [CometChatListBase] and [CometChatListItem]
+///[ConvoKitConversations] is a component that shows all conversations involving the logged in user with the help of [CometChatListBase] and [CometChatListItem]
 ///By default, for each conversation that will be listed, the name of the user or group the logged in user is having conversation with will be displayed in the title of every list item,
 ///the subtitle will contain the last message in that conversation along with its receipt status, the leading view will contain the avatars of the user and groups and
 ///status indicator will indicate if users are online and icons for indicating a private or password protected group,
@@ -15,7 +15,7 @@ import '../../../src/adapters/cometchat_sdk_adapter.dart';
 ///conversations are fetched using [ConversationsBuilderProtocol] and [ConversationsRequestBuilder]
 ///
 /// ```dart
-/// CometChatConversations(
+/// ConvoKitConversations(
 ///  avatarStyle: CometChatAvatarStyle(),
 ///  statusIndicatorStyle: CometChatStatusIndicatorStyle(),
 ///  badgeStyle: CometChatBadgeStyle(),
@@ -27,7 +27,7 @@ import '../../../src/adapters/cometchat_sdk_adapter.dart';
 ///  )
 ///  ```
 
-class CometChatConversations extends StatefulWidget {
+class ConvoKitConversations extends StatefulWidget {
   /// Style for every list item: background, gradient, border, corner
   /// radius, padding, margin, size, title style and a separator line between
   /// rows (none after the last). [conversationsStyle] wins wherever both set
@@ -42,12 +42,12 @@ class CometChatConversations extends StatefulWidget {
   )
   final String? controllerTag;
 
-  const CometChatConversations({
+  const ConvoKitConversations({
     super.key,
     this.conversationsProtocol,
     this.subtitleView,
     this.listItemView,
-    this.conversationsStyle = const CometChatConversationsStyle(),
+    this.conversationsStyle = const ConvoKitConversationsStyle(),
     this.scrollController,
     this.backButton,
     this.showBackButton = false,
@@ -134,8 +134,8 @@ class CometChatConversations extends StatefulWidget {
   ///  ...
   ///)
   ///
-  ///// Pass it to CometChatConversations
-  ///CometChatConversations(
+  ///// Pass it to ConvoKitConversations
+  ///ConvoKitConversations(
   ///  routeObserver: routeObserver,
   ///  ...
   ///)
@@ -164,7 +164,7 @@ class CometChatConversations extends StatefulWidget {
   final Widget Function(Conversation conversation)? listItemView;
 
   ///[conversationsStyle] sets style
-  final CometChatConversationsStyle conversationsStyle;
+  final ConvoKitConversationsStyle conversationsStyle;
 
   ///[scrollController] to handle scrolling behavior.
   final ScrollController? scrollController;
@@ -375,12 +375,12 @@ class CometChatConversations extends StatefulWidget {
   final EdgeInsetsGeometry? searchContentPadding;
 
   @override
-  State<CometChatConversations> createState() => _CometChatConversationsState();
+  State<ConvoKitConversations> createState() => _ConvoKitConversationsState();
 }
 
-class _CometChatConversationsState extends State<CometChatConversations>
+class _ConvoKitConversationsState extends State<ConvoKitConversations>
     with AutomaticKeepAliveClientMixin, RouteAware {
-  late CometChatConversationsStyle style;
+  late ConvoKitConversationsStyle style;
   late CometChatStatusIndicatorStyle statusStyle;
   late CometChatTypingIndicatorStyle typingStyle;
   late CometChatMessageReceiptStyle receiptStyle;
@@ -448,9 +448,9 @@ class _CometChatConversationsState extends State<CometChatConversations>
     typography = CometChatThemeHelper.getTypography(context);
     colorPalette = CometChatThemeHelper.getColorPalette(context);
     spacing = CometChatThemeHelper.getSpacing(context);
-    style = CometChatThemeHelper.getTheme<CometChatConversationsStyle>(
+    style = CometChatThemeHelper.getTheme<ConvoKitConversationsStyle>(
       context: context,
-      defaultTheme: CometChatConversationsStyle.of,
+      defaultTheme: ConvoKitConversationsStyle.of,
     ).merge(widget.conversationsStyle);
     statusStyle = CometChatThemeHelper.getTheme<CometChatStatusIndicatorStyle>(
       context: context,
@@ -841,8 +841,8 @@ class _CometChatConversationsState extends State<CometChatConversations>
 
   /// The long-press options the integrator supplied for [conversation].
   ///
-  /// [CometChatConversations.setOptions] replaces the built-in Pin and Delete
-  /// entries; [CometChatConversations.addOptions] goes in front of them.
+  /// [ConvoKitConversations.setOptions] replaces the built-in Pin and Delete
+  /// entries; [ConvoKitConversations.addOptions] goes in front of them.
   ({List<CometChatOption> options, bool keepDefaults}) _customOptions(
     Conversation conversation,
   ) {

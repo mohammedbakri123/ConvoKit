@@ -46,7 +46,7 @@ class CometChatReactionList extends StatefulWidget {
   ///[reactionListBloc] Optional external ReactionListBloc instance.
   ///If provided, it is used instead of creating one internally and the widget
   ///does not close it on dispose. Mirrors
-  ///[CometChatConversations.conversationsBloc] — the seam that lets a test
+  ///[ConvoKitConversations.conversationsBloc] — the seam that lets a test
   ///supply reactions without a live SDK.
   final ReactionListBloc? reactionListBloc;
 

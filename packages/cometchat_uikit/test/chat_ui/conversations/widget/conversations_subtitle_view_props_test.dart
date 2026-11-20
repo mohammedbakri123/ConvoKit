@@ -356,7 +356,7 @@ TypingIndicator _typer(User who) =>
     TypingIndicator(sender: who, receiverId: 'u1', receiverType: 'user');
 
 // Baseline tokens: what every row renders with unless it overrides one.
-const _style = CometChatConversationsStyle();
+const _style = ConvoKitConversationsStyle();
 final _receiptStyle = CometChatMessageReceiptStyle();
 const _typingStyle = CometChatTypingIndicatorStyle();
 
@@ -394,7 +394,7 @@ const _kSubtitleLoser = Color(0xFF9A8B7C);
 
 // The textStyle carries a colour of its own, so the view's final
 // `copyWith(color: itemSubtitleTextColor)` is what makes the colour win.
-const _kSubtitleStyle = CometChatConversationsStyle(
+const _kSubtitleStyle = ConvoKitConversationsStyle(
   itemSubtitleTextColor: _kSubtitle,
   itemSubtitleTextStyle: TextStyle(fontSize: 13.25, color: _kSubtitleLoser),
 );
@@ -435,7 +435,7 @@ class _Props {
 
   final Conversation? conversation;
   final List<TypingIndicator>? typingIndicators;
-  final CometChatConversationsStyle? style;
+  final ConvoKitConversationsStyle? style;
   final CometChatMessageReceiptStyle? receiptStyle;
   final CometChatTypingIndicatorStyle? typingStyle;
   final CometChatColorPalette? colorPalette;
@@ -759,7 +759,7 @@ final _matrix = <_Row>[
     'messageTypeIconColor tints the media-type icon',
     conversation: _photo,
     set: () => const _Props(
-      style: CometChatConversationsStyle(messageTypeIconColor: _kTypeIcon),
+      style: ConvoKitConversationsStyle(messageTypeIconColor: _kTypeIcon),
     ),
     probe: (t) => _tint(t, Icons.photo),
     before: _kIconSecondary,

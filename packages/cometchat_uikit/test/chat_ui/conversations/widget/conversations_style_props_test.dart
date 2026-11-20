@@ -1,8 +1,8 @@
-/// Render-verified prop matrix for [CometChatConversationsStyle] — Track 3
+/// Render-verified prop matrix for [ConvoKitConversationsStyle] — Track 3
 /// PROP1 (ENG-38688, coverage part 2).
 ///
 /// The style is verified through the widget that paints it:
-/// `CometChatConversations(conversationsStyle: ...)`, driven by a mocked bloc
+/// `ConvoKitConversations(conversationsStyle: ...)`, driven by a mocked bloc
 /// seeded into a chosen state. Each row names one style field, the sentinel
 /// it sets (a value no theme uses), the state to seed, an optional real
 /// interaction, a probe that reads the rendered child the field reaches, the
@@ -257,7 +257,7 @@ const _kDecoy = Color(0xFF9E8D7C);
 // ─── The matrix ──────────────────────────────────────────────────────────────
 
 /// Every style field a row can set. Each is wired into the one
-/// [CometChatConversationsStyle] construction in [main]; the guard test holds
+/// [ConvoKitConversationsStyle] construction in [main]; the guard test holds
 /// each to a row.
 class _S {
   const _S({
@@ -416,7 +416,7 @@ class _Row {
     this.search = false,
   });
 
-  /// The [CometChatConversationsStyle] field this row verifies.
+  /// The [ConvoKitConversationsStyle] field this row verifies.
   final String prop;
 
   /// What the row claims, in words. Becomes the test name.
@@ -451,11 +451,11 @@ class _Row {
   /// Shows the back button, so the back icon renders.
   final bool backButton;
 
-  /// Shows the search box, which CometChatConversations hides by default.
+  /// Shows the search box, which ConvoKitConversations hides by default.
   final bool search;
 }
 
-Finder get _conversations => find.byType(CometChatConversations);
+Finder get _conversations => find.byType(ConvoKitConversations);
 
 Translations _tr(WidgetTester tester) =>
     Translations.of(tester.element(_conversations));
@@ -535,7 +535,7 @@ final _matrix = <_Row>[
           )
           .backgroundColor,
       _appBar(t).backgroundColor,
-      _box(t, CometChatConversationListItem).color,
+      _box(t, ConvoKitConversationListItem).color,
     ],
     expected: [_kBackground, _kBackground, _kBackground],
     unset: (e) => [
@@ -557,7 +557,7 @@ final _matrix = <_Row>[
     'rounds the outer clip, the list base clip and its box',
     set: const _S(borderRadius: _kRadius),
     probe: (t) => [
-      // The clip CometChatConversations wraps the list base in.
+      // The clip ConvoKitConversations wraps the list base in.
       t
           .widget<ClipRRect>(
             find
@@ -1032,7 +1032,7 @@ final _matrix = <_Row>[
 // ─── Tests ───────────────────────────────────────────────────────────────────
 
 void main() {
-  group('CometChatConversationsStyle prop matrix', () {
+  group('ConvoKitConversationsStyle prop matrix', () {
     for (final row in _matrix) {
       testWidgets('${row.prop}: ${row.claim}', (tester) async {
         final readings = <Object?>[];
@@ -1049,11 +1049,11 @@ void main() {
           await mockNetworkImagesFor(() async {
             await tester.pumpWidget(
               _wrap(
-                CometChatConversations(
+                ConvoKitConversations(
                   conversationsBloc: bloc,
                   showBackButton: row.backButton,
                   hideSearch: !row.search,
-                  conversationsStyle: CometChatConversationsStyle(
+                  conversationsStyle: ConvoKitConversationsStyle(
                     backgroundColor: s.backgroundColor,
                     border: s.border,
                     borderRadius: s.borderRadius,
@@ -1133,7 +1133,7 @@ void main() {
       }
     }
     expect(_S.wired.intersection(_unwired), isEmpty);
-    // CometChatConversationsStyle has 44 fields: 33 here, 11 left out.
+    // ConvoKitConversationsStyle has 44 fields: 33 here, 11 left out.
     expect(_S.wired.length + _unwired.length, 44);
   });
 }

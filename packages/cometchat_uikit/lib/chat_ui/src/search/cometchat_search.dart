@@ -81,7 +81,7 @@ class CometChatSearch extends StatefulWidget {
   /// one.
   ///
   /// Mirrors `CometChatUsers.usersBloc`, `CometChatGroups.groupsBloc` and
-  /// `CometChatConversations.conversationsBloc`. Search was the only one of
+  /// `ConvoKitConversations.conversationsBloc`. Search was the only one of
   /// the four without the seam, and because every builder here passes
   /// `bloc: _searchBloc` explicitly, an ambient BlocProvider could not stand
   /// in for it either — which left most of this component's props impossible
@@ -696,7 +696,7 @@ class _CometChatSearchState extends State<CometChatSearch> {
   ///
   /// ENG-39113: `receiptsVisibility` was declared and read nowhere, because
   /// Search rendered no receipt at all. The gating mirrors
-  /// `CometChatConversationListItem._shouldShowReceipt` so the two surfaces
+  /// `ConvoKitConversationListItem._shouldShowReceipt` so the two surfaces
   /// agree — a receipt belongs to an *outgoing* message, so it appears only
   /// when the last message was sent by the logged-in user.
   Widget? _buildConversationReceipt(Conversation conversation) {
@@ -715,7 +715,7 @@ class _CometChatSearchState extends State<CometChatSearch> {
     );
   }
 
-  /// Same ladder as `CometChatConversationListItem._getReceiptStatus`, mapped
+  /// Same ladder as `ConvoKitConversationListItem._getReceiptStatus`, mapped
   /// onto the shared `ReceiptStatus` enum rather than its private strings.
   ReceiptStatus _receiptStatusOf(BaseMessage message) {
     if (message.readAt != null && message.readAt!.millisecondsSinceEpoch > 0) {

@@ -76,7 +76,7 @@ class ConvoKitMessageHeader extends StatefulWidget
   ///[messageHeaderBloc] Optional external MessageHeaderBloc instance.
   ///If provided, it is used instead of creating one internally and the
   ///widget does not close it on dispose. Mirrors
-  ///[CometChatConversations.conversationsBloc].
+  ///[ConvoKitConversations.conversationsBloc].
   final MessageHeaderBloc? messageHeaderBloc;
 
   /// [backButton] used to set back button widget

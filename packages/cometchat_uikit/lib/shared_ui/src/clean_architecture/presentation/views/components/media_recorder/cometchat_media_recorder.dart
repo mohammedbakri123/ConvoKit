@@ -68,7 +68,7 @@ class CometChatMediaRecorder extends StatefulWidget {
   ///[mediaRecorderBloc] Optional external MediaRecorderBloc instance.
   ///If provided, it is used instead of creating one internally and the widget
   ///does not close it on dispose. Mirrors
-  ///[CometChatConversations.conversationsBloc] — the seam that lets a test
+  ///[ConvoKitConversations.conversationsBloc] — the seam that lets a test
   ///drive the recorder through its states without a live microphone.
   final MediaRecorderBloc? mediaRecorderBloc;
 

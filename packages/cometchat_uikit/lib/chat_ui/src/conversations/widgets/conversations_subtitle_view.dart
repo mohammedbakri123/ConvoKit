@@ -48,7 +48,7 @@ class ConversationsSubtitleView extends StatelessWidget {
   final List<TypingIndicator> typingIndicators;
 
   /// The style configuration for the conversations widget.
-  final CometChatConversationsStyle style;
+  final ConvoKitConversationsStyle style;
 
   /// The style configuration for message receipts.
   final CometChatMessageReceiptStyle receiptStyle;

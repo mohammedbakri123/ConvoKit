@@ -1,7 +1,7 @@
 /// Render-verified prop matrix for [ConversationsList] — Track 3 PROP1.
 ///
 /// 54 props, previously at zero and the largest single unit in the gap. It is
-/// exported, so it is in the denominator, but the `CometChatConversations`
+/// exported, so it is in the denominator, but the `ConvoKitConversations`
 /// matrix only reaches it through whatever that component forwards — which
 /// proves the forwarding, not the widget.
 ///
@@ -192,9 +192,9 @@ Widget _host(Widget Function(BuildContext) build) => MaterialApp(
   home: Scaffold(body: Builder(builder: build)),
 );
 
-CometChatConversationListItem _row(WidgetTester tester) => tester
-    .widgetList<CometChatConversationListItem>(
-      find.byType(CometChatConversationListItem),
+ConvoKitConversationListItem _row(WidgetTester tester) => tester
+    .widgetList<ConvoKitConversationListItem>(
+      find.byType(ConvoKitConversationListItem),
     )
     .first;
 
@@ -228,7 +228,7 @@ void main() {
           _host(
             (context) => ConversationsList(
               conversationsBloc: _bloc(_loaded()),
-              style: const CometChatConversationsStyle(
+              style: const ConvoKitConversationsStyle(
                 itemTitleTextColor: _c1,
                 itemTitleTextStyle: TextStyle(fontSize: 23),
               ),
@@ -274,7 +274,7 @@ void main() {
           _host(
             (context) => ConversationsList(
               conversationsBloc: _bloc(_loaded()),
-              style: const CometChatConversationsStyle(),
+              style: const ConvoKitConversationsStyle(),
               statusStyle: const CometChatStatusIndicatorStyle(),
               typingStyle: const CometChatTypingIndicatorStyle(),
               receiptStyle: CometChatMessageReceiptStyle(),
@@ -306,7 +306,7 @@ void main() {
           _host(
             (context) => ConversationsList(
               conversationsBloc: _bloc(_loaded()),
-              style: const CometChatConversationsStyle(),
+              style: const ConvoKitConversationsStyle(),
               statusStyle: const CometChatStatusIndicatorStyle(),
               typingStyle: const CometChatTypingIndicatorStyle(),
               receiptStyle: CometChatMessageReceiptStyle(),
@@ -339,7 +339,7 @@ void main() {
             _host(
               (context) => ConversationsList(
                 conversationsBloc: _bloc(entry.value),
-                style: const CometChatConversationsStyle(),
+                style: const ConvoKitConversationsStyle(),
                 statusStyle: const CometChatStatusIndicatorStyle(),
                 typingStyle: const CometChatTypingIndicatorStyle(),
                 receiptStyle: CometChatMessageReceiptStyle(),
@@ -368,7 +368,7 @@ void main() {
               conversationsBloc: _bloc(
                 const ConversationsError(message: 'boom'),
               ),
-              style: const CometChatConversationsStyle(),
+              style: const ConvoKitConversationsStyle(),
               statusStyle: const CometChatStatusIndicatorStyle(),
               typingStyle: const CometChatTypingIndicatorStyle(),
               receiptStyle: CometChatMessageReceiptStyle(),
@@ -405,7 +405,7 @@ void main() {
             _host(
               (context) => ConversationsList(
                 conversationsBloc: _bloc(state),
-                style: const CometChatConversationsStyle(),
+                style: const ConvoKitConversationsStyle(),
                 statusStyle: const CometChatStatusIndicatorStyle(),
                 typingStyle: const CometChatTypingIndicatorStyle(),
                 receiptStyle: CometChatMessageReceiptStyle(),
@@ -439,7 +439,7 @@ void main() {
           _host(
             (context) => ConversationsList(
               conversationsBloc: _bloc(_loaded()),
-              style: const CometChatConversationsStyle(),
+              style: const ConvoKitConversationsStyle(),
               statusStyle: const CometChatStatusIndicatorStyle(),
               typingStyle: const CometChatTypingIndicatorStyle(),
               receiptStyle: CometChatMessageReceiptStyle(),
@@ -483,7 +483,7 @@ void main() {
           _host(
             (context) => ConversationsList(
               conversationsBloc: _bloc(_loaded()),
-              style: const CometChatConversationsStyle(),
+              style: const ConvoKitConversationsStyle(),
               statusStyle: const CometChatStatusIndicatorStyle(),
               typingStyle: const CometChatTypingIndicatorStyle(),
               receiptStyle: CometChatMessageReceiptStyle(),
@@ -530,7 +530,7 @@ void main() {
           _host(
             (context) => ConversationsList(
               conversationsBloc: _bloc(_loaded()),
-              style: const CometChatConversationsStyle(),
+              style: const ConvoKitConversationsStyle(),
               statusStyle: const CometChatStatusIndicatorStyle(),
               typingStyle: const CometChatTypingIndicatorStyle(),
               receiptStyle: CometChatMessageReceiptStyle(),
@@ -568,7 +568,7 @@ void main() {
           _host(
             (context) => ConversationsList(
               conversationsBloc: _bloc(_loaded()),
-              style: const CometChatConversationsStyle(),
+              style: const ConvoKitConversationsStyle(),
               statusStyle: const CometChatStatusIndicatorStyle(),
               typingStyle: const CometChatTypingIndicatorStyle(),
               receiptStyle: CometChatMessageReceiptStyle(),
@@ -603,7 +603,7 @@ void main() {
           _host(
             (context) => ConversationsList(
               conversationsBloc: _bloc(_loaded(), typing: [FakeTyping()]),
-              style: const CometChatConversationsStyle(),
+              style: const ConvoKitConversationsStyle(),
               statusStyle: const CometChatStatusIndicatorStyle(),
               typingStyle: const CometChatTypingIndicatorStyle(),
               receiptStyle: CometChatMessageReceiptStyle(),
@@ -635,7 +635,7 @@ void main() {
           _host(
             (context) => ConversationsList(
               conversationsBloc: _bloc(_loaded()),
-              style: const CometChatConversationsStyle(),
+              style: const ConvoKitConversationsStyle(),
               statusStyle: const CometChatStatusIndicatorStyle(),
               typingStyle: const CometChatTypingIndicatorStyle(),
               receiptStyle: CometChatMessageReceiptStyle(),
@@ -668,7 +668,7 @@ void main() {
           _host(
             (context) => ConversationsList(
               conversationsBloc: _bloc(_loaded(selected: {'user_u1'})),
-              style: const CometChatConversationsStyle(),
+              style: const ConvoKitConversationsStyle(),
               statusStyle: const CometChatStatusIndicatorStyle(),
               typingStyle: const CometChatTypingIndicatorStyle(),
               receiptStyle: CometChatMessageReceiptStyle(),
@@ -696,7 +696,7 @@ void main() {
           _host(
             (context) => ConversationsList(
               conversationsBloc: _bloc(_loaded()),
-              style: const CometChatConversationsStyle(),
+              style: const ConvoKitConversationsStyle(),
               statusStyle: const CometChatStatusIndicatorStyle(),
               typingStyle: const CometChatTypingIndicatorStyle(),
               receiptStyle: CometChatMessageReceiptStyle(),

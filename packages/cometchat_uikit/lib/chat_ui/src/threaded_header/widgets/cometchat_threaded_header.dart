@@ -92,7 +92,7 @@ class ConvoKitThreadedHeader extends StatefulWidget {
   ///[threadedHeaderBloc] Optional external ThreadedHeaderBloc instance.
   ///If provided, it is used instead of creating one internally and the widget
   ///does not close it on dispose. Mirrors
-  ///[CometChatConversations.conversationsBloc] — the seam that lets a test
+  ///[ConvoKitConversations.conversationsBloc] — the seam that lets a test
   ///supply a reply count without a live SDK.
   final ThreadedHeaderBloc? threadedHeaderBloc;
 

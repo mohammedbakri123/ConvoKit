@@ -6,7 +6,7 @@
 //
 // The fixes, for reference. `core/utils/text_scale_utils.dart` holds three
 // helpers: `scaledMaxLines` lets a single-line label wrap above 1.15x instead
-// of clipping (`CometChatListItem`, `CometChatConversationListItem`,
+// of clipping (`CometChatListItem`, `ConvoKitConversationListItem`,
 // `CometChatGroupListItem`, `CometChatFilesBubble`, `CometChatDate`);
 // `scaledDimension` grows a fixed box with the text size (composer attachment
 // tiles, audio player rows). Beyond those: the conversations empty state and the incoming-call
@@ -251,7 +251,7 @@ void main() {
         return ListView.builder(
           itemCount: conversations.length,
           itemBuilder: (BuildContext context, int index) =>
-              CometChatConversationListItem(
+              ConvoKitConversationListItem(
                 conversation: conversations[index],
                 onItemClick: (_) {},
               ),
@@ -263,7 +263,7 @@ void main() {
       await check(tester, 'conversations empty state', () {
         return Builder(
           builder: (BuildContext context) => ConversationsEmptyView(
-            style: const CometChatConversationsStyle(),
+            style: const ConvoKitConversationsStyle(),
             colorPalette: CometChatThemeHelper.getColorPalette(context),
             spacing: CometChatThemeHelper.getSpacing(context),
             typography: CometChatThemeHelper.getTypography(context),
@@ -279,7 +279,7 @@ void main() {
             errorMessage:
                 'Something went wrong while loading your conversations. '
                 'Check your connection and try again.',
-            style: const CometChatConversationsStyle(),
+            style: const ConvoKitConversationsStyle(),
             colorPalette: CometChatThemeHelper.getColorPalette(context),
             spacing: CometChatThemeHelper.getSpacing(context),
             typography: CometChatThemeHelper.getTypography(context),

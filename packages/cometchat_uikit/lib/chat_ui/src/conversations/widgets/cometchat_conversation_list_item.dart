@@ -4,7 +4,7 @@ import '../utils/status_indicator_helper.dart';
 import '../utils/conversation_utils.dart' as conv_utils;
 import '../utils/conversation_subtitle_utils.dart';
 
-/// [CometChatConversationListItem] is a dedicated widget for displaying a single conversation list item.
+/// [ConvoKitConversationListItem] is a dedicated widget for displaying a single conversation list item.
 ///
 /// This widget is purpose-built for conversations and provides conversation-specific features including:
 /// - Avatar with status indicator (online status for users, group type icons for groups)
@@ -23,7 +23,7 @@ import '../utils/conversation_subtitle_utils.dart';
 /// ## Basic Usage
 ///
 /// ```dart
-/// CometChatConversationListItem(
+/// ConvoKitConversationListItem(
 ///   conversation: conversation,
 ///   onItemClick: (conv) => navigateToChat(conv),
 /// )
@@ -32,10 +32,10 @@ import '../utils/conversation_subtitle_utils.dart';
 /// ## With Styling
 ///
 /// ```dart
-/// CometChatConversationListItem(
+/// ConvoKitConversationListItem(
 ///   conversation: conversation,
 ///   onItemClick: (conv) => navigateToChat(conv),
-///   style: CometChatConversationListItemStyle(
+///   style: ConvoKitConversationListItemStyle(
 ///     backgroundColor: Colors.white,
 ///     titleTextColor: Colors.black,
 ///     avatarStyle: CometChatAvatarStyle(
@@ -50,7 +50,7 @@ import '../utils/conversation_subtitle_utils.dart';
 /// ## With Selection Mode
 ///
 /// ```dart
-/// CometChatConversationListItem(
+/// ConvoKitConversationListItem(
 ///   conversation: conversation,
 ///   onItemClick: (conv) => handleClick(conv),
 ///   selectionMode: SelectionMode.multiple,
@@ -62,7 +62,7 @@ import '../utils/conversation_subtitle_utils.dart';
 /// ## With Custom Views
 ///
 /// ```dart
-/// CometChatConversationListItem(
+/// ConvoKitConversationListItem(
 ///   conversation: conversation,
 ///   onItemClick: (conv) => handleClick(conv),
 ///   leadingView: (conv, typing) => CustomAvatar(conversation: conv),
@@ -80,11 +80,11 @@ import '../utils/conversation_subtitle_utils.dart';
 /// This allows for flexible customization at different levels of granularity.
 ///
 /// See also:
-/// - [CometChatConversationListItemStyle] for comprehensive styling options
+/// - [ConvoKitConversationListItemStyle] for comprehensive styling options
 /// - [ConversationsList] for displaying a list of conversations
 /// - [CometChatListItem] for the generic list item widget
-class CometChatConversationListItem extends StatelessWidget {
-  const CometChatConversationListItem({
+class ConvoKitConversationListItem extends StatelessWidget {
+  const ConvoKitConversationListItem({
     super.key,
     required this.conversation,
     required this.onItemClick,
@@ -189,10 +189,10 @@ class CometChatConversationListItem extends StatelessWidget {
 
   /// [style] comprehensive style configuration for the list item.
   ///
-  /// Its [CometChatConversationListItemStyle.separatorColor] and
-  /// [CometChatConversationListItemStyle.separatorHeight] draw a line along
+  /// Its [ConvoKitConversationListItemStyle.separatorColor] and
+  /// [ConvoKitConversationListItemStyle.separatorHeight] draw a line along
   /// the bottom of the row; see [hideSeparator].
-  final CometChatConversationListItemStyle? style;
+  final ConvoKitConversationListItemStyle? style;
 
   /// Generic list-item style for the row: [ListItemStyle.background],
   /// [ListItemStyle.gradient], [ListItemStyle.border],
@@ -324,7 +324,7 @@ class CometChatConversationListItem extends StatelessWidget {
         typography ?? CometChatThemeHelper.getTypography(context);
     final effectiveStyle =
         style ??
-        CometChatConversationListItemStyle.fromTheme(
+        ConvoKitConversationListItemStyle.fromTheme(
           context,
           colorPalette: effectiveColorPalette,
           typography: effectiveTypography,
@@ -469,7 +469,7 @@ class CometChatConversationListItem extends StatelessWidget {
   }
 
   Widget _buildSelectionCheckbox(
-    CometChatConversationListItemStyle effectiveStyle,
+    ConvoKitConversationListItemStyle effectiveStyle,
     CometChatColorPalette effectiveColorPalette,
     CometChatSpacing effectiveSpacing,
   ) {
@@ -550,7 +550,7 @@ class CometChatConversationListItem extends StatelessWidget {
 
   Widget _buildLeadingView(
     BuildContext context,
-    CometChatConversationListItemStyle effectiveStyle,
+    ConvoKitConversationListItemStyle effectiveStyle,
     CometChatColorPalette effectiveColorPalette,
     CometChatSpacing effectiveSpacing,
   ) {
@@ -628,7 +628,7 @@ class CometChatConversationListItem extends StatelessWidget {
 
   Widget _buildTitleView(
     BuildContext context,
-    CometChatConversationListItemStyle effectiveStyle,
+    ConvoKitConversationListItemStyle effectiveStyle,
     CometChatColorPalette effectiveColorPalette,
     CometChatTypography effectiveTypography,
   ) {
@@ -663,7 +663,7 @@ class CometChatConversationListItem extends StatelessWidget {
 
   Widget _buildSubtitleView(
     BuildContext context,
-    CometChatConversationListItemStyle effectiveStyle,
+    ConvoKitConversationListItemStyle effectiveStyle,
     CometChatColorPalette effectiveColorPalette,
     CometChatTypography effectiveTypography,
     CometChatSpacing effectiveSpacing,
@@ -766,7 +766,7 @@ class CometChatConversationListItem extends StatelessWidget {
 
   Widget _buildLastMessageText(
     BuildContext context,
-    CometChatConversationListItemStyle effectiveStyle,
+    ConvoKitConversationListItemStyle effectiveStyle,
     CometChatColorPalette effectiveColorPalette,
     CometChatTypography effectiveTypography,
   ) {
@@ -816,12 +816,12 @@ class CometChatConversationListItem extends StatelessWidget {
   }
 
   Widget _buildReceiptIndicator(
-    CometChatConversationListItemStyle effectiveStyle,
+    ConvoKitConversationListItemStyle effectiveStyle,
     CometChatColorPalette effectiveColorPalette,
   ) {
     // The caller's receipt style takes precedence over the palette default for
     // each status. Both this widget's receiptStyle and the one on
-    // CometChatConversationListItemStyle were declared and read nowhere.
+    // ConvoKitConversationListItemStyle were declared and read nowhere.
     // ENG-39124. Merged per colour, as the date and status styles are, so a
     // receiptStyle that leaves a colour unset lets the style's through.
     final receiptColors =
@@ -876,7 +876,7 @@ class CometChatConversationListItem extends StatelessWidget {
 
   Widget _buildTrailingView(
     BuildContext context,
-    CometChatConversationListItemStyle effectiveStyle,
+    ConvoKitConversationListItemStyle effectiveStyle,
     CometChatColorPalette effectiveColorPalette,
     CometChatTypography effectiveTypography,
     CometChatSpacing effectiveSpacing,
@@ -944,7 +944,7 @@ class CometChatConversationListItem extends StatelessWidget {
 
   Widget _buildTimestamp(
     BuildContext context,
-    CometChatConversationListItemStyle effectiveStyle,
+    ConvoKitConversationListItemStyle effectiveStyle,
     CometChatColorPalette effectiveColorPalette,
     CometChatTypography effectiveTypography,
     CometChatSpacing effectiveSpacing,
@@ -994,7 +994,7 @@ class CometChatConversationListItem extends StatelessWidget {
     );
   }
 
-  Widget _buildUnreadBadge(CometChatConversationListItemStyle effectiveStyle) {
+  Widget _buildUnreadBadge(ConvoKitConversationListItemStyle effectiveStyle) {
     final count = conversation.unreadMessageCount;
     return CometChatBadge(
       count: count,
@@ -1040,7 +1040,7 @@ class CometChatConversationListItem extends StatelessWidget {
   /// The status dot's fill: a group-type background from the style first,
   /// then the status indicator style's backgroundColor, then the palette.
   Color? _getStatusIndicatorBackgroundColor(
-    CometChatConversationListItemStyle effectiveStyle,
+    ConvoKitConversationListItemStyle effectiveStyle,
     CometChatColorPalette effectiveColorPalette,
   ) {
     final config = StatusIndicatorHelper.getStatusIndicator(

@@ -1,13 +1,13 @@
 import '../../../cometchat_uikit_shared.dart';
 
 ///Event emitting class for `CometchatConversation`
-class CometChatConversationEvents {
-  static Map<String, CometChatConversationEventListener>
+class ConvoKitConversationEvents {
+  static Map<String, ConvoKitConversationEventListener>
   conversationListListener = {};
 
   static void addConversationListListener(
     String listenerId,
-    CometChatConversationEventListener listenerClass,
+    ConvoKitConversationEventListener listenerClass,
   ) {
     conversationListListener[listenerId] = listenerClass;
   }

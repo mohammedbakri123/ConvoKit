@@ -4,7 +4,7 @@ import "../../../../clean_architecture.dart";
 import 'list_base_bloc.dart';
 
 ///[CometChatListBase] is a top level container widget
-///used internally by components like [CometChatUsers], [CometChatGroups], [CometChatConversations], [CometChatGroupMembers]
+///used internally by components like [CometChatUsers], [CometChatGroups], [ConvoKitConversations], [CometChatGroupMembers]
 /// ```dart
 ///   CometChatListBase(
 ///        title: "title",

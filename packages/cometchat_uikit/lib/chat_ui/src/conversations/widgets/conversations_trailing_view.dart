@@ -37,7 +37,7 @@ class ConversationsTrailingView extends StatelessWidget {
   final Conversation conversation;
 
   /// The style configuration for the conversations widget.
-  final CometChatConversationsStyle style;
+  final ConvoKitConversationsStyle style;
 
   /// The style configuration for the date widget.
   final CometChatDateStyle datesStyle;

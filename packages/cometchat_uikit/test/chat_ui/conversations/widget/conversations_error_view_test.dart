@@ -21,7 +21,7 @@ void main() {
               builder: (context) {
                 return ConversationsErrorView(
                   errorMessage: 'Network failure',
-                  style: const CometChatConversationsStyle(),
+                  style: const ConvoKitConversationsStyle(),
                   colorPalette: CometChatThemeHelper.getColorPalette(context),
                   spacing: CometChatThemeHelper.getSpacing(context),
                   typography: CometChatThemeHelper.getTypography(context),
@@ -47,7 +47,7 @@ void main() {
             builder: (context) {
               return ConversationsErrorView(
                 errorMessage: 'x',
-                style: const CometChatConversationsStyle(),
+                style: const ConvoKitConversationsStyle(),
                 colorPalette: CometChatThemeHelper.getColorPalette(context),
                 spacing: CometChatThemeHelper.getSpacing(context),
                 typography: CometChatThemeHelper.getTypography(context),
@@ -75,7 +75,7 @@ void main() {
             builder: (context) {
               return ConversationsErrorView(
                 errorMessage: 'x',
-                style: const CometChatConversationsStyle(
+                style: const ConvoKitConversationsStyle(
                   errorStateTextColor: customColor,
                 ),
                 colorPalette: CometChatThemeHelper.getColorPalette(context),

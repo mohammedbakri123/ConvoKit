@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../../../cometchat_chat_uikit.dart';
 
-/// Style configuration for [CometChatConversationListItem] component.
+/// Style configuration for [ConvoKitConversationListItem] component.
 ///
 /// This class encapsulates all visual styling properties for the conversation list item,
 /// integrating with the CometChatTheme system for consistent styling.
-class CometChatConversationListItemStyle {
+class ConvoKitConversationListItemStyle {
   /// Icon shown inside the selection checkbox when the row is selected, in
   /// place of the default tick. [checkBoxSelectIconTint] tints it unless the
   /// icon sets its own colour.
@@ -89,7 +89,7 @@ class CometChatConversationListItemStyle {
   /// Background of the status dot on a password-protected group's avatar.
   final Color? protectedGroupIconBackground;
 
-  const CometChatConversationListItemStyle({
+  const ConvoKitConversationListItemStyle({
     this.backgroundColor,
     this.selectedBackgroundColor,
     this.titleTextColor,
@@ -120,7 +120,7 @@ class CometChatConversationListItemStyle {
   ///
   /// [colorPalette], [typography] and [spacing] replace the theme's own when
   /// given, so an item built with its own palette takes its defaults from it.
-  factory CometChatConversationListItemStyle.fromTheme(
+  factory ConvoKitConversationListItemStyle.fromTheme(
     BuildContext context, {
     CometChatColorPalette? colorPalette,
     CometChatTypography? typography,
@@ -131,7 +131,7 @@ class CometChatConversationListItemStyle {
     final type = typography ?? CometChatThemeHelper.getTypography(context);
     final space = spacing ?? CometChatThemeHelper.getSpacing(context);
 
-    return CometChatConversationListItemStyle(
+    return ConvoKitConversationListItemStyle(
       backgroundColor: palette.background1,
       selectedBackgroundColor: palette.background4,
       titleTextColor: palette.textPrimary,
@@ -161,12 +161,12 @@ class CometChatConversationListItemStyle {
   }
 
   /// Merges this style with another style, with the other style taking precedence.
-  CometChatConversationListItemStyle merge(
-    CometChatConversationListItemStyle? other,
+  ConvoKitConversationListItemStyle merge(
+    ConvoKitConversationListItemStyle? other,
   ) {
     if (other == null) return this;
 
-    return CometChatConversationListItemStyle(
+    return ConvoKitConversationListItemStyle(
       backgroundColor: other.backgroundColor ?? backgroundColor,
       selectedBackgroundColor:
           other.selectedBackgroundColor ?? selectedBackgroundColor,
@@ -202,7 +202,7 @@ class CometChatConversationListItemStyle {
   }
 
   /// Creates a copy of this style with the given fields replaced.
-  CometChatConversationListItemStyle copyWith({
+  ConvoKitConversationListItemStyle copyWith({
     Color? backgroundColor,
     Color? selectedBackgroundColor,
     Color? titleTextColor,
@@ -228,7 +228,7 @@ class CometChatConversationListItemStyle {
     Color? separatorColor,
     double? separatorHeight,
   }) {
-    return CometChatConversationListItemStyle(
+    return ConvoKitConversationListItemStyle(
       backgroundColor: backgroundColor ?? this.backgroundColor,
       selectedBackgroundColor:
           selectedBackgroundColor ?? this.selectedBackgroundColor,

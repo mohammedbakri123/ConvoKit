@@ -1,8 +1,8 @@
-/// Render-verified prop matrix for [CometChatConversationsStyle] — Track 3
+/// Render-verified prop matrix for [ConvoKitConversationsStyle] — Track 3
 /// PROP1.
 ///
 /// Companion to `conversations_props_test.dart`, which covers
-/// `CometChatConversations` itself. 44 style props.
+/// `ConvoKitConversations` itself. 44 style props.
 ///
 /// `mentionsStyle` is pinned as construction-only: it is declared and read
 /// nowhere, and unlike the other dead style props it has no receiver to wire
@@ -184,9 +184,9 @@ ListBaseStyle _listBaseStyle(WidgetTester tester) =>
 ConversationsList _list(WidgetTester tester) =>
     tester.widget<ConversationsList>(find.byType(ConversationsList));
 
-CometChatConversationListItemStyle _itemStyle(WidgetTester tester) => tester
-    .widgetList<CometChatConversationListItem>(
-      find.byType(CometChatConversationListItem),
+ConvoKitConversationListItemStyle _itemStyle(WidgetTester tester) => tester
+    .widgetList<ConvoKitConversationListItem>(
+      find.byType(ConvoKitConversationListItem),
     )
     .first
     .style!;
@@ -206,10 +206,10 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loaded(),
               title: 'Chats',
-              conversationsStyle: const CometChatConversationsStyle(
+              conversationsStyle: const ConvoKitConversationsStyle(
                 backgroundColor: _c1,
                 border: Border.fromBorderSide(BorderSide(color: _c2, width: 3)),
                 borderRadius: BorderRadius.all(Radius.circular(18)),
@@ -238,9 +238,9 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loaded(selected: const {}),
-              conversationsStyle: const CometChatConversationsStyle(
+              conversationsStyle: const ConvoKitConversationsStyle(
                 separatorColor: _c5,
                 separatorHeight: 4,
               ),
@@ -259,11 +259,11 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loaded(),
               // hideSearch defaults to true on this component.
               hideSearch: false,
-              conversationsStyle: const CometChatConversationsStyle(
+              conversationsStyle: const ConvoKitConversationsStyle(
                 searchIconColor: _c1,
                 searchBackgroundColor: _c2,
                 searchBorder: BorderSide(color: _c3, width: 2),
@@ -294,10 +294,10 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loaded(selected: {'user_u1'}),
               selectionMode: SelectionMode.multiple,
-              conversationsStyle: const CometChatConversationsStyle(
+              conversationsStyle: const ConvoKitConversationsStyle(
                 submitIconColor: _c6,
               ),
             ),
@@ -318,9 +318,9 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loaded(selected: const {}),
-              conversationsStyle: const CometChatConversationsStyle(
+              conversationsStyle: const ConvoKitConversationsStyle(
                 itemTitleTextColor: _c1,
                 itemTitleTextStyle: TextStyle(fontSize: 23),
                 itemSubtitleTextColor: _c2,
@@ -345,9 +345,9 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loaded(selected: const {}),
-              conversationsStyle: const CometChatConversationsStyle(
+              conversationsStyle: const ConvoKitConversationsStyle(
                 messageTypeIconColor: _c3,
               ),
             ),
@@ -364,9 +364,9 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loaded(selected: const {}),
-              conversationsStyle: const CometChatConversationsStyle(
+              conversationsStyle: const ConvoKitConversationsStyle(
                 avatarStyle: CometChatAvatarStyle(backgroundColor: _c4),
                 badgeStyle: CometChatBadgeStyle(backgroundColor: _c5),
               ),
@@ -395,9 +395,9 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loaded(selected: const {}),
-              conversationsStyle: CometChatConversationsStyle(
+              conversationsStyle: ConvoKitConversationsStyle(
                 statusIndicatorStyle: const CometChatStatusIndicatorStyle(
                   backgroundColor: _c1,
                 ),
@@ -431,9 +431,9 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loaded(selected: const {}),
-              conversationsStyle: const CometChatConversationsStyle(
+              conversationsStyle: const ConvoKitConversationsStyle(
                 privateGroupIconBackground: _c5,
                 protectedGroupIconBackground: _c6,
               ),
@@ -443,8 +443,8 @@ void main() {
         await tester.pump();
       });
 
-      final rows = tester.widgetList<CometChatConversationListItem>(
-        find.byType(CometChatConversationListItem),
+      final rows = tester.widgetList<ConvoKitConversationListItem>(
+        find.byType(ConvoKitConversationListItem),
       );
       expect(rows.first.privateGroupIconBackground, _c5);
       expect(rows.first.protectedGroupIconBackground, _c6);
@@ -459,10 +459,10 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loaded(selected: {'user_u1'}),
               selectionMode: SelectionMode.multiple,
-              conversationsStyle: const CometChatConversationsStyle(
+              conversationsStyle: const ConvoKitConversationsStyle(
                 checkBoxBackgroundColor: _c1,
                 checkBoxCheckedBackgroundColor: _c2,
                 checkBoxBorderRadius: BorderRadius.all(Radius.circular(7)),
@@ -496,9 +496,9 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _blocIn(const ConversationsEmpty()),
-              conversationsStyle: const CometChatConversationsStyle(
+              conversationsStyle: const ConvoKitConversationsStyle(
                 emptyStateTextColor: _c1,
                 emptyStateTextStyle: TextStyle(fontSize: 26),
                 emptyStateSubTitleTextColor: _c2,
@@ -519,11 +519,11 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _blocIn(
                 const ConversationsError(message: 'boom'),
               ),
-              conversationsStyle: const CometChatConversationsStyle(
+              conversationsStyle: const ConvoKitConversationsStyle(
                 errorStateTextColor: _c3,
                 errorStateTextStyle: TextStyle(fontSize: 26),
                 errorStateSubTitleTextColor: _c4,
@@ -551,9 +551,9 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversations(
+            ConvoKitConversations(
               conversationsBloc: _loaded(selected: const {}),
-              conversationsStyle: const CometChatConversationsStyle(
+              conversationsStyle: const ConvoKitConversationsStyle(
                 deleteConversationDialogStyle: CometChatConfirmDialogStyle(
                   backgroundColor: _c6,
                 ),
@@ -579,7 +579,7 @@ void main() {
     // without taking a mentions style, so wiring it is a feature rather than a
     // one-line map.
     test('mentionsStyle is accepted and discarded', () {
-      final style = CometChatConversationsStyle(
+      final style = ConvoKitConversationsStyle(
         mentionsStyle: CometChatMentionsStyle(),
       );
 

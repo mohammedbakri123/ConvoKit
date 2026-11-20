@@ -180,13 +180,13 @@ class CometChatUIKitHelper {
   ///[onConversationDeleted] is used to inform the listeners
   ///when the logged-in user deletes a conversation
   static void onConversationDeleted(Conversation conversation) {
-    CometChatConversationEvents.ccConversationDeleted(conversation);
+    ConvoKitConversationEvents.ccConversationDeleted(conversation);
   }
 
   ///[onConversationUpdate] is used to inform the listeners
   ///when a conversation is updated (e.g., mark as unread)
   static void onConversationUpdate(Conversation conversation) {
-    CometChatConversationEvents.ccUpdateConversation(conversation);
+    ConvoKitConversationEvents.ccUpdateConversation(conversation);
   }
 
   //---------- CometChat UI Events ----------

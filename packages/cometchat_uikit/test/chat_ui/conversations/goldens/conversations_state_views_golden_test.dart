@@ -1,4 +1,4 @@
-/// Golden pins for the state views of [CometChatConversations]: what the
+/// Golden pins for the state views of [ConvoKitConversations]: what the
 /// screen shows while it loads, when there is nothing, and when the fetch
 /// failed.
 ///
@@ -54,7 +54,7 @@ void main() {
         'conversations empty state',
         fileName: 'conversations_state_empty',
         size: _size,
-        builder: () => CometChatConversations(
+        builder: () => ConvoKitConversations(
           conversationsBloc: _bloc(const ConversationsEmpty()),
         ),
       );
@@ -63,7 +63,7 @@ void main() {
         'conversations error state',
         fileName: 'conversations_state_error',
         size: _size,
-        builder: () => CometChatConversations(
+        builder: () => ConvoKitConversations(
           conversationsBloc: _bloc(
             const ConversationsError(message: 'Something went wrong'),
           ),

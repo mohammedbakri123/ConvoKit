@@ -1,10 +1,10 @@
 /// Render-verified tests for the conversation-row props that 6.2.0 had
 /// deprecated as no-ops and that now take effect:
 ///
-/// - `listItemStyle` on [CometChatConversations], [ConversationsList] and
-///   [CometChatConversationListItem]. The v6 docs list it on
-///   CometChatConversations, and Android applies its row item style.
-/// - [CometChatConversationListItemStyle.checkBoxSelectIcon], which Android
+/// - `listItemStyle` on [ConvoKitConversations], [ConversationsList] and
+///   [ConvoKitConversationListItem]. The v6 docs list it on
+///   ConvoKitConversations, and Android applies its row item style.
+/// - [ConvoKitConversationListItemStyle.checkBoxSelectIcon], which Android
 ///   Compose applies to the row's checkbox.
 ///
 /// Every test pumps the real widget and reads what the prop changed in the
@@ -144,7 +144,7 @@ Widget _wrap(Widget child) => MaterialApp(
 Container _rowContainer(WidgetTester tester) => tester.widget<Container>(
   find
       .descendant(
-        of: find.byType(CometChatConversationListItem),
+        of: find.byType(ConvoKitConversationListItem),
         matching: find.byType(Container),
       )
       .first,
@@ -189,7 +189,7 @@ void _expectDefaultRow(WidgetTester tester) {
 
 void main() {
   group('listItemStyle', () {
-    testWidgets('on CometChatConversations it styles every row', (
+    testWidgets('on ConvoKitConversations it styles every row', (
       tester,
     ) async {
       await mockNetworkImagesFor(() async {
@@ -197,7 +197,7 @@ void main() {
           _wrap(
             SizedBox(
               height: 600,
-              child: CometChatConversations(
+              child: ConvoKitConversations(
                 key: UniqueKey(),
                 conversationsBloc: _loadedBloc(),
               ),
@@ -213,7 +213,7 @@ void main() {
           _wrap(
             SizedBox(
               height: 600,
-              child: CometChatConversations(
+              child: ConvoKitConversations(
                 key: UniqueKey(),
                 conversationsBloc: _loadedBloc(),
                 listItemStyle: _fullItemStyle,
@@ -226,7 +226,7 @@ void main() {
       _expectFullItemStyle(tester);
     });
 
-    testWidgets('CometChatConversationsStyle wins where both set a value', (
+    testWidgets('ConvoKitConversationsStyle wins where both set a value', (
       tester,
     ) async {
       await mockNetworkImagesFor(() async {
@@ -234,9 +234,9 @@ void main() {
           _wrap(
             SizedBox(
               height: 600,
-              child: CometChatConversations(
+              child: ConvoKitConversations(
                 conversationsBloc: _loadedBloc(),
-                conversationsStyle: const CometChatConversationsStyle(
+                conversationsStyle: const ConvoKitConversationsStyle(
                   backgroundColor: _kStyleBackground,
                   itemTitleTextStyle: TextStyle(fontSize: 13),
                 ),
@@ -261,7 +261,7 @@ void main() {
               height: 600,
               child: ConversationsList(
                 conversationsBloc: _loadedBloc(),
-                style: const CometChatConversationsStyle(),
+                style: const ConvoKitConversationsStyle(),
                 statusStyle: const CometChatStatusIndicatorStyle(),
                 typingStyle: const CometChatTypingIndicatorStyle(),
                 receiptStyle: CometChatMessageReceiptStyle(),
@@ -280,14 +280,14 @@ void main() {
       _expectFullItemStyle(tester);
     });
 
-    testWidgets('on CometChatConversationListItem it styles the row', (
+    testWidgets('on ConvoKitConversationListItem it styles the row', (
       tester,
     ) async {
       Future<void> pump({ListItemStyle? listItemStyle}) async {
         await mockNetworkImagesFor(() async {
           await tester.pumpWidget(
             _wrap(
-              CometChatConversationListItem(
+              ConvoKitConversationListItem(
                 key: UniqueKey(),
                 conversation: _alice(),
                 onItemClick: (_) {},
@@ -314,7 +314,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: _alice(),
               onItemClick: (_) {},
               colorPalette: _palette,
@@ -336,12 +336,12 @@ void main() {
       const gradient = LinearGradient(colors: [_kGradientStart, _kBackground]);
       Future<void> pump({
         bool isSelected = false,
-        CometChatConversationListItemStyle? style,
+        ConvoKitConversationListItemStyle? style,
       }) async {
         await mockNetworkImagesFor(() async {
           await tester.pumpWidget(
             _wrap(
-              CometChatConversationListItem(
+              ConvoKitConversationListItem(
                 key: UniqueKey(),
                 conversation: _alice(),
                 onItemClick: (_) {},
@@ -365,7 +365,7 @@ void main() {
 
       // An explicit background colour is not painted over.
       await pump(
-        style: const CometChatConversationListItemStyle(
+        style: const ConvoKitConversationListItemStyle(
           backgroundColor: _kStyleBackground,
         ),
       );
@@ -383,14 +383,14 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               key: UniqueKey(),
               conversation: _alice(),
               onItemClick: (_) {},
               colorPalette: _palette,
               selectionMode: SelectionMode.multiple,
               isSelected: isSelected,
-              style: CometChatConversationListItemStyle(
+              style: ConvoKitConversationListItemStyle(
                 checkBoxSelectIcon: icon,
                 checkBoxSelectIconTint: _kTint,
               ),
@@ -429,14 +429,14 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: _alice(),
               onItemClick: (_) {},
               onSelectionToggle: () => toggles++,
               colorPalette: _palette,
               selectionMode: SelectionMode.multiple,
               isSelected: true,
-              style: const CometChatConversationListItemStyle(
+              style: const ConvoKitConversationListItemStyle(
                 checkBoxSelectIcon: Icon(Icons.star),
               ),
             ),

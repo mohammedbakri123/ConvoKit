@@ -383,7 +383,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildConversationsList() {
-    return CometChatConversations(
+    return ConvoKitConversations(
       hideAppbar: true,
       textFormatters: [
         CometChatMentionsFormatter(),

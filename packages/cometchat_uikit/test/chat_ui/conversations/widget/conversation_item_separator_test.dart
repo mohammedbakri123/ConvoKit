@@ -1,18 +1,18 @@
 /// Render-verified tests for the conversation row separator and
-/// [CometChatConversationsStyle.itemStyle].
+/// [ConvoKitConversationsStyle.itemStyle].
 ///
 /// Android v6 documents `itemStyle.separatorColor` and `separatorHeight` as
 /// the line between conversation rows, off by default and never drawn after
 /// the last row. Here that is:
 ///
-/// - [CometChatConversationListItemStyle.separatorColor] and
-///   [CometChatConversationListItemStyle.separatorHeight], which 6.2.0 had
+/// - [ConvoKitConversationListItemStyle.separatorColor] and
+///   [ConvoKitConversationListItemStyle.separatorHeight], which 6.2.0 had
 ///   deprecated as no-ops, drawing a line along the bottom of the row.
-/// - [CometChatConversationListItem.hideSeparator], which [ConversationsList]
+/// - [ConvoKitConversationListItem.hideSeparator], which [ConversationsList]
 ///   sets on the last row.
-/// - [CometChatConversationsStyle.itemStyle], which carries every row style
-///   field from [CometChatConversations] to the rows, under the item fields
-///   [CometChatConversationsStyle] carries itself.
+/// - [ConvoKitConversationsStyle.itemStyle], which carries every row style
+///   field from [ConvoKitConversations] to the rows, under the item fields
+///   [ConvoKitConversationsStyle] carries itself.
 ///
 /// Every test pumps the real widget and reads the built row, against a pump
 /// without the prop wherever a default could coincide with the sentinel.
@@ -208,7 +208,7 @@ Widget _wrap(Widget child) => MaterialApp(
 /// The list item that draws [name].
 Finder _row(String name) => find.ancestor(
   of: find.text(name),
-  matching: find.byType(CometChatConversationListItem),
+  matching: find.byType(ConvoKitConversationListItem),
 );
 
 /// The row's root container: the first [Container] under the row.
@@ -250,15 +250,15 @@ void main() {
 
   tearDown(() => CometChatUIKit.loggedInUser = previousUser);
 
-  group('CometChatConversationListItemStyle separator', () {
+  group('ConvoKitConversationListItemStyle separator', () {
     testWidgets('separatorColor draws a 1 px line along the bottom', (
       tester,
     ) async {
-      Future<void> pump(CometChatConversationListItemStyle? style) async {
+      Future<void> pump(ConvoKitConversationListItemStyle? style) async {
         await mockNetworkImagesFor(() async {
           await tester.pumpWidget(
             _wrap(
-              CometChatConversationListItem(
+              ConvoKitConversationListItem(
                 key: UniqueKey(),
                 conversation: _alice(),
                 onItemClick: (_) {},
@@ -276,7 +276,7 @@ void main() {
       _expectPlainRow(tester, 'Alice');
 
       await pump(
-        const CometChatConversationListItemStyle(separatorColor: _kSeparator),
+        const ConvoKitConversationListItemStyle(separatorColor: _kSeparator),
       );
       final border = _border(tester, 'Alice')! as Border;
       expect(border.bottom.color, _kSeparator);
@@ -299,12 +299,12 @@ void main() {
         await mockNetworkImagesFor(() async {
           await tester.pumpWidget(
             _wrap(
-              CometChatConversationListItem(
+              ConvoKitConversationListItem(
                 key: UniqueKey(),
                 conversation: _alice(),
                 onItemClick: (_) {},
                 colorPalette: _palette,
-                style: CometChatConversationListItemStyle(
+                style: ConvoKitConversationListItemStyle(
                   separatorColor: _kSeparator,
                   separatorHeight: height,
                 ),
@@ -330,11 +330,11 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: _alice(),
               onItemClick: (_) {},
               colorPalette: _palette,
-              style: const CometChatConversationListItemStyle(
+              style: const ConvoKitConversationListItemStyle(
                 separatorHeight: 2,
               ),
             ),
@@ -349,11 +349,11 @@ void main() {
     testWidgets('an explicit style beats listItemStyle for the colour', (
       tester,
     ) async {
-      Future<void> pump(CometChatConversationListItemStyle style) async {
+      Future<void> pump(ConvoKitConversationListItemStyle style) async {
         await mockNetworkImagesFor(() async {
           await tester.pumpWidget(
             _wrap(
-              CometChatConversationListItem(
+              ConvoKitConversationListItem(
                 key: UniqueKey(),
                 conversation: _alice(),
                 onItemClick: (_) {},
@@ -370,12 +370,12 @@ void main() {
       }
 
       await pump(
-        const CometChatConversationListItemStyle(separatorColor: _kSeparator),
+        const ConvoKitConversationListItemStyle(separatorColor: _kSeparator),
       );
       expect(_separator(tester, 'Alice')?.color, _kSeparator);
 
       // A style with only a height keeps listItemStyle's colour at its width.
-      await pump(const CometChatConversationListItemStyle(separatorHeight: 4));
+      await pump(const ConvoKitConversationListItemStyle(separatorHeight: 4));
       expect(_separator(tester, 'Alice')?.color, _kListSeparator);
       expect(_separator(tester, 'Alice')?.width, 4);
     });
@@ -387,11 +387,11 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: _alice(),
               onItemClick: (_) {},
               colorPalette: _palette,
-              style: const CometChatConversationListItemStyle(
+              style: const ConvoKitConversationListItemStyle(
                 separatorColor: _kSeparator,
                 separatorHeight: 2,
               ),
@@ -405,7 +405,7 @@ void main() {
     });
   });
 
-  group('CometChatConversationListItem.hideSeparator', () {
+  group('ConvoKitConversationListItem.hideSeparator', () {
     testWidgets('leaves the line off the row, whichever style asks for it', (
       tester,
     ) async {
@@ -413,13 +413,13 @@ void main() {
         await mockNetworkImagesFor(() async {
           await tester.pumpWidget(
             _wrap(
-              CometChatConversationListItem(
+              ConvoKitConversationListItem(
                 key: UniqueKey(),
                 conversation: _alice(),
                 onItemClick: (_) {},
                 colorPalette: _palette,
                 hideSeparator: hideSeparator,
-                style: const CometChatConversationListItemStyle(
+                style: const ConvoKitConversationListItemStyle(
                   separatorColor: _kSeparator,
                 ),
                 listItemStyle: const ListItemStyle(
@@ -449,8 +449,8 @@ void main() {
               height: 600,
               child: ConversationsList(
                 conversationsBloc: _loadedBloc(_three()),
-                style: const CometChatConversationsStyle(
-                  itemStyle: CometChatConversationListItemStyle(
+                style: const ConvoKitConversationsStyle(
+                  itemStyle: ConvoKitConversationListItemStyle(
                     separatorColor: _kSeparator,
                   ),
                 ),
@@ -473,17 +473,17 @@ void main() {
     });
   });
 
-  group('CometChatConversationsStyle.itemStyle', () {
-    testWidgets('reaches every row through CometChatConversations', (
+  group('ConvoKitConversationsStyle.itemStyle', () {
+    testWidgets('reaches every row through ConvoKitConversations', (
       tester,
     ) async {
-      Future<void> pump(CometChatConversationsStyle style) async {
+      Future<void> pump(ConvoKitConversationsStyle style) async {
         await mockNetworkImagesFor(() async {
           await tester.pumpWidget(
             _wrap(
               SizedBox(
                 height: 600,
-                child: CometChatConversations(
+                child: ConvoKitConversations(
                   key: UniqueKey(),
                   conversationsBloc: _loadedBloc(_three()),
                   conversationsStyle: style,
@@ -496,15 +496,15 @@ void main() {
       }
 
       // Without it the rows keep their defaults: no line, theme title colour.
-      await pump(const CometChatConversationsStyle());
+      await pump(const ConvoKitConversationsStyle());
       for (final name in ['Alice', 'Bob', 'Carol']) {
         _expectPlainRow(tester, name);
       }
       expect(_titleColor(tester, 'Alice'), isNot(_kItemTitle));
 
       await pump(
-        const CometChatConversationsStyle(
-          itemStyle: CometChatConversationListItemStyle(
+        const ConvoKitConversationsStyle(
+          itemStyle: ConvoKitConversationListItemStyle(
             separatorColor: _kSeparator,
             separatorHeight: 2,
             titleTextColor: _kItemTitle,
@@ -521,7 +521,7 @@ void main() {
       expect(_titleColor(tester, 'Carol'), _kItemTitle);
     });
 
-    testWidgets('a field CometChatConversationsStyle carries itself wins', (
+    testWidgets('a field ConvoKitConversationsStyle carries itself wins', (
       tester,
     ) async {
       await mockNetworkImagesFor(() async {
@@ -529,11 +529,11 @@ void main() {
           _wrap(
             SizedBox(
               height: 600,
-              child: CometChatConversations(
+              child: ConvoKitConversations(
                 conversationsBloc: _loadedBloc(_three()),
-                conversationsStyle: const CometChatConversationsStyle(
+                conversationsStyle: const ConvoKitConversationsStyle(
                   itemTitleTextColor: _kMappedTitle,
-                  itemStyle: CometChatConversationListItemStyle(
+                  itemStyle: ConvoKitConversationListItemStyle(
                     titleTextColor: _kItemTitle,
                     separatorColor: _kSeparator,
                   ),
@@ -558,7 +558,7 @@ void main() {
           _wrap(
             SizedBox(
               height: 600,
-              child: CometChatConversations(
+              child: ConvoKitConversations(
                 conversationsBloc: _loadedBloc([
                   _user(
                     'Alice',
@@ -570,11 +570,11 @@ void main() {
                   ),
                   _user('Bob', 'u2', message: _FakeTextMessage(from: _me)),
                 ]),
-                conversationsStyle: CometChatConversationsStyle(
+                conversationsStyle: ConvoKitConversationsStyle(
                   receiptStyle: CometChatMessageReceiptStyle(
                     readIconColor: _kMappedRead,
                   ),
-                  itemStyle: CometChatConversationListItemStyle(
+                  itemStyle: ConvoKitConversationListItemStyle(
                     receiptStyle: CometChatMessageReceiptStyle(
                       readIconColor: _kItemRead,
                       sentIconColor: _kItemSent,
@@ -593,25 +593,25 @@ void main() {
     });
 
     test('copyWith, merge and lerp carry it', () {
-      const first = CometChatConversationListItemStyle(
+      const first = ConvoKitConversationListItemStyle(
         separatorColor: _kSeparator,
       );
-      const second = CometChatConversationListItemStyle(
+      const second = ConvoKitConversationListItemStyle(
         separatorColor: _kListSeparator,
       );
-      const style = CometChatConversationsStyle(itemStyle: first);
+      const style = ConvoKitConversationsStyle(itemStyle: first);
 
       expect(style.copyWith().itemStyle, first);
       expect(style.copyWith(itemStyle: second).itemStyle, second);
       expect(style.merge(null).itemStyle, first);
-      expect(style.merge(const CometChatConversationsStyle()).itemStyle, first);
+      expect(style.merge(const ConvoKitConversationsStyle()).itemStyle, first);
       expect(
         style
-            .merge(const CometChatConversationsStyle(itemStyle: second))
+            .merge(const ConvoKitConversationsStyle(itemStyle: second))
             .itemStyle,
         second,
       );
-      const other = CometChatConversationsStyle(itemStyle: second);
+      const other = ConvoKitConversationsStyle(itemStyle: second);
       expect(style.lerp(other, 0.25).itemStyle, first);
       expect(style.lerp(other, 0.75).itemStyle, second);
     });

@@ -192,7 +192,7 @@ Conversation _agent(String role) =>
     _chat(withWhom: _FakeUser('bot', 'Helper Bot', role: role));
 
 // Baseline tokens: what every row renders with unless it overrides one.
-const _style = CometChatConversationsStyle();
+const _style = ConvoKitConversationsStyle();
 const _datesStyle = CometChatDateStyle();
 
 const _kTextSecondary = Color(0xFF727272);
@@ -256,7 +256,7 @@ class _Props {
   });
 
   final Conversation? conversation;
-  final CometChatConversationsStyle? style;
+  final ConvoKitConversationsStyle? style;
   final CometChatDateStyle? datesStyle;
   final CometChatColorPalette? colorPalette;
   final CometChatSpacing? spacing;
@@ -464,7 +464,7 @@ final _matrix = <_Row>[
     'style',
     'badgeStyle colours the unread badge and its count',
     set: () => const _Props(
-      style: CometChatConversationsStyle(
+      style: ConvoKitConversationsStyle(
         badgeStyle: CometChatBadgeStyle(
           backgroundColor: _kBadgeBackground,
           textColor: _kBadgeText,

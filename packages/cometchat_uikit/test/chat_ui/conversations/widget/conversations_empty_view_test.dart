@@ -23,7 +23,7 @@ void main() {
             Builder(
               builder: (context) {
                 return ConversationsEmptyView(
-                  style: const CometChatConversationsStyle(),
+                  style: const ConvoKitConversationsStyle(),
                   colorPalette: CometChatThemeHelper.getColorPalette(context),
                   spacing: CometChatThemeHelper.getSpacing(context),
                   typography: CometChatThemeHelper.getTypography(context),
@@ -48,7 +48,7 @@ void main() {
             Builder(
               builder: (context) {
                 return ConversationsEmptyView(
-                  style: const CometChatConversationsStyle(),
+                  style: const ConvoKitConversationsStyle(),
                   colorPalette: CometChatThemeHelper.getColorPalette(context),
                   spacing: CometChatThemeHelper.getSpacing(context),
                   typography: CometChatThemeHelper.getTypography(context),
@@ -77,7 +77,7 @@ void main() {
           Builder(
             builder: (context) {
               return ConversationsEmptyView(
-                style: const CometChatConversationsStyle(
+                style: const ConvoKitConversationsStyle(
                   emptyStateTextColor: customColor,
                 ),
                 colorPalette: CometChatThemeHelper.getColorPalette(context),

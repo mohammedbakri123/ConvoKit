@@ -461,7 +461,7 @@ class _CometChatSavedMessagesState extends State<CometChatSavedMessages> {
       );
     }
 
-    // Rows mirror CometChatConversationListItem structurally, so Saved reads
+    // Rows mirror ConvoKitConversationListItem structurally, so Saved reads
     // exactly like the conversations list: same 16/12 padding, 48px avatar
     // with a 12px gutter, heading4 title over a body-sized subtitle, and the
     // date in its own trailing column (top-aligned, caption sizing) — not

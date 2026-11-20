@@ -42,19 +42,19 @@ class ScreenReach {
   /// same-named Text elsewhere (app bar, another tab kept alive by the
   /// IndexedStack) can never be the thing that gets tapped.
   ///
-  /// `CometChatConversationListItem` renders the title as a plain `Text`
+  /// `ConvoKitConversationListItem` renders the title as a plain `Text`
   /// (chat_uikit/lib/chat_ui/src/conversations/widgets/
   /// cometchat_conversation_list_item.dart, `_getConversationTitle`).
   static Finder conversationRowNamed(String name) => find.ancestor(
     of: find.text(name),
-    matching: find.byType(CometChatConversationListItem),
+    matching: find.byType(ConvoKitConversationListItem),
   );
 
   /// The conversation row whose peer is the user [uid] — matched on the model
   /// the row was built from, not on rendered text.
   static Finder conversationRowForUser(String uid) =>
       find.byWidgetPredicate((w) {
-        if (w is! CometChatConversationListItem) return false;
+        if (w is! ConvoKitConversationListItem) return false;
         final peer = w.conversation.conversationWith;
         return peer is User && peer.uid == uid;
       });

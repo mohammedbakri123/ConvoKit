@@ -107,7 +107,7 @@ Widget _buildItem(
   bool isSelected = false,
   SelectionMode selectionMode = SelectionMode.none,
 }) {
-  return CometChatConversationListItem(
+  return ConvoKitConversationListItem(
     conversation: conv,
     onItemClick: (_) {},
     isSelected: isSelected,

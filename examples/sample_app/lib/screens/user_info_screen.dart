@@ -294,7 +294,7 @@ class _UserInfoScreenState extends State<UserInfoScreen>
       _user.uid,
       _conversation!.conversationType,
       onSuccess: (_) {
-        CometChatConversationEvents.ccConversationDeleted(_conversation!);
+        ConvoKitConversationEvents.ccConversationDeleted(_conversation!);
         if (mounted) {
           // Dismiss dialog then pop back to home
           Navigator.of(dialogContext).pop();

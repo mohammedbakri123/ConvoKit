@@ -988,7 +988,7 @@ void main() {
     // The receipt belongs to an outgoing message, so it only renders when the
     // last message's sender is the logged-in user. The fixture's sender is u2,
     // so the static has to agree before any of this is observable — the same
-    // gate CometChatConversationListItem._shouldShowReceipt applies.
+    // gate ConvoKitConversationListItem._shouldShowReceipt applies.
     setUp(() {
       CometChatUIKit.loggedInUser = FakeUser(name: 'Bob', uid: 'u2');
     });

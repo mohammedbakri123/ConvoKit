@@ -159,7 +159,7 @@ Widget _fullScreenConversations({required Brightness brightness}) {
         ),
         body: ListView.builder(
           itemCount: conversations.length,
-          itemBuilder: (context, index) => CometChatConversationListItem(
+          itemBuilder: (context, index) => ConvoKitConversationListItem(
             conversation: conversations[index],
             onItemClick: (_) {},
           ),

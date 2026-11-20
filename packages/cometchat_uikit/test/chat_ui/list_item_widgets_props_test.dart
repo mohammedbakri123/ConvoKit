@@ -1,7 +1,7 @@
 /// Render-verified prop matrix for the three list-item widgets — Track 3
 /// PROP1.
 ///
-/// [CometChatConversationListItem] (50 props), [CometChatGroupListItem] (28)
+/// [ConvoKitConversationListItem] (50 props), [CometChatGroupListItem] (28)
 /// and [CometChatListItem] (23). Companion to
 /// `list_item_styles_props_test.dart`, which covers the style objects these
 /// take; this covers the widgets' own parameters.
@@ -156,12 +156,12 @@ List<TextStyle> _textStyles(WidgetTester tester) {
 
 void main() {
   // ===========================================================================
-  group('CometChatConversationListItem', () {
+  group('ConvoKitConversationListItem', () {
     testWidgets('avatar geometry and style reach the avatar', (tester) async {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: FakeConversation(),
               onItemClick: (_) {},
               avatarHeight: 44,
@@ -191,7 +191,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: FakeConversation(),
               onItemClick: (_) {},
               statusIndicatorHeight: 20,
@@ -223,7 +223,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: FakeConversation(),
               onItemClick: (_) {},
               badgeWidth: 34,
@@ -263,7 +263,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: FakeConversation(),
               onItemClick: (_) {},
               leadingView: (c, t) => const Text('lead-slot'),
@@ -288,7 +288,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: FakeConversation(
                 with_: FakeGroup(name: 'Design', guid: 'g1', type: 'private'),
               ),
@@ -318,7 +318,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: FakeConversation(),
               onItemClick: (_) {},
             ),
@@ -331,7 +331,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: FakeConversation(),
               onItemClick: (_) {},
               hideUserStatus: true,
@@ -356,7 +356,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: FakeConversation(),
               onItemClick: (_) {},
               readIcon: const Text('read-glyph'),
@@ -378,7 +378,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: FakeConversation(),
               onItemClick: (_) {},
               typingIndicators: [FakeTyping()],
@@ -407,7 +407,7 @@ void main() {
         () => tester.pumpWidget(
           _wrap(
             Builder(
-              builder: (context) => CometChatConversationListItem(
+              builder: (context) => ConvoKitConversationListItem(
                 conversation: FakeConversation(),
                 onItemClick: (_) {},
                 textFormatters: const <CometChatTextFormatter>[],
@@ -432,7 +432,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatConversationListItem(
+            ConvoKitConversationListItem(
               conversation: FakeConversation(),
               onItemClick: (_) {},
               selectionMode: SelectionMode.multiple,
