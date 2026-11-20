@@ -4,8 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('Public API cleanliness checks', () {
-    final libDir = Directory('lib');
-
     test('lib/convokit.dart and its exported files contain no cometchat SDK imports or CometChat naming', () {
       final publicEntryFile = File('lib/convokit.dart');
       expect(publicEntryFile.existsSync(), isTrue);
