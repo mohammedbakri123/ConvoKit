@@ -2,6 +2,8 @@
 /// Internal adapter keeping CometChat SDK static calls centralized behind adapters.
 library;
 
+import 'dart:async';
+
 import 'package:cometchat_sdk/cometchat_sdk.dart' as cc;
 
 class CometChatSdkAdapter {
@@ -468,9 +470,14 @@ class CometChatSdkAdapter {
 
   static cc.UploadFileRequest createUploadFileRequest(
     String receiverId,
-    String receiverType,
-  ) =>
-      cc.CometChat.createUploadFileRequest(receiverId, receiverType);
+    String receiverType, {
+    int? parentMessageId,
+  }) =>
+      cc.CometChat.createUploadFileRequest(
+        receiverId,
+        receiverType,
+        parentMessageId: parentMessageId,
+      );
 
   static int getMaxAttachmentCount() => cc.CometChat.getMaxAttachmentCount();
 
@@ -589,4 +596,62 @@ class CometChatSdkAdapter {
         onSuccess: onSuccess != null ? (res) => onSuccess(res) : (res) {},
         onError: onError != null ? (err) => onError(err) : (err) {},
       );
+
+  static Future<cc.Attachment?> uploadMedia(
+    String receiverId,
+    String receiverType,
+    cc.UploadFile file, {
+    void Function(int loaded, int total, int percent)? onProgress,
+    void Function(cc.Attachment)? onSuccess,
+    void Function(cc.CometChatException)? onError,
+  }) async {
+    final req = createUploadFileRequest(receiverId, receiverType);
+    final completer = Completer<cc.Attachment?>();
+    final fileId = 'file_${DateTime.now().microsecondsSinceEpoch}';
+    req.uploadAttachment(
+      fileId,
+      file,
+      _SdkUploadListener(
+        onProgress: onProgress,
+        onSuccess: (att) {
+          onSuccess?.call(att);
+          if (!completer.isCompleted) completer.complete(att);
+        },
+        onError: (err) {
+          onError?.call(err);
+          if (!completer.isCompleted) completer.completeError(err);
+        },
+      ),
+    );
+    return completer.future;
+  }
 }
+
+class _SdkUploadListener extends cc.UploadFileListener {
+  final void Function(int loaded, int total, int percent)? onProgress;
+  final void Function(cc.Attachment)? onSuccess;
+  final void Function(cc.CometChatException)? onError;
+
+  _SdkUploadListener({this.onProgress, this.onSuccess, this.onError});
+
+  @override
+  void onFileProgress(String fileId, int loaded, int total, int percent) {
+    onProgress?.call(loaded, total, percent);
+  }
+
+  @override
+  void onFileUploaded(String fileId, cc.Attachment attachment) {
+    onSuccess?.call(attachment);
+  }
+
+  @override
+  void onFileFailure(String fileId, cc.CometChatException error) {
+    onError?.call(error);
+  }
+
+  @override
+  void onFileError(String fileId, cc.CometChatException error) {
+    onError?.call(error);
+  }
+}
+

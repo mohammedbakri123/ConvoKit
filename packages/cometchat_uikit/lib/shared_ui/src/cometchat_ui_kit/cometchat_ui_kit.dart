@@ -22,6 +22,7 @@ import '../../../../src/contracts/message_repository.dart' as contracts;
 import '../../../../src/contracts/media_provider.dart' as contracts;
 import '../../../../src/core/convo_kit.dart';
 import '../../../../src/adapters/cometchat_session_adapter.dart';
+import '../../../../src/adapters/cometchat_media_adapter.dart';
 
 class CometChatUIKit {
   static UIKitSettings? authenticationSettings;
@@ -38,6 +39,10 @@ class CometChatUIKit {
   static ChatSession? session;
 
   static final CometChatSessionAdapter _sdkAdapter = CometChatSessionAdapter();
+  static final CometChatMediaAdapter _mediaAdapter = CometChatMediaAdapter();
+
+  static contracts.ChatMediaProvider get effectiveMediaProvider =>
+      mediaProvider ?? kit?.media ?? _mediaAdapter;
 
   static User? _legacyLoggedInUser;
 
