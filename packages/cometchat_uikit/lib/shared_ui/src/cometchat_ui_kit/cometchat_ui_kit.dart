@@ -278,12 +278,6 @@ class CometChatUIKit {
       final uiKitSection = json['uiKit'] as Map<String, dynamic>? ?? {};
       final subscribePresenceForAllUsers =
           uiKitSection['subscribePresenceForAllUsers'] as bool? ?? true;
-      // Calling toggle for the file-based path (ENG-37368) — without this the
-      // settings door could never initialize the Calls SDK at all (UIKitSettings
-      // defaults enableCalls to false and the file is the only input here).
-      // Key name matches the Android UIKit's settings schema (uiKit.enableCalling).
-      final enableCalling = uiKitSection['enableCalling'] as bool? ?? false;
-
       // Parse chatSDK section for host overrides
       final chatSdkSection = json['chatSDK'] as Map<String, dynamic>? ?? {};
       final autoEstablishSocketConnection =

@@ -1,5 +1,3 @@
-import 'package:cometchat_chat_uikit/chat_ui/src/message_header/cometchat_message_header.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_list/utils/message_template_utils.dart';
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

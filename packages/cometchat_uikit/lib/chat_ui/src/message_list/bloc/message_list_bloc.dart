@@ -1351,37 +1351,6 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
     _handleCallMessage(call);
   }
 
-  /// A call that started or stopped ringing, on either side, from the Calls
-  /// SDK (ringing v2, Android and iOS). For a call of this chat, the list
-  /// pulls what the backend wrote, as Android's `onCallActivity` does: the
-  /// newer messages are synced, and the call's bubbles already on screen are
-  /// re-read, since a call message keeps its ID while its status moves on.
-  /// Call messages are not replies, so a thread's list is left alone.
-  void _handleCallActivity(Call call) {
-    if (isClosed || parentMessageId != null) return;
-    if (state.status != MessageListStatus.loaded) return;
-    if (!_isCallForCurrentConversation(call)) return;
-    add(const SyncMessages());
-    final onScreen = {
-      for (final m in state.messages)
-        if (m is Call && m.sessionId == call.sessionId && m.id > 0) m.id,
-    };
-    for (final id in onScreen) {
-      unawaited(_rereadCallMessage(id));
-    }
-  }
-
-  /// Re-reads call message [id] and updates its bubble (by ID, through
-  /// [MessageReceived]).
-  Future<void> _rereadCallMessage(int id) async {
-    try {
-      final fresh = await CometChat.getMessageDetails(id);
-      if (isClosed || fresh is! Call) return;
-      if (fresh.category.isEmpty) fresh.category = MessageCategoryConstants.call;
-      add(MessageReceived(fresh));
-    } catch (_) {}
-  }
-
   /// Handle call message
   ///
   /// Dispatches MessageReceived event for call messages that belong

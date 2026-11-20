@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cometchat_chat_uikit/convokit.dart' as ck;
 import '../../../../src/adapters/cometchat_message_adapter.dart';
 import '../../../../src/adapters/cometchat_sdk_adapter.dart';
-import 'package:intl/intl.dart';
 import '../../../../shared_ui/cometchat_uikit_shared.dart';
 import '../../../../shared_ui/cometchat_uikit_shared.dart' as cc;
 import '../../extensions/extension_constants.dart';

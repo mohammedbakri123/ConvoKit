@@ -1722,13 +1722,6 @@ class ConversationsBloc extends Bloc<ConversationsEvent, ConversationsState>
     _refreshSingleConversation(call);
   }
 
-  /// A call that started or stopped ringing, on either side, from the Calls
-  /// SDK (ringing v2, Android and iOS).
-  void _handleCallActivity(Call call) {
-    if (isClosed || !_updateOnCallActivities) return;
-    _refreshSingleConversation(call);
-  }
-
   /// A call this device placed, accepted, declined or ended (the UI Kit's
   /// call events), as Android's conversations view model hears them.
   void _handleCCCall(Call call) {
