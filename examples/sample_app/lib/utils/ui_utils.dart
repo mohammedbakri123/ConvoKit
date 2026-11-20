@@ -1,4 +1,4 @@
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 import 'package:flutter/material.dart';
 
 void removeFocus(BuildContext context, FocusNode focusNode) {

@@ -1,4 +1,4 @@
-import '../../../shared_ui/cometchat_uikit_shared.dart';
+import '../../../shared_ui/convokit_uikit_shared.dart';
 
 ///An abstract class which holds the logic for searching in different lists
 abstract class CometChatSearchListController<T1, T2>

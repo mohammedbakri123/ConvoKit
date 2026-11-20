@@ -1,4 +1,4 @@
-import '../../../../cometchat_uikit_shared.dart';
+import '../../../../convokit_uikit_shared.dart';
 import 'package:flutter/widgets.dart';
 
 abstract class ConvoKitMessageListControllerProtocol

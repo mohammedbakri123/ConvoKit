@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../../cometchat_uikit_shared.dart';
+import '../../../../../../convokit_uikit_shared.dart';
 
 ///[ConvoKitStatusIndicator] is a widget that is used to indicate the online status of a [User]
 /// ```dart

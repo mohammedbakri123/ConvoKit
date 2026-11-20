@@ -1,4 +1,4 @@
-import '../../../cometchat_chat_uikit.dart';
+import '../../../convokit_uikit.dart';
 import '../../../shared_ui/src/logging/cometchat_log.dart';
 
 ///[ExtensionModerator] is an utility class that scans for information of applied extensions inside the metadata of a [BaseMessage]

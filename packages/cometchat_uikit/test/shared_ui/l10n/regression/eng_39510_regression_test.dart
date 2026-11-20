@@ -21,7 +21,7 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 
-const String _barrel = 'lib/cometchat_chat_uikit.dart';
+const String _barrel = 'lib/convokit_uikit.dart';
 const String _packagePrefix = 'package:convokit/';
 
 /// Strips `//` and `/* */` comments, so commented-out code and doc samples

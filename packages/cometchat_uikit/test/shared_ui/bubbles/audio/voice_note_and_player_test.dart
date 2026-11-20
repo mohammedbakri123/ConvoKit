@@ -13,7 +13,7 @@ library;
 
 import 'dart:io';
 
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 // The waveform is an internal widget of the audio player: not exported, but
 // it is the thing the seek gesture and the bar colours live on.
 import 'package:convokit/shared_ui/src/clean_architecture/presentation/views/bubbles/audio_bubble/gesture_waveform.dart';

@@ -9,7 +9,7 @@ library;
 
 import 'dart:async';
 
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

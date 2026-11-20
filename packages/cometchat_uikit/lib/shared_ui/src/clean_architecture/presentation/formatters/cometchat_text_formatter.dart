@@ -5,7 +5,7 @@ import 'formatter.dart';
 import 'attributed_text.dart';
 import '../theme/theme.dart';
 import '../../data/models/suggestion_list_item.dart';
-import '../../../../cometchat_uikit_shared.dart'
+import '../../../../convokit_uikit_shared.dart'
     show BubbleAlignment, AssetConstants, UIConstants;
 
 ///[CometChatTextFormatter] is an abstract class which is used to format the text

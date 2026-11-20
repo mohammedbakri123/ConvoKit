@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart' hide Action;
-import '../../../../cometchat_chat_uikit.dart';
+import '../../../../convokit_uikit.dart';
 import 'action_type_constants.dart';
 
 /// Utility class for conversation-related operations.

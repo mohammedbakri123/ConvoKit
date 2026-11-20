@@ -8,7 +8,7 @@
 ///   flutter test test/chat_ui/message_composer/composer_audio_recording_test.dart
 library;
 
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

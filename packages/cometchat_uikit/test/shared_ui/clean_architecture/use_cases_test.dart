@@ -11,7 +11,7 @@
 ///   flutter test test/shared_ui/clean_architecture/use_cases_test.dart
 library;
 
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 // The barrel exports a different `GetMessagesUseCase` (the chat_ui message
 // list's own), and the Params classes are not exported at all, so the
 // clean-architecture use cases are imported by path under a prefix.

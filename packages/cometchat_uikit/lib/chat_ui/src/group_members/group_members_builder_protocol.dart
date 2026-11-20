@@ -1,4 +1,4 @@
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 
 ///[GroupMembersBuilderProtocol] is an interface that defines the structure for fetching the group members.
 ///It provides a generic [requestBuilder] property and methods [getRequest] and [getSearchRequest] that needs to be overridden.

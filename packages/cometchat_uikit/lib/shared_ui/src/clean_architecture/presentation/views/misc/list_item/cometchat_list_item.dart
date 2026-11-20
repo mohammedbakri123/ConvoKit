@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../../cometchat_uikit_shared.dart';
+import '../../../../../../convokit_uikit_shared.dart';
 
 ///[ConvoKitListItem] is a top level container widget
 ///used internally for displaying each item in components like `ConvoKitUsers`, `ConvoKitGroups`, `ConvoKitConversations`, `ConvoKitGroupMembers`

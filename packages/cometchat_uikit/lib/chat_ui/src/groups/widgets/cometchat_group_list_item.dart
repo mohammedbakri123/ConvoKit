@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../cometchat_chat_uikit.dart';
+import '../../../../convokit_uikit.dart';
 
 /// [CometChatGroupListItem] is a dedicated widget for displaying a single group list item.
 ///

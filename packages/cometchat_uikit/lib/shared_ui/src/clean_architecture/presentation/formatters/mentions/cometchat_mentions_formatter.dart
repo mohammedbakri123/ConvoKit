@@ -12,7 +12,7 @@ import '../../../domain/events/ui_events/cometchat_ui_events.dart';
 import '../../theme/theme.dart';
 import 'cometchat_mentions_style.dart';
 import '../../../../logging/cometchat_log.dart';
-import '../../../../../cometchat_uikit_shared.dart'
+import '../../../../../convokit_uikit_shared.dart'
     show
         BubbleAlignment,
         OnError,

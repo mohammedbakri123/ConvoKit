@@ -9,7 +9,7 @@
 ///   flutter test test/shared_ui/formatters/mentions_formatter_test.dart
 library;
 
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

@@ -1,4 +1,4 @@
-import '../../../cometchat_uikit_shared.dart';
+import '../../../convokit_uikit_shared.dart';
 import 'package:flutter/material.dart';
 
 ///[ConvoKitThemeHelper] is a class that gives the styling to the text displayed in the buttons

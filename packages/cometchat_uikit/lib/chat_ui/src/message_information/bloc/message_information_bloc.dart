@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../shared_ui/cometchat_uikit_shared.dart';
+import '../../../../shared_ui/convokit_uikit_shared.dart';
 import '../di/message_information_service_locator.dart';
 import '../domain/usecases/fetch_message_receipts_usecase.dart';
 import 'message_information_event.dart';

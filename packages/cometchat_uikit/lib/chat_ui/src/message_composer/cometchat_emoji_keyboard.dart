@@ -1,7 +1,7 @@
 import 'package:convokit/chat_ui/src/constants/emoji_category.dart';
 import 'package:flutter/material.dart';
 
-import '../../../cometchat_chat_uikit.dart';
+import '../../../convokit_uikit.dart';
 
 /// Public function to show emoji keyboard, returns the tapped emoji
 /// Opens as a small bottom sheet that doesn't cover the message overlay

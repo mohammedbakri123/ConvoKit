@@ -1,5 +1,5 @@
 import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
-import '../../../../../cometchat_uikit_shared.dart'
+import '../../../../../convokit_uikit_shared.dart'
     show MessageTypeConstants, MessageCategoryConstants, ModelFieldConstants;
 import '../interactive_elements/element_entity.dart';
 

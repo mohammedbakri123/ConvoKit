@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../../../../../shared_ui/cometchat_uikit_shared.dart';
+import '../../../../../shared_ui/convokit_uikit_shared.dart';
 
 /// Enum representing the status of the message header
 enum MessageHeaderStatus { initial, loading, loaded, error }

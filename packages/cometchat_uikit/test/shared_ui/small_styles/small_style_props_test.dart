@@ -9,7 +9,7 @@
 ///   flutter test test/shared_ui/small_styles/small_style_props_test.dart
 library;
 
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 import 'package:convokit/chat_ui/src/message_composer/widgets/message_composer_suggestion_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

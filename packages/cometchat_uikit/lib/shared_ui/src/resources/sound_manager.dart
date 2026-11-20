@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-import '../../cometchat_uikit_shared.dart';
+import '../../convokit_uikit_shared.dart';
 import '../logging/cometchat_log.dart';
 import '../clean_architecture/core/utils/platform_utils/platform_file_utils.dart'
     as platform;

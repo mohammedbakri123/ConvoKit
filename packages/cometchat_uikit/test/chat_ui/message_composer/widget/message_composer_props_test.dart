@@ -17,7 +17,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 import 'package:convokit/chat_ui/src/message_composer/widgets/message_composer_suggestion_list.dart';
 import 'package:convokit/chat_ui/src/message_composer/widgets/message_composer_send_button.dart';
 import 'package:convokit/chat_ui/src/message_composer/widgets/message_composer_secondary_buttons.dart';

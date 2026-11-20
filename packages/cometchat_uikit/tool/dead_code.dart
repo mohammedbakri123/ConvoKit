@@ -38,7 +38,7 @@ import 'dart:convert';
 import 'dart:io';
 
 const _entryPoints = <String>[
-  'lib/cometchat_chat_uikit.dart',
+  'lib/convokit_uikit.dart',
   'lib/cometchat_calls_uikit.dart',
   'lib/cometchat_chat_uikit_web.dart',
 ];

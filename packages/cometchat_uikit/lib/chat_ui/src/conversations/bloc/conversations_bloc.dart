@@ -6,7 +6,7 @@ import '../di/conversations_service_locator.dart';
 import 'conversations_event.dart';
 import 'conversations_state.dart';
 import '../utils/conversation_tier_ordering.dart';
-import '../../../../shared_ui/cometchat_uikit_shared.dart';
+import '../../../../shared_ui/convokit_uikit_shared.dart';
 import '../../shared/list_base.dart';
 import '../conversations_builder_protocol.dart';
 import '../../../../shared_ui/src/logging/cometchat_log.dart';

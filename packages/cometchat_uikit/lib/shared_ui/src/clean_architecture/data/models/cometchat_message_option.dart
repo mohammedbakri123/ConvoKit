@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
-import '../../../../cometchat_uikit_shared.dart'
+import '../../../../convokit_uikit_shared.dart'
     show
         ConvoKitMessageListControllerProtocol,
         ConvoKitMessageOptionSheetStyle,

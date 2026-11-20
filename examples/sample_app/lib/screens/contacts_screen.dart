@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:convokit/cometchat_chat_uikit.dart';
-import 'package:convokit/cometchat_chat_uikit.dart' as cc;
+import 'package:convokit/convokit_uikit.dart';
+import 'package:convokit/convokit_uikit.dart' as cc;
 import 'messages_screen.dart';
 import 'join_protected_group_screen.dart';
 

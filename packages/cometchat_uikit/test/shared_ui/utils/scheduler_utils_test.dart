@@ -14,7 +14,7 @@
 ///   flutter test test/shared_ui/utils/scheduler_utils_test.dart
 library;
 
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 // The initializer ConvoKitUIKit.init calls. It has to be this one:
 // SchedulerUtils once read a second database copy that nothing filled, and
 // a test that initialised that copy directly hid it.

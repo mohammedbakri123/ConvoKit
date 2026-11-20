@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 
 ///[ConvoKitMessageComposerStyle] is a data class that has styling-related properties
 ///to customize the appearance of [ConvoKitMessageComposer]

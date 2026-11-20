@@ -1,6 +1,6 @@
 // Foundation tests for AttachmentUtils (multiple-attachments feature, Part A).
 
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Attachment _att(String mime, {String name = 'f', String ext = 'x'}) =>

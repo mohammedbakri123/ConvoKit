@@ -12,7 +12,7 @@ library;
 import 'dart:async';
 import 'dart:io';
 
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../helpers/fake_video_player_platform.dart';

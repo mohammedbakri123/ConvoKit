@@ -1,4 +1,4 @@
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 
 ///[ThumbnailGenerationConfiguration] configured the v5 thumbnail generation extension. No v6 API accepts it:
 /// the extension is enabled from the CometChat Dashboard, and the

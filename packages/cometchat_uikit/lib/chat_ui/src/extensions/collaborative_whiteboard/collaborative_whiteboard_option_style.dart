@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../cometchat_chat_uikit.dart';
+import '../../../../convokit_uikit.dart';
 
 ///[CollaborativeWhiteboardOptionStyle] is a data class that has styling-related properties
 ///to customize the appearance of the option in the attachment options menu for the `CollaborativeWhiteBoardExtension`

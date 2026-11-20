@@ -1,4 +1,4 @@
-import '../../../../../../cometchat_uikit_shared.dart';
+import '../../../../../../convokit_uikit_shared.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';

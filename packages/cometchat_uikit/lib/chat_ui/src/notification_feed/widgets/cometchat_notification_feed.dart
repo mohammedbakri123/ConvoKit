@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 
 /// A full-screen notification feed component that displays campaign/promotional
 /// notifications in a scrollable list with category-based filtering, timestamp

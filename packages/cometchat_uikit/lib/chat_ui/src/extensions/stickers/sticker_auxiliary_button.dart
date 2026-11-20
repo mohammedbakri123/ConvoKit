@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../cometchat_chat_uikit.dart';
+import '../../../../convokit_uikit.dart';
 import '../../../../shared_ui/src/clean_architecture/core/utils/ui_event_target.dart';
 
 ///[StickerAuxiliaryButton] is the widget that represents the `StickersExtension`

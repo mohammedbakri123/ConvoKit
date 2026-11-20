@@ -1,4 +1,4 @@
-import '../../../../../cometchat_uikit_shared.dart'
+import '../../../../../convokit_uikit_shared.dart'
     show UIElementTypeConstants, ModelFieldConstants;
 import 'element_entity.dart';
 

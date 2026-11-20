@@ -26,7 +26,7 @@ import 'package:convokit/chat_ui/src/conversations/domain/usecases/get_conversat
 import 'package:convokit/chat_ui/src/conversations/domain/usecases/get_logged_in_user_usecase.dart';
 import 'package:convokit/chat_ui/src/conversations/domain/usecases/load_more_conversations_usecase.dart';
 import 'package:convokit/chat_ui/src/conversations/domain/usecases/mark_as_delivered_usecase.dart';
-import 'package:convokit/cometchat_chat_uikit.dart'
+import 'package:convokit/convokit_uikit.dart'
     show ConvoKitConversationEvents;
 import 'package:convokit/shared_ui/src/clean_architecture/core/result.dart';
 import 'package:convokit/src/chat_sdk_listeners.dart';

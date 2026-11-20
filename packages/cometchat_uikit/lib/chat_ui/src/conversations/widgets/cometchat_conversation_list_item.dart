@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../cometchat_chat_uikit.dart';
+import '../../../../convokit_uikit.dart';
 import '../utils/status_indicator_helper.dart';
 import '../utils/conversation_utils.dart' as conv_utils;
 import '../utils/conversation_subtitle_utils.dart';

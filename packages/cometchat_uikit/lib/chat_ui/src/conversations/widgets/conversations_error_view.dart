@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../../../../cometchat_chat_uikit.dart';
-import '../../../../cometchat_chat_uikit.dart' as cc;
+import '../../../../convokit_uikit.dart';
+import '../../../../convokit_uikit.dart' as cc;
 import '../../../../shared_ui/src/logging/cometchat_log.dart';
 
 /// A widget that displays the error state for the conversations list.

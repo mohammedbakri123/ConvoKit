@@ -1,4 +1,4 @@
-import '../../../../../../cometchat_chat_uikit.dart';
+import '../../../../../../convokit_uikit.dart';
 
 /// Repository interface for message information operations.
 ///

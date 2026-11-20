@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import '../../../../../../shared_ui/cometchat_uikit_shared.dart';
+import '../../../../../../shared_ui/convokit_uikit_shared.dart';
 
 /// Style configuration for the rich text formatting toolbar
 @immutable

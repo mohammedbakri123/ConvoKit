@@ -1,4 +1,4 @@
-import '../../../../../cometchat_uikit_shared.dart'
+import '../../../../../convokit_uikit_shared.dart'
     show UIElementTypeConstants, ModelFieldConstants;
 import 'base_input_element.dart';
 import 'text_input_placeholder.dart';

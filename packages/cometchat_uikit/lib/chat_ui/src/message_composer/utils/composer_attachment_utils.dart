@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import '../../../../shared_ui/cometchat_uikit_shared.dart';
+import '../../../../shared_ui/convokit_uikit_shared.dart';
 
 /// Utility class for message composer attachment options.
 /// These methods are only used by the composer.

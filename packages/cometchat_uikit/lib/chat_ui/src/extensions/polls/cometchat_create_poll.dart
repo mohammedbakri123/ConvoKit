@@ -1,7 +1,7 @@
 import 'package:convokit/src/adapters/cometchat_sdk_adapter.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 import '../../../../shared_ui/src/logging/cometchat_log.dart';
 
 ///[CometChatCreatePoll] is a widget used to create a poll bubble

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../../../../shared_ui/cometchat_uikit_shared.dart';
+import '../../../../../../shared_ui/convokit_uikit_shared.dart';
 import '../../../../../../shared_ui/src/rich_text_formatting/domain/entities/format_type.dart';
 import 'rich_text_editing_controller.dart';
 import 'segment_composer_controller.dart';

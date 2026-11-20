@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../src/adapters/cometchat_sdk_adapter.dart';
-import '../../../../shared_ui/cometchat_uikit_shared.dart';
+import '../../../../shared_ui/convokit_uikit_shared.dart';
 import '../di/message_header_service_locator.dart';
 import '../domain/usecases/get_user_usecase.dart';
 import '../domain/usecases/get_group_usecase.dart';

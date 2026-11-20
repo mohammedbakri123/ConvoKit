@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
-import '../../cometchat_uikit_shared.dart';
+import '../../convokit_uikit_shared.dart';
 import '../../../src/chat_auth_gateway.dart';
 import '../utils/sdk_methods.dart' as legacy_sdk;
 import '../utils/timezone_utils/data/latest.dart';

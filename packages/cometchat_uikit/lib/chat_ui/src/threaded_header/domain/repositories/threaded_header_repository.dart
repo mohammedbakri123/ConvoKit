@@ -1,4 +1,4 @@
-import '../../../../../cometchat_chat_uikit.dart';
+import '../../../../../convokit_uikit.dart';
 
 /// Repository interface for threaded header data operations.
 /// Abstracts template resolution for testability.

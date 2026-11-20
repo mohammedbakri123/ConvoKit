@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import '../../../cometchat_uikit_shared.dart';
+import '../../../convokit_uikit_shared.dart';
 
 /// class for handling call events.
 ///

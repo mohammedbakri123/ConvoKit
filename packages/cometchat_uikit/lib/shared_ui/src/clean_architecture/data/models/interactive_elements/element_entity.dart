@@ -1,4 +1,4 @@
-import '../../../../../cometchat_uikit_shared.dart'
+import '../../../../../convokit_uikit_shared.dart'
     show ModelFieldConstants, UIElementTypeConstants;
 import 'label_element.dart';
 import '../interactive_elements/button_element.dart';

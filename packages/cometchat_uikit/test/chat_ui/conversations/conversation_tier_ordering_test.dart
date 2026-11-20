@@ -3,7 +3,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:convokit/chat_ui/src/conversations/utils/conversation_tier_ordering.dart';
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 
 Conversation _row(String id, {DateTime? pinnedAt, String? pinnedBy}) {
   final conversation = Conversation(

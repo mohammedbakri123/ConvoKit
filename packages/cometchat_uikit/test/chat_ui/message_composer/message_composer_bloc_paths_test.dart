@@ -18,7 +18,7 @@ library;
 
 import 'dart:async';
 
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 import 'package:convokit/shared_ui/src/clean_architecture/core/constants/enums.dart'
     as core_enums;
 import 'package:flutter/services.dart';

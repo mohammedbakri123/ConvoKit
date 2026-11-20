@@ -1,4 +1,4 @@
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 import 'package:sample_app/app_credentials.dart';
 
 /// The [UIKitSettings] for every `ConvoKitUIKit.init` in this app, built

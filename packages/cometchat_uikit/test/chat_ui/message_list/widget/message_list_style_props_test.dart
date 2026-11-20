@@ -6,7 +6,7 @@
 // Reading a field back off the style object would prove nothing about wiring.
 
 import 'package:bloc_test/bloc_test.dart';
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 import 'package:convokit/chat_ui/src/message_list/widgets/cometchat_message_action_overlay.dart';
 import 'package:cometchat_sdk/cometchat_sdk.dart' as sdk show Action;
 import 'package:flutter/material.dart';

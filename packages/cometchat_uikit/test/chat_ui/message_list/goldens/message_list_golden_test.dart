@@ -15,7 +15,7 @@ library;
 import 'dart:io' show Platform;
 
 import 'package:alchemist/alchemist.dart';
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 import 'package:flutter/material.dart';
 
 /// GitHub Actions sets CI=true. Platform goldens use the system font and

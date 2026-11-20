@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../../shared_ui/cometchat_uikit_shared.dart';
+import '../../../../../../shared_ui/convokit_uikit_shared.dart';
 import '../../../../../../shared_ui/src/rich_text_formatting/domain/entities/format_type.dart';
 import 'rich_text_editing_controller.dart';
 

@@ -4,7 +4,7 @@ import 'cometchat_text_formatter.dart';
 import 'attributed_text.dart';
 import '../theme/theme.dart';
 import '../../core/constants/regex_constants.dart';
-import '../../../../cometchat_uikit_shared.dart' show BubbleAlignment;
+import '../../../../convokit_uikit_shared.dart' show BubbleAlignment;
 import 'package:url_launcher/url_launcher.dart';
 
 ///[CometChatPhoneNumberFormatter] is a class which is used to style the phone number text

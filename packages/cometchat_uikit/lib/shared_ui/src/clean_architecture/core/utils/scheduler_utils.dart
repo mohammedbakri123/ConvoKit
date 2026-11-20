@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 import '../../../logging/cometchat_log.dart';
 import '../../data/models/interactive_message/scheduler_message.dart'
     show TimeRange, SchedulerMessage;
-import '../../../../cometchat_uikit_shared.dart'
+import '../../../../convokit_uikit_shared.dart'
     show Translations, ConvoKitUIKit;
 
 enum TimeFormat { twelveHour, twentyFourHour }

@@ -4,7 +4,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:cometchat_sdk/cometchat_sdk.dart';
 
-import 'package:convokit/cometchat_chat_uikit.dart'
+import 'package:convokit/convokit_uikit.dart'
     show CustomUIPosition;
 import 'package:convokit/chat_ui/src/message_composer/bloc/message_composer_bloc.dart';
 import 'package:convokit/chat_ui/src/message_composer/bloc/message_composer_event.dart';

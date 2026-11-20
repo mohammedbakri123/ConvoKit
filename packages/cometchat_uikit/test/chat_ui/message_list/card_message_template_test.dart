@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:convokit/shared_ui/cometchat_uikit_shared.dart';
+import 'package:convokit/shared_ui/convokit_uikit_shared.dart';
 
 // ---------------------------------------------------------------------------
 // Fakes

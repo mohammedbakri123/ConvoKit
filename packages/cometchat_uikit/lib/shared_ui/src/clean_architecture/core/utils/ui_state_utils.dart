@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../cometchat_uikit_shared.dart'
+import '../../../../convokit_uikit_shared.dart'
     show User, Group, UIConstants, Translations;
 import '../constants/asset_constants.dart';
 import '../../presentation/theme/theme/cometchat_theme_helper.dart';

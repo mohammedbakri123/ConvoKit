@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 
 ///[CometChatCollaborativeBubble] a widget that provides access to collaborative document
 ///where users can work on common document

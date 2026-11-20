@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../../cometchat_uikit_shared.dart';
+import '../../../../../../convokit_uikit_shared.dart';
 
 ///[CardStyle] is a model class for card widget. It contains the styles for the card widget.
 ///

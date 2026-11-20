@@ -13,14 +13,14 @@ void main() {
       );
     });
 
-    test('lib/cometchat_chat_uikit.dart does not export ai_assistant_chat_history', () {
-      final barrel = File('lib/cometchat_chat_uikit.dart');
+    test('lib/convokit_uikit.dart does not export ai_assistant_chat_history', () {
+      final barrel = File('lib/convokit_uikit.dart');
       expect(barrel.existsSync(), isTrue);
       final content = barrel.readAsStringSync();
       expect(
         content.contains('ai_assistant_chat_history'),
         isFalse,
-        reason: 'cometchat_chat_uikit.dart must not export ai_assistant_chat_history',
+        reason: 'convokit_uikit.dart must not export ai_assistant_chat_history',
       );
     });
 
@@ -58,34 +58,34 @@ void main() {
       }
     });
 
-    test('lib/shared_ui/cometchat_uikit_shared.dart does not export AI views or option sheet', () {
-      final sharedBarrel = File('lib/shared_ui/cometchat_uikit_shared.dart');
+    test('lib/shared_ui/convokit_uikit_shared.dart does not export AI views or option sheet', () {
+      final sharedBarrel = File('lib/shared_ui/convokit_uikit_shared.dart');
       expect(sharedBarrel.existsSync(), isTrue);
       final content = sharedBarrel.readAsStringSync();
       expect(
         content.contains('ai_smart_replies'),
         isFalse,
-        reason: 'cometchat_uikit_shared.dart must not export ai_smart_replies',
+        reason: 'convokit_uikit_shared.dart must not export ai_smart_replies',
       );
       expect(
         content.contains('ai_conversation_starter'),
         isFalse,
-        reason: 'cometchat_uikit_shared.dart must not export ai_conversation_starter',
+        reason: 'convokit_uikit_shared.dart must not export ai_conversation_starter',
       );
       expect(
         content.contains('ai_conversation_summary'),
         isFalse,
-        reason: 'cometchat_uikit_shared.dart must not export ai_conversation_summary',
+        reason: 'convokit_uikit_shared.dart must not export ai_conversation_summary',
       );
       expect(
         content.contains('ai_option_sheet'),
         isFalse,
-        reason: 'cometchat_uikit_shared.dart must not export ai_option_sheet',
+        reason: 'convokit_uikit_shared.dart must not export ai_option_sheet',
       );
       expect(
         content.contains('cometchat_stream_service.dart'),
         isFalse,
-        reason: 'cometchat_uikit_shared.dart must not export cometchat_stream_service',
+        reason: 'convokit_uikit_shared.dart must not export cometchat_stream_service',
       );
     });
 

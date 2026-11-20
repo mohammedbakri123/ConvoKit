@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 
 ///[MessageTranslationBubble] shows a text message's content with its
 ///translation underneath: the original [child], a separator, the

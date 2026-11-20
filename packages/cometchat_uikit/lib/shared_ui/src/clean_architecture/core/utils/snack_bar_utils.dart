@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../cometchat_uikit_shared.dart' show SnackBarConfiguration;
+import '../../../../convokit_uikit_shared.dart' show SnackBarConfiguration;
 
 class SnackBarUtils {
   static void show(

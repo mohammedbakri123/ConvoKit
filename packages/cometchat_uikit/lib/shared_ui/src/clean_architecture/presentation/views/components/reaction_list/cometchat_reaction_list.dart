@@ -1,7 +1,7 @@
 import "../../../../clean_architecture.dart";
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../../cometchat_uikit_shared.dart'
+import '../../../../../../convokit_uikit_shared.dart'
     show ListItemStyle, ConvoKitListItem, ConvoKitAvatarStyle;
 
 /// [CometChatReactionList] is a StatefulWidget that displays the list of reactions

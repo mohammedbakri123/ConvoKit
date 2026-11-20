@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../cometchat_chat_uikit.dart';
-import '../../../../cometchat_chat_uikit.dart' as cc;
+import '../../../../convokit_uikit.dart';
+import '../../../../convokit_uikit.dart' as cc;
 
 /// A widget that displays the empty state for the conversations list.
 ///

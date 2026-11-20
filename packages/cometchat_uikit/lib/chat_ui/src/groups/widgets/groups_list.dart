@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../cometchat_chat_uikit.dart';
+import '../../../../convokit_uikit.dart';
 import '../../shared/list_options_menu.dart';
 
 /// A widget that displays the list of groups with state handling and pagination.

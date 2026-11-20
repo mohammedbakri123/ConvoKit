@@ -20,7 +20,7 @@
 library;
 
 import 'package:bloc_test/bloc_test.dart';
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 // The SDK exports none of these; see the library comment. Both files exist in
 // the local SDK and in the hosted 5.0.7.
 // ignore: implementation_imports

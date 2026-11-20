@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../../cometchat_uikit_shared.dart';
+import '../../../../../../convokit_uikit_shared.dart';
 
 ///[CometChatAttachmentOptionSheet] is a widget that displays a list of options to choose from in a bottom sheet.
 /// ```dart

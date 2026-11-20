@@ -20,7 +20,7 @@ import 'dart:async';
 // classes (group_members' and groups'), so this one has to be named.
 import 'package:convokit/chat_ui/src/group_members/domain/usecases/get_logged_in_user_usecase.dart'
     as gm;
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

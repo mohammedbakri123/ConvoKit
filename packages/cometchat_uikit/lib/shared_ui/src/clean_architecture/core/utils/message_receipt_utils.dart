@@ -1,4 +1,4 @@
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 
 ///[MessageReceiptUtils] is a utility class to determine receipt status
 class MessageReceiptUtils {

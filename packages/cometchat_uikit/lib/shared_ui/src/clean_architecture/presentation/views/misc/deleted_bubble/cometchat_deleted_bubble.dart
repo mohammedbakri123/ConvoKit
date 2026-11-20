@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../../cometchat_uikit_shared.dart';
+import '../../../../../../convokit_uikit_shared.dart';
 
 ///[ConvoKitDeletedBubble] is a widget that provides a placeholder for messages thave been deleted
 ///

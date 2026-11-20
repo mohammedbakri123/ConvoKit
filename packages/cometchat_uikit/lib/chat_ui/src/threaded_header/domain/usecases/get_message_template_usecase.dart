@@ -1,4 +1,4 @@
-import '../../../../../cometchat_chat_uikit.dart';
+import '../../../../../convokit_uikit.dart';
 
 /// Use case for resolving a message template by category and type.
 class GetMessageTemplateUseCase {

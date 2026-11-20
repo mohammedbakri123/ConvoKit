@@ -1,7 +1,7 @@
 import 'package:convokit/src/adapters/cometchat_sdk_adapter.dart';
 import 'dart:async';
 
-import '../../../../../cometchat_chat_uikit.dart';
+import '../../../../../convokit_uikit.dart';
 
 /// Exception thrown when message information data source operations fail
 class MessageInformationDataSourceException implements Exception {

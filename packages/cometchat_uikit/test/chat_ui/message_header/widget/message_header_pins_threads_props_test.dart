@@ -27,7 +27,7 @@
 library;
 
 import 'package:bloc_test/bloc_test.dart';
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 // The SDK exports none of these. They are the seam the pinned-messages screen
 // and the thread bell leave: neither takes an injectable data source, so the
 // fake has to sit where the SDK resolves its repositories. All four files

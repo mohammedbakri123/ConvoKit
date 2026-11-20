@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../src/adapters/cometchat_sdk_adapter.dart';
-import '../../../../shared_ui/cometchat_uikit_shared.dart';
+import '../../../../shared_ui/convokit_uikit_shared.dart';
 
 /// Style class for the Flag Message dialog.
 class CometChatFlagMessageStyle

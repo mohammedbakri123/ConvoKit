@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 
 /// Transfer Ownership screen — select a member to transfer group ownership to.
 /// Uses ConvoKitGroupMembers with single selection mode.

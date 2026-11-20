@@ -5,7 +5,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../../../shared_ui/cometchat_uikit_shared.dart';
+import '../../../shared_ui/convokit_uikit_shared.dart';
 
 /// Opens [options] as a menu anchored on the row [rowContext] belongs to, and
 /// runs the chosen option's `onClick` once, after the menu has closed. Opens

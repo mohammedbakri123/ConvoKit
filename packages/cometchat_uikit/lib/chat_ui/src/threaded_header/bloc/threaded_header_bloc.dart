@@ -1,7 +1,7 @@
 import 'package:convokit/src/adapters/cometchat_sdk_adapter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../shared_ui/cometchat_uikit_shared.dart';
+import '../../../../shared_ui/convokit_uikit_shared.dart';
 import '../../../../shared_ui/src/clean_architecture/core/constants/enums.dart'
     as core_enums;
 import 'threaded_header_event.dart';

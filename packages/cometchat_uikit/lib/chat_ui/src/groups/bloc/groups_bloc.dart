@@ -4,7 +4,7 @@ import '../domain/usecases/get_groups_usecase.dart';
 import '../domain/usecases/load_more_groups_usecase.dart';
 import '../domain/usecases/get_logged_in_user_usecase.dart';
 import '../di/groups_service_locator.dart';
-import '../../../../shared_ui/cometchat_uikit_shared.dart';
+import '../../../../shared_ui/convokit_uikit_shared.dart';
 import '../../../../src/adapters/cometchat_sdk_adapter.dart';
 import '../../shared/list_base.dart';
 import 'groups_event.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:convokit/cometchat_chat_uikit.dart';
-import 'package:convokit/cometchat_chat_uikit.dart' as cc;
+import 'package:convokit/convokit_uikit.dart';
+import 'package:convokit/convokit_uikit.dart' as cc;
 import 'messages_screen.dart';
 
 /// Join Protected Group screen — shown as a bottom sheet for password groups.

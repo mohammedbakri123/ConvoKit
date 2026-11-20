@@ -1,6 +1,6 @@
 // import 'package:flutter/material.dart';
 //
-// import '../../../cometchat_uikit_shared.dart';
+// import '../../../convokit_uikit_shared.dart';
 //
 // class CometChatUserOption extends CometChatOptions {
 //   ///[onClick] call function which takes 2 parameters

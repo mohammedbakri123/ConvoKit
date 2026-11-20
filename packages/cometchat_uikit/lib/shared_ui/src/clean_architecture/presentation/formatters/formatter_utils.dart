@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'cometchat_text_formatter.dart';
 import 'attributed_text.dart';
 import '../theme/theme.dart';
-import '../../../../cometchat_uikit_shared.dart' show BubbleAlignment;
+import '../../../../convokit_uikit_shared.dart' show BubbleAlignment;
 import '../../../formatter/markdown/markdown_text_formatter.dart';
 
 ///[FormatterUtils] is an utility class which is used to style the text in the message bubble and the conversation subtitle

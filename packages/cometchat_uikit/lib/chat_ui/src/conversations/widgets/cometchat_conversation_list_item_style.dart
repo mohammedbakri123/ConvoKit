@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../cometchat_chat_uikit.dart';
+import '../../../../convokit_uikit.dart';
 
 /// Style configuration for [ConvoKitConversationListItem] component.
 ///

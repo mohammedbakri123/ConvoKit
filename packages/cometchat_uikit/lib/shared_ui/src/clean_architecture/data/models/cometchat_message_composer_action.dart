@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
-import '../../../../cometchat_uikit_shared.dart'
+import '../../../../convokit_uikit_shared.dart'
     show CometChatAttachmentOptionSheetStyle;
 
 ///[ConvoKitMessageComposerAction] is the type of menu items allowed to be displayed `ConvoKitMessageComposer`

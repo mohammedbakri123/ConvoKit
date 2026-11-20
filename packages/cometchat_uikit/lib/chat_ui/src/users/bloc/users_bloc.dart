@@ -5,7 +5,7 @@ import '../domain/domain.dart';
 import '../di/users_service_locator.dart';
 import 'users_event.dart';
 import 'users_state.dart';
-import '../../../../shared_ui/cometchat_uikit_shared.dart';
+import '../../../../shared_ui/convokit_uikit_shared.dart';
 import '../../../../src/adapters/cometchat_sdk_adapter.dart';
 import '../../shared/list_base.dart';
 

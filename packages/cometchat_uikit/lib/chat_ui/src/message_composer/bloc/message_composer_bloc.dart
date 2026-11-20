@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../src/adapters/cometchat_sdk_adapter.dart';
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 import '../../../../shared_ui/src/logging/cometchat_log.dart';
 import '../../../../shared_ui/src/clean_architecture/core/utils/platform_utils/platform_file_utils.dart'
     as platform;

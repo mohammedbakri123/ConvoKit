@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../../cometchat_uikit_shared.dart';
+import '../../../../../../convokit_uikit_shared.dart';
 
 ///[ConvoKitBadge] is a widget to display a small amount of information about its a component like a count or status
 /// ```dart

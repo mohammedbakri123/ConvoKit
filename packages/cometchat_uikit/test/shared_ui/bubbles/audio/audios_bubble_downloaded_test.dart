@@ -22,7 +22,7 @@ library;
 import 'dart:async';
 import 'dart:io';
 
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 // The cache-bucket rule is internal to the Kit but is exactly what decides
 // where a downloaded attachment lives, so the seeding here has to use it
 // rather than re-implement it.

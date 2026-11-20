@@ -9,7 +9,7 @@
 // initialisation is required.
 
 import 'package:bloc_test/bloc_test.dart';
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 import 'package:convokit/chat_ui/src/message_list/widgets/cometchat_message_action_overlay.dart';
 import 'package:convokit/chat_ui/src/message_list/widgets/cometchat_message_swipe.dart';
 import 'package:convokit/chat_ui/src/message_list/widgets/cometchat_flag_message_dialog.dart';

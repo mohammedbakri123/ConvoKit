@@ -1,4 +1,4 @@
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 
 ///[ImageModerationConfiguration] is a data class that has configuration properties
 ///to customize the functionality and appearance of `ImageModerationExtension`

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../../cometchat_uikit_shared.dart';
+import '../../../../../../convokit_uikit_shared.dart';
 
 ///[CometChatCard] is a prebuilt widget which is used to display a card with title, subtitle, avatar and bottom view.
 ///

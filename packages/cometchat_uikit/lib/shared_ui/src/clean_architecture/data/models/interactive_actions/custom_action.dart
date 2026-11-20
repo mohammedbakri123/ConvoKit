@@ -1,4 +1,4 @@
-import '../../../../../cometchat_uikit_shared.dart' show ActionTypeConstants;
+import '../../../../../convokit_uikit_shared.dart' show ActionTypeConstants;
 import 'action_entity.dart';
 
 /// Represents a custom action in a chat application.

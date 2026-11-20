@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../cometchat_chat_uikit.dart';
-import '../../../cometchat_chat_uikit.dart' as cc;
+import '../../../convokit_uikit.dart';
+import '../../../convokit_uikit.dart' as cc;
 
 /// [ConvoKitGroupMembers] displays all members of a [Group] as a list.
 ///

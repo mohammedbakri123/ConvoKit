@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../cometchat_chat_uikit.dart';
-import '../../../../cometchat_chat_uikit.dart' as cc;
+import '../../../../convokit_uikit.dart';
+import '../../../../convokit_uikit.dart' as cc;
 
 /// [CometChatMessageInformation] is a widget which is used to display message information.
 ///

@@ -25,7 +25,7 @@ import 'package:convokit/chat_ui/src/message_list/domain/usecases/load_older_mes
 import 'package:convokit/chat_ui/src/message_list/domain/usecases/mark_as_delivered_usecase.dart';
 import 'package:convokit/chat_ui/src/message_list/domain/usecases/mark_as_read_usecase.dart';
 import 'package:convokit/chat_ui/src/message_list/domain/usecases/mark_as_unread_usecase.dart';
-import 'package:convokit/cometchat_chat_uikit.dart'
+import 'package:convokit/convokit_uikit.dart'
     show
         ConvoKitUIKit,
         MessageCategoryConstants,

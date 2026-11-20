@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../cometchat_chat_uikit.dart';
-import '../../../../cometchat_chat_uikit.dart' as cc;
+import '../../../../convokit_uikit.dart';
+import '../../../../convokit_uikit.dart' as cc;
 import '../utils/conversation_subtitle_utils.dart';
 
 /// A widget that displays the subtitle area for a conversation list item.

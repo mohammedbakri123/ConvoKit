@@ -64,14 +64,14 @@ void main() {
     });
 
     test('no public barrel re-exports package:cometchat_sdk', () {
-      final mainBarrel = File('lib/cometchat_chat_uikit.dart');
+      final mainBarrel = File('lib/convokit_uikit.dart');
       expect(mainBarrel.existsSync(), isTrue);
       final text = mainBarrel.readAsStringSync();
 
       expect(
         text.contains("export 'package:cometchat_sdk/cometchat_sdk.dart'"),
         isFalse,
-        reason: 'lib/cometchat_chat_uikit.dart must not re-export package:cometchat_sdk',
+        reason: 'lib/convokit_uikit.dart must not re-export package:cometchat_sdk',
       );
     });
   });

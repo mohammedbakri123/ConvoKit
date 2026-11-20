@@ -1,4 +1,4 @@
-import '../../../../../cometchat_uikit_shared.dart' show ModelFieldConstants;
+import '../../../../../convokit_uikit_shared.dart' show ModelFieldConstants;
 
 ///placeholder model for Text field
 class TextInputPlaceholder {

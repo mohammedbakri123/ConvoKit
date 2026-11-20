@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import "../../../../clean_architecture.dart";
-import '../../../../../../cometchat_uikit_shared.dart'
+import '../../../../../../convokit_uikit_shared.dart'
     show ConvoKitAvatarStyle, ConvoKitDateStyle, CometChatMessageReceiptStyle;
 
 ///[CometChatVideoBubbleStyle] is a data class that has styling-related properties

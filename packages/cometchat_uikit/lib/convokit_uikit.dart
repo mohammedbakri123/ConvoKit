@@ -123,7 +123,7 @@ export 'chat_ui/src/saved_messages/cometchat_saved_messages_style.dart';
 export 'chat_ui/src/extensions/extension.dart';
 
 //Shared UI Kit
-export 'shared_ui/cometchat_uikit_shared.dart';
+export 'shared_ui/convokit_uikit_shared.dart';
 
 //Message information
 export 'chat_ui/src/message_information/message_information.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../shared_ui/cometchat_uikit_shared.dart';
-import '../../../../shared_ui/cometchat_uikit_shared.dart' as cc;
+import '../../../../shared_ui/convokit_uikit_shared.dart';
+import '../../../../shared_ui/convokit_uikit_shared.dart' as cc;
 
 /// Utility class for building conversation subtitle widgets.
 /// These methods are only used by the conversations module.

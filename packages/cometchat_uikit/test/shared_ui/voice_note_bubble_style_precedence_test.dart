@@ -1,7 +1,7 @@
 // ignore_for_file: deprecated_member_use_from_same_package
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 
 void main() {
   const oldS = CometChatVoiceNoteBubbleStyle(playIconColor: Color(0xFF0000FF));

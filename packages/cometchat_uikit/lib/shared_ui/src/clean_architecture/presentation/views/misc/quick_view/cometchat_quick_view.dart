@@ -1,4 +1,4 @@
-import '../../../../../../cometchat_uikit_shared.dart';
+import '../../../../../../convokit_uikit_shared.dart';
 import 'package:flutter/material.dart';
 
 /// The [CometChatQuickView] widget is used to display a quick view with a title and an optional subtitle.

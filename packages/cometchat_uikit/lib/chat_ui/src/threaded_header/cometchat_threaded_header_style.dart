@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 
 ///[ConvoKitThreadedHeaderStyle] is a data class that has styling-related properties
 ///to customize the appearance of [ConvoKitThreadedHeader]

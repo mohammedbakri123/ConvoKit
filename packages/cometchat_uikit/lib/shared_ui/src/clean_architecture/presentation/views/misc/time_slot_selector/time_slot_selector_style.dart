@@ -1,4 +1,4 @@
-import '../../../../../../cometchat_uikit_shared.dart';
+import '../../../../../../convokit_uikit_shared.dart';
 import 'package:flutter/material.dart';
 
 class TimeSlotSelectorStyle extends BaseStyles {

@@ -9,7 +9,7 @@ import '../../presentation/theme/colors/cometchat_color_palette.dart';
 import '../../presentation/theme/typography/cometchat_typography.dart';
 import '../../presentation/theme/spacing/cometchat_spacing.dart';
 import '../../presentation/formatters/cometchat_text_formatter.dart';
-import '../../../../cometchat_uikit_shared.dart'
+import '../../../../convokit_uikit_shared.dart'
     show
         ConvoKitDateStyle,
         CometChatMessageReceiptStyle,

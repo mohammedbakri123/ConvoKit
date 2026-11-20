@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 
 /// The one-line message preview used by list surfaces that show messages out
 /// of their conversation — search results and saved messages.

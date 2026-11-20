@@ -1,7 +1,7 @@
 import 'package:convokit/src/adapters/cometchat_sdk_adapter.dart';
 import 'package:flutter/material.dart';
 
-import '../../../shared_ui/cometchat_uikit_shared.dart';
+import '../../../shared_ui/convokit_uikit_shared.dart';
 import '../../../shared_ui/src/clean_architecture/presentation/views/misc/message_preview_subtitle.dart';
 import '../../../shared_ui/src/clean_architecture/core/utils/thread_toast.dart';
 import 'cometchat_saved_messages_style.dart';

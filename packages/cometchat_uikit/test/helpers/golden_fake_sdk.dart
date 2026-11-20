@@ -7,7 +7,7 @@
 /// network. It is the same seam pinned_messages_props_test.dart uses.
 library;
 
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 // The SDK exports none of these; they are the only seam these screens leave.
 // ignore: implementation_imports
 import 'package:cometchat_sdk/src/bootstrap/sdk_registry.dart' as sdk;

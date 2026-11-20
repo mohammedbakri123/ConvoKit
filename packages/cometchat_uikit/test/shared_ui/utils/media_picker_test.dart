@@ -28,7 +28,7 @@
 ///   flutter test test/shared_ui/utils/media_picker_test.dart
 library;
 
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 // `PickedFile` is the UI Kit's own class here, not the deprecated

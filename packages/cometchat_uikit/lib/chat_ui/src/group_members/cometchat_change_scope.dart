@@ -1,4 +1,4 @@
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 import 'package:flutter/material.dart';
 
 ///[ConvoKitChangeScope] is a stateful widget which allows user to change the scope of a group member

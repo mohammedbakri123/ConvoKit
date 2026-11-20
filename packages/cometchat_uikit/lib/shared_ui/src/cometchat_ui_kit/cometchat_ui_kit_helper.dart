@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../shared_ui/cometchat_uikit_shared.dart' as ui_kit;
-import '../../../shared_ui/cometchat_uikit_shared.dart';
+import '../../../shared_ui/convokit_uikit_shared.dart' as ui_kit;
+import '../../../shared_ui/convokit_uikit_shared.dart';
 import '../clean_architecture/core/constants/enums.dart' as core_enums;
 
 ///[ConvoKitUIKitHelper] contains static methods for triggering local events

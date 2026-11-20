@@ -9,7 +9,7 @@ import 'dart:math';
 import 'package:convokit/chat_ui/src/conversations/utils/conversation_tier_ordering.dart';
 import 'package:convokit/chat_ui/src/conversations/utils/conversation_utils.dart'
     as chat_ui;
-import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/convokit_uikit.dart';
 import 'package:cometchat_sdk/cometchat_sdk.dart' as cc;
 import 'package:flutter_test/flutter_test.dart';
 

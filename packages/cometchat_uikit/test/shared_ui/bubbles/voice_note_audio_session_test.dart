@@ -12,7 +12,7 @@ library;
 
 import 'dart:io';
 
-import 'package:convokit/cometchat_chat_uikit.dart'
+import 'package:convokit/convokit_uikit.dart'
     show AudioBubbleState;
 import 'package:convokit/shared_ui/src/clean_architecture/core/constants/ui_kit_constants.dart';
 import 'package:convokit/shared_ui/src/clean_architecture/presentation/views/bubbles/audio_bubble/voice_note_audio_session.dart';

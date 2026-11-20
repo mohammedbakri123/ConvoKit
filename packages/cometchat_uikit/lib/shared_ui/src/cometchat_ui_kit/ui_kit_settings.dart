@@ -1,4 +1,4 @@
-import '../../../shared_ui/cometchat_uikit_shared.dart';
+import '../../../shared_ui/convokit_uikit_shared.dart';
 
 ///Used to set Ui kit level settings
 class UIKitSettings {

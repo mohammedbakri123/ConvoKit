@@ -1,4 +1,4 @@
-import '../../../../../cometchat_chat_uikit.dart';
+import '../../../../../convokit_uikit.dart';
 
 /// Data source for threaded header template resolution.
 abstract class ThreadedHeaderDataSource {

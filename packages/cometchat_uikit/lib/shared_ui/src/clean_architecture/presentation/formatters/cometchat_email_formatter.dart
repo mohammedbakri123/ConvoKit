@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../cometchat_uikit_shared.dart';
+import '../../../../convokit_uikit_shared.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 ///[CometChatEmailFormatter] is a class which is used to style the email text
