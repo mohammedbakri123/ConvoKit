@@ -97,7 +97,6 @@ SUITES=(
   "integration_test/suites/saved_messages_test.dart"
   "integration_test/suites/message_information_test.dart"
   "integration_test/suites/notification_feed_test.dart"
-  "integration_test/suites/ai_assistant_test.dart"
   "integration_test/suites/conversation_gap_test.dart"
   "integration_test/suites/accessibility_audit_test.dart"
 )

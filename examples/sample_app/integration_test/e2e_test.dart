@@ -46,7 +46,6 @@ library;
 // ---------------------------------------------------------------------------
 
 import 'suites/accessibility_audit_test.dart' as accessibility_audit_test;
-import 'suites/ai_assistant_test.dart' as ai_assistant_test;
 import 'suites/auth_test.dart' as auth_test;
 import 'suites/block_user_test.dart' as block_user_test;
 import 'suites/calls_test.dart' as calls_test;
@@ -100,7 +99,6 @@ import 'suites/users_test.dart' as users_test;
 
 void main() {
   accessibility_audit_test.main();
-  ai_assistant_test.main();
   auth_test.main();
   block_user_test.main();
   calls_test.main();

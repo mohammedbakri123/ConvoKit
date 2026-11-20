@@ -29,11 +29,10 @@ class _AddMembersScreenState extends State<AddMembersScreen> {
     if (!UsersServiceLocator.instance.isInitialized) {
       UsersServiceLocator.instance.setup();
     }
-    // Include AI agents (`@agentic`) alongside regular users so an agent can be
-    // added to a group for testing — the default user query excludes them.
+    // Exclude special roles; query default users for group membership.
     _usersBloc = UsersBloc(
       usersRequestBuilder: UsersRequestBuilder()
-        ..roles = ['default', AIConstants.aiRole],
+        ..roles = ['default'],
     );
     _usersBloc.add(const LoadUsers());
     _initLoggedInUser();

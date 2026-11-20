@@ -45,9 +45,6 @@ E2E-168,e2e,local,integration_test/suites/accessibility_audit_test.dart
 E2E-169,e2e,local,integration_test/suites/accessibility_audit_test.dart
 E2E-170,e2e,local,integration_test/suites/accessibility_audit_test.dart
 E2E-171,e2e,local,integration_test/suites/accessibility_audit_test.dart
-E2E-189,e2e,local,integration_test/suites/ai_assistant_test.dart
-E2E-190,e2e,local,integration_test/suites/ai_assistant_test.dart
-E2E-191,e2e,local,integration_test/suites/ai_assistant_test.dart
 E2E-001,e2e,local,integration_test/suites/auth_test.dart
 E2E-002,e2e,local,integration_test/suites/auth_test.dart
 E2E-003,e2e,local,integration_test/suites/auth_test.dart

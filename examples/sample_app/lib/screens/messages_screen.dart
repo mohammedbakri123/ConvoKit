@@ -11,8 +11,6 @@ class MessagesScreen extends StatefulWidget {
   final Group? group;
   final int? goToMessageId;
   final BaseMessage? parentMessage;
-  final bool isHistory;
-  final bool isNewChat;
 
   /// When true, the back button in the message header is hidden.
   /// Used in desktop split-pane layout where the screen is embedded.
@@ -34,8 +32,6 @@ class MessagesScreen extends StatefulWidget {
     this.group,
     this.goToMessageId,
     this.parentMessage,
-    this.isHistory = false,
-    this.isNewChat = false,
     this.hideBackButton = false,
     this.onOpenSidePanel,
     this.onCloseSidePanel,
@@ -247,27 +243,14 @@ class _MessagesScreenState extends State<MessagesScreen>
 
   Widget _buildMessageList() {
     final t = _toggles;
-    final isAIUser = _user?.role == 'ai' || _user?.role == '@agentic';
-
-    // When coming from AI chat history, scope messages to the parent message
-    MessagesRequestBuilder? requestBuilder;
-    int? parentMessageId;
-    if (widget.parentMessage != null && widget.isHistory) {
-      parentMessageId = widget.parentMessage!.id;
-      requestBuilder = MessagesRequestBuilder()
-        ..parentMessageId = widget.parentMessage!.id
-        ..withParent = true
-        ..hideReplies = false; // Show all messages in the thread (user + AI)
-    }
 
     return CometChatMessageList(
       controller: _messageListController,
       user: _user,
       group: _group,
       goToMessageId: widget.goToMessageId,
-      parentMessageId: parentMessageId,
-      messagesRequestBuilder: requestBuilder,
-      hideReplies: (widget.isHistory) ? false : true,
+      parentMessageId: widget.parentMessage?.id,
+      hideReplies: true,
       showMarkAsUnreadOption: true,
       startFromUnreadMessages: true,
       hideDeletedMessages: t.hideDeletedMessages.value,
@@ -275,12 +258,11 @@ class _MessagesScreenState extends State<MessagesScreen>
       avatarVisibility: t.avatarVisibility.value,
       hideDateSeparator: t.hideDateSeparator.value,
       hideStickyDate: t.hideStickyDate.value,
-      disableReactions: isAIUser || t.disableReactions.value,
-      enableSwipeToReply: isAIUser ? false : t.enableSwipeToReply.value,
+      disableReactions: t.disableReactions.value,
+      enableSwipeToReply: t.enableSwipeToReply.value,
       hideGroupActionMessages: t.hideGroupActionMessages.value,
-      enableSmartReplies: isAIUser || t.enableSmartReplies.value,
-      enableConversationStarters:
-          isAIUser || t.enableConversationStarters.value,
+      enableSmartReplies: false,
+      enableConversationStarters: false,
       hideCopyMessageOption: t.hideCopyMessageOption.value,
       hideDeleteMessageOption: t.hideDeleteMessageOption.value,
       hideEditMessageOption: t.hideEditMessageOption.value,
@@ -564,44 +546,38 @@ class _MessagesScreenState extends State<MessagesScreen>
 
   Widget _buildComposer() {
     final t = _toggles;
-    final isAI = _user?.role == 'ai' || _user?.role == '@agentic';
     return CometChatMessageComposer(
       user: _user,
       group: _group,
       parentMessageId: widget.parentMessage?.id ?? 0,
-      placeholderText: isAI ? 'Ask anything...' : null,
-      disableTypingEvents: isAI || t.disableTypingEvents.value,
-      hideVoiceRecordingButton: isAI || t.hideVoiceRecordingButton.value,
+      disableTypingEvents: t.disableTypingEvents.value,
+      hideVoiceRecordingButton: t.hideVoiceRecordingButton.value,
       hideSendButton: t.hideSendButton.value,
-      hideAttachmentButton: isAI || t.hideAttachmentButton.value,
-      hideStickersButton: isAI || t.hideStickersButton.value,
-      disableMentions: isAI || t.disableMentions.value,
+      hideAttachmentButton: t.hideAttachmentButton.value,
+      hideStickersButton: t.hideStickersButton.value,
+      disableMentions: t.disableMentions.value,
       hideBottomSafeArea: t.hideBottomSafeArea.value,
       layout: cc.CometChatComposerLayout.singleLine,
       // Trailing Toolbar Buttons DD — the canonical colour-picker exemplar.
       // All colour logic is consumer code (§1.1.1): the kit only exposes the
       // slot, the controller, and getMentionRanges.
-      richTextToolbarActions: isAI
-          ? null
-          : (context, user, group, id) => [
-                CometChatMessageComposerAction(
-                  id: 'text_color',
-                  title: 'Text colour',
-                  icon: const Icon(Icons.palette_outlined),
-                  onToolbarTap: _onTextColorTap,
-                ),
-              ],
-      textFormatters: isAI
-          ? [] // No formatters for AI chat
-          : [
-              CometChatMentionsFormatter(user: _user, group: _group),
-              MarkdownTextFormatter(),
-              CometChatUrlFormatter(),
-              CometChatPhoneNumberFormatter(),
-              CometChatEmailFormatter(),
-            ],
-      enableRichTextFormatting: !isAI,
-      showRichTextFormattingOptions: !isAI,
+      richTextToolbarActions: (context, user, group, id) => [
+        CometChatMessageComposerAction(
+          id: 'text_color',
+          title: 'Text colour',
+          icon: const Icon(Icons.palette_outlined),
+          onToolbarTap: _onTextColorTap,
+        ),
+      ],
+      textFormatters: [
+        CometChatMentionsFormatter(user: _user, group: _group),
+        MarkdownTextFormatter(),
+        CometChatUrlFormatter(),
+        CometChatPhoneNumberFormatter(),
+        CometChatEmailFormatter(),
+      ],
+      enableRichTextFormatting: true,
+      showRichTextFormattingOptions: true,
     );
   }
 
@@ -609,7 +585,6 @@ class _MessagesScreenState extends State<MessagesScreen>
   Widget build(BuildContext context) {
     final _colorPalette = CometChatThemeHelper.getColorPalette(context);
     final _typography = CometChatThemeHelper.getTypography(context);
-    final _isAI = _user?.role == 'ai' || _user?.role == '@agentic';
     return Scaffold(
       backgroundColor: _colorPalette.background1,
       appBar: CometChatMessageHeader(
@@ -620,9 +595,9 @@ class _MessagesScreenState extends State<MessagesScreen>
         // A user either side has blocked cannot be called: no buttons, as
         // in Android's MessagesActivity.
         hideVideoCallButton:
-            _isAI || _isUserBlocked || _toggles.hideVideoCallButton.value,
+            _isUserBlocked || _toggles.hideVideoCallButton.value,
         hideVoiceCallButton:
-            _isAI || _isUserBlocked || _toggles.hideVoiceCallButton.value,
+            _isUserBlocked || _toggles.hideVoiceCallButton.value,
         usersStatusVisibility: _toggles.headerUsersStatusVisibility.value,
         // Pin & Save: the header ⋯ menu opens the conversation's pinned
         // list; tapping a row jumps to that message (replies open their
@@ -643,54 +618,9 @@ class _MessagesScreenState extends State<MessagesScreen>
                   title: cc.Translations.of(context).pinnedMessagesTitle,
                 ),
         // ⋯ overflow menu entries + tap-on-name → info screen.
-        onInfoTap: _isAI ? null : _openInfoScreen,
-        onSearchTap: _isAI ? null : _openSearchScreen,
-        onHeaderTap: _isAI ? null : _openInfoScreen,
-        chatHistoryButtonClick: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => CometChatAIAssistantChatHistory(
-                user: _user,
-                group: _group,
-                onNewChatButtonClicked: () {
-                  if (widget.isHistory) {
-                    Navigator.of(context).pop();
-                  }
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => MessagesScreen(
-                        user: _user,
-                        group: _group,
-                        isNewChat: true,
-                      ),
-                    ),
-                  );
-                },
-                onMessageClicked: (message) {
-                  if (message != null) {
-                    Navigator.of(context)
-                      ..pop()
-                      ..pop();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => MessagesScreen(
-                          user: _user,
-                          group: _group,
-                          parentMessage: message,
-                          isHistory: true,
-                        ),
-                      ),
-                    );
-                  }
-                },
-                onClose: () => Navigator.of(context).pop(),
-              ),
-            ),
-          );
-        },
+        onInfoTap: _openInfoScreen,
+        onSearchTap: _openSearchScreen,
+        onHeaderTap: _openInfoScreen,
         messageHeaderStyle: CometChatMessageHeaderStyle(
           backgroundColor: _colorPalette.background1,
           border: Border(
@@ -700,76 +630,6 @@ class _MessagesScreenState extends State<MessagesScreen>
             ),
           ),
         ),
-        trailingView: (user, group, ctx) => [
-          if (user?.role == 'ai' || user?.role == '@agentic') ...[
-            IconButton(
-              icon: Icon(Icons.add, color: _colorPalette.iconPrimary),
-              tooltip: 'New Chat',
-              onPressed: () {
-                Navigator.pushReplacement(
-                  ctx,
-                  MaterialPageRoute(
-                    builder: (_) => MessagesScreen(
-                      user: _user,
-                      group: _group,
-                      isNewChat: true,
-                    ),
-                  ),
-                );
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.history, color: _colorPalette.iconPrimary),
-              tooltip: 'AI Chat History',
-              onPressed: () {
-                Navigator.push(
-                  ctx,
-                  MaterialPageRoute(
-                    builder: (_) => CometChatAIAssistantChatHistory(
-                      user: _user,
-                      group: _group,
-                      onNewChatButtonClicked: () {
-                        // Pop history, then replace current messages with fresh one
-                        if (widget.isHistory) {
-                          Navigator.of(ctx).pop();
-                        }
-                        Navigator.pushReplacement(
-                          ctx,
-                          MaterialPageRoute(
-                            builder: (_) => MessagesScreen(
-                              user: _user,
-                              group: _group,
-                              isNewChat: true,
-                            ),
-                          ),
-                        );
-                      },
-                      onMessageClicked: (message) {
-                        if (message != null) {
-                          Navigator.of(ctx)
-                            ..pop()
-                            ..pop();
-                          Navigator.push(
-                            ctx,
-                            MaterialPageRoute(
-                              builder: (_) => MessagesScreen(
-                                user: _user,
-                                group: _group,
-                                parentMessage: message,
-                                isHistory: true,
-                              ),
-                            ),
-                          );
-                        }
-                      },
-                      onClose: () => Navigator.of(ctx).pop(),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ], // end AI buttons spread
-        ],
       ),
       body: SafeArea(
         top: false,

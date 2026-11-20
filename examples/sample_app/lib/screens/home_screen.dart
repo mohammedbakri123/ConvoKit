@@ -653,20 +653,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _openAiAssistantScreen() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => CometChatUsers(
-          title: cc.Translations.of(context).agents,
-          usersRequestBuilder: UsersRequestBuilder()
-            ..roles = [AIConstants.aiRole],
-          onItemTap: (ctx, user) => _pushMessages(ctx, user: user),
-        ),
-      ),
-    );
-  }
-
   void _openNotificationsScreen() {
     // Switch to the Notifications tab
     // Mobile: index 4, Web: index 3

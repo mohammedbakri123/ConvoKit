@@ -13,7 +13,7 @@ SUITES=(
   group_thread_messages group_header group_members groups_realtime composer_voice
   rich_text_composer composer_draft mentions_one_to_one swipe_to_reply search_in_conversation
   polls media_viewer_and_tools pinned_messages saved_messages message_information
-  notification_feed ai_assistant conversation_gap accessibility_audit
+  notification_feed conversation_gap accessibility_audit
 )
 is_done(){ [ -f "$1" ] && grep -qE "All tests passed!|Some tests failed\." "$1"; }
 for S in "${SUITES[@]}"; do
