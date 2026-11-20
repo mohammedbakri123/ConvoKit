@@ -4,19 +4,19 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:cometchat_sdk/cometchat_sdk.dart';
 
-import 'package:cometchat_chat_uikit/chat_ui/src/notification_feed/bloc/notification_feed_bloc.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/notification_feed/bloc/notification_feed_event.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/notification_feed/bloc/notification_feed_state.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/notification_feed/domain/usecases/get_feed_items_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/notification_feed/domain/usecases/get_categories_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/notification_feed/domain/usecases/mark_feed_delivered_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/notification_feed/domain/usecases/mark_feed_read_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/notification_feed/domain/usecases/report_feed_engagement_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/notification_feed/domain/usecases/get_unread_count_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/notification_feed/domain/usecases/get_feed_item_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/notification_feed/domain/repositories/notification_feed_repository.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/notification_feed/utils/timestamp_grouper.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/result.dart';
+import 'package:convokit/chat_ui/src/notification_feed/bloc/notification_feed_bloc.dart';
+import 'package:convokit/chat_ui/src/notification_feed/bloc/notification_feed_event.dart';
+import 'package:convokit/chat_ui/src/notification_feed/bloc/notification_feed_state.dart';
+import 'package:convokit/chat_ui/src/notification_feed/domain/usecases/get_feed_items_usecase.dart';
+import 'package:convokit/chat_ui/src/notification_feed/domain/usecases/get_categories_usecase.dart';
+import 'package:convokit/chat_ui/src/notification_feed/domain/usecases/mark_feed_delivered_usecase.dart';
+import 'package:convokit/chat_ui/src/notification_feed/domain/usecases/mark_feed_read_usecase.dart';
+import 'package:convokit/chat_ui/src/notification_feed/domain/usecases/report_feed_engagement_usecase.dart';
+import 'package:convokit/chat_ui/src/notification_feed/domain/usecases/get_unread_count_usecase.dart';
+import 'package:convokit/chat_ui/src/notification_feed/domain/usecases/get_feed_item_usecase.dart';
+import 'package:convokit/chat_ui/src/notification_feed/domain/repositories/notification_feed_repository.dart';
+import 'package:convokit/chat_ui/src/notification_feed/utils/timestamp_grouper.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/result.dart';
 
 // ---------------------------------------------------------------------------
 // Mocks

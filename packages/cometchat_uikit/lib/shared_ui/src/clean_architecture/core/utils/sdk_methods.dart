@@ -1,4 +1,4 @@
-import 'package:cometchat_chat_uikit/src/adapters/cometchat_sdk_adapter.dart';
+import 'package:convokit/src/adapters/cometchat_sdk_adapter.dart';
 import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
 import '../../data/models/interactive_message/form_message.dart';
 import '../../data/models/interactive_message/card_message.dart';

@@ -1,4 +1,4 @@
-import 'package:cometchat_chat_uikit/chat_ui/src/constants/emoji_category.dart';
+import 'package:convokit/chat_ui/src/constants/emoji_category.dart';
 import 'package:flutter/material.dart';
 
 import '../../../cometchat_chat_uikit.dart';

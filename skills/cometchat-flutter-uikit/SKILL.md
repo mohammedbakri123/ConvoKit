@@ -39,8 +39,8 @@ dart pub add cometchat_chat_uikit:6.0.0-beta2 --hosted-url https://dart.cloudsmi
 
 Call functionality is built into `cometchat_chat_uikit` — no separate package needed. To use call-specific types, import the calls barrel:
 ```dart
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
-import 'package:cometchat_chat_uikit/cometchat_calls_uikit.dart'; // For call types
+import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_calls_uikit.dart'; // For call types
 ```
 
 ## Skill Routing
@@ -127,7 +127,7 @@ User? existingUser = await CometChat.getLoggedInUser();
 ## Golden Path — Minimal Chat App
 
 ```dart
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 
 // 1. Init (once, at app startup)
 final settings = (UIKitSettingsBuilder()
@@ -176,7 +176,7 @@ Full working app with init → auth guard → login → home → logout. Copy-pa
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 
 const String appId = 'YOUR_APP_ID';
 const String region = 'us';

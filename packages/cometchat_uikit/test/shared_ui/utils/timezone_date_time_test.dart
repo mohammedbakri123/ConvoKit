@@ -15,10 +15,10 @@
 ///   flutter test test/shared_ui/utils/timezone_date_time_test.dart
 library;
 
-import 'package:cometchat_chat_uikit/shared_ui/src/utils/timezone_utils/data/latest.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/utils/timezone_utils/date_time.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/utils/timezone_utils/env.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/utils/timezone_utils/location.dart';
+import 'package:convokit/shared_ui/src/utils/timezone_utils/data/latest.dart';
+import 'package:convokit/shared_ui/src/utils/timezone_utils/date_time.dart';
+import 'package:convokit/shared_ui/src/utils/timezone_utils/env.dart';
+import 'package:convokit/shared_ui/src/utils/timezone_utils/location.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 const int _hour = 3600 * 1000;

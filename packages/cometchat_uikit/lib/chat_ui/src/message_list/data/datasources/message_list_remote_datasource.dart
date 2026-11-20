@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:cometchat_chat_uikit/convokit.dart' as ck;
+import 'package:convokit/convokit.dart' as ck;
 import 'package:cometchat_sdk/cometchat_sdk.dart' hide CardMessage;
 
 import '../../../../../shared_ui/src/cometchat_ui_kit/cometchat_ui_kit.dart';

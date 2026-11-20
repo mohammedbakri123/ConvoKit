@@ -8,7 +8,7 @@
 ///   flutter test test/chat_ui/extensions/create_poll_behaviour_test.dart
 library;
 
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

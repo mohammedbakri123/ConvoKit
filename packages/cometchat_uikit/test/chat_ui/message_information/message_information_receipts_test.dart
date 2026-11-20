@@ -19,15 +19,15 @@ import 'package:cometchat_sdk/cometchat_sdk.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import 'package:cometchat_chat_uikit/chat_ui/src/message_information/bloc/message_information_bloc.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_information/bloc/message_information_event.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_information/bloc/message_information_state.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_information/di/message_information_service_locator.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_information/domain/repositories/message_information_repository.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_information/domain/usecases/fetch_message_receipts_usecase.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/constants/ui_kit_constants.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/result.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/domain/events/message_events/cometchat_message_events.dart';
+import 'package:convokit/chat_ui/src/message_information/bloc/message_information_bloc.dart';
+import 'package:convokit/chat_ui/src/message_information/bloc/message_information_event.dart';
+import 'package:convokit/chat_ui/src/message_information/bloc/message_information_state.dart';
+import 'package:convokit/chat_ui/src/message_information/di/message_information_service_locator.dart';
+import 'package:convokit/chat_ui/src/message_information/domain/repositories/message_information_repository.dart';
+import 'package:convokit/chat_ui/src/message_information/domain/usecases/fetch_message_receipts_usecase.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/constants/ui_kit_constants.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/result.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/domain/events/message_events/cometchat_message_events.dart';
 
 class MockRepo extends Mock implements MessageInformationRepository {}
 

@@ -11,7 +11,7 @@ library;
 
 import 'dart:io';
 
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 // The Kit's own `VideoPlayer` shadows the package's, so the package widget is

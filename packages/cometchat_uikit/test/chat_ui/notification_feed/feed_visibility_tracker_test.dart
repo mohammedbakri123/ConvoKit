@@ -3,10 +3,10 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:cometchat_sdk/cometchat_sdk.dart';
 
-import 'package:cometchat_chat_uikit/chat_ui/src/notification_feed/bloc/notification_feed_bloc.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/notification_feed/bloc/notification_feed_event.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/notification_feed/bloc/notification_feed_state.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/notification_feed/utils/feed_visibility_tracker.dart';
+import 'package:convokit/chat_ui/src/notification_feed/bloc/notification_feed_bloc.dart';
+import 'package:convokit/chat_ui/src/notification_feed/bloc/notification_feed_event.dart';
+import 'package:convokit/chat_ui/src/notification_feed/bloc/notification_feed_state.dart';
+import 'package:convokit/chat_ui/src/notification_feed/utils/feed_visibility_tracker.dart';
 
 // ---------------------------------------------------------------------------
 // Mocks

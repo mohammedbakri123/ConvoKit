@@ -3,13 +3,13 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:cometchat_sdk/cometchat_sdk.dart';
 
-import 'package:cometchat_chat_uikit/chat_ui/src/users/bloc/users_bloc.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/users/bloc/users_event.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/users/bloc/users_state.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/users/domain/repositories/users_repository.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/users/domain/usecases/get_users_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/users/domain/usecases/get_logged_in_user_usecase.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/result.dart';
+import 'package:convokit/chat_ui/src/users/bloc/users_bloc.dart';
+import 'package:convokit/chat_ui/src/users/bloc/users_event.dart';
+import 'package:convokit/chat_ui/src/users/bloc/users_state.dart';
+import 'package:convokit/chat_ui/src/users/domain/repositories/users_repository.dart';
+import 'package:convokit/chat_ui/src/users/domain/usecases/get_users_usecase.dart';
+import 'package:convokit/chat_ui/src/users/domain/usecases/get_logged_in_user_usecase.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/result.dart';
 
 // ---------------------------------------------------------------------------
 // Mocks

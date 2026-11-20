@@ -258,7 +258,7 @@ CometChatMessageList(
 - Keep mutable `_user`/`_group` copies in your State class and update them from SDK listeners. Passing `widget.user`/`widget.group` directly means stale data after block/kick events.
 - The CometChat SDK has an `Action` class (a `BaseMessage` subclass used in group events like kick/ban/scope-change). It conflicts with Flutter's built-in `Action` widget. If your messages screen uses SDK listener mixins that reference `Action`, use an import alias:
   ```dart
-  import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart' as cc;
+  import 'package:convokit/cometchat_chat_uikit.dart' as cc;
   // Then use: cc.Action instead of Action
   ```
   This is especially common when mixing `GroupListener` into a messages screen State class.

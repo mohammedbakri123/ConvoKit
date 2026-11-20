@@ -331,8 +331,8 @@ Bottom sheet for message actions (copy, reply, delete, etc.) and attachment opti
 ## Quick Reference: Import
 
 ```dart
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';       // All chat widgets
-import 'package:cometchat_chat_uikit/cometchat_calls_uikit.dart';      // Call widgets
+import 'package:convokit/cometchat_chat_uikit.dart';       // All chat widgets
+import 'package:convokit/cometchat_calls_uikit.dart';      // Call widgets
 ```
 
 ## Quick Reference: Architecture

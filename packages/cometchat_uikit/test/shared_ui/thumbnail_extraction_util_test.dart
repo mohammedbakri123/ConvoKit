@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/utils/thumbnail_extraction_util.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/utils/thumbnail_extraction_util.dart';
 
 /// Covers [ThumbnailExtractionUtil.thumbnailForAttachment] (R7). Fixtures mirror
 /// the real `@injected.extensions.thumbnail-generation` shape observed on the

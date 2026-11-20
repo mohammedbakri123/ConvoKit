@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../src/adapters/cometchat_sdk_adapter.dart';
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 import '../../../../shared_ui/src/clean_architecture/core/utils/thread_toast.dart';
 import 'cometchat_flag_message_dialog.dart';
 import 'cometchat_message_action_overlay.dart';

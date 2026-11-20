@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 
 // Trailing Toolbar Buttons DD — Flutter acceptance (§8.1 structural +
 // §8.2 S1–S4 exercised at the controller level, where the enablers live).

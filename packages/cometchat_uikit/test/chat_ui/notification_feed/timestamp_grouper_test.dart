@@ -3,7 +3,7 @@ import 'package:cometchat_sdk/cometchat_sdk.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
-import 'package:cometchat_chat_uikit/chat_ui/src/notification_feed/utils/timestamp_grouper.dart';
+import 'package:convokit/chat_ui/src/notification_feed/utils/timestamp_grouper.dart';
 
 // ---------------------------------------------------------------------------
 // Helpers

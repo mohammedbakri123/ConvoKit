@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 
 ///[CollaborativeWhiteBoardConfiguration] configured the v5 collaborative whiteboard extension. No v6 API accepts it:
 /// the extension is enabled from the CometChat Dashboard, and the

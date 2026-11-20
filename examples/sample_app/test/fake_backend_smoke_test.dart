@@ -23,7 +23,7 @@ import 'package:flutter_test/flutter_test.dart';
 // are no typos or syntax errors.
 //
 // ignore: uri_does_not_exist
-import 'package:cometchat_chat_uikit/convokit.dart';
+import 'package:convokit/convokit.dart';
 // The InMemoryChatBackend will live in example/ (not in the shipped package).
 // ignore: uri_does_not_exist
 import 'package:sample_app/in_memory_chat_backend.dart';

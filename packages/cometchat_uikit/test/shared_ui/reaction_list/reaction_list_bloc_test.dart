@@ -14,7 +14,7 @@
 ///   flutter test test/shared_ui/reaction_list/reaction_list_bloc_test.dart
 library;
 
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 // The SDK exports none of these; `SdkRegistry` is the seam that lets
 // `CometChat.removeReaction` resolve to a fake in a VM test. Same approach as
 // test/helpers/golden_fake_sdk.dart.

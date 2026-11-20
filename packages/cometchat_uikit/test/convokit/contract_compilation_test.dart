@@ -6,7 +6,7 @@ library;
 
 import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:cometchat_chat_uikit/convokit.dart';
+import 'package:convokit/convokit.dart';
 
 // Host implementation of ChatSession
 class HostChatSession implements ChatSession {

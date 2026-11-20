@@ -15,14 +15,14 @@
 ///   flutter test test/chat_ui/groups/groups_request_builder_paging_test.dart
 library;
 
-import 'package:cometchat_chat_uikit/chat_ui/src/groups/bloc/groups_bloc.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/groups/bloc/groups_event.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/groups/bloc/groups_state.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/groups/data/datasources/groups_remote_datasource.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/groups/data/repositories/groups_repository_impl.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/groups/domain/usecases/get_groups_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/groups/domain/usecases/get_logged_in_user_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/groups/domain/usecases/load_more_groups_usecase.dart';
+import 'package:convokit/chat_ui/src/groups/bloc/groups_bloc.dart';
+import 'package:convokit/chat_ui/src/groups/bloc/groups_event.dart';
+import 'package:convokit/chat_ui/src/groups/bloc/groups_state.dart';
+import 'package:convokit/chat_ui/src/groups/data/datasources/groups_remote_datasource.dart';
+import 'package:convokit/chat_ui/src/groups/data/repositories/groups_repository_impl.dart';
+import 'package:convokit/chat_ui/src/groups/domain/usecases/get_groups_usecase.dart';
+import 'package:convokit/chat_ui/src/groups/domain/usecases/get_logged_in_user_usecase.dart';
+import 'package:convokit/chat_ui/src/groups/domain/usecases/load_more_groups_usecase.dart';
 import 'package:cometchat_sdk/cometchat_sdk.dart' hide CardMessage;
 import 'package:flutter_test/flutter_test.dart';
 

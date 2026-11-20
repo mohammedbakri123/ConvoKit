@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
-import 'package:cometchat_chat_uikit/convokit.dart';
+import 'package:convokit/convokit.dart';
 
 /// In-memory chat backend implementing Phase 1 ConvoKit contracts.
 ///

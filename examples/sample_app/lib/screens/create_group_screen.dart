@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart' as cc;
+import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart' as cc;
 
 /// Create Group screen — shown as a bottom sheet.
 /// Supports Public, Private, and Password group types.

@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/utils/platform_utils/platform_file_utils.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/utils/platform_utils/platform_file_utils.dart';
 
 /// Contract test for the clipboard-image bridge: [readClipboardImage] invokes
 /// `getClipboardImage` on the `cometchat_chat_uikit` channel and maps the

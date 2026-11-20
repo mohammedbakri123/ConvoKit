@@ -1,17 +1,17 @@
-name: cometchat_chat_uikit
-description: CometChat's Flutter UI Kit offers custom UI components for streamlined text and chat features in your app, designed with developers in mind to minimize development effort.
-version: 6.3.0
-homepage: https://www.cometchat.com/
-repository: https://github.com/cometchat/cometchat-uikit-flutter
-issue_tracker: https://github.com/cometchat/cometchat-uikit-flutter/issues
+name: convokit
+description: ConvoKit offers custom UI components for streamlined text and chat features in your app, designed with developers in mind to minimize development effort.
+version: 0.1.0
+homepage: https://github.com/mohammedbakri123/ChatUI
+repository: https://github.com/mohammedbakri123/ChatUI
+issue_tracker: https://github.com/mohammedbakri123/ChatUI/issues
 topics:
   - chat
   - messaging
   - chat-ui
-  - cometchat
+  - convokit
   - uikit
 screenshots:
-  - description: "CometChat Flutter UI Kit components: conversations and messages."
+  - description: "ConvoKit Flutter UI Kit components: conversations and messages."
     path: screenshots/overview_cometchat_screens.png
 
 environment:
@@ -85,8 +85,8 @@ flutter:
       ios:
         pluginClass: CometchatChatUikitPlugin
       web:
-        pluginClass: CometchatChatUikitPluginWeb
-        fileName: cometchat_chat_uikit_web.dart
+        pluginClass: ConvoKitPluginWeb
+        fileName: convokit_web.dart
 
   # To add assets to your plugin package, add an assets section, like this:
 #  assets:

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 
 /// A filter chip with optional icon, toggling between selected/unselected states.
 class SearchFilterChip extends StatelessWidget {

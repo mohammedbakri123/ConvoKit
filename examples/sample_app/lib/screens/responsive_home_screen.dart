@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 import 'package:sample_app/utils/feature_flags.dart';
 import 'package:sample_app/utils/component_toggles.dart';
 import 'package:sample_app/screens/messages_screen.dart';

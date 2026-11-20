@@ -2,10 +2,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:cometchat_sdk/cometchat_sdk.dart';
 
-import 'package:cometchat_chat_uikit/chat_ui/src/message_list/data/datasources/message_list_remote_datasource.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_list/data/datasources/message_list_local_datasource.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_list/data/repositories/message_list_repository_impl.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/result.dart';
+import 'package:convokit/chat_ui/src/message_list/data/datasources/message_list_remote_datasource.dart';
+import 'package:convokit/chat_ui/src/message_list/data/datasources/message_list_local_datasource.dart';
+import 'package:convokit/chat_ui/src/message_list/data/repositories/message_list_repository_impl.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/result.dart';
 
 // ---------------------------------------------------------------------------
 // Mocks

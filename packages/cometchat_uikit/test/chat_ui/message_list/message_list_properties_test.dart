@@ -5,18 +5,18 @@ import 'package:glados/glados.dart'
 import 'package:mocktail/mocktail.dart' hide any;
 import 'package:mocktail/mocktail.dart' as mt;
 
-import 'package:cometchat_chat_uikit/chat_ui/src/message_list/bloc/message_list_bloc.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_list/bloc/message_list_event.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_list/domain/repositories/message_list_repository.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_list/domain/usecases/get_messages_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_list/domain/usecases/load_older_messages_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_list/domain/usecases/load_newer_messages_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_list/domain/usecases/mark_as_read_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_list/domain/usecases/mark_as_delivered_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_list/domain/usecases/mark_as_unread_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_list/domain/usecases/get_logged_in_user_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_list/data/datasources/message_list_local_datasource.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/result.dart';
+import 'package:convokit/chat_ui/src/message_list/bloc/message_list_bloc.dart';
+import 'package:convokit/chat_ui/src/message_list/bloc/message_list_event.dart';
+import 'package:convokit/chat_ui/src/message_list/domain/repositories/message_list_repository.dart';
+import 'package:convokit/chat_ui/src/message_list/domain/usecases/get_messages_usecase.dart';
+import 'package:convokit/chat_ui/src/message_list/domain/usecases/load_older_messages_usecase.dart';
+import 'package:convokit/chat_ui/src/message_list/domain/usecases/load_newer_messages_usecase.dart';
+import 'package:convokit/chat_ui/src/message_list/domain/usecases/mark_as_read_usecase.dart';
+import 'package:convokit/chat_ui/src/message_list/domain/usecases/mark_as_delivered_usecase.dart';
+import 'package:convokit/chat_ui/src/message_list/domain/usecases/mark_as_unread_usecase.dart';
+import 'package:convokit/chat_ui/src/message_list/domain/usecases/get_logged_in_user_usecase.dart';
+import 'package:convokit/chat_ui/src/message_list/data/datasources/message_list_local_datasource.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/result.dart';
 
 import 'generators/message_list_generators.dart';
 

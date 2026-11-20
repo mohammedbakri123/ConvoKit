@@ -18,7 +18,7 @@ library;
 
 import 'dart:async';
 
-import 'package:cometchat_chat_uikit/shared_ui/src/cometchat_list/cometchat_list_controller.dart';
+import 'package:convokit/shared_ui/src/cometchat_list/cometchat_list_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // ─── Test doubles ────────────────────────────────────────────────────────────

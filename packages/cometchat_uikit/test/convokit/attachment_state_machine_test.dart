@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:cometchat_chat_uikit/convokit.dart';
+import 'package:convokit/convokit.dart';
 
 void main() {
   group('Attachment state machine tests (API-DESIGN.md §2)', () {

@@ -13,7 +13,7 @@
 ///   flutter test test/shared_ui/clean_architecture/message_entity_test.dart
 library;
 
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// A fully populated entity: every optional field is non-null, so a

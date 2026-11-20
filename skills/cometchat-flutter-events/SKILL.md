@@ -213,4 +213,4 @@ void onCcMessageSent(BaseMessage msg, MessageStatus status) {
 - [ ] `subscriptionType` set in UIKitSettings for presence/typing events
 - [ ] `ccMessageSent` handlers filter by `MessageStatus`
 - [ ] No redundant listeners for UIKit components that handle their own
-- [ ] `Action` from CometChat SDK not confused with Flutter's `Action` widget (use `import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart' as cc;` and `cc.Action`)
+- [ ] `Action` from CometChat SDK not confused with Flutter's `Action` widget (use `import 'package:convokit/cometchat_chat_uikit.dart' as cc;` and `cc.Action`)

@@ -15,25 +15,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import 'package:cometchat_chat_uikit/chat_ui/src/group_members/bloc/group_members_bloc.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/group_members/bloc/group_members_bloc_adapter.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/group_members/bloc/group_members_event.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/group_members/bloc/group_members_state.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/group_members/domain/repositories/group_members_repository.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/group_members/domain/usecases/ban_group_member_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/group_members/domain/usecases/get_group_members_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/group_members/domain/usecases/get_logged_in_user_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/group_members/domain/usecases/kick_group_member_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/group_members/domain/usecases/load_more_group_members_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/group_members/domain/usecases/update_member_scope_usecase.dart';
-import 'package:cometchat_chat_uikit/shared_ui/l10n/translations.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/result.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/data/models/cometchat_group_member_option.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/constants/ui_kit_constants.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/presentation/theme/colors/cometchat_color_palette.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/presentation/theme/spacing/cometchat_spacing.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/presentation/theme/typography/cometchat_typography.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/presentation/view_models/cometchat_group_members_controller_protocol.dart';
+import 'package:convokit/chat_ui/src/group_members/bloc/group_members_bloc.dart';
+import 'package:convokit/chat_ui/src/group_members/bloc/group_members_bloc_adapter.dart';
+import 'package:convokit/chat_ui/src/group_members/bloc/group_members_event.dart';
+import 'package:convokit/chat_ui/src/group_members/bloc/group_members_state.dart';
+import 'package:convokit/chat_ui/src/group_members/domain/repositories/group_members_repository.dart';
+import 'package:convokit/chat_ui/src/group_members/domain/usecases/ban_group_member_usecase.dart';
+import 'package:convokit/chat_ui/src/group_members/domain/usecases/get_group_members_usecase.dart';
+import 'package:convokit/chat_ui/src/group_members/domain/usecases/get_logged_in_user_usecase.dart';
+import 'package:convokit/chat_ui/src/group_members/domain/usecases/kick_group_member_usecase.dart';
+import 'package:convokit/chat_ui/src/group_members/domain/usecases/load_more_group_members_usecase.dart';
+import 'package:convokit/chat_ui/src/group_members/domain/usecases/update_member_scope_usecase.dart';
+import 'package:convokit/shared_ui/l10n/translations.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/result.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/data/models/cometchat_group_member_option.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/constants/ui_kit_constants.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/presentation/theme/colors/cometchat_color_palette.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/presentation/theme/spacing/cometchat_spacing.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/presentation/theme/typography/cometchat_typography.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/presentation/view_models/cometchat_group_members_controller_protocol.dart';
 
 class MockRepo extends Mock implements GroupMembersRepository {}
 

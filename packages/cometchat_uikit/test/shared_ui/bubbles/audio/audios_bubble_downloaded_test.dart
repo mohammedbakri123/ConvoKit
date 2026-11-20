@@ -22,11 +22,11 @@ library;
 import 'dart:async';
 import 'dart:io';
 
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 // The cache-bucket rule is internal to the Kit but is exactly what decides
 // where a downloaded attachment lives, so the seeding here has to use it
 // rather than re-implement it.
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/utils/download_cache_key.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/utils/download_cache_key.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';

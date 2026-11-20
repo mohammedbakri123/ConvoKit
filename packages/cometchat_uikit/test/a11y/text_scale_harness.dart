@@ -25,7 +25,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 
 /// The scales worth checking. 2.0 is the WCAG threshold; 1.3 catches layouts
 /// that break well before it, which is the more common failure.

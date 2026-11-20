@@ -13,7 +13,7 @@
 ///   flutter test test/shared_ui/events/ui_kit_helper_test.dart
 library;
 
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 import 'package:cometchat_sdk/cometchat_sdk.dart' as cc show Action;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

@@ -22,7 +22,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 
 const String _barrel = 'lib/cometchat_chat_uikit.dart';
-const String _packagePrefix = 'package:cometchat_chat_uikit/';
+const String _packagePrefix = 'package:convokit/';
 
 /// Strips `//` and `/* */` comments, so commented-out code and doc samples
 /// are not mistaken for declarations or directives.
@@ -117,7 +117,7 @@ String _headerOf(String file, String name) {
 }
 
 void main() {
-  test('CometChatLocalize is exported from package:cometchat_chat_uikit', () {
+  test('CometChatLocalize is exported from package:convokit', () {
     expect(File(_barrel).existsSync(), isTrue, reason: 'run from chat_uikit');
     expect(
       _exportingFile(_barrel, 'CometChatLocalize'),

@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/utils/platform_utils/clipboard_paste.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/utils/platform_utils/clipboard_paste.dart';
 
 /// On native (VM) the paste-event listener resolves to the no-op stub: it must
 /// register/unregister without touching a DOM or invoking the callback. The

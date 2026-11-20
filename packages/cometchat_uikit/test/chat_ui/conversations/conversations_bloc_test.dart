@@ -3,17 +3,17 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:cometchat_sdk/cometchat_sdk.dart';
 
-import 'package:cometchat_chat_uikit/chat_ui/src/conversations/bloc/conversations_bloc.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/conversations/bloc/conversations_event.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/conversations/bloc/conversations_state.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/conversations/domain/usecases/get_conversations_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/conversations/domain/usecases/delete_conversation_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/conversations/domain/usecases/get_logged_in_user_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/conversations/domain/usecases/get_conversation_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/conversations/domain/usecases/mark_as_delivered_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/conversations/domain/usecases/load_more_conversations_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/conversations/domain/repositories/conversations_repository.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/result.dart';
+import 'package:convokit/chat_ui/src/conversations/bloc/conversations_bloc.dart';
+import 'package:convokit/chat_ui/src/conversations/bloc/conversations_event.dart';
+import 'package:convokit/chat_ui/src/conversations/bloc/conversations_state.dart';
+import 'package:convokit/chat_ui/src/conversations/domain/usecases/get_conversations_usecase.dart';
+import 'package:convokit/chat_ui/src/conversations/domain/usecases/delete_conversation_usecase.dart';
+import 'package:convokit/chat_ui/src/conversations/domain/usecases/get_logged_in_user_usecase.dart';
+import 'package:convokit/chat_ui/src/conversations/domain/usecases/get_conversation_usecase.dart';
+import 'package:convokit/chat_ui/src/conversations/domain/usecases/mark_as_delivered_usecase.dart';
+import 'package:convokit/chat_ui/src/conversations/domain/usecases/load_more_conversations_usecase.dart';
+import 'package:convokit/chat_ui/src/conversations/domain/repositories/conversations_repository.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/result.dart';
 
 // ---------------------------------------------------------------------------
 // Mocks

@@ -20,7 +20,7 @@ library;
 
 import '../../../helpers/golden_config.dart';
 import 'package:alchemist/alchemist.dart';
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 import 'package:flutter/material.dart';
 
 /// A caller style deliberately unlike the function's defaults on every axis it

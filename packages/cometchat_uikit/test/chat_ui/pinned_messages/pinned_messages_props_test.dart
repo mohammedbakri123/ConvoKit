@@ -32,7 +32,7 @@
 ///   flutter test test/chat_ui/pinned_messages/pinned_messages_props_test.dart
 library;
 
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 // The SDK exports none of these. CometChatPinnedMessages has no bloc or
 // request injection, so the fake has to sit where the SDK resolves its
 // repositories.

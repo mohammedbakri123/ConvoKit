@@ -9,7 +9,7 @@
 ///   flutter test test/chat_ui/message_composer/attachment_tray_controller_test.dart
 library;
 
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../helpers/fake_upload_sdk.dart';

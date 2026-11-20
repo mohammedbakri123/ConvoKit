@@ -14,9 +14,9 @@ library;
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:cometchat_chat_uikit/chat_ui/src/message_composer/widgets/inline_audio_recorder/inline_audio_recorder_bloc.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_composer/widgets/inline_audio_recorder/inline_audio_recorder_event.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_composer/widgets/inline_audio_recorder/inline_audio_recorder_state.dart';
+import 'package:convokit/chat_ui/src/message_composer/widgets/inline_audio_recorder/inline_audio_recorder_bloc.dart';
+import 'package:convokit/chat_ui/src/message_composer/widgets/inline_audio_recorder/inline_audio_recorder_event.dart';
+import 'package:convokit/chat_ui/src/message_composer/widgets/inline_audio_recorder/inline_audio_recorder_state.dart';
 
 const _channel = MethodChannel('cometchat_chat_uikit');
 

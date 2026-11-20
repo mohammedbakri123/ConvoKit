@@ -15,7 +15,7 @@ library;
 import 'package:cometchat_sdk/cometchat_sdk.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:cometchat_chat_uikit/chat_ui/src/message_list/bloc/message_list_event.dart';
+import 'package:convokit/chat_ui/src/message_list/bloc/message_list_event.dart';
 
 class FakeMsg extends Fake implements TextMessage {
   FakeMsg(this._id);

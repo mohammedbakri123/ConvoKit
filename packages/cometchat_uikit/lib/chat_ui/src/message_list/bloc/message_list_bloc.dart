@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cometchat_sdk/cometchat_sdk.dart';
 import '../../../../src/adapters/cometchat_sdk_adapter.dart';
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart'
+import 'package:convokit/cometchat_chat_uikit.dart'
     show
         CometChatMessageEvents,
         CometChatMessageEventListener,

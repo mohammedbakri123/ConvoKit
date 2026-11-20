@@ -20,7 +20,7 @@ library;
 
 import 'dart:async';
 
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 import 'package:cometchat_sdk/cometchat_sdk.dart' as cc show Action;
 // The SDK exports neither of these; registering a client here is the only way
 // to answer `CometChat.getLoggedInUser()` without a live connection. Same seam

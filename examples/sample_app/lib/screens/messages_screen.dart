@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart' as cc;
+import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart' as cc;
 import '../utils/component_toggles.dart';
 import 'thread_screen.dart';
 import 'group_info_screen.dart';

@@ -9,8 +9,8 @@
 ///   flutter test test/shared_ui/bubbles/audio_playback_session_test.dart
 library;
 
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/constants/ui_kit_constants.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/presentation/views/bubbles/audio_bubble/audio_playback_session.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/constants/ui_kit_constants.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/presentation/views/bubbles/audio_bubble/audio_playback_session.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 

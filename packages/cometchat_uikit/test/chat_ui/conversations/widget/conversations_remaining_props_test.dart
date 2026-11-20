@@ -61,7 +61,7 @@ library;
 import 'dart:async';
 
 import 'package:bloc_test/bloc_test.dart';
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 // The SDK exports none of these. The widget builds its own bloc for these
 // rows, so the fake has to sit where the SDK resolves its repositories.
 // ignore: implementation_imports

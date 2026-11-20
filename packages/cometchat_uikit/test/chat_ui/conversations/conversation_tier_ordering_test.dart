@@ -2,8 +2,8 @@
 // Socket-driven inserts land at the top of their OWN tier only.
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/conversations/utils/conversation_tier_ordering.dart';
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/chat_ui/src/conversations/utils/conversation_tier_ordering.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 
 Conversation _row(String id, {DateTime? pinnedAt, String? pinnedBy}) {
   final conversation = Conversation(

@@ -15,8 +15,8 @@ library;
 import 'dart:async';
 import 'dart:io';
 
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/utils/download_cache_key.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/utils/platform_utils/platform_file_utils.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/utils/download_cache_key.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/utils/platform_utils/platform_file_utils.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 

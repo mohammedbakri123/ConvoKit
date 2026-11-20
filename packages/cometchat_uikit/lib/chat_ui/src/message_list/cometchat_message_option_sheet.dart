@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 
 ///[CometchatMessageOptionSheet] renders a bottom modal sheet
 ///that contains all the actions available to execute on a particular type of message

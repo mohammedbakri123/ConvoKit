@@ -36,7 +36,7 @@ Two of these deserve attention rather than acceptance.
 every file beneath it as importable. The two barrels the package advertises —
 `cometchat_chat_uikit.dart` and `cometchat_calls_uikit.dart` — cover 1,006 and
 101 types, but a consumer can equally well import
-`package:cometchat_chat_uikit/shared_ui/src/clean_architecture/…` and pin
+`package:convokit/shared_ui/src/clean_architecture/…` and pin
 themselves to an internal path. Anything reachable that way is a contract we are
 already committed to. Narrowing it is itself a breaking change, which is why the
 baseline records the situation rather than quietly fixing it.

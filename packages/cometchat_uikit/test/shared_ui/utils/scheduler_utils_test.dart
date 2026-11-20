@@ -14,11 +14,11 @@
 ///   flutter test test/shared_ui/utils/scheduler_utils_test.dart
 library;
 
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 // The initializer CometChatUIKit.init calls. It has to be this one:
 // SchedulerUtils once read a second database copy that nothing filled, and
 // a test that initialised that copy directly hid it.
-import 'package:cometchat_chat_uikit/shared_ui/src/utils/timezone_utils/data/latest.dart';
+import 'package:convokit/shared_ui/src/utils/timezone_utils/data/latest.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

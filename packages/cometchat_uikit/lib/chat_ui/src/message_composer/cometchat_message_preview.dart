@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 
 /// [CometChatMessagePreview] is a component that provides a bubble consisting of text
 /// that can be appended to the message composer, message bubble or any other component as desired.

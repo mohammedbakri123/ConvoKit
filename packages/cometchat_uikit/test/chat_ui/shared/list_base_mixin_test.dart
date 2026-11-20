@@ -16,7 +16,7 @@
 ///   flutter test test/chat_ui/shared/list_base_mixin_test.dart
 library;
 
-import 'package:cometchat_chat_uikit/chat_ui/src/shared/list_base.dart';
+import 'package:convokit/chat_ui/src/shared/list_base.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// One hook invocation.

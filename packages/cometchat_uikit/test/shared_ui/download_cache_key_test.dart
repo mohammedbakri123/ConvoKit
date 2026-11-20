@@ -1,4 +1,4 @@
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/utils/download_cache_key.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/utils/download_cache_key.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// The download cache used to be keyed on the attachment file name alone, so a

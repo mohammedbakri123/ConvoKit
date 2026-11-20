@@ -46,7 +46,7 @@ flutter pub get
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 
 Future<void> initCometChat() async {
   final uiKitSettings = (UIKitSettingsBuilder()

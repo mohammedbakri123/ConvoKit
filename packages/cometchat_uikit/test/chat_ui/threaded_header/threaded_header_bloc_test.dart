@@ -17,12 +17,12 @@ library;
 import 'package:cometchat_sdk/cometchat_sdk.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:cometchat_chat_uikit/chat_ui/src/threaded_header/bloc/threaded_header_bloc.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/threaded_header/bloc/threaded_header_event.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/threaded_header/bloc/threaded_header_state.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/constants/enums.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/data/models/interactive_message/scheduler_message.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/domain/events/message_events/cometchat_message_events.dart';
+import 'package:convokit/chat_ui/src/threaded_header/bloc/threaded_header_bloc.dart';
+import 'package:convokit/chat_ui/src/threaded_header/bloc/threaded_header_event.dart';
+import 'package:convokit/chat_ui/src/threaded_header/bloc/threaded_header_state.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/constants/enums.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/data/models/interactive_message/scheduler_message.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/domain/events/message_events/cometchat_message_events.dart';
 
 class FakeUser extends Fake implements User {
   FakeUser([this._uid = 'me']);

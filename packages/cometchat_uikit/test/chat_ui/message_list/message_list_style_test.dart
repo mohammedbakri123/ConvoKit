@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:cometchat_chat_uikit/chat_ui/src/message_list/cometchat_message_list_style.dart';
+import 'package:convokit/chat_ui/src/message_list/cometchat_message_list_style.dart';
 
 // ---------------------------------------------------------------------------
 // Tests

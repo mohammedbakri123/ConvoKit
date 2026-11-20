@@ -7,7 +7,7 @@
 // opened in the parent conversation beside it too. The message list had the
 // mirror-image bug: it never read `parentMessageId` at all.
 
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/utils/ui_event_target.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/utils/ui_event_target.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

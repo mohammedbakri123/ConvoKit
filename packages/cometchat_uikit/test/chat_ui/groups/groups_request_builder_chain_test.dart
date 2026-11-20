@@ -8,11 +8,11 @@
 /// is called without one.
 library;
 
-import 'package:cometchat_chat_uikit/chat_ui/src/groups/data/datasources/groups_remote_datasource.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/groups/data/repositories/groups_repository_impl.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/groups/domain/repositories/groups_repository.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/groups/domain/usecases/get_groups_usecase.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/result.dart';
+import 'package:convokit/chat_ui/src/groups/data/datasources/groups_remote_datasource.dart';
+import 'package:convokit/chat_ui/src/groups/data/repositories/groups_repository_impl.dart';
+import 'package:convokit/chat_ui/src/groups/domain/repositories/groups_repository.dart';
+import 'package:convokit/chat_ui/src/groups/domain/usecases/get_groups_usecase.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/result.dart';
 import 'package:cometchat_sdk/cometchat_sdk.dart' hide CardMessage;
 import 'package:flutter_test/flutter_test.dart';
 

@@ -43,7 +43,7 @@ const _entryPoints = <String>[
   'lib/cometchat_chat_uikit_web.dart',
 ];
 
-const _packagePrefix = 'package:cometchat_chat_uikit/';
+const _packagePrefix = 'package:convokit/';
 
 final _directive = RegExp(r'\b(?:import|export|part)\b[^;]*;', dotAll: true);
 final _quoted = RegExp("""['"]([^'"]+)['"]""");

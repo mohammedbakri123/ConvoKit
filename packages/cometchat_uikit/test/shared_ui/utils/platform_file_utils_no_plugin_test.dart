@@ -10,7 +10,7 @@
 ///   flutter test test/shared_ui/utils/platform_file_utils_no_plugin_test.dart
 library;
 
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/utils/platform_utils/platform_file_utils.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/utils/platform_utils/platform_file_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

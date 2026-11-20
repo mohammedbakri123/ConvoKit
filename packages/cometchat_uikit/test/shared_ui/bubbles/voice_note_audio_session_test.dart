@@ -12,10 +12,10 @@ library;
 
 import 'dart:io';
 
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart'
+import 'package:convokit/cometchat_chat_uikit.dart'
     show AudioBubbleState;
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/constants/ui_kit_constants.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/presentation/views/bubbles/audio_bubble/voice_note_audio_session.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/constants/ui_kit_constants.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/presentation/views/bubbles/audio_bubble/voice_note_audio_session.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

@@ -1,4 +1,4 @@
-import 'package:cometchat_chat_uikit/src/adapters/cometchat_sdk_adapter.dart';
+import 'package:convokit/src/adapters/cometchat_sdk_adapter.dart';
 import 'package:flutter/material.dart';
 
 import '../../../shared_ui/cometchat_uikit_shared.dart';

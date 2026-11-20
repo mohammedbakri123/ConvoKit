@@ -33,7 +33,7 @@ Data Layer:
 ### 1. Basic Stream Playback
 
 ```dart
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 
 class AudioPlayerWidget extends StatefulWidget {
   @override

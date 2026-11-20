@@ -18,8 +18,8 @@ library;
 
 import 'dart:async';
 
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/constants/enums.dart'
+import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/constants/enums.dart'
     as core_enums;
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';

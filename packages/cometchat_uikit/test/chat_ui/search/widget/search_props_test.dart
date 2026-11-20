@@ -23,7 +23,7 @@
 ///   flutter test test/chat_ui/search/widget/search_props_test.dart
 library;
 
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 // The SDK exports none of these. They are the seam CometChatSearch leaves:
 // no bloc injection, so the fake has to sit where the SDK resolves its
 // repositories. Identical in the local SDK and in the hosted 5.0.7 CI uses.

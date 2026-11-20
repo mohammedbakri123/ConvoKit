@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart' as cc;
+import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart' as cc;
 import '../conversations/utils/conversation_subtitle_utils.dart';
 import '../../../shared_ui/src/clean_architecture/presentation/views/misc/message_preview_subtitle.dart';
 

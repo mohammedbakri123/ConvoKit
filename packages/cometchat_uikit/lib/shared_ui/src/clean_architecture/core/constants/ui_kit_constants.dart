@@ -7,7 +7,7 @@ import '../../data/models/cometchat_message_composer_action.dart';
 
 class UIConstants {
   static const MethodChannel channel = MethodChannel('cometchat_chat_uikit');
-  static const String packageName = "cometchat_chat_uikit";
+  static const String packageName = "convokit";
 }
 
 ///[MessageCategoryConstants] is a utility class that stores String constants of categories of messages

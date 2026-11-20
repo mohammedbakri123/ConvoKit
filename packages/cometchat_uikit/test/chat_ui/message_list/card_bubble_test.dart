@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:cometchat_sdk/cometchat_sdk.dart';
 import 'package:cometchat_cards/cometchat_cards.dart';
 
-import 'package:cometchat_chat_uikit/chat_ui/src/message_list/widgets/cometchat_card_bubble.dart';
+import 'package:convokit/chat_ui/src/message_list/widgets/cometchat_card_bubble.dart';
 
 // ---------------------------------------------------------------------------
 // Mocks & Fakes

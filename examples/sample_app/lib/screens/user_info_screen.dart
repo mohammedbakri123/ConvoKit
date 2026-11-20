@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart' as cc;
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/utils/thread_toast.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart' as cc;
+import 'package:convokit/shared_ui/src/clean_architecture/core/utils/thread_toast.dart';
 import 'package:intl/intl.dart';
 
 import 'messages_screen.dart';

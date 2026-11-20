@@ -1,4 +1,4 @@
-import 'package:cometchat_chat_uikit/src/adapters/cometchat_sdk_adapter.dart';
+import 'package:convokit/src/adapters/cometchat_sdk_adapter.dart';
 import '../../../cometchat_uikit_shared.dart';
 import '../../clean_architecture/data/models/interactive_message/card_message.dart'
     as legacy;

@@ -2,11 +2,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:cometchat_sdk/cometchat_sdk.dart';
 
-import 'package:cometchat_chat_uikit/chat_ui/src/users/domain/repositories/users_repository.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/users/domain/usecases/get_users_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/users/domain/usecases/block_user_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/users/domain/usecases/unblock_user_usecase.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/result.dart';
+import 'package:convokit/chat_ui/src/users/domain/repositories/users_repository.dart';
+import 'package:convokit/chat_ui/src/users/domain/usecases/get_users_usecase.dart';
+import 'package:convokit/chat_ui/src/users/domain/usecases/block_user_usecase.dart';
+import 'package:convokit/chat_ui/src/users/domain/usecases/unblock_user_usecase.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/result.dart';
 
 // ---------------------------------------------------------------------------
 // Mocks

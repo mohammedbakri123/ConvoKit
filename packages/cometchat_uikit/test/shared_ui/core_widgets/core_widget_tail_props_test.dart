@@ -4,7 +4,7 @@
 ///   flutter test test/shared_ui/core_widgets/core_widget_tail_props_test.dart
 library;
 
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 import 'package:flutter/material.dart';
 // `Bloc` through flutter_bloc, which re-exports it: package:bloc is a
 // transitive dependency, not a declared one, so importing it directly trips

@@ -6,7 +6,7 @@
 // first access constructs the RegExp, and an invalid pattern would throw here
 // rather than in someone's chat.
 
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/utils/emoji_utils.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/utils/emoji_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

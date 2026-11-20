@@ -1,4 +1,4 @@
-import 'package:cometchat_chat_uikit/convokit.dart';
+import 'package:convokit/convokit.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'fake_chat_backend.dart';

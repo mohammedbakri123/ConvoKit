@@ -4,17 +4,17 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:cometchat_sdk/cometchat_sdk.dart';
 
-import 'package:cometchat_chat_uikit/chat_ui/src/message_composer/bloc/message_composer_bloc.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_composer/bloc/message_composer_event.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_composer/bloc/message_composer_state.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_composer/domain/repositories/message_composer_repository.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_composer/domain/usecases/send_text_message_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_composer/domain/usecases/send_media_message_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_composer/domain/usecases/send_custom_message_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_composer/domain/usecases/edit_message_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_composer/domain/usecases/typing_usecases.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/message_composer/domain/usecases/get_logged_in_user_usecase.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/result.dart';
+import 'package:convokit/chat_ui/src/message_composer/bloc/message_composer_bloc.dart';
+import 'package:convokit/chat_ui/src/message_composer/bloc/message_composer_event.dart';
+import 'package:convokit/chat_ui/src/message_composer/bloc/message_composer_state.dart';
+import 'package:convokit/chat_ui/src/message_composer/domain/repositories/message_composer_repository.dart';
+import 'package:convokit/chat_ui/src/message_composer/domain/usecases/send_text_message_usecase.dart';
+import 'package:convokit/chat_ui/src/message_composer/domain/usecases/send_media_message_usecase.dart';
+import 'package:convokit/chat_ui/src/message_composer/domain/usecases/send_custom_message_usecase.dart';
+import 'package:convokit/chat_ui/src/message_composer/domain/usecases/edit_message_usecase.dart';
+import 'package:convokit/chat_ui/src/message_composer/domain/usecases/typing_usecases.dart';
+import 'package:convokit/chat_ui/src/message_composer/domain/usecases/get_logged_in_user_usecase.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/result.dart';
 
 // ---------------------------------------------------------------------------
 // Mocks & Fakes

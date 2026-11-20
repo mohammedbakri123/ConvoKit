@@ -6,8 +6,8 @@
 ///   flutter test test/shared_ui/l10n_ringing_test.dart
 library;
 
-import 'package:cometchat_chat_uikit/shared_ui/l10n/translations.dart';
-import 'package:cometchat_chat_uikit/shared_ui/l10n/translations_en.dart';
+import 'package:convokit/shared_ui/l10n/translations.dart';
+import 'package:convokit/shared_ui/l10n/translations_en.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 

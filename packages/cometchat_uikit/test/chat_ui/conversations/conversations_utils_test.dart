@@ -2,9 +2,9 @@ import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cometchat_sdk/cometchat_sdk.dart';
 
-import 'package:cometchat_chat_uikit/chat_ui/src/conversations/utils/debouncer.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/conversations/utils/preview_cache.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/conversations/utils/status_indicator_helper.dart';
+import 'package:convokit/chat_ui/src/conversations/utils/debouncer.dart';
+import 'package:convokit/chat_ui/src/conversations/utils/preview_cache.dart';
+import 'package:convokit/chat_ui/src/conversations/utils/status_indicator_helper.dart';
 
 // ---------------------------------------------------------------------------
 // Fakes — minimal SDK doubles for the utils under test

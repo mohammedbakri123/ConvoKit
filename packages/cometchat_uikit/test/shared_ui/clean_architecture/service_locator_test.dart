@@ -20,11 +20,11 @@
 ///   flutter test test/shared_ui/clean_architecture/service_locator_test.dart
 library;
 
-import 'package:cometchat_chat_uikit/chat_ui/src/conversations/di/conversations_service_locator.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/di/audio_service_locator.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/di/service_locator.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/data/repositories/repository_impl.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/services/audio_state/data/repositories/audio_state_repository_impl.dart';
+import 'package:convokit/chat_ui/src/conversations/di/conversations_service_locator.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/di/audio_service_locator.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/di/service_locator.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/data/repositories/repository_impl.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/services/audio_state/data/repositories/audio_state_repository_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

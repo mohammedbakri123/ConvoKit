@@ -12,7 +12,7 @@
 ///   flutter test test/chat_ui/search/search_bloc_test.dart
 library;
 
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 // The SDK exports none of these; `SdkRegistry` is the documented seam (see
 // test/helpers/golden_fake_sdk.dart).
 // ignore: implementation_imports

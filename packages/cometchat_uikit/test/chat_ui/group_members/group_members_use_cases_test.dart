@@ -2,12 +2,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:cometchat_sdk/cometchat_sdk.dart';
 
-import 'package:cometchat_chat_uikit/chat_ui/src/group_members/domain/repositories/group_members_repository.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/group_members/domain/usecases/get_group_members_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/group_members/domain/usecases/kick_group_member_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/group_members/domain/usecases/ban_group_member_usecase.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/group_members/domain/usecases/update_member_scope_usecase.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/result.dart';
+import 'package:convokit/chat_ui/src/group_members/domain/repositories/group_members_repository.dart';
+import 'package:convokit/chat_ui/src/group_members/domain/usecases/get_group_members_usecase.dart';
+import 'package:convokit/chat_ui/src/group_members/domain/usecases/kick_group_member_usecase.dart';
+import 'package:convokit/chat_ui/src/group_members/domain/usecases/ban_group_member_usecase.dart';
+import 'package:convokit/chat_ui/src/group_members/domain/usecases/update_member_scope_usecase.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/result.dart';
 
 // ---------------------------------------------------------------------------
 // Mocks

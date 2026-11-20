@@ -15,7 +15,7 @@ library;
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/presentation/views/components/media_recorder/media_recorder_bloc.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/presentation/views/components/media_recorder/media_recorder_bloc.dart';
 
 /// Counts what the bloc dispatches to itself, so the periodic timer's ticks
 /// can be counted without depending on the values it computes.

@@ -15,7 +15,7 @@ library;
 // path, which is exactly what these cases cover.
 // ignore_for_file: deprecated_member_use_from_same_package
 
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

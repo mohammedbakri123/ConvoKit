@@ -5,8 +5,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/constants/ui_kit_constants.dart'
+import 'package:convokit/cometchat_chat_uikit.dart';
+import 'package:convokit/shared_ui/src/constants/ui_kit_constants.dart'
     as legacy_constants;
 
 class _RecordingListener with CometChatMessageEventListener {

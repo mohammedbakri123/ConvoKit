@@ -14,9 +14,9 @@ import 'package:cometchat_sdk/cometchat_sdk.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import 'package:cometchat_chat_uikit/chat_ui/src/notification_feed/data/datasources/notification_feed_remote_datasource.dart';
-import 'package:cometchat_chat_uikit/chat_ui/src/notification_feed/data/repositories/notification_feed_repository_impl.dart';
-import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/result.dart';
+import 'package:convokit/chat_ui/src/notification_feed/data/datasources/notification_feed_remote_datasource.dart';
+import 'package:convokit/chat_ui/src/notification_feed/data/repositories/notification_feed_repository_impl.dart';
+import 'package:convokit/shared_ui/src/clean_architecture/core/result.dart';
 
 class MockRemote extends Mock implements NotificationFeedRemoteDataSource {}
 

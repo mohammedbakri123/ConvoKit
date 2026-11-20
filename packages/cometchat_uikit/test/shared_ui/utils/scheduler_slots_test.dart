@@ -11,10 +11,10 @@
 ///   flutter test test/shared_ui/utils/scheduler_slots_test.dart
 library;
 
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+import 'package:convokit/cometchat_chat_uikit.dart';
 // The initializer CometChatUIKit.init calls; SchedulerUtils reads this copy
 // of the timezone database and nothing else fills it.
-import 'package:cometchat_chat_uikit/shared_ui/src/utils/timezone_utils/data/latest.dart';
+import 'package:convokit/shared_ui/src/utils/timezone_utils/data/latest.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

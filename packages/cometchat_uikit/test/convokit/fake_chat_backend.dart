@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs
 import 'dart:async';
 
-import 'package:cometchat_chat_uikit/convokit.dart';
+import 'package:convokit/convokit.dart';
 
 extension ChatResultTestX<T> on ChatResult<T> {
   T getOrThrow() {
