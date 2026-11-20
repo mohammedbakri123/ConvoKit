@@ -51,7 +51,6 @@ export 'src/events/ai_assistant_events/cometchat_ai_assistant_events_listener.da
 
 // AI constants
 export 'src/constants/ai_constants.dart';
-export 'src/constants/ai_feature_constants.dart';
 
 // AI models
 export 'src/models/ai/stream_message.dart';
@@ -184,18 +183,6 @@ export 'src/views/ai_assistant_bubble/cometchat_ai_assistant_bubble_style.dart';
 
 // Stream Bubble
 export 'src/views/stream_bubble/cometchat_stream_bubble.dart';
-
-// AI Smart Replies
-export 'src/views/ai_smart_replies/cometchat_ai_smart_replies_view.dart';
-export 'src/views/ai_smart_replies/cometchat_ai_smart_replies_style.dart';
-
-// AI Conversation Starter
-export 'src/views/ai_conversation_starter/cometchat_ai_conversation_starter_view.dart';
-export 'src/views/ai_conversation_starter/cometchat_ai_conversation_starter_style.dart';
-
-// AI Conversation Summary
-export 'src/views/ai_conversation_summary/cometchat_ai_conversation_summary_view.dart';
-export 'src/views/ai_conversation_summary/cometchat_ai_conversation_summary_style.dart';
 
 // AI Option Sheet
 export 'src/views/ai_option_sheet/cometchat_ai_option_sheet.dart';
