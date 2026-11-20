@@ -57,7 +57,6 @@ export 'src/models/ai/stream_message.dart';
 export 'src/models/ai_option_style.dart';
 
 // AI services
-export 'src/services/cometchat_stream_service.dart';
 export 'src/services/cometchat_stream_callback.dart';
 
 // Export helpers (not duplicated in clean architecture)

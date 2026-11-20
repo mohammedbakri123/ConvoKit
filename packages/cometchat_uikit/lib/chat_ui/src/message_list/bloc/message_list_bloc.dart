@@ -16,9 +16,6 @@ import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart'
         CometChatUIEvents,
         ExtensionType,
         AIConstants,
-        StreamMessage,
-        CometChatStreamService,
-        CometChatStreamCallBackEvents,
         Sound;
 
 import 'message_list_event.dart';
@@ -262,9 +259,6 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
   /// Unique ID for connection listener
   late final String _connectionListenerId;
 
-  /// Unique ID for AI assistant event listener
-  late final String _aiAssistantListenerId;
-
   /// Unique ID for UI message events listener (ccMessageSent, ccMessageEdited, etc.)
   late final String _uiMessageListenerId;
 
@@ -291,9 +285,6 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
 
   /// Logged in user (cached after first fetch)
   User? _loggedInUser;
-
-  /// Stream service for AI streaming events
-  final CometChatStreamService _streamService = CometChatStreamService();
 
   /// Flag to track if index maps need full rebuild
   bool _mapNeedsRebuild = true;
@@ -386,7 +377,6 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
     _uiMessageListenerId = 'message_list_bloc_ui_message_$timestamp';
     _uiGroupListenerId = 'message_list_bloc_ui_group_$timestamp';
     _uiCallListenerId = 'message_list_bloc_ui_call_$timestamp';
-    _aiAssistantListenerId = 'message_list_bloc_ai_$timestamp';
 
     // Register event handlers (implementations in Task 9)
     on<LoadMessages>(_onLoadMessages);
@@ -843,7 +833,6 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
         onMediaMessageReceivedCallback: _handleMessageReceived,
         onCustomMessageReceivedCallback: _handleMessageReceived,
         onInteractiveMessageReceivedCallback: _handleMessageReceived,
-        onAIAssistantMessageReceivedCallback: _handleMessageReceived,
         onMessageEditedCallback: _handleMessageEdited,
         onMessagePinSaveChangedCallback: _handleMessagePinSaveChanged,
         onMessageDeletedCallback: _handleMessageDeleted,
@@ -896,16 +885,6 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
         onDisconnectedCallback: _handleDisconnected,
       ),
     );
-
-    // Register AI assistant event listener (for streaming/thinking bubbles)
-    if (user?.role == 'ai' || user?.role == AIConstants.aiRole) {
-      CometChatSdkAdapter.addAIAssistantListener(
-        _aiAssistantListenerId,
-        _MessageListAIAssistantListener(
-          onAIAssistantEventReceivedCallback: _handleAIAssistantEvent,
-        ),
-      );
-    }
 
     // Register UI message events listener (for messages sent by logged-in user)
     CometChatMessageEvents.addMessagesListener(
@@ -1450,64 +1429,6 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
     // Dispatch a single event — all state mutations happen inside the BLoC
     // event handler where state is consistent (no race conditions).
     add(MessageSentByUser(message: message, status: status.toString()));
-  }
-
-  // ============================================================
-  // AI ASSISTANT EVENT HANDLING
-  // ============================================================
-
-  /// Handle AI assistant streaming events.
-  /// Creates thinking bubble on run_started, routes content to stream service.
-  /// The CometChatStreamBubble widget handles word-by-word rendering.
-  void _handleAIAssistantEvent(AIAssistantBaseEvent event) {
-    if (isClosed) return;
-    ccLog(
-      '[MessageListBloc] AI event received: type=${event.type}, id=${event.id}',
-    );
-    final runId = event.id;
-    if (runId == null) return;
-
-    _streamService.handleIncomingEvent(runId, event);
-
-    if (event.type == AgenticKeys.runStarted ||
-        event.type == AgenticKeys.textMessageStart) {
-      _createThinkingMessage(runId);
-    }
-  }
-
-  /// Create a thinking/streaming bubble for a new AI run.
-  /// Uses negative runId to avoid collision with the parent message ID.
-  /// Initial text is empty — the CometChatStreamBubble widget shows shimmer
-  /// via metadata[aiShimmer]=true, then updates text as content arrives.
-  void _createThinkingMessage(int runId) {
-    final thinkingMessageId = -runId;
-    // Don't create duplicate thinking bubbles
-    for (final msg in state.messages) {
-      if (msg.id == thinkingMessageId) return;
-    }
-
-    final thinkingMessage = StreamMessage(
-      id: thinkingMessageId,
-      text: 'Thinking...', // Shown with shimmer effect until content arrives
-      sender: user,
-      receiver: _loggedInUser,
-      receiverUid: _loggedInUser?.uid ?? '',
-      receiverType: CometChatReceiverType.user,
-      sentAt: DateTime.now(),
-      runId: runId,
-      muid: 'run_$runId',
-      metadata: {AIConstants.aiShimmer: true},
-      parentMessageId: parentMessageId ?? 0,
-    );
-
-    _streamService.setMessageIdForRun(runId, thinkingMessage.id);
-    _streamService.getOrCreateBuffer(runId);
-    _streamService.registerMessage(thinkingMessage);
-
-    // Notify composer that AI is streaming (shows stop button)
-    CometChatStreamCallBackEvents.ccStreamInProgress(true);
-
-    add(MessageReceived(thinkingMessage));
   }
 
   /// Force the message list into empty state without loading messages.
@@ -2680,34 +2601,6 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
       'class=${message.runtimeType}',
     );
 
-    // For AI assistant messages, replace the thinking/stream bubble
-    if (message is AIAssistantMessage && message.runId != null) {
-      final thinkingId = -(message.runId!);
-      // Scan for thinking bubble (negative IDs may not be in index map)
-      for (int i = 0; i < state.messages.length; i++) {
-        if (state.messages[i].id == thinkingId) {
-          final thinkingMsg = state.messages[i];
-          _streamService.removeMessageById(thinkingId);
-          _streamService.stopStreamingForRunId(message.runId!);
-          final updatedMessages = List<BaseMessage>.from(state.messages);
-          updatedMessages[i] = message;
-          emit(
-            state.copyWith(
-              messages: updatedMessages,
-              status: MessageListStatus.loaded,
-            ),
-          );
-          _rebuildIndexMaps();
-          _operationsController.add(
-            MessageOperation.update(thinkingMsg, message, i),
-          );
-          // Notify composer that streaming is complete (restore send button)
-          CometChatStreamCallBackEvents.ccStreamCompleted(true);
-          return;
-        }
-      }
-    }
-
     // Check if message belongs to current conversation
     final belongsHere = message is Call
         ? _isCallForCurrentConversation(message)
@@ -3782,7 +3675,6 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
         CometChatSdkAdapter.removeCallListener(_callListenerId);
       }
       CometChatSdkAdapter.removeConnectionListener(_connectionListenerId);
-      CometChatSdkAdapter.removeAIAssistantListener(_aiAssistantListenerId);
     }
 
     // Remove UI message events listener
@@ -4454,7 +4346,6 @@ class _MessageListMessageListener with MessageListener {
   final void Function(BaseMessage) onMediaMessageReceivedCallback;
   final void Function(BaseMessage) onCustomMessageReceivedCallback;
   final void Function(BaseMessage) onInteractiveMessageReceivedCallback;
-  final void Function(BaseMessage) onAIAssistantMessageReceivedCallback;
   final void Function(BaseMessage) onMessageEditedCallback;
 
   /// Pin & Save: (message, isPinScope) — see [MessagePinSaveChanged].
@@ -4475,7 +4366,6 @@ class _MessageListMessageListener with MessageListener {
     required this.onMediaMessageReceivedCallback,
     required this.onCustomMessageReceivedCallback,
     required this.onInteractiveMessageReceivedCallback,
-    required this.onAIAssistantMessageReceivedCallback,
     required this.onMessageEditedCallback,
     required this.onMessagePinSaveChangedCallback,
     required this.onMessageDeletedCallback,
@@ -4532,17 +4422,6 @@ class _MessageListMessageListener with MessageListener {
     );
     // Route card messages through the same path as other messages
     onTextMessageReceivedCallback(cardMessage);
-  }
-
-  @override
-  void onAIAssistantMessageReceived(AIAssistantMessage aiAssistantMessage) {
-    ccLog(
-      '[MessageListener] onAIAssistantMessageReceived: id=${aiAssistantMessage.id}, '
-      'runId=${aiAssistantMessage.runId}, '
-      'hasElements=${aiAssistantMessage.getElements()?.isNotEmpty ?? false}, '
-      'elementsCount=${aiAssistantMessage.getElements()?.length ?? 0}',
-    );
-    onAIAssistantMessageReceivedCallback(aiAssistantMessage);
   }
 
   @override
@@ -4796,20 +4675,6 @@ class _MessageListConnectionListener with ConnectionListener {
   @override
   void onDisconnected() {
     onDisconnectedCallback();
-  }
-}
-
-/// AI assistant event listener for streaming events (thinking bubbles, content)
-class _MessageListAIAssistantListener with AIAssistantListener {
-  final void Function(AIAssistantBaseEvent) onAIAssistantEventReceivedCallback;
-
-  _MessageListAIAssistantListener({
-    required this.onAIAssistantEventReceivedCallback,
-  });
-
-  @override
-  void onAIAssistantEventReceived(AIAssistantBaseEvent event) {
-    onAIAssistantEventReceivedCallback(event);
   }
 }
 
