@@ -1,5 +1,5 @@
 {
-  "users":[
+  "users": [
     {
       "uid": "superhero1",
       "name": "Iron Man",
@@ -24,6 +24,72 @@
       "uid": "superhero5",
       "name": "Cyclops",
       "avatar": "assets/cyclops_avatar.png"
+    }
+  ],
+  "groups": [
+    {
+      "guid": "group_avengers",
+      "name": "Avengers HQ",
+      "avatar": "assets/captainamerica_avatar.png",
+      "description": "Earth’s Mightiest Heroes",
+      "type": "public",
+      "members": ["superhero1", "superhero2", "superhero3"]
+    }
+  ],
+  "conversations": [
+    {
+      "id": "conv_superhero1_superhero2",
+      "type": "user",
+      "peer": "superhero2",
+      "lastMessage": "Suit up, Tony!",
+      "unreadCount": 1
+    },
+    {
+      "id": "conv_superhero1_superhero3",
+      "type": "user",
+      "peer": "superhero3",
+      "lastMessage": "Mr. Stark, do you have any new upgrades?",
+      "unreadCount": 0
+    },
+    {
+      "id": "conv_superhero1_superhero4",
+      "type": "user",
+      "peer": "superhero4",
+      "lastMessage": "Where are we meeting?",
+      "unreadCount": 1
+    },
+    {
+      "id": "conv_superhero1_superhero5",
+      "type": "user",
+      "peer": "superhero5",
+      "lastMessage": "X-Men are ready when you are.",
+      "unreadCount": 0
+    }
+  ],
+  "messages": [
+    {
+      "id": "msg_1",
+      "conversationId": "conv_superhero1_superhero2",
+      "sender": "superhero2",
+      "text": "Suit up, Tony!"
+    },
+    {
+      "id": "msg_2",
+      "conversationId": "conv_superhero1_superhero3",
+      "sender": "superhero3",
+      "text": "Mr. Stark, do you have any new upgrades?"
+    },
+    {
+      "id": "msg_3",
+      "conversationId": "conv_superhero1_superhero4",
+      "sender": "superhero4",
+      "text": "Where are we meeting?"
+    },
+    {
+      "id": "msg_4",
+      "conversationId": "conv_superhero1_superhero5",
+      "sender": "superhero5",
+      "text": "X-Men are ready when you are."
     }
   ]
 }
