@@ -590,12 +590,6 @@ class _MessagesScreenState extends State<MessagesScreen>
         group: _group,
         showBackButton: !widget.hideBackButton,
         onBack: widget.hideBackButton ? null : () => Navigator.pop(context),
-        // A user either side has blocked cannot be called: no buttons, as
-        // in Android's MessagesActivity.
-        hideVideoCallButton:
-            _isUserBlocked || _toggles.hideVideoCallButton.value,
-        hideVoiceCallButton:
-            _isUserBlocked || _toggles.hideVoiceCallButton.value,
         hideNewChatButton: true,
         hideChatHistoryButton: true,
         usersStatusVisibility: _toggles.headerUsersStatusVisibility.value,

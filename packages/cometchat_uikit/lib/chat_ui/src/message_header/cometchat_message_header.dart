@@ -52,8 +52,6 @@ class CometChatMessageHeader extends StatefulWidget
     this.avatarWidth,
     this.height,
     this.padding,
-    this.hideVideoCallButton,
-    this.hideVoiceCallButton,
     this.titleView,
     this.leadingStateView,
     this.auxiliaryButtonView,
@@ -181,12 +179,6 @@ class CometChatMessageHeader extends StatefulWidget
 
   /// [padding] set padding for message header
   final EdgeInsetsGeometry? padding;
-
-  /// [hideVideoCallButton] is a [bool] that can be used to hide/display video call button
-  final bool? hideVideoCallButton;
-
-  /// [hideVoiceCallButton] is a [bool] that can be used to hide/display voice call button
-  final bool? hideVoiceCallButton;
 
   /// [leadingStateView] to set leading View
   final Widget? Function(Group? group, User? user, BuildContext context)?

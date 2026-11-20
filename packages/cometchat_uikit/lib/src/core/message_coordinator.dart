@@ -132,23 +132,28 @@ class MessageCoordinator {
         return ChatResult.failure(error);
       }
 
+      if (currentAttachment.localPath == null) {
+        const error = ChatError(
+          ChatErrorCode.validation,
+          'No file or bytes provided for media upload',
+        );
+        final failed = pending.copyWithSendState(
+          SendState.failed,
+          failure: error,
+        );
+        store.addOrReconcile(failed);
+        return ChatResult.failure(error);
+      }
+
       final cancelToken = CancellationToken();
       _activeUploads[effectiveLocalId] = cancelToken;
 
-      final uploadReq = currentAttachment.localPath != null
-          ? UploadRequest.file(
-              currentAttachment.localPath!,
-              kind: currentAttachment.kind,
-              mimeType: currentAttachment.mimeType,
-              name: currentAttachment.name,
-            )
-          : UploadRequest.bytes(
-              // In case bytes were provided
-              Uint8List(0),
-              kind: currentAttachment.kind,
-              mimeType: currentAttachment.mimeType,
-              name: currentAttachment.name,
-            );
+      final uploadReq = UploadRequest.file(
+        currentAttachment.localPath!,
+        kind: currentAttachment.kind,
+        mimeType: currentAttachment.mimeType,
+        name: currentAttachment.name,
+      );
 
       final uploadResult = await mediaProvider.upload(
         uploadReq,

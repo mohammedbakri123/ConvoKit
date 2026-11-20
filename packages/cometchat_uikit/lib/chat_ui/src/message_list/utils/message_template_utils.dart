@@ -1757,17 +1757,6 @@ class MessageTemplateUtils {
       CometChatMessageType.assistant,
       CometChatMessageType.runStarted,
     ];
-    if (CometChatUIKit.authenticationSettings?.enableCalls == true) {
-      if (!types.contains(MessageTypeConstants.audio)) {
-        types.add(MessageTypeConstants.audio);
-      }
-      if (!types.contains(MessageTypeConstants.video)) {
-        types.add(MessageTypeConstants.video);
-      }
-      if (!types.contains(MessageTypeConstants.meeting)) {
-        types.add(MessageTypeConstants.meeting);
-      }
-    }
     return types;
   }
 

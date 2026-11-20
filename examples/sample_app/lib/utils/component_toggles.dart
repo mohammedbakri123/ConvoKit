@@ -60,8 +60,6 @@ class ComponentToggles {
   final composerDoubleLine = ValueNotifier<bool>(false);
 
   // ── Message Header ─────────────────────────────────────────────
-  final hideVideoCallButton = ValueNotifier<bool>(false);
-  final hideVoiceCallButton = ValueNotifier<bool>(false);
   final headerUsersStatusVisibility = ValueNotifier<bool>(true);
 
   // ── Users ──────────────────────────────────────────────────────

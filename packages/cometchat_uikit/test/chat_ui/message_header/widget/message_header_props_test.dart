@@ -268,16 +268,13 @@ void main() {
   });
 
   group('action buttons', () {
-    testWidgets('hideVoiceCallButton and hideVideoCallButton remove the call '
-        'controls', (tester) async {
+    testWidgets('header renders no call controls', (tester) async {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(
             CometChatMessageHeader(
               user: _bob,
               messageHeaderBloc: _mock(),
-              hideVoiceCallButton: true,
-              hideVideoCallButton: true,
             ),
           ),
         );
@@ -610,8 +607,6 @@ void main() {
             CometChatMessageHeader(
               user: _bob,
               messageHeaderBloc: _mock(),
-              hideVoiceCallButton: false,
-              hideVideoCallButton: false,
               messageHeaderStyle: const CometChatMessageHeaderStyle(
                 callButtonsStyle: CometChatCallButtonsStyle(
                   voiceCallIconColor: Color(0xFFFB0B0B),

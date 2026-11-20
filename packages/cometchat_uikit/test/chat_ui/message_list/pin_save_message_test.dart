@@ -139,8 +139,6 @@ void main() {
             group: Group(guid: 'g1', name: 'G', type: 'public'),
             pinnedMessagesVisibility: visible,
             parentMessage: parentMessage,
-            hideVoiceCallButton: true,
-            hideVideoCallButton: true,
           ),
           body: const SizedBox(),
         ),

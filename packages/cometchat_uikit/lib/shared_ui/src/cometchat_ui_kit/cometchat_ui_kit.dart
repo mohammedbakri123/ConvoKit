@@ -84,11 +84,7 @@ class CometChatUIKit {
   static ConversationUpdateSettings? conversationUpdateSettings;
 
   /// Whether the UIKit was initialized via [initFromSettings] (the AI-agent /
-  /// skills path). Read when the UI Kit initialises the Calls SDK, to route it
-  /// through its telemetry-aware `CometChatCalls.initFromSettings` so
-  /// integrationSource = "ai-agent" propagates past the Chat SDK (ENG-37368).
-  /// The plain [init] path sets this back to false and the Calls SDK uses its
-  /// plain init ("manual").
+  /// skills path).
   static bool initializedFromSettings = false;
 
   /// method initializes the settings required for CometChat

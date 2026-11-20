@@ -70,8 +70,6 @@ void main() {
     });
 
     test('message header toggles have correct defaults', () {
-      expect(toggles.hideVideoCallButton.value, isFalse);
-      expect(toggles.hideVoiceCallButton.value, isFalse);
       expect(toggles.headerUsersStatusVisibility.value, isTrue);
     });
 

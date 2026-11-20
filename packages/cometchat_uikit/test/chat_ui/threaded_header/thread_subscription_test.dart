@@ -174,8 +174,6 @@ void main() {
             group: Group(guid: 'g1', name: 'G', type: 'public'),
             threadSubscriptionVisibility: show,
             parentMessage: rootMessage(),
-            hideVoiceCallButton: true,
-            hideVideoCallButton: true,
           ),
           body: const SizedBox(),
         ),

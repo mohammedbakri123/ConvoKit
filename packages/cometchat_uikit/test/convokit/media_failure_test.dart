@@ -186,5 +186,54 @@ void main() {
         reason: 'Cancelled upload must not leave a draft or pending message behind',
       );
     });
+
+    test('sendMediaMessage fails with validation error when attachment has no localPath', () async {
+      final kit = ConvoKit(
+        session: fake.session,
+        users: fake.users,
+        conversations: fake.conversations,
+        messages: fake.messages,
+        events: fake.events,
+        media: fake.media,
+        capabilities: ChatCapabilities.basic(),
+      );
+      final hub = EventHub();
+      hub.attach(kit);
+
+      final result = await hub.coordinator.sendMediaMessage(
+        conversationId: 'conv_1_2',
+        sender: fake.user1,
+        attachment: _NoPathAttachment(),
+      );
+
+      expect(result.isFailure, isTrue);
+      expect(result.errorOrNull!.code, ChatErrorCode.validation);
+      hub.dispose();
+    });
   });
+}
+
+class _NoPathAttachment extends Fake implements ChatAttachment {
+  @override
+  String get id => 'att_no_path';
+  @override
+  AttachmentKind get kind => AttachmentKind.file;
+  @override
+  AttachmentState get state => AttachmentState.local;
+  @override
+  String? get localPath => null;
+  @override
+  String? get url => null;
+  @override
+  String? get remoteId => null;
+  @override
+  double? get uploadProgress => null;
+  @override
+  ChatError? get uploadFailure => null;
+  @override
+  String? get mimeType => null;
+  @override
+  int? get sizeBytes => null;
+  @override
+  String? get name => null;
 }
