@@ -41,7 +41,7 @@ Displays a list of recent conversations with real-time updates (new messages, ty
 
 ### CometChatMessageList
 
-Displays messages for a 1:1 or group conversation with real-time updates, reactions, threads, and smart replies.
+Displays messages for a 1:1 or group conversation with real-time updates, reactions, and threads.
 
 - **Location:** `chat_ui/src/message_list/widgets/cometchat_message_list.dart`
 - **Key props:** `user`, `group`, `messagesRequestBuilder`, `parentMessageId`, `templates`, `alignment`, `hideDeletedMessages`, `disableReceipts`, `disableReactions`, `enableSwipeToReply`, `textFormatters`, `messageListBloc`
@@ -51,7 +51,7 @@ Displays messages for a 1:1 or group conversation with real-time updates, reacti
 
 ### CometChatMessageComposer
 
-Text input with attachments, voice recording, rich text toolbar, mentions, and AI features.
+Text input with attachments, voice recording, rich text toolbar, and mentions.
 
 - **Location:** `chat_ui/src/message_composer/widgets/cometchat_message_composer.dart`
 - **Key props:** `user`, `group`, `parentMessageId`, `placeholderText`, `disableTypingEvents`, `text`, `onChange`, `onSendButtonTap`, `textFormatters`, `disableMentions`, `hideVoiceRecordingButton`, `richTextConfiguration`
@@ -125,16 +125,6 @@ Displays read/delivered receipt information for a message. Shows per-member rece
 - **Key props:** `message` (required), `title`, `template`, `textFormatters`
 - **Style:** `CometChatMessageInformationStyle`
 
-### CometChatAIAssistantChatHistory
-
-Displays AI assistant conversation history with pagination, date separators, message deletion, and new chat button.
-
-- **Location:** `chat_ui/src/ai_assistant_chat_history/widgets/cometchat_ai_assistant_chat_history.dart`
-- **Key props:** `user`, `group`, `messagesRequestBuilder`, `onMessageClicked`, `onNewChatButtonClicked`, `onClose`, `hideStickyDate`, `hideDateSeparator`
-- **View slots:** `emptyStateView`, `errorStateView`, `loadingStateView`, `backButton`
-- **Style:** `CometChatAIAssistantChatHistoryStyle`
-
----
 
 ## 2. Call Components
 
@@ -337,37 +327,6 @@ Bottom sheet for message actions (copy, reply, delete, etc.) and attachment opti
 
 ---
 
-## 6. AI Views
-
-### CometChatAISmartReplies
-
-Displays AI-generated smart reply suggestions as tappable chips.
-
-- **Location:** `shared_ui/src/views/ai_smart_replies/cometchat_ai_smart_replies_view.dart`
-- **Style:** `CometChatAISmartRepliesStyle`
-
-### CometChatAIConversationStarter
-
-Shows AI-generated conversation starters for empty chats.
-
-- **Location:** `shared_ui/src/views/ai_conversation_starter/cometchat_ai_conversation_starter_view.dart`
-- **Style:** `CometChatAIConversationStarterStyle`
-
-### CometChatAIConversationSummary
-
-Displays an AI-generated summary of the conversation.
-
-- **Location:** `shared_ui/src/views/ai_conversation_summary/cometchat_ai_conversation_summary_view.dart`
-- **Style:** `CometChatAIConversationSummaryStyle`
-
-### CometChatAIAssistantBubble
-
-Bubble for AI assistant responses with streaming text support.
-
-- **Location:** `shared_ui/src/views/ai_assistant_bubble/cometchat_ai_assistant_bubble.dart`
-- **Style:** `CometChatAIAssistantBubbleStyle`
-
----
 
 ## Quick Reference: Import
 

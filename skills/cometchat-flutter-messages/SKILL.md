@@ -8,8 +8,7 @@ description: >
   CometChatFileBubble, CometChatMessageBubble, bubble factories, message templates,
   send message, edit message, delete message, reply, thread, reactions, receipts,
   typing indicators, mentions, markdown formatting, text formatters, scroll to bottom,
-  unread messages, mark as read, goToMessageId, message options, swipe to reply,
-  smart replies, or conversation starters. Also use when
+  unread messages, mark as read, goToMessageId, message options, or swipe to reply. Also use when
   the user asks about building a chat screen, message input, or message display.
 license: "MIT"
 compatibility: "cometchat_chat_uikit ^6.0.0; flutter_bloc ^8.1.0"

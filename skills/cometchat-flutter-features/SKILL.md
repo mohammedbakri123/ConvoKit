@@ -2,16 +2,16 @@
 name: cometchat-flutter-features
 description: >
   Enable and configure features in CometChat Flutter UIKit v6 — calls, reactions,
-  smart replies, conversation starters, stickers, mentions, rich text formatting,
-  message translation, link preview, and AI features. Covers what's auto-enabled,
-  what needs UIKitSettings flags, and what needs CometChat dashboard toggles.
+  stickers, mentions, rich text formatting, message translation, and link preview.
+  Covers what's auto-enabled, what needs UIKitSettings flags, and what needs
+  CometChat dashboard toggles.
 license: "MIT"
 compatibility: "cometchat_chat_uikit ^6.0.0"
 allowed-tools: "executeBash, readFile, readCode, fileSearch, listDirectory, grepSearch"
 metadata:
   author: "CometChat"
   version: "1.0.0"
-  tags: "cometchat flutter features calls reactions stickers ai smart-replies extensions"
+  tags: "cometchat flutter features calls reactions stickers extensions"
 ---
 
 # CometChat Flutter UIKit v6 — Features
@@ -26,7 +26,7 @@ Every feature falls into one of three categories:
 |---|---|---|---|
 | **Auto-enabled** | Works out of the box when you render the standard components | Text/media messages, typing indicators, read receipts, reactions, message editing/deletion, threaded replies, @mentions | Just render `CometChatMessageHeader` + `CometChatMessageList` + `CometChatMessageComposer` |
 | **UIKitSettings flag** | Set a property on `UIKitSettingsBuilder` before `CometChatUIKit.init()` | Voice/video calls (`enableCalls: true`), presence/typing (`subscriptionType`) | Set the flag → init |
-| **Dashboard-toggle** | Enable the extension in the CometChat dashboard. UIKit auto-wires the UI once enabled. | Polls, stickers, smart replies, conversation starters, conversation summary, message translation, link preview, collaborative document, collaborative whiteboard, image moderation, thumbnail generation | Toggle on in dashboard → restart app |
+| **Dashboard-toggle** | Enable the extension in the CometChat dashboard. UIKit auto-wires the UI once enabled. | Polls, stickers, message translation, link preview, collaborative document, collaborative whiteboard, image moderation, thumbnail generation | Toggle on in dashboard → restart app |
 
 ## 2. Auto-Enabled Features
 
@@ -97,9 +97,6 @@ These are extensions enabled in the CometChat dashboard (app.cometchat.com → E
 |---|---|---|
 | Polls | "Create Poll" option in composer attachment menu | `extensions/polls/` |
 | Stickers | Sticker picker button next to composer | `extensions/stickers/` |
-| Smart Replies | Chip suggestions above composer after incoming message | AI view: `views/ai_smart_replies/` |
-| Conversation Starters | Suggested messages when chat is empty | AI view: `views/ai_conversation_starter/` |
-| Conversation Summary | Summary panel above composer | AI view: `views/ai_conversation_summary/` |
 | Message Translation | "Translate" option in message long-press menu | `extensions/message_translation/` |
 | Link Preview | Rich preview card for URLs in messages | `extensions/link_preview/` |
 | Collaborative Document | "Document" option in composer attachment menu | `extensions/collaborative_document/` |
@@ -137,51 +134,7 @@ CallingConfiguration(
 
 For the full call flow, init sequence, and gotchas, see the `cometchat-flutter-calls` skill.
 
-## 6. AI Features
-
-AI features require enabling the corresponding extension in the CometChat dashboard. The UIKit provides built-in views for each.
-
-### Smart Replies
-
-Suggested reply chips shown above the composer after receiving a message.
-
-```dart
-CometChatMessageList(
-  user: user,
-  group: group,
-  enableSmartReplies: true,
-  smartRepliesDelayDuration: 10000,  // ms before showing suggestions
-  smartRepliesKeywords: ['what', 'when', 'why', 'who', 'where', 'how', '?'],
-)
-```
-
-### Conversation Starters
-
-Suggested messages shown when the chat is empty to help start a conversation.
-
-```dart
-CometChatMessageList(
-  user: user,
-  group: group,
-  enableConversationStarters: true,
-)
-```
-
-### Conversation Summary
-
-A summary of the conversation shown in a panel. Available via the AI option sheet in the message header.
-
-### AI Assistant
-
-Full AI chat assistant with chat history. Uses Clean Architecture + BLoC at `chat_ui/src/ai_assistant_chat_history/`. The chat history button appears in `CometChatMessageHeader` for AI-type users.
-
-Related props on `CometChatMessageHeader`:
-- `hideChatHistoryButton` — hide the AI chat history button
-- `hideNewChatButton` — hide the new AI chat button
-- `chatHistoryButtonClick` — custom callback for chat history tap
-- `newChatButtonClick` — custom callback for new chat tap
-
-## 7. Rich Text & Formatters
+## 6. Rich Text & Formatters
 
 The composer supports rich text formatting via the WYSIWYG toolbar (bold, italic, strikethrough, inline code, ordered/bullet lists, blockquote, links, code blocks).
 
@@ -238,7 +191,7 @@ CometChatMessageComposer(
 )
 ```
 
-## 8. Reactions
+## 7. Reactions
 
 Reactions are auto-enabled. Users long-press a message to add emoji reactions.
 
@@ -268,7 +221,7 @@ CometChatMessageList(
 )
 ```
 
-## 9. Disabling Features
+## 8. Disabling Features
 
 Most features can be hidden or disabled via component props.
 
@@ -278,8 +231,6 @@ Most features can be hidden or disabled via component props.
 |---|---|---|
 | `hideVoiceCallButton` | `bool?` | Hide voice call button |
 | `hideVideoCallButton` | `bool?` | Hide video call button |
-| `hideChatHistoryButton` | `bool?` | Hide AI chat history button |
-| `hideNewChatButton` | `bool?` | Hide new AI chat button |
 | `usersStatusVisibility` | `bool?` | Show/hide online status indicator |
 
 ### CometChatMessageList
@@ -305,9 +256,6 @@ Most features can be hidden or disabled via component props.
 | `hideReactionOption` | `bool` | `false` | Remove "React" from long-press menu |
 | `hideTranslateMessageOption` | `bool` | `false` | Remove "Translate" from long-press menu |
 | `hideShareMessageOption` | `bool` | `false` | Remove "Share" from long-press menu |
-| `hideSuggestedMessages` | `bool` | `false` | Hide AI suggested messages |
-| `enableSmartReplies` | `bool` | `false` | Enable smart reply suggestions |
-| `enableConversationStarters` | `bool` | `false` | Enable conversation starter suggestions |
 | `enableSwipeToReply` | `bool` | `true` | Enable swipe-to-reply gesture |
 
 ### CometChatMessageComposer
