@@ -47,7 +47,21 @@ class CometChatSessionAdapter implements ChatSession {
         'offline' => UserPresence.offline,
         _ => UserPresence.unknown,
       },
-      isBlocked: user.blockedByMe ?? false,
+      // `blockedByMe` is read defensively: legacy tests set
+      // `CometChatUIKit.loggedInUser` with mocktail `Fake` users that only
+      // implement uid/name/status/avatar/role/link. The old setter stored
+      // the user without touching `blockedByMe`; this conversion must not
+      // throw on a partially-implemented User. Real SDK users always
+      // provide the value.
+      isBlocked: _blockedByMe(user),
     );
+  }
+
+  static bool _blockedByMe(cc.User user) {
+    try {
+      return user.blockedByMe ?? false;
+    } catch (_) {
+      return false;
+    }
   }
 }
