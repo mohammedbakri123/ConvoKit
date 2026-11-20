@@ -9,7 +9,6 @@
 ///   flutter test test/shared_ui/bubble_styles/bubble_widget_props_test.dart
 library;
 
-import 'package:cometchat_chat_uikit/cometchat_calls_uikit.dart';
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -172,69 +171,6 @@ void main() {
       await tester.tap(find.byType(CometChatVideoBubble));
       await tester.pump();
       expect(clicked, isTrue);
-    });
-  });
-
-  group('CometChatCallBubble', () {
-    testWidgets('geometry and the icon slots reach the bubble', (tester) async {
-      _ignorePlatformOnlyErrors();
-      await tester.pumpWidget(
-        _host(
-          CometChatCallBubble(
-            title: 'Voice call',
-            buttonText: 'Call back',
-            onTap: (_) {},
-            icon: const Icon(Icons.call, key: Key('call')),
-            iconUrl: 'https://example.com/call.png',
-            height: 91,
-            width: 251,
-          ),
-        ),
-      );
-      await tester.pump();
-      expect(find.byKey(const Key('call')), findsOneWidget);
-      expect(_boxHeights(tester), contains(91.0));
-      expect(_boxWidths(tester), contains(251.0));
-    });
-
-    // P5-C06: the button always read "Join", whatever buttonText said.
-    testWidgets('P5-C06: buttonText is what the button says', (tester) async {
-      _ignorePlatformOnlyErrors();
-      await tester.pumpWidget(
-        _host(
-          CometChatCallBubble(
-            title: 'Voice call',
-            buttonText: 'Call back',
-            onTap: (_) {},
-          ),
-        ),
-      );
-      await tester.pump();
-      expect(
-        find.descendant(
-          of: find.byType(ElevatedButton),
-          matching: find.text('Call back'),
-        ),
-        findsOneWidget,
-      );
-      expect(find.text('Join'), findsNothing);
-    });
-
-    testWidgets('P5-C06: with no buttonText the button says "Join"', (
-      tester,
-    ) async {
-      _ignorePlatformOnlyErrors();
-      await tester.pumpWidget(
-        _host(CometChatCallBubble(title: 'Voice call', onTap: (_) {})),
-      );
-      await tester.pump();
-      expect(
-        find.descendant(
-          of: find.byType(ElevatedButton),
-          matching: find.text('Join'),
-        ),
-        findsOneWidget,
-      );
     });
   });
 

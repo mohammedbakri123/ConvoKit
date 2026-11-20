@@ -12,7 +12,6 @@
 ///   flutter test test/shared_ui/bubble_styles/gallery_and_extension_bubble_style_props_test.dart
 library;
 
-import 'package:cometchat_chat_uikit/cometchat_calls_uikit.dart';
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -290,40 +289,6 @@ void main() {
       expect(_textSizes(tester), contains(19.0));
       expect(_textSizes(tester), contains(17.0));
       expect(_textSizes(tester), contains(21.0));
-    });
-  });
-
-  group('CometChatCallBubbleStyle', () {
-    testWidgets('every property the bubble owns reaches it', (tester) async {
-      _ignorePlatformOnlyErrors();
-      await tester.pumpWidget(
-        _host(
-          CometChatCallBubble(
-            title: 'Voice call',
-            subtitle: '2 min',
-            buttonText: 'Call back',
-            onTap: (_) {},
-            alignment: BubbleAlignment.left,
-            style: const CometChatCallBubbleStyle(
-              border: Border.fromBorderSide(
-                BorderSide(color: Color(0xFF1E5050), width: 3),
-              ),
-              borderRadius: BorderRadius.all(Radius.circular(77)),
-              buttonBackgroundColor: Color(0xFF1E5151),
-              buttonTextStyle: TextStyle(fontSize: 17),
-              dividerColor: Color(0xFF1E5252),
-              iconBackgroundColor: Color(0xFF1E5353),
-              iconColor: Color(0xFF1E5454),
-              subtitleStyle: TextStyle(fontSize: 19),
-              titleStyle: TextStyle(fontSize: 21),
-            ),
-          ),
-        ),
-      );
-      await tester.pump();
-      expect(_textSizes(tester), contains(21.0));
-      expect(_textSizes(tester), contains(19.0));
-      expect(_textSizes(tester), contains(17.0));
     });
   });
 

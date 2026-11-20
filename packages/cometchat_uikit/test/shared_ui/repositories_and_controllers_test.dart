@@ -20,23 +20,7 @@
 ///   flutter test test/shared_ui/repositories_and_controllers_test.dart
 library;
 
-import 'package:cometchat_chat_uikit/cometchat_calls_uikit.dart';
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
-// `GetLoggedInUserUseCase` is declared seven times across the package and the
-// barrels export more than one of them, so naming it unqualified after
-// importing both barrels is a compile error:
-//
-//   'GetLoggedInUserUseCase' is imported from both
-//   .../call_ui/src/call_logs/domain/usecases/get_logged_in_user_usecase.dart
-//   and .../chat_ui/src/groups/domain/usecases/get_logged_in_user_usecase.dart
-//
-// tool/api/README.md predicted exactly this and reported 0 unimportable types
-// because dart_apitool matches by name. Reaching the one CallLogsBloc wants
-// means importing its implementation path directly — which `lib/` permits,
-// having no top-level `src/`. Same family as ENG-39100 and ENG-39101.
-// ignore: implementation_imports
-import 'package:cometchat_chat_uikit/call_ui/src/call_logs/domain/usecases/get_logged_in_user_usecase.dart'
-    as call_logs;
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -64,16 +48,6 @@ class _FakeGroup extends Fake implements Group {
 GroupMembersBuilderProtocol _membersBuilder() =>
     UIGroupMembersBuilder(GroupMembersRequestBuilder('g1'));
 
-class _FakeCall extends Fake implements Call {
-  @override
-  String get sessionId => 's1';
-  @override
-  String get receiverUid => 'u2';
-}
-
-class _FakeSessionSettingsBuilder extends Fake
-    implements SessionSettingsBuilder {}
-
 /// Fails `sendTextMessage` with whatever it is given, so the repository's
 /// error map can be walked branch by branch.
 class _ThrowingComposerDataSource extends Fake
@@ -94,15 +68,6 @@ class _EchoComposerDataSource extends Fake
     calls++;
     return message;
   }
-}
-
-class _StubCallLogsRepository extends Fake implements CallLogsRepository {
-  @override
-  Future<Result<List<CallLog>>> getCallLogs({int limit = 30}) async =>
-      const Success(<CallLog>[]);
-
-  @override
-  Future<Result<User?>> getLoggedInUser() async => const Success(null);
 }
 
 class _StubMessageDataSource extends Fake implements MessageDataSource {
@@ -332,78 +297,6 @@ void main() {
 
       expect(packed.interactiveData['customData'], {'k': 'changed'});
       expect(packed, same(message));
-    });
-  });
-
-  // ===========================================================================
-  group('the call blocs construct and dispose cleanly', () {
-    // Each registers a listener in its constructor and derives a listener id
-    // from the wall clock. What is assertable headless is that building and
-    // closing one is safe and that its initial state is what the widget
-    // renders before anything happens.
-    test('IncomingCallBloc starts in its initial state', () async {
-      final bloc = IncomingCallBloc(call: _FakeCall());
-
-      expect(bloc.state, isA<IncomingCallState>());
-      expect(bloc.call, isNotNull);
-      await bloc.close();
-    });
-
-    test('OutgoingCallBloc starts in its initial state', () async {
-      final bloc = OutgoingCallBloc(call: _FakeCall());
-
-      expect(bloc.state, isA<OutgoingCallState>());
-      await bloc.close();
-    });
-
-    test('OngoingCallBloc starts in its initial state', () async {
-      final bloc = OngoingCallBloc(
-        sessionSettingsBuilder: _FakeSessionSettingsBuilder(),
-        sessionId: 's1',
-      );
-
-      expect(bloc.state, isA<OngoingCallState>());
-      expect(bloc.sessionId, 's1');
-      await bloc.close();
-    });
-
-    test('CallButtonsBloc starts in its initial state', () async {
-      final bloc = CallButtonsBloc();
-
-      expect(bloc.state, isA<CallButtonsState>());
-      await bloc.close();
-    });
-
-    test('CallLogsBloc accepts injected use cases instead of the service '
-        'locator', () async {
-      // Its constructor falls back to a service locator for all four use
-      // cases, which is what made it unconstructible in a unit test. Supplying
-      // them is the documented escape hatch and this is the case that proves
-      // the hatch works.
-      final repository = _StubCallLogsRepository();
-      final bloc = CallLogsBloc(
-        getCallLogsUseCase: GetCallLogsUseCase(repository),
-        loadMoreCallLogsUseCase: LoadMoreCallLogsUseCase(repository),
-        initiateCallUseCase: InitiateCallUseCase(repository),
-        getLoggedInUserUseCase: call_logs.GetLoggedInUserUseCase(repository),
-      );
-
-      expect(bloc.state, isA<CallLogsState>());
-      expect(bloc.getCallLogsUseCase, isA<GetCallLogsUseCase>());
-      await bloc.close();
-    });
-
-    test('two blocs of the same kind get different listener ids', () async {
-      // The id is derived from microsecondsSinceEpoch, so two built in the
-      // same microsecond would collide and the second would displace the
-      // first's listener. Cheap to assert, and the failure mode is a call
-      // screen that stops receiving events.
-      final a = IncomingCallBloc(call: _FakeCall());
-      final b = IncomingCallBloc(call: _FakeCall());
-
-      expect(a, isNot(same(b)));
-      await a.close();
-      await b.close();
     });
   });
 

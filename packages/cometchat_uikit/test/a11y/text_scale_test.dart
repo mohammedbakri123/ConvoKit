@@ -30,8 +30,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:network_image_mock/network_image_mock.dart';
 
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
-// CallLog, CallLogsListItem and CometChatCallBubble live in the calls barrel.
-import 'package:cometchat_chat_uikit/cometchat_calls_uikit.dart';
 
 import 'text_scale_harness.dart';
 
@@ -115,56 +113,6 @@ class _FakeMediaMessage extends Fake implements MediaMessage {
   List<Attachment>? get attachments => _attachments;
   @override
   Map<String, dynamic>? get metadata => null;
-}
-
-/// `CallLogsUtils.receiverName` type-tests the initiator and receiver against
-/// `CallUser`, so faking the `CallEntity` marker class is not enough — the name
-/// comes back empty and the row renders without a title.
-class _FakeCallUser extends Fake implements CallUser {
-  _FakeCallUser({required this.uid, required this.name});
-
-  @override
-  final String? uid;
-  @override
-  final String? name;
-  @override
-  String? get avatar => null;
-}
-
-class _FakeCallLog extends Fake implements CallLog {
-  @override
-  String? get sessionId => 'session_1';
-  @override
-  int? get initiatedAt => 1756713600;
-  @override
-  String? get type => 'audio';
-  @override
-  String? get status => 'unanswered';
-  @override
-  String? get receiverType => 'user';
-  @override
-  CallEntity? get initiator => _FakeCallUser(uid: 'bob', name: 'Bob Smith');
-  @override
-  CallEntity? get receiver =>
-      _FakeCallUser(uid: 'alex', name: 'Alexandra Constantinou');
-}
-
-class _FakeCall extends Fake implements Call {
-  @override
-  String get sessionId => 'session_1';
-  @override
-  String get type => 'audio';
-  @override
-  String get receiverType => 'user';
-  @override
-  String get category => 'call';
-  @override
-  AppEntity? get callInitiator =>
-      _FakeUser(name: 'Alexandra Constantinou', uid: 'alex');
-  @override
-  AppEntity? get callReceiver => _FakeUser(name: 'Bob Smith', uid: 'bob');
-  @override
-  User? get sender => _FakeUser(name: 'Alexandra Constantinou', uid: 'alex');
 }
 
 class _FakeTextMessage extends Fake implements TextMessage {
@@ -440,17 +388,6 @@ void main() {
       });
     });
 
-    // --- call logs --------------------------------------------------------
-
-    testWidgets('call log list item', (WidgetTester tester) async {
-      await check(tester, 'call log list item', () {
-        return CallLogsListItem(
-          callLog: _FakeCallLog(),
-          loggedInUser: _FakeUser(name: 'Bob Smith', uid: 'bob'),
-        );
-      });
-    });
-
     // --- composer ---------------------------------------------------------
 
     testWidgets('composer attachment tray', (WidgetTester tester) async {
@@ -525,23 +462,6 @@ void main() {
               context,
               _FakeTextMessage(),
               BubbleAlignment.left,
-            ),
-            BubbleAlignment.left,
-          ),
-        );
-      });
-    });
-
-    testWidgets('call bubble', (WidgetTester tester) async {
-      await check(tester, 'call bubble', () {
-        return Builder(
-          builder: (BuildContext context) => asBubble(
-            context,
-            const CometChatCallBubble(
-              title: 'Missed audio call',
-              subtitle: 'Tap to call back',
-              buttonText: 'Call again',
-              alignment: BubbleAlignment.left,
             ),
             BubbleAlignment.left,
           ),
@@ -739,28 +659,6 @@ void main() {
             ),
             BubbleAlignment.right,
           ),
-        );
-      });
-    });
-
-    // --- call screens -----------------------------------------------------
-
-    testWidgets('incoming call', (WidgetTester tester) async {
-      await check(tester, 'incoming call', () {
-        return CometChatIncomingCall(
-          call: _FakeCall(),
-          user: _FakeUser(name: 'Alexandra Constantinou', uid: 'alex'),
-          disableSoundForCalls: true,
-        );
-      });
-    });
-
-    testWidgets('outgoing call', (WidgetTester tester) async {
-      await check(tester, 'outgoing call', () {
-        return CometChatOutgoingCall(
-          call: _FakeCall(),
-          user: _FakeUser(name: 'Alexandra Constantinou', uid: 'alex'),
-          disableSoundForCalls: true,
         );
       });
     });

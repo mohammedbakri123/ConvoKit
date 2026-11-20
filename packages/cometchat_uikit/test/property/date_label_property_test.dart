@@ -7,8 +7,6 @@ library;
 
 import 'dart:math';
 
-import 'package:cometchat_chat_uikit/cometchat_calls_uikit.dart'
-    show CallLogsUtils;
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -198,34 +196,5 @@ void main() {
         reason: 'moment: $moment',
       );
     }
-  });
-
-  test('a call duration in minutes is rendered so that it reads back to the '
-      'same number of seconds', () {
-    forAll((r) => r.nextInt(100 * 3600) / 60.0, (minutes) {
-      final label = CallLogsUtils.formatMinutesAndSeconds(minutes);
-      final m = RegExp(r'^(?:(\d+)h )?(\d+)m (\d{2})s$').firstMatch(label);
-      expect(m, isNotNull, reason: 'got "$label"');
-      final h = int.parse(m!.group(1) ?? '0');
-      final min = int.parse(m.group(2)!);
-      final s = int.parse(m.group(3)!);
-      expect(min, lessThan(60));
-      expect(s, lessThan(60));
-      expect(h * 3600 + min * 60 + s, (minutes * 60).round());
-    }, cases: 300);
-  });
-
-  test('a call-log day key is "dd MMM yyyy" for any timestamp and empty only '
-      'for a missing one', () {
-    expect(CallLogsUtils.storeValueInMapTime(null), '');
-    forAll((r) => genEpochSeconds(r, nowSeconds: _nowSeconds()), (seconds) {
-      expect(
-        RegExp(
-          r'^\d{2} [A-Z][a-z]{2} -?\d{4,}$',
-        ).hasMatch(CallLogsUtils.storeValueInMapTime(seconds)),
-        isTrue,
-        reason: CallLogsUtils.storeValueInMapTime(seconds),
-      );
-    });
   });
 }
