@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 
-import '../../../../../../../call_ui/src/utils/call_state_service.dart';
 import '../../../../../logging/cometchat_log.dart';
 import '../../../../core/constants/ui_kit_constants.dart';
 import '../../../../core/utils/platform_utils/platform_file_utils.dart'
@@ -25,8 +24,7 @@ class AudioPlaybackSession {
 
   /// Whether a call is in progress. Replaceable for tests.
   @visibleForTesting
-  static bool Function() isCallActive = () =>
-      CallStateService.instance.isActiveCall.value;
+  static bool Function() isCallActive = () => false;
 
   /// Readies the session. Never throws.
   static Future<void> prepare() async {

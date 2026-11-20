@@ -1,6 +1,4 @@
 import '../../../shared_ui/cometchat_uikit_shared.dart';
-import '../../../call_ui/src/call_settings/cometchat_call_push_bridge.dart';
-import '../../../call_ui/src/calling_configuration.dart';
 
 ///Used to set Ui kit level settings
 class UIKitSettings {
@@ -10,33 +8,14 @@ class UIKitSettings {
   final bool? autoEstablishSocketConnection;
   final String? authKey;
 
-  ///[enableCalls] when true, initializes the CometChat Calls SDK
-  ///and registers the calling extension (call buttons, incoming/outgoing call screens, call message templates).
-  ///Defaults to false.
-  ///
-  ///The UI Kit then also starts its call handling (the incoming call
-  ///listener, the Calls SDK login) at login and stops it at logout.
-  ///`CometChatUIKit.init`, `login` and `loginWithAuthToken` call their
-  ///onSuccess, and complete their futures, once the Calls SDK is set up:
-  ///within about 22 s (10 s for an init that restores no session). A Calls
-  ///SDK failure never turns into onError. Await them behind a splash screen,
-  ///not before `runApp`.
+  ///[enableCalls] deprecated in v1; calling is deferred.
   final bool enableCalls;
 
-  ///[callingConfiguration] optional configuration for call buttons, incoming call, outgoing call, and group call settings.
-  ///
-  ///The incoming call banner and the meeting bubble read it whether or not
-  ///[enableCalls] is set; the message header's call buttons, which only
-  ///appear with [enableCalls], read it too. It wins over the configuration
-  ///passed to the deprecated `CallEventService.init(configuration:)`.
-  final CallingConfiguration? callingConfiguration;
+  ///[callingConfiguration] deprecated in v1; calling is deferred.
+  final dynamic callingConfiguration;
 
-  ///[callPushBridge] the push ringer incoming calls ring through (ringing
-  ///v2): the UI Kit joins the calls answered on its ring screen, answers
-  ///and declines through it, and reports its calls to CallKit on iOS. See
-  ///[CometChatCallPushBridge]. Needed for calls to ring on Android and iOS;
-  ///not used on web.
-  final CometChatCallPushBridge? callPushBridge;
+  ///[callPushBridge] deprecated in v1; calling is deferred.
+  final dynamic callPushBridge;
 
   ///[enableThreadSubscription] feature gate for the thread follow/unfollow
   ///surfaces (the message action-sheet option and the threaded-header
@@ -77,18 +56,14 @@ class UIKitSettingsBuilder {
   bool? autoEstablishSocketConnection;
   String? authKey;
 
-  ///[enableCalls] when true, initializes the CometChat Calls SDK
-  ///and registers the calling extension. Defaults to false.
-  ///See [UIKitSettings.enableCalls] for when onSuccess is called with it.
+  ///[enableCalls] deprecated in v1; calling is deferred.
   bool enableCalls = false;
 
-  ///[callingConfiguration] optional configuration for call buttons, incoming call, outgoing call, and group call settings.
-  ///See [UIKitSettings.callingConfiguration] for where it is read.
-  CallingConfiguration? callingConfiguration;
+  ///[callingConfiguration] deprecated in v1; calling is deferred.
+  dynamic callingConfiguration;
 
-  ///[callPushBridge] the push ringer incoming calls ring through (ringing
-  ///v2). See [UIKitSettings.callPushBridge].
-  CometChatCallPushBridge? callPushBridge;
+  ///[callPushBridge] deprecated in v1; calling is deferred.
+  dynamic callPushBridge;
 
   ///[enableThreadSubscription] feature gate for the thread follow/unfollow
   ///surfaces. Defaults to false (both surfaces stay hidden).

@@ -38,7 +38,6 @@ import '../../../../shared_ui/src/constants/ui_kit_constants.dart'
     show MessageCategoryConstants, UpdateSettingsConstant;
 import '../../shared/list_base.dart';
 import '../../../../shared_ui/src/logging/cometchat_log.dart';
-import '../../../../src/call_activity_listener.dart';
 
 // ============================================================================
 // Message Receipt Status
@@ -874,15 +873,8 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
       ),
     );
 
-    // Call messages. Ringing v2: the chat SDK's call listener (deprecated) is
-    // registered on web only, where calls still ring through the chat SDK.
-    // On Android and iOS the Calls SDK says when a call for this chat starts
-    // or stops ringing, on either side, and the list pulls the call message
-    // the backend wrote, as Android's UI Kit does. This device's own call
-    // actions also arrive through the UI Kit's call events.
-    if (!kIsWeb) {
-      CallActivityListener.add(_callListenerId, _handleCallActivity);
-    } else {
+    // Call messages on web (where calls still ring through the chat SDK).
+    if (kIsWeb) {
       // ignore: deprecated_member_use
       CometChatSdkAdapter.addCallListener(
         _callListenerId,
@@ -1382,10 +1374,12 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
   /// Re-reads call message [id] and updates its bubble (by ID, through
   /// [MessageReceived]).
   Future<void> _rereadCallMessage(int id) async {
-    final fresh = await CallActivityListener.fetchMessage(id);
-    if (isClosed || fresh is! Call) return;
-    if (fresh.category.isEmpty) fresh.category = MessageCategoryConstants.call;
-    add(MessageReceived(fresh));
+    try {
+      final fresh = await CometChat.getMessageDetails(id);
+      if (isClosed || fresh is! Call) return;
+      if (fresh.category.isEmpty) fresh.category = MessageCategoryConstants.call;
+      add(MessageReceived(fresh));
+    } catch (_) {}
   }
 
   /// Handle call message
@@ -3817,8 +3811,6 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
       if (kIsWeb) {
         // ignore: deprecated_member_use
         CometChatSdkAdapter.removeCallListener(_callListenerId);
-      } else {
-        CallActivityListener.remove(_callListenerId);
       }
       CometChatSdkAdapter.removeConnectionListener(_connectionListenerId);
       CometChatSdkAdapter.removeAIAssistantListener(_aiAssistantListenerId);

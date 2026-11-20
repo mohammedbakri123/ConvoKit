@@ -5,8 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import '../../cometchat_uikit_shared.dart';
-import '../../../src/calls_lifecycle.dart';
-import '../../../src/calls_sdk_session.dart';
 import '../../../src/chat_auth_gateway.dart';
 import '../utils/sdk_methods.dart' as legacy_sdk;
 import '../utils/timezone_utils/data/latest.dart';
@@ -143,11 +141,6 @@ class CometChatUIKit {
       ),
     );
 
-    // Follows a host's direct login/logout, so call handling is
-    // started and stopped for the right user even when CometChatUIKit is
-    // bypassed. It only acts when enableCalls is on. Idempotent.
-    CallsLifecycle.attachLoginListener();
-
     AppSettings appSettings =
         (AppSettingsBuilder()
               ..subscriptionType =
@@ -196,31 +189,16 @@ class CometChatUIKit {
     String successMessage,
     Function(String successMessage)? onSuccess,
   ) async {
-    Future<void>? callsReady;
     try {
       final User? user = await getLoggedInUser();
       if (user != null) {
         CometChatUIKit.loggedInUser = user;
-        callsReady = _initiateAfterLogin(user);
-      } else {
-        if (CallsLifecycle.isStarted) {
-          // Call handling is still up for a user the chat SDK no longer has:
-          // an init with another app id logs the user out without telling
-          // any login listener. Stop it and log the Calls SDK out (bounded,
-          // not waited for).
-          ccLog(
-            'CometChatUIKit.init: no session any more; stopping call '
-            'handling for ${CallsLifecycle.uid}',
-          );
-          unawaited(CallsLifecycle.shutdown());
-        }
-        callsReady = CallsLifecycle.readyForHost(null);
+        _initiateAfterLogin(user);
       }
       getConversationUpdateSettings();
     } catch (e) {
       ccLog('CometChatUIKit.init: restoring the session failed: $e');
     }
-    if (callsReady != null) await callsReady;
 
     //executing custom onSuccess handler when CometChat SDK is initialized successfully
     _runHostCallback(
@@ -323,8 +301,7 @@ class CometChatUIKit {
             : null
         ..autoEstablishSocketConnection = autoEstablishSocketConnection
         ..adminHost = adminHost
-        ..clientHost = clientHost
-        ..enableCalls = enableCalling;
+        ..clientHost = clientHost;
 
       final uiKitSettings = builder.build();
 
@@ -373,17 +350,6 @@ class CometChatUIKit {
     User? loggedInUser = await getLoggedInUser();
 
     if (loggedInUser == null || loggedInUser.uid != uid) {
-      if (loggedInUser != null) {
-        // Another user is logged in and this login replaces them. End their
-        // calls first, as logout does, while they can still be heard:
-        // after the login anything sent goes out as the new user. Call
-        // handling itself is switched over once the new user is in.
-        try {
-          await CallsLifecycle.prepareForLogout();
-        } catch (e) {
-          ccLog('CometChatUIKit.login: call clean-up failed: $e');
-        }
-      }
       // The chat SDK calls onSuccess without awaiting it. Keep what it
       // starts, so this future completes only once the host's onSuccess ran.
       Future<void>? succeeded;
@@ -514,60 +480,28 @@ class CometChatUIKit {
     Function(CometChatException excep)? onError,
     String failureLog,
   ) {
-    Future<void>? callsReady;
     try {
       getConversationUpdateSettings();
       CometChatUIKit.loggedInUser = user;
-      callsReady = _initiateAfterLogin(user);
+      _initiateAfterLogin(user);
     } catch (e) {
       ccLog('CometChatUIKit: set-up after login failed: $e');
     }
-    void succeed() => _runHostCallback(() => onSuccess?.call(user), failureLog);
-    if (callsReady == null) {
-      succeed();
-      return Future<void>.value();
-    }
-    void settle() {
-      if (CometChatUIKit.loggedInUser?.uid == user.uid) {
-        succeed();
-        return;
-      }
-      _runHostCallback(
-        () => onError?.call(
-          CometChatException(
-            'ERR_LOGGED_OUT_DURING_LOGIN',
-            'User ${user.uid} logged out before the login finished.',
-            'The session ended while the UI Kit was setting up calls. '
-                'Log in again.',
-          ),
-        ),
-        "user logged out during login but failed to execute onError callback",
-      );
-    }
-
-    return callsReady.then((_) => settle(), onError: (_) => settle());
+    _runHostCallback(() => onSuccess?.call(user), failureLog);
+    return Future<void>.value();
   }
 
   /// The UI Kit's own set-up for a logged-in [user]: the chat event bridge,
-  /// the time zone details and, with `enableCalls`, call handling.
-  ///
-  /// Returns what the host's onSuccess has to wait for (see
-  /// [CallsLifecycle.readyForHost]), or null when there is nothing.
-  static Future<void>? _initiateAfterLogin(User user) {
+  /// the time zone details.
+  static void _initiateAfterLogin(User user) {
     _initializeSDKEVent();
     _inititalizeTimeZoneDetails();
-
-    // Calls first: the call listeners go up at once and the Calls SDK sets
-    // up while the time zone database loads. Single-flight: the chat SDK's
-    // login listener may already have started it for this user.
-    final callsReady = CallsLifecycle.readyForHost(user);
 
     try {
       initializeTimeZones();
     } catch (e) {
       ccLog('CometChatUIKit: loading the time zone database failed: $e');
     }
-    return callsReady;
   }
 
   /// Calls a host callback, logging instead of throwing when it fails.
@@ -660,16 +594,6 @@ class CometChatUIKit {
   }) async {
     if (!checkAuthSettings(onError)) return;
 
-    // Before the chat logout: afterwards nothing can be sent as this user.
-    // It used to tear call handling down first and send nothing, so the
-    // other party kept ringing or sat alone in the call, and a failed logout
-    // still left the user without calls.
-    try {
-      await CallsLifecycle.prepareForLogout();
-    } catch (e) {
-      ccLog('CometChatUIKit.logout: call clean-up failed: $e');
-    }
-
     // The chat SDK calls onSuccess without awaiting it. Keep what it starts,
     // so this future completes only once the host's onSuccess has run.
     Future<void>? succeeded;
@@ -678,7 +602,6 @@ class CometChatUIKit {
         succeeded = _afterLogout(message, onSuccess);
       },
       onError: (error) {
-        // Still logged in: the call listeners stay registered.
         _runHostCallback(
           () => onError?.call(error),
           'user logout was unsuccessful: ${error.message}, but unable to '
@@ -689,30 +612,11 @@ class CometChatUIKit {
     await succeeded;
   }
 
-  /// What [logout] runs once the chat SDK has logged out, before the host
-  /// hears of it: stop call handling and log the Calls SDK out (bounded,
-  /// shared with the chat SDK's logout listener), forget the user, then
-  /// call [onSuccess]. Never throws.
+  /// What [logout] runs once the chat SDK has logged out.
   static Future<void> _afterLogout(
     String message,
     dynamic Function(String)? onSuccess,
   ) async {
-    // Bounded as a whole: the Calls logout first waits for a Calls login
-    // still in flight, and each wait had its own limit, so onSuccess could
-    // come some 10 s after the chat logout. What is still running when the
-    // limit is up finishes on its own.
-    final limit = CallsSdkSession.instance.timeouts.logout;
-    try {
-      await CallsLifecycle.shutdown().timeout(
-        limit,
-        onTimeout: () => ccLog(
-          'CometChatUIKit.logout: the Calls SDK logout is still running '
-          'after ${limit.inSeconds} s; carrying on',
-        ),
-      );
-    } catch (e) {
-      ccLog('CometChatUIKit.logout: stopping calls failed: $e');
-    }
     CometChatUIKit.loggedInUser = null;
     _runHostCallback(
       () => onSuccess?.call(message),

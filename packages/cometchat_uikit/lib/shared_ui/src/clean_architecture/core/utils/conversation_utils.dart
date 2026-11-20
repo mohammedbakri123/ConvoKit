@@ -14,7 +14,6 @@ import '../../presentation/formatters/mentions/cometchat_mentions_formatter.dart
 import 'scheduler_utils.dart';
 import '../../../../l10n/translations.dart';
 import '../../../../src/cometchat_ui_kit/cometchat_ui_kit.dart';
-import '../../../../../src/missed_call_rule.dart';
 
 ///[ConversationUtils] is an Utility class that helps to
 ///the last message for any conversation and also
@@ -360,7 +359,8 @@ class ConversationUtils {
           subtitle = Translations.of(context).outgoingVdeoCall;
         }
       }
-    } else if (MissedCallRule.isMissedStatus(call.callStatus)) {
+    } else if (call.callStatus == CallStatusConstants.unanswered ||
+        call.callStatus == CallStatusConstants.cancelled) {
       // Missed only for the person who did not start the call: the one rule
       // the call bubbles and the call logs use too.
       if ((callInitiatorUser != null &&
@@ -782,7 +782,8 @@ class ConversationUtils {
           );
         }
       }
-    } else if (MissedCallRule.isMissedStatus(call.callStatus)) {
+    } else if (call.callStatus == CallStatusConstants.unanswered ||
+        call.callStatus == CallStatusConstants.cancelled) {
       // Missed only for the person who did not start the call; the caller's
       // own cancelled or unanswered call shows as outgoing.
       final missed =

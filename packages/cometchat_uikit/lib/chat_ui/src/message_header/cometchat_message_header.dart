@@ -3,9 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../cometchat_chat_uikit.dart';
 import '../../../cometchat_chat_uikit.dart' as cc;
 import '../../../shared_ui/src/clean_architecture/core/utils/thread_toast.dart';
-import '../../../call_ui/src/call_buttons/cometchat_call_buttons.dart';
 import '../../../src/adapters/cometchat_sdk_adapter.dart';
-import '../../../src/calling_configuration_resolver.dart';
 import 'package:intl/intl.dart';
 
 /// [CometChatMessageHeader] is a widget which shows [user]/[group] details using [CometChatListItem]
@@ -718,10 +716,7 @@ class _CometChatMessageHeaderState extends State<CometChatMessageHeader> {
     if (widget.auxiliaryButtonView != null) {
       return widget.auxiliaryButtonView!(state.group, state.user, context);
     } else {
-      if (state.isUserAgentic) {
-        return null;
-      }
-      return _buildCallButtons(style);
+      return null;
     }
   }
 
@@ -974,45 +969,6 @@ class _CometChatMessageHeaderState extends State<CometChatMessageHeader> {
   bool _hideUserPresence(MessageHeaderState state) {
     return state.user != null &&
         (widget.usersStatusVisibility == false || !state.userIsNotBlocked);
-  }
-
-  Widget? _buildCallButtons(CometChatMessageHeaderStyle style) {
-    if (CometChatUIKit.authenticationSettings?.enableCalls != true) {
-      return null;
-    }
-
-    final callingConfig = CallingConfigurationResolver.resolved;
-
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        CometChatCallButtons(
-          user: widget.user,
-          group: widget.group,
-          callButtonsStyle:
-              (callingConfig?.callButtonsConfiguration?.callButtonsStyle ??
-                      const CometChatCallButtonsStyle())
-                  .merge(style.callButtonsStyle),
-          onError: callingConfig?.callButtonsConfiguration?.onError,
-          hideVoiceCallButton:
-              widget.hideVoiceCallButton ??
-              callingConfig?.callButtonsConfiguration?.hideVoiceCallButton,
-          hideVideoCallButton:
-              widget.hideVideoCallButton ??
-              callingConfig?.callButtonsConfiguration?.hideVideoCallButton,
-          voiceCallIcon: callingConfig?.callButtonsConfiguration?.voiceCallIcon,
-          videoCallIcon: callingConfig?.callButtonsConfiguration?.videoCallIcon,
-          outgoingCallConfiguration:
-              callingConfig
-                  ?.callButtonsConfiguration
-                  ?.outgoingCallConfiguration ??
-              callingConfig?.outgoingCallConfiguration,
-          callSettingsBuilder:
-              callingConfig?.callButtonsConfiguration?.callSettingsBuilder,
-        ),
-      ],
-    );
   }
 
   String _getUserActivityStatus(

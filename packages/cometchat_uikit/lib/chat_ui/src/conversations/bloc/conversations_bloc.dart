@@ -10,7 +10,6 @@ import '../../../../shared_ui/cometchat_uikit_shared.dart';
 import '../../shared/list_base.dart';
 import '../conversations_builder_protocol.dart';
 import '../../../../shared_ui/src/logging/cometchat_log.dart';
-import '../../../../src/call_activity_listener.dart';
 import '../../../../src/chat_sdk_listeners.dart';
 import '../../../../src/adapters/cometchat_sdk_adapter.dart';
 
@@ -464,15 +463,8 @@ class ConversationsBloc extends Bloc<ConversationsEvent, ConversationsState>
       ),
     );
 
-    // Call messages. Ringing v2: the chat SDK's call listener (deprecated) is
-    // registered on web only, where calls still ring through the chat SDK.
-    // On Android and iOS the Calls SDK says when a call starts or stops
-    // ringing, on either side, and that call's row is updated, as Android's
-    // UI Kit does. This device's own call actions also arrive through the
-    // UI Kit's call events.
-    if (!kIsWeb) {
-      CallActivityListener.add(_callListenerKey, _handleCallActivity);
-    } else {
+    // Call messages on web (where calls still ring through the chat SDK).
+    if (kIsWeb) {
       ChatSdkListeners.addCallListener(
         _callListenerKey,
         _ConversationCallListener(
@@ -2150,8 +2142,6 @@ class ConversationsBloc extends Bloc<ConversationsEvent, ConversationsState>
     CometChatSdkAdapter.removeGroupListener(_groupListenerKey);
     if (kIsWeb) {
       ChatSdkListeners.removeCallListener(_callListenerKey);
-    } else {
-      CallActivityListener.remove(_callListenerKey);
     }
     CometChatSdkAdapter.removeConnectionListener(_connectionListenerKey);
     CometChatSdkAdapter.removeConversationListener(_conversationListenerKey);

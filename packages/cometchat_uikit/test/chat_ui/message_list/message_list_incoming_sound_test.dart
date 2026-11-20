@@ -33,7 +33,6 @@ import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart'
         ReceiverTypeConstants,
         UpdateSettingsConstant;
 import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/result.dart';
-import 'package:cometchat_chat_uikit/src/sound_loop_owner.dart';
 import 'package:cometchat_sdk/cometchat_sdk.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -174,21 +173,6 @@ void main() {
     final bloc = await _loaded();
     expect(await _receive(bloc, _text(1)), [_kIncoming]);
     expect(bloc.state.messages.map((m) => m.id), [1]);
-    await bloc.close();
-  });
-
-  test('P3-E39: a message while an incoming call rings plays no sound, and '
-      'the next one after the ringing does (round 3, P3-C16)', () async {
-    final bloc = await _loaded();
-    final ringing = Object();
-    incomingRingtoneLoop.take(ringing);
-    addTearDown(incomingRingtoneLoop.reset);
-
-    expect(await _receive(bloc, _text(1)), isEmpty);
-    expect(bloc.state.messages.map((m) => m.id), [1]);
-
-    incomingRingtoneLoop.release(ringing);
-    expect(await _receive(bloc, _text(2)), [_kIncoming]);
     await bloc.close();
   });
 

@@ -5,17 +5,6 @@ import '../../../../src/adapters/cometchat_sdk_adapter.dart';
 import 'package:intl/intl.dart';
 import '../../../../shared_ui/cometchat_uikit_shared.dart';
 import '../../../../shared_ui/cometchat_uikit_shared.dart' as cc;
-import '../../../../call_ui/src/call_bubble/cometchat_call_bubble.dart';
-import '../../../../call_ui/src/calling_configuration.dart';
-import '../../../../call_ui/src/utils/call_utils.dart';
-import '../../../../call_ui/src/utils/call_extension_constants.dart';
-import '../../../../call_ui/src/ongoing_call/call_screen_overlay.dart';
-import '../../../../src/active_call_tracker.dart';
-import '../../../../src/call_errors.dart';
-import '../../../../src/calling_configuration_resolver.dart';
-import '../../../../src/meeting_session_settings.dart';
-import 'package:cometchat_calls_sdk/cometchat_calls_sdk.dart'
-    show SessionSettingsBuilder;
 import '../../extensions/extension_constants.dart';
 import '../../extensions/polls/cometchat_polls_bubble.dart';
 import '../../extensions/stickers/cometchat_sticker_bubble.dart';
@@ -1270,11 +1259,6 @@ class MessageTemplateUtils {
       MessageTemplateUtils.getCollaborativeDocumentTemplate(),
       MessageTemplateUtils.getCollaborativeWhiteboardTemplate(),
     ];
-    if (CometChatUIKit.authenticationSettings?.enableCalls == true) {
-      templates.add(_getGroupCallTemplate());
-      templates.add(_getDefaultVoiceCallTemplate());
-      templates.add(_getDefaultVideoCallTemplate());
-    }
     // AI message templates
     templates.add(getAIAssistantMessageTemplate());
     templates.add(getStreamMessageTemplate());
@@ -1286,23 +1270,10 @@ class MessageTemplateUtils {
     required String messageCategory,
   }) {
     CometChatMessageTemplate? template;
-    if (messageCategory == MessageCategoryConstants.call) {
-      // Handle call message templates
-      if (CometChatUIKit.authenticationSettings?.enableCalls == true) {
-        switch (messageType) {
-          case CallTypeConstants.audioCall:
-            template = _getDefaultVoiceCallTemplate();
-            break;
-          case CallTypeConstants.videoCall:
-            template = _getDefaultVideoCallTemplate();
-            break;
-        }
-      }
-    } else if (messageCategory == MessageCategoryConstants.custom &&
-        messageType == MessageTypeConstants.meeting) {
-      if (CometChatUIKit.authenticationSettings?.enableCalls == true) {
-        template = _getGroupCallTemplate();
-      }
+    if (messageCategory == MessageCategoryConstants.call ||
+        (messageCategory == MessageCategoryConstants.custom &&
+            messageType == MessageTypeConstants.meeting)) {
+      // Calling is cut for v1: no call or meeting message templates.
     } else if (messageCategory == MessageCategoryConstants.custom) {
       switch (messageType) {
         case ExtensionType.extensionPoll:
@@ -1811,11 +1782,6 @@ class MessageTemplateUtils {
       CometChatMessageCategory.categoryAgentic,
       CometChatMessageCategory.streamMessage,
     ];
-    if (CometChatUIKit.authenticationSettings?.enableCalls == true) {
-      if (!categories.contains(MessageCategoryConstants.call)) {
-        categories.add(MessageCategoryConstants.call);
-      }
-    }
     return categories;
   }
 
@@ -2679,293 +2645,4 @@ class MessageTemplateUtils {
     );
   }
 
-  static CometChatMessageTemplate _getGroupCallTemplate() {
-    return CometChatMessageTemplate(
-      type: MessageTypeConstants.meeting,
-      category: MessageCategoryConstants.custom,
-      options: MessageTemplateUtils.getCommonOptions,
-      contentView:
-          (
-            BaseMessage message,
-            BuildContext context,
-            BubbleAlignment alignment, {
-            AdditionalConfigurations? additionalConfigurations,
-          }) {
-            if (message.deletedAt != null || message is! CustomMessage) {
-              return getDeleteMessageBubble(
-                message,
-                context,
-                additionalConfigurations?.deletedBubbleStyle,
-              );
-            }
-            return _getCallBubble(
-              message,
-              context,
-              alignment,
-              additionalConfigurations: additionalConfigurations,
-            );
-          },
-    );
-  }
-
-  static Widget _getCallBubble(
-    CustomMessage message,
-    BuildContext context,
-    BubbleAlignment alignment, {
-    AdditionalConfigurations? additionalConfigurations,
-  }) {
-    final loggedInUser = CometChatUIKit.loggedInUser;
-    String? callType;
-    if (message.customData != null &&
-        message.customData?.containsKey('callType') == true) {
-      callType = message.customData?['callType'];
-    }
-    String title;
-    String icon;
-    CometChatCallBubbleStyle? style;
-
-    if (callType == CallTypeConstants.videoCall) {
-      title = cc.Translations.of(context).videoCall;
-      style = additionalConfigurations?.videoCallBubbleStyle;
-      icon = message.sender?.uid == loggedInUser?.uid
-          ? AssetConstants.videoOutgoing
-          : AssetConstants.videoIncoming;
-    } else {
-      title = cc.Translations.of(context).voiceCall;
-      style = additionalConfigurations?.voiceCallBubbleStyle;
-      icon = message.sender?.uid == loggedInUser?.uid
-          ? AssetConstants.voiceOutgoing
-          : AssetConstants.voiceIncoming;
-    }
-
-    String receiver = message.receiverUid;
-    String? subtitle;
-    if (message.sentAt != null) {
-      subtitle = DateFormat('d MMM, hh:mm a').format(message.sentAt!);
-    }
-
-    final callingConfig = CallingConfigurationResolver.resolved;
-
-    return CometChatCallBubble(
-      title: title,
-      iconUrl: icon,
-      subtitle: subtitle,
-      onTap: (context) => _initiateDirectCall(
-        context,
-        receiver,
-        message,
-        callingConfig: callingConfig,
-        call: Call(
-          receiverUid: receiver,
-          receiverType: CometChatReceiverType.group,
-          category: MessageCategoryConstants.call,
-          type: MessageTypeConstants.meeting,
-        ),
-      ),
-      style: style,
-      alignment: alignment,
-    );
-  }
-
-  static void _initiateDirectCall(
-    BuildContext context,
-    String sessionID,
-    CustomMessage message, {
-    Call? call,
-    CallingConfiguration? callingConfig,
-  }) async {
-    // A meeting message still on its way, or one that failed to send: Join
-    // does nothing (round 5, D03 A). The host's own bubble shows while the
-    // message is sending, before the call buttons open the meeting; a Join
-    // there opened it first, and the buttons' screen then replaced it with
-    // a second join. A failed message announced no meeting.
-    if (message.id <= 0 || message.metadata?['error'] != null) {
-      ccLog(
-        'MessageTemplateUtils: the meeting message is not sent; Join '
-        'ignored',
-      );
-      return;
-    }
-    // Joining a meeting from its bubble is the call buttons' job done from
-    // the chat, so their onError hears when the join fails.
-    final OnError? onError = callingConfig?.callButtonsConfiguration?.onError;
-    String? callType;
-    String? sessionId;
-    if (message.customData != null &&
-        message.customData?.containsKey('callType') == true) {
-      callType = message.customData?['callType'];
-    }
-    if (message.customData != null &&
-        message.customData?.containsKey('sessionID') == true) {
-      sessionId = message.customData?['sessionID'];
-    }
-    final String meetingSessionId = sessionId ?? sessionID;
-    // This meeting is on screen already (a second tap on Join): nothing to
-    // do (round 5, D03 A).
-    if (CallScreenOverlay.isShowing &&
-        ActiveCallTracker.callScreenWorkFlow == CallWorkFlow.directCalling &&
-        ActiveCallTracker.callScreenSessionId == meetingSessionId) {
-      ccLog('MessageTemplateUtils: meeting $meetingSessionId is on screen');
-      return;
-    }
-    // A call in progress, or another meeting on the call screen: one at a
-    // time (round 5, P5-C07; the owner's D06 A). Joining used to replace
-    // that call's screen without ending the call. No navigator to show the
-    // meeting on is refused by show() itself (NO_NAVIGATOR).
-    if (ActiveCallTracker.isInCallOrMeeting) {
-      ccLog('MessageTemplateUtils: a call is on; meeting not joined');
-      reportCallError(
-        onError,
-        activeCallException(),
-        where: 'MessageTemplateUtils',
-      );
-      return;
-    }
-    // The settings the meeting's host joins with too (round 5, P5-C05):
-    // the call buttons' callSettingsBuilder, then groupSessionSettingsBuilder,
-    // then the tile layout. An audio meeting's flags used to be written into
-    // the app's groupSessionSettingsBuilder itself, so every later Join,
-    // video ones included, started with the camera paused.
-    final SessionSettingsBuilder sessionSettingsBuilder;
-    try {
-      sessionSettingsBuilder = MeetingSessionSettings.resolve(
-        isAudioOnly: callType == CallTypeConstants.audioCall,
-        settingsFactory:
-            callingConfig?.callButtonsConfiguration?.callSettingsBuilder,
-        group: message.receiver is Group ? message.receiver as Group : null,
-        configuration: callingConfig,
-      );
-    } catch (e) {
-      // The app's callSettingsBuilder threw: the meeting is not joined.
-      ccLog('MessageTemplateUtils: the meeting settings failed: $e');
-      reportCallError(
-        onError,
-        callExceptionFrom(e),
-        where: 'MessageTemplateUtils',
-      );
-      return;
-    }
-    CallScreenOverlay.show(
-      sessionId: meetingSessionId,
-      sessionSettingsBuilder: sessionSettingsBuilder,
-      callWorkFlow: CallWorkFlow.directCalling,
-      onError: onError,
-    );
-  }
-
-  static CometChatMessageTemplate _getDefaultVoiceCallTemplate() {
-    return CometChatMessageTemplate(
-      type: CallTypeConstants.audioCall,
-      category: MessageCategoryConstants.call,
-      footerView: null,
-      contentView:
-          (
-            BaseMessage message,
-            BuildContext context,
-            BubbleAlignment alignment, {
-            AdditionalConfigurations? additionalConfigurations,
-          }) {
-            if (message is Call) {
-              final loggedInUser = CometChatUIKit.loggedInUser;
-              final CometChatColorPalette colorPalette =
-                  CometChatThemeHelper.getColorPalette(context);
-              final typography = CometChatThemeHelper.getTypography(context);
-              return CometChatActionBubble(
-                text: CallUtils.getCallStatus(context, message, loggedInUser),
-                leadingIcon: Image.asset(
-                  CallUtils.getCallIconByStatus(
-                    context,
-                    message,
-                    loggedInUser,
-                    true,
-                  ),
-                  package: UIConstants.packageName,
-                  color: CallUtils.getCallTextColor(
-                    context,
-                    message,
-                    loggedInUser,
-                    colorPalette,
-                  ),
-                  height: 20,
-                  width: 20,
-                ),
-                style: CometChatActionBubbleStyle(
-                  textStyle: TextStyle(
-                    fontSize: typography.caption1?.regular?.fontSize,
-                    fontWeight: typography.caption1?.regular?.fontWeight,
-                    fontFamily: typography.caption1?.regular?.fontFamily,
-                    color: CallUtils.getCallTextColor(
-                      context,
-                      message,
-                      loggedInUser,
-                      colorPalette,
-                    ),
-                    letterSpacing: 0,
-                  ),
-                ).merge(additionalConfigurations?.actionBubbleStyle),
-              );
-            } else {
-              return null;
-            }
-          },
-    );
-  }
-
-  static CometChatMessageTemplate _getDefaultVideoCallTemplate() {
-    return CometChatMessageTemplate(
-      type: CallTypeConstants.videoCall,
-      category: MessageCategoryConstants.call,
-      contentView:
-          (
-            BaseMessage message,
-            BuildContext context,
-            BubbleAlignment alignment, {
-            AdditionalConfigurations? additionalConfigurations,
-          }) {
-            if (message is Call) {
-              final loggedInUser = CometChatUIKit.loggedInUser;
-              final CometChatColorPalette colorPalette =
-                  CometChatThemeHelper.getColorPalette(context);
-              final typography = CometChatThemeHelper.getTypography(context);
-
-              return CometChatActionBubble(
-                text: CallUtils.getCallStatus(context, message, loggedInUser),
-                leadingIcon: Image.asset(
-                  CallUtils.getCallIconByStatus(
-                    context,
-                    message,
-                    loggedInUser,
-                    false,
-                  ),
-                  package: UIConstants.packageName,
-                  // The icon wears the text's colour, as in the voice
-                  // template: red only for a missed call.
-                  color: CallUtils.getCallTextColor(
-                    context,
-                    message,
-                    loggedInUser,
-                    colorPalette,
-                  ),
-                  height: 24,
-                  width: 24,
-                ),
-                style: CometChatActionBubbleStyle(
-                  textStyle: TextStyle(
-                    fontSize: typography.caption1?.regular?.fontSize,
-                    fontWeight: typography.caption1?.regular?.fontWeight,
-                    color: CallUtils.getCallTextColor(
-                      context,
-                      message,
-                      loggedInUser,
-                      colorPalette,
-                    ),
-                  ),
-                ).merge(additionalConfigurations?.actionBubbleStyle),
-              );
-            } else {
-              return null;
-            }
-          },
-    );
-  }
 }
