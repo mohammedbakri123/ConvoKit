@@ -382,7 +382,6 @@ Widget build(BuildContext context) {
 - **Fix**: This is a known SDK-level issue. Workarounds:
   1. Implement a timeout wrapper around `startSession` calls
   2. Show a retry option to the user if the call screen doesn't load within 5 seconds
-  3. Check for updates to `cometchat_calls_sdk` that may fix this
 
 ### 4.5 Incoming call not received
 
@@ -509,12 +508,12 @@ buildTypes {
 ### 6.2 Android: minSdk too low
 
 - **Symptom**: Build fails with error about minimum SDK version. Error mentions `minSdkVersion` incompatibility.
-- **Cause**: `minSdk` is set below 26. The `cometchat_calls_sdk` requires minSdk 26.
+- **Cause**: `minSdk` is set below 26.
 - **Fix**: In `android/app/build.gradle` (or `.kts`):
 
 ```kotlin
 defaultConfig {
-    minSdk = 26  // Required by cometchat_calls_sdk
+    minSdk = 26
 }
 ```
 

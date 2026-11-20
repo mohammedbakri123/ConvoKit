@@ -407,7 +407,7 @@ android.enableJetifier=true
 In `android/app/build.gradle` (or `.kts`):
 ```kotlin
 defaultConfig {
-    minSdk = 26  // Required by cometchat_calls_sdk
+    minSdk = 26
 }
 ```
 

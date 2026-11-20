@@ -1,5 +1,3 @@
-import 'package:cometchat_chat_uikit/cometchat_calls_uikit.dart'
-    show CometChatOutgoingCall;
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -351,101 +349,6 @@ void main() {
           find.descendant(of: button, matching: find.text('$count')),
           findsOneWidget,
           reason: 'The new-message count should be rendered on the button',
-        );
-      },
-    );
-
-    testWidgets(
-      'E2E-197: Cancelling an outgoing call returns to the messages screen',
-      (tester) async {
-        if (kIsWeb) {
-          markTestSkipped('Calling is not available in the web test harness.');
-          return;
-        }
-        // The call workflow awaits a NATIVE permission dialog first
-        // (call_buttons_bloc.dart `_initiateCallWorkflow`); WidgetTester cannot
-        // answer it, so without a pre-grant the call screen can never appear.
-        if (!await Permission.microphone.isGranted) {
-          markTestSkipped(
-            'Microphone permission is not pre-granted on this '
-            'device (adb shell pm grant <pkg> android.permission.RECORD_AUDIO '
-            '/ xcrun simctl privacy <udid> grant microphone <bundle>), so the '
-            'native permission dialog would block the outgoing call.',
-          );
-          return;
-        }
-        await CleanupHelper.seedConversation(text: 'Call seed $stamp');
-        await launch(tester);
-        await ScreenReach.openConversationNamed(tester, bName);
-
-        // cometchat_call_buttons.dart: IconButton(tooltip: voiceCall) =
-        // 'Voice call'.
-        final voice = find.descendant(
-          of: find.byType(CometChatMessageHeader),
-          matching: find.byTooltip('Voice call'),
-        );
-        expect(
-          voice,
-          findsOneWidget,
-          reason: 'The 1:1 header should offer a voice call button',
-        );
-        await tester.tap(voice);
-
-        final outgoing = find.byType(CometChatOutgoingCall);
-        if (!await pumpUntilFound(
-          tester,
-          outgoing,
-          timeout: const Duration(seconds: 25),
-        )) {
-          fail(
-            'Tapping "Voice call" never showed the outgoing call screen '
-            '(initiateCall failed, or calling is disabled for this app).',
-          );
-        }
-
-        // cometchat_outgoing_call.dart: IconButton(tooltip: decline) =
-        // 'Decline' → OutgoingCallBloc.add(CancelCall()).
-        final decline = find.descendant(
-          of: outgoing,
-          matching: find.byTooltip('Decline'),
-        );
-        expect(
-          decline,
-          findsOneWidget,
-          reason: 'The outgoing call screen should offer a cancel button',
-        );
-        await tester.tap(decline);
-
-        expect(
-          await pumpUntilGone(
-            tester,
-            outgoing,
-            timeout: const Duration(seconds: 20),
-          ),
-          isTrue,
-          reason: 'Cancelling should dismiss the outgoing call screen',
-        );
-        await pumpFor(tester, const Duration(seconds: 3));
-        // Exactly ONE route must have been popped: still on B's messages
-        // screen, not bounced through to HomeScreen.
-        expect(
-          find.byType(MessagesScreen),
-          findsOneWidget,
-          reason: 'Cancelling a call should land back on the messages screen',
-        );
-        expect(
-          find.descendant(
-            of: find.byType(CometChatMessageHeader),
-            matching: find.text(bName),
-          ),
-          findsWidgets,
-          reason:
-              'It should be the same conversation the call was started from',
-        );
-        expect(
-          find.byType(CometChatMessageComposer),
-          findsOneWidget,
-          reason: 'The composer should be usable again after the call ends',
         );
       },
     );

@@ -1,12 +1,3 @@
-# CometChat Calls SDK — classes referenced by cometchat_sdk but provided
-# at runtime by cometchat_calls_sdk. Suppress R8 missing class warnings.
--dontwarn com.cometchat.calls.CometChatRTCView$CometChatRTCViewBuilder
--dontwarn com.cometchat.calls.CometChatRTCView
--dontwarn com.cometchat.calls.CometChatRTCViewListener
--dontwarn com.cometchat.calls.model.AnalyticsSettings
--dontwarn com.cometchat.calls.model.RTCCallback
--dontwarn com.cometchat.calls.model.RTCReceiver
-
 # Flutter Play Store split install (deferred components — not used in this app)
 -dontwarn com.google.android.play.core.splitcompat.SplitCompatApplication
 -dontwarn com.google.android.play.core.splitinstall.**

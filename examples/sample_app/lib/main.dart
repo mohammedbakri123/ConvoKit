@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:cometchat_chat_uikit/cometchat_calls_uikit.dart';
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +9,6 @@ import 'package:sample_app/screens/guard_screen.dart';
 import 'package:sample_app/screens/home_screen.dart';
 import 'package:sample_app/screens/responsive_home_screen.dart';
 import 'package:sample_app/utils/app_uikit_settings.dart';
-import 'package:sample_app/utils/call_error_snackbar.dart';
 
 /// Entry point for the public sample app.
 ///
@@ -51,6 +49,10 @@ Future<void> main() async {
 
   runApp(const BlocSampleApp());
 }
+
+final GlobalKey<NavigatorState> appNavigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<ScaffoldMessengerState> appScaffoldMessengerKey =
+    GlobalKey<ScaffoldMessengerState>();
 
 class BlocSampleApp extends StatefulWidget {
   const BlocSampleApp({super.key});
@@ -186,12 +188,7 @@ class _BlocSampleAppState extends State<BlocSampleApp> {
     return MaterialApp(
       title: 'CometChat Sample App',
       debugShowCheckedModeBanner: false,
-      // master_app swaps in its own key on mobile to drive the native
-      // call-notification flow. With no PlatformServices here, the UI Kit's
-      // own key is used on every platform, which is what its call overlay
-      // expects.
-      navigatorKey: CallNavigationContext.navigatorKey,
-      // Call errors raised by the UI Kit's call components surface here.
+      navigatorKey: appNavigatorKey,
       scaffoldMessengerKey: appScaffoldMessengerKey,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

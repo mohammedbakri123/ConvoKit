@@ -47,8 +47,7 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
         }
-        // Flutter creates a 'profile' build type. cometchat_calls_sdk pulls in
-        // React Native deps that only publish 'debug'/'release' variants.
+        // Flutter creates a 'profile' build type.
         // configureEach runs during evaluation so matchingFallbacks isn't locked yet.
         configureEach {
             if (name == "profile") {

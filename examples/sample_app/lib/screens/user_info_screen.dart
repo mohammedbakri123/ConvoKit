@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart' as cc;
 import 'package:cometchat_chat_uikit/shared_ui/src/clean_architecture/core/utils/thread_toast.dart';
-import 'package:cometchat_chat_uikit/cometchat_calls_uikit.dart';
 import 'package:intl/intl.dart';
-
-import 'package:sample_app/utils/call_error_snackbar.dart';
 
 import 'messages_screen.dart';
 import 'thread_screen.dart';
@@ -43,11 +40,6 @@ class _UserInfoScreenState extends State<UserInfoScreen>
   late final String _userListenerId;
   late final String _uiUserListenerId;
 
-  /// Places the Voice and Video calls, through the UI Kit as the chat
-  /// header's call buttons do: the same checks, the same outgoing screen
-  /// and configuration, and errors as SnackBars.
-  late final CallButtonsBloc _callButtonsBloc;
-
   @override
   void initState() {
     super.initState();
@@ -57,15 +49,6 @@ class _UserInfoScreenState extends State<UserInfoScreen>
     _uiUserListenerId = '${ts}_user_info_ui';
     CometChat.addUserListener(_userListenerId, this);
     CometChatUserEvents.addUsersListener(_uiUserListenerId, this);
-    final calling = CometChatUIKit.authenticationSettings?.callingConfiguration;
-    _callButtonsBloc = CallButtonsBloc(
-      user: _user,
-      // The configuration the chat header's call buttons use.
-      outgoingCallConfiguration:
-          calling?.callButtonsConfiguration?.outgoingCallConfiguration ??
-          calling?.outgoingCallConfiguration,
-      errorCallback: showCallButtonsError,
-    );
     _initLoggedInUser();
   }
 
@@ -85,7 +68,6 @@ class _UserInfoScreenState extends State<UserInfoScreen>
   void dispose() {
     CometChat.removeUserListener(_userListenerId);
     CometChatUserEvents.removeUsersListener(_uiUserListenerId);
-    _callButtonsBloc.close();
     super.dispose();
   }
 
@@ -447,8 +429,6 @@ class _UserInfoScreenState extends State<UserInfoScreen>
                   ),
                 ),
               ),
-            // Call buttons (only when not blocked)
-            if (!_isBlocked) _buildCallButtons(),
             SizedBox(height: _spacing.padding3),
             Divider(color: _colorPalette.borderLight, height: 1),
             // Search
@@ -568,94 +548,6 @@ class _UserInfoScreenState extends State<UserInfoScreen>
             fontFamily: _typography.heading4?.regular?.fontFamily,
             fontWeight: _typography.heading4?.regular?.fontWeight,
             color: _colorPalette.textPrimary,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCallButtons() {
-    return StreamBuilder<CallButtonsState>(
-      stream: _callButtonsBloc.stream,
-      initialData: _callButtonsBloc.state,
-      builder: (context, snapshot) {
-        // Off while a call is being placed, as the header's buttons are.
-        final enabled = snapshot.data?.isDisabled != true;
-        return Padding(
-          padding: EdgeInsets.only(
-            top: _spacing.padding5 ?? 0,
-            left: _spacing.padding5 ?? 0,
-            right: _spacing.padding5 ?? 0,
-          ),
-          child: Row(
-            children: [
-              _buildCallTile(
-                Icons.call_outlined,
-                cc.Translations.of(context).voice,
-                enabled
-                    ? () => _callButtonsBloc.add(const InitiateVoiceCall())
-                    : null,
-              ),
-              SizedBox(width: _spacing.padding2),
-              _buildCallTile(
-                Icons.videocam_outlined,
-                cc.Translations.of(context).video,
-                enabled
-                    ? () => _callButtonsBloc.add(const InitiateVideoCall())
-                    : null,
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildCallTile(IconData icon, String label, VoidCallback? onTap) {
-    return Expanded(
-      child: Semantics(
-        button: true,
-        enabled: onTap != null,
-        label: label,
-        child: GestureDetector(
-          onTap: onTap,
-          child: Opacity(
-            opacity: onTap == null ? 0.5 : 1,
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                vertical: _spacing.padding2 ?? 0,
-                horizontal: _spacing.padding3 ?? 0,
-              ),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: _colorPalette.borderDefault ?? Colors.transparent,
-                ),
-                borderRadius: BorderRadius.circular(_spacing.radius2 ?? 0),
-              ),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(bottom: _spacing.padding2 ?? 0),
-                    child: Icon(
-                      icon,
-                      color: _colorPalette.iconHighlight,
-                      size: 24,
-                    ),
-                  ),
-                  Text(
-                    label,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      overflow: TextOverflow.ellipsis,
-                      fontSize: _typography.caption1?.regular?.fontSize,
-                      fontFamily: _typography.caption1?.regular?.fontFamily,
-                      fontWeight: _typography.caption1?.regular?.fontWeight,
-                      color: _colorPalette.textSecondary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
           ),
         ),
       ),

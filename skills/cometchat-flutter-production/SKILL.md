@@ -234,7 +234,7 @@ In `android/app/build.gradle` (Groovy) or `build.gradle.kts` (Kotlin DSL):
 // build.gradle.kts
 android {
     defaultConfig {
-        minSdk = 26  // Required by cometchat_calls_sdk
+        minSdk = 26
     }
 }
 ```
@@ -248,7 +248,7 @@ android {
 }
 ```
 
-If your `minSdk` is lower than 26, the build will fail with a manifest merger error referencing `cometchat_calls_sdk`.
+If your `minSdk` is lower than 26, the build will fail with a manifest merger error.
 
 ### ProGuard / R8 Keep Rules
 

@@ -5,22 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart' as cc;
-import 'package:cometchat_chat_uikit/cometchat_calls_uikit.dart';
 import 'package:http/http.dart' show Client, Request;
 import 'package:sample_app/utils/feature_flags.dart';
 import 'package:sample_app/utils/component_toggles.dart';
 import 'package:sample_app/screens/messages_screen.dart';
 import 'package:sample_app/screens/contacts_screen.dart';
 import 'package:sample_app/screens/create_group_screen.dart';
-import 'package:sample_app/screens/call_log_details_screen.dart';
 import 'package:sample_app/screens/join_protected_group_screen.dart';
 import 'package:sample_app/screens/login_screen.dart';
 import 'package:sample_app/screens/thread_screen.dart';
 import 'package:sample_app/screens/threads_screen.dart';
-
-// Mobile-only imports — guarded by kIsWeb at call sites
-import 'package:sample_app/utils/call_error_snackbar.dart';
-import 'package:sample_app/utils/call_placement.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -32,29 +26,19 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
 
-  /// A new key gives the Calls tab a new CometChatCallLogs, which loads its
-  /// logs again: the custom error view's Retry. A plain setState kept the
-  /// same CometChatCallLogs, and so its error, so Retry did nothing.
-  Key _callLogsKey = UniqueKey();
-
   final _toggles = ComponentToggles.instance;
   late CometChatColorPalette _colorPalette;
 
-  // Push transport on Android (mobile only). On iOS chat pushes come over
   // UI event listener for mention tap → open chat navigation
   final String _uiListenerId =
       'home_screen_ui_${DateTime.now().millisecondsSinceEpoch}';
 
-  static const _tabTitlesMobile = [
+  static const _tabTitles = [
     'Chats',
-    'Calls',
     'Users',
     'Groups',
     'Notifications'
   ];
-  static const _tabTitlesWeb = ['Chats', 'Users', 'Groups', 'Notifications'];
-  static List<String> get _tabTitles =>
-      kIsWeb ? _tabTitlesWeb : _tabTitlesMobile;
 
   @override
   void initState() {
@@ -111,12 +95,6 @@ class _HomeScreenState extends State<HomeScreen> {
             activeIcon: Icon(Icons.chat_rounded),
             label: 'Chats',
           ),
-          if (!kIsWeb)
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.call_outlined),
-              activeIcon: Icon(Icons.call_rounded),
-              label: 'Calls',
-            ),
           const BottomNavigationBarItem(
             icon: Icon(Icons.person_outline_rounded),
             activeIcon: Icon(Icons.person_rounded),
@@ -375,115 +353,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildBody() {
-    // On web: no Calls tab. Indices: 0=Chats, 1=Users, 2=Groups, 3=Notifications
-    // On mobile: 0=Chats, 1=Calls, 2=Users, 3=Groups, 4=Notifications
-    if (!kIsWeb && _currentIndex == 1) {
-      return CometChatCallLogs(
-        key: _callLogsKey,
-        hideAppbar: true,
-        onItemClick: (callLog) => _openCallLogDetails(context, callLog),
-        onError: (Exception error) {
-          // A call placed from a log row that failed; see
-          // call_error_snackbar.dart.
-          if (isCallLogsPlacementError(error)) {
-            showCallPlacementError(error);
-            return;
-          }
-          final errorMessage =
-              error is CometChatException ? error.message : error.toString();
-          debugPrint('CallLogs error: $errorMessage');
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Call logs error: $errorMessage'),
-              backgroundColor: Colors.red,
-              duration: const Duration(seconds: 3),
-            ),
-          );
-        },
-        errorStateView: (context) => Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.error_outline,
-                size: 64,
-                color: _colorPalette.iconSecondary,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Unable to load call logs',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: _colorPalette.textPrimary,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Please check your connection and try again',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: _colorPalette.textSecondary,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 24),
-              ElevatedButton.icon(
-                onPressed: () {
-                  setState(() => _callLogsKey = UniqueKey());
-                },
-                icon: const Icon(Icons.refresh),
-                label: const Text('Retry'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: _colorPalette.primary,
-                  foregroundColor: Colors.white,
-                ),
-              ),
-            ],
-          ),
-        ),
-        emptyStateView: (context) => Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.call_outlined,
-                size: 64,
-                color: _colorPalette.iconSecondary,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'No call logs yet',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: _colorPalette.textPrimary,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Make or receive calls to see them here',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: _colorPalette.textSecondary,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
     // Wrap in ValueListenableBuilder so toggle changes rebuild tabs instantly
-    // On web: 0=Chats, 1=Users, 2=Groups, 3=Notifications (no Calls offset)
-    // On mobile: 0=Chats, 2=Users, 3=Groups, 4=Notifications → subtract 1 for Calls gap
-    final int stackIndex;
-    if (kIsWeb) {
-      stackIndex = _currentIndex; // 0=Chats, 1=Users, 2=Groups, 3=Notifications
-    } else {
-      stackIndex = _currentIndex == 0 ? 0 : _currentIndex - 1;
-    }
+    final int stackIndex = _currentIndex;
     return ValueListenableBuilder<int>(
       valueListenable: _toggles.revision,
       builder: (context, _, __) {
@@ -690,15 +561,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _pushMessages(context, user: user, group: group);
   }
 
-  void _openCallLogDetails(BuildContext context, CallLog callLog) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => CallLogDetailsScreen(callLog: callLog),
-      ),
-    );
-  }
-
   void _openUserChat(BuildContext context, User user) =>
       _pushMessages(context, user: user);
 
@@ -896,12 +758,8 @@ class _HomeScreenState extends State<HomeScreen> {
       case CometChatCardChatWithGroupAction(:final guid):
         _navigateToChatWithGroup(guid);
 
-      case CometChatCardInitiateCallAction(
-          :final callType,
-          :final uid,
-          :final guid
-        ):
-        _initiateCall(callType, uid, guid);
+      case CometChatCardInitiateCallAction():
+        debugPrint('[HomeScreen] Card initiate call action ignored: calling cut in v1');
 
       case CometChatCardCustomCallbackAction(:final callbackId, :final payload):
         debugPrint('[HomeScreen] customCallback: callbackId=$callbackId, '
@@ -976,52 +834,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }, onError: (e) {
       debugPrint('[HomeScreen] Card chatWithGroup error: ${e.message}');
     });
-  }
-
-  /// A card's "initiate call" action. A call to a user goes through the UI
-  /// Kit, as the chat header's call buttons do: the same checks, outgoing
-  /// screen and configuration, and errors as SnackBars. It used to call
-  /// CometChat.initiateCall directly, so the callee rang while the caller
-  /// had nothing on screen to end the call with.
-  void _initiateCall(String callType, String? uid, String? guid) {
-    if (uid == null || uid.isEmpty) {
-      // A group call is a meeting, which a card does not start here.
-      if (guid != null && guid.isNotEmpty && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Group calls from cards aren't supported here."),
-            duration: Duration(seconds: 2),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-      }
-      return;
-    }
-    CometChat.getUser(
-      uid,
-      onSuccess: (user) {
-        if (!mounted) return;
-        _placeCardCall(user, isVideo: callType == 'video');
-      },
-      onError: showCallPlacementError,
-    );
-  }
-
-  /// Places a call to [user] with a CallButtonsBloc of its own, kept until
-  /// the placement is done (the outgoing screen is up, or the call was
-  /// refused) and closed then: closed at once, it would stop before the
-  /// call was placed. See [closeWhenPlaced].
-  void _placeCardCall(User user, {required bool isVideo}) {
-    final calling = CometChatUIKit.authenticationSettings?.callingConfiguration;
-    final bloc = CallButtonsBloc(
-      user: user,
-      outgoingCallConfiguration:
-          calling?.callButtonsConfiguration?.outgoingCallConfiguration ??
-              calling?.outgoingCallConfiguration,
-      errorCallback: showCallButtonsError,
-    );
-    unawaited(closeWhenPlaced(bloc.stream, bloc.close));
-    bloc.add(isVideo ? const InitiateVideoCall() : const InitiateVoiceCall());
   }
 
   @override

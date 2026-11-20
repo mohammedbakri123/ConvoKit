@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
-import 'package:cometchat_chat_uikit/cometchat_calls_uikit.dart';
 import 'package:sample_app/utils/feature_flags.dart';
 import 'package:sample_app/utils/component_toggles.dart';
 import 'package:sample_app/screens/messages_screen.dart';
 import 'package:sample_app/screens/contacts_screen.dart';
 import 'package:sample_app/screens/create_group_screen.dart';
-import 'package:sample_app/screens/call_log_details_screen.dart';
 import 'package:sample_app/screens/join_protected_group_screen.dart';
 import 'package:sample_app/screens/login_screen.dart';
 import 'package:sample_app/screens/thread_screen.dart';
 import 'package:sample_app/screens/threads_screen.dart';
 import 'package:sample_app/widgets/responsive_layout.dart';
-import 'package:sample_app/utils/call_error_snackbar.dart';
 
 /// A responsive home screen that shows:
 /// - Desktop/Web (>=700px): 3-panel layout with nested navigators
@@ -77,7 +74,7 @@ class _ResponsiveHomeScreenState extends State<ResponsiveHomeScreen> {
   final String _uiListenerId =
       'responsive_home_ui_${DateTime.now().millisecondsSinceEpoch}';
 
-  static const _tabTitles = ['Chats', 'Calls', 'Users', 'Groups'];
+  static const _tabTitles = ['Chats', 'Users', 'Groups'];
 
   @override
   void initState() {
@@ -263,34 +260,9 @@ class _ResponsiveHomeScreenState extends State<ResponsiveHomeScreen> {
     );
   }
 
-  /// The tab content (conversations, calls, users, groups)
+  /// The tab content (conversations, users, groups)
   Widget _buildLeftContent() {
-    if (_currentIndex == 1) {
-      return CometChatCallLogs(
-        hideAppbar: true,
-        onItemClick: (callLog) {
-          // Push call log details within left panel navigator
-          _leftNavKey.currentState?.push(
-            MaterialPageRoute(
-              builder: (_) => CallLogDetailsScreen(callLog: callLog),
-            ),
-          );
-        },
-        onError: (Exception error) {
-          // A call placed from a log row that failed; the list's own load
-          // errors show in its error view.
-          if (isCallLogsPlacementError(error)) {
-            showCallPlacementError(error);
-            return;
-          }
-          final errorMessage =
-              error is CometChatException ? error.message : error.toString();
-          debugPrint('CallLogs error: $errorMessage');
-        },
-      );
-    }
-
-    final int stackIndex = _currentIndex == 0 ? 0 : _currentIndex - 1;
+    final int stackIndex = _currentIndex;
     return ValueListenableBuilder<int>(
       valueListenable: _toggles.revision,
       builder: (context, _, __) {
@@ -459,32 +431,7 @@ class _ResponsiveHomeScreenState extends State<ResponsiveHomeScreen> {
   }
 
   Widget _buildMobileBody() {
-    if (_currentIndex == 1) {
-      return CometChatCallLogs(
-        hideAppbar: true,
-        onItemClick: (callLog) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => CallLogDetailsScreen(callLog: callLog),
-            ),
-          );
-        },
-        onError: (Exception error) {
-          // A call placed from a log row that failed; the list's own load
-          // errors show in its error view.
-          if (isCallLogsPlacementError(error)) {
-            showCallPlacementError(error);
-            return;
-          }
-          final errorMessage =
-              error is CometChatException ? error.message : error.toString();
-          debugPrint('CallLogs error: $errorMessage');
-        },
-      );
-    }
-
-    final int stackIndex = _currentIndex == 0 ? 0 : _currentIndex - 1;
+    final int stackIndex = _currentIndex;
     return ValueListenableBuilder<int>(
       valueListenable: _toggles.revision,
       builder: (context, _, __) {
@@ -604,11 +551,6 @@ class _ResponsiveHomeScreenState extends State<ResponsiveHomeScreen> {
           icon: Icon(Icons.chat_outlined),
           activeIcon: Icon(Icons.chat_rounded),
           label: 'Chats',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.call_outlined),
-          activeIcon: Icon(Icons.call_rounded),
-          label: 'Calls',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person_outline_rounded),
