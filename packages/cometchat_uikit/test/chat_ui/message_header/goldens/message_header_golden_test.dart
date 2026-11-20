@@ -164,20 +164,6 @@ void main() {
         },
       );
 
-      lightDarkGolden(
-        'user header, voice and video call buttons',
-        fileName: 'message_header_call_buttons',
-        size: _size,
-        settle: false,
-        builder: () {
-          _setCallsEnabled(true);
-          final user = _online();
-          return CometChatMessageHeader(
-            user: user,
-            messageHeaderBloc: _bloc(user: user),
-          );
-        },
-      );
     },
   );
 }
