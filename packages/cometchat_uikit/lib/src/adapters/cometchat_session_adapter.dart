@@ -38,30 +38,33 @@ class CometChatSessionAdapter implements ChatSession {
   }
 
   static ChatUser _fromCometChatUser(cc.User user) {
+    // Every property is read defensively: legacy tests set
+    // `CometChatUIKit.loggedInUser` with mocktail `Fake` users that only
+    // implement a subset of `User` (one fake implements just `uid`). The
+    // old setter stored the user without reading any property; this
+    // conversion must not throw on a partially-implemented User. Real SDK
+    // users always provide every value, so production behaviour is
+    // unchanged.
     return ChatUser(
-      id: user.uid,
-      name: user.name ?? '',
-      avatarUrl: user.avatar,
-      presence: switch (user.status) {
+      id: _read(() => user.uid, ''),
+      name: _read(() => user.name, null) ?? '',
+      avatarUrl: _read(() => user.avatar, null),
+      presence: switch (_read(() => user.status, null)) {
         'online' => UserPresence.online,
         'offline' => UserPresence.offline,
         _ => UserPresence.unknown,
       },
-      // `blockedByMe` is read defensively: legacy tests set
-      // `CometChatUIKit.loggedInUser` with mocktail `Fake` users that only
-      // implement uid/name/status/avatar/role/link. The old setter stored
-      // the user without touching `blockedByMe`; this conversion must not
-      // throw on a partially-implemented User. Real SDK users always
-      // provide the value.
-      isBlocked: _blockedByMe(user),
+      isBlocked: _read(() => user.blockedByMe, null) ?? false,
     );
   }
 
-  static bool _blockedByMe(cc.User user) {
+  /// Best-effort read of a property that a partial `Fake` may not
+  /// implement (throws `UnimplementedError` via `Fake.noSuchMethod`).
+  static T _read<T>(T Function() read, T fallback) {
     try {
-      return user.blockedByMe ?? false;
+      return read();
     } catch (_) {
-      return false;
+      return fallback;
     }
   }
 }
