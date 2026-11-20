@@ -1,13 +1,11 @@
 name: Feature request
-description: Suggest a component, prop or capability for the Flutter UIKit.
+description: Suggest a component, prop or capability for ConvoKit.
 labels: ["enhancement", "needs-triage"]
 body:
   - type: markdown
     attributes:
       value: |
-        Feature requests for the UIKit are welcome here. Requests about the
-        CometChat platform itself (APIs, dashboard, plans) are better raised
-        through the [help desk](https://help.cometchat.com/hc/en-us).
+        Feature requests for ConvoKit are welcome here.
 
   - type: textarea
     id: problem

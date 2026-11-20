@@ -1,7 +1,7 @@
-name: cometchat_uikit_flutter
-description: "CometChat Flutter UIKit - Pre-built UI components for chat"
+name: convokit
+description: "ConvoKit Flutter UI Kit - Pre-built UI components for chat"
 publish_to: 'none'
-version: 6.3.0
+version: 0.1.0
 
 environment:
   sdk: ^3.6.0

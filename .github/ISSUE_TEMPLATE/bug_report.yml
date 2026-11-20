@@ -1,5 +1,5 @@
 name: Bug report
-description: Report a defect in the CometChat Flutter UIKit.
+description: Report a defect in the ConvoKit Flutter UIKit.
 labels: ["bug", "needs-triage"]
 body:
   - type: markdown
@@ -7,12 +7,7 @@ body:
       value: |
         Thanks for taking the time to file a report.
 
-        Please do **not** include your App ID, Auth Key, REST API key, or any
-        other credential in this issue. Redact them from logs before pasting.
-
-        For account, billing or integration questions, use the
-        [help desk](https://help.cometchat.com/hc/en-us) instead — it will get
-        you a faster answer than this repository.
+        Please do **not** include credentials in this issue. Redact them from logs before pasting.
 
   - type: textarea
     id: what-happened
@@ -30,7 +25,7 @@ body:
         Numbered steps, or a link to a minimal reproduction. A reproduction
         based on `examples/sample_app` is the fastest route to a fix.
       placeholder: |
-        1. Add CometChatConversations to the widget tree
+        1. Add ConvoKitConversations to the widget tree
         2. Log in as a user with ...
         3. Observe ...
     validations:
@@ -40,8 +35,8 @@ body:
     id: uikit-version
     attributes:
       label: UIKit version
-      description: The `cometchat_chat_uikit` version from your pubspec.lock.
-      placeholder: "6.1.0"
+      description: The `convokit` version from your pubspec.lock.
+      placeholder: "0.1.0"
     validations:
       required: true
 

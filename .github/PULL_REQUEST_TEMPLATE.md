@@ -1,13 +1,8 @@
 # Pull request
 
-> **Before you spend time on this:** the contents of this repository are
-> generated from CometChat's internal monorepo by an automated release
-> pipeline. Anything merged here is overwritten on the next release unless a
-> maintainer ports it upstream first.
->
-> Small fixes are still very welcome — open the PR, and a maintainer will
-> carry it into the internal repository and credit you in the changelog. For
-> anything larger, please open an issue first so we can agree the approach
+> **Before you spend time on this:**
+> Small fixes are welcome — open the PR, and a maintainer will review it.
+> For anything larger, please open an issue first so we can agree on the approach
 > before you write the code.
 
 ## What does this change?
