@@ -35,24 +35,44 @@ class ConvoKit {
     required this.conversations,
     required this.messages,
     required this.events,
-    this.capabilities = const ChatCapabilities(),
+    ChatCapabilities capabilities = const ChatCapabilities(),
     this.groups,
     this.media,
-  }) {
-    if ((groups == null) != !capabilities.groups) {
+  }) : capabilities =
+            _resolveCapabilities(capabilities, groups != null, media != null) {
+    if ((groups == null) != !this.capabilities.groups) {
       throw ArgumentError(
         'groups provider and capabilities.groups disagree: '
         'pass a GroupRepository exactly when capabilities.groups is true.',
       );
     }
-    if ((media == null) != !capabilities.media) {
+    if ((media == null) != !this.capabilities.media) {
       throw ArgumentError(
         'media provider and capabilities.media disagree: '
         'pass a ChatMediaProvider exactly when capabilities.media is true.',
       );
     }
-    if (capabilities.mediaDelete && media == null) {
+    if (this.capabilities.mediaDelete && media == null) {
       throw ArgumentError('mediaDelete requires a media provider.');
     }
+  }
+
+  static ChatCapabilities _resolveCapabilities(
+    ChatCapabilities requested,
+    bool hasGroups,
+    bool hasMedia,
+  ) {
+    if (requested == ChatCapabilities.basic() && (!hasGroups || !hasMedia)) {
+      return ChatCapabilities(
+        receipts: requested.receipts,
+        typing: requested.typing,
+        media: hasMedia,
+        mediaDelete: hasMedia,
+        groups: hasGroups,
+        search: requested.search,
+        messageCatchUp: requested.messageCatchUp,
+      );
+    }
+    return requested;
   }
 }
