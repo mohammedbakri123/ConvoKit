@@ -225,3 +225,105 @@ class CustomMessage extends ChatMessage {
   String toString() =>
       'CustomMessage(localId: $localId, id: $id, kind: $kind, sendState: $sendState, deliveryState: $deliveryState)';
 }
+
+extension ChatMessageStateCopyX on ChatMessage {
+  ChatMessage copyWithDeliveryState(DeliveryState state) {
+    return switch (this) {
+      TextMessage t => TextMessage(
+          id: id,
+          localId: localId,
+          conversationId: conversationId,
+          sender: sender,
+          createdAt: createdAt,
+          serverCreatedAt: serverCreatedAt,
+          sendState: sendState,
+          deliveryState: state,
+          failure: failure,
+          repliedTo: repliedTo,
+          text: t.text,
+        ),
+      MediaMessage m => MediaMessage(
+          id: id,
+          localId: localId,
+          conversationId: conversationId,
+          sender: sender,
+          createdAt: createdAt,
+          serverCreatedAt: serverCreatedAt,
+          sendState: sendState,
+          deliveryState: state,
+          failure: failure,
+          repliedTo: repliedTo,
+          attachment: m.attachment,
+          caption: m.caption,
+        ),
+      CustomMessage c => CustomMessage(
+          id: id,
+          localId: localId,
+          conversationId: conversationId,
+          sender: sender,
+          createdAt: createdAt,
+          serverCreatedAt: serverCreatedAt,
+          sendState: sendState,
+          deliveryState: state,
+          failure: failure,
+          repliedTo: repliedTo,
+          kind: c.kind,
+          data: c.data,
+        ),
+    };
+  }
+
+  ChatMessage copyWithSendState(
+    SendState state, {
+    ChatError? failure,
+    String? id,
+    DateTime? serverCreatedAt,
+  }) {
+    return switch (this) {
+      TextMessage t => TextMessage(
+          id: id ?? this.id,
+          localId: localId,
+          conversationId: conversationId,
+          sender: sender,
+          createdAt: createdAt,
+          serverCreatedAt: serverCreatedAt ?? this.serverCreatedAt,
+          sendState: state,
+          deliveryState:
+              state == SendState.failed ? DeliveryState.none : deliveryState,
+          failure: state == SendState.failed ? failure : null,
+          repliedTo: repliedTo,
+          text: t.text,
+        ),
+      MediaMessage m => MediaMessage(
+          id: id ?? this.id,
+          localId: localId,
+          conversationId: conversationId,
+          sender: sender,
+          createdAt: createdAt,
+          serverCreatedAt: serverCreatedAt ?? this.serverCreatedAt,
+          sendState: state,
+          deliveryState:
+              state == SendState.failed ? DeliveryState.none : deliveryState,
+          failure: state == SendState.failed ? failure : null,
+          repliedTo: repliedTo,
+          attachment: m.attachment,
+          caption: m.caption,
+        ),
+      CustomMessage c => CustomMessage(
+          id: id ?? this.id,
+          localId: localId,
+          conversationId: conversationId,
+          sender: sender,
+          createdAt: createdAt,
+          serverCreatedAt: serverCreatedAt ?? this.serverCreatedAt,
+          sendState: state,
+          deliveryState:
+              state == SendState.failed ? DeliveryState.none : deliveryState,
+          failure: state == SendState.failed ? failure : null,
+          repliedTo: repliedTo,
+          kind: c.kind,
+          data: c.data,
+        ),
+    };
+  }
+}
