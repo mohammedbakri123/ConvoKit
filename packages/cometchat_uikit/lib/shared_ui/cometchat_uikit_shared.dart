@@ -170,20 +170,6 @@ export 'src/cometchat_message_list/widgets/cometchat_new_message_indicator_style
 export 'src/cometchat_message_list/utils/keyboard_mixin.dart';
 export 'src/cometchat_message_list/utils/composer_height_notifier.dart';
 
-// AI Agent View Builders
-export 'src/views/ai_agent_view_builders/stream_viewer_helper.dart';
-export 'src/views/ai_agent_view_builders/cometchat_code_block.dart';
-export 'src/views/ai_agent_view_builders/cometchat_table_builder.dart';
-export 'src/views/ai_agent_view_builders/cometchat_link_builder.dart';
-export 'src/views/ai_agent_view_builders/cometchat_highlight_builder.dart';
-
-// AI Assistant Bubble
-export 'src/views/ai_assistant_bubble/cometchat_ai_assistant_bubble.dart';
-export 'src/views/ai_assistant_bubble/cometchat_ai_assistant_bubble_style.dart';
-
-// Stream Bubble
-export 'src/views/stream_bubble/cometchat_stream_bubble.dart';
-
 // AI Option Sheet
 export 'src/views/ai_option_sheet/cometchat_ai_option_sheet.dart';
 export 'src/views/ai_option_sheet/cometchat_ai_option_sheet_style.dart';

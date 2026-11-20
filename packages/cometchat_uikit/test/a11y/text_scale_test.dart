@@ -626,23 +626,6 @@ void main() {
       });
     });
 
-    testWidgets('ai assistant bubble', (WidgetTester tester) async {
-      await check(tester, 'ai assistant bubble', () {
-        return Builder(
-          builder: (BuildContext context) => asBubble(
-            context,
-            const CometChatAIAssistantBubble(
-              text:
-                  'The composer is the largest component in the package at '
-                  '22k lines, and it had five test files before this pass.',
-              alignment: BubbleAlignment.left,
-            ),
-            BubbleAlignment.left,
-          ),
-        );
-      });
-    });
-
     testWidgets('message bubble wrapper', (WidgetTester tester) async {
       await check(tester, 'message bubble wrapper', () {
         return Builder(

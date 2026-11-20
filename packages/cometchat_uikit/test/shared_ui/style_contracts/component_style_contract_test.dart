@@ -829,57 +829,6 @@ void main() {
     );
 
     test(
-      'CometChatAIAssistantBubbleStyle keeps every field through copyWith/merge/lerp',
-      () {
-        expectStyleContract<CometChatAIAssistantBubbleStyle>(
-          label: 'CometChatAIAssistantBubbleStyle',
-          empty: const CometChatAIAssistantBubbleStyle(),
-          copyWithNothing: (s) => s.copyWith(),
-          merge: (s, o) => s.merge(o),
-          lerp: (s, o, t) => s.lerp(o, t),
-          lerpNullReturnsSelf: false,
-          fields: [
-            Fld<CometChatAIAssistantBubbleStyle, TextStyle>(
-              'textStyle',
-              const TextStyle(fontSize: 248.5),
-              const TextStyle(fontSize: 249.5),
-              (s, v) => s.copyWith(textStyle: v),
-              (s) => s.textStyle,
-            ),
-            Fld<CometChatAIAssistantBubbleStyle, BoxBorder>(
-              'border',
-              Border.all(width: 250.5),
-              Border.all(width: 251.5),
-              (s, v) => s.copyWith(border: v),
-              (s) => s.border,
-            ),
-            Fld<CometChatAIAssistantBubbleStyle, BorderRadiusGeometry>(
-              'borderRadius',
-              BorderRadius.circular(252.5),
-              BorderRadius.circular(253.5),
-              (s, v) => s.copyWith(borderRadius: v),
-              (s) => s.borderRadius,
-            ),
-            Fld<CometChatAIAssistantBubbleStyle, Color>(
-              'textColor',
-              const Color(0xFFE3FB02),
-              const Color(0xFFEE0005),
-              (s, v) => s.copyWith(textColor: v),
-              (s) => s.textColor,
-            ),
-            Fld<CometChatAIAssistantBubbleStyle, Color>(
-              'backgroundColor',
-              const Color(0xFFF80508),
-              const Color(0xFF020A0B),
-              (s, v) => s.copyWith(backgroundColor: v),
-              (s) => s.backgroundColor,
-            ),
-          ],
-        );
-      },
-    );
-
-    test(
       'CometChatMessageReceiptStyle keeps every field through copyWith/merge/lerp',
       () {
         expectStyleContract<CometChatMessageReceiptStyle>(

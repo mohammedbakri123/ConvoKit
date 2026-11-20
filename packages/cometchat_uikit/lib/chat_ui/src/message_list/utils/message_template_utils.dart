@@ -2573,7 +2573,7 @@ class MessageTemplateUtils {
   // -------- Call Message Templates (used when enableCalls == true) --------
 
   /// Template for AI assistant messages (category: agentic, type: assistant).
-  /// Renders using [CometChatAIAssistantBubble] with full markdown support.
+  /// Renders as a plain text message (v1.1 design).
   static CometChatMessageTemplate getAIAssistantMessageTemplate() {
     return CometChatMessageTemplate(
       type: CometChatMessageType.assistant,
@@ -2595,14 +2595,14 @@ class MessageTemplateUtils {
                 additionalConfigurations?.deletedBubbleStyle,
               );
             }
-            if (message is AIAssistantMessage) {
-              return CometChatAIAssistantBubble(
-                message: message,
-                alignment: alignment,
-              );
-            }
-            // Fallback: render as text if somehow not AIAssistantMessage
-            return Text(message.toString());
+            final text = message is AIAssistantMessage
+                ? message.text
+                : (message is TextMessage ? message.text : message.toString());
+            return CometChatTextBubble(
+              text: text,
+              alignment: alignment,
+              style: additionalConfigurations?.textBubbleStyle,
+            );
           },
       options:
           (
@@ -2616,7 +2616,7 @@ class MessageTemplateUtils {
   }
 
   /// Template for stream messages (category: streamMessage, type: run_started).
-  /// Renders using [CometChatStreamBubble] with shimmer streaming effect.
+  /// Renders as a plain text message (v1.1 design).
   static CometChatMessageTemplate getStreamMessageTemplate() {
     return CometChatMessageTemplate(
       type: CometChatMessageType.runStarted,
@@ -2629,7 +2629,11 @@ class MessageTemplateUtils {
             AdditionalConfigurations? additionalConfigurations,
           }) {
             if (message is StreamMessage) {
-              return CometChatStreamBubble(message: message);
+              return CometChatTextBubble(
+                text: message.text,
+                alignment: alignment,
+                style: additionalConfigurations?.textBubbleStyle,
+              );
             }
             return const SizedBox.shrink();
           },

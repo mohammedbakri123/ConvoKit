@@ -18,7 +18,6 @@ library;
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gpt_markdown/gpt_markdown.dart';
 import 'package:network_image_mock/network_image_mock.dart';
 
 const _c1 = Color(0xFF101112);
@@ -57,46 +56,6 @@ class FakeUser extends Fake implements User {
   String get uid => 'ai_bot';
   @override
   String get name => 'AI Bot';
-}
-
-class FakeAssistantMessage extends Fake implements AIAssistantMessage {
-  FakeAssistantMessage(this._text);
-  final String _text;
-
-  @override
-  String? get text => _text;
-  @override
-  int get id => 1;
-  @override
-  List<AIAssistantElement>? getElements() => null;
-}
-
-class FakeStreamMessage extends Fake implements StreamMessage {
-  FakeStreamMessage(this._text);
-  String _text;
-
-  @override
-  int get id => 7;
-  @override
-  String get muid => 'muid_7';
-  @override
-  String get type => 'text';
-  @override
-  String get category => 'agentic';
-  @override
-  String? get text => _text;
-  @override
-  set text(String? value) => _text = value ?? '';
-  @override
-  int? get runId => 7;
-  @override
-  User? get sender => FakeUser();
-  @override
-  DateTime? get sentAt => DateTime(2026, 6, 19, 10, 0);
-  @override
-  DateTime? get deletedAt => null;
-  @override
-  Map<String, dynamic>? get metadata => {AIConstants.aiShimmer: false};
 }
 
 Widget _host(Widget Function(BuildContext) build) => MaterialApp(
@@ -657,144 +616,6 @@ void main() {
   });
 
   // ===========================================================================
-  group('the AI agent view builders', () {
-    testWidgets('CometchatLinkBuilder takes url, style and the palette', (
-      tester,
-    ) async {
-      await tester.pumpWidget(
-        _host(
-          (context) => CometchatLinkBuilder(
-            url: 'https://example.invalid/doc',
-            style: const TextStyle(color: _c1, fontStyle: FontStyle.italic),
-            colorPalette: CometChatThemeHelper.getColorPalette(
-              context,
-            ).copyWith(textHighlight: _c2),
-            typography: _typography,
-          ),
-        ),
-      );
-      await tester.pump();
-
-      final rendered = tester.widget<RichText>(find.byType(RichText));
-      final span = rendered.text as TextSpan;
-      expect(span.text, 'https://example.invalid/doc', reason: 'url');
-      expect(span.style?.fontStyle, FontStyle.italic, reason: 'style');
-      expect(span.style?.color, _c2, reason: 'colorPalette.textHighlight');
-      expect(span.style?.fontSize, 33, reason: 'typography.body.regular');
-    });
-
-    testWidgets(
-      'CometChatAiAssistantCodeBlock takes language, codes and trio',
-      (tester) async {
-        await tester.pumpWidget(
-          _host(
-            (context) => CometChatAiAssistantCodeBlock(
-              language: 'dart',
-              codes: 'void main() {}\n',
-              colorPalette: CometChatThemeHelper.getColorPalette(
-                context,
-              ).copyWith(background4: _c1, textPrimary: _c2),
-              spacing: _spacing(),
-              typography: _typography,
-            ),
-          ),
-        );
-        await tester.pump();
-
-        final header = tester.widget<Text>(find.text('dart'));
-        expect(header.style?.color, _c2, reason: 'colorPalette.textPrimary');
-        expect(
-          header.style?.fontWeight,
-          FontWeight.w800,
-          reason: 'typography.caption1.medium',
-        );
-        expect(find.textContaining('void main'), findsWidgets, reason: 'codes');
-
-        final head = tester.widget<Container>(
-          find
-              .byWidgetPredicate(
-                (w) =>
-                    w is Container &&
-                    w.decoration is BoxDecoration &&
-                    (w.decoration! as BoxDecoration).color == _c1,
-              )
-              .first,
-        );
-        expect(
-          (head.decoration! as BoxDecoration).borderRadius,
-          const BorderRadius.only(
-            topLeft: Radius.circular(15),
-            topRight: Radius.circular(15),
-          ),
-          reason: 'spacing.radius3',
-        );
-      },
-    );
-
-    testWidgets(
-      'CometChatAiAssistantTableBuilder takes rows, config and trio',
-      (tester) async {
-        await tester.pumpWidget(
-          _host(
-            (context) => CometChatAiAssistantTableBuilder(
-              tableRows: [
-                CustomTableRow(
-                  isHeader: true,
-                  fields: [
-                    CustomTableField(data: 'Region'),
-                    CustomTableField(data: 'Seats'),
-                  ],
-                ),
-                CustomTableRow(
-                  fields: [
-                    CustomTableField(data: 'EMEA'),
-                    CustomTableField(data: '42'),
-                  ],
-                ),
-              ],
-              config: const GptMarkdownConfig(textDirection: TextDirection.ltr),
-              colorPalette: CometChatThemeHelper.getColorPalette(
-                context,
-              ).copyWith(borderDark: _c1, background4: _c3, textPrimary: _c2),
-              spacing: _spacing(),
-              typography: _typography,
-            ),
-          ),
-        );
-        await tester.pump();
-
-        expect(find.text('Region'), findsOneWidget, reason: 'tableRows');
-        expect(find.text('EMEA'), findsOneWidget);
-
-        final header = tester.widget<Text>(find.text('Region'));
-        expect(header.style?.color, _c2, reason: 'colorPalette.textPrimary');
-        expect(
-          header.style?.fontSize,
-          29,
-          reason: 'typography.caption1.medium',
-        );
-
-        final frame = tester.widget<Container>(
-          find
-              .byWidgetPredicate(
-                (w) =>
-                    w is Container &&
-                    w.decoration is BoxDecoration &&
-                    (w.decoration! as BoxDecoration).border ==
-                        Border.all(color: _c1, width: 1),
-              )
-              .first,
-        );
-        expect(
-          (frame.decoration! as BoxDecoration).borderRadius,
-          BorderRadius.circular(15),
-          reason: 'spacing.radius3',
-        );
-      },
-    );
-  });
-
-  // ===========================================================================
   group('the bubbles', () {
     testWidgets('CometChatActionBubble takes the icon, size and padding', (
       tester,
@@ -830,35 +651,6 @@ void main() {
       expect(bubble.constraints?.maxWidth, 260, reason: 'width');
     });
 
-    testWidgets('CometChatAIAssistantBubble takes message and size', (
-      tester,
-    ) async {
-      await tester.pumpWidget(
-        _wrap(
-          CometChatAIAssistantBubble(
-            message: FakeAssistantMessage('Here is a summary.'),
-            height: 120,
-            width: 280,
-          ),
-        ),
-      );
-      await tester.pump();
-
-      final bubble = tester.widget<Container>(
-        find
-            .byWidgetPredicate(
-              (w) => w is Container && w.constraints?.maxWidth == 280,
-            )
-            .first,
-      );
-      expect(bubble.constraints?.maxHeight, 120, reason: 'height');
-      expect(
-        find.textContaining('summary'),
-        findsWidgets,
-        reason: 'message supplies the text',
-      );
-    });
-
     testWidgets('CometChatDeletedBubble takes margin and padding', (
       tester,
     ) async {
@@ -881,34 +673,6 @@ void main() {
       );
       expect(bubble.margin, const EdgeInsets.all(5), reason: 'margin');
     });
-
-    testWidgets('CometChatStreamBubble takes style and size', (tester) async {
-      await tester.pumpWidget(
-        _wrap(
-          CometChatStreamBubble(
-            message: FakeStreamMessage('Thinking...'),
-            width: 280,
-            height: 120,
-            style: const CometChatAIAssistantBubbleStyle(backgroundColor: _c1),
-          ),
-        ),
-      );
-      await tester.pump();
-
-      final bubble = tester.widget<Container>(
-        find
-            .byWidgetPredicate(
-              (w) => w is Container && w.constraints?.maxWidth == 280,
-            )
-            .first,
-      );
-      expect(bubble.constraints?.maxHeight, 120, reason: 'height');
-      expect(
-        (bubble.decoration! as BoxDecoration).color,
-        _c1,
-        reason: 'style.backgroundColor',
-      );
-    });
   });
 
   // ===========================================================================
@@ -916,14 +680,6 @@ void main() {
   // sees them, deliberately NOT pumped so they stay outside the numerator.
   group('DEFECT — declared and never read', () {
     test('the props no build method consults', () {
-      // `text` is an InlineSpan the builder never renders: it always draws the
-      // raw `url`. `spacing` is accepted and dropped. ENG-39129.
-      CometchatLinkBuilder(
-        url: 'https://example.invalid/doc',
-        text: const TextSpan(text: 'the design doc'),
-        spacing: _spacing(),
-      );
-
       // `message` is documented as the action message object and read nowhere;
       // the bubble renders `text` only. ENG-39129.
       const CometChatActionBubble(text: 'Group created', message: 'raw');
@@ -948,13 +704,6 @@ void main() {
         optionTextStyle: const TextStyle(color: _c1),
         optionBackground: _c2,
         selectedOptionBackground: _c3,
-      );
-
-      // `alignment` is accepted and never consulted — the bubble has no
-      // left/right behaviour. ENG-39129.
-      const CometChatAIAssistantBubble(
-        text: 'Here is a summary.',
-        alignment: BubbleAlignment.left,
       );
 
       expect(true, isTrue);
