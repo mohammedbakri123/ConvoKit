@@ -12,6 +12,7 @@ import '../conversations_builder_protocol.dart';
 import '../../../../shared_ui/src/logging/cometchat_log.dart';
 import '../../../../src/call_activity_listener.dart';
 import '../../../../src/chat_sdk_listeners.dart';
+import '../../../../src/adapters/cometchat_sdk_adapter.dart';
 
 /// BLoC for managing conversations list
 ///
@@ -424,7 +425,7 @@ class ConversationsBloc extends Bloc<ConversationsEvent, ConversationsState>
 
   /// Register all CometChat SDK listeners for real-time updates
   void _registerSDKListeners() {
-    CometChat.addMessageListener(
+    CometChatSdkAdapter.addMessageListener(
       _messageListenerKey,
       _ConversationMessageListener(
         onMessageReceivedCallback: _handleMessageReceived,
@@ -440,7 +441,7 @@ class ConversationsBloc extends Bloc<ConversationsEvent, ConversationsState>
     );
 
     if (usersStatusVisibility) {
-      CometChat.addUserListener(
+      CometChatSdkAdapter.addUserListener(
         _userListenerKey,
         _ConversationUserListener(
           onUserOnlineCallback: _handleUserOnline,
@@ -449,7 +450,7 @@ class ConversationsBloc extends Bloc<ConversationsEvent, ConversationsState>
       );
     }
 
-    CometChat.addGroupListener(
+    CometChatSdkAdapter.addGroupListener(
       _groupListenerKey,
       _ConversationGroupListener(
         onGroupMemberJoinedCallback: _handleGroupMemberJoined,
@@ -484,7 +485,7 @@ class ConversationsBloc extends Bloc<ConversationsEvent, ConversationsState>
       );
     }
 
-    CometChat.addConnectionListener(
+    CometChatSdkAdapter.addConnectionListener(
       _connectionListenerKey,
       _ConversationConnectionListener(
         onConnectedCallback: _handleConnected,
@@ -495,7 +496,7 @@ class ConversationsBloc extends Bloc<ConversationsEvent, ConversationsState>
     // Pin Conversation: self-echo events for the logged-in user's pins —
     // fired locally on this device's own REST success and via socket from
     // their other devices (plus admin app_system pins).
-    CometChat.addConversationListener(
+    CometChatSdkAdapter.addConversationListener(
       _conversationListenerKey,
       _ConversationPinListener(
         onPinnedCallback: (conversation) {
@@ -2142,18 +2143,18 @@ class ConversationsBloc extends Bloc<ConversationsEvent, ConversationsState>
     _typingNotifiers.clear();
 
     // Remove SDK listeners
-    CometChat.removeMessageListener(_messageListenerKey);
+    CometChatSdkAdapter.removeMessageListener(_messageListenerKey);
     if (usersStatusVisibility) {
-      CometChat.removeUserListener(_userListenerKey);
+      CometChatSdkAdapter.removeUserListener(_userListenerKey);
     }
-    CometChat.removeGroupListener(_groupListenerKey);
+    CometChatSdkAdapter.removeGroupListener(_groupListenerKey);
     if (kIsWeb) {
       ChatSdkListeners.removeCallListener(_callListenerKey);
     } else {
       CallActivityListener.remove(_callListenerKey);
     }
-    CometChat.removeConnectionListener(_connectionListenerKey);
-    CometChat.removeConversationListener(_conversationListenerKey);
+    CometChatSdkAdapter.removeConnectionListener(_connectionListenerKey);
+    CometChatSdkAdapter.removeConversationListener(_conversationListenerKey);
 
     // Remove CC UI Event listeners
     CometChatMessageEvents.removeMessagesListener(_ccMessageListenerKey);

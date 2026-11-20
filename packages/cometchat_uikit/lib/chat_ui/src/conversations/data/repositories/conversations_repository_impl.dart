@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:cometchat_sdk/cometchat_sdk.dart' hide CardMessage;
+import '../../../../../shared_ui/src/cometchat_ui_kit/cometchat_ui_kit.dart';
+import '../../../../../src/adapters/cometchat_sdk_adapter.dart';
 import '../../../../../shared_ui/src/clean_architecture/core/result.dart';
 import '../../domain/repositories/conversations_repository.dart';
 import '../datasources/conversations_remote_datasource.dart';
@@ -146,7 +148,8 @@ class ConversationsRepositoryImpl implements ConversationsRepository {
               before.isNotEmpty && int.tryParse(before) != null;
           if (type == 'user' && before.isNotEmpty && !beforeIsNumericPrefix) {
             // "{uidA}_user_{uidB}" — choose the participant that is not us.
-            final ownUid = (await CometChat.getLoggedInUser())?.uid;
+            final ownUid = CometChatUIKit.loggedInUser?.uid ??
+                (await CometChatSdkAdapter.getLoggedInUser())?.uid;
             withId = (after == ownUid && before != ownUid) ? before : after;
           } else {
             // "{number}_user_{uid}" / "user_{uid}" / "group_{guid}" forms.
@@ -213,7 +216,8 @@ class ConversationsRepositoryImpl implements ConversationsRepository {
   @override
   Future<Result<User?>> getLoggedInUser() async {
     try {
-      final user = await CometChat.getLoggedInUser();
+      final user = CometChatUIKit.loggedInUser ??
+          await CometChatSdkAdapter.getLoggedInUser();
       return Success(user);
     } on CometChatException catch (e) {
       return Failure(
@@ -235,7 +239,7 @@ class ConversationsRepositoryImpl implements ConversationsRepository {
     try {
       final completer = Completer<void>();
 
-      await CometChat.markAsDelivered(
+      await CometChatSdkAdapter.markAsDelivered(
         message,
         onSuccess: (_) {
           completer.complete();
@@ -270,7 +274,7 @@ class ConversationsRepositoryImpl implements ConversationsRepository {
     try {
       final completer = Completer<Conversation>();
 
-      await CometChat.getConversation(
+      await CometChatSdkAdapter.getConversation(
         conversationWith,
         conversationType,
         onSuccess: (Conversation conversation) {

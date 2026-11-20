@@ -15,10 +15,24 @@ import '../logging/cometchat_log.dart';
 import '../clean_architecture/data/models/interactive_message/card_message.dart'
     as legacy_card;
 import '../../../../src/contracts/session.dart';
+import '../../../../src/contracts/conversation_repository.dart' as contracts;
+import '../../../../src/contracts/user_repository.dart' as contracts;
+import '../../../../src/contracts/group_repository.dart' as contracts;
+import '../../../../src/contracts/message_repository.dart' as contracts;
+import '../../../../src/contracts/media_provider.dart' as contracts;
+import '../../../../src/core/convo_kit.dart';
 import '../../../../src/adapters/cometchat_session_adapter.dart';
 
 class CometChatUIKit {
   static UIKitSettings? authenticationSettings;
+
+  /// Host-supplied contracts and ConvoKit instance.
+  static contracts.ConversationRepository? conversationRepository;
+  static contracts.UserRepository? userRepository;
+  static contracts.GroupRepository? groupRepository;
+  static contracts.MessageRepository? messageRepository;
+  static contracts.ChatMediaProvider? mediaProvider;
+  static ConvoKit? kit;
 
   /// Host-supplied read-only [ChatSession] replacing the static facade.
   static ChatSession? session;

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../cometchat_chat_uikit.dart';
 import '../../../cometchat_chat_uikit.dart' as cc;
 import '../../../shared_ui/src/clean_architecture/core/utils/thread_toast.dart';
+import '../../../src/adapters/cometchat_sdk_adapter.dart';
 
 ///[CometChatConversations] is a component that shows all conversations involving the logged in user with the help of [CometChatListBase] and [CometChatListItem]
 ///By default, for each conversation that will be listed, the name of the user or group the logged in user is having conversation with will be displayed in the title of every list item,
@@ -832,7 +833,7 @@ class _CometChatConversationsState extends State<CometChatConversations>
     if (widget.pinConversationOptionVisibility == false) return false;
     // Server feature flag (features.ux.conversations.pinned.enabled) —
     // absence means enabled, so older backends keep the option.
-    if (!CometChat.isPinConversationEnabled()) return false;
+    if (!CometChatSdkAdapter.isPinConversationEnabled()) return false;
     final pinnedBy = conversation.pinnedBy;
     if (pinnedBy == null) return true;
     return pinnedBy == CometChatUIKit.loggedInUser?.uid;
@@ -1009,7 +1010,7 @@ class _CometChatConversationsState extends State<CometChatConversations>
 
     final bool pin = conversation.pinnedBy == null;
     final updated = pin
-        ? await CometChat.pinConversation(
+        ? await CometChatSdkAdapter.pinConversation(
             conversationWith,
             conversation.conversationType,
             onError: (error) {
@@ -1021,7 +1022,7 @@ class _CometChatConversationsState extends State<CometChatConversations>
               }
             },
           )
-        : await CometChat.unpinConversation(
+        : await CometChatSdkAdapter.unpinConversation(
             conversationWith,
             conversation.conversationType,
             onError: (error) {
@@ -1057,7 +1058,7 @@ class _CometChatConversationsState extends State<CometChatConversations>
     switch (error.code) {
       case 'ERR_PINNED_CONVERSATIONS_LIMIT_EXCEEDED':
         return cc.Translations.of(context).conversationPinLimitReachedToast(
-          limit ?? CometChat.getPinnedConversationsLimit() ?? 5,
+          limit ?? CometChatSdkAdapter.getPinnedConversationsLimit() ?? 5,
         );
       case 'ERR_UNAUTHORIZED':
       case 'ERR_FORBIDDEN':
