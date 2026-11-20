@@ -5,16 +5,16 @@ import '../../../cometchat_chat_uikit.dart' as cc;
 import '../../../shared_ui/src/logging/cometchat_log.dart';
 import '../../../src/adapters/cometchat_sdk_adapter.dart';
 
-///[CometChatGroupMembersController] is the view model for [CometChatGroupMembers]
-///it contains all the business logic involved in changing the state of the UI of [CometChatGroupMembers]
-class CometChatGroupMembersController
+///[ConvoKitGroupMembersController] is the view model for [ConvoKitGroupMembers]
+///it contains all the business logic involved in changing the state of the UI of [ConvoKitGroupMembers]
+class ConvoKitGroupMembersController
     extends CometChatSearchListController<GroupMember, String>
     with
         CometChatSelectable,
         GroupListener,
         UserListener,
-        CometChatGroupEventListener
-    implements CometChatGroupMembersControllerProtocol {
+        ConvoKitGroupEventListener
+    implements ConvoKitGroupMembersControllerProtocol {
   //Class members
   late GroupMembersBuilderProtocol groupMembersBuilderProtocol;
   late String dateStamp;
@@ -38,10 +38,10 @@ class CometChatGroupMembersController
 
   String? _conversationId;
   CometChatConfirmDialogStyle? confirmDialogStyle;
-  CometChatChangeScopeStyle? changeScopeStyle;
+  ConvoKitChangeScopeStyle? changeScopeStyle;
 
   //Constructor
-  CometChatGroupMembersController({
+  ConvoKitGroupMembersController({
     required this.groupMembersBuilderProtocol,
     required this.group,
     SelectionMode? mode,
@@ -67,7 +67,7 @@ class CometChatGroupMembersController
   @override
   void onInit() {
     CometChatSdkAdapter.addGroupListener(groupSDKListenerID, this);
-    CometChatGroupEvents.addGroupsListener(groupUIListenerID, this);
+    ConvoKitGroupEvents.addGroupsListener(groupUIListenerID, this);
 
     if (usersStatusVisibility == true) {
       //Adding listener when presence is needed
@@ -92,7 +92,7 @@ class CometChatGroupMembersController
   @override
   void onClose() {
     CometChatSdkAdapter.removeGroupListener(groupSDKListenerID);
-    CometChatGroupEvents.removeGroupsListener(groupUIListenerID);
+    ConvoKitGroupEvents.removeGroupsListener(groupUIListenerID);
     if (usersStatusVisibility == true) {
       CometChatSdkAdapter.removeUserListener(userSDKListenerID);
     }
@@ -227,7 +227,7 @@ class CometChatGroupMembersController
       scope: newScope,
       onSuccess: (String res) {
         member.scope = newScope;
-        CometChatGroupEvents.ccGroupMemberScopeChanged(
+        ConvoKitGroupEvents.ccGroupMemberScopeChanged(
           cc.Action(
             conversationId: _conversationId!,
             message: "${loggedInUser?.name} made ${member.name} $newScope",
@@ -381,7 +381,7 @@ class CometChatGroupMembersController
                 uid: member.uid,
                 onSuccess: (String result) async {
                   group.membersCount--;
-                  CometChatGroupEvents.ccGroupMemberBanned(
+                  ConvoKitGroupEvents.ccGroupMemberBanned(
                     cc.Action(
                       conversationId: _conversationId!,
                       message: "${loggedInUser?.name} banned ${member.name}",
@@ -437,7 +437,7 @@ class CometChatGroupMembersController
                 uid: member.uid,
                 onSuccess: (String result) async {
                   group.membersCount--;
-                  CometChatGroupEvents.ccGroupMemberKicked(
+                  ConvoKitGroupEvents.ccGroupMemberKicked(
                     cc.Action(
                       conversationId: _conversationId!,
                       message: '${loggedInUser?.name} kicked ${member.name}',
@@ -477,7 +477,7 @@ class CometChatGroupMembersController
           barrierColor: (colorPalette.textPrimary ?? const Color(0xFF141414))
               .withValues(alpha: 0.8),
           builder: (context) => SingleChildScrollView(
-            child: CometChatChangeScope(
+            child: ConvoKitChangeScope(
               group: group,
               member: member,
               onSave: changeScope,

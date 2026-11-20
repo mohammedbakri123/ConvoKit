@@ -1,7 +1,7 @@
 import '../../../../cometchat_uikit_shared.dart';
 import 'package:flutter/material.dart';
 
-abstract class CometChatGroupMembersControllerProtocol
+abstract class ConvoKitGroupMembersControllerProtocol
     extends CometChatSearchListControllerProtocol<GroupMember> {
   //default functions
   List<CometChatOption> defaultFunction(

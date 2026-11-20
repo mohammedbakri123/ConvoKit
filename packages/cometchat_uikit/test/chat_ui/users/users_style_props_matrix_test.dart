@@ -1,6 +1,6 @@
-/// Render-verified prop matrix for [CometChatUsersStyle] — Track 3 PROP1.
+/// Render-verified prop matrix for [ConvoKitUsersStyle] — Track 3 PROP1.
 ///
-/// Companion to `users_props_test.dart`, which covers `CometChatUsers` itself.
+/// Companion to `users_props_test.dart`, which covers `ConvoKitUsers` itself.
 /// 43 style props, all read as of ENG-39121 — the five `retryButton*` props
 /// were dead until then.
 ///
@@ -102,9 +102,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loaded(),
-              usersStyle: const CometChatUsersStyle(
+              usersStyle: const ConvoKitUsersStyle(
                 backgroundColor: _c1,
                 border: Border.fromBorderSide(BorderSide(color: _c2, width: 3)),
                 borderRadius: BorderRadius.all(Radius.circular(18)),
@@ -131,9 +131,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loaded(),
-              usersStyle: const CometChatUsersStyle(
+              usersStyle: const ConvoKitUsersStyle(
                 separatorColor: _c3,
                 separatorHeight: 4,
               ),
@@ -157,10 +157,10 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loaded(),
               title: 'Channels',
-              usersStyle: const CometChatUsersStyle(
+              usersStyle: const ConvoKitUsersStyle(
                 titleTextColor: _c1,
                 titleTextStyle: TextStyle(fontSize: 29, letterSpacing: 2),
               ),
@@ -181,9 +181,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loaded(),
-              usersStyle: const CometChatUsersStyle(backIconColor: _c2),
+              usersStyle: const ConvoKitUsersStyle(backIconColor: _c2),
             ),
           ),
         ),
@@ -198,9 +198,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loaded(selected: {'g1'}),
-              usersStyle: const CometChatUsersStyle(submitIconColor: _c3),
+              usersStyle: const ConvoKitUsersStyle(submitIconColor: _c3),
             ),
           ),
         ),
@@ -217,9 +217,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loaded(),
-              usersStyle: const CometChatUsersStyle(
+              usersStyle: const ConvoKitUsersStyle(
                 searchBackgroundColor: _c1,
                 searchBorder: BorderSide(color: _c2, width: 2),
                 searchBorderRadius: BorderRadius.all(Radius.circular(11)),
@@ -257,9 +257,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _blocIn(const UsersEmpty()),
-              usersStyle: const CometChatUsersStyle(
+              usersStyle: const ConvoKitUsersStyle(
                 emptyStateTextColor: _c1,
                 emptyStateTextStyle: TextStyle(fontSize: 26),
                 emptyStateSubTitleTextColor: _c2,
@@ -296,9 +296,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _blocIn(const UsersError(message: 'boom')),
-              usersStyle: const CometChatUsersStyle(
+              usersStyle: const ConvoKitUsersStyle(
                 errorStateTextColor: _c1,
                 errorStateTextStyle: TextStyle(fontSize: 26),
                 errorStateSubTitleTextColor: _c2,
@@ -324,14 +324,14 @@ void main() {
       tester,
     ) async {
       // ENG-39121: all five were dead. getDefaultErrorStateView has accepted
-      // button* arguments the whole time — CometChatGroupMembers passes them,
+      // button* arguments the whole time — ConvoKitGroupMembers passes them,
       // Groups and Users did not.
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _blocIn(const UsersError(message: 'boom')),
-              usersStyle: const CometChatUsersStyle(
+              usersStyle: const ConvoKitUsersStyle(
                 retryButtonBackgroundColor: _c3,
                 retryButtonTextColor: _c4,
                 retryButtonTextStyle: TextStyle(fontSize: 19),
@@ -375,9 +375,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loaded(),
-              usersStyle: const CometChatUsersStyle(
+              usersStyle: const ConvoKitUsersStyle(
                 itemTitleTextColor: _c1,
                 itemTitleTextStyle: TextStyle(fontSize: 23),
                 itemBorder: Border.fromBorderSide(
@@ -414,9 +414,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loaded(),
-              usersStyle: const CometChatUsersStyle(
+              usersStyle: const ConvoKitUsersStyle(
                 avatarStyle: CometChatAvatarStyle(backgroundColor: _c3),
                 statusIndicatorStyle: CometChatStatusIndicatorStyle(
                   backgroundColor: _c4,
@@ -448,9 +448,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loaded(),
-              usersStyle: const CometChatUsersStyle(
+              usersStyle: const ConvoKitUsersStyle(
                 stickyTitleColor: _c5,
                 stickyTitleTextStyle: TextStyle(fontSize: 18, letterSpacing: 3),
               ),
@@ -477,10 +477,10 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loaded(selected: {'u1'}),
               selectionMode: SelectionMode.multiple,
-              usersStyle: const CometChatUsersStyle(
+              usersStyle: const ConvoKitUsersStyle(
                 checkBoxBackgroundColor: _c1,
                 checkBoxCheckedBackgroundColor: _c2,
                 checkBoxBorderRadius: BorderRadius.all(Radius.circular(7)),
@@ -521,10 +521,10 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loaded(selected: {'u1'}),
               selectionMode: SelectionMode.multiple,
-              usersStyle: const CometChatUsersStyle(
+              usersStyle: const ConvoKitUsersStyle(
                 listItemSelectedBackgroundColor: _c5,
               ),
             ),

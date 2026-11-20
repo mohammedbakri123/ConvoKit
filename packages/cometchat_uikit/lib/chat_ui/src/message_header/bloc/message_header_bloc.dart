@@ -158,7 +158,7 @@ class MessageHeaderBloc extends Bloc<MessageHeaderEvent, MessageHeaderState> {
 
   /// Register CometChat UI Event listeners
   void _registerCCEventListeners() {
-    CometChatGroupEvents.addGroupsListener(
+    ConvoKitGroupEvents.addGroupsListener(
       _ccGroupListenerKey,
       _CCMessageHeaderGroupEventListener(
         onCCGroupMemberAddedCallback: _handleCCGroupMemberAdded,
@@ -168,7 +168,7 @@ class MessageHeaderBloc extends Bloc<MessageHeaderEvent, MessageHeaderState> {
       ),
     );
 
-    CometChatUserEvents.addUsersListener(
+    ConvoKitUserEvents.addUsersListener(
       _ccUserListenerKey,
       _CCMessageHeaderUserEventListener(
         onCCUserBlockedCallback: _handleCCUserBlocked,
@@ -667,8 +667,8 @@ class MessageHeaderBloc extends Bloc<MessageHeaderEvent, MessageHeaderState> {
     CometChatSdkAdapter.removeConnectionListener(_connectionListenerKey);
 
     // Remove CC Event listeners
-    CometChatGroupEvents.removeGroupsListener(_ccGroupListenerKey);
-    CometChatUserEvents.removeUsersListener(_ccUserListenerKey);
+    ConvoKitGroupEvents.removeGroupsListener(_ccGroupListenerKey);
+    ConvoKitUserEvents.removeUsersListener(_ccUserListenerKey);
 
     // Dispose ValueNotifier
     _typingNotifier.dispose();
@@ -817,7 +817,7 @@ class _MessageHeaderConnectionListener with ConnectionListener {
 }
 
 /// CC Group event listener
-class _CCMessageHeaderGroupEventListener with CometChatGroupEventListener {
+class _CCMessageHeaderGroupEventListener with ConvoKitGroupEventListener {
   final void Function(List<Action>, List<User>, Group, User)
   onCCGroupMemberAddedCallback;
   final void Function(Action, User, User, Group) onCCGroupMemberKickedCallback;
@@ -868,7 +868,7 @@ class _CCMessageHeaderGroupEventListener with CometChatGroupEventListener {
 }
 
 /// CC User event listener
-class _CCMessageHeaderUserEventListener with CometChatUserEventListener {
+class _CCMessageHeaderUserEventListener with ConvoKitUserEventListener {
   final void Function(User) onCCUserBlockedCallback;
   final void Function(User) onCCUserUnblockedCallback;
 

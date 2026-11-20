@@ -80,7 +80,7 @@ class CometChatSearch extends StatefulWidget {
   /// [searchBloc] injects the bloc instead of letting the component build
   /// one.
   ///
-  /// Mirrors `CometChatUsers.usersBloc`, `CometChatGroups.groupsBloc` and
+  /// Mirrors `ConvoKitUsers.usersBloc`, `ConvoKitGroups.groupsBloc` and
   /// `ConvoKitConversations.conversationsBloc`. Search was the only one of
   /// the four without the seam, and because every builder here passes
   /// `bloc: _searchBloc` explicitly, an ambient BlocProvider could not stand

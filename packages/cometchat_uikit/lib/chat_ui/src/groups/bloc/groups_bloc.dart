@@ -253,7 +253,7 @@ class GroupsBloc extends Bloc<GroupsEvent, GroupsState> with ListBase<Group> {
   /// This method registers:
   /// - GroupListener for member events (joined, left, kicked, banned, scope changed)
   /// - ConnectionListener for reconnection handling
-  /// - CometChatGroupEvents for UI-triggered group events
+  /// - ConvoKitGroupEvents for UI-triggered group events
   ///
   /// Requirements: 1.6
   void _registerSDKListeners() {
@@ -281,8 +281,8 @@ class GroupsBloc extends Bloc<GroupsEvent, GroupsState> with ListBase<Group> {
       ),
     );
 
-    // Register CometChatGroupEvents for UI-triggered group events
-    CometChatGroupEvents.addGroupsListener(
+    // Register ConvoKitGroupEvents for UI-triggered group events
+    ConvoKitGroupEvents.addGroupsListener(
       _ccGroupListenerKey,
       _GroupsCCEventListener(
         onCCGroupCreatedCallback: _handleCCGroupCreated,
@@ -1037,7 +1037,7 @@ class GroupsBloc extends Bloc<GroupsEvent, GroupsState> with ListBase<Group> {
     if (!disableSDKListeners) {
       CometChatSdkAdapter.removeGroupListener(_groupListenerKey);
       CometChatSdkAdapter.removeConnectionListener(_connectionListenerKey);
-      CometChatGroupEvents.removeGroupsListener(_ccGroupListenerKey);
+      ConvoKitGroupEvents.removeGroupsListener(_ccGroupListenerKey);
     }
 
     return super.close();
@@ -1208,7 +1208,7 @@ class _GroupsConnectionListener with ConnectionListener {
 // ============================================================
 
 /// CC Group event listener for UI-triggered group events
-class _GroupsCCEventListener with CometChatGroupEventListener {
+class _GroupsCCEventListener with ConvoKitGroupEventListener {
   final void Function(Group) onCCGroupCreatedCallback;
   final void Function(Group) onCCGroupDeletedCallback;
   final void Function(Action, User, Group) onCCGroupLeftCallback;

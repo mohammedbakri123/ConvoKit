@@ -15,7 +15,7 @@ import '../sdk_user_b/group_actions.dart';
 ///
 /// This file REPLACES suites/groups_realtime_test.dart and consolidates every
 /// group-related test case from the spec (specs/groups.md), migrating the
-/// CometChatGroups / CometChatGroupMembers cases from e2e_full_app_test.dart and
+/// ConvoKitGroups / ConvoKitGroupMembers cases from e2e_full_app_test.dart and
 /// the realtime group-event cases from the old groups_realtime_test.dart.
 ///
 /// Covered IDs (23):
@@ -96,7 +96,7 @@ void main() {
   });
 
   // ───────────────────────────────────────────────────────────────────────────
-  // Groups list / navigation / search (CometChatGroups) — drive A's UI.
+  // Groups list / navigation / search (ConvoKitGroups) — drive A's UI.
   // ───────────────────────────────────────────────────────────────────────────
   group('Groups: list, navigation, search', () {
     // E2E-014: Groups list shows seeded groups.
@@ -154,7 +154,7 @@ void main() {
   });
 
   // ───────────────────────────────────────────────────────────────────────────
-  // Group creation UI (CometChatGroups) — drive A's create-group screen.
+  // Group creation UI (ConvoKitGroups) — drive A's create-group screen.
   // ───────────────────────────────────────────────────────────────────────────
   group('Groups: creation UI', () {
     /// Open the Groups tab and tap the create-group entry point (FAB / + icon).
@@ -216,7 +216,7 @@ void main() {
   });
 
   // ───────────────────────────────────────────────────────────────────────────
-  // Group members info (CometChatGroupMembers) — drive A's group-info screen.
+  // Group members info (ConvoKitGroupMembers) — drive A's group-info screen.
   // ───────────────────────────────────────────────────────────────────────────
   group('Groups: members info', () {
     // E2E-030: Members list shows all — open group info from the chat header.

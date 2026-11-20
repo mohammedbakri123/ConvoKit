@@ -1,16 +1,16 @@
 import 'package:convokit/cometchat_chat_uikit.dart';
 import 'package:flutter/material.dart';
 
-///[CometChatChangeScope] is a stateful widget which allows user to change the scope of a group member
+///[ConvoKitChangeScope] is a stateful widget which allows user to change the scope of a group member
 ///
 /// ```dart
-/// CometChatChangeScope(
+/// ConvoKitChangeScope(
 ///  group: group,
 ///  member: member,
 ///  onSave: (group, member, newScope, oldScope) async {
 ///  // code to save the new scope
 ///  },
-///  style: CometChatChangeScopeStyle(
+///  style: ConvoKitChangeScopeStyle(
 ///  backgroundColor: Colors.white,
 ///  iconColor: Colors.black,
 ///  iconBackgroundColor: Colors.grey.shade100,
@@ -22,8 +22,8 @@ import 'package:flutter/material.dart';
 ///  ),
 /// );
 /// ```
-class CometChatChangeScope extends StatefulWidget {
-  const CometChatChangeScope({
+class ConvoKitChangeScope extends StatefulWidget {
+  const ConvoKitChangeScope({
     super.key,
     required this.group,
     required this.member,
@@ -48,22 +48,22 @@ class CometChatChangeScope extends StatefulWidget {
   onSave;
 
   ///[style] to be used to style this widget
-  final CometChatChangeScopeStyle? style;
+  final ConvoKitChangeScopeStyle? style;
 
   final EdgeInsetsGeometry? padding;
 
   @override
-  State<CometChatChangeScope> createState() => _CometChatChangeScopeState();
+  State<ConvoKitChangeScope> createState() => _ConvoKitChangeScopeState();
 }
 
-class _CometChatChangeScopeState extends State<CometChatChangeScope> {
+class _ConvoKitChangeScopeState extends State<ConvoKitChangeScope> {
   List<String> scopes = ['Admin', 'Moderator', 'Participant'];
   late String? selectedScope;
 
   late CometChatColorPalette colorPalette;
   late CometChatTypography typography;
   late CometChatSpacing spacing;
-  late CometChatChangeScopeStyle style;
+  late ConvoKitChangeScopeStyle style;
 
   @override
   void initState() {
@@ -76,9 +76,9 @@ class _CometChatChangeScopeState extends State<CometChatChangeScope> {
     colorPalette = CometChatThemeHelper.getColorPalette(context);
     typography = CometChatThemeHelper.getTypography(context);
     spacing = CometChatThemeHelper.getSpacing(context);
-    style = CometChatThemeHelper.getTheme<CometChatChangeScopeStyle>(
+    style = CometChatThemeHelper.getTheme<ConvoKitChangeScopeStyle>(
       context: context,
-      defaultTheme: CometChatChangeScopeStyle.of,
+      defaultTheme: ConvoKitChangeScopeStyle.of,
     ).merge(widget.style);
     super.didChangeDependencies();
   }
@@ -313,7 +313,7 @@ class _CometChatChangeScopeState extends State<CometChatChangeScope> {
 
   Widget _buildScopeTile(
     int index,
-    CometChatChangeScopeStyle style,
+    ConvoKitChangeScopeStyle style,
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
     CometChatSpacing spacing,

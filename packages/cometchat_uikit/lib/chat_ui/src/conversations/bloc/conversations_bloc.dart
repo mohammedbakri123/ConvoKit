@@ -523,7 +523,7 @@ class ConversationsBloc extends Bloc<ConversationsEvent, ConversationsState>
       ),
     );
 
-    CometChatGroupEvents.addGroupsListener(
+    ConvoKitGroupEvents.addGroupsListener(
       _ccGroupListenerKey,
       _CCGroupEventListener(
         onCCGroupLeftCallback: _handleCCGroupLeft,
@@ -2141,7 +2141,7 @@ class ConversationsBloc extends Bloc<ConversationsEvent, ConversationsState>
 
     // Remove CC UI Event listeners
     CometChatMessageEvents.removeMessagesListener(_ccMessageListenerKey);
-    CometChatGroupEvents.removeGroupsListener(_ccGroupListenerKey);
+    ConvoKitGroupEvents.removeGroupsListener(_ccGroupListenerKey);
     ConvoKitConversationEvents.removeConversationListListener(
       _ccConversationListenerKey,
     );
@@ -2676,7 +2676,7 @@ class _CCMessageEventListener with CometChatMessageEventListener {
 }
 
 /// CC Group event listener for UI-triggered group events
-class _CCGroupEventListener with CometChatGroupEventListener {
+class _CCGroupEventListener with ConvoKitGroupEventListener {
   final void Function(Action, User, Group) onCCGroupLeftCallback;
   final void Function(Group) onCCGroupDeletedCallback;
   final void Function(List<Action>, List<User>, Group, User)

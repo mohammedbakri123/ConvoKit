@@ -158,7 +158,7 @@ class ThreadedHeaderBloc
     );
 
     // Register UI group event listener (for potential group-related updates)
-    CometChatGroupEvents.addGroupsListener(
+    ConvoKitGroupEvents.addGroupsListener(
       _uiGroupListenerKey,
       _ThreadedHeaderUIGroupListener(),
     );
@@ -265,7 +265,7 @@ class ThreadedHeaderBloc
     // Remove all SDK listeners to prevent memory leaks
     CometChatSdkAdapter.removeMessageListener(_messageListenerKey);
     CometChatMessageEvents.removeMessagesListener(_uiMessageListenerKey);
-    CometChatGroupEvents.removeGroupsListener(_uiGroupListenerKey);
+    ConvoKitGroupEvents.removeGroupsListener(_uiGroupListenerKey);
     return super.close();
   }
 }
@@ -381,8 +381,8 @@ class _ThreadedHeaderUIMessageListener with CometChatMessageEventListener {
   }
 }
 
-/// UI Group event listener for CometChatGroupEvents
+/// UI Group event listener for ConvoKitGroupEvents
 ///
 /// Currently empty - reserved for potential group-related updates
 /// that may affect the threaded header in the future.
-class _ThreadedHeaderUIGroupListener with CometChatGroupEventListener {}
+class _ThreadedHeaderUIGroupListener with ConvoKitGroupEventListener {}

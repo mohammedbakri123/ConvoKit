@@ -10,7 +10,7 @@ import '../helpers_v2/cleanup_helper.dart';
 import '../config/test_credentials.dart';
 import '../sdk_user_b/presence_actions.dart';
 
-/// Users (CometChatUsers) E2E Tests — A on emulator, B as REST peer.
+/// Users (ConvoKitUsers) E2E Tests — A on emulator, B as REST peer.
 ///
 /// Covered sheet IDs:
 ///   - E2E-010 : Users list shows test users (B's name appears, tap opens chat)

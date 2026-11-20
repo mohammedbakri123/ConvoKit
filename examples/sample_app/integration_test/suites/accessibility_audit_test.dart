@@ -135,11 +135,11 @@ void main() {
     ) async {
       await launchHome(tester);
       await ScreenReach.goToTab(tester, 'Users');
-      // CometChatUsers rows are CometChatListItem.
+      // ConvoKitUsers rows are CometChatListItem.
       if (!await pumpUntilFound(
         tester,
         find.descendant(
-          of: find.byType(CometChatUsers),
+          of: find.byType(ConvoKitUsers),
           matching: find.byType(CometChatListItem),
         ),
         timeout: const Duration(seconds: 20),
@@ -157,7 +157,7 @@ void main() {
         if (!await pumpUntilFound(
           tester,
           find.descendant(
-            of: find.byType(CometChatGroups),
+            of: find.byType(ConvoKitGroups),
             matching: find.byType(CometChatListItem),
           ),
           timeout: const Duration(seconds: 20),

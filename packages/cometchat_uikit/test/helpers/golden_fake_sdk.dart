@@ -1,6 +1,6 @@
 /// A fake SDK message store for goldens of screens that take no bloc.
 ///
-/// `CometChatPinnedMessages` and `CometChatSavedMessages` fetch through
+/// `ConvoKitPinnedMessages` and `ConvoKitSavedMessages` fetch through
 /// `MessagesRequest.fetchPrevious`, which resolves the SDK's MessageRepository
 /// through `SdkRegistry`. Registering this client there answers every message
 /// fetch with a fixed page, so the real screen renders real rows without a

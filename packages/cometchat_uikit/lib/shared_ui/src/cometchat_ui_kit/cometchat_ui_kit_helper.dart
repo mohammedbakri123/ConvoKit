@@ -43,13 +43,13 @@ class CometChatUIKitHelper {
   ///[onUserBlocked] is used to inform the listeners
   ///when the logged-in user blocks another user
   static void onUserBlocked(User user) {
-    CometChatUserEvents.ccUserBlocked(user);
+    ConvoKitUserEvents.ccUserBlocked(user);
   }
 
   ///[onUserUnblocked] is used to inform the listeners
   ///when the logged-in user unblocks a blocked user
   static void onUserUnblocked(User user) {
-    CometChatUserEvents.ccUserUnblocked(user);
+    ConvoKitUserEvents.ccUserUnblocked(user);
   }
 
   ///[onMessageModerated] is used to inform the listeners
@@ -62,13 +62,13 @@ class CometChatUIKitHelper {
   ///[onGroupCreated] is used to inform the listeners
   ///when the logged-in user creates a Group
   static void onGroupCreated(Group group) {
-    CometChatGroupEvents.ccGroupCreated(group);
+    ConvoKitGroupEvents.ccGroupCreated(group);
   }
 
   ///[onGroupDeleted] is used to inform the listeners
   ///when the logged-in user deletes a Group
   static void onGroupDeleted(Group group) {
-    CometChatGroupEvents.ccGroupDeleted(group);
+    ConvoKitGroupEvents.ccGroupDeleted(group);
   }
 
   ///[onGroupLeft] is used to inform the listeners
@@ -78,7 +78,7 @@ class CometChatUIKitHelper {
     User leftUser,
     Group leftGroup,
   ) {
-    CometChatGroupEvents.ccGroupLeft(message, leftUser, leftGroup);
+    ConvoKitGroupEvents.ccGroupLeft(message, leftUser, leftGroup);
   }
 
   ///[onGroupMemberScopeChanged] is used to inform the listeners
@@ -91,7 +91,7 @@ class CometChatUIKitHelper {
     String scopeChangedFrom,
     Group group,
   ) {
-    CometChatGroupEvents.ccGroupMemberScopeChanged(
+    ConvoKitGroupEvents.ccGroupMemberScopeChanged(
       message,
       updatedUser,
       scopeChangedTo,
@@ -108,7 +108,7 @@ class CometChatUIKitHelper {
     User bannedBy,
     Group bannedFrom,
   ) {
-    CometChatGroupEvents.ccGroupMemberBanned(
+    ConvoKitGroupEvents.ccGroupMemberBanned(
       message,
       bannedUser,
       bannedBy,
@@ -124,7 +124,7 @@ class CometChatUIKitHelper {
     User kickedBy,
     Group kickedFrom,
   ) {
-    CometChatGroupEvents.ccGroupMemberKicked(
+    ConvoKitGroupEvents.ccGroupMemberKicked(
       message,
       kickedUser,
       kickedBy,
@@ -140,7 +140,7 @@ class CometChatUIKitHelper {
     User unbannedBy,
     Group unbannedFrom,
   ) {
-    CometChatGroupEvents.ccGroupMemberUnbanned(
+    ConvoKitGroupEvents.ccGroupMemberUnbanned(
       message,
       unbannedUser,
       unbannedBy,
@@ -151,7 +151,7 @@ class CometChatUIKitHelper {
   ///[onGroupMemberJoined] is used to inform the listeners
   ///when the logged-in user joins a group
   static void onGroupMemberJoined(User joinedUser, Group joinedGroup) {
-    CometChatGroupEvents.ccGroupMemberJoined(joinedUser, joinedGroup);
+    ConvoKitGroupEvents.ccGroupMemberJoined(joinedUser, joinedGroup);
   }
 
   ///[onGroupMemberAdded] is used to inform the listeners
@@ -162,7 +162,7 @@ class CometChatUIKitHelper {
     Group groupAddedIn,
     User addedBy,
   ) {
-    CometChatGroupEvents.ccGroupMemberAdded(
+    ConvoKitGroupEvents.ccGroupMemberAdded(
       messages,
       usersAdded,
       groupAddedIn,
@@ -173,7 +173,7 @@ class CometChatUIKitHelper {
   ///[onOwnershipChanged] is used to inform the listeners
   ///when the logged-in user transfers their ownership to some other group member
   static void onOwnershipChanged(Group group, GroupMember newOwner) {
-    CometChatGroupEvents.ccOwnershipChanged(group, newOwner);
+    ConvoKitGroupEvents.ccOwnershipChanged(group, newOwner);
   }
 
   //---------- Conversation Events ----------

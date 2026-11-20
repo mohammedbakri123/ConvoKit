@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-///[CometChatPinnedMessagesStyle] contains the styling properties for
-///[CometChatPinnedMessages] — the pinned-messages bottom sheet.
-class CometChatPinnedMessagesStyle {
-  const CometChatPinnedMessagesStyle({
+///[ConvoKitPinnedMessagesStyle] contains the styling properties for
+///[ConvoKitPinnedMessages] — the pinned-messages bottom sheet.
+class ConvoKitPinnedMessagesStyle {
+  const ConvoKitPinnedMessagesStyle({
     this.backgroundColor,
     this.appBarColor,
     this.titleTextStyle,
@@ -46,9 +46,9 @@ class CometChatPinnedMessagesStyle {
   ///[borderRadius] top corner radius of the sheet
   final BorderRadiusGeometry? borderRadius;
 
-  CometChatPinnedMessagesStyle merge(CometChatPinnedMessagesStyle? other) {
+  ConvoKitPinnedMessagesStyle merge(ConvoKitPinnedMessagesStyle? other) {
     if (other == null) return this;
-    return CometChatPinnedMessagesStyle(
+    return ConvoKitPinnedMessagesStyle(
       backgroundColor: other.backgroundColor ?? backgroundColor,
       appBarColor: other.appBarColor ?? appBarColor,
       titleTextStyle: other.titleTextStyle ?? titleTextStyle,

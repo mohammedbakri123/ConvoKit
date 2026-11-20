@@ -1,4 +1,4 @@
-/// CometChatGroups.groupsRequestBuilder keeps its limit and its search
+/// ConvoKitGroups.groupsRequestBuilder keeps its limit and its search
 /// keyword — ENG-38688.
 ///
 /// The data source used to build the first request by writing into the app's

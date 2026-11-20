@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../../../cometchat_uikit_shared.dart';
 
 ///[CometChatListItem] is a top level container widget
-///used internally for displaying each item in components like `CometChatUsers`, `CometChatGroups`, `ConvoKitConversations`, `CometChatGroupMembers`
+///used internally for displaying each item in components like `ConvoKitUsers`, `ConvoKitGroups`, `ConvoKitConversations`, `ConvoKitGroupMembers`
 /// ```dart
 ///                CometChatListItem(
 ///                    avatarName: _user.name,
@@ -17,7 +17,7 @@ class CometChatListItem extends StatelessWidget {
 
   /// Options for the list item.
   @Deprecated(
-    'Has no effect. The list item has no option menu; use setOptions or addOptions on CometChatUsers, CometChatGroups, ConvoKitConversations or CometChatGroupMembers. Will be removed in 7.0.0.',
+    'Has no effect. The list item has no option menu; use setOptions or addOptions on ConvoKitUsers, ConvoKitGroups, ConvoKitConversations or ConvoKitGroupMembers. Will be removed in 7.0.0.',
   )
   final List<CometChatOption>? options;
 

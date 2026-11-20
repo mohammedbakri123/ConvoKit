@@ -1,4 +1,4 @@
-/// The [CometChatUsers] and [CometChatGroups] branches the prop matrices do
+/// The [ConvoKitUsers] and [ConvoKitGroups] branches the prop matrices do
 /// not reach: the events the search box and the selection chrome dispatch, and
 /// the path a screen takes when no bloc is injected.
 ///
@@ -121,13 +121,13 @@ void main() {
   });
 
   // =========================================================================
-  group('CometChatUsers', () {
+  group('ConvoKitUsers', () {
     testWidgets('typing in the search box dispatches SearchUsers', (
       tester,
     ) async {
       final bloc = _usersBloc();
 
-      await _pump(tester, _wrap(CometChatUsers(usersBloc: bloc)));
+      await _pump(tester, _wrap(ConvoKitUsers(usersBloc: bloc)));
       await tester.enterText(find.byType(TextField), 'ali');
       await tester.pump();
       await tester.pump(const Duration(seconds: 1));
@@ -146,7 +146,7 @@ void main() {
       await _pump(
         tester,
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: bloc,
             selectionMode: SelectionMode.multiple,
           ),
@@ -166,7 +166,7 @@ void main() {
       await _pump(
         tester,
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _usersBloc(selected: const {'u2'}),
             selectionMode: SelectionMode.multiple,
             onSelection: (users, _) => submitted = users,
@@ -183,7 +183,7 @@ void main() {
       await _pump(
         tester,
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _usersBloc(),
             selectionMode: SelectionMode.multiple,
             onSelection: (_, _) {},
@@ -201,28 +201,28 @@ void main() {
       // the service locator is set up and the screen owns the bloc it closes
       // on dispose.
       await runZonedGuarded(() async {
-        await _pump(tester, _wrap(const CometChatUsers()));
+        await _pump(tester, _wrap(const ConvoKitUsers()));
       }, (_, _) {});
       while (tester.takeException() != null) {}
 
-      expect(find.byType(CometChatUsers), findsOneWidget);
+      expect(find.byType(ConvoKitUsers), findsOneWidget);
 
       await tester.pumpWidget(_wrap(const SizedBox.shrink()));
       await tester.pump();
       while (tester.takeException() != null) {}
 
-      expect(find.byType(CometChatUsers), findsNothing);
+      expect(find.byType(ConvoKitUsers), findsNothing);
     });
   });
 
   // =========================================================================
-  group('CometChatGroups', () {
+  group('ConvoKitGroups', () {
     testWidgets('typing in the search box dispatches SearchGroups', (
       tester,
     ) async {
       final bloc = _groupsBloc();
 
-      await _pump(tester, _wrap(CometChatGroups(groupsBloc: bloc)));
+      await _pump(tester, _wrap(ConvoKitGroups(groupsBloc: bloc)));
       await tester.enterText(find.byType(TextField), 'dev');
       await tester.pump();
       await tester.pump(const Duration(seconds: 1));
@@ -241,7 +241,7 @@ void main() {
       await _pump(
         tester,
         _wrap(
-          CometChatGroups(
+          ConvoKitGroups(
             groupsBloc: bloc,
             selectionMode: SelectionMode.multiple,
           ),
@@ -260,17 +260,17 @@ void main() {
       // initialised the data source raises into the zone. The screen must
       // still mount and tear down.
       await runZonedGuarded(() async {
-        await _pump(tester, _wrap(const CometChatGroups()));
+        await _pump(tester, _wrap(const ConvoKitGroups()));
       }, (_, _) {});
       while (tester.takeException() != null) {}
 
-      expect(find.byType(CometChatGroups), findsOneWidget);
+      expect(find.byType(ConvoKitGroups), findsOneWidget);
 
       await tester.pumpWidget(_wrap(const SizedBox.shrink()));
       await tester.pump();
       while (tester.takeException() != null) {}
 
-      expect(find.byType(CometChatGroups), findsNothing);
+      expect(find.byType(ConvoKitGroups), findsNothing);
     });
   });
 }

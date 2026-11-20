@@ -14,7 +14,7 @@ import '../sdk_user_b/messaging_actions.dart';
 ///
 /// How the sample app reaches it (master_app/lib/screens/home_screen.dart,
 /// `_buildProfileMenu`): the app-bar avatar `PopupMenuButton<String>` →
-/// "Saved Messages" pushes `CometChatSavedMessages`. Save / Unsave live on the
+/// "Saved Messages" pushes `ConvoKitSavedMessages`. Save / Unsave live on the
 /// "More" page of the long-press overlay and apply without a confirm dialog;
 /// unsaving FROM the saved list is a row long-press plus an "Unsave" confirm
 /// (chat_uikit/lib/chat_ui/src/saved_messages/cometchat_saved_messages.dart).
@@ -36,7 +36,7 @@ void main() {
   final savedIds = <int>{};
 
   final messageList = find.byType(ConvoKitMessageList);
-  final savedScreen = find.byType(CometChatSavedMessages);
+  final savedScreen = find.byType(ConvoKitSavedMessages);
 
   setUpAll(() async {
     await CleanupHelper.fullReset();
@@ -224,7 +224,7 @@ void main() {
           fail('Back did not leave the Saved Messages screen.');
         }
 
-        // Re-entry builds a NEW CometChatSavedMessages state, so this can only
+        // Re-entry builds a NEW ConvoKitSavedMessages state, so this can only
         // be satisfied by a fresh server fetch.
         await ScreenReach.openSavedMessages(tester);
         expect(

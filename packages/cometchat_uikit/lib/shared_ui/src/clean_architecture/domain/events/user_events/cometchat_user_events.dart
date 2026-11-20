@@ -1,12 +1,12 @@
 import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
 import 'cometchat_user_event_listener.dart';
 
-class CometChatUserEvents {
-  static Map<String, CometChatUserEventListener> usersListener = {};
+class ConvoKitUserEvents {
+  static Map<String, ConvoKitUserEventListener> usersListener = {};
 
   static void addUsersListener(
     String listenerId,
-    CometChatUserEventListener listenerClass,
+    ConvoKitUserEventListener listenerClass,
   ) {
     usersListener[listenerId] = listenerClass;
   }

@@ -120,11 +120,11 @@ class _ContactsScreenState extends State<ContactsScreen>
             child: TabBarView(
               controller: _tabController,
               children: [
-                CometChatUsers(
+                ConvoKitUsers(
                   hideAppbar: true,
                   onItemTap: (ctx, user) => _onUserTap(ctx, user),
                 ),
-                CometChatGroups(
+                ConvoKitGroups(
                   hideAppbar: true,
                   onItemTap: (ctx, group) => _onGroupTap(ctx, group),
                 ),

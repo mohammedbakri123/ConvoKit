@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-///[CometChatSavedMessagesStyle] contains the styling properties for
-///[CometChatSavedMessages] — the saved-messages screen.
-class CometChatSavedMessagesStyle {
-  const CometChatSavedMessagesStyle({
+///[ConvoKitSavedMessagesStyle] contains the styling properties for
+///[ConvoKitSavedMessages] — the saved-messages screen.
+class ConvoKitSavedMessagesStyle {
+  const ConvoKitSavedMessagesStyle({
     this.backgroundColor,
     this.appBarColor,
     this.titleTextStyle,
@@ -46,9 +46,9 @@ class CometChatSavedMessagesStyle {
   ///[separatorColor] color of the row separators
   final Color? separatorColor;
 
-  CometChatSavedMessagesStyle merge(CometChatSavedMessagesStyle? other) {
+  ConvoKitSavedMessagesStyle merge(ConvoKitSavedMessagesStyle? other) {
     if (other == null) return this;
-    return CometChatSavedMessagesStyle(
+    return ConvoKitSavedMessagesStyle(
       backgroundColor: other.backgroundColor ?? backgroundColor,
       appBarColor: other.appBarColor ?? appBarColor,
       titleTextStyle: other.titleTextStyle ?? titleTextStyle,

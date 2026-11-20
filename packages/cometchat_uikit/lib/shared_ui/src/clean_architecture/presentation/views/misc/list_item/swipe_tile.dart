@@ -211,7 +211,7 @@ class SwipeTileOptions extends StatelessWidget {
   }
 
   void performOnClick(CometChatOption option) {
-    // if (option is CometChatGroupMemberOption<CometChatGroupMembersController>) {
+    // if (option is CometChatGroupMemberOption<ConvoKitGroupMembersController>) {
     //   if (option.onClick2 != null) {
     //     option.onClick2!();
     //   }

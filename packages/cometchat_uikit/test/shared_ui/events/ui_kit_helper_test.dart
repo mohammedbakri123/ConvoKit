@@ -102,7 +102,7 @@ class _MsgRec with CometChatMessageEventListener, _Records {
       calls.add(_Call('onMessageModerated', [message]));
 }
 
-class _UserRec with CometChatUserEventListener, _Records {
+class _UserRec with ConvoKitUserEventListener, _Records {
   @override
   void ccUserBlocked(User user) => calls.add(_Call('ccUserBlocked', [user]));
 
@@ -111,7 +111,7 @@ class _UserRec with CometChatUserEventListener, _Records {
       calls.add(_Call('ccUserUnblocked', [user]));
 }
 
-class _GroupRec with CometChatGroupEventListener, _Records {
+class _GroupRec with ConvoKitGroupEventListener, _Records {
   @override
   void ccGroupCreated(Group group) =>
       calls.add(_Call('ccGroupCreated', [group]));
@@ -252,8 +252,8 @@ void main() {
 
   setUp(() {
     CometChatMessageEvents.messagesListener.clear();
-    CometChatUserEvents.usersListener.clear();
-    CometChatGroupEvents.groupsListener.clear();
+    ConvoKitUserEvents.usersListener.clear();
+    ConvoKitGroupEvents.groupsListener.clear();
     ConvoKitConversationEvents.conversationListListener.clear();
     CometChatUIEvents.uiListener.clear();
 
@@ -264,16 +264,16 @@ void main() {
     ui = _UiRec();
 
     CometChatMessageEvents.addMessagesListener('rec', msg);
-    CometChatUserEvents.addUsersListener('rec', usr);
-    CometChatGroupEvents.addGroupsListener('rec', grp);
+    ConvoKitUserEvents.addUsersListener('rec', usr);
+    ConvoKitGroupEvents.addGroupsListener('rec', grp);
     ConvoKitConversationEvents.addConversationListListener('rec', conv);
     CometChatUIEvents.addUiListener('rec', ui);
   });
 
   tearDown(() {
     CometChatMessageEvents.messagesListener.clear();
-    CometChatUserEvents.usersListener.clear();
-    CometChatGroupEvents.groupsListener.clear();
+    ConvoKitUserEvents.usersListener.clear();
+    ConvoKitGroupEvents.groupsListener.clear();
     ConvoKitConversationEvents.conversationListListener.clear();
     CometChatUIEvents.uiListener.clear();
   });
@@ -551,7 +551,7 @@ void main() {
   group('fan-out', () {
     test('every registered listener on a bus is reached, not just one', () {
       final second = _GroupRec();
-      CometChatGroupEvents.addGroupsListener('second', second);
+      ConvoKitGroupEvents.addGroupsListener('second', second);
 
       CometChatUIKitHelper.onGroupCreated(_team);
 
@@ -560,7 +560,7 @@ void main() {
     });
 
     test('with no listener registered the helper is still harmless', () {
-      CometChatGroupEvents.groupsListener.clear();
+      ConvoKitGroupEvents.groupsListener.clear();
       ConvoKitConversationEvents.conversationListListener.clear();
 
       expect(() => CometChatUIKitHelper.onGroupCreated(_team), returnsNormally);

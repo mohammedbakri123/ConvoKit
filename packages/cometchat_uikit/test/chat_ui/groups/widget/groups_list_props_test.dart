@@ -8,7 +8,7 @@
 /// the list renders, or on the event it dispatches back to the bloc. Every
 /// assertion fails if the list stopped reading the prop.
 ///
-/// GroupsList is the body of CometChatGroups, so the rows it renders are
+/// GroupsList is the body of ConvoKitGroups, so the rows it renders are
 /// CometChatGroupListItems; the item-level cases assert at the same render
 /// sites `group_list_item_props_test.dart` uses.
 ///
@@ -168,7 +168,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: bloc,
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -195,7 +195,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: bloc,
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -219,7 +219,7 @@ void main() {
             GroupsList(
               groupsBloc: _loadedBloc(selected: {'g2'}),
               selectionMode: SelectionMode.multiple,
-              style: const CometChatGroupsStyle(
+              style: const ConvoKitGroupsStyle(
                 itemTitleTextColor: Color(0xFF3D1F5A),
                 itemTitleTextStyle: TextStyle(fontSize: 22.5),
                 itemSubtitleTextColor: Color(0xFF5A3D1F),
@@ -283,7 +283,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _blocIn(const GroupsEmpty()),
-              style: const CometChatGroupsStyle(
+              style: const ConvoKitGroupsStyle(
                 emptyStateTextColor: Color(0xFF2E4A66),
                 emptyStateTextStyle: TextStyle(fontSize: 25.5),
                 emptyStateSubTitleTextColor: Color(0xFF4A662E),
@@ -319,7 +319,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _blocIn(const GroupsError(message: 'boom')),
-              style: const CometChatGroupsStyle(
+              style: const ConvoKitGroupsStyle(
                 errorStateTextColor: Color(0xFF664A2E),
                 errorStateTextStyle: TextStyle(fontSize: 26.5),
                 errorStateSubTitleTextColor: Color(0xFF2E664A),
@@ -352,7 +352,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _loadedBloc(hasMore: true),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(
                 primary: const Color(0xFF0B1C2D),
                 warning: const Color(0xFF2D1C0B),
@@ -391,7 +391,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _loadedBloc(hasMore: true),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(padding3: 11, padding4: 23),
               typography: const CometChatTypography(),
@@ -432,7 +432,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _loadedBloc(),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(
@@ -476,7 +476,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _loadedBloc(groups: many),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -506,7 +506,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _blocIn(const GroupsLoading()),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -526,7 +526,7 @@ void main() {
             _wrap(
               GroupsList(
                 groupsBloc: _blocIn(state),
-                style: const CometChatGroupsStyle(),
+                style: const ConvoKitGroupsStyle(),
                 colorPalette: CometChatColorPalette(),
                 spacing: CometChatSpacing(),
                 typography: const CometChatTypography(),
@@ -550,7 +550,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _blocIn(const GroupsEmpty()),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -567,7 +567,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _blocIn(const GroupsEmpty()),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -590,7 +590,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _blocIn(const GroupsError(message: 'boom')),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -606,7 +606,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _blocIn(const GroupsError(message: 'boom')),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -629,7 +629,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _loadedBloc(),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -655,7 +655,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _loadedBloc(),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -680,7 +680,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _loadedBloc(),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -708,7 +708,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _loadedBloc(),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -730,7 +730,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _loadedBloc(),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -753,7 +753,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _loadedBloc(),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -770,7 +770,7 @@ void main() {
             _wrap(
               GroupsList(
                 groupsBloc: _loadedBloc(),
-                style: const CometChatGroupsStyle(),
+                style: const ConvoKitGroupsStyle(),
                 colorPalette: CometChatColorPalette(),
                 spacing: CometChatSpacing(),
                 typography: const CometChatTypography(),
@@ -796,7 +796,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _loadedBloc(),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -813,7 +813,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: bloc,
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -844,7 +844,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: plain,
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -866,7 +866,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: selecting,
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -895,7 +895,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: idle,
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -919,7 +919,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: active,
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -951,7 +951,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: bloc,
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -979,7 +979,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: bloc,
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -1005,7 +1005,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _loadedBloc(),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -1047,7 +1047,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _loadedBloc(),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -1068,7 +1068,7 @@ void main() {
             GroupsList(
               key: const ValueKey('with-callback'),
               groupsBloc: _loadedBloc(),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -1098,7 +1098,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _loadedBloc(),
-              style: const CometChatGroupsStyle(
+              style: const ConvoKitGroupsStyle(
                 checkBoxBorderRadius: BorderRadiusDirectional.only(
                   topStart: Radius.circular(6),
                 ),
@@ -1131,7 +1131,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _blocIn(const GroupsError(message: 'boom')),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -1153,7 +1153,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _loadedBloc(),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -1182,7 +1182,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _loadedBloc(),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -1199,7 +1199,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _loadedBloc(),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -1222,7 +1222,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _loadedBloc(),
-              style: const CometChatGroupsStyle(
+              style: const ConvoKitGroupsStyle(
                 avatarStyle: CometChatAvatarStyle(
                   backgroundColor: Color(0xFF4B5A69),
                 ),
@@ -1243,7 +1243,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _loadedBloc(),
-              style: const CometChatGroupsStyle(
+              style: const ConvoKitGroupsStyle(
                 avatarStyle: CometChatAvatarStyle(
                   backgroundColor: Color(0xFF4B5A69),
                 ),
@@ -1271,7 +1271,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _loadedBloc(),
-              style: CometChatGroupsStyle(
+              style: ConvoKitGroupsStyle(
                 statusIndicatorStyle: CometChatStatusIndicatorStyle(
                   border: Border.all(color: const Color(0xFF0F0E0D)),
                 ),
@@ -1297,7 +1297,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _loadedBloc(),
-              style: CometChatGroupsStyle(
+              style: ConvoKitGroupsStyle(
                 statusIndicatorStyle: CometChatStatusIndicatorStyle(
                   border: Border.all(color: const Color(0xFF0F0E0D)),
                 ),
@@ -1331,7 +1331,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _loadedBloc(),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),
@@ -1365,7 +1365,7 @@ void main() {
           _wrap(
             GroupsList(
               groupsBloc: _loadedBloc(),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatColorPalette(),
               spacing: CometChatSpacing(),
               typography: const CometChatTypography(),

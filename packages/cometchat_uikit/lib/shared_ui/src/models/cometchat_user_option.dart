@@ -4,7 +4,7 @@
 //
 // class CometChatUserOption extends CometChatOptions {
 //   ///[onClick] call function which takes 2 parameters
-//   Function(User user, CometChatUsersController controller)? onClick;
+//   Function(User user, ConvoKitUsersController controller)? onClick;
 //
 //   CometChatUserOption(
 //       {this.onClick,

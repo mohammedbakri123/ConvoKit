@@ -5,13 +5,13 @@ import '../../../shared_ui/cometchat_uikit_shared.dart';
 import '../../../shared_ui/src/clean_architecture/core/utils/thread_toast.dart';
 import 'cometchat_pinned_messages_style.dart';
 
-///[CometChatPinnedMessages] renders the pinned messages of one conversation
+///[ConvoKitPinnedMessages] renders the pinned messages of one conversation
 ///as a pushed screen that opens inside the chat context — the same
 ///navigation used for threads: on the nearest [Navigator], so on a desktop
 ///side-by-side layout it replaces only the chat column, and on mobile it is
 ///a full-screen route (Pin & Save Message).
 ///
-///Open it via [CometChatPinnedMessages.show], or embed the widget directly.
+///Open it via [ConvoKitPinnedMessages.show], or embed the widget directly.
 ///Rows are read-only previews ordered newest-pinned-first; each row carries
 ///an Unpin affordance (permission-gated) and reports taps through
 ///[onItemTap] so the host screen can jump to the message.
@@ -20,8 +20,8 @@ import 'cometchat_pinned_messages_style.dart';
 ///(ccMessagePinned/ccMessageUnpinned) for same-screen actions and the SDK's
 ///[MessageListener.onMessagePinned]/[onMessageUnpinned] broadcast for other
 ///members' actions.
-class CometChatPinnedMessages extends StatefulWidget {
-  const CometChatPinnedMessages({
+class ConvoKitPinnedMessages extends StatefulWidget {
+  const ConvoKitPinnedMessages({
     super.key,
     this.user,
     this.group,
@@ -46,7 +46,7 @@ class CometChatPinnedMessages extends StatefulWidget {
   final Function(BaseMessage message)? onItemTap;
 
   ///[style] styling overrides
-  final CometChatPinnedMessagesStyle? style;
+  final ConvoKitPinnedMessagesStyle? style;
 
   ///[hideUnpinOption] hides the per-row unpin affordance even when the
   ///logged-in user has permission.
@@ -69,7 +69,7 @@ class CometChatPinnedMessages extends StatefulWidget {
     User? user,
     Group? group,
     Function(BaseMessage message)? onItemTap,
-    CometChatPinnedMessagesStyle? style,
+    ConvoKitPinnedMessagesStyle? style,
     bool? hideUnpinOption,
     bool showBackButton = true,
     bool hideAppBar = false,
@@ -78,7 +78,7 @@ class CometChatPinnedMessages extends StatefulWidget {
       PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 280),
         reverseTransitionDuration: const Duration(milliseconds: 220),
-        pageBuilder: (_, animation, _) => CometChatPinnedMessages(
+        pageBuilder: (_, animation, _) => ConvoKitPinnedMessages(
           user: user,
           group: group,
           onItemTap: onItemTap,
@@ -110,11 +110,11 @@ class CometChatPinnedMessages extends StatefulWidget {
   }
 
   @override
-  State<CometChatPinnedMessages> createState() =>
-      _CometChatPinnedMessagesState();
+  State<ConvoKitPinnedMessages> createState() =>
+      _ConvoKitPinnedMessagesState();
 }
 
-class _CometChatPinnedMessagesState extends State<CometChatPinnedMessages> {
+class _ConvoKitPinnedMessagesState extends State<ConvoKitPinnedMessages> {
   static int _instanceCounter = 0;
   late final String _listenerId = 'pinned_messages_panel_${++_instanceCounter}';
 
@@ -358,7 +358,7 @@ class _CometChatPinnedMessagesState extends State<CometChatPinnedMessages> {
       icon: Icon(
         Icons.push_pin,
         color:
-            const CometChatPinnedMessagesStyle()
+            const ConvoKitPinnedMessagesStyle()
                 .merge(widget.style)
                 .unpinIconColor ??
             CometChatThemeHelper.getColorPalette(context).iconHighlight,
@@ -415,7 +415,7 @@ class _CometChatPinnedMessagesState extends State<CometChatPinnedMessages> {
     final colorPalette = CometChatThemeHelper.getColorPalette(context);
     final typography = CometChatThemeHelper.getTypography(context);
     final spacing = CometChatThemeHelper.getSpacing(context);
-    final style = const CometChatPinnedMessagesStyle().merge(widget.style);
+    final style = const ConvoKitPinnedMessagesStyle().merge(widget.style);
     final translations = Translations.of(context);
 
     // Pushed-screen chrome (thread-style): back arrow + title bar, matching
@@ -484,7 +484,7 @@ class _CometChatPinnedMessagesState extends State<CometChatPinnedMessages> {
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
     CometChatSpacing spacing,
-    CometChatPinnedMessagesStyle style,
+    ConvoKitPinnedMessagesStyle style,
   ) {
     final translations = Translations.of(context);
 

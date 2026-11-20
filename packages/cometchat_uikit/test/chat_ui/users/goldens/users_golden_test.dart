@@ -1,4 +1,4 @@
-/// Golden pins for [CometChatUsers]: its rows and the three state views.
+/// Golden pins for [ConvoKitUsers]: its rows and the three state views.
 ///
 /// The real screen is rendered (app bar, search box, sticky headers, rows),
 /// held in a fixed state through its `usersBloc` seam. Avatars have no URL, so
@@ -69,7 +69,7 @@ void main() {
         'users list, online and offline rows under sticky headers',
         fileName: 'users_list_loaded',
         size: _listSize,
-        builder: () => CometChatUsers(
+        builder: () => ConvoKitUsers(
           usersBloc: _bloc(UsersLoaded(users: _users(), hasMore: false)),
         ),
       );
@@ -78,7 +78,7 @@ void main() {
         'users list in multi-select, two rows checked',
         fileName: 'users_list_selection',
         size: _listSize,
-        builder: () => CometChatUsers(
+        builder: () => ConvoKitUsers(
           selectionMode: SelectionMode.multiple,
           activateSelection: ActivateSelection.onClick,
           usersBloc: _bloc(
@@ -95,14 +95,14 @@ void main() {
         'users empty state',
         fileName: 'users_state_empty',
         size: _stateSize,
-        builder: () => CometChatUsers(usersBloc: _bloc(const UsersEmpty())),
+        builder: () => ConvoKitUsers(usersBloc: _bloc(const UsersEmpty())),
       );
 
       lightDarkGolden(
         'users error state',
         fileName: 'users_state_error',
         size: _stateSize,
-        builder: () => CometChatUsers(
+        builder: () => ConvoKitUsers(
           usersBloc: _bloc(const UsersError(message: 'Something went wrong')),
         ),
       );

@@ -77,7 +77,7 @@ List<FakeUser> _generateUsers(int count) {
 }
 
 // ---------------------------------------------------------------------------
-// Tests — Kotlin CometChatUsersAPIMethodCoverageTest equivalent
+// Tests — Kotlin ConvoKitUsersAPIMethodCoverageTest equivalent
 // ---------------------------------------------------------------------------
 
 void main() {

@@ -1,4 +1,4 @@
-/// Style matrix for [CometChatGroupMembersStyle] — Track 3 PROP1 (ENG-38767).
+/// Style matrix for [ConvoKitGroupMembersStyle] — Track 3 PROP1 (ENG-38767).
 ///
 /// Uses the `groupMembersBloc` seam added by ENG-38797, so member rows, scope
 /// badges, checkboxes and the option popup are all reachable. Every case
@@ -126,7 +126,7 @@ Future<void> _settle(WidgetTester tester) async {
 }
 
 Widget _list(
-  CometChatGroupMembersStyle style, {
+  ConvoKitGroupMembersStyle style, {
   List<GroupMember>? members,
   Set<String> selected = const {},
   GroupMembersState? state,
@@ -134,7 +134,7 @@ Widget _list(
   ActivateSelection? activateSelection,
 }) => MaterialApp(
   home: Scaffold(
-    body: CometChatGroupMembers(
+    body: ConvoKitGroupMembers(
       group: _group,
       groupMembersBloc: _mock(
         members: members,
@@ -182,7 +182,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             ownerMemberScopeBackgroundColor: Color(0xFF010101),
           ),
           members: [_owner],
@@ -196,7 +196,7 @@ void main() {
       final border = Border.all(color: const Color(0xFF020202), width: 3);
       await tester.pumpWidget(
         _list(
-          CometChatGroupMembersStyle(ownerMemberScopeBorder: border),
+          ConvoKitGroupMembersStyle(ownerMemberScopeBorder: border),
           members: [_owner],
         ),
       );
@@ -209,7 +209,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             ownerMemberScopeTextColor: Color(0xFF030303),
           ),
           members: [_owner],
@@ -227,7 +227,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             ownerMemberScopeTextStyle: TextStyle(fontSize: 31),
           ),
           members: [_owner],
@@ -244,7 +244,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             adminMemberScopeBackgroundColor: Color(0xFF040404),
           ),
           members: [_admin],
@@ -258,7 +258,7 @@ void main() {
       final border = Border.all(color: const Color(0xFF050505), width: 4);
       await tester.pumpWidget(
         _list(
-          CometChatGroupMembersStyle(adminMemberScopeBorder: border),
+          ConvoKitGroupMembersStyle(adminMemberScopeBorder: border),
           members: [_admin],
         ),
       );
@@ -271,7 +271,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             adminMemberScopeTextColor: Color(0xFF060606),
           ),
           members: [_admin],
@@ -289,7 +289,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             adminMemberScopeTextStyle: TextStyle(fontSize: 32),
           ),
           members: [_admin],
@@ -306,7 +306,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             moderatorMemberScopeBackgroundColor: Color(0xFF070707),
           ),
           members: [_moderator],
@@ -322,7 +322,7 @@ void main() {
       final border = Border.all(color: const Color(0xFF080808), width: 5);
       await tester.pumpWidget(
         _list(
-          CometChatGroupMembersStyle(moderatorMemberScopeBorder: border),
+          ConvoKitGroupMembersStyle(moderatorMemberScopeBorder: border),
           members: [_moderator],
         ),
       );
@@ -335,7 +335,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             moderatorMemberScopeTextColor: Color(0xFF090909),
           ),
           members: [_moderator],
@@ -353,7 +353,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             moderatorMemberScopeTextStyle: TextStyle(fontSize: 33),
           ),
           members: [_moderator],
@@ -373,7 +373,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             checkboxCheckedBackgroundColor: Color(0xFF0A0A0A),
           ),
           members: [_participant],
@@ -389,7 +389,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             checkboxBackgroundColor: Color(0xFF0B0B0B),
           ),
           members: [_participant, _admin],
@@ -403,7 +403,7 @@ void main() {
     testWidgets('checkboxBorderRadius shapes the box', (tester) async {
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             checkboxBorderRadius: BorderRadius.all(Radius.circular(9)),
           ),
           members: [_participant],
@@ -420,7 +420,7 @@ void main() {
     testWidgets('checkboxSelectedIconColor colours the tick', (tester) async {
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             checkboxSelectedIconColor: Color(0xFF0C0C0C),
           ),
           members: [_participant],
@@ -435,7 +435,7 @@ void main() {
       const side = BorderSide(color: Color(0xFF0D0D0D), width: 6);
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(checkboxBorder: side),
+          const ConvoKitGroupMembersStyle(checkboxBorder: side),
           members: [_participant],
           selected: const {'u1'},
         ),
@@ -449,7 +449,7 @@ void main() {
     testWidgets('avatarStyle reaches the list item', (tester) async {
       const avatar = CometChatAvatarStyle(backgroundColor: Color(0xFF0E0E0E));
       await tester.pumpWidget(
-        _list(const CometChatGroupMembersStyle(avatarStyle: avatar)),
+        _list(const ConvoKitGroupMembersStyle(avatarStyle: avatar)),
       );
       await _settle(tester);
       expect(
@@ -466,7 +466,7 @@ void main() {
       );
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(statusIndicatorStyle: indicator),
+          const ConvoKitGroupMembersStyle(statusIndicatorStyle: indicator),
         ),
       );
       await _settle(tester);
@@ -483,7 +483,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             listItemStyle: ListItemStyle(titleStyle: TextStyle(fontSize: 34)),
           ),
         ),
@@ -504,7 +504,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             listItemSelectedBackgroundColor: Color(0xFF101010),
           ),
           members: [_participant],
@@ -522,7 +522,7 @@ void main() {
         ..status = 'online';
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             onlineStatusColor: Color(0xFF111111),
           ),
           members: [online],
@@ -542,7 +542,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             separatorColor: Color(0xFF121212),
             separatorHeight: 7,
           ),
@@ -564,7 +564,7 @@ void main() {
     testWidgets('listPadding pads the member list', (tester) async {
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(listPadding: EdgeInsets.all(19)),
+          const ConvoKitGroupMembersStyle(listPadding: EdgeInsets.all(19)),
         ),
       );
       await _settle(tester);
@@ -577,7 +577,7 @@ void main() {
     testWidgets('loadingIconColor tints the loading indicator', (tester) async {
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(loadingIconColor: Color(0xFF131313)),
+          const ConvoKitGroupMembersStyle(loadingIconColor: Color(0xFF131313)),
           state: GroupMembersLoaded(
             members: [_participant],
             hasMore: true,
@@ -602,7 +602,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(submitIconColor: Color(0xFF141414)),
+          const ConvoKitGroupMembersStyle(submitIconColor: Color(0xFF141414)),
           members: [_participant],
           selectionMode: SelectionMode.multiple,
           activateSelection: ActivateSelection.onClick,
@@ -622,7 +622,7 @@ void main() {
     testWidgets('emptyStateTextStyle styles the empty title', (tester) async {
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             emptyStateTextStyle: TextStyle(fontSize: 35),
           ),
           state: GroupMembersEmpty(),
@@ -635,7 +635,7 @@ void main() {
     testWidgets('emptyStateTextColor colours the empty title', (tester) async {
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             emptyStateTextColor: Color(0xFF151515),
           ),
           state: GroupMembersEmpty(),
@@ -653,7 +653,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             emptyStateSubtitleTextStyle: TextStyle(fontSize: 36),
           ),
           state: GroupMembersEmpty(),
@@ -668,7 +668,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             emptyStateSubtitleTextColor: Color(0xFF161616),
           ),
           state: GroupMembersEmpty(),
@@ -684,7 +684,7 @@ void main() {
     testWidgets('errorStateTextStyle styles the error title', (tester) async {
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             errorStateTextStyle: TextStyle(fontSize: 37),
           ),
           state: const GroupMembersError(message: 'boom'),
@@ -700,7 +700,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _list(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             errorStateSubtitleStyle: TextStyle(fontSize: 38),
           ),
           state: const GroupMembersError(message: 'boom'),
@@ -713,13 +713,13 @@ void main() {
   });
 
   group('retry button', () {
-    Widget errored(CometChatGroupMembersStyle style) =>
+    Widget errored(ConvoKitGroupMembersStyle style) =>
         _list(style, state: const GroupMembersError(message: 'boom'));
 
     testWidgets('retryButtonTextStyle styles the retry label', (tester) async {
       await tester.pumpWidget(
         errored(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             retryButtonTextStyle: TextStyle(fontSize: 39),
           ),
         ),
@@ -732,7 +732,7 @@ void main() {
     testWidgets('retryButtonTextColor colours the retry label', (tester) async {
       await tester.pumpWidget(
         errored(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             retryButtonTextColor: Color(0xFF171717),
           ),
         ),
@@ -753,7 +753,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         errored(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             retryButtonBackgroundColor: Color(0xFF181818),
           ),
         ),
@@ -769,7 +769,7 @@ void main() {
     testWidgets('retryButtonBorder outlines the retry button', (tester) async {
       const side = BorderSide(color: Color(0xFF191919), width: 8);
       await tester.pumpWidget(
-        errored(const CometChatGroupMembersStyle(retryButtonBorder: side)),
+        errored(const ConvoKitGroupMembersStyle(retryButtonBorder: side)),
       );
       await _settle(tester);
       _drainAssetErrors(tester);
@@ -784,7 +784,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         errored(
-          const CometChatGroupMembersStyle(
+          const ConvoKitGroupMembersStyle(
             retryButtonBorderRadius: BorderRadius.all(Radius.circular(11)),
           ),
         ),
@@ -806,10 +806,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatGroupMembers(
+            body: ConvoKitGroupMembers(
               group: _group,
               groupMembersBloc: _mock(),
-              style: const CometChatGroupMembersStyle(
+              style: const ConvoKitGroupMembersStyle(
                 optionsBackgroundColor: Color(0xFF1A1A1A),
                 optionsTextStyle: TextStyle(fontSize: 40),
                 optionsIconColor: Color(0xFF1B1B1B),
@@ -838,19 +838,19 @@ void main() {
       tester,
     ) async {
       _ignoreToleratedErrors();
-      final scope = CometChatChangeScopeStyle(
+      final scope = ConvoKitChangeScopeStyle(
         backgroundColor: const Color(0xFF1C1C1C),
       );
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatGroupMembers(
+            body: ConvoKitGroupMembers(
               group: _group,
               groupMembersBloc: _mockWithOption(
                 GroupMemberOptionConstants.changeScope,
                 'ChangeScope',
               ),
-              style: CometChatGroupMembersStyle(changeScopeStyle: scope),
+              style: ConvoKitGroupMembersStyle(changeScopeStyle: scope),
             ),
           ),
         ),
@@ -866,7 +866,7 @@ void main() {
       _drainAssetErrors(tester);
       expect(
         tester
-            .widget<CometChatChangeScope>(find.byType(CometChatChangeScope))
+            .widget<ConvoKitChangeScope>(find.byType(ConvoKitChangeScope))
             .style
             ?.backgroundColor,
         const Color(0xFF1C1C1C),
@@ -880,13 +880,13 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatGroupMembers(
+            body: ConvoKitGroupMembers(
               group: _group,
               groupMembersBloc: _mockWithOption(
                 GroupMemberOptionConstants.kick,
                 'Kick',
               ),
-              style: const CometChatGroupMembersStyle(
+              style: const ConvoKitGroupMembersStyle(
                 confirmDialogStyle: CometChatConfirmDialogStyle(
                   iconColor: Color(0xFF1D1D1D),
                 ),

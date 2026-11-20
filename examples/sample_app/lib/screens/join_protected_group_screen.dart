@@ -64,7 +64,7 @@ class _JoinProtectedGroupScreenState extends State<JoinProtectedGroupScreen> {
         if (!group.hasJoined) group.hasJoined = true;
         final user = await CometChat.getLoggedInUser();
         if (user != null) {
-          CometChatGroupEvents.ccGroupMemberJoined(user, group);
+          ConvoKitGroupEvents.ccGroupMemberJoined(user, group);
         }
         if (!mounted) return;
         Navigator.pop(context); // close bottom sheet

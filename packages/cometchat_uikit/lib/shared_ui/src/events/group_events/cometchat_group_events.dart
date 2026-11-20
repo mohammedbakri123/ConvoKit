@@ -1,11 +1,11 @@
 import '../../../cometchat_uikit_shared.dart';
 
-class CometChatGroupEvents {
-  static Map<String, CometChatGroupEventListener> groupsListener = {};
+class ConvoKitGroupEvents {
+  static Map<String, ConvoKitGroupEventListener> groupsListener = {};
 
   static void addGroupsListener(
     String listenerId,
-    CometChatGroupEventListener listenerClass,
+    ConvoKitGroupEventListener listenerClass,
   ) {
     groupsListener[listenerId] = listenerClass;
   }

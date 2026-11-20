@@ -33,7 +33,7 @@ class UsersList extends StatelessWidget {
   });
 
   final UsersBloc usersBloc;
-  final CometChatUsersStyle style;
+  final ConvoKitUsersStyle style;
   final CometChatColorPalette colorPalette;
   final CometChatSpacing spacing;
   final CometChatTypography typography;

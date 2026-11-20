@@ -13,7 +13,7 @@ class BannedMembersScreen extends StatefulWidget {
 }
 
 class _BannedMembersScreenState extends State<BannedMembersScreen>
-    with GroupListener, CometChatGroupEventListener {
+    with GroupListener, ConvoKitGroupEventListener {
   late CometChatColorPalette _colorPalette;
   late CometChatTypography _typography;
   late CometChatSpacing _spacing;
@@ -39,7 +39,7 @@ class _BannedMembersScreenState extends State<BannedMembersScreen>
     _groupListenerId = '${ts}_banned_sdk';
     _uiGroupListenerId = '${ts}_banned_ui';
     CometChat.addGroupListener(_groupListenerId, this);
-    CometChatGroupEvents.addGroupsListener(_uiGroupListenerId, this);
+    ConvoKitGroupEvents.addGroupsListener(_uiGroupListenerId, this);
     _request =
         BannedGroupMembersRequestBuilder(guid: widget.group.guid).build();
     _initLoggedInUser();
@@ -57,7 +57,7 @@ class _BannedMembersScreenState extends State<BannedMembersScreen>
   @override
   void dispose() {
     CometChat.removeGroupListener(_groupListenerId);
-    CometChatGroupEvents.removeGroupsListener(_uiGroupListenerId);
+    ConvoKitGroupEvents.removeGroupsListener(_uiGroupListenerId);
     super.dispose();
   }
 
@@ -187,7 +187,7 @@ class _BannedMembersScreenState extends State<BannedMembersScreen>
       uid: member.uid,
       onSuccess: (_) {
         if (!mounted) return;
-        CometChatGroupEvents.ccGroupMemberUnbanned(
+        ConvoKitGroupEvents.ccGroupMemberUnbanned(
           cc.Action(
             conversationId: _conversationId ?? '',
             message: '${_loggedInUser?.name} unbanned ${member.name}',

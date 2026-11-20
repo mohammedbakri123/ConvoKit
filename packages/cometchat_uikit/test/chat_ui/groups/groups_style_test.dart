@@ -1,9 +1,9 @@
-/// Tests for [CometChatGroupsStyle]: Track 3 PROP1/PROP2 (ENG-38688).
+/// Tests for [ConvoKitGroupsStyle]: Track 3 PROP1/PROP2 (ENG-38688).
 ///
 /// The first half is the original file: default values, copyWith, merge, lerp
 /// and ThemeExtension compliance. Those prove the data class holds what it is
 /// given and nothing more. Every one of them would still pass if
-/// CometChatGroups stopped reading the style entirely.
+/// ConvoKitGroups stopped reading the style entirely.
 ///
 /// The second half is the render-verified matrix. Each row names a prop, the
 /// sentinel it is set to, and how to read the value back off the element that
@@ -20,7 +20,7 @@
 /// same test body.
 ///
 /// 9 of the 44 props have no row, because they are declared on the style and
-/// read by nothing CometChatGroups builds. See [_inert]. Two props with rows,
+/// read by nothing ConvoKitGroups builds. See [_inert]. Two props with rows,
 /// avatarStyle and statusIndicatorStyle, are only partly honoured, and
 /// checkBoxBorderRadius accepts only a BorderRadius. See the notes on their
 /// rows.
@@ -246,7 +246,7 @@ final _listRows = <_Row>[
         .widget<ClipRRect>(
           find
               .descendant(
-                of: find.byType(CometChatGroups),
+                of: find.byType(ConvoKitGroups),
                 matching: find.byType(ClipRRect),
               )
               .first,
@@ -533,7 +533,7 @@ const _allProps = {
 };
 
 // ===========================================================================
-// Tests — CometChatGroupsStyle
+// Tests — ConvoKitGroupsStyle
 // ===========================================================================
 
 void main() {
@@ -541,9 +541,9 @@ void main() {
   // Default values
   // =========================================================================
 
-  group('CometChatGroupsStyle defaults', () {
+  group('ConvoKitGroupsStyle defaults', () {
     test('all properties are null by default', () {
-      const style = CometChatGroupsStyle();
+      const style = ConvoKitGroupsStyle();
       expect(style.backgroundColor, isNull);
       expect(style.border, isNull);
       expect(style.borderRadius, isNull);
@@ -595,15 +595,15 @@ void main() {
   // copyWith
   // =========================================================================
 
-  group('CometChatGroupsStyle copyWith', () {
+  group('ConvoKitGroupsStyle copyWith', () {
     test('copyWith updates backgroundColor', () {
-      const style = CometChatGroupsStyle();
+      const style = ConvoKitGroupsStyle();
       final updated = style.copyWith(backgroundColor: Colors.white);
       expect(updated.backgroundColor, Colors.white);
     });
 
     test('copyWith preserves existing values when not overridden', () {
-      const style = CometChatGroupsStyle(
+      const style = ConvoKitGroupsStyle(
         backgroundColor: Colors.blue,
         titleTextColor: Colors.white,
         separatorHeight: 1.0,
@@ -616,7 +616,7 @@ void main() {
     });
 
     test('copyWith updates group icon backgrounds', () {
-      const style = CometChatGroupsStyle();
+      const style = ConvoKitGroupsStyle();
       final updated = style.copyWith(
         privateGroupIconBackground: Colors.blue,
         protectedGroupIconBackground: Colors.orange,
@@ -626,7 +626,7 @@ void main() {
     });
 
     test('copyWith updates search properties', () {
-      const style = CometChatGroupsStyle();
+      const style = ConvoKitGroupsStyle();
       final updated = style.copyWith(
         searchBackgroundColor: Colors.grey.shade100,
         searchIconColor: Colors.grey,
@@ -640,7 +640,7 @@ void main() {
     });
 
     test('copyWith updates checkbox properties', () {
-      const style = CometChatGroupsStyle();
+      const style = ConvoKitGroupsStyle();
       final updated = style.copyWith(
         checkBoxBackgroundColor: Colors.white,
         checkBoxCheckedBackgroundColor: Colors.blue,
@@ -658,19 +658,19 @@ void main() {
   // merge
   // =========================================================================
 
-  group('CometChatGroupsStyle merge', () {
+  group('ConvoKitGroupsStyle merge', () {
     test('merge with null returns same style', () {
-      const style = CometChatGroupsStyle(backgroundColor: Colors.white);
+      const style = ConvoKitGroupsStyle(backgroundColor: Colors.white);
       final merged = style.merge(null);
       expect(merged.backgroundColor, Colors.white);
     });
 
     test('merge applies other style properties', () {
-      const base = CometChatGroupsStyle(
+      const base = ConvoKitGroupsStyle(
         backgroundColor: Colors.white,
         titleTextColor: Colors.black,
       );
-      const other = CometChatGroupsStyle(
+      const other = ConvoKitGroupsStyle(
         backgroundColor: Colors.blue,
         privateGroupIconBackground: Colors.indigo,
       );
@@ -682,8 +682,8 @@ void main() {
     });
 
     test('merge overrides all non-null properties from other', () {
-      const base = CometChatGroupsStyle();
-      const other = CometChatGroupsStyle(
+      const base = ConvoKitGroupsStyle();
+      const other = ConvoKitGroupsStyle(
         separatorColor: Colors.grey,
         separatorHeight: 2.0,
         submitIconColor: Colors.green,
@@ -701,30 +701,30 @@ void main() {
   // lerp
   // =========================================================================
 
-  group('CometChatGroupsStyle lerp', () {
+  group('ConvoKitGroupsStyle lerp', () {
     test('lerp at t=0 returns start style', () {
-      const start = CometChatGroupsStyle(backgroundColor: Colors.white);
-      const end = CometChatGroupsStyle(backgroundColor: Colors.black);
+      const start = ConvoKitGroupsStyle(backgroundColor: Colors.white);
+      const end = ConvoKitGroupsStyle(backgroundColor: Colors.black);
       final result = start.lerp(end, 0.0);
       expect(result.backgroundColor, Colors.white);
     });
 
     test('lerp at t=1 returns end style', () {
-      const start = CometChatGroupsStyle(backgroundColor: Colors.white);
-      const end = CometChatGroupsStyle(backgroundColor: Colors.black);
+      const start = ConvoKitGroupsStyle(backgroundColor: Colors.white);
+      const end = ConvoKitGroupsStyle(backgroundColor: Colors.black);
       final result = start.lerp(end, 1.0);
       expect(result.backgroundColor, Colors.black);
     });
 
-    test('lerp with non-CometChatGroupsStyle returns this', () {
-      const style = CometChatGroupsStyle(backgroundColor: Colors.blue);
+    test('lerp with non-ConvoKitGroupsStyle returns this', () {
+      const style = ConvoKitGroupsStyle(backgroundColor: Colors.blue);
       final result = style.lerp(null, 0.5);
       expect(result.backgroundColor, Colors.blue);
     });
 
     test('lerp interpolates separatorHeight', () {
-      const start = CometChatGroupsStyle(separatorHeight: 0.0);
-      const end = CometChatGroupsStyle(separatorHeight: 10.0);
+      const start = ConvoKitGroupsStyle(separatorHeight: 0.0);
+      const end = ConvoKitGroupsStyle(separatorHeight: 10.0);
       final result = start.lerp(end, 0.5);
       expect(result.separatorHeight, 5.0);
     });
@@ -734,16 +734,16 @@ void main() {
   // ThemeExtension compliance
   // =========================================================================
 
-  // CometChatGroups looks its style up as Theme.of(context).extension, falls
-  // back to CometChatGroupsStyle.of when none is registered, and merges its
+  // ConvoKitGroups looks its style up as Theme.of(context).extension, falls
+  // back to ConvoKitGroupsStyle.of when none is registered, and merges its
   // own groupsStyle over whichever it found.
   group('ThemeExtension compliance', () {
-    testWidgets('a style registered on the theme paints CometChatGroups, and '
+    testWidgets('a style registered on the theme paints ConvoKitGroups, and '
         'groupsStyle wins over it prop by prop', (tester) async {
       Widget themed(Widget child) => MaterialApp(
         theme: ThemeData(
           extensions: const [
-            CometChatGroupsStyle(
+            ConvoKitGroupsStyle(
               titleTextColor: _S.themeTitle,
               backIconColor: _S.themeBackIcon,
             ),
@@ -759,7 +759,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           themed(
-            CometChatGroups(
+            ConvoKitGroups(
               key: const ValueKey('theme only'),
               groupsBloc: _listBloc(),
             ),
@@ -773,10 +773,10 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           themed(
-            CometChatGroups(
+            ConvoKitGroups(
               key: const ValueKey('theme and widget'),
               groupsBloc: _listBloc(),
-              groupsStyle: const CometChatGroupsStyle(titleTextColor: _S.title),
+              groupsStyle: const ConvoKitGroupsStyle(titleTextColor: _S.title),
             ),
           ),
         ),
@@ -792,12 +792,12 @@ void main() {
         'palette', (tester) async {
       await mockNetworkImagesFor(
         () =>
-            tester.pumpWidget(_wrap(CometChatGroups(groupsBloc: _listBloc()))),
+            tester.pumpWidget(_wrap(ConvoKitGroups(groupsBloc: _listBloc()))),
       );
       await tester.pump();
 
       final palette = CometChatThemeHelper.getColorPalette(
-        tester.element(find.byType(CometChatGroups)),
+        tester.element(find.byType(ConvoKitGroups)),
       );
       // Non-null, so the comparisons below cannot pass as null == null.
       expect(palette.textPrimary, isNotNull);
@@ -814,18 +814,18 @@ void main() {
   // Render-verified matrix
   // =========================================================================
   //
-  // Each surface pumps a fresh CometChatGroups for the unstyled read and
+  // Each surface pumps a fresh ConvoKitGroups for the unstyled read and
   // another for the styled one, told apart by key. The key matters:
-  // CometChatGroups resolves its style once, in didChangeDependencies, and has
+  // ConvoKitGroups resolves its style once, in didChangeDependencies, and has
   // no didUpdateWidget, so re-pumping the same element with a new groupsStyle
   // keeps the old one. That is a DEFECT, recorded separately.
 
-  group('CometChatGroupsStyle matrix: each prop paints what it names', () {
+  group('ConvoKitGroupsStyle matrix: each prop paints what it names', () {
     testWidgets('the loaded list', (tester) async {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               key: const ValueKey('unstyled'),
               groupsBloc: _listBloc(),
             ),
@@ -838,10 +838,10 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               key: const ValueKey('styled'),
               groupsBloc: _listBloc(),
-              groupsStyle: const CometChatGroupsStyle(
+              groupsStyle: const ConvoKitGroupsStyle(
                 privateGroupIconBackground: _S.privateDot,
                 protectedGroupIconBackground: _S.protectedDot,
                 backgroundColor: _S.background,
@@ -895,7 +895,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               key: const ValueKey('unstyled'),
               groupsBloc: _blocIn(const GroupsEmpty()),
             ),
@@ -908,10 +908,10 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               key: const ValueKey('styled'),
               groupsBloc: _blocIn(const GroupsEmpty()),
-              groupsStyle: const CometChatGroupsStyle(
+              groupsStyle: const ConvoKitGroupsStyle(
                 emptyStateTextColor: _S.emptyTitle,
                 emptyStateTextStyle: TextStyle(fontSize: _S.emptyTitleSize),
                 emptyStateSubTitleTextColor: _S.emptySubtitle,
@@ -943,7 +943,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               key: const ValueKey('unstyled'),
               groupsBloc: _blocIn(const GroupsError(message: 'boom')),
             ),
@@ -956,10 +956,10 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               key: const ValueKey('styled'),
               groupsBloc: _blocIn(const GroupsError(message: 'boom')),
-              groupsStyle: const CometChatGroupsStyle(
+              groupsStyle: const ConvoKitGroupsStyle(
                 errorStateTextColor: _S.errorTitle,
                 errorStateTextStyle: TextStyle(fontSize: _S.errorTitleSize),
                 errorStateSubTitleTextColor: _S.errorSubtitle,
@@ -996,7 +996,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               key: const ValueKey('unstyled'),
               groupsBloc: _listBloc(selected: {'g1'}),
               selectionMode: SelectionMode.multiple,
@@ -1010,11 +1010,11 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               key: const ValueKey('styled'),
               groupsBloc: _listBloc(selected: {'g1'}),
               selectionMode: SelectionMode.multiple,
-              groupsStyle: const CometChatGroupsStyle(
+              groupsStyle: const ConvoKitGroupsStyle(
                 checkBoxBackgroundColor: _S.checkBoxFill,
                 checkBoxCheckedBackgroundColor: _S.checkBoxCheckedFill,
                 checkBoxBorderRadius: _S.checkBoxRadius,
@@ -1053,9 +1053,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: bloc,
-              groupsStyle: const CometChatGroupsStyle(
+              groupsStyle: const ConvoKitGroupsStyle(
                 backgroundColor: _S.background,
               ),
             ),
@@ -1068,9 +1068,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: bloc,
-              groupsStyle: const CometChatGroupsStyle(
+              groupsStyle: const ConvoKitGroupsStyle(
                 backgroundColor: _S.selectedRow,
               ),
             ),

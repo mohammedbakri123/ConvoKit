@@ -1,7 +1,7 @@
 /// Render-verified prop matrix for [UsersList] — Track 3 PROP1 (ENG-38688,
 /// coverage part 2).
 ///
-/// UsersList is the list body [CometChatUsers] hands its bloc, style and theme
+/// UsersList is the list body [ConvoKitUsers] hands its bloc, style and theme
 /// to. It is exported, so each row here constructs it directly with one prop
 /// set to a sentinel, then asserts what the list rendered — a row, a Text, a
 /// decoration, a Checkbox — or, for the bloc and the callbacks, what a real
@@ -159,7 +159,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: bloc,
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
@@ -182,7 +182,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: bloc,
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
@@ -203,7 +203,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _loaded(),
-            style: const CometChatUsersStyle(
+            style: const ConvoKitUsersStyle(
               stickyTitleColor: Color(0xFF1A2B3C),
             ),
             colorPalette: _palette,
@@ -224,7 +224,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _loaded(),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: CometChatColorPalette(
               textPrimary: const Color(0xFF2B3C4D),
             ),
@@ -246,7 +246,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _loaded(),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: CometChatSpacing(padding2: 5, padding4: 37),
             typography: _typography,
@@ -266,7 +266,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _loaded(),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: const CometChatTypography(
@@ -297,7 +297,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _bloc(UsersLoaded(users: many, hasMore: false)),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
@@ -323,7 +323,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _bloc(const UsersLoading()),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
@@ -337,7 +337,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _bloc(const UsersLoading()),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
@@ -357,7 +357,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _bloc(const UsersEmpty()),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
@@ -377,7 +377,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _bloc(const UsersError(message: 'boom')),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
@@ -400,7 +400,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _loaded(),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
@@ -420,7 +420,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _loaded(),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
@@ -441,7 +441,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _loaded(),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
@@ -462,7 +462,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _loaded(),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
@@ -484,7 +484,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _loaded(),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
@@ -506,7 +506,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _loaded(),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
@@ -538,7 +538,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _loaded(),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
@@ -576,7 +576,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _loaded(),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
@@ -590,7 +590,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _loaded(),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
@@ -612,7 +612,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _loaded(),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
@@ -630,7 +630,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _loaded(),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
@@ -656,7 +656,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _loaded(),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
@@ -670,7 +670,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _loaded(),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
@@ -694,7 +694,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _loaded(),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
@@ -715,7 +715,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _loaded(),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
@@ -739,7 +739,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: plain,
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
@@ -756,7 +756,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: selecting,
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
@@ -784,7 +784,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: plain,
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,
@@ -801,7 +801,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: selecting,
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: _palette,
             spacing: _spacing,
             typography: _typography,

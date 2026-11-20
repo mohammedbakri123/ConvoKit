@@ -6,7 +6,7 @@ import '../../../shared_ui/src/clean_architecture/presentation/views/misc/messag
 import '../../../shared_ui/src/clean_architecture/core/utils/thread_toast.dart';
 import 'cometchat_saved_messages_style.dart';
 
-///[CometChatSavedMessages] renders the logged-in user's saved (bookmarked)
+///[ConvoKitSavedMessages] renders the logged-in user's saved (bookmarked)
 ///messages across every conversation as a pushed full-screen list (Pin &
 ///Save Message, §6.9 Flutter container).
 ///
@@ -18,8 +18,8 @@ import 'cometchat_saved_messages_style.dart';
 ///The list stays live without a refetch: it follows the kit events
 ///(ccMessageSaved/ccMessageUnsaved) and the SDK's cross-device
 ///[MessageListener.onMessageSaved]/[onMessageUnsaved] self-echo.
-class CometChatSavedMessages extends StatefulWidget {
-  const CometChatSavedMessages({
+class ConvoKitSavedMessages extends StatefulWidget {
+  const ConvoKitSavedMessages({
     super.key,
     this.onItemTap,
     this.style,
@@ -34,7 +34,7 @@ class CometChatSavedMessages extends StatefulWidget {
   final Function(BaseMessage message)? onItemTap;
 
   ///[style] styling overrides
-  final CometChatSavedMessagesStyle? style;
+  final ConvoKitSavedMessagesStyle? style;
 
   ///[hideUnsaveOption] hides the per-row unsave affordance.
   final bool? hideUnsaveOption;
@@ -55,10 +55,10 @@ class CometChatSavedMessages extends StatefulWidget {
   final bool useCloseButton;
 
   @override
-  State<CometChatSavedMessages> createState() => _CometChatSavedMessagesState();
+  State<ConvoKitSavedMessages> createState() => _ConvoKitSavedMessagesState();
 }
 
-class _CometChatSavedMessagesState extends State<CometChatSavedMessages> {
+class _ConvoKitSavedMessagesState extends State<ConvoKitSavedMessages> {
   static int _instanceCounter = 0;
   late final String _listenerId = 'saved_messages_panel_${++_instanceCounter}';
 
@@ -238,7 +238,7 @@ class _CometChatSavedMessagesState extends State<CometChatSavedMessages> {
       icon: Icon(
         Icons.bookmark_remove_outlined,
         color:
-            const CometChatSavedMessagesStyle()
+            const ConvoKitSavedMessagesStyle()
                 .merge(widget.style)
                 .unsaveIconColor ??
             CometChatThemeHelper.getColorPalette(context).iconHighlight,
@@ -332,7 +332,7 @@ class _CometChatSavedMessagesState extends State<CometChatSavedMessages> {
   Widget build(BuildContext context) {
     final colorPalette = CometChatThemeHelper.getColorPalette(context);
     final typography = CometChatThemeHelper.getTypography(context);
-    final style = const CometChatSavedMessagesStyle().merge(widget.style);
+    final style = const ConvoKitSavedMessagesStyle().merge(widget.style);
     final translations = Translations.of(context);
 
     return Scaffold(
@@ -399,7 +399,7 @@ class _CometChatSavedMessagesState extends State<CometChatSavedMessages> {
   Widget _buildBody(
     CometChatColorPalette colorPalette,
     CometChatTypography typography,
-    CometChatSavedMessagesStyle style,
+    ConvoKitSavedMessagesStyle style,
   ) {
     final spacing = CometChatThemeHelper.getSpacing(context);
     final translations = Translations.of(context);

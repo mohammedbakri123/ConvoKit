@@ -7,8 +7,8 @@ import 'package:convokit/cometchat_chat_uikit.dart'
     show
         CometChatMessageEvents,
         CometChatMessageEventListener,
-        CometChatGroupEvents,
-        CometChatGroupEventListener,
+        ConvoKitGroupEvents,
+        ConvoKitGroupEventListener,
         CometChatCallEvents,
         CometChatCallEventListener,
         CometChatUIKitHelper,
@@ -901,7 +901,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
     // Register UI group events listener (for group actions by logged-in user)
     // SDK group listeners only fire for OTHER users' actions — we need UI events
     // to catch action messages when the logged-in user adds/kicks/bans members.
-    CometChatGroupEvents.addGroupsListener(
+    ConvoKitGroupEvents.addGroupsListener(
       _uiGroupListenerId,
       _MessageListUIGroupEventListener(
         onCCGroupMemberAddedCallback: _handleCCGroupMemberAdded,
@@ -1241,7 +1241,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
   }
 
   // ============================================================
-  // UI GROUP EVENT CALLBACKS (CometChatGroupEvents)
+  // UI GROUP EVENT CALLBACKS (ConvoKitGroupEvents)
   // ============================================================
   // These fire when the LOGGED-IN user performs group actions.
   // SDK listeners only fire for OTHER users in the group.
@@ -3681,7 +3681,7 @@ class MessageListBloc extends Bloc<MessageListEvent, MessageListState>
     CometChatMessageEvents.removeMessagesListener(_uiMessageListenerId);
 
     // Remove UI group events listener
-    CometChatGroupEvents.removeGroupsListener(_uiGroupListenerId);
+    ConvoKitGroupEvents.removeGroupsListener(_uiGroupListenerId);
 
     // Remove UI call events listener
     CometChatCallEvents.removeCallEventsListener(_uiCallListenerId);
@@ -4722,8 +4722,8 @@ class _MessageListUIEventListener with CometChatMessageEventListener {
 ///
 /// SDK group listeners only fire for actions by OTHER users. When the
 /// logged-in user performs actions (add/kick/ban), we rely on these
-/// CometChatGroupEvents to generate action messages in the message list.
-class _MessageListUIGroupEventListener with CometChatGroupEventListener {
+/// ConvoKitGroupEvents to generate action messages in the message list.
+class _MessageListUIGroupEventListener with ConvoKitGroupEventListener {
   final void Function(List<Action>, List<User>, Group, User)
   onCCGroupMemberAddedCallback;
   final void Function(Action, User, User, Group) onCCGroupMemberKickedCallback;

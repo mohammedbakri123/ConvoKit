@@ -207,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
               context,
               MaterialPageRoute(
                 builder: (_) =>
-                    CometChatSavedMessages(onItemTap: _openSavedMessage),
+                    ConvoKitSavedMessages(onItemTap: _openSavedMessage),
               ),
             );
             break;
@@ -412,7 +412,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildUsersTab() {
-    return CometChatUsers(
+    return ConvoKitUsers(
       hideAppbar: true,
       onItemTap: (_, user) => _openUserChat(context, user),
       hideSearch: _toggles.usersHideSearch.value,
@@ -423,7 +423,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildGroupsTab() {
     return Stack(
       children: [
-        CometChatGroups(
+        ConvoKitGroups(
           hideAppbar: true,
           onItemTap: (_, group) => _openGroupChat(context, group),
           hideSearch: _toggles.groupsHideSearch.value,
@@ -633,7 +633,7 @@ class _HomeScreenState extends State<HomeScreen> {
         if (!joinedGroup.hasJoined) joinedGroup.hasJoined = true;
         final user = await CometChat.getLoggedInUser();
         if (user != null) {
-          CometChatGroupEvents.ccGroupMemberJoined(user, joinedGroup);
+          ConvoKitGroupEvents.ccGroupMemberJoined(user, joinedGroup);
         }
         if (!mounted) return;
         messenger.hideCurrentSnackBar();

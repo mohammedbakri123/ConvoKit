@@ -1,5 +1,5 @@
-/// Table-driven prop matrices for [CometChatGroupMembers] and
-/// [CometChatGroupMembersStyle] — Track 3 PROP1. One fixture, two matrices.
+/// Table-driven prop matrices for [ConvoKitGroupMembers] and
+/// [ConvoKitGroupMembersStyle] — Track 3 PROP1. One fixture, two matrices.
 ///
 /// Every case pumps the real widget and asserts a *rendered* consequence.
 ///
@@ -65,27 +65,27 @@ ListBaseStyle _listBaseStyle(WidgetTester tester) =>
 
 void main() {
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // CometChatGroupMembers — chrome that renders without member data
+  // ConvoKitGroupMembers — chrome that renders without member data
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  group('CometChatGroupMembers · structure', () {
+  group('ConvoKitGroupMembers · structure', () {
     testWidgets('group renders the component', (tester) async {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
-          _wrap(CometChatGroupMembers(group: FakeGroup())),
+          _wrap(ConvoKitGroupMembers(group: FakeGroup())),
         );
         await tester.pump();
         await tester.pump(const Duration(seconds: 1));
       }, _swallow);
 
-      expect(find.byType(CometChatGroupMembers), findsOneWidget);
+      expect(find.byType(ConvoKitGroupMembers), findsOneWidget);
       expect(find.byType(AppBar), findsOneWidget);
     });
 
     testWidgets('hideAppbar removes the app bar', (tester) async {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
-          _wrap(CometChatGroupMembers(group: FakeGroup(), hideAppbar: true)),
+          _wrap(ConvoKitGroupMembers(group: FakeGroup(), hideAppbar: true)),
         );
         await tester.pump();
         await tester.pump(const Duration(seconds: 1));
@@ -97,7 +97,7 @@ void main() {
     testWidgets('hideSearch removes the search field', (tester) async {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
-          _wrap(CometChatGroupMembers(group: FakeGroup(), hideSearch: true)),
+          _wrap(ConvoKitGroupMembers(group: FakeGroup(), hideSearch: true)),
         );
         await tester.pump();
         await tester.pump(const Duration(seconds: 1));
@@ -110,7 +110,7 @@ void main() {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(
+            ConvoKitGroupMembers(
               group: FakeGroup(),
               searchPlaceholder: 'Find a member',
             ),
@@ -127,7 +127,7 @@ void main() {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(group: FakeGroup(), searchBoxIcon: _icon()),
+            ConvoKitGroupMembers(group: FakeGroup(), searchBoxIcon: _icon()),
           ),
         );
         await tester.pump();
@@ -141,7 +141,7 @@ void main() {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(
+            ConvoKitGroupMembers(
               group: FakeGroup(),
               backButton: _slot(),
               showBackButton: true,
@@ -161,7 +161,7 @@ void main() {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(
+            ConvoKitGroupMembers(
               group: FakeGroup(),
               backButton: _slot(),
               showBackButton: false,
@@ -179,7 +179,7 @@ void main() {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(group: FakeGroup(), appBarOptions: [_slot()]),
+            ConvoKitGroupMembers(group: FakeGroup(), appBarOptions: [_slot()]),
           ),
         );
         await tester.pump();
@@ -193,7 +193,7 @@ void main() {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(group: FakeGroup(), height: 321, width: 640),
+            ConvoKitGroupMembers(group: FakeGroup(), height: 321, width: 640),
           ),
         );
         await tester.pump();
@@ -207,17 +207,17 @@ void main() {
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // CometChatGroupMembers — error and loading surfaces
+  // ConvoKitGroupMembers — error and loading surfaces
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  group('CometChatGroupMembers · state views', () {
+  group('ConvoKitGroupMembers · state views', () {
     testWidgets('errorStateView replaces the default error view', (
       tester,
     ) async {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(
+            ConvoKitGroupMembers(
               group: FakeGroup(),
               errorStateView: (_) => _slot(),
             ),
@@ -237,7 +237,7 @@ void main() {
     testWidgets('hideError suppresses the default error view', (tester) async {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
-          _wrap(CometChatGroupMembers(group: FakeGroup(), hideError: true)),
+          _wrap(ConvoKitGroupMembers(group: FakeGroup(), hideError: true)),
         );
         await tester.pump();
         await tester.pump(const Duration(seconds: 1));
@@ -252,7 +252,7 @@ void main() {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(
+            ConvoKitGroupMembers(
               group: FakeGroup(),
               loadingStateView: (_) => _slot(),
             ),
@@ -270,7 +270,7 @@ void main() {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(
+            ConvoKitGroupMembers(
               group: FakeGroup(),
               onError: (_) => fired = true,
             ),
@@ -288,7 +288,7 @@ void main() {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(
+            ConvoKitGroupMembers(
               group: FakeGroup(),
               onLoad: (_) => fired = true,
             ),
@@ -302,7 +302,7 @@ void main() {
       // the assertion is that the wiring exists and does not throw. The
       // loaded-state path is covered once an injectable bloc lands (ENG-38797).
       expect(fired, isFalse);
-      expect(find.byType(CometChatGroupMembers), findsOneWidget);
+      expect(find.byType(ConvoKitGroupMembers), findsOneWidget);
     });
 
     testWidgets('onEmpty is accepted and the component renders', (
@@ -310,13 +310,13 @@ void main() {
     ) async {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
-          _wrap(CometChatGroupMembers(group: FakeGroup(), onEmpty: () {})),
+          _wrap(ConvoKitGroupMembers(group: FakeGroup(), onEmpty: () {})),
         );
         await tester.pump();
         await tester.pump(const Duration(seconds: 1));
       }, _swallow);
 
-      expect(find.byType(CometChatGroupMembers), findsOneWidget);
+      expect(find.byType(ConvoKitGroupMembers), findsOneWidget);
     });
 
     testWidgets('stateCallBack hands back the controller', (tester) async {
@@ -324,7 +324,7 @@ void main() {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(
+            ConvoKitGroupMembers(
               group: FakeGroup(),
               stateCallBack: (c) => handed = c,
             ),
@@ -339,16 +339,16 @@ void main() {
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // CometChatGroupMembers — flags that render either way
+  // ConvoKitGroupMembers — flags that render either way
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  group('CometChatGroupMembers · option flags', () {
+  group('ConvoKitGroupMembers · option flags', () {
     testWidgets('usersStatusVisibility renders both ways', (tester) async {
       for (final value in [true, false]) {
         await runZonedGuarded(() async {
           await tester.pumpWidget(
             _wrap(
-              CometChatGroupMembers(
+              ConvoKitGroupMembers(
                 group: FakeGroup(),
                 usersStatusVisibility: value,
               ),
@@ -356,7 +356,7 @@ void main() {
           );
           await tester.pump();
         }, _swallow);
-        expect(find.byType(CometChatGroupMembers), findsOneWidget);
+        expect(find.byType(ConvoKitGroupMembers), findsOneWidget);
       }
     });
 
@@ -365,7 +365,7 @@ void main() {
         await runZonedGuarded(() async {
           await tester.pumpWidget(
             _wrap(
-              CometChatGroupMembers(
+              ConvoKitGroupMembers(
                 group: FakeGroup(),
                 hideKickMemberOption: value,
               ),
@@ -373,7 +373,7 @@ void main() {
           );
           await tester.pump();
         }, _swallow);
-        expect(find.byType(CometChatGroupMembers), findsOneWidget);
+        expect(find.byType(ConvoKitGroupMembers), findsOneWidget);
       }
     });
 
@@ -382,7 +382,7 @@ void main() {
         await runZonedGuarded(() async {
           await tester.pumpWidget(
             _wrap(
-              CometChatGroupMembers(
+              ConvoKitGroupMembers(
                 group: FakeGroup(),
                 hideBanMemberOption: value,
               ),
@@ -390,7 +390,7 @@ void main() {
           );
           await tester.pump();
         }, _swallow);
-        expect(find.byType(CometChatGroupMembers), findsOneWidget);
+        expect(find.byType(ConvoKitGroupMembers), findsOneWidget);
       }
     });
 
@@ -399,7 +399,7 @@ void main() {
         await runZonedGuarded(() async {
           await tester.pumpWidget(
             _wrap(
-              CometChatGroupMembers(
+              ConvoKitGroupMembers(
                 group: FakeGroup(),
                 hideScopeChangeOption: value,
               ),
@@ -407,7 +407,7 @@ void main() {
           );
           await tester.pump();
         }, _swallow);
-        expect(find.byType(CometChatGroupMembers), findsOneWidget);
+        expect(find.byType(ConvoKitGroupMembers), findsOneWidget);
       }
     });
 
@@ -416,12 +416,12 @@ void main() {
         await runZonedGuarded(() async {
           await tester.pumpWidget(
             _wrap(
-              CometChatGroupMembers(group: FakeGroup(), hideSeparator: value),
+              ConvoKitGroupMembers(group: FakeGroup(), hideSeparator: value),
             ),
           );
           await tester.pump();
         }, _swallow);
-        expect(find.byType(CometChatGroupMembers), findsOneWidget);
+        expect(find.byType(ConvoKitGroupMembers), findsOneWidget);
       }
     });
 
@@ -429,43 +429,43 @@ void main() {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(group: FakeGroup(), searchKeyword: 'ali'),
+            ConvoKitGroupMembers(group: FakeGroup(), searchKeyword: 'ali'),
           ),
         );
         await tester.pump();
         await tester.pump(const Duration(seconds: 1));
       }, _swallow);
 
-      expect(find.byType(CometChatGroupMembers), findsOneWidget);
+      expect(find.byType(ConvoKitGroupMembers), findsOneWidget);
     });
 
     testWidgets('controllerTag renders', (tester) async {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(group: FakeGroup(), controllerTag: 'tag-1'),
+            ConvoKitGroupMembers(group: FakeGroup(), controllerTag: 'tag-1'),
           ),
         );
         await tester.pump();
         await tester.pump(const Duration(seconds: 1));
       }, _swallow);
 
-      expect(find.byType(CometChatGroupMembers), findsOneWidget);
+      expect(find.byType(ConvoKitGroupMembers), findsOneWidget);
     });
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // CometChatGroupMembersStyle — each field asserted on what it paints
+  // ConvoKitGroupMembersStyle — each field asserted on what it paints
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  group('CometChatGroupMembersStyle', () {
+  group('ConvoKitGroupMembersStyle', () {
     testWidgets('backgroundColor paints the container', (tester) async {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(
+            ConvoKitGroupMembers(
               group: FakeGroup(),
-              style: const CometChatGroupMembersStyle(
+              style: const ConvoKitGroupMembersStyle(
                 backgroundColor: Color(0xFF112233),
               ),
             ),
@@ -482,9 +482,9 @@ void main() {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(
+            ConvoKitGroupMembers(
               group: FakeGroup(),
-              style: const CometChatGroupMembersStyle(
+              style: const ConvoKitGroupMembersStyle(
                 searchBackground: Color(0xFF445566),
               ),
             ),
@@ -506,9 +506,9 @@ void main() {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(
+            ConvoKitGroupMembers(
               group: FakeGroup(),
-              style: const CometChatGroupMembersStyle(
+              style: const ConvoKitGroupMembersStyle(
                 border: Border.fromBorderSide(
                   BorderSide(color: Color(0xFF778899), width: 3),
                 ),
@@ -530,9 +530,9 @@ void main() {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(
+            ConvoKitGroupMembers(
               group: FakeGroup(),
-              style: const CometChatGroupMembersStyle(
+              style: const ConvoKitGroupMembersStyle(
                 searchBorderRadius: BorderRadius.all(Radius.circular(23)),
               ),
             ),
@@ -554,10 +554,10 @@ void main() {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(
+            ConvoKitGroupMembers(
               group: FakeGroup(),
               searchPlaceholder: 'Find a member',
-              style: const CometChatGroupMembersStyle(
+              style: const ConvoKitGroupMembersStyle(
                 searchPlaceholderStyle: TextStyle(fontSize: 27),
               ),
             ),
@@ -574,9 +574,9 @@ void main() {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(
+            ConvoKitGroupMembers(
               group: FakeGroup(),
-              style: const CometChatGroupMembersStyle(
+              style: const ConvoKitGroupMembersStyle(
                 titleStyle: TextStyle(fontSize: 31),
               ),
             ),
@@ -598,9 +598,9 @@ void main() {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(
+            ConvoKitGroupMembers(
               group: FakeGroup(),
-              style: const CometChatGroupMembersStyle(
+              style: const ConvoKitGroupMembersStyle(
                 errorStateTextStyle: TextStyle(fontSize: 29),
               ),
             ),
@@ -624,9 +624,9 @@ void main() {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(
+            ConvoKitGroupMembers(
               group: FakeGroup(),
-              style: const CometChatGroupMembersStyle(
+              style: const ConvoKitGroupMembersStyle(
                 errorStateSubtitleStyle: TextStyle(fontSize: 13),
               ),
             ),
@@ -646,15 +646,15 @@ void main() {
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // CometChatGroupMembers · wiring reachable without member data
+  // ConvoKitGroupMembers · wiring reachable without member data
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  group('CometChatGroupMembers · wiring', () {
+  group('ConvoKitGroupMembers · wiring', () {
     testWidgets('onBack is handed to the rendered list base', (tester) async {
       void handler() {}
       await runZonedGuarded(() async {
         await tester.pumpWidget(
-          _wrap(CometChatGroupMembers(group: FakeGroup(), onBack: handler)),
+          _wrap(ConvoKitGroupMembers(group: FakeGroup(), onBack: handler)),
         );
         await tester.pump();
         await tester.pump(const Duration(seconds: 1));
@@ -670,7 +670,7 @@ void main() {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(
+            ConvoKitGroupMembers(
               group: FakeGroup(),
               groupMembersRequestBuilder: GroupMembersRequestBuilder('g1'),
             ),
@@ -680,14 +680,14 @@ void main() {
         await tester.pump(const Duration(seconds: 1));
       }, _swallow);
 
-      expect(find.byType(CometChatGroupMembers), findsOneWidget);
+      expect(find.byType(ConvoKitGroupMembers), findsOneWidget);
     });
 
     testWidgets('groupMembersProtocol renders', (tester) async {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(
+            ConvoKitGroupMembers(
               group: FakeGroup(),
               groupMembersProtocol: UIGroupMembersBuilder(
                 GroupMembersRequestBuilder('g1'),
@@ -699,7 +699,7 @@ void main() {
         await tester.pump(const Duration(seconds: 1));
       }, _swallow);
 
-      expect(find.byType(CometChatGroupMembers), findsOneWidget);
+      expect(find.byType(ConvoKitGroupMembers), findsOneWidget);
     });
 
     testWidgets('selectionMode renders in every mode', (tester) async {
@@ -707,13 +707,13 @@ void main() {
         await runZonedGuarded(() async {
           await tester.pumpWidget(
             _wrap(
-              CometChatGroupMembers(group: FakeGroup(), selectionMode: mode),
+              ConvoKitGroupMembers(group: FakeGroup(), selectionMode: mode),
             ),
           );
           await tester.pump();
         }, _swallow);
         expect(
-          find.byType(CometChatGroupMembers),
+          find.byType(ConvoKitGroupMembers),
           findsOneWidget,
           reason: '$mode',
         );
@@ -725,7 +725,7 @@ void main() {
         await runZonedGuarded(() async {
           await tester.pumpWidget(
             _wrap(
-              CometChatGroupMembers(
+              ConvoKitGroupMembers(
                 group: FakeGroup(),
                 selectionMode: SelectionMode.multiple,
                 activateSelection: mode,
@@ -735,7 +735,7 @@ void main() {
           await tester.pump();
         }, _swallow);
         expect(
-          find.byType(CometChatGroupMembers),
+          find.byType(ConvoKitGroupMembers),
           findsOneWidget,
           reason: '$mode',
         );
@@ -744,17 +744,17 @@ void main() {
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // CometChatGroupMembersStyle · remaining chrome fields
+  // ConvoKitGroupMembersStyle · remaining chrome fields
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  group('CometChatGroupMembersStyle · chrome', () {
+  group('ConvoKitGroupMembersStyle · chrome', () {
     testWidgets('backIconColor tints the back icon', (tester) async {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(
+            ConvoKitGroupMembers(
               group: FakeGroup(),
-              style: const CometChatGroupMembersStyle(
+              style: const ConvoKitGroupMembersStyle(
                 backIconColor: Color(0xFF223344),
               ),
             ),
@@ -771,9 +771,9 @@ void main() {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(
+            ConvoKitGroupMembers(
               group: FakeGroup(),
-              style: const CometChatGroupMembersStyle(
+              style: const ConvoKitGroupMembersStyle(
                 searchIconColor: Color(0xFF556677),
               ),
             ),
@@ -790,9 +790,9 @@ void main() {
       await runZonedGuarded(() async {
         await tester.pumpWidget(
           _wrap(
-            CometChatGroupMembers(
+            ConvoKitGroupMembers(
               group: FakeGroup(),
-              style: const CometChatGroupMembersStyle(
+              style: const ConvoKitGroupMembersStyle(
                 searchTextStyle: TextStyle(fontSize: 21),
               ),
             ),

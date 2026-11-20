@@ -31,7 +31,7 @@ export 'chat_ui/src/group_members/cometchat_group_members_style.dart';
 export 'chat_ui/src/group_members/group_members_builder_protocol.dart';
 export 'chat_ui/src/group_members/cometchat_change_scope.dart';
 export 'chat_ui/src/group_members/cometchat_change_scope_style.dart';
-// ENG-39106: GroupMembersBloc is named by CometChatGroupMembers.groupMembersBloc
+// ENG-39106: GroupMembersBloc is named by ConvoKitGroupMembers.groupMembersBloc
 // and was exported by nothing, so the injection point accepted only null.
 //
 // `hide GetLoggedInUserUseCase` rather than a `show` list: the name is declared

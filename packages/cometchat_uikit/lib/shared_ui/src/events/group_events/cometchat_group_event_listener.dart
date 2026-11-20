@@ -2,7 +2,7 @@ import '../../../cometchat_uikit_shared.dart';
 
 ///Events can be triggered by Group Module
 ///e.g. Clicking on a particular group. All public-facing components in each module will trigger events.
-mixin CometChatGroupEventListener implements UIEventHandler {
+mixin ConvoKitGroupEventListener implements UIEventHandler {
   ///This will get triggered when a group is created successfully
   void ccGroupCreated(Group group) {}
 

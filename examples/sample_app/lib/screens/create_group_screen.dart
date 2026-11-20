@@ -97,7 +97,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen>
       onSuccess: (Group created) {
         if (!mounted) return;
         setState(() => _isLoading = false);
-        CometChatGroupEvents.ccGroupCreated(created);
+        ConvoKitGroupEvents.ccGroupCreated(created);
         // Dismiss the bottom sheet first
         Navigator.of(context).pop();
         // Use the UI event to open the conversation — this lets the

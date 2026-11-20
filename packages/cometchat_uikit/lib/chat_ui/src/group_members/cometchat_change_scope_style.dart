@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-///[CometChatChangeScopeStyle] is a class that defines the styling for the CometChatChangeScope widget
+///[ConvoKitChangeScopeStyle] is a class that defines the styling for the ConvoKitChangeScope widget
 ///
 /// ```dart
-/// CometChatChangeScope(
-///  style: CometChatChangeScopeStyle(
+/// ConvoKitChangeScope(
+///  style: ConvoKitChangeScopeStyle(
 ///  backgroundColor: Colors.white,
 ///  borderRadius: BorderRadius.circular(10),
 ///  border: Border.all(color: Colors.red),
@@ -30,8 +30,8 @@ import 'package:flutter/material.dart';
 ///  ),
 ///  );
 ///  ```
-class CometChatChangeScopeStyle
-    extends ThemeExtension<CometChatChangeScopeStyle> {
+class ConvoKitChangeScopeStyle
+    extends ThemeExtension<ConvoKitChangeScopeStyle> {
   ///[backgroundColor] defines the background color of the widget
   final Color? backgroundColor;
 
@@ -98,10 +98,10 @@ class CometChatChangeScopeStyle
   ///[selectedTileColor] defines the color of the selected tile
   final Color? selectedTileColor;
 
-  static CometChatChangeScopeStyle of(BuildContext context) =>
-      CometChatChangeScopeStyle();
+  static ConvoKitChangeScopeStyle of(BuildContext context) =>
+      ConvoKitChangeScopeStyle();
 
-  CometChatChangeScopeStyle({
+  ConvoKitChangeScopeStyle({
     this.backgroundColor,
     this.borderRadius,
     this.border,
@@ -127,7 +127,7 @@ class CometChatChangeScopeStyle
   });
 
   @override
-  CometChatChangeScopeStyle copyWith({
+  ConvoKitChangeScopeStyle copyWith({
     Color? backgroundColor,
     BorderRadiusGeometry? borderRadius,
     BoxBorder? border,
@@ -151,7 +151,7 @@ class CometChatChangeScopeStyle
     Color? tileColor,
     Color? selectedTileColor,
   }) {
-    return CometChatChangeScopeStyle(
+    return ConvoKitChangeScopeStyle(
       backgroundColor: backgroundColor ?? this.backgroundColor,
       borderRadius: borderRadius ?? this.borderRadius,
       border: border ?? this.border,
@@ -184,7 +184,7 @@ class CometChatChangeScopeStyle
     );
   }
 
-  CometChatChangeScopeStyle merge(CometChatChangeScopeStyle? other) {
+  ConvoKitChangeScopeStyle merge(ConvoKitChangeScopeStyle? other) {
     if (other == null) return this;
     return copyWith(
       backgroundColor: other.backgroundColor,
@@ -213,14 +213,14 @@ class CometChatChangeScopeStyle
   }
 
   @override
-  CometChatChangeScopeStyle lerp(
-    ThemeExtension<CometChatChangeScopeStyle>? other,
+  ConvoKitChangeScopeStyle lerp(
+    ThemeExtension<ConvoKitChangeScopeStyle>? other,
     double t,
   ) {
-    if (other is! CometChatChangeScopeStyle) {
+    if (other is! ConvoKitChangeScopeStyle) {
       return this;
     }
-    return CometChatChangeScopeStyle(
+    return ConvoKitChangeScopeStyle(
       backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t),
       borderRadius: BorderRadiusGeometry.lerp(
         borderRadius,

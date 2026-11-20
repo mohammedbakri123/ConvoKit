@@ -4,7 +4,7 @@
 /// callback the bloc mixes in.
 ///
 /// The listeners are plain UI-event maps ([CometChatMessageEvents],
-/// [CometChatUIEvents], [CometChatUserEvents],
+/// [CometChatUIEvents], [ConvoKitUserEvents],
 /// [CometChatStreamCallBackEvents]), so each callback is driven end to end by
 /// firing the corresponding static. Real SDK model objects are used
 /// throughout, because half of what is asserted here is which fields survive a
@@ -1455,18 +1455,18 @@ void main() {
       final bloc = await ready();
       expect(bloc.state.userIsNotBlocked, isTrue);
 
-      CometChatUserEvents.ccUserBlocked(
+      ConvoKitUserEvents.ccUserBlocked(
         User(uid: _peer, name: 'Peer', blockedByMe: true),
       );
       await settle();
       expect(bloc.state.userIsNotBlocked, isFalse);
 
-      CometChatUserEvents.ccUserUnblocked(User(uid: _peer, name: 'Peer'));
+      ConvoKitUserEvents.ccUserUnblocked(User(uid: _peer, name: 'Peer'));
       await settle();
       expect(bloc.state.userIsNotBlocked, isTrue);
 
       // Another user's block must not touch this composer.
-      CometChatUserEvents.ccUserBlocked(
+      ConvoKitUserEvents.ccUserBlocked(
         User(uid: 'stranger', name: 'S', blockedByMe: true),
       );
       await settle();

@@ -1,7 +1,7 @@
-/// Render-verified prop matrices for [CometChatSavedMessages] and
-/// [CometChatSavedMessagesStyle] — Track 3 PROP1 (ENG-38688, coverage part 2).
+/// Render-verified prop matrices for [ConvoKitSavedMessages] and
+/// [ConvoKitSavedMessagesStyle] — Track 3 PROP1 (ENG-38688, coverage part 2).
 ///
-/// CometChatSavedMessages takes no bloc. Its initState builds a
+/// ConvoKitSavedMessages takes no bloc. Its initState builds a
 /// `MessagesRequestBuilder` with `saved = true` and pages it through
 /// MessagesRequest.fetchPrevious, which resolves the SDK's MessageRepository
 /// through SdkRegistry. So these matrices run the real widget and fake one
@@ -24,7 +24,7 @@
 library;
 
 import 'package:convokit/cometchat_chat_uikit.dart';
-// The SDK exports none of these. They are the seam CometChatSavedMessages
+// The SDK exports none of these. They are the seam ConvoKitSavedMessages
 // leaves: no bloc injection, so the fake has to sit where the SDK resolves its
 // repositories. Identical in the local SDK and in the hosted 5.0.7 CI uses.
 // ignore: implementation_imports
@@ -194,7 +194,7 @@ Color? _screenColor(WidgetTester t) => t
     .widget<Scaffold>(
       find
           .descendant(
-            of: find.byType(CometChatSavedMessages),
+            of: find.byType(ConvoKitSavedMessages),
             matching: find.byType(Scaffold),
           )
           .first,
@@ -261,7 +261,7 @@ Color _ruleColor(WidgetTester t) {
 
 enum _Run { baseline, subject }
 
-// ─── CometChatSavedMessages matrix ───────────────────────────────────────────
+// ─── ConvoKitSavedMessages matrix ───────────────────────────────────────────
 
 /// What the callbacks under test reported.
 class _Log {
@@ -270,7 +270,7 @@ class _Log {
 
 /// The props a widget case can set. The defaults are the widget's documented
 /// ones; the baseline run does not use this class at all, it pumps a bare
-/// `const CometChatSavedMessages()` so a changed default would show up there.
+/// `const ConvoKitSavedMessages()` so a changed default would show up there.
 class _Props {
   const _Props({
     this.onItemTap,
@@ -282,7 +282,7 @@ class _Props {
   });
 
   final Function(BaseMessage message)? onItemTap;
-  final CometChatSavedMessagesStyle? style;
+  final ConvoKitSavedMessagesStyle? style;
   final bool? hideUnsaveOption;
   final bool showBackButton;
   final bool popOnItemTap;
@@ -332,7 +332,7 @@ final _widgetMatrix = <_Case>[
       await t.tap(find.text('Alice'));
       await _settlePop(t);
       return [
-        _count(find.byType(CometChatSavedMessages)),
+        _count(find.byType(ConvoKitSavedMessages)),
         _count(find.text(_rootPage)),
       ];
     },
@@ -402,7 +402,7 @@ final _widgetMatrix = <_Case>[
     prop: 'style',
     effect: 'reaches the screen and its app bar',
     subject: (_) => const _Props(
-      style: CometChatSavedMessagesStyle(
+      style: ConvoKitSavedMessagesStyle(
         backgroundColor: _styleBg,
         appBarColor: _styleBar,
       ),
@@ -413,7 +413,7 @@ final _widgetMatrix = <_Case>[
   ),
 ];
 
-// ─── CometChatSavedMessagesStyle matrix ──────────────────────────────────────
+// ─── ConvoKitSavedMessagesStyle matrix ──────────────────────────────────────
 
 /// The style props a case can set. itemContextTextStyle is absent on
 /// purpose: it is a defect, see the library comment.
@@ -609,7 +609,7 @@ void main() {
     // Every baseline below leans on this: two rows, a title, a date each.
     _sizeView(tester);
     await mockNetworkImagesFor(() async {
-      await tester.pumpWidget(_host(const CometChatSavedMessages()));
+      await tester.pumpWidget(_host(const ConvoKitSavedMessages()));
       await _settle(tester);
     });
 
@@ -623,7 +623,7 @@ void main() {
     expect(_dates(tester), hasLength(2));
   });
 
-  group('CometChatSavedMessages prop matrix', () {
+  group('ConvoKitSavedMessages prop matrix', () {
     for (final c in _widgetMatrix) {
       testWidgets('${c.prop} ${c.effect}', (tester) async {
         _sizeView(tester);
@@ -640,8 +640,8 @@ void main() {
             await tester.pumpWidget(
               _host(
                 p == null
-                    ? const CometChatSavedMessages()
-                    : CometChatSavedMessages(
+                    ? const ConvoKitSavedMessages()
+                    : ConvoKitSavedMessages(
                         onItemTap: p.onItemTap,
                         style: p.style,
                         hideUnsaveOption: p.hideUnsaveOption,
@@ -676,7 +676,7 @@ void main() {
     }
   });
 
-  group('CometChatSavedMessagesStyle prop matrix', () {
+  group('ConvoKitSavedMessagesStyle prop matrix', () {
     for (final c in _styleMatrix) {
       testWidgets('${c.prop} ${c.effect}', (tester) async {
         _sizeView(tester);
@@ -690,10 +690,10 @@ void main() {
           await mockNetworkImagesFor(() async {
             await tester.pumpWidget(
               _host(
-                CometChatSavedMessages(
+                ConvoKitSavedMessages(
                   // itemContextTextStyle is left off on purpose: it is a
                   // defect, see the library comment.
-                  style: CometChatSavedMessagesStyle(
+                  style: ConvoKitSavedMessagesStyle(
                     backgroundColor: s.backgroundColor,
                     appBarColor: s.appBarColor,
                     titleTextStyle: s.titleTextStyle,
@@ -740,7 +740,7 @@ void main() {
       _sizeView(tester);
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
-          _host(const CometChatSavedMessages(useCloseButton: true)),
+          _host(const ConvoKitSavedMessages(useCloseButton: true)),
         );
         await _settle(tester);
       });
@@ -750,7 +750,7 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _host(
-            const CometChatSavedMessages(
+            const ConvoKitSavedMessages(
               showBackButton: false,
               useCloseButton: true,
             ),
@@ -768,7 +768,7 @@ void main() {
       _sizeView(tester);
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
-          _host(const CometChatSavedMessages(useCloseButton: true)),
+          _host(const ConvoKitSavedMessages(useCloseButton: true)),
         );
         await _settle(tester);
       });
@@ -780,9 +780,9 @@ void main() {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _host(
-            const CometChatSavedMessages(
+            const ConvoKitSavedMessages(
               useCloseButton: true,
-              style: CometChatSavedMessagesStyle(iconColor: _iconTint),
+              style: ConvoKitSavedMessagesStyle(iconColor: _iconTint),
             ),
           ),
         );

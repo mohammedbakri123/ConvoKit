@@ -1,4 +1,4 @@
-/// Golden pins for [CometChatGroups]: its rows and the three state views.
+/// Golden pins for [ConvoKitGroups]: its rows and the three state views.
 ///
 /// The real screen is rendered, held in a fixed state through its `groupsBloc`
 /// seam. Group icons have no URL, so they fall back to initials and nothing
@@ -81,7 +81,7 @@ void main() {
         'groups list: public, private and password rows with member counts',
         fileName: 'groups_list_loaded',
         size: _size,
-        builder: () => CometChatGroups(
+        builder: () => ConvoKitGroups(
           groupsBloc: _bloc(GroupsLoaded(groups: _groups(), hasMore: false)),
         ),
       );
@@ -90,7 +90,7 @@ void main() {
         'groups list in multi-select, two rows checked',
         fileName: 'groups_list_selection',
         size: _size,
-        builder: () => CometChatGroups(
+        builder: () => ConvoKitGroups(
           selectionMode: SelectionMode.multiple,
           activateSelection: ActivateSelection.onClick,
           groupsBloc: _bloc(
@@ -107,14 +107,14 @@ void main() {
         'groups empty state',
         fileName: 'groups_state_empty',
         size: _size,
-        builder: () => CometChatGroups(groupsBloc: _bloc(const GroupsEmpty())),
+        builder: () => ConvoKitGroups(groupsBloc: _bloc(const GroupsEmpty())),
       );
 
       lightDarkGolden(
         'groups error state',
         fileName: 'groups_state_error',
         size: _size,
-        builder: () => CometChatGroups(
+        builder: () => ConvoKitGroups(
           groupsBloc: _bloc(const GroupsError(message: 'Something went wrong')),
         ),
       );

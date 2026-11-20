@@ -20,7 +20,7 @@ import '../../shared/list_options_menu.dart';
 /// ```dart
 /// GroupsList(
 ///   groupsBloc: groupsBloc,
-///   style: CometChatGroupsStyle(),
+///   style: ConvoKitGroupsStyle(),
 ///   colorPalette: colorPalette,
 ///   spacing: spacing,
 ///   typography: typography,
@@ -63,7 +63,7 @@ class GroupsList extends StatelessWidget {
   final GroupsBloc groupsBloc;
 
   /// The style configuration for the groups widget.
-  final CometChatGroupsStyle style;
+  final ConvoKitGroupsStyle style;
 
   /// The color palette used for styling.
   final CometChatColorPalette colorPalette;
@@ -87,7 +87,7 @@ class GroupsList extends StatelessWidget {
   final WidgetBuilder? errorStateView;
 
   /// Hides the error view, including a custom [errorStateView], when true.
-  /// Matches CometChatGroupMembers.
+  /// Matches ConvoKitGroupMembers.
   final bool? hideError;
 
   /// Custom list item view builder for full customization.
@@ -419,7 +419,7 @@ class GroupsList extends StatelessWidget {
       trailingView: trailingView != null
           ? (g) => trailingView!(context, g)
           : null,
-      // Pass item-level styles from CometChatGroupsStyle
+      // Pass item-level styles from ConvoKitGroupsStyle
       style: CometChatGroupListItemStyle(
         titleTextStyle: style.itemTitleTextStyle,
         titleTextColor: style.itemTitleTextColor,

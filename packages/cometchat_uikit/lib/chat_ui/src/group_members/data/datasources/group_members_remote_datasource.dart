@@ -123,7 +123,7 @@ class GroupMembersRemoteDataSourceImpl implements GroupMembersRemoteDataSource {
           if (appGuid != guid) {
             ccLog(
               'GroupMembersRemoteDataSource: '
-              'CometChatGroupMembers: groupMembersRequestBuilder is for group '
+              'ConvoKitGroupMembers: groupMembersRequestBuilder is for group '
               '"$appGuid", but the list shows group "$guid"; loading "$guid" with '
               "the builder's other settings.",
             );

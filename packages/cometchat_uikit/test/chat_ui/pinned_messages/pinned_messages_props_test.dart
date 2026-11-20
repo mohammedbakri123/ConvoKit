@@ -1,8 +1,8 @@
-/// Render-verified prop matrices for [CometChatPinnedMessages] and
-/// [CometChatPinnedMessagesStyle] — Track 3 PROP1 (ENG-38688, coverage
+/// Render-verified prop matrices for [ConvoKitPinnedMessages] and
+/// [ConvoKitPinnedMessagesStyle] — Track 3 PROP1 (ENG-38688, coverage
 /// part 2). Both classes are new in 6.1.1.
 ///
-/// CometChatPinnedMessages takes no bloc: its State fetches the pins itself in
+/// ConvoKitPinnedMessages takes no bloc: its State fetches the pins itself in
 /// initState through MessagesRequest.fetchPrevious, which resolves its
 /// repository through SdkRegistry. So these matrices run the real widget and
 /// fake one layer further down — the SDK's MessageRepository — the same seam
@@ -16,9 +16,9 @@
 /// passes false explicitly, and the style matrix's unpinIconColor baseline is
 /// the render that shows null still offers unpin.
 ///
-/// CometChatPinnedMessages: all 7 props are wired and covered here.
+/// ConvoKitPinnedMessages: all 7 props are wired and covered here.
 ///
-/// CometChatPinnedMessagesStyle: 6 of its 10 props are wired and covered. The
+/// ConvoKitPinnedMessagesStyle: 6 of its 10 props are wired and covered. The
 /// other 4 have no observable effect and are deliberately left off every
 /// construction below, so the coverage tool does not credit them:
 ///
@@ -33,7 +33,7 @@
 library;
 
 import 'package:convokit/cometchat_chat_uikit.dart';
-// The SDK exports none of these. CometChatPinnedMessages has no bloc or
+// The SDK exports none of these. ConvoKitPinnedMessages has no bloc or
 // request injection, so the fake has to sit where the SDK resolves its
 // repositories.
 // ignore: implementation_imports
@@ -58,7 +58,7 @@ const _barInk = Color(0xFF5E6F70);
 const _unpinInk = Color(0xFF6F7081);
 
 /// What the widget-level `style` case hands the screen.
-const _screenStyle = CometChatPinnedMessagesStyle(backgroundColor: _bg);
+const _screenStyle = ConvoKitPinnedMessagesStyle(backgroundColor: _bg);
 
 // ─── SDK fakes ───────────────────────────────────────────────────────────────
 
@@ -201,7 +201,7 @@ Finder _inHeader(Finder matching) =>
 Color? _scaffoldColor(WidgetTester tester) => tester
     .widget<Scaffold>(
       find.descendant(
-        of: find.byType(CometChatPinnedMessages),
+        of: find.byType(ConvoKitPinnedMessages),
         matching: find.byType(Scaffold),
       ),
     )
@@ -232,7 +232,7 @@ class _WidgetCase {
     required this.expected,
   });
 
-  /// The CometChatPinnedMessages prop this row covers.
+  /// The ConvoKitPinnedMessages prop this row covers.
   final String prop;
 
   /// What setting it does, as the test name reads.
@@ -327,7 +327,7 @@ class _StyleCase {
     this.act,
   });
 
-  /// The CometChatPinnedMessagesStyle prop this row covers.
+  /// The ConvoKitPinnedMessagesStyle prop this row covers.
   final String prop;
 
   /// The element the prop paints, as the test name reads.
@@ -426,7 +426,7 @@ void main() {
     await sdk.SdkRegistry.clear();
   });
 
-  group('CometChatPinnedMessages prop matrix', () {
+  group('ConvoKitPinnedMessages prop matrix', () {
     test('names each of the 7 props exactly once', () {
       final props = _widgetCases.map((c) => c.prop).toList();
       expect(props.toSet(), hasLength(props.length));
@@ -448,7 +448,7 @@ void main() {
         await mockNetworkImagesFor(() async {
           await tester.pumpWidget(
             _host(
-              CometChatPinnedMessages(
+              ConvoKitPinnedMessages(
                 user: c.prop == 'user' ? null : _alice,
                 group: c.prop == 'user' ? _crew : null,
                 // A bool?, so false is spelled out: a widget that hid unpin
@@ -471,7 +471,7 @@ void main() {
         await mockNetworkImagesFor(() async {
           await tester.pumpWidget(
             _host(
-              CometChatPinnedMessages(
+              ConvoKitPinnedMessages(
                 user:
                     c.on('user', _scopeUser) ??
                     (c.prop == 'group' ? null : _alice),
@@ -502,7 +502,7 @@ void main() {
     }
   });
 
-  group('CometChatPinnedMessagesStyle prop matrix', () {
+  group('ConvoKitPinnedMessagesStyle prop matrix', () {
     test('names each of the 6 wired props exactly once', () {
       final props = _styleCases.map((c) => c.prop).toList();
       expect(props.toSet(), hasLength(props.length));
@@ -520,7 +520,7 @@ void main() {
       testWidgets('${c.prop} paints ${c.target}', (tester) async {
         // 1. No style.
         await mockNetworkImagesFor(() async {
-          await tester.pumpWidget(_host(CometChatPinnedMessages(user: _alice)));
+          await tester.pumpWidget(_host(ConvoKitPinnedMessages(user: _alice)));
           await _load(tester);
         });
         if (c.act != null) await c.act!(tester);
@@ -532,9 +532,9 @@ void main() {
         await mockNetworkImagesFor(() async {
           await tester.pumpWidget(
             _host(
-              CometChatPinnedMessages(
+              ConvoKitPinnedMessages(
                 user: _alice,
-                style: CometChatPinnedMessagesStyle(
+                style: ConvoKitPinnedMessagesStyle(
                   backgroundColor: c.on('backgroundColor', _bg),
                   iconColor: c.on('iconColor', _iconInk),
                   titleTextStyle: c.on('titleTextStyle', _titleStyle),
@@ -590,7 +590,7 @@ void main() {
       final e = User(uid: 'e', name: 'E');
       final counts = await rowsAfterEvents(
         tester,
-        CometChatPinnedMessages(user: e),
+        ConvoKitPinnedMessages(user: e),
         [
           // u-me_user_bob contains "e", but neither side of it is e.
           _live(
@@ -617,7 +617,7 @@ void main() {
       (tester) async {
         final counts = await rowsAfterEvents(
           tester,
-          CometChatPinnedMessages(
+          ConvoKitPinnedMessages(
             group: Group(
               guid: 'g1',
               name: 'G1',

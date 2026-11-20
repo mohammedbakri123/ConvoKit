@@ -1,6 +1,6 @@
-/// Long-press options on [CometChatUsers] and [UsersList] — ENG-38688.
+/// Long-press options on [ConvoKitUsers] and [UsersList] — ENG-38688.
 ///
-/// Android's CometChatUsers takes `setOptions` and `addOptions`, and its menu
+/// Android's ConvoKitUsers takes `setOptions` and `addOptions`, and its menu
 /// is the `setOptions` list when there is one, else the `addOptions` list
 /// (`buildMenuItems`). v5 Flutter had both; v6 had neither until 6.2.0. A long
 /// press goes, in order, to: starting a long-press selection, then
@@ -106,7 +106,7 @@ final _menuEntries = find.byType(CustomPopupMenuItem<CometChatOption>);
 // ─── Tests ───────────────────────────────────────────────────────────────────
 
 void main() {
-  group('CometChatUsers', () {
+  group('ConvoKitUsers', () {
     testWidgets('setOptions: a long press opens its menu on that user and '
         'runs the chosen option once', (tester) async {
       final bloc = _loaded();
@@ -115,7 +115,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: bloc,
               setOptions: (user, usersBloc, context) {
                 built.add([user.uid, identical(usersBloc, bloc)]);
@@ -152,7 +152,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loaded(),
               addOptions: (user, usersBloc, context) => [
                 CometChatOption(
@@ -181,7 +181,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loaded(),
               setOptions: (user, usersBloc, context) => [
                 CometChatOption(id: 'set', title: 'SET-5Z'),
@@ -208,7 +208,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loaded(),
               onItemLongPress: (context, user) => pressed.add(user.uid),
               setOptions: (user, usersBloc, context) => [
@@ -231,7 +231,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: idle,
               selectionMode: SelectionMode.multiple,
               activateSelection: ActivateSelection.onLongClick,
@@ -256,7 +256,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               key: const ValueKey('selecting'),
               usersBloc: selecting,
               selectionMode: SelectionMode.multiple,
@@ -282,7 +282,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loaded(),
               setOptions: (user, usersBloc, context) {
                 built.add(user.uid);
@@ -310,7 +310,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _loaded(),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: CometChatColorPalette(),
             spacing: CometChatSpacing(),
             typography: const CometChatTypography(),
@@ -352,7 +352,7 @@ void main() {
         _wrap(
           UsersList(
             usersBloc: _loaded(),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: CometChatColorPalette(),
             spacing: CometChatSpacing(),
             typography: const CometChatTypography(),
@@ -369,7 +369,7 @@ void main() {
           UsersList(
             key: const ValueKey('with-callback'),
             usersBloc: _loaded(),
-            style: const CometChatUsersStyle(),
+            style: const ConvoKitUsersStyle(),
             colorPalette: CometChatColorPalette(),
             spacing: CometChatSpacing(),
             typography: const CometChatTypography(),

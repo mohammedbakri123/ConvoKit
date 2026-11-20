@@ -24,7 +24,7 @@ class CometChatGroupMemberOption extends CometChatBaseOptions {
   Function(
     Group group,
     GroupMember member,
-    CometChatGroupMembersControllerProtocol state,
+    ConvoKitGroupMembersControllerProtocol state,
   )?
   onClick;
 

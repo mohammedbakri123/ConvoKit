@@ -19,7 +19,7 @@ class MessageComposerBloc
     with
         CometChatMessageEventListener,
         CometChatUIEventListener,
-        CometChatUserEventListener,
+        ConvoKitUserEventListener,
         CometChatStreamCallbackListener {
   // ============================================================================
   // Use Cases
@@ -315,7 +315,7 @@ class MessageComposerBloc
 
     CometChatMessageEvents.addMessagesListener(_messageListenerKey, this);
     CometChatUIEvents.addUiListener(_uiEventListenerKey, this);
-    CometChatUserEvents.addUsersListener(_userEventListenerKey, this);
+    ConvoKitUserEvents.addUsersListener(_userEventListenerKey, this);
     CometChatStreamCallBackEvents.addStreamCallBackListener(
       _uiEventListenerKey,
       this,
@@ -1334,7 +1334,7 @@ class MessageComposerBloc
     // Remove SDK listeners
     CometChatMessageEvents.removeMessagesListener(_messageListenerKey);
     CometChatUIEvents.removeUiListener(_uiEventListenerKey);
-    CometChatUserEvents.removeUsersListener(_userEventListenerKey);
+    ConvoKitUserEvents.removeUsersListener(_userEventListenerKey);
     CometChatStreamCallBackEvents.removeStreamCallBackListener(
       _uiEventListenerKey,
     );

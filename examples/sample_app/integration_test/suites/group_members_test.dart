@@ -15,7 +15,7 @@ import '../sdk_user_b/group_test_actions.dart';
 /// Group Details & Group Members — Consolidated E2E Suite (single file).
 ///
 /// Drives User A's real Flutter UI on the emulator (GroupInfoScreen,
-/// CometChatGroupMembers, AddMembersScreen, BannedMembersScreen,
+/// ConvoKitGroupMembers, AddMembersScreen, BannedMembersScreen,
 /// TransferOwnershipScreen) while User B / other members act via REST
 /// (UserBGroup, GroupTestActions, SdkUserB) to trigger real WebSocket events.
 ///
@@ -491,7 +491,7 @@ void main() {
   });
 
   // ───────────────────────────────────────────────────────────────────────────
-  // Members list (CometChatGroupMembers) — badges, add, banned, scope.
+  // Members list (ConvoKitGroupMembers) — badges, add, banned, scope.
   // ───────────────────────────────────────────────────────────────────────────
   group('Group members management', () {
     // Open the A-owned group info, then the "View Members" screen.
@@ -543,7 +543,7 @@ void main() {
       await tester.tap(addTile.first);
       await pumpFor(tester, const Duration(seconds: 4));
 
-      // AddMembersScreen embeds CometChatUsers (a user list). Assert a list /
+      // AddMembersScreen embeds ConvoKitUsers (a user list). Assert a list /
       // rows rendered: either a Scrollable user list or at least the screen
       // title "Add Members" present along with list items.
       final hasList = find.byType(Scrollable).evaluate().isNotEmpty;
@@ -572,7 +572,7 @@ void main() {
 
       var droveAdd = false;
       try {
-        // Select User B in the embedded CometChatUsers (tap his row).
+        // Select User B in the embedded ConvoKitUsers (tap his row).
         final bRow = find.text(bName);
         if (bRow.evaluate().isNotEmpty) {
           await tester.tap(bRow.first);
@@ -620,7 +620,7 @@ void main() {
       final opened = await openViewMembers(tester);
       expect(opened, isTrue, reason: 'GRP-074: View Members should open');
 
-      // CometChatGroupMembers lists the member's name.
+      // ConvoKitGroupMembers lists the member's name.
       final seen = await AssertionHelper.waitForAnyTextInTree(
         tester,
         [bName, bName.split(' ').first],
@@ -754,7 +754,7 @@ void main() {
       await pumpFor(tester, const Duration(seconds: 4));
 
       // Wait for B's row to render, then long-press it -> popup -> "Change
-      // Scope" -> CometChatChangeScope sheet -> select "Participant" -> "Save".
+      // Scope" -> ConvoKitChangeScope sheet -> select "Participant" -> "Save".
       var droveChange = false;
       try {
         await AssertionHelper.waitForAnyTextInTree(

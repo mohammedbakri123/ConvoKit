@@ -1,6 +1,6 @@
-/// Render-verified prop matrix for [CometChatGroupsStyle] — Track 3 PROP1.
+/// Render-verified prop matrix for [ConvoKitGroupsStyle] — Track 3 PROP1.
 ///
-/// The component matrix in `groups_props_test.dart` covers `CometChatGroups`
+/// The component matrix in `groups_props_test.dart` covers `ConvoKitGroups`
 /// itself; this covers the 44 props of the style it takes. Distinct from the
 /// existing `groups_style_test.dart`, which asserts constructor assignment and
 /// therefore scores zero on this gate — it would keep passing if the component
@@ -103,9 +103,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loaded(),
-              groupsStyle: const CometChatGroupsStyle(
+              groupsStyle: const ConvoKitGroupsStyle(
                 backgroundColor: _c1,
                 border: Border.fromBorderSide(BorderSide(color: _c2, width: 3)),
                 borderRadius: BorderRadius.all(Radius.circular(18)),
@@ -132,9 +132,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loaded(),
-              groupsStyle: const CometChatGroupsStyle(
+              groupsStyle: const ConvoKitGroupsStyle(
                 separatorColor: _c3,
                 separatorHeight: 4,
               ),
@@ -158,10 +158,10 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loaded(),
               title: 'Channels',
-              groupsStyle: const CometChatGroupsStyle(
+              groupsStyle: const ConvoKitGroupsStyle(
                 titleTextColor: _c1,
                 titleTextStyle: TextStyle(fontSize: 29, letterSpacing: 2),
               ),
@@ -182,9 +182,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loaded(),
-              groupsStyle: const CometChatGroupsStyle(backIconColor: _c2),
+              groupsStyle: const ConvoKitGroupsStyle(backIconColor: _c2),
             ),
           ),
         ),
@@ -199,9 +199,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loaded(selected: {'g1'}),
-              groupsStyle: const CometChatGroupsStyle(submitIconColor: _c3),
+              groupsStyle: const ConvoKitGroupsStyle(submitIconColor: _c3),
             ),
           ),
         ),
@@ -218,9 +218,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loaded(),
-              groupsStyle: const CometChatGroupsStyle(
+              groupsStyle: const ConvoKitGroupsStyle(
                 searchBackgroundColor: _c1,
                 searchBorder: BorderSide(color: _c2, width: 2),
                 searchBorderRadius: BorderRadius.all(Radius.circular(11)),
@@ -260,9 +260,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loaded(),
-              groupsStyle: const CometChatGroupsStyle(
+              groupsStyle: const ConvoKitGroupsStyle(
                 itemTitleTextColor: _c1,
                 itemTitleTextStyle: TextStyle(fontSize: 23),
                 itemSubtitleTextColor: _c2,
@@ -287,9 +287,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loaded(),
-              groupsStyle: const CometChatGroupsStyle(
+              groupsStyle: const ConvoKitGroupsStyle(
                 avatarStyle: CometChatAvatarStyle(backgroundColor: _c3),
                 statusIndicatorStyle: CometChatStatusIndicatorStyle(
                   backgroundColor: _c4,
@@ -318,9 +318,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loaded(),
-              groupsStyle: const CometChatGroupsStyle(
+              groupsStyle: const ConvoKitGroupsStyle(
                 privateGroupIconBackground: _c5,
                 protectedGroupIconBackground: _c6,
               ),
@@ -357,10 +357,10 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loaded(selected: {'g1'}),
               selectionMode: SelectionMode.multiple,
-              groupsStyle: const CometChatGroupsStyle(
+              groupsStyle: const ConvoKitGroupsStyle(
                 checkBoxBackgroundColor: _c1,
                 checkBoxCheckedBackgroundColor: _c2,
                 checkBoxBorderRadius: BorderRadius.all(Radius.circular(7)),
@@ -393,10 +393,10 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loaded(selected: {'g1'}),
               selectionMode: SelectionMode.multiple,
-              groupsStyle: const CometChatGroupsStyle(
+              groupsStyle: const ConvoKitGroupsStyle(
                 checkboxSelectedIconColor: _c4,
               ),
             ),
@@ -417,9 +417,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _blocIn(const GroupsEmpty()),
-              groupsStyle: const CometChatGroupsStyle(
+              groupsStyle: const ConvoKitGroupsStyle(
                 emptyStateTextColor: _c1,
                 emptyStateTextStyle: TextStyle(fontSize: 26),
                 emptyStateSubTitleTextColor: _c2,
@@ -456,9 +456,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _blocIn(const GroupsError(message: 'boom')),
-              groupsStyle: const CometChatGroupsStyle(
+              groupsStyle: const ConvoKitGroupsStyle(
                 errorStateTextColor: _c1,
                 errorStateTextStyle: TextStyle(fontSize: 26),
                 errorStateSubTitleTextColor: _c2,
@@ -484,14 +484,14 @@ void main() {
       tester,
     ) async {
       // ENG-39121: all five were dead. getDefaultErrorStateView has accepted
-      // button* arguments the whole time — CometChatGroupMembers passes them,
+      // button* arguments the whole time — ConvoKitGroupMembers passes them,
       // Groups and Users did not.
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _blocIn(const GroupsError(message: 'boom')),
-              groupsStyle: const CometChatGroupsStyle(
+              groupsStyle: const ConvoKitGroupsStyle(
                 retryButtonBackgroundColor: _c3,
                 retryButtonTextColor: _c4,
                 retryButtonTextStyle: TextStyle(fontSize: 19),

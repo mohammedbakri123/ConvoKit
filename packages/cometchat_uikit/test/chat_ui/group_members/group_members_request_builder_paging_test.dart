@@ -1,4 +1,4 @@
-/// CometChatGroupMembers.groupMembersRequestBuilder shapes what the list
+/// ConvoKitGroupMembers.groupMembersRequestBuilder shapes what the list
 /// loads — ENG-38688.
 ///
 /// The prop only reached the legacy controller stub: GroupMembersBloc took no
@@ -561,7 +561,7 @@ void main() {
     });
   });
 
-  group('CometChatGroupMembers', () {
+  group('ConvoKitGroupMembers', () {
     testWidgets('groupMembersRequestBuilder shapes the request the list '
         'loads', (tester) async {
       final server = _Server(_roster());
@@ -575,7 +575,7 @@ void main() {
             localizationsDelegates: Translations.localizationsDelegates,
             supportedLocales: const [Locale('en')],
             home: Scaffold(
-              body: CometChatGroupMembers(
+              body: ConvoKitGroupMembers(
                 group: _group,
                 groupMembersRequestBuilder: builder,
               ),

@@ -1,5 +1,5 @@
-/// Behaviour tests for [CometChatGroupMembersController] — the legacy
-/// `ChangeNotifier` view model behind `CometChatGroupMembers` (the screen also
+/// Behaviour tests for [ConvoKitGroupMembersController] — the legacy
+/// `ChangeNotifier` view model behind `ConvoKitGroupMembers` (the screen also
 /// ships a bloc; this controller is the public, subclassable one).
 ///
 /// It sat at 3% line coverage because every concrete use of it goes through
@@ -162,7 +162,7 @@ void main() {
 
   /// Builds a controller that is safe to drive without the SDK: `loggedInUser`
   /// is pre-set, so `loadMoreElements` never reaches `CometChat.getLoggedInUser`.
-  CometChatGroupMembersController make({
+  ConvoKitGroupMembersController make({
     List<GroupMember> seed = const [],
     _FakeBuilder? withBuilder,
     Group? group,
@@ -174,7 +174,7 @@ void main() {
     User? loggedInUser,
   }) {
     builder = withBuilder ?? _FakeBuilder();
-    final c = CometChatGroupMembersController(
+    final c = ConvoKitGroupMembersController(
       groupMembersBuilderProtocol: builder,
       group: group ?? _group(),
       mode: mode,
@@ -246,7 +246,7 @@ void main() {
     });
 
     test('the hide* option flags are carried verbatim', () {
-      final c = CometChatGroupMembersController(
+      final c = ConvoKitGroupMembersController(
         groupMembersBuilderProtocol: _FakeBuilder(),
         group: _group(),
         hideBanMemberOption: true,
@@ -405,7 +405,7 @@ void main() {
   // ===========================================================================
   group('removal listeners — kicked / left / banned', () {
     for (final kind in ['kicked', 'left', 'banned']) {
-      void fire(CometChatGroupMembersController c, User who, Group from) {
+      void fire(ConvoKitGroupMembersController c, User who, Group from) {
         switch (kind) {
           case 'kicked':
             c.onGroupMemberKicked(_action(), who, _user('me'), from);
@@ -921,12 +921,12 @@ void main() {
       c.onInit();
       await Future<void>.delayed(Duration.zero);
 
-      expect(CometChatGroupEvents.groupsListener[c.groupUIListenerID], same(c));
+      expect(ConvoKitGroupEvents.groupsListener[c.groupUIListenerID], same(c));
       expect(b.plain.calls, 1);
       expect(c.list.map((m) => m.uid), ['a']);
 
       c.onClose();
-      expect(CometChatGroupEvents.groupsListener[c.groupUIListenerID], isNull);
+      expect(ConvoKitGroupEvents.groupsListener[c.groupUIListenerID], isNull);
     });
 
     test('onClose is idempotent and safe without a prior onInit', () {
@@ -941,26 +941,26 @@ void main() {
 
       c.onInit();
       await Future<void>.delayed(Duration.zero);
-      expect(CometChatGroupEvents.groupsListener[c.groupUIListenerID], same(c));
+      expect(ConvoKitGroupEvents.groupsListener[c.groupUIListenerID], same(c));
 
       c.onClose();
-      expect(CometChatGroupEvents.groupsListener[c.groupUIListenerID], isNull);
+      expect(ConvoKitGroupEvents.groupsListener[c.groupUIListenerID], isNull);
     });
 
     test(
       'dispose runs onClose, so the UI bus does not keep the controller',
       () {
-        final c = CometChatGroupMembersController(
+        final c = ConvoKitGroupMembersController(
           groupMembersBuilderProtocol: _FakeBuilder(),
           group: _group(),
         );
         c.loggedInUser = _user('me');
-        CometChatGroupEvents.addGroupsListener(c.groupUIListenerID, c);
+        ConvoKitGroupEvents.addGroupsListener(c.groupUIListenerID, c);
 
         c.dispose();
 
         expect(
-          CometChatGroupEvents.groupsListener[c.groupUIListenerID],
+          ConvoKitGroupEvents.groupsListener[c.groupUIListenerID],
           isNull,
         );
       },
@@ -1032,7 +1032,7 @@ void main() {
     /// `Translations.of(context)` and the theme helpers resolve.
     Future<List<CometChatOption>> optionsFor(
       WidgetTester tester,
-      CometChatGroupMembersController c, {
+      ConvoKitGroupMembersController c, {
       required GroupMember member,
       Group? group,
     }) async {
@@ -1078,7 +1078,7 @@ void main() {
     testWidgets('hideBanMemberOption / hideKickMemberOption drop their rows', (
       tester,
     ) async {
-      final c = CometChatGroupMembersController(
+      final c = ConvoKitGroupMembersController(
         groupMembersBuilderProtocol: _FakeBuilder(),
         group: _group(),
         hideBanMemberOption: true,
@@ -1097,7 +1097,7 @@ void main() {
     testWidgets('hideScopeChangeOption drops only the scope row', (
       tester,
     ) async {
-      final c = CometChatGroupMembersController(
+      final c = ConvoKitGroupMembersController(
         groupMembersBuilderProtocol: _FakeBuilder(),
         group: _group(),
         hideScopeChangeOption: true,
@@ -1165,7 +1165,7 @@ void main() {
             .onClick!();
         await tester.pumpAndSettle();
 
-        expect(find.byType(CometChatChangeScope), findsOneWidget);
+        expect(find.byType(ConvoKitChangeScope), findsOneWidget);
       },
     );
 

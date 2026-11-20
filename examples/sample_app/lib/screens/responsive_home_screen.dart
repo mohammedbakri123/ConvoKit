@@ -492,7 +492,7 @@ class _ResponsiveHomeScreenState extends State<ResponsiveHomeScreen> {
   }
 
   Widget _buildUsersTab() {
-    return CometChatUsers(
+    return ConvoKitUsers(
       hideAppbar: true,
       onItemTap: (_, user) => _openConversation(user: user),
       hideSearch: _toggles.usersHideSearch.value,
@@ -503,7 +503,7 @@ class _ResponsiveHomeScreenState extends State<ResponsiveHomeScreen> {
   Widget _buildGroupsTab() {
     return Stack(
       children: [
-        CometChatGroups(
+        ConvoKitGroups(
           hideAppbar: true,
           onItemTap: (_, group) => _openGroupChat(group),
           hideSearch: _toggles.groupsHideSearch.value,
@@ -606,7 +606,7 @@ class _ResponsiveHomeScreenState extends State<ResponsiveHomeScreen> {
             // Desktop keeps the list in the left panel while the tapped
             // message opens in the centre; mobile pops it like any other
             // pushed route.
-            final saved = CometChatSavedMessages(
+            final saved = ConvoKitSavedMessages(
               onItemTap: _openSavedMessage,
               popOnItemTap: !isDesktopLayout(context),
               // Desktop: panel chrome — ✕ on the right, title left.
@@ -886,7 +886,7 @@ class _ResponsiveHomeScreenState extends State<ResponsiveHomeScreen> {
         if (!joinedGroup.hasJoined) joinedGroup.hasJoined = true;
         final user = await CometChat.getLoggedInUser();
         if (user != null) {
-          CometChatGroupEvents.ccGroupMemberJoined(user, joinedGroup);
+          ConvoKitGroupEvents.ccGroupMemberJoined(user, joinedGroup);
         }
         if (!mounted) return;
         messenger.hideCurrentSnackBar();

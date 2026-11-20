@@ -1,8 +1,8 @@
-/// Data-class behaviour for [CometChatUsersStyle] — `copyWith`, `merge`,
+/// Data-class behaviour for [ConvoKitUsersStyle] — `copyWith`, `merge`,
 /// `lerp` and `of`.
 ///
 /// `users_style_props_test.dart` and `users_style_props_matrix_test.dart`
-/// already pump every prop through `CometChatUsers` and read it back off the
+/// already pump every prop through `ConvoKitUsers` and read it back off the
 /// painted widget, so *reaching* the screen is covered. What is not covered is
 /// the style object's own plumbing: three hand-written per-field methods,
 /// ~180 lines between them, where one transposed line silently drops or
@@ -35,7 +35,7 @@ double? _boxWidth(BoxBorder? b) => b?.top.width;
 
 // ─── The field table ─────────────────────────────────────────────────────────
 
-typedef _Row = (String name, int n, double? Function(CometChatUsersStyle));
+typedef _Row = (String name, int n, double? Function(ConvoKitUsersStyle));
 
 /// Every field the style declares, with the number it carries and how to read
 /// that number back.
@@ -85,88 +85,88 @@ const List<_Row> _rows = [
   ('stickyTitleTextStyle', 43, _rStickyTitleTextStyle),
 ];
 
-double? _rBackgroundColor(CometChatUsersStyle s) => _blue(s.backgroundColor);
-double? _rBorder(CometChatUsersStyle s) => _boxWidth(s.border);
-double? _rBorderRadius(CometChatUsersStyle s) => _radius(s.borderRadius);
-double? _rBackIconColor(CometChatUsersStyle s) => _blue(s.backIconColor);
-double? _rTitleTextStyle(CometChatUsersStyle s) => s.titleTextStyle?.fontSize;
-double? _rTitleTextColor(CometChatUsersStyle s) => _blue(s.titleTextColor);
-double? _rEmptyStateTextStyle(CometChatUsersStyle s) =>
+double? _rBackgroundColor(ConvoKitUsersStyle s) => _blue(s.backgroundColor);
+double? _rBorder(ConvoKitUsersStyle s) => _boxWidth(s.border);
+double? _rBorderRadius(ConvoKitUsersStyle s) => _radius(s.borderRadius);
+double? _rBackIconColor(ConvoKitUsersStyle s) => _blue(s.backIconColor);
+double? _rTitleTextStyle(ConvoKitUsersStyle s) => s.titleTextStyle?.fontSize;
+double? _rTitleTextColor(ConvoKitUsersStyle s) => _blue(s.titleTextColor);
+double? _rEmptyStateTextStyle(ConvoKitUsersStyle s) =>
     s.emptyStateTextStyle?.fontSize;
-double? _rEmptyStateTextColor(CometChatUsersStyle s) =>
+double? _rEmptyStateTextColor(ConvoKitUsersStyle s) =>
     _blue(s.emptyStateTextColor);
-double? _rErrorStateTextStyle(CometChatUsersStyle s) =>
+double? _rErrorStateTextStyle(ConvoKitUsersStyle s) =>
     s.errorStateTextStyle?.fontSize;
-double? _rErrorStateTextColor(CometChatUsersStyle s) =>
+double? _rErrorStateTextColor(ConvoKitUsersStyle s) =>
     _blue(s.errorStateTextColor);
-double? _rEmptySubStyle(CometChatUsersStyle s) =>
+double? _rEmptySubStyle(ConvoKitUsersStyle s) =>
     s.emptyStateSubTitleTextStyle?.fontSize;
-double? _rEmptySubColor(CometChatUsersStyle s) =>
+double? _rEmptySubColor(ConvoKitUsersStyle s) =>
     _blue(s.emptyStateSubTitleTextColor);
-double? _rErrorSubStyle(CometChatUsersStyle s) =>
+double? _rErrorSubStyle(ConvoKitUsersStyle s) =>
     s.errorStateSubTitleTextStyle?.fontSize;
-double? _rErrorSubColor(CometChatUsersStyle s) =>
+double? _rErrorSubColor(ConvoKitUsersStyle s) =>
     _blue(s.errorStateSubTitleTextColor);
-double? _rItemTitleTextStyle(CometChatUsersStyle s) =>
+double? _rItemTitleTextStyle(ConvoKitUsersStyle s) =>
     s.itemTitleTextStyle?.fontSize;
-double? _rItemTitleTextColor(CometChatUsersStyle s) =>
+double? _rItemTitleTextColor(ConvoKitUsersStyle s) =>
     _blue(s.itemTitleTextColor);
-double? _rSeparatorColor(CometChatUsersStyle s) => _blue(s.separatorColor);
-double? _rSeparatorHeight(CometChatUsersStyle s) => s.separatorHeight;
-double? _rAvatarStyle(CometChatUsersStyle s) =>
+double? _rSeparatorColor(ConvoKitUsersStyle s) => _blue(s.separatorColor);
+double? _rSeparatorHeight(ConvoKitUsersStyle s) => s.separatorHeight;
+double? _rAvatarStyle(ConvoKitUsersStyle s) =>
     _blue(s.avatarStyle?.backgroundColor);
-double? _rStatusIndicatorStyle(CometChatUsersStyle s) =>
+double? _rStatusIndicatorStyle(ConvoKitUsersStyle s) =>
     _blue(s.statusIndicatorStyle?.backgroundColor);
-double? _rSearchBackgroundColor(CometChatUsersStyle s) =>
+double? _rSearchBackgroundColor(ConvoKitUsersStyle s) =>
     _blue(s.searchBackgroundColor);
-double? _rSearchBorder(CometChatUsersStyle s) => s.searchBorder?.width;
-double? _rSearchBorderRadius(CometChatUsersStyle s) =>
+double? _rSearchBorder(ConvoKitUsersStyle s) => s.searchBorder?.width;
+double? _rSearchBorderRadius(ConvoKitUsersStyle s) =>
     _radius(s.searchBorderRadius);
-double? _rSearchIconColor(CometChatUsersStyle s) => _blue(s.searchIconColor);
-double? _rSearchInputTextColor(CometChatUsersStyle s) =>
+double? _rSearchIconColor(ConvoKitUsersStyle s) => _blue(s.searchIconColor);
+double? _rSearchInputTextColor(ConvoKitUsersStyle s) =>
     _blue(s.searchInputTextColor);
-double? _rSearchInputTextStyle(CometChatUsersStyle s) =>
+double? _rSearchInputTextStyle(ConvoKitUsersStyle s) =>
     s.searchInputTextStyle?.fontSize;
-double? _rSearchPlaceHolderTextColor(CometChatUsersStyle s) =>
+double? _rSearchPlaceHolderTextColor(ConvoKitUsersStyle s) =>
     _blue(s.searchPlaceHolderTextColor);
-double? _rSearchPlaceHolderTextStyle(CometChatUsersStyle s) =>
+double? _rSearchPlaceHolderTextStyle(ConvoKitUsersStyle s) =>
     s.searchPlaceHolderTextStyle?.fontSize;
-double? _rCheckBoxBackgroundColor(CometChatUsersStyle s) =>
+double? _rCheckBoxBackgroundColor(ConvoKitUsersStyle s) =>
     _blue(s.checkBoxBackgroundColor);
-double? _rCheckBoxBorder(CometChatUsersStyle s) => s.checkBoxBorder?.width;
-double? _rCheckBoxBorderRadius(CometChatUsersStyle s) =>
+double? _rCheckBoxBorder(ConvoKitUsersStyle s) => s.checkBoxBorder?.width;
+double? _rCheckBoxBorderRadius(ConvoKitUsersStyle s) =>
     _radius(s.checkBoxBorderRadius);
-double? _rCheckBoxCheckedBackgroundColor(CometChatUsersStyle s) =>
+double? _rCheckBoxCheckedBackgroundColor(ConvoKitUsersStyle s) =>
     _blue(s.checkBoxCheckedBackgroundColor);
-double? _rListItemSelectedBackgroundColor(CometChatUsersStyle s) =>
+double? _rListItemSelectedBackgroundColor(ConvoKitUsersStyle s) =>
     _blue(s.listItemSelectedBackgroundColor);
-double? _rCheckboxSelectedIconColor(CometChatUsersStyle s) =>
+double? _rCheckboxSelectedIconColor(ConvoKitUsersStyle s) =>
     _blue(s.checkboxSelectedIconColor);
-double? _rSubmitIconColor(CometChatUsersStyle s) => _blue(s.submitIconColor);
-double? _rRetryButtonBackgroundColor(CometChatUsersStyle s) =>
+double? _rSubmitIconColor(ConvoKitUsersStyle s) => _blue(s.submitIconColor);
+double? _rRetryButtonBackgroundColor(ConvoKitUsersStyle s) =>
     _blue(s.retryButtonBackgroundColor);
-double? _rRetryButtonBorder(CometChatUsersStyle s) =>
+double? _rRetryButtonBorder(ConvoKitUsersStyle s) =>
     s.retryButtonBorder?.width;
-double? _rRetryButtonBorderRadius(CometChatUsersStyle s) =>
+double? _rRetryButtonBorderRadius(ConvoKitUsersStyle s) =>
     _radius(s.retryButtonBorderRadius);
-double? _rRetryButtonTextColor(CometChatUsersStyle s) =>
+double? _rRetryButtonTextColor(ConvoKitUsersStyle s) =>
     _blue(s.retryButtonTextColor);
-double? _rRetryButtonTextStyle(CometChatUsersStyle s) =>
+double? _rRetryButtonTextStyle(ConvoKitUsersStyle s) =>
     s.retryButtonTextStyle?.fontSize;
-double? _rItemBorder(CometChatUsersStyle s) => _boxWidth(s.itemBorder);
-double? _rStickyTitleColor(CometChatUsersStyle s) => _blue(s.stickyTitleColor);
-double? _rStickyTitleTextStyle(CometChatUsersStyle s) =>
+double? _rItemBorder(ConvoKitUsersStyle s) => _boxWidth(s.itemBorder);
+double? _rStickyTitleColor(ConvoKitUsersStyle s) => _blue(s.stickyTitleColor);
+double? _rStickyTitleTextStyle(ConvoKitUsersStyle s) =>
     s.stickyTitleTextStyle?.fontSize;
 
 // ─── Style builders ──────────────────────────────────────────────────────────
 
 /// A style whose every field carries `n + offset`.
-CometChatUsersStyle _style(int offset) {
+ConvoKitUsersStyle _style(int offset) {
   double d(int n) => (n + offset).toDouble();
   Color c(int n) => _c(n + offset);
   TextStyle t(int n) => TextStyle(fontSize: d(n));
 
-  return CometChatUsersStyle(
+  return ConvoKitUsersStyle(
     backgroundColor: c(1),
     border: Border.all(width: d(2)),
     borderRadius: BorderRadius.circular(d(3)),
@@ -214,7 +214,7 @@ CometChatUsersStyle _style(int offset) {
 }
 
 /// The same values, handed to `copyWith` one parameter at a time.
-CometChatUsersStyle _copyEverything(CometChatUsersStyle onto, int offset) {
+ConvoKitUsersStyle _copyEverything(ConvoKitUsersStyle onto, int offset) {
   double d(int n) => (n + offset).toDouble();
   Color c(int n) => _c(n + offset);
   TextStyle t(int n) => TextStyle(fontSize: d(n));
@@ -287,7 +287,7 @@ void main() {
   });
 
   test('a default style holds nothing', () {
-    const s = CometChatUsersStyle();
+    const s = ConvoKitUsersStyle();
     for (final (name, _, read) in _rows) {
       expect(read(s), isNull, reason: name);
     }
@@ -357,7 +357,7 @@ void main() {
     });
 
     test('an empty other style changes nothing', () {
-      final merged = start.merge(const CometChatUsersStyle());
+      final merged = start.merge(const ConvoKitUsersStyle());
       for (final (name, n, read) in _rows) {
         expect(read(merged), n.toDouble(), reason: '$name was blanked');
       }
@@ -365,7 +365,7 @@ void main() {
 
     test('merge is per-field, not all-or-nothing', () {
       final merged = start.merge(
-        const CometChatUsersStyle(separatorHeight: 999),
+        const ConvoKitUsersStyle(separatorHeight: 999),
       );
       expect(_rSeparatorHeight(merged), 999);
       expect(_rSeparatorColor(merged), 17);
@@ -408,7 +408,7 @@ void main() {
       // substitute a default when either side is null, so a half-populated
       // theme animation still produces a paintable border rather than
       // throwing.
-      final r = const CometChatUsersStyle().lerp(end, 1.0);
+      final r = const ConvoKitUsersStyle().lerp(end, 1.0);
       expect(r.searchBorder?.width, 122);
       expect(r.checkBoxBorder?.width, 130);
       expect(r.retryButtonBorder?.width, 137);
@@ -430,13 +430,13 @@ void main() {
     // `of` predates CometChatThemeHelper: it does not read the theme, so a
     // style registered as a ThemeExtension is NOT what it returns. Components
     // resolve the themed style through the helper instead.
-    late CometChatUsersStyle resolved;
+    late ConvoKitUsersStyle resolved;
     await tester.pumpWidget(
       MaterialApp(
         theme: ThemeData(extensions: <ThemeExtension<dynamic>>[start]),
         home: Builder(
           builder: (context) {
-            resolved = CometChatUsersStyle.of(context);
+            resolved = ConvoKitUsersStyle.of(context);
             return const SizedBox();
           },
         ),
@@ -447,7 +447,7 @@ void main() {
     expect(
       Theme.of(
         tester.element(find.byType(SizedBox)),
-      ).extension<CometChatUsersStyle>()?.backgroundColor,
+      ).extension<ConvoKitUsersStyle>()?.backgroundColor,
       _c(1),
     );
   });

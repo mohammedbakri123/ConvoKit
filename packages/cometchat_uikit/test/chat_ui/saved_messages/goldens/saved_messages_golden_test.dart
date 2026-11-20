@@ -1,4 +1,4 @@
-/// Golden pins for [CometChatSavedMessages]: the saved-message row (1-1 and
+/// Golden pins for [ConvoKitSavedMessages]: the saved-message row (1-1 and
 /// group) and the empty state.
 ///
 /// The screen takes no bloc, so the real widget runs against a fake message
@@ -77,7 +77,7 @@ void main() {
         size: _size,
         builder: () {
           fakeMessagePage = _saved;
-          return const CometChatSavedMessages();
+          return const ConvoKitSavedMessages();
         },
       );
 
@@ -87,7 +87,7 @@ void main() {
         size: _size,
         builder: () {
           fakeMessagePage = () => const [];
-          return const CometChatSavedMessages();
+          return const ConvoKitSavedMessages();
         },
       );
     },

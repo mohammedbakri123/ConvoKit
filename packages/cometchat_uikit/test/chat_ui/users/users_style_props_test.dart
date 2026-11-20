@@ -1,9 +1,9 @@
-/// Render-verified style matrix for [CometChatUsersStyle] — Track 3 PROP1
+/// Render-verified style matrix for [ConvoKitUsersStyle] — Track 3 PROP1
 /// (ENG-38688, coverage part 2).
 ///
 /// `users_props_test.dart` already renders eight of the 43 props (the heading,
 /// the back icon, the container and the search text). This file covers the
-/// other 35, one row per prop: pump [CometChatUsers] with that prop set to a
+/// other 35, one row per prop: pump [ConvoKitUsers] with that prop set to a
 /// sentinel no theme uses, find the widget that actually paints it, and compare.
 /// Every assertion reads the painter — the Checkbox, the row's Container, a
 /// Text, the AppBar's shape — never the style object, so each one fails if the
@@ -12,7 +12,7 @@
 /// Rows are grouped by the child that paints them:
 ///
 ///   search row, frame, separator ... CometChatListBase, via ListBaseStyle
-///   submit icon ..................... CometChatUsers' selection action
+///   submit icon ..................... ConvoKitUsers' selection action
 ///   checkboxes, selected row ........ UsersList
 ///   title, border, avatar, dot ...... CometChatListItem, via UsersList
 ///   initials ........................ SectionSeparator, via UsersList
@@ -152,9 +152,9 @@ void main() {
     testWidgets('searchBackgroundColor fills the search field', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _loaded(),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               searchBackgroundColor: Color(0xFF1A2B3C),
             ),
           ),
@@ -168,9 +168,9 @@ void main() {
     testWidgets('searchBorder outlines the search field', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _loaded(),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               searchBorder: BorderSide(color: Color(0xFF2B3C4D), width: 2.5),
             ),
           ),
@@ -187,9 +187,9 @@ void main() {
     testWidgets('searchBorderRadius rounds the search field', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _loaded(),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               searchBorderRadius: BorderRadius.all(Radius.circular(9)),
             ),
           ),
@@ -206,9 +206,9 @@ void main() {
     testWidgets('searchIconColor tints the magnifier', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _loaded(),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               searchIconColor: Color(0xFF3C4D5E),
             ),
           ),
@@ -227,10 +227,10 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _loaded(),
             searchPlaceholder: 'Find someone',
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               searchPlaceHolderTextStyle: TextStyle(fontSize: 17.5),
             ),
           ),
@@ -251,9 +251,9 @@ void main() {
     testWidgets('border outlines the component container', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _loaded(),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               border: Border.fromBorderSide(
                 BorderSide(color: Color(0xFF4D5E6F), width: 3),
               ),
@@ -278,9 +278,9 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _loaded(),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               separatorColor: Color(0xFF5E6F70),
             ),
           ),
@@ -294,9 +294,9 @@ void main() {
     testWidgets('separatorHeight sets the rule thickness', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _loaded(),
-            usersStyle: const CometChatUsersStyle(separatorHeight: 3.5),
+            usersStyle: const ConvoKitUsersStyle(separatorHeight: 3.5),
           ),
         ),
       );
@@ -313,10 +313,10 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _loaded(selected: {'u1'}),
             selectionMode: SelectionMode.multiple,
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               submitIconColor: Color(0xFF6F7081),
             ),
           ),
@@ -335,10 +335,10 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _loaded(),
             selectionMode: SelectionMode.multiple,
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               checkBoxBackgroundColor: Color(0xFF708192),
             ),
           ),
@@ -353,10 +353,10 @@ void main() {
     testWidgets('checkBoxBorder outlines an unchecked box', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _loaded(),
             selectionMode: SelectionMode.multiple,
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               checkBoxBorder: BorderSide(color: Color(0xFF8192A3), width: 2.5),
             ),
           ),
@@ -373,10 +373,10 @@ void main() {
     testWidgets('checkBoxBorderRadius rounds the box', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _loaded(),
             selectionMode: SelectionMode.multiple,
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               checkBoxBorderRadius: BorderRadius.all(Radius.circular(7)),
             ),
           ),
@@ -394,10 +394,10 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _loaded(selected: {'u1'}),
             selectionMode: SelectionMode.multiple,
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               checkBoxCheckedBackgroundColor: Color(0xFF92A3B4),
             ),
           ),
@@ -416,10 +416,10 @@ void main() {
     testWidgets('checkboxSelectedIconColor colours the tick', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _loaded(selected: {'u1'}),
             selectionMode: SelectionMode.multiple,
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               checkboxSelectedIconColor: Color(0xFFA3B4C5),
             ),
           ),
@@ -438,9 +438,9 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _loaded(selected: {'u1'}),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               listItemSelectedBackgroundColor: Color(0xFFB4C5D6),
             ),
           ),
@@ -461,9 +461,9 @@ void main() {
     testWidgets('itemTitleTextColor colours each name', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _loaded(),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               itemTitleTextColor: Color(0xFFC5D6E7),
             ),
           ),
@@ -480,9 +480,9 @@ void main() {
     testWidgets('itemTitleTextStyle styles each name', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _loaded(),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               itemTitleTextStyle: TextStyle(fontSize: 22.5),
             ),
           ),
@@ -496,9 +496,9 @@ void main() {
     testWidgets('itemBorder outlines each row', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _loaded(),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               itemBorder: Border.fromBorderSide(
                 BorderSide(color: Color(0xFFD6E7F8), width: 2),
               ),
@@ -519,9 +519,9 @@ void main() {
     testWidgets('avatarStyle reaches the row avatar', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _loaded(),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               avatarStyle: CometChatAvatarStyle(
                 backgroundColor: Color(0xFFE7F809),
                 border: Border.fromBorderSide(
@@ -549,9 +549,9 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _loaded(),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               statusIndicatorStyle: CometChatStatusIndicatorStyle(
                 backgroundColor: Color(0xFF1B2C3D),
                 border: Border.fromBorderSide(
@@ -583,9 +583,9 @@ void main() {
     testWidgets('stickyTitleColor colours the initial', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _loaded(),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               stickyTitleColor: Color(0xFF3D4E5F),
             ),
           ),
@@ -599,9 +599,9 @@ void main() {
     testWidgets('stickyTitleTextStyle styles the initial', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _loaded(),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               stickyTitleTextStyle: TextStyle(fontSize: 19.5),
             ),
           ),
@@ -618,9 +618,9 @@ void main() {
     testWidgets('emptyStateTextColor colours the empty title', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _bloc(const UsersEmpty()),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               emptyStateTextColor: Color(0xFF4E5F60),
             ),
           ),
@@ -635,9 +635,9 @@ void main() {
     testWidgets('emptyStateTextStyle styles the empty title', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _bloc(const UsersEmpty()),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               emptyStateTextStyle: TextStyle(fontSize: 24.5),
             ),
           ),
@@ -654,9 +654,9 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _bloc(const UsersEmpty()),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               emptyStateSubTitleTextColor: Color(0xFF5F6071),
             ),
           ),
@@ -673,9 +673,9 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _bloc(const UsersEmpty()),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               emptyStateSubTitleTextStyle: TextStyle(fontSize: 13.5),
             ),
           ),
@@ -693,9 +693,9 @@ void main() {
     testWidgets('errorStateTextColor colours the error title', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _bloc(const UsersError(message: 'boom')),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               errorStateTextColor: Color(0xFF607182),
             ),
           ),
@@ -710,9 +710,9 @@ void main() {
     testWidgets('errorStateTextStyle styles the error title', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _bloc(const UsersError(message: 'boom')),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               errorStateTextStyle: TextStyle(fontSize: 26.5),
             ),
           ),
@@ -729,9 +729,9 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _bloc(const UsersError(message: 'boom')),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               errorStateSubTitleTextColor: Color(0xFF718293),
             ),
           ),
@@ -750,9 +750,9 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _bloc(const UsersError(message: 'boom')),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               errorStateSubTitleTextStyle: TextStyle(fontSize: 11.5),
             ),
           ),
@@ -771,9 +771,9 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _bloc(const UsersError(message: 'boom')),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               retryButtonBackgroundColor: Color(0xFF1A2B3C),
             ),
           ),
@@ -791,9 +791,9 @@ void main() {
     testWidgets('retryButtonBorder outlines the retry button', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _bloc(const UsersError(message: 'boom')),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               retryButtonBorder: BorderSide(color: Color(0xFF2B3C4D), width: 3),
             ),
           ),
@@ -813,9 +813,9 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _bloc(const UsersError(message: 'boom')),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               retryButtonBorderRadius: BorderRadius.all(Radius.circular(17)),
             ),
           ),
@@ -833,9 +833,9 @@ void main() {
     testWidgets('retryButtonTextColor colours the retry label', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _bloc(const UsersError(message: 'boom')),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               retryButtonTextColor: Color(0xFF3C4D5E),
             ),
           ),
@@ -850,9 +850,9 @@ void main() {
     testWidgets('retryButtonTextStyle styles the retry label', (tester) async {
       await tester.pumpWidget(
         _wrap(
-          CometChatUsers(
+          ConvoKitUsers(
             usersBloc: _bloc(const UsersError(message: 'boom')),
-            usersStyle: const CometChatUsersStyle(
+            usersStyle: const ConvoKitUsersStyle(
               retryButtonTextStyle: TextStyle(fontSize: 19.5),
             ),
           ),

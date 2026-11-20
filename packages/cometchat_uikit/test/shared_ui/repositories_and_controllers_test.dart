@@ -334,9 +334,9 @@ void main() {
   });
 
   // ===========================================================================
-  group('CometChatGroupMembersController', () {
+  group('ConvoKitGroupMembersController', () {
     test('constructs with a group and defaults its options', () {
-      final controller = CometChatGroupMembersController(
+      final controller = ConvoKitGroupMembersController(
         groupMembersBuilderProtocol: _membersBuilder(),
         group: _FakeGroup(),
       );
@@ -352,7 +352,7 @@ void main() {
     test('the three listener ids share one timestamp and stay distinct', () {
       // All three are built from the same dateStamp, so they must differ by
       // suffix or one SDK listener would displace another.
-      final controller = CometChatGroupMembersController(
+      final controller = ConvoKitGroupMembersController(
         groupMembersBuilderProtocol: _membersBuilder(),
         group: _FakeGroup(),
       );
@@ -370,7 +370,7 @@ void main() {
     });
 
     test('the moderation options are honoured when supplied', () {
-      final controller = CometChatGroupMembersController(
+      final controller = ConvoKitGroupMembersController(
         groupMembersBuilderProtocol: _membersBuilder(),
         group: _FakeGroup(),
         userStatusVisibility: false,
@@ -388,11 +388,11 @@ void main() {
     });
 
     test('two controllers do not share listener ids', () {
-      final a = CometChatGroupMembersController(
+      final a = ConvoKitGroupMembersController(
         groupMembersBuilderProtocol: _membersBuilder(),
         group: _FakeGroup(),
       );
-      final b = CometChatGroupMembersController(
+      final b = ConvoKitGroupMembersController(
         groupMembersBuilderProtocol: _membersBuilder(),
         group: _FakeGroup(),
       );

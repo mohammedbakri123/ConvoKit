@@ -1,4 +1,4 @@
-/// Render-verified prop matrix for [CometChatUsers] — Track 3 PROP1
+/// Render-verified prop matrix for [ConvoKitUsers] — Track 3 PROP1
 /// (ENG-38919).
 ///
 /// Built on the pattern `conversations_props_test.dart` establishes and that
@@ -100,7 +100,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(),
               title: 'Choose a colleague',
             ),
@@ -115,7 +115,7 @@ void main() {
     testWidgets('with no title the localized default is used', (tester) async {
       await mockNetworkImagesFor(
         () =>
-            tester.pumpWidget(_wrap(CometChatUsers(usersBloc: _loadedBloc()))),
+            tester.pumpWidget(_wrap(ConvoKitUsers(usersBloc: _loadedBloc()))),
       );
       await tester.pump();
 
@@ -129,7 +129,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(selected: {'u1', 'u2'}),
               title: 'Choose a colleague',
             ),
@@ -146,7 +146,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(),
               titleView: (context, user) => const Text('custom-title-view'),
             ),
@@ -155,20 +155,20 @@ void main() {
       );
       await tester.pump();
 
-      expect(find.byType(CometChatUsers), findsOneWidget);
+      expect(find.byType(ConvoKitUsers), findsOneWidget);
     });
 
     testWidgets('hideAppbar removes the app bar', (tester) async {
       await mockNetworkImagesFor(
         () =>
-            tester.pumpWidget(_wrap(CometChatUsers(usersBloc: _loadedBloc()))),
+            tester.pumpWidget(_wrap(ConvoKitUsers(usersBloc: _loadedBloc()))),
       );
       await tester.pump();
       final withBar = find.byType(AppBar).evaluate().length;
 
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
-          _wrap(CometChatUsers(usersBloc: _loadedBloc(), hideAppbar: true)),
+          _wrap(ConvoKitUsers(usersBloc: _loadedBloc(), hideAppbar: true)),
         ),
       );
       await tester.pump();
@@ -180,7 +180,7 @@ void main() {
     testWidgets('showBackButton false removes the back icon', (tester) async {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
-          _wrap(CometChatUsers(usersBloc: _loadedBloc(), showBackButton: true)),
+          _wrap(ConvoKitUsers(usersBloc: _loadedBloc(), showBackButton: true)),
         ),
       );
       await tester.pump();
@@ -189,7 +189,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(usersBloc: _loadedBloc(), showBackButton: false),
+            ConvoKitUsers(usersBloc: _loadedBloc(), showBackButton: false),
           ),
         ),
       );
@@ -201,7 +201,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(),
               showBackButton: true,
               backButton: const Icon(Icons.close),
@@ -220,7 +220,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(),
               showBackButton: true,
               onBack: () => backs++,
@@ -239,7 +239,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(),
               appBarOptions: (context) => const [Icon(Icons.filter_alt)],
             ),
@@ -257,14 +257,14 @@ void main() {
     testWidgets('hideSearch removes the search field', (tester) async {
       await mockNetworkImagesFor(
         () =>
-            tester.pumpWidget(_wrap(CometChatUsers(usersBloc: _loadedBloc()))),
+            tester.pumpWidget(_wrap(ConvoKitUsers(usersBloc: _loadedBloc()))),
       );
       await tester.pump();
       expect(find.byType(TextField), findsWidgets);
 
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
-          _wrap(CometChatUsers(usersBloc: _loadedBloc(), hideSearch: true)),
+          _wrap(ConvoKitUsers(usersBloc: _loadedBloc(), hideSearch: true)),
         ),
       );
       await tester.pump();
@@ -275,7 +275,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(),
               searchPlaceholder: 'Find someone',
             ),
@@ -291,7 +291,7 @@ void main() {
     testWidgets('searchKeyword seeds the field', (tester) async {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
-          _wrap(CometChatUsers(usersBloc: _loadedBloc(), searchKeyword: 'ali')),
+          _wrap(ConvoKitUsers(usersBloc: _loadedBloc(), searchKeyword: 'ali')),
         ),
       );
       await tester.pump();
@@ -304,7 +304,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(),
               searchBoxIcon: const Icon(Icons.travel_explore),
             ),
@@ -323,7 +323,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(usersBloc: _loadedBloc(), height: 300, width: 250),
+            ConvoKitUsers(usersBloc: _loadedBloc(), height: 300, width: 250),
           ),
         ),
       );
@@ -343,9 +343,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(),
-              usersStyle: const CometChatUsersStyle(
+              usersStyle: const ConvoKitUsersStyle(
                 borderRadius: BorderRadius.all(Radius.circular(18)),
               ),
             ),
@@ -365,7 +365,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(),
               scrollController: controller,
             ),
@@ -374,7 +374,7 @@ void main() {
       );
       await tester.pump();
 
-      expect(find.byType(CometChatUsers), findsOneWidget);
+      expect(find.byType(ConvoKitUsers), findsOneWidget);
     });
   });
 
@@ -386,10 +386,10 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(),
               title: 'Directory',
-              usersStyle: const CometChatUsersStyle(
+              usersStyle: const ConvoKitUsersStyle(
                 titleTextColor: Color(0xFF0C5F66),
                 titleTextStyle: TextStyle(fontSize: 27),
               ),
@@ -407,15 +407,15 @@ void main() {
     testWidgets('FIXED — backIconColor tints the back icon', (tester) async {
       // Was inert: CometChatListBase applies backIconTint as the IconButton's
       // `color`, which only reaches an icon that sets none of its own, and
-      // CometChatUsers handed it a pre-built icon carrying an explicit palette
+      // ConvoKitUsers handed it a pre-built icon carrying an explicit palette
       // colour. _buildBackIcon now resolves the style first. ENG-39105.
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(),
               showBackButton: true,
-              usersStyle: const CometChatUsersStyle(
+              usersStyle: const ConvoKitUsersStyle(
                 backIconColor: Color(0xFFA3382B),
               ),
             ),
@@ -434,9 +434,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(),
-              usersStyle: const CometChatUsersStyle(
+              usersStyle: const ConvoKitUsersStyle(
                 backgroundColor: Color(0xFFEDF2F2),
               ),
             ),
@@ -456,10 +456,10 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(),
               searchPlaceholder: 'Find someone',
-              usersStyle: const CometChatUsersStyle(
+              usersStyle: const ConvoKitUsersStyle(
                 searchInputTextColor: Color(0xFF121A1C),
                 searchInputTextStyle: TextStyle(fontSize: 19),
                 searchPlaceHolderTextColor: Color(0xFF7A898F),
@@ -479,7 +479,7 @@ void main() {
     testWidgets('a style set on the theme is picked up without the prop', (
       tester,
     ) async {
-      // CometChatUsersStyle is a ThemeExtension, so an integrator may set it
+      // ConvoKitUsersStyle is a ThemeExtension, so an integrator may set it
       // globally instead of per-component. Both routes must work, and the prop
       // must win where both are present.
       await mockNetworkImagesFor(
@@ -489,11 +489,11 @@ void main() {
             supportedLocales: const [Locale('en')],
             theme: ThemeData(
               extensions: const [
-                CometChatUsersStyle(titleTextColor: Color(0xFF1C7549)),
+                ConvoKitUsersStyle(titleTextColor: Color(0xFF1C7549)),
               ],
             ),
             home: Scaffold(
-              body: CometChatUsers(usersBloc: _loadedBloc(), title: 'Themed'),
+              body: ConvoKitUsers(usersBloc: _loadedBloc(), title: 'Themed'),
             ),
           ),
         ),
@@ -515,7 +515,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(selected: {'u1'}),
               selectionMode: SelectionMode.single,
             ),
@@ -524,7 +524,7 @@ void main() {
       );
       await tester.pump();
 
-      expect(find.byType(CometChatUsers), findsOneWidget);
+      expect(find.byType(ConvoKitUsers), findsOneWidget);
       expect(find.text('1'), findsOneWidget);
     });
 
@@ -534,7 +534,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(selected: {'u1'}),
               selectionMode: SelectionMode.multiple,
               submitIcon: const Icon(Icons.done_all),
@@ -553,7 +553,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(selected: {'u1'}),
               showBackButton: true,
             ),
@@ -572,7 +572,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(),
               activateSelection: ActivateSelection.onClick,
               selectionMode: SelectionMode.multiple,
@@ -583,7 +583,7 @@ void main() {
       );
       await tester.pump();
 
-      expect(find.byType(CometChatUsers), findsOneWidget);
+      expect(find.byType(ConvoKitUsers), findsOneWidget);
     });
   });
 
@@ -593,7 +593,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(),
               listItemView: (user) => Text('row-${user.uid}'),
             ),
@@ -611,7 +611,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(),
               subtitleView: (context, user) => Text('sub-${user.uid}'),
             ),
@@ -628,7 +628,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(),
               leadingView: (context, user) => Text('lead-${user.uid}'),
               trailingView: (context, user) => Text('trail-${user.uid}'),
@@ -647,7 +647,7 @@ void main() {
     ) async {
       await mockNetworkImagesFor(
         () =>
-            tester.pumpWidget(_wrap(CometChatUsers(usersBloc: _loadedBloc()))),
+            tester.pumpWidget(_wrap(ConvoKitUsers(usersBloc: _loadedBloc()))),
       );
       await tester.pump();
       final withStatus = find
@@ -658,7 +658,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(),
               usersStatusVisibility: false,
             ),
@@ -680,7 +680,7 @@ void main() {
       // and Carla, so each row starts a new initial.
       await mockNetworkImagesFor(
         () =>
-            tester.pumpWidget(_wrap(CometChatUsers(usersBloc: _loadedBloc()))),
+            tester.pumpWidget(_wrap(ConvoKitUsers(usersBloc: _loadedBloc()))),
       );
       await tester.pump();
       expect(_texts(tester).contains('A'), isTrue);
@@ -688,7 +688,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(),
               stickyHeaderVisibility: true,
             ),
@@ -703,7 +703,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _blocIn(const UsersLoading()),
               loadingStateView: (context) => const Text('custom-loading'),
             ),
@@ -719,7 +719,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _blocIn(const UsersEmpty()),
               emptyStateView: (context) => const Text('custom-empty'),
             ),
@@ -735,7 +735,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _blocIn(const UsersError(message: 'boom')),
               errorStateView: (context) => const Text('custom-error'),
             ),
@@ -755,7 +755,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(),
               onItemTap: (context, user) => tapped = user,
             ),
@@ -774,7 +774,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(),
               onItemLongPress: (context, user) => pressed = user,
             ),
@@ -800,7 +800,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _loadedBloc(),
               onLoad: (users) {
                 loaded = users;
@@ -822,7 +822,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _blocIn(const UsersEmpty()),
               onEmpty: () => empties++,
             ),
@@ -844,7 +844,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _blocIn(const UsersLoaded(users: [], hasMore: false)),
               onEmpty: () => empties++,
             ),
@@ -862,7 +862,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatUsers(
+            ConvoKitUsers(
               usersBloc: _blocIn(const UsersError(message: 'boom')),
               onError: (e) => seen = e,
             ),
@@ -881,7 +881,7 @@ void main() {
       // gains a user is still loaded, and re-reporting would turn onLoad into
       // a per-frame callback.
       var calls = 0;
-      final widget = CometChatUsers(
+      final widget = ConvoKitUsers(
         usersBloc: _loadedBloc(),
         onLoad: (_) => calls++,
       );

@@ -368,7 +368,7 @@ class MessageInformationBloc
 
     // Register UI group event listener for potential group-related updates
     // **Requirement: 5.3**
-    CometChatGroupEvents.addGroupsListener(
+    ConvoKitGroupEvents.addGroupsListener(
       _uiGroupListenerKey,
       _MessageInformationUIGroupListener(),
     );
@@ -403,7 +403,7 @@ class MessageInformationBloc
   Future<void> close() {
     // Remove all SDK listeners to prevent memory leaks
     CometChatMessageEvents.removeMessagesListener(_uiMessageListenerKey);
-    CometChatGroupEvents.removeGroupsListener(_uiGroupListenerKey);
+    ConvoKitGroupEvents.removeGroupsListener(_uiGroupListenerKey);
     return super.close();
   }
 }
@@ -439,10 +439,10 @@ class _MessageInformationUIMessageListener with CometChatMessageEventListener {
   }
 }
 
-/// UI Group event listener for CometChatGroupEvents
+/// UI Group event listener for ConvoKitGroupEvents
 ///
 /// Currently empty - reserved for potential group-related updates
 /// that may affect the message information in the future.
 ///
 /// **Requirement: 5.3**
-class _MessageInformationUIGroupListener with CometChatGroupEventListener {}
+class _MessageInformationUIGroupListener with ConvoKitGroupEventListener {}

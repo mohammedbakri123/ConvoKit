@@ -29,7 +29,7 @@ class GroupInfoScreen extends StatefulWidget {
 }
 
 class _GroupInfoScreenState extends State<GroupInfoScreen>
-    with GroupListener, CometChatGroupEventListener {
+    with GroupListener, ConvoKitGroupEventListener {
   late CometChatColorPalette _colorPalette;
   late CometChatTypography _typography;
   late CometChatSpacing _spacing;
@@ -54,7 +54,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen>
     _groupListenerId = '${ts}_group_info_sdk';
     _uiGroupListenerId = '${ts}_group_info_ui';
     CometChat.addGroupListener(_groupListenerId, this);
-    CometChatGroupEvents.addGroupsListener(_uiGroupListenerId, this);
+    ConvoKitGroupEvents.addGroupsListener(_uiGroupListenerId, this);
     _initLoggedInUser();
     _refreshGroup();
   }
@@ -70,7 +70,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen>
   @override
   void dispose() {
     CometChat.removeGroupListener(_groupListenerId);
-    CometChatGroupEvents.removeGroupsListener(_uiGroupListenerId);
+    ConvoKitGroupEvents.removeGroupsListener(_uiGroupListenerId);
     super.dispose();
   }
 
@@ -197,7 +197,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen>
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => CometChatGroupMembers(group: _group),
+        builder: (_) => ConvoKitGroupMembers(group: _group),
       ),
     );
   }
@@ -270,7 +270,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen>
       onSuccess: (_) {
         if (!mounted) return;
         _group.membersCount--;
-        CometChatGroupEvents.ccGroupLeft(
+        ConvoKitGroupEvents.ccGroupLeft(
           cc.Action(
             conversationId: _conversationId ?? '',
             message:
@@ -320,7 +320,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen>
   void _leaveGroupAfterTransfer() {
     if (!mounted) return;
     _group.membersCount--;
-    CometChatGroupEvents.ccGroupLeft(
+    ConvoKitGroupEvents.ccGroupLeft(
       cc.Action(
         conversationId: _conversationId ?? '',
         message: '${_loggedInUser?.name} ${cc.Translations.of(context).left}',
@@ -434,7 +434,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen>
       _group.guid,
       onSuccess: (_) {
         if (!mounted) return;
-        CometChatGroupEvents.ccGroupDeleted(_group);
+        ConvoKitGroupEvents.ccGroupDeleted(_group);
 
         if (kIsWeb) {
           // Dismiss dialog, then pop group info + messages.
@@ -770,7 +770,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen>
   }
 
   void _viewPinnedMessages() {
-    CometChatPinnedMessages.show(
+    ConvoKitPinnedMessages.show(
       context,
       group: _group,
       onItemTap: (message) {

@@ -3,7 +3,7 @@
 /// [GroupsList] (24 props) and [UsersList] (22), both previously at zero.
 ///
 /// These are exported, so they are in the denominator, but a component matrix
-/// only reaches them through whatever `CometChatGroups` / `CometChatUsers`
+/// only reaches them through whatever `ConvoKitGroups` / `ConvoKitUsers`
 /// choose to forward — which proves the forwarding, not the widget. Each case
 /// here constructs the list directly with a mocked bloc.
 ///
@@ -161,7 +161,7 @@ void main() {
           _host(
             (context) => GroupsList(
               groupsBloc: _groupsBloc(GroupsLoaded(groups: _groups())),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatThemeHelper.getColorPalette(context),
               spacing: CometChatThemeHelper.getSpacing(context),
               typography: CometChatThemeHelper.getTypography(context),
@@ -187,7 +187,7 @@ void main() {
           _host(
             (context) => GroupsList(
               groupsBloc: _groupsBloc(GroupsLoaded(groups: _groups())),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatThemeHelper.getColorPalette(context),
               spacing: CometChatThemeHelper.getSpacing(context),
               typography: CometChatThemeHelper.getTypography(context),
@@ -213,7 +213,7 @@ void main() {
             _host(
               (context) => GroupsList(
                 groupsBloc: _groupsBloc(entry.value),
-                style: const CometChatGroupsStyle(),
+                style: const ConvoKitGroupsStyle(),
                 colorPalette: CometChatThemeHelper.getColorPalette(context),
                 spacing: CometChatThemeHelper.getSpacing(context),
                 typography: CometChatThemeHelper.getTypography(context),
@@ -236,7 +236,7 @@ void main() {
           _host(
             (context) => GroupsList(
               groupsBloc: _groupsBloc(const GroupsError(message: 'boom')),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatThemeHelper.getColorPalette(context),
               spacing: CometChatThemeHelper.getSpacing(context),
               typography: CometChatThemeHelper.getTypography(context),
@@ -260,7 +260,7 @@ void main() {
           _host(
             (context) => GroupsList(
               groupsBloc: _groupsBloc(GroupsLoaded(groups: _groups())),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatThemeHelper.getColorPalette(context),
               spacing: CometChatThemeHelper.getSpacing(context),
               typography: CometChatThemeHelper.getTypography(context),
@@ -279,7 +279,7 @@ void main() {
           _host(
             (context) => GroupsList(
               groupsBloc: _groupsBloc(GroupsLoaded(groups: _groups())),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatThemeHelper.getColorPalette(context),
               spacing: CometChatThemeHelper.getSpacing(context),
               typography: CometChatThemeHelper.getTypography(context),
@@ -302,7 +302,7 @@ void main() {
           _host(
             (context) => GroupsList(
               groupsBloc: _groupsBloc(GroupsLoaded(groups: _groups())),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatThemeHelper.getColorPalette(context),
               spacing: CometChatThemeHelper.getSpacing(context),
               typography: CometChatThemeHelper.getTypography(context),
@@ -334,7 +334,7 @@ void main() {
           _host(
             (context) => GroupsList(
               groupsBloc: _groupsBloc(GroupsLoaded(groups: _groups())),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatThemeHelper.getColorPalette(context),
               spacing: CometChatThemeHelper.getSpacing(context),
               typography: CometChatThemeHelper.getTypography(context),
@@ -365,7 +365,7 @@ void main() {
               groupsBloc: _groupsBloc(
                 GroupsLoaded(groups: _groups(), selectedGroups: const {'g1'}),
               ),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatThemeHelper.getColorPalette(context),
               spacing: CometChatThemeHelper.getSpacing(context),
               typography: CometChatThemeHelper.getTypography(context),
@@ -389,7 +389,7 @@ void main() {
           _host(
             (context) => GroupsList(
               groupsBloc: _groupsBloc(GroupsLoaded(groups: _groups())),
-              style: const CometChatGroupsStyle(),
+              style: const ConvoKitGroupsStyle(),
               colorPalette: CometChatThemeHelper.getColorPalette(context),
               spacing: CometChatThemeHelper.getSpacing(context),
               typography: CometChatThemeHelper.getTypography(context),
@@ -413,7 +413,7 @@ void main() {
           _host(
             (context) => GroupsList(
               groupsBloc: _groupsBloc(GroupsLoaded(groups: _groups())),
-              style: const CometChatGroupsStyle(
+              style: const ConvoKitGroupsStyle(
                 itemTitleTextColor: _c3,
                 itemTitleTextStyle: TextStyle(fontSize: 23),
               ),
@@ -451,7 +451,7 @@ void main() {
           _host(
             (context) => UsersList(
               usersBloc: _usersBloc(UsersLoaded(users: _users())),
-              style: const CometChatUsersStyle(),
+              style: const ConvoKitUsersStyle(),
               colorPalette: CometChatThemeHelper.getColorPalette(context),
               spacing: CometChatThemeHelper.getSpacing(context),
               typography: CometChatThemeHelper.getTypography(context),
@@ -477,7 +477,7 @@ void main() {
           _host(
             (context) => UsersList(
               usersBloc: _usersBloc(UsersLoaded(users: _users())),
-              style: const CometChatUsersStyle(),
+              style: const ConvoKitUsersStyle(),
               colorPalette: CometChatThemeHelper.getColorPalette(context),
               spacing: CometChatThemeHelper.getSpacing(context),
               typography: CometChatThemeHelper.getTypography(context),
@@ -503,7 +503,7 @@ void main() {
             _host(
               (context) => UsersList(
                 usersBloc: _usersBloc(entry.value),
-                style: const CometChatUsersStyle(),
+                style: const ConvoKitUsersStyle(),
                 colorPalette: CometChatThemeHelper.getColorPalette(context),
                 spacing: CometChatThemeHelper.getSpacing(context),
                 typography: CometChatThemeHelper.getTypography(context),
@@ -530,7 +530,7 @@ void main() {
           _host(
             (context) => UsersList(
               usersBloc: _usersBloc(UsersLoaded(users: _users())),
-              style: const CometChatUsersStyle(),
+              style: const ConvoKitUsersStyle(),
               colorPalette: CometChatThemeHelper.getColorPalette(context),
               spacing: CometChatThemeHelper.getSpacing(context),
               typography: CometChatThemeHelper.getTypography(context),
@@ -546,7 +546,7 @@ void main() {
           _host(
             (context) => UsersList(
               usersBloc: _usersBloc(UsersLoaded(users: _users())),
-              style: const CometChatUsersStyle(),
+              style: const ConvoKitUsersStyle(),
               colorPalette: CometChatThemeHelper.getColorPalette(context),
               spacing: CometChatThemeHelper.getSpacing(context),
               typography: CometChatThemeHelper.getTypography(context),
@@ -570,7 +570,7 @@ void main() {
           _host(
             (context) => UsersList(
               usersBloc: _usersBloc(UsersLoaded(users: _users())),
-              style: const CometChatUsersStyle(),
+              style: const ConvoKitUsersStyle(),
               colorPalette: CometChatThemeHelper.getColorPalette(context),
               spacing: CometChatThemeHelper.getSpacing(context),
               typography: CometChatThemeHelper.getTypography(context),
@@ -586,7 +586,7 @@ void main() {
           _host(
             (context) => UsersList(
               usersBloc: _usersBloc(UsersLoaded(users: _users())),
-              style: const CometChatUsersStyle(),
+              style: const ConvoKitUsersStyle(),
               colorPalette: CometChatThemeHelper.getColorPalette(context),
               spacing: CometChatThemeHelper.getSpacing(context),
               typography: CometChatThemeHelper.getTypography(context),
@@ -611,7 +611,7 @@ void main() {
           _host(
             (context) => UsersList(
               usersBloc: _usersBloc(UsersLoaded(users: _users())),
-              style: const CometChatUsersStyle(),
+              style: const ConvoKitUsersStyle(),
               colorPalette: CometChatThemeHelper.getColorPalette(context),
               spacing: CometChatThemeHelper.getSpacing(context),
               typography: CometChatThemeHelper.getTypography(context),
@@ -643,7 +643,7 @@ void main() {
           _host(
             (context) => UsersList(
               usersBloc: _usersBloc(UsersLoaded(users: _users())),
-              style: const CometChatUsersStyle(),
+              style: const ConvoKitUsersStyle(),
               colorPalette: CometChatThemeHelper.getColorPalette(context),
               spacing: CometChatThemeHelper.getSpacing(context),
               typography: CometChatThemeHelper.getTypography(context),
@@ -674,7 +674,7 @@ void main() {
               usersBloc: _usersBloc(
                 UsersLoaded(users: _users(), selectedUsers: const {'u1'}),
               ),
-              style: const CometChatUsersStyle(),
+              style: const ConvoKitUsersStyle(),
               colorPalette: CometChatThemeHelper.getColorPalette(context),
               spacing: CometChatThemeHelper.getSpacing(context),
               typography: CometChatThemeHelper.getTypography(context),
@@ -700,7 +700,7 @@ void main() {
           _host(
             (context) => UsersList(
               usersBloc: _usersBloc(UsersLoaded(users: _users())),
-              style: const CometChatUsersStyle(
+              style: const ConvoKitUsersStyle(
                 itemTitleTextColor: _c3,
                 itemTitleTextStyle: TextStyle(fontSize: 23),
               ),

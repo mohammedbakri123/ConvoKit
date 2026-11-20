@@ -141,9 +141,9 @@ class ScreenReach {
   /// fetch (its body is a bare `CircularProgressIndicator` while `_loading`).
   static Future<void> openPinnedMessages(WidgetTester tester) async {
     await chooseHeaderMenuEntry(tester, 'Pinned Messages');
-    final screen = find.byType(CometChatPinnedMessages);
+    final screen = find.byType(ConvoKitPinnedMessages);
     if (!await pumpUntilFound(tester, screen)) {
-      fail('Choosing "Pinned Messages" did not open CometChatPinnedMessages.');
+      fail('Choosing "Pinned Messages" did not open ConvoKitPinnedMessages.');
     }
     final spinner = find.descendant(
       of: screen,
@@ -178,9 +178,9 @@ class ScreenReach {
       fail('The profile menu has no "Saved Messages" item.');
     }
     await tester.tap(item.first);
-    final screen = find.byType(CometChatSavedMessages);
+    final screen = find.byType(ConvoKitSavedMessages);
     if (!await pumpUntilFound(tester, screen)) {
-      fail('Choosing "Saved Messages" did not open CometChatSavedMessages.');
+      fail('Choosing "Saved Messages" did not open ConvoKitSavedMessages.');
     }
     final spinner = find.descendant(
       of: screen,

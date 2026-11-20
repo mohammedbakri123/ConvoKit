@@ -1,7 +1,7 @@
 /// Barrel export file for groups widgets.
 ///
 /// This file exports all modular widget components extracted from
-/// the CometChatGroups widget for better maintainability
+/// the ConvoKitGroups widget for better maintainability
 /// and reusability.
 library;
 

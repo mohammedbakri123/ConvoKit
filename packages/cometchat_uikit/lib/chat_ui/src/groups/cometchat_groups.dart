@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../cometchat_chat_uikit.dart';
 import '../../../cometchat_chat_uikit.dart' as cc;
 
-/// [CometChatGroups] is a component that displays a list of groups available in the app
+/// [ConvoKitGroups] is a component that displays a list of groups available in the app
 /// using Clean Architecture with BLoC pattern.
 ///
 /// Fetched groups are listed down alphabetically and in order of recent activity.
@@ -15,12 +15,12 @@ import '../../../cometchat_chat_uikit.dart' as cc;
 /// - BlocProvider to provide GroupsBloc to child widgets (Requirement 5.1)
 ///
 /// ```dart
-/// CometChatGroups(
-///   groupsStyle: CometChatGroupsStyle(),
+/// ConvoKitGroups(
+///   groupsStyle: ConvoKitGroupsStyle(),
 ///   onItemTap: (context, group) => navigateToGroup(group),
 /// );
 /// ```
-class CometChatGroups extends StatefulWidget {
+class ConvoKitGroups extends StatefulWidget {
   // Deprecated in 6.2.0: no effect, removed in 7.0.0.
 
   /// Custom groups request builder protocol.
@@ -35,7 +35,7 @@ class CometChatGroups extends StatefulWidget {
   )
   final String? controllerTag;
 
-  const CometChatGroups({
+  const ConvoKitGroups({
     super.key,
     this.groupsBloc,
     this.subtitleView,
@@ -100,7 +100,7 @@ class CometChatGroups extends StatefulWidget {
   final Widget Function(Group group)? listItemView;
 
   /// [groupsStyle] sets style
-  final CometChatGroupsStyle? groupsStyle;
+  final ConvoKitGroupsStyle? groupsStyle;
 
   /// [scrollController] sets controller for the list
   final ScrollController? scrollController;
@@ -220,10 +220,10 @@ class CometChatGroups extends StatefulWidget {
   final Widget? Function(BuildContext context, Group group)? titleView;
 
   @override
-  State<CometChatGroups> createState() => _CometChatGroupsState();
+  State<ConvoKitGroups> createState() => _ConvoKitGroupsState();
 }
 
-class _CometChatGroupsState extends State<CometChatGroups>
+class _ConvoKitGroupsState extends State<ConvoKitGroups>
     with AutomaticKeepAliveClientMixin {
   /// BLoC to manage groups state
   late GroupsBloc groupsBloc;
@@ -241,7 +241,7 @@ class _CometChatGroupsState extends State<CometChatGroups>
   late CometChatTypography typography;
   late CometChatSpacing spacing;
 
-  late CometChatGroupsStyle style;
+  late ConvoKitGroupsStyle style;
   late CometChatAvatarStyle avatarStyle;
   late CometChatStatusIndicatorStyle statusIndicatorStyle;
 
@@ -297,19 +297,19 @@ class _CometChatGroupsState extends State<CometChatGroups>
   }
 
   @override
-  void didUpdateWidget(covariant CometChatGroups oldWidget) {
+  void didUpdateWidget(covariant ConvoKitGroups oldWidget) {
     super.didUpdateWidget(oldWidget);
     // didChangeDependencies re-resolves only on a theme or brightness change,
     // so a groupsStyle that changes after the first build is picked up here.
     if (oldWidget.groupsStyle != widget.groupsStyle) _resolveStyles();
   }
 
-  /// Merges [CometChatGroups.groupsStyle] over the theme's groups style, and
+  /// Merges [ConvoKitGroups.groupsStyle] over the theme's groups style, and
   /// the avatar and status indicator styles over theirs.
   void _resolveStyles() {
-    style = CometChatThemeHelper.getTheme<CometChatGroupsStyle>(
+    style = CometChatThemeHelper.getTheme<ConvoKitGroupsStyle>(
       context: context,
-      defaultTheme: CometChatGroupsStyle.of,
+      defaultTheme: ConvoKitGroupsStyle.of,
     ).merge(widget.groupsStyle);
 
     avatarStyle = CometChatThemeHelper.getTheme<CometChatAvatarStyle>(
@@ -437,9 +437,9 @@ class _CometChatGroupsState extends State<CometChatGroups>
     );
   }
 
-  /// The long-press menu for [group]: the [CometChatGroups.setOptions]
-  /// entries, then the [CometChatGroups.addOptions] ones. Android's
-  /// CometChatGroups joins the two lists; GroupsList opens nothing when the
+  /// The long-press menu for [group]: the [ConvoKitGroups.setOptions]
+  /// entries, then the [ConvoKitGroups.addOptions] ones. Android's
+  /// ConvoKitGroups joins the two lists; GroupsList opens nothing when the
   /// result is empty.
   List<CometChatOption> _longPressOptions(BuildContext context, Group group) =>
       [

@@ -154,7 +154,7 @@ class _AddMembersScreenState extends State<AddMembersScreen> {
             widget.group.membersCount += addedMembers.length;
           }
           if (!mounted) return;
-          CometChatGroupEvents.ccGroupMemberAdded(
+          ConvoKitGroupEvents.ccGroupMemberAdded(
               messages, addedMembers, widget.group, _loggedInUser!);
           setState(() => _isLoading = false);
           _usersBloc.add(const ClearUserSelection());
@@ -196,7 +196,7 @@ class _AddMembersScreenState extends State<AddMembersScreen> {
       body: Column(
         children: [
           Expanded(
-            child: CometChatUsers(
+            child: ConvoKitUsers(
               usersBloc: _usersBloc,
               stickyHeaderVisibility: true,
               hideAppbar: true,

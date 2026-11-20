@@ -3,14 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../cometchat_chat_uikit.dart';
 import '../../../cometchat_chat_uikit.dart' as cc;
 
-/// [CometChatGroupMembers] displays all members of a [Group] as a list.
+/// [ConvoKitGroupMembers] displays all members of a [Group] as a list.
 ///
 /// Migrated from GetX controller to BLoC architecture.
 /// The widget now owns a [GroupMembersBloc] that is created in `initState`
 /// and disposed in `dispose`, fixing the bug where `onInit` was never called
 /// because the controller was created inside `build()` of a StatelessWidget.
-class CometChatGroupMembers extends StatefulWidget {
-  const CometChatGroupMembers({
+class ConvoKitGroupMembers extends StatefulWidget {
+  const ConvoKitGroupMembers({
     super.key,
     this.groupMembersProtocol,
     this.subtitleView,
@@ -83,15 +83,15 @@ class CometChatGroupMembers extends StatefulWidget {
   subtitleView;
   final bool? hideSeparator;
   final Widget Function(GroupMember groupMember)? listItemView;
-  final CometChatGroupMembersStyle? style;
+  final ConvoKitGroupMembersStyle? style;
   final ScrollController? controller;
 
   /// Legacy options callback — kept for backward compatibility.
-  /// Receives a [CometChatGroupMembersController] stub that delegates to the BLoC.
+  /// Receives a [ConvoKitGroupMembersController] stub that delegates to the BLoC.
   final List<CometChatOption>? Function(
     Group group,
     GroupMember member,
-    CometChatGroupMembersController controller,
+    ConvoKitGroupMembersController controller,
     BuildContext context,
   )?
   options;
@@ -105,7 +105,7 @@ class CometChatGroupMembers extends StatefulWidget {
   final Function(List<GroupMember>?)? onSelection;
 
   /// Legacy stateCallBack — kept for backward compatibility.
-  final Function(CometChatGroupMembersController controller)? stateCallBack;
+  final Function(ConvoKitGroupMembersController controller)? stateCallBack;
 
   final bool? hideError;
   final WidgetBuilder? loadingStateView;
@@ -132,7 +132,7 @@ class CometChatGroupMembers extends StatefulWidget {
   final List<CometChatOption>? Function(
     Group group,
     GroupMember groupMember,
-    CometChatGroupMembersController controller,
+    ConvoKitGroupMembersController controller,
     BuildContext context,
   )?
   setOptions;
@@ -140,7 +140,7 @@ class CometChatGroupMembers extends StatefulWidget {
   final List<CometChatOption>? Function(
     Group group,
     GroupMember groupMember,
-    CometChatGroupMembersController controller,
+    ConvoKitGroupMembersController controller,
     BuildContext context,
   )?
   addOptions;
@@ -155,10 +155,10 @@ class CometChatGroupMembers extends StatefulWidget {
   final bool? hideScopeChangeOption;
 
   @override
-  State<CometChatGroupMembers> createState() => _CometChatGroupMembersState();
+  State<ConvoKitGroupMembers> createState() => _ConvoKitGroupMembersState();
 }
 
-class _CometChatGroupMembersState extends State<CometChatGroupMembers> {
+class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
   late GroupMembersBloc _bloc;
   bool _isExternalBloc = false;
   final ValueNotifier<bool> _isSelectionOn = ValueNotifier<bool>(false);
@@ -216,17 +216,17 @@ class _CometChatGroupMembersState extends State<CometChatGroupMembers> {
 
   // ── Helpers ────────────────────────────────────────────────────────────────
 
-  CometChatGroupMembersStyle _resolvedStyle(BuildContext context) {
-    return CometChatThemeHelper.getTheme<CometChatGroupMembersStyle>(
+  ConvoKitGroupMembersStyle _resolvedStyle(BuildContext context) {
+    return CometChatThemeHelper.getTheme<ConvoKitGroupMembersStyle>(
       context: context,
-      defaultTheme: CometChatGroupMembersStyle.of,
+      defaultTheme: ConvoKitGroupMembersStyle.of,
     ).merge(widget.style);
   }
 
   /// Build the scope badge shown as trailing on each member row.
   Widget _buildScopeBadge(
     GroupMember member,
-    CometChatGroupMembersStyle style,
+    ConvoKitGroupMembersStyle style,
   ) {
     Color? bg;
     BoxBorder? border;
@@ -300,7 +300,7 @@ class _CometChatGroupMembersState extends State<CometChatGroupMembers> {
   Widget _buildListItem(
     GroupMember member,
     GroupMembersLoaded state,
-    CometChatGroupMembersStyle groupMemberStyle,
+    ConvoKitGroupMembersStyle groupMemberStyle,
     GlobalKey itemKey,
   ) {
     if (widget.listItemView != null) {
@@ -453,7 +453,7 @@ class _CometChatGroupMembersState extends State<CometChatGroupMembers> {
   void _onItemLongPress(
     GroupMember member,
     GroupMembersLoaded state,
-    CometChatGroupMembersStyle groupMemberStyle,
+    ConvoKitGroupMembersStyle groupMemberStyle,
     GlobalKey itemKey,
   ) {
     final isOwner = member.uid == widget.group.owner;
@@ -534,7 +534,7 @@ class _CometChatGroupMembersState extends State<CometChatGroupMembers> {
   void _handleMemberOptionClick(
     String optionId,
     GroupMember member,
-    CometChatGroupMembersStyle groupMemberStyle,
+    ConvoKitGroupMembersStyle groupMemberStyle,
   ) {
     final confirmDialogStyle =
         CometChatThemeHelper.getTheme<CometChatConfirmDialogStyle>(
@@ -542,9 +542,9 @@ class _CometChatGroupMembersState extends State<CometChatGroupMembers> {
           defaultTheme: CometChatConfirmDialogStyle.of,
         ).merge(groupMemberStyle.confirmDialogStyle);
     final changeScopeStyle =
-        CometChatThemeHelper.getTheme<CometChatChangeScopeStyle>(
+        CometChatThemeHelper.getTheme<ConvoKitChangeScopeStyle>(
           context: context,
-          defaultTheme: CometChatChangeScopeStyle.of,
+          defaultTheme: ConvoKitChangeScopeStyle.of,
         ).merge(groupMemberStyle.changeScopeStyle);
 
     switch (optionId) {
@@ -592,7 +592,7 @@ class _CometChatGroupMembersState extends State<CometChatGroupMembers> {
           barrierColor: (_colorPalette.textPrimary ?? const Color(0xFF141414))
               .withValues(alpha: 0.8),
           builder: (_) => SingleChildScrollView(
-            child: CometChatChangeScope(
+            child: ConvoKitChangeScope(
               group: widget.group,
               member: member,
               style: changeScopeStyle,
@@ -661,15 +661,15 @@ class _CometChatGroupMembersState extends State<CometChatGroupMembers> {
 
   /// Minimal legacy controller stub — only used when [setOptions]/[addOptions] callbacks
   /// are provided by the consumer and need a controller reference.
-  /// The legacy controller handed to [CometChatGroupMembers.stateCallBack],
-  /// [CometChatGroupMembers.setOptions] and
-  /// [CometChatGroupMembers.addOptions]. Built once so callers keep a stable
+  /// The legacy controller handed to [ConvoKitGroupMembers.stateCallBack],
+  /// [ConvoKitGroupMembers.setOptions] and
+  /// [ConvoKitGroupMembers.addOptions]. Built once so callers keep a stable
   /// reference, and its selectionMap is synced from bloc state — otherwise
   /// `stateCallBack` hands back a controller whose selection is always empty.
-  CometChatGroupMembersController? _legacyController;
+  ConvoKitGroupMembersController? _legacyController;
 
-  CometChatGroupMembersController _buildLegacyControllerStub() {
-    return _legacyController ??= CometChatGroupMembersController(
+  ConvoKitGroupMembersController _buildLegacyControllerStub() {
+    return _legacyController ??= ConvoKitGroupMembersController(
       groupMembersBuilderProtocol:
           widget.groupMembersProtocol ??
           UIGroupMembersBuilder(
@@ -686,7 +686,7 @@ class _CometChatGroupMembersState extends State<CometChatGroupMembers> {
 
   void _showPopupMenu(
     List<CometChatOption> options,
-    CometChatGroupMembersStyle groupMemberStyle,
+    ConvoKitGroupMembersStyle groupMemberStyle,
     GlobalKey widgetKey,
     GroupMember member,
   ) {
@@ -726,7 +726,7 @@ class _CometChatGroupMembersState extends State<CometChatGroupMembers> {
 
   // ── State views ────────────────────────────────────────────────────────────
 
-  Widget _buildLoading(CometChatGroupMembersStyle style) {
+  Widget _buildLoading(ConvoKitGroupMembersStyle style) {
     if (widget.loadingStateView != null) {
       return Center(child: widget.loadingStateView!(context));
     }
@@ -798,7 +798,7 @@ class _CometChatGroupMembersState extends State<CometChatGroupMembers> {
     );
   }
 
-  Widget _buildEmpty(CometChatGroupMembersStyle style) {
+  Widget _buildEmpty(ConvoKitGroupMembersStyle style) {
     if (widget.emptyStateView != null) return widget.emptyStateView!(context);
     return UIStateUtils.getDefaultEmptyStateView(
       context,
@@ -812,7 +812,7 @@ class _CometChatGroupMembersState extends State<CometChatGroupMembers> {
     );
   }
 
-  Widget _buildError(CometChatGroupMembersStyle style) {
+  Widget _buildError(ConvoKitGroupMembersStyle style) {
     if (widget.errorStateView != null) return widget.errorStateView!(context);
     return UIStateUtils.getDefaultErrorStateView(
       context,
@@ -832,7 +832,7 @@ class _CometChatGroupMembersState extends State<CometChatGroupMembers> {
 
   Widget _buildList(
     GroupMembersLoaded state,
-    CometChatGroupMembersStyle style,
+    ConvoKitGroupMembersStyle style,
   ) {
     final keys = List.generate(state.members.length, (_) => GlobalKey());
     return NotificationListener<ScrollNotification>(
@@ -882,7 +882,7 @@ class _CometChatGroupMembersState extends State<CometChatGroupMembers> {
     );
   }
 
-  Widget _buildSelectionWidget(CometChatGroupMembersStyle style) {
+  Widget _buildSelectionWidget(ConvoKitGroupMembersStyle style) {
     if (!_isSelectionOn.value) return const SizedBox(height: 0, width: 0);
     return IconButton(
       tooltip: Translations.of(context).done,
@@ -1070,7 +1070,7 @@ class _CometChatGroupMembersState extends State<CometChatGroupMembers> {
 
   Widget _buildContainer(
     GroupMembersState state,
-    CometChatGroupMembersStyle style,
+    ConvoKitGroupMembersStyle style,
   ) {
     if (state is GroupMembersLoading || state is GroupMembersInitial) {
       return _buildLoading(style);

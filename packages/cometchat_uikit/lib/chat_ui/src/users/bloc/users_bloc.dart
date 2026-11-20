@@ -241,7 +241,7 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> with ListBase<User> {
     );
 
     // Register CC UI Event listeners for block/unblock
-    CometChatUserEvents.addUsersListener(
+    ConvoKitUserEvents.addUsersListener(
       _ccUserListenerKey,
       _UsersCCEventListener(
         onUserBlockedCallback: _handleUserBlocked,
@@ -384,7 +384,7 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> with ListBase<User> {
 
       final allUsers = [...currentState.users, ...newUsers];
       replaceAll(allUsers);
-      // Only an empty page ends paging, as on Android and as CometChatGroups
+      // Only an empty page ends paging, as on Android and as ConvoKitGroups
       // does. The request after the last page is answered by the SDK from its
       // page count. Emitted after replaceAll, since onListReplaced does not
       // set hasMore or isLoadingMore.
@@ -634,7 +634,7 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> with ListBase<User> {
 
     CometChatSdkAdapter.removeUserListener(_userListenerKey);
     CometChatSdkAdapter.removeConnectionListener(_connectionListenerKey);
-    CometChatUserEvents.removeUsersListener(_ccUserListenerKey);
+    ConvoKitUserEvents.removeUsersListener(_ccUserListenerKey);
 
     // Dispose all status notifiers
     for (final notifier in _statusNotifiers.values) {
@@ -751,7 +751,7 @@ class _UsersConnectionListener with ConnectionListener {
   void onDisconnected() => onDisconnectedCallback();
 }
 
-class _UsersCCEventListener with CometChatUserEventListener {
+class _UsersCCEventListener with ConvoKitUserEventListener {
   final void Function(User user) onUserBlockedCallback;
   final void Function(User user) onUserUnblockedCallback;
 

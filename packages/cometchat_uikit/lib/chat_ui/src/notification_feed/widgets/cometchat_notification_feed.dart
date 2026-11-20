@@ -70,7 +70,7 @@ class CometChatNotificationFeed extends StatefulWidget {
   ///If provided, it is used instead of creating one internally and the widget
   ///does not close it on dispose. Mirrors
   ///[ConvoKitConversations.conversationsBloc] and
-  ///[CometChatGroupMembers.groupMembersBloc] — the seam that lets a test
+  ///[ConvoKitGroupMembers.groupMembersBloc] — the seam that lets a test
   ///supply feed data without a live SDK.
   final NotificationFeedBloc? notificationFeedBloc;
 

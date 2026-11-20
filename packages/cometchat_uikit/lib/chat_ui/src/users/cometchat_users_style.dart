@@ -3,10 +3,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:convokit/cometchat_chat_uikit.dart';
 
-///[CometChatUsersStyle] is a data class that has styling-related properties
-///to customize the appearance of [CometChatUsers]
-class CometChatUsersStyle extends ThemeExtension<CometChatUsersStyle> {
-  const CometChatUsersStyle({
+///[ConvoKitUsersStyle] is a data class that has styling-related properties
+///to customize the appearance of [ConvoKitUsers]
+class ConvoKitUsersStyle extends ThemeExtension<ConvoKitUsersStyle> {
+  const ConvoKitUsersStyle({
     this.backgroundColor,
     this.border,
     this.borderRadius,
@@ -181,11 +181,11 @@ class CometChatUsersStyle extends ThemeExtension<CometChatUsersStyle> {
   ///[stickyTitleTextStyle] provides text style for alphabet
   final TextStyle? stickyTitleTextStyle;
 
-  static CometChatUsersStyle of(BuildContext context) =>
-      const CometChatUsersStyle();
+  static ConvoKitUsersStyle of(BuildContext context) =>
+      const ConvoKitUsersStyle();
 
   @override
-  CometChatUsersStyle copyWith({
+  ConvoKitUsersStyle copyWith({
     Color? backgroundColor,
     Border? border,
     BorderRadiusGeometry? borderRadius,
@@ -230,7 +230,7 @@ class CometChatUsersStyle extends ThemeExtension<CometChatUsersStyle> {
     Color? stickyTitleColor,
     TextStyle? stickyTitleTextStyle,
   }) {
-    return CometChatUsersStyle(
+    return ConvoKitUsersStyle(
       backgroundColor: backgroundColor ?? this.backgroundColor,
       border: border ?? this.border,
       borderRadius: borderRadius ?? this.borderRadius,
@@ -291,7 +291,7 @@ class CometChatUsersStyle extends ThemeExtension<CometChatUsersStyle> {
     );
   }
 
-  CometChatUsersStyle merge(CometChatUsersStyle? style) {
+  ConvoKitUsersStyle merge(ConvoKitUsersStyle? style) {
     if (style == null) return this;
     return copyWith(
       errorStateTextColor: style.errorStateTextColor,
@@ -341,14 +341,14 @@ class CometChatUsersStyle extends ThemeExtension<CometChatUsersStyle> {
   }
 
   @override
-  CometChatUsersStyle lerp(
-    ThemeExtension<CometChatUsersStyle>? other,
+  ConvoKitUsersStyle lerp(
+    ThemeExtension<ConvoKitUsersStyle>? other,
     double t,
   ) {
-    if (other is! CometChatUsersStyle) {
+    if (other is! ConvoKitUsersStyle) {
       return this;
     }
-    return CometChatUsersStyle(
+    return ConvoKitUsersStyle(
       backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t),
       border: Border.lerp(border, other.border, t),
       borderRadius: BorderRadiusGeometry.lerp(

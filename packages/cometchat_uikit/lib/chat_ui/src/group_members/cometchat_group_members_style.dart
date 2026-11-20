@@ -3,11 +3,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:convokit/cometchat_chat_uikit.dart';
 
-///[CometChatGroupMembersStyle] is a data class that has styling-related properties
-///to customize the appearance of [CometChatGroupMembers]
-class CometChatGroupMembersStyle
-    extends ThemeExtension<CometChatGroupMembersStyle> {
-  const CometChatGroupMembersStyle({
+///[ConvoKitGroupMembersStyle] is a data class that has styling-related properties
+///to customize the appearance of [ConvoKitGroupMembers]
+class ConvoKitGroupMembersStyle
+    extends ThemeExtension<ConvoKitGroupMembersStyle> {
+  const ConvoKitGroupMembersStyle({
     this.titleStyle,
     this.backIconColor,
     this.searchBackground,
@@ -211,7 +211,7 @@ class CometChatGroupMembersStyle
   final Color? submitIconColor;
 
   ///[changeScopeStyle] provides styling for change scope
-  final CometChatChangeScopeStyle? changeScopeStyle;
+  final ConvoKitChangeScopeStyle? changeScopeStyle;
 
   ///[optionsBackgroundColor] provides background color for options
   final Color? optionsBackgroundColor;
@@ -223,7 +223,7 @@ class CometChatGroupMembersStyle
   final TextStyle? optionsTextStyle;
 
   @override
-  CometChatGroupMembersStyle copyWith({
+  ConvoKitGroupMembersStyle copyWith({
     TextStyle? titleStyle,
     Color? backIconColor,
     Color? searchBackground,
@@ -273,12 +273,12 @@ class CometChatGroupMembersStyle
     TextStyle? moderatorMemberScopeTextStyle,
     TextStyle? adminMemberScopeTextStyle,
     Color? submitIconColor,
-    CometChatChangeScopeStyle? changeScopeStyle,
+    ConvoKitChangeScopeStyle? changeScopeStyle,
     Color? optionsBackgroundColor,
     Color? optionsIconColor,
     TextStyle? optionsTextStyle,
   }) {
-    return CometChatGroupMembersStyle(
+    return ConvoKitGroupMembersStyle(
       titleStyle: titleStyle ?? this.titleStyle,
       backIconColor: backIconColor ?? this.backIconColor,
       searchBackground: searchBackground ?? this.searchBackground,
@@ -363,12 +363,12 @@ class CometChatGroupMembersStyle
   }
 
   @override
-  CometChatGroupMembersStyle lerp(
-    covariant CometChatGroupMembersStyle? other,
+  ConvoKitGroupMembersStyle lerp(
+    covariant ConvoKitGroupMembersStyle? other,
     double t,
   ) {
-    if (other is! CometChatGroupMembersStyle) return this;
-    return CometChatGroupMembersStyle(
+    if (other is! ConvoKitGroupMembersStyle) return this;
+    return ConvoKitGroupMembersStyle(
       titleStyle: TextStyle.lerp(titleStyle, other.titleStyle, t),
       backIconColor: Color.lerp(backIconColor, other.backIconColor, t),
       searchBackground: Color.lerp(searchBackground, other.searchBackground, t),
@@ -598,7 +598,7 @@ class CometChatGroupMembersStyle
     );
   }
 
-  CometChatGroupMembersStyle merge(CometChatGroupMembersStyle? other) {
+  ConvoKitGroupMembersStyle merge(ConvoKitGroupMembersStyle? other) {
     if (other == null) return this;
     return copyWith(
       titleStyle: other.titleStyle,
@@ -658,6 +658,6 @@ class CometChatGroupMembersStyle
     );
   }
 
-  static CometChatGroupMembersStyle of(BuildContext context) =>
-      const CometChatGroupMembersStyle();
+  static ConvoKitGroupMembersStyle of(BuildContext context) =>
+      const ConvoKitGroupMembersStyle();
 }

@@ -27,7 +27,7 @@ class UserInfoScreen extends StatefulWidget {
 }
 
 class _UserInfoScreenState extends State<UserInfoScreen>
-    with UserListener, CometChatUserEventListener {
+    with UserListener, ConvoKitUserEventListener {
   late CometChatColorPalette _colorPalette;
   late CometChatTypography _typography;
   late CometChatSpacing _spacing;
@@ -48,7 +48,7 @@ class _UserInfoScreenState extends State<UserInfoScreen>
     _userListenerId = '${ts}_user_info_sdk';
     _uiUserListenerId = '${ts}_user_info_ui';
     CometChat.addUserListener(_userListenerId, this);
-    CometChatUserEvents.addUsersListener(_uiUserListenerId, this);
+    ConvoKitUserEvents.addUsersListener(_uiUserListenerId, this);
     _initLoggedInUser();
   }
 
@@ -67,7 +67,7 @@ class _UserInfoScreenState extends State<UserInfoScreen>
   @override
   void dispose() {
     CometChat.removeUserListener(_userListenerId);
-    CometChatUserEvents.removeUsersListener(_uiUserListenerId);
+    ConvoKitUserEvents.removeUsersListener(_uiUserListenerId);
     super.dispose();
   }
 
@@ -209,7 +209,7 @@ class _UserInfoScreenState extends State<UserInfoScreen>
       [_user.uid],
       onSuccess: (_) {
         _user.blockedByMe = true;
-        CometChatUserEvents.ccUserBlocked(_user);
+        ConvoKitUserEvents.ccUserBlocked(_user);
         if (mounted) {
           setState(() => _isBlockLoading = false);
         }
@@ -230,7 +230,7 @@ class _UserInfoScreenState extends State<UserInfoScreen>
       [_user.uid],
       onSuccess: (_) {
         _user.blockedByMe = false;
-        CometChatUserEvents.ccUserUnblocked(_user);
+        ConvoKitUserEvents.ccUserUnblocked(_user);
         if (mounted) {
           setState(() => _isBlockLoading = false);
         }
@@ -584,7 +584,7 @@ class _UserInfoScreenState extends State<UserInfoScreen>
   }
 
   void _viewPinnedMessages() {
-    CometChatPinnedMessages.show(
+    ConvoKitPinnedMessages.show(
       context,
       user: widget.user,
       onItemTap: (message) {

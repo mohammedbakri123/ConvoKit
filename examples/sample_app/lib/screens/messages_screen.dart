@@ -44,9 +44,9 @@ class MessagesScreen extends StatefulWidget {
 class _MessagesScreenState extends State<MessagesScreen>
     with
         UserListener,
-        CometChatUserEventListener,
+        ConvoKitUserEventListener,
         GroupListener,
-        CometChatGroupEventListener {
+        ConvoKitGroupEventListener {
   // Mutable copies for tracking blocked / kicked state
   late User? _user;
   late Group? _group;
@@ -74,13 +74,13 @@ class _MessagesScreenState extends State<MessagesScreen>
     // Add listeners for blocked/kicked state
     if (_user != null) {
       CometChat.addUserListener('${_listenerId}_msg_user', this);
-      CometChatUserEvents.addUsersListener('${_listenerId}_msg_user_ui', this);
+      ConvoKitUserEvents.addUsersListener('${_listenerId}_msg_user_ui', this);
       _isUserBlocked =
           _user!.blockedByMe == true || _user!.hasBlockedMe == true;
     }
     if (_group != null) {
       CometChat.addGroupListener('${_listenerId}_msg_group', this);
-      CometChatGroupEvents.addGroupsListener(
+      ConvoKitGroupEvents.addGroupsListener(
           '${_listenerId}_msg_group_ui', this);
     }
   }
@@ -89,11 +89,11 @@ class _MessagesScreenState extends State<MessagesScreen>
   void dispose() {
     if (_user != null) {
       CometChat.removeUserListener('${_listenerId}_msg_user');
-      CometChatUserEvents.removeUsersListener('${_listenerId}_msg_user_ui');
+      ConvoKitUserEvents.removeUsersListener('${_listenerId}_msg_user_ui');
     }
     if (_group != null) {
       CometChat.removeGroupListener('${_listenerId}_msg_group');
-      CometChatGroupEvents.removeGroupsListener('${_listenerId}_msg_group_ui');
+      ConvoKitGroupEvents.removeGroupsListener('${_listenerId}_msg_group_ui');
     }
     super.dispose();
   }
@@ -600,7 +600,7 @@ class _MessagesScreenState extends State<MessagesScreen>
         onPinnedMessagesTap: widget.onOpenSidePanel == null
             ? null
             : () => widget.onOpenSidePanel!(
-                  CometChatPinnedMessages(
+                  ConvoKitPinnedMessages(
                     user: _user,
                     group: _group,
                     onItemTap: _openPinnedMessage,

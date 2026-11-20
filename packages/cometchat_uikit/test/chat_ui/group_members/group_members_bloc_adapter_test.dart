@@ -1,5 +1,5 @@
 /// GroupMembersBlocAdapter — the shim that lets legacy templates drive the
-/// BLoC through `CometChatGroupMembersControllerProtocol`.
+/// BLoC through `ConvoKitGroupMembersControllerProtocol`.
 ///
 /// Every method is a one-line delegation, which is exactly why it is worth
 /// pinning: a protocol method wired to the wrong event (or to the wrong
@@ -427,7 +427,7 @@ void main() {
       expect(captured, [same(group), same(member), same(adapter)]);
       expect(
         captured[2],
-        isA<CometChatGroupMembersControllerProtocol>(),
+        isA<ConvoKitGroupMembersControllerProtocol>(),
         reason: 'the adapter hands itself in as the controller',
       );
     }, seed: false);

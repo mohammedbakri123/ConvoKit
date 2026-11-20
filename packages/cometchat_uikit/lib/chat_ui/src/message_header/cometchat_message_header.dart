@@ -132,7 +132,7 @@ class ConvoKitMessageHeader extends StatefulWidget
 
   /// [pinnedMessagesVisibility] controls the pinned-messages entry in the
   /// header's overflow (⋯) menu, which opens the conversation's
-  /// [CometChatPinnedMessages] as a pushed screen. Defaults to visible; the
+  /// [ConvoKitPinnedMessages] as a pushed screen. Defaults to visible; the
   /// entry additionally requires the server Pin feature flag
   /// ([CometChatSdkAdapter.isPinMessageEnabled]) and renders only on a conversation
   /// header (never when [parentMessage] puts the header in thread mode).
@@ -145,7 +145,7 @@ class ConvoKitMessageHeader extends StatefulWidget
 
   /// [pinnedMessagesStyle] styling for the pinned-messages screen opened from
   /// the header's overflow (⋯) menu.
-  final CometChatPinnedMessagesStyle? pinnedMessagesStyle;
+  final ConvoKitPinnedMessagesStyle? pinnedMessagesStyle;
 
   /// [onInfoTap] when set, the header's ⋯ overflow menu carries a
   /// "Group Info"/"User Info" entry that invokes it (the host app owns the
@@ -162,7 +162,7 @@ class ConvoKitMessageHeader extends StatefulWidget
   final VoidCallback? onHeaderTap;
 
   /// [onPinnedMessagesTap] when set, the ⋯ menu's pinned-messages entry
-  /// invokes this instead of pushing [CometChatPinnedMessages] itself — so a
+  /// invokes this instead of pushing [ConvoKitPinnedMessages] itself — so a
   /// host with its own layout (a desktop side panel, say) can decide where
   /// the list appears. [onPinnedMessageItemTap] still forwards row taps when
   /// the kit does the presenting.
@@ -250,7 +250,7 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
       opener();
       return;
     }
-    CometChatPinnedMessages.show(
+    ConvoKitPinnedMessages.show(
       context,
       user: widget.user,
       group: widget.group,

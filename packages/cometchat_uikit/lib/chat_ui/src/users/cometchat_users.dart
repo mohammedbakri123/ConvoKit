@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../cometchat_chat_uikit.dart';
 import '../../../cometchat_chat_uikit.dart' as cc;
 
-/// [CometChatUsers] is a component that displays a list of users
+/// [ConvoKitUsers] is a component that displays a list of users
 /// using Clean Architecture with BLoC pattern.
-class CometChatUsers extends StatefulWidget {
-  const CometChatUsers({
+class ConvoKitUsers extends StatefulWidget {
+  const ConvoKitUsers({
     super.key,
-    this.usersStyle = const CometChatUsersStyle(),
+    this.usersStyle = const ConvoKitUsersStyle(),
     this.scrollController,
     this.searchPlaceholder,
     this.backButton,
@@ -54,7 +54,7 @@ class CometChatUsers extends StatefulWidget {
 
   final Widget? Function(BuildContext, User)? subtitleView;
   final Widget Function(User)? listItemView;
-  final CometChatUsersStyle usersStyle;
+  final ConvoKitUsersStyle usersStyle;
   final ScrollController? scrollController;
   final String? searchPlaceholder;
   final Widget? backButton;
@@ -108,10 +108,10 @@ class CometChatUsers extends StatefulWidget {
   final Widget? Function(BuildContext context, User user)? titleView;
 
   @override
-  State<CometChatUsers> createState() => _CometChatUsersState();
+  State<ConvoKitUsers> createState() => _ConvoKitUsersState();
 }
 
-class _CometChatUsersState extends State<CometChatUsers>
+class _ConvoKitUsersState extends State<ConvoKitUsers>
     with AutomaticKeepAliveClientMixin {
   late UsersBloc usersBloc;
   bool _isExternalBloc = false;
@@ -123,7 +123,7 @@ class _CometChatUsersState extends State<CometChatUsers>
   late CometChatColorPalette colorPalette;
   late CometChatTypography typography;
   late CometChatSpacing spacing;
-  late CometChatUsersStyle style;
+  late ConvoKitUsersStyle style;
   late CometChatAvatarStyle avatarStyle;
   late CometChatStatusIndicatorStyle statusIndicatorStyle;
 
@@ -164,9 +164,9 @@ class _CometChatUsersState extends State<CometChatUsers>
     colorPalette = CometChatThemeHelper.getColorPalette(context);
     spacing = CometChatThemeHelper.getSpacing(context);
 
-    style = CometChatThemeHelper.getTheme<CometChatUsersStyle>(
+    style = CometChatThemeHelper.getTheme<ConvoKitUsersStyle>(
       context: context,
-      defaultTheme: CometChatUsersStyle.of,
+      defaultTheme: ConvoKitUsersStyle.of,
     ).merge(widget.usersStyle);
 
     avatarStyle = CometChatThemeHelper.getTheme<CometChatAvatarStyle>(
@@ -290,8 +290,8 @@ class _CometChatUsersState extends State<CometChatUsers>
     );
   }
 
-  /// The long-press menu for [user]: [CometChatUsers.setOptions] when set,
-  /// else [CometChatUsers.addOptions] — Android's CometChatUsers rule.
+  /// The long-press menu for [user]: [ConvoKitUsers.setOptions] when set,
+  /// else [ConvoKitUsers.addOptions] — Android's ConvoKitUsers rule.
   List<CometChatOption> _longPressOptions(BuildContext context, User user) {
     final build = widget.setOptions ?? widget.addOptions!;
     return build(user, usersBloc, context) ?? const <CometChatOption>[];

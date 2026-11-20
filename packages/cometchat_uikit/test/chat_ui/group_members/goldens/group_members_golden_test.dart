@@ -1,4 +1,4 @@
-/// Golden pins for [CometChatGroupMembers]: the member row with each scope
+/// Golden pins for [ConvoKitGroupMembers]: the member row with each scope
 /// chip, and the screen's state views.
 ///
 /// The real screen is rendered, held in a fixed state through its
@@ -94,7 +94,7 @@ void main() {
         'member rows: owner, admin, moderator and participant scope chips',
         fileName: 'group_members_scope_chips',
         size: _size,
-        builder: () => CometChatGroupMembers(
+        builder: () => ConvoKitGroupMembers(
           group: _group(),
           groupMembersBloc: _bloc(
             GroupMembersLoaded(members: _members(), hasMore: false),
@@ -106,7 +106,7 @@ void main() {
         'member rows in multi-select, two rows checked',
         fileName: 'group_members_selection',
         size: _size,
-        builder: () => CometChatGroupMembers(
+        builder: () => ConvoKitGroupMembers(
           group: _group(),
           selectionMode: SelectionMode.multiple,
           activateSelection: ActivateSelection.onClick,
@@ -125,7 +125,7 @@ void main() {
         'group members empty state',
         fileName: 'group_members_state_empty',
         size: _size,
-        builder: () => CometChatGroupMembers(
+        builder: () => ConvoKitGroupMembers(
           group: _group(),
           groupMembersBloc: _bloc(const GroupMembersEmpty()),
         ),
@@ -135,7 +135,7 @@ void main() {
         'group members error state',
         fileName: 'group_members_state_error',
         size: _size,
-        builder: () => CometChatGroupMembers(
+        builder: () => ConvoKitGroupMembers(
           group: _group(),
           groupMembersBloc: _bloc(
             const GroupMembersError(message: 'Something went wrong'),

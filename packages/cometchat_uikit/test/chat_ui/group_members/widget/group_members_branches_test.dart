@@ -1,4 +1,4 @@
-/// The branches of [CometChatGroupMembers] the prop matrices do not reach:
+/// The branches of [ConvoKitGroupMembers] the prop matrices do not reach:
 /// the member-option actions, the selection state machine, and the callbacks
 /// and events each gesture dispatches.
 ///
@@ -82,7 +82,7 @@ void _drainAssetErrors(WidgetTester tester) {
   while (tester.takeException() != null) {}
 }
 
-Widget _screen(CometChatGroupMembers child) => MaterialApp(
+Widget _screen(ConvoKitGroupMembers child) => MaterialApp(
   localizationsDelegates: Translations.localizationsDelegates,
   supportedLocales: const [Locale('en')],
   home: Scaffold(body: child),
@@ -117,7 +117,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        _screen(CometChatGroupMembers(group: _group, groupMembersBloc: bloc)),
+        _screen(ConvoKitGroupMembers(group: _group, groupMembersBloc: bloc)),
       );
       await _settle(tester);
       await _openMenu(tester);
@@ -137,7 +137,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        _screen(CometChatGroupMembers(group: _group, groupMembersBloc: bloc)),
+        _screen(ConvoKitGroupMembers(group: _group, groupMembersBloc: bloc)),
       );
       await _settle(tester);
       await _openMenu(tester);
@@ -162,7 +162,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        _screen(CometChatGroupMembers(group: _group, groupMembersBloc: bloc)),
+        _screen(ConvoKitGroupMembers(group: _group, groupMembersBloc: bloc)),
       );
       await _settle(tester);
       await _openMenu(tester);
@@ -187,7 +187,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        _screen(CometChatGroupMembers(group: _group, groupMembersBloc: bloc)),
+        _screen(ConvoKitGroupMembers(group: _group, groupMembersBloc: bloc)),
       );
       await _settle(tester);
       await _openMenu(tester);
@@ -218,7 +218,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        _screen(CometChatGroupMembers(group: _group, groupMembersBloc: bloc)),
+        _screen(ConvoKitGroupMembers(group: _group, groupMembersBloc: bloc)),
       );
       await _settle(tester);
       await _openMenu(tester);
@@ -226,8 +226,8 @@ void main() {
       await tester.pumpAndSettle();
       _drainAssetErrors(tester);
 
-      final sheet = tester.widget<CometChatChangeScope>(
-        find.byType(CometChatChangeScope),
+      final sheet = tester.widget<ConvoKitChangeScope>(
+        find.byType(ConvoKitChangeScope),
       );
       expect(sheet.member.uid, 'u1');
       expect(sheet.group.guid, 'g1');
@@ -243,7 +243,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        _screen(CometChatGroupMembers(group: _group, groupMembersBloc: bloc)),
+        _screen(ConvoKitGroupMembers(group: _group, groupMembersBloc: bloc)),
       );
       await _settle(tester);
       await _openMenu(tester);
@@ -252,8 +252,8 @@ void main() {
       _drainAssetErrors(tester);
 
       // Drive the sheet's own onSave, which is the widget's wiring under test.
-      final sheet = tester.widget<CometChatChangeScope>(
-        find.byType(CometChatChangeScope),
+      final sheet = tester.widget<ConvoKitChangeScope>(
+        find.byType(ConvoKitChangeScope),
       );
       await sheet.onSave!(
         _group,
@@ -278,7 +278,7 @@ void main() {
     testWidgets('a null from options opens no menu', (tester) async {
       await tester.pumpWidget(
         _screen(
-          CometChatGroupMembers(
+          ConvoKitGroupMembers(
             group: _group,
             groupMembersBloc: _mock(),
             options: (_, _, _, _) => null,
@@ -294,7 +294,7 @@ void main() {
     testWidgets('a null from setOptions opens no menu', (tester) async {
       await tester.pumpWidget(
         _screen(
-          CometChatGroupMembers(
+          ConvoKitGroupMembers(
             group: _group,
             groupMembersBloc: _mock(),
             setOptions: (_, _, _, _) => null,
@@ -312,7 +312,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _screen(
-          CometChatGroupMembers(
+          ConvoKitGroupMembers(
             group: _group,
             groupMembersBloc: _mock(
               defaultOptions: [_opt(GroupMemberOptionConstants.kick, 'Kick')],
@@ -330,7 +330,7 @@ void main() {
     testWidgets('addOptions entries come before the defaults', (tester) async {
       await tester.pumpWidget(
         _screen(
-          CometChatGroupMembers(
+          ConvoKitGroupMembers(
             group: _group,
             groupMembersBloc: _mock(
               defaultOptions: [_opt(GroupMemberOptionConstants.kick, 'Kick')],
@@ -359,7 +359,7 @@ void main() {
 
       await tester.pumpWidget(
         _screen(
-          CometChatGroupMembers(
+          ConvoKitGroupMembers(
             group: _group,
             groupMembersBloc: _mock(),
             setOptions: (_, _, _, _) => [
@@ -390,7 +390,7 @@ void main() {
 
       await tester.pumpWidget(
         _screen(
-          CometChatGroupMembers(
+          ConvoKitGroupMembers(
             group: _group,
             groupMembersBloc: bloc,
             selectionMode: SelectionMode.multiple,
@@ -415,7 +415,7 @@ void main() {
 
       await tester.pumpWidget(
         _screen(
-          CometChatGroupMembers(
+          ConvoKitGroupMembers(
             group: _group,
             groupMembersBloc: bloc,
             selectionMode: SelectionMode.multiple,
@@ -440,7 +440,7 @@ void main() {
 
       await tester.pumpWidget(
         _screen(
-          CometChatGroupMembers(
+          ConvoKitGroupMembers(
             group: _group,
             groupMembersBloc: bloc,
             selectionMode: SelectionMode.multiple,
@@ -464,7 +464,7 @@ void main() {
 
       await tester.pumpWidget(
         _screen(
-          CometChatGroupMembers(
+          ConvoKitGroupMembers(
             group: _group,
             groupMembersBloc: bloc,
             selectionMode: SelectionMode.multiple,
@@ -487,7 +487,7 @@ void main() {
 
       await tester.pumpWidget(
         _screen(
-          CometChatGroupMembers(
+          ConvoKitGroupMembers(
             group: _group,
             groupMembersBloc: bloc,
             selectionMode: SelectionMode.none,
@@ -511,7 +511,7 @@ void main() {
 
       await tester.pumpWidget(
         _screen(
-          CometChatGroupMembers(
+          ConvoKitGroupMembers(
             group: _group,
             groupMembersBloc: bloc,
             selectionMode: SelectionMode.multiple,
@@ -534,7 +534,7 @@ void main() {
 
       await tester.pumpWidget(
         _screen(
-          CometChatGroupMembers(
+          ConvoKitGroupMembers(
             group: _group,
             groupMembersBloc: bloc,
             selectionMode: SelectionMode.multiple,
@@ -568,7 +568,7 @@ void main() {
 
       await tester.pumpWidget(
         _screen(
-          CometChatGroupMembers(
+          ConvoKitGroupMembers(
             group: _group,
             groupMembersBloc: bloc,
             selectionMode: SelectionMode.multiple,
@@ -593,7 +593,7 @@ void main() {
       final bloc = _mock();
 
       await tester.pumpWidget(
-        _screen(CometChatGroupMembers(group: _group, groupMembersBloc: bloc)),
+        _screen(ConvoKitGroupMembers(group: _group, groupMembersBloc: bloc)),
       );
       await _settle(tester);
       await tester.enterText(find.byType(TextField), 'ali');
@@ -612,7 +612,7 @@ void main() {
       final bloc = _mock(state: const GroupMembersError(message: 'boom'));
 
       await tester.pumpWidget(
-        _screen(CometChatGroupMembers(group: _group, groupMembersBloc: bloc)),
+        _screen(ConvoKitGroupMembers(group: _group, groupMembersBloc: bloc)),
       );
       await _settle(tester);
       // The screen already asked for a first page on mount; only the retry
@@ -629,7 +629,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         _screen(
-          CometChatGroupMembers(
+          ConvoKitGroupMembers(
             group: _group,
             groupMembersBloc: _mock(
               state: const GroupMembersError(message: 'boom'),
@@ -650,7 +650,7 @@ void main() {
       final bloc = _mock(members: many, hasMore: true);
 
       await tester.pumpWidget(
-        _screen(CometChatGroupMembers(group: _group, groupMembersBloc: bloc)),
+        _screen(ConvoKitGroupMembers(group: _group, groupMembersBloc: bloc)),
       );
       await _settle(tester);
       await tester.fling(find.text('Member 0'), const Offset(0, -4000), 4000);
@@ -665,7 +665,7 @@ void main() {
       final bloc = _mock();
 
       await tester.pumpWidget(
-        _screen(CometChatGroupMembers(group: _group, groupMembersBloc: bloc)),
+        _screen(ConvoKitGroupMembers(group: _group, groupMembersBloc: bloc)),
       );
       await _settle(tester);
       await tester.fling(find.text('Alice'), const Offset(0, -400), 1000);
@@ -682,7 +682,7 @@ void main() {
 
       await tester.pumpWidget(
         _screen(
-          CometChatGroupMembers(
+          ConvoKitGroupMembers(
             group: _group,
             groupMembersBloc: _mock(),
             onLoad: (m) => loaded = m,
@@ -699,7 +699,7 @@ void main() {
 
       await tester.pumpWidget(
         _screen(
-          CometChatGroupMembers(
+          ConvoKitGroupMembers(
             group: _group,
             groupMembersBloc: _mock(state: GroupMembersEmpty()),
             onEmpty: () => empties++,
@@ -718,7 +718,7 @@ void main() {
 
       await tester.pumpWidget(
         _screen(
-          CometChatGroupMembers(
+          ConvoKitGroupMembers(
             group: _group,
             groupMembersBloc: _mock(
               state: const GroupMembersError(message: 'boom'),
@@ -738,11 +738,11 @@ void main() {
   group('legacy controller bridge', () {
     testWidgets('stateCallBack hands back a controller whose selectionMap '
         'mirrors the list', (tester) async {
-      CometChatGroupMembersController? handed;
+      ConvoKitGroupMembersController? handed;
 
       await tester.pumpWidget(
         _screen(
-          CometChatGroupMembers(
+          ConvoKitGroupMembers(
             group: _group,
             groupMembersBloc: _mock(selected: const {'u2'}),
             selectionMode: SelectionMode.multiple,
@@ -761,12 +761,12 @@ void main() {
 
     testWidgets('the same controller instance is handed to the option '
         'builders', (tester) async {
-      CometChatGroupMembersController? fromState;
-      CometChatGroupMembersController? fromOptions;
+      ConvoKitGroupMembersController? fromState;
+      ConvoKitGroupMembersController? fromOptions;
 
       await tester.pumpWidget(
         _screen(
-          CometChatGroupMembers(
+          ConvoKitGroupMembers(
             group: _group,
             groupMembersBloc: _mock(),
             stateCallBack: (c) => fromState = c,
@@ -798,7 +798,7 @@ void main() {
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute<void>(
                     builder: (_) => Scaffold(
-                      body: CometChatGroupMembers(
+                      body: ConvoKitGroupMembers(
                         group: _group,
                         groupMembersBloc: _mock(),
                         showBackButton: true,
@@ -814,12 +814,12 @@ void main() {
       );
       await tester.tap(find.text('go'));
       await tester.pumpAndSettle();
-      expect(find.byType(CometChatGroupMembers), findsOneWidget);
+      expect(find.byType(ConvoKitGroupMembers), findsOneWidget);
 
       await tester.tap(find.byIcon(Icons.arrow_back));
       await tester.pumpAndSettle();
 
-      expect(find.byType(CometChatGroupMembers), findsNothing);
+      expect(find.byType(ConvoKitGroupMembers), findsNothing);
     });
 
     testWidgets('FINDING: onBack never fires — the arrow pops instead', (
@@ -836,7 +836,7 @@ void main() {
 
       await tester.pumpWidget(
         _screen(
-          CometChatGroupMembers(
+          ConvoKitGroupMembers(
             group: _group,
             groupMembersBloc: _mock(),
             showBackButton: true,
@@ -867,7 +867,7 @@ void main() {
 
       await tester.pumpWidget(
         _screen(
-          CometChatGroupMembers(
+          ConvoKitGroupMembers(
             group: _group,
             groupMembersBloc: _mock(),
             showBackButton: true,

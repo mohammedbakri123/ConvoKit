@@ -3,10 +3,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:convokit/cometchat_chat_uikit.dart';
 
-///[CometChatGroupsStyle] is a data class that has styling-related properties
-///to customize the appearance of [CometChatGroups]
-class CometChatGroupsStyle extends ThemeExtension<CometChatGroupsStyle> {
-  const CometChatGroupsStyle({
+///[ConvoKitGroupsStyle] is a data class that has styling-related properties
+///to customize the appearance of [ConvoKitGroups]
+class ConvoKitGroupsStyle extends ThemeExtension<ConvoKitGroupsStyle> {
+  const ConvoKitGroupsStyle({
     this.backgroundColor,
     this.border,
     this.borderRadius,
@@ -185,11 +185,11 @@ class CometChatGroupsStyle extends ThemeExtension<CometChatGroupsStyle> {
   ///[protectedGroupIconBackground] provides background color for protected group icon
   final Color? protectedGroupIconBackground;
 
-  static CometChatGroupsStyle of(BuildContext context) =>
-      const CometChatGroupsStyle();
+  static ConvoKitGroupsStyle of(BuildContext context) =>
+      const ConvoKitGroupsStyle();
 
   @override
-  CometChatGroupsStyle copyWith({
+  ConvoKitGroupsStyle copyWith({
     Color? backgroundColor,
     Border? border,
     BorderRadiusGeometry? borderRadius,
@@ -235,7 +235,7 @@ class CometChatGroupsStyle extends ThemeExtension<CometChatGroupsStyle> {
     Color? privateGroupIconBackground,
     Color? protectedGroupIconBackground,
   }) {
-    return CometChatGroupsStyle(
+    return ConvoKitGroupsStyle(
       backgroundColor: backgroundColor ?? this.backgroundColor,
       border: border ?? this.border,
       borderRadius: borderRadius ?? this.borderRadius,
@@ -301,7 +301,7 @@ class CometChatGroupsStyle extends ThemeExtension<CometChatGroupsStyle> {
     );
   }
 
-  CometChatGroupsStyle merge(CometChatGroupsStyle? style) {
+  ConvoKitGroupsStyle merge(ConvoKitGroupsStyle? style) {
     if (style == null) return this;
     return copyWith(
       errorStateTextColor: style.errorStateTextColor,
@@ -352,14 +352,14 @@ class CometChatGroupsStyle extends ThemeExtension<CometChatGroupsStyle> {
   }
 
   @override
-  CometChatGroupsStyle lerp(
-    ThemeExtension<CometChatGroupsStyle>? other,
+  ConvoKitGroupsStyle lerp(
+    ThemeExtension<ConvoKitGroupsStyle>? other,
     double t,
   ) {
-    if (other is! CometChatGroupsStyle) {
+    if (other is! ConvoKitGroupsStyle) {
       return this;
     }
-    return CometChatGroupsStyle(
+    return ConvoKitGroupsStyle(
       backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t),
       border: Border.lerp(border, other.border, t),
       borderRadius: BorderRadiusGeometry.lerp(

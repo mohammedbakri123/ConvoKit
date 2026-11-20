@@ -219,7 +219,7 @@ class _Props {
   final VoidCallback? onPinnedMessagesTap;
   final VoidCallback? onSearchTap;
   final BaseMessage? parentMessage;
-  final CometChatPinnedMessagesStyle? pinnedMessagesStyle;
+  final ConvoKitPinnedMessagesStyle? pinnedMessagesStyle;
   final bool? pinnedMessagesVisibility;
   final bool? threadSubscriptionVisibility;
 }
@@ -311,7 +311,7 @@ List<String> _bells(WidgetTester tester) => [
 Future<void> _drainToast(WidgetTester tester) =>
     tester.pump(const Duration(seconds: 3));
 
-final _sheet = find.byType(CometChatPinnedMessages);
+final _sheet = find.byType(ConvoKitPinnedMessages);
 
 /// How the pushed pinned-messages screen painted its chrome.
 Map<String, Object?> _sheetPaint(WidgetTester tester) {
@@ -438,7 +438,7 @@ final _matrix = <_Case>[
     prop: 'pinnedMessagesStyle',
     effect: 'styles the pinned-messages screen the menu pushes',
     subject: (log) => const _Props(
-      pinnedMessagesStyle: CometChatPinnedMessagesStyle(
+      pinnedMessagesStyle: ConvoKitPinnedMessagesStyle(
         backgroundColor: _sheetBackground,
         iconColor: _sheetBackIcon,
         titleTextStyle: TextStyle(

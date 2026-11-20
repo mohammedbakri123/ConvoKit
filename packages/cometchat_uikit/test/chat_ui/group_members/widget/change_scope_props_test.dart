@@ -1,5 +1,5 @@
-/// Render-verified prop matrix for [CometChatChangeScopeStyle] and
-/// [CometChatChangeScope] — Track 3 PROP1/PROP2 (ENG-38929).
+/// Render-verified prop matrix for [ConvoKitChangeScopeStyle] and
+/// [ConvoKitChangeScope] — Track 3 PROP1/PROP2 (ENG-38929).
 ///
 /// The sheet renders every branch it has in a single pump: the header icon,
 /// the three scope tiles (one of them selected, since the member arrives with
@@ -23,10 +23,10 @@ final _member = GroupMember(
   scope: GroupMemberScope.participant,
 );
 
-Widget _sheet(CometChatChangeScopeStyle style, {EdgeInsetsGeometry? padding}) =>
+Widget _sheet(ConvoKitChangeScopeStyle style, {EdgeInsetsGeometry? padding}) =>
     MaterialApp(
       home: Scaffold(
-        body: CometChatChangeScope(
+        body: ConvoKitChangeScope(
           group: _group,
           member: _member,
           style: style,
@@ -74,7 +74,7 @@ void main() {
   group('the sheet header', () {
     testWidgets('backgroundColor', (tester) async {
       await tester.pumpWidget(
-        _sheet(CometChatChangeScopeStyle(backgroundColor: Color(0xFF150101))),
+        _sheet(ConvoKitChangeScopeStyle(backgroundColor: Color(0xFF150101))),
       );
       await tester.pump();
       expect(_boxColors(tester), contains(const Color(0xFF150101)));
@@ -83,7 +83,7 @@ void main() {
     testWidgets('border', (tester) async {
       await tester.pumpWidget(
         _sheet(
-          CometChatChangeScopeStyle(
+          ConvoKitChangeScopeStyle(
             border: Border.fromBorderSide(
               BorderSide(color: Color(0xFF150202), width: 3),
             ),
@@ -104,7 +104,7 @@ void main() {
     testWidgets('borderRadius', (tester) async {
       await tester.pumpWidget(
         _sheet(
-          CometChatChangeScopeStyle(
+          ConvoKitChangeScopeStyle(
             borderRadius: BorderRadius.all(Radius.circular(35)),
           ),
         ),
@@ -121,7 +121,7 @@ void main() {
     testWidgets('titleTextStyle', (tester) async {
       await tester.pumpWidget(
         _sheet(
-          CometChatChangeScopeStyle(titleTextStyle: TextStyle(fontSize: 31)),
+          ConvoKitChangeScopeStyle(titleTextStyle: TextStyle(fontSize: 31)),
         ),
       );
       await tester.pump();
@@ -131,7 +131,7 @@ void main() {
     testWidgets('subtitleTextStyle', (tester) async {
       await tester.pumpWidget(
         _sheet(
-          CometChatChangeScopeStyle(subtitleTextStyle: TextStyle(fontSize: 17)),
+          ConvoKitChangeScopeStyle(subtitleTextStyle: TextStyle(fontSize: 17)),
         ),
       );
       await tester.pump();
@@ -141,7 +141,7 @@ void main() {
     testWidgets('iconBackgroundColor', (tester) async {
       await tester.pumpWidget(
         _sheet(
-          CometChatChangeScopeStyle(iconBackgroundColor: Color(0xFF150303)),
+          ConvoKitChangeScopeStyle(iconBackgroundColor: Color(0xFF150303)),
         ),
       );
       await tester.pump();
@@ -150,7 +150,7 @@ void main() {
 
     testWidgets('iconColor', (tester) async {
       await tester.pumpWidget(
-        _sheet(CometChatChangeScopeStyle(iconColor: Color(0xFF150404))),
+        _sheet(ConvoKitChangeScopeStyle(iconColor: Color(0xFF150404))),
       );
       await tester.pump();
       expect(
@@ -164,7 +164,7 @@ void main() {
     testWidgets('scopeSectionBorder', (tester) async {
       await tester.pumpWidget(
         _sheet(
-          CometChatChangeScopeStyle(
+          ConvoKitChangeScopeStyle(
             scopeSectionBorder: Border.fromBorderSide(
               BorderSide(color: Color(0xFF150505), width: 4),
             ),
@@ -184,7 +184,7 @@ void main() {
 
     testWidgets('tileColor', (tester) async {
       await tester.pumpWidget(
-        _sheet(CometChatChangeScopeStyle(tileColor: Color(0xFF150606))),
+        _sheet(ConvoKitChangeScopeStyle(tileColor: Color(0xFF150606))),
       );
       await tester.pump();
       // the two unselected tiles take tileColor
@@ -193,7 +193,7 @@ void main() {
 
     testWidgets('selectedTileColor', (tester) async {
       await tester.pumpWidget(
-        _sheet(CometChatChangeScopeStyle(selectedTileColor: Color(0xFF150707))),
+        _sheet(ConvoKitChangeScopeStyle(selectedTileColor: Color(0xFF150707))),
       );
       await tester.pump();
       // Participant is the member's current scope, so its tile is the selected one
@@ -203,7 +203,7 @@ void main() {
     testWidgets('scopeTextStyle', (tester) async {
       await tester.pumpWidget(
         _sheet(
-          CometChatChangeScopeStyle(scopeTextStyle: TextStyle(fontSize: 19)),
+          ConvoKitChangeScopeStyle(scopeTextStyle: TextStyle(fontSize: 19)),
         ),
       );
       await tester.pump();
@@ -213,7 +213,7 @@ void main() {
     testWidgets('selectedScopeTextStyle', (tester) async {
       await tester.pumpWidget(
         _sheet(
-          CometChatChangeScopeStyle(
+          ConvoKitChangeScopeStyle(
             selectedScopeTextStyle: TextStyle(color: Color(0xFF150808)),
           ),
         ),
@@ -224,7 +224,7 @@ void main() {
 
     testWidgets('radioButtonColor', (tester) async {
       await tester.pumpWidget(
-        _sheet(CometChatChangeScopeStyle(radioButtonColor: Color(0xFF150909))),
+        _sheet(ConvoKitChangeScopeStyle(radioButtonColor: Color(0xFF150909))),
       );
       await tester.pump();
       expect(_radioFills(tester), contains(const Color(0xFF150909)));
@@ -233,7 +233,7 @@ void main() {
     testWidgets('radioButtonSelectedColor', (tester) async {
       await tester.pumpWidget(
         _sheet(
-          CometChatChangeScopeStyle(
+          ConvoKitChangeScopeStyle(
             radioButtonSelectedColor: Color(0xFF150A0A),
           ),
         ),
@@ -247,7 +247,7 @@ void main() {
     testWidgets('saveButtonBackgroundColor', (tester) async {
       await tester.pumpWidget(
         _sheet(
-          CometChatChangeScopeStyle(
+          ConvoKitChangeScopeStyle(
             saveButtonBackgroundColor: Color(0xFF150B0B),
           ),
         ),
@@ -259,7 +259,7 @@ void main() {
     testWidgets('saveButtonBorder', (tester) async {
       await tester.pumpWidget(
         _sheet(
-          CometChatChangeScopeStyle(
+          ConvoKitChangeScopeStyle(
             saveButtonBorder: BorderSide(color: Color(0xFF150C0C), width: 5),
           ),
         ),
@@ -271,7 +271,7 @@ void main() {
     testWidgets('saveButtonBorderRadius', (tester) async {
       await tester.pumpWidget(
         _sheet(
-          CometChatChangeScopeStyle(
+          ConvoKitChangeScopeStyle(
             saveButtonBorderRadius: BorderRadius.all(Radius.circular(37)),
           ),
         ),
@@ -286,7 +286,7 @@ void main() {
     testWidgets('saveButtonTextStyle', (tester) async {
       await tester.pumpWidget(
         _sheet(
-          CometChatChangeScopeStyle(
+          ConvoKitChangeScopeStyle(
             saveButtonTextStyle: TextStyle(fontSize: 21),
           ),
         ),
@@ -298,7 +298,7 @@ void main() {
     testWidgets('cancelButtonBackgroundColor', (tester) async {
       await tester.pumpWidget(
         _sheet(
-          CometChatChangeScopeStyle(
+          ConvoKitChangeScopeStyle(
             cancelButtonBackgroundColor: Color(0xFF150D0D),
           ),
         ),
@@ -310,7 +310,7 @@ void main() {
     testWidgets('cancelButtonBorder', (tester) async {
       await tester.pumpWidget(
         _sheet(
-          CometChatChangeScopeStyle(
+          ConvoKitChangeScopeStyle(
             cancelButtonBorder: BorderSide(color: Color(0xFF150E0E), width: 6),
           ),
         ),
@@ -322,7 +322,7 @@ void main() {
     testWidgets('cancelButtonBorderRadius', (tester) async {
       await tester.pumpWidget(
         _sheet(
-          CometChatChangeScopeStyle(
+          ConvoKitChangeScopeStyle(
             cancelButtonBorderRadius: BorderRadius.all(Radius.circular(39)),
           ),
         ),
@@ -337,7 +337,7 @@ void main() {
     testWidgets('cancelButtonTextStyle', (tester) async {
       await tester.pumpWidget(
         _sheet(
-          CometChatChangeScopeStyle(
+          ConvoKitChangeScopeStyle(
             cancelButtonTextStyle: TextStyle(fontSize: 23),
           ),
         ),
@@ -347,12 +347,12 @@ void main() {
     });
   });
 
-  group('CometChatChangeScope own props', () {
+  group('ConvoKitChangeScope own props', () {
     testWidgets('group and member drive the sheet', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatChangeScope(group: _group, member: _member),
+            body: ConvoKitChangeScope(group: _group, member: _member),
           ),
         ),
       );
@@ -366,10 +366,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatChangeScope(
+            body: ConvoKitChangeScope(
               group: _group,
               member: _member,
-              style: CometChatChangeScopeStyle(
+              style: ConvoKitChangeScopeStyle(
                 backgroundColor: const Color(0xFF151010),
               ),
             ),
@@ -384,7 +384,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatChangeScope(
+            body: ConvoKitChangeScope(
               group: _group,
               member: _member,
               padding: const EdgeInsets.only(left: 41),
@@ -406,7 +406,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatChangeScope(
+            body: ConvoKitChangeScope(
               group: _group,
               member: _member,
               onSave: (group, member, newScope, oldScope) async {

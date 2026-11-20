@@ -1,4 +1,4 @@
-/// Data-class behaviour for [CometChatGroupMembersStyle] — `copyWith`,
+/// Data-class behaviour for [ConvoKitGroupMembersStyle] — `copyWith`,
 /// `merge`, `lerp` and `of`.
 ///
 /// `widget/group_members_style_props_test.dart` covers the props on their way
@@ -35,7 +35,7 @@ double? _pad(EdgeInsetsGeometry? p) =>
 typedef _Row = (
   String name,
   int n,
-  double? Function(CometChatGroupMembersStyle),
+  double? Function(ConvoKitGroupMembersStyle),
 );
 
 const List<_Row> _rows = [
@@ -94,115 +94,115 @@ const List<_Row> _rows = [
   ('optionsTextStyle', 53, _rOptionsTextStyle),
 ];
 
-double? _rTitleStyle(CometChatGroupMembersStyle s) => s.titleStyle?.fontSize;
-double? _rBackIconColor(CometChatGroupMembersStyle s) => _blue(s.backIconColor);
-double? _rSearchBackground(CometChatGroupMembersStyle s) =>
+double? _rTitleStyle(ConvoKitGroupMembersStyle s) => s.titleStyle?.fontSize;
+double? _rBackIconColor(ConvoKitGroupMembersStyle s) => _blue(s.backIconColor);
+double? _rSearchBackground(ConvoKitGroupMembersStyle s) =>
     _blue(s.searchBackground);
-double? _rSearchBorderRadius(CometChatGroupMembersStyle s) =>
+double? _rSearchBorderRadius(ConvoKitGroupMembersStyle s) =>
     _radius(s.searchBorderRadius);
-double? _rSearchIconColor(CometChatGroupMembersStyle s) =>
+double? _rSearchIconColor(ConvoKitGroupMembersStyle s) =>
     _blue(s.searchIconColor);
-double? _rSearchPlaceholderStyle(CometChatGroupMembersStyle s) =>
+double? _rSearchPlaceholderStyle(ConvoKitGroupMembersStyle s) =>
     s.searchPlaceholderStyle?.fontSize;
-double? _rSearchTextStyle(CometChatGroupMembersStyle s) =>
+double? _rSearchTextStyle(ConvoKitGroupMembersStyle s) =>
     s.searchTextStyle?.fontSize;
-double? _rLoadingIconColor(CometChatGroupMembersStyle s) =>
+double? _rLoadingIconColor(ConvoKitGroupMembersStyle s) =>
     _blue(s.loadingIconColor);
-double? _rEmptyStateTextStyle(CometChatGroupMembersStyle s) =>
+double? _rEmptyStateTextStyle(ConvoKitGroupMembersStyle s) =>
     s.emptyStateTextStyle?.fontSize;
-double? _rEmptyStateTextColor(CometChatGroupMembersStyle s) =>
+double? _rEmptyStateTextColor(ConvoKitGroupMembersStyle s) =>
     _blue(s.emptyStateTextColor);
-double? _rEmptySubStyle(CometChatGroupMembersStyle s) =>
+double? _rEmptySubStyle(ConvoKitGroupMembersStyle s) =>
     s.emptyStateSubtitleTextStyle?.fontSize;
-double? _rEmptySubColor(CometChatGroupMembersStyle s) =>
+double? _rEmptySubColor(ConvoKitGroupMembersStyle s) =>
     _blue(s.emptyStateSubtitleTextColor);
-double? _rErrorStateTextStyle(CometChatGroupMembersStyle s) =>
+double? _rErrorStateTextStyle(ConvoKitGroupMembersStyle s) =>
     s.errorStateTextStyle?.fontSize;
-double? _rErrorSubStyle(CometChatGroupMembersStyle s) =>
+double? _rErrorSubStyle(ConvoKitGroupMembersStyle s) =>
     s.errorStateSubtitleStyle?.fontSize;
-double? _rOnlineStatusColor(CometChatGroupMembersStyle s) =>
+double? _rOnlineStatusColor(ConvoKitGroupMembersStyle s) =>
     _blue(s.onlineStatusColor);
-double? _rListPadding(CometChatGroupMembersStyle s) => _pad(s.listPadding);
-double? _rBackgroundColor(CometChatGroupMembersStyle s) =>
+double? _rListPadding(ConvoKitGroupMembersStyle s) => _pad(s.listPadding);
+double? _rBackgroundColor(ConvoKitGroupMembersStyle s) =>
     _blue(s.backgroundColor);
-double? _rBorder(CometChatGroupMembersStyle s) => _boxWidth(s.border);
-double? _rBorderRadius(CometChatGroupMembersStyle s) => _radius(s.borderRadius);
-double? _rCheckboxChecked(CometChatGroupMembersStyle s) =>
+double? _rBorder(ConvoKitGroupMembersStyle s) => _boxWidth(s.border);
+double? _rBorderRadius(ConvoKitGroupMembersStyle s) => _radius(s.borderRadius);
+double? _rCheckboxChecked(ConvoKitGroupMembersStyle s) =>
     _blue(s.checkboxCheckedBackgroundColor);
-double? _rCheckboxBackground(CometChatGroupMembersStyle s) =>
+double? _rCheckboxBackground(ConvoKitGroupMembersStyle s) =>
     _blue(s.checkboxBackgroundColor);
-double? _rCheckboxSelectedIcon(CometChatGroupMembersStyle s) =>
+double? _rCheckboxSelectedIcon(ConvoKitGroupMembersStyle s) =>
     _blue(s.checkboxSelectedIconColor);
-double? _rCheckboxBorder(CometChatGroupMembersStyle s) =>
+double? _rCheckboxBorder(ConvoKitGroupMembersStyle s) =>
     s.checkboxBorder?.width;
-double? _rCheckboxBorderRadius(CometChatGroupMembersStyle s) =>
+double? _rCheckboxBorderRadius(ConvoKitGroupMembersStyle s) =>
     _radius(s.checkboxBorderRadius);
-double? _rListItemSelected(CometChatGroupMembersStyle s) =>
+double? _rListItemSelected(ConvoKitGroupMembersStyle s) =>
     _blue(s.listItemSelectedBackgroundColor);
-double? _rConfirmDialogStyle(CometChatGroupMembersStyle s) =>
+double? _rConfirmDialogStyle(ConvoKitGroupMembersStyle s) =>
     _blue(s.confirmDialogStyle?.backgroundColor);
-double? _rListItemStyle(CometChatGroupMembersStyle s) =>
+double? _rListItemStyle(ConvoKitGroupMembersStyle s) =>
     _blue(s.listItemStyle?.background);
-double? _rAvatarStyle(CometChatGroupMembersStyle s) =>
+double? _rAvatarStyle(ConvoKitGroupMembersStyle s) =>
     _blue(s.avatarStyle?.backgroundColor);
-double? _rStatusIndicatorStyle(CometChatGroupMembersStyle s) =>
+double? _rStatusIndicatorStyle(ConvoKitGroupMembersStyle s) =>
     _blue(s.statusIndicatorStyle?.backgroundColor);
-double? _rRetryBackground(CometChatGroupMembersStyle s) =>
+double? _rRetryBackground(ConvoKitGroupMembersStyle s) =>
     _blue(s.retryButtonBackgroundColor);
-double? _rRetryTextColor(CometChatGroupMembersStyle s) =>
+double? _rRetryTextColor(ConvoKitGroupMembersStyle s) =>
     _blue(s.retryButtonTextColor);
-double? _rRetryTextStyle(CometChatGroupMembersStyle s) =>
+double? _rRetryTextStyle(ConvoKitGroupMembersStyle s) =>
     s.retryButtonTextStyle?.fontSize;
-double? _rRetryBorder(CometChatGroupMembersStyle s) =>
+double? _rRetryBorder(ConvoKitGroupMembersStyle s) =>
     s.retryButtonBorder?.width;
-double? _rRetryBorderRadius(CometChatGroupMembersStyle s) =>
+double? _rRetryBorderRadius(ConvoKitGroupMembersStyle s) =>
     _radius(s.retryButtonBorderRadius);
-double? _rSeparatorHeight(CometChatGroupMembersStyle s) => s.separatorHeight;
-double? _rSeparatorColor(CometChatGroupMembersStyle s) =>
+double? _rSeparatorHeight(ConvoKitGroupMembersStyle s) => s.separatorHeight;
+double? _rSeparatorColor(ConvoKitGroupMembersStyle s) =>
     _blue(s.separatorColor);
-double? _rOwnerScopeBackground(CometChatGroupMembersStyle s) =>
+double? _rOwnerScopeBackground(ConvoKitGroupMembersStyle s) =>
     _blue(s.ownerMemberScopeBackgroundColor);
-double? _rModeratorScopeBackground(CometChatGroupMembersStyle s) =>
+double? _rModeratorScopeBackground(ConvoKitGroupMembersStyle s) =>
     _blue(s.moderatorMemberScopeBackgroundColor);
-double? _rAdminScopeBackground(CometChatGroupMembersStyle s) =>
+double? _rAdminScopeBackground(ConvoKitGroupMembersStyle s) =>
     _blue(s.adminMemberScopeBackgroundColor);
-double? _rOwnerScopeTextColor(CometChatGroupMembersStyle s) =>
+double? _rOwnerScopeTextColor(ConvoKitGroupMembersStyle s) =>
     _blue(s.ownerMemberScopeTextColor);
-double? _rModeratorScopeTextColor(CometChatGroupMembersStyle s) =>
+double? _rModeratorScopeTextColor(ConvoKitGroupMembersStyle s) =>
     _blue(s.moderatorMemberScopeTextColor);
-double? _rAdminScopeTextColor(CometChatGroupMembersStyle s) =>
+double? _rAdminScopeTextColor(ConvoKitGroupMembersStyle s) =>
     _blue(s.adminMemberScopeTextColor);
-double? _rOwnerScopeBorder(CometChatGroupMembersStyle s) =>
+double? _rOwnerScopeBorder(ConvoKitGroupMembersStyle s) =>
     _boxWidth(s.ownerMemberScopeBorder);
-double? _rModeratorScopeBorder(CometChatGroupMembersStyle s) =>
+double? _rModeratorScopeBorder(ConvoKitGroupMembersStyle s) =>
     _boxWidth(s.moderatorMemberScopeBorder);
-double? _rAdminScopeBorder(CometChatGroupMembersStyle s) =>
+double? _rAdminScopeBorder(ConvoKitGroupMembersStyle s) =>
     _boxWidth(s.adminMemberScopeBorder);
-double? _rAdminScopeTextStyle(CometChatGroupMembersStyle s) =>
+double? _rAdminScopeTextStyle(ConvoKitGroupMembersStyle s) =>
     s.adminMemberScopeTextStyle?.fontSize;
-double? _rModeratorScopeTextStyle(CometChatGroupMembersStyle s) =>
+double? _rModeratorScopeTextStyle(ConvoKitGroupMembersStyle s) =>
     s.moderatorMemberScopeTextStyle?.fontSize;
-double? _rOwnerScopeTextStyle(CometChatGroupMembersStyle s) =>
+double? _rOwnerScopeTextStyle(ConvoKitGroupMembersStyle s) =>
     s.ownerMemberScopeTextStyle?.fontSize;
-double? _rSubmitIconColor(CometChatGroupMembersStyle s) =>
+double? _rSubmitIconColor(ConvoKitGroupMembersStyle s) =>
     _blue(s.submitIconColor);
-double? _rChangeScopeStyle(CometChatGroupMembersStyle s) =>
+double? _rChangeScopeStyle(ConvoKitGroupMembersStyle s) =>
     _blue(s.changeScopeStyle?.backgroundColor);
-double? _rOptionsBackground(CometChatGroupMembersStyle s) =>
+double? _rOptionsBackground(ConvoKitGroupMembersStyle s) =>
     _blue(s.optionsBackgroundColor);
-double? _rOptionsIconColor(CometChatGroupMembersStyle s) =>
+double? _rOptionsIconColor(ConvoKitGroupMembersStyle s) =>
     _blue(s.optionsIconColor);
-double? _rOptionsTextStyle(CometChatGroupMembersStyle s) =>
+double? _rOptionsTextStyle(ConvoKitGroupMembersStyle s) =>
     s.optionsTextStyle?.fontSize;
 
 // ─── Style builders ──────────────────────────────────────────────────────────
 
-CometChatGroupMembersStyle _style(int offset) {
+ConvoKitGroupMembersStyle _style(int offset) {
   double d(int n) => (n + offset).toDouble();
   Color c(int n) => _c(n + offset);
   TextStyle t(int n) => TextStyle(fontSize: d(n));
 
-  return CometChatGroupMembersStyle(
+  return ConvoKitGroupMembersStyle(
     titleStyle: t(1),
     backIconColor: c(2),
     searchBackground: c(3),
@@ -252,15 +252,15 @@ CometChatGroupMembersStyle _style(int offset) {
     moderatorMemberScopeTextStyle: t(47),
     ownerMemberScopeTextStyle: t(48),
     submitIconColor: c(49),
-    changeScopeStyle: CometChatChangeScopeStyle(backgroundColor: c(50)),
+    changeScopeStyle: ConvoKitChangeScopeStyle(backgroundColor: c(50)),
     optionsBackgroundColor: c(51),
     optionsIconColor: c(52),
     optionsTextStyle: t(53),
   );
 }
 
-CometChatGroupMembersStyle _copyEverything(
-  CometChatGroupMembersStyle onto,
+ConvoKitGroupMembersStyle _copyEverything(
+  ConvoKitGroupMembersStyle onto,
   int offset,
 ) {
   double d(int n) => (n + offset).toDouble();
@@ -317,7 +317,7 @@ CometChatGroupMembersStyle _copyEverything(
     moderatorMemberScopeTextStyle: t(47),
     ownerMemberScopeTextStyle: t(48),
     submitIconColor: c(49),
-    changeScopeStyle: CometChatChangeScopeStyle(backgroundColor: c(50)),
+    changeScopeStyle: ConvoKitChangeScopeStyle(backgroundColor: c(50)),
     optionsBackgroundColor: c(51),
     optionsIconColor: c(52),
     optionsTextStyle: t(53),
@@ -338,7 +338,7 @@ void main() {
   });
 
   test('a default style holds nothing', () {
-    const s = CometChatGroupMembersStyle();
+    const s = ConvoKitGroupMembersStyle();
     for (final (name, _, read) in _rows) {
       expect(read(s), isNull, reason: name);
     }
@@ -399,7 +399,7 @@ void main() {
     });
 
     test('an empty other style changes nothing', () {
-      final merged = start.merge(const CometChatGroupMembersStyle());
+      final merged = start.merge(const ConvoKitGroupMembersStyle());
       for (final (name, n, read) in _rows) {
         expect(read(merged), n.toDouble(), reason: '$name was blanked');
       }
@@ -407,7 +407,7 @@ void main() {
 
     test('merge is per-field, not all-or-nothing', () {
       final merged = start.merge(
-        const CometChatGroupMembersStyle(separatorHeight: 999),
+        const ConvoKitGroupMembersStyle(separatorHeight: 999),
       );
       expect(_rSeparatorHeight(merged), 999);
       expect(_rSeparatorColor(merged), 36);
@@ -450,7 +450,7 @@ void main() {
       () {
         // checkboxBorder, retryButtonBorder and the three member-scope borders
         // substitute a default when either side is null, so they still arrive.
-        final r = const CometChatGroupMembersStyle().lerp(end, 1.0);
+        final r = const ConvoKitGroupMembersStyle().lerp(end, 1.0);
         expect(_rCheckboxBorder(r), 123);
         expect(_rRetryBorder(r), 133);
         expect(_rOwnerScopeBorder(r), 143);
@@ -474,15 +474,15 @@ void main() {
         // lerp always constructs a ListItemStyle from five interpolated
         // sub-fields. A style that had none before lerping comes out with an
         // empty-but-present one.
-        final r = const CometChatGroupMembersStyle().lerp(
-          const CometChatGroupMembersStyle(),
+        final r = const ConvoKitGroupMembersStyle().lerp(
+          const ConvoKitGroupMembersStyle(),
           0.5,
         );
         expect(r.listItemStyle, isNotNull);
         expect(r.listItemStyle?.background, isNull);
         // Only those five sub-fields survive: anything else on the source
         // ListItemStyle is dropped by the rebuild.
-        final withPadding = CometChatGroupMembersStyle(
+        final withPadding = ConvoKitGroupMembersStyle(
           listItemStyle: const ListItemStyle(
             background: Color(0xFF102030),
             padding: EdgeInsets.all(8),
@@ -502,13 +502,13 @@ void main() {
   testWidgets('of() ignores its context and returns the bare defaults', (
     tester,
   ) async {
-    late CometChatGroupMembersStyle resolved;
+    late ConvoKitGroupMembersStyle resolved;
     await tester.pumpWidget(
       MaterialApp(
         theme: ThemeData(extensions: <ThemeExtension<dynamic>>[start]),
         home: Builder(
           builder: (context) {
-            resolved = CometChatGroupMembersStyle.of(context);
+            resolved = ConvoKitGroupMembersStyle.of(context);
             return const SizedBox();
           },
         ),
@@ -519,7 +519,7 @@ void main() {
     expect(
       Theme.of(
         tester.element(find.byType(SizedBox)),
-      ).extension<CometChatGroupMembersStyle>()?.backgroundColor,
+      ).extension<ConvoKitGroupMembersStyle>()?.backgroundColor,
       _c(17),
     );
   });

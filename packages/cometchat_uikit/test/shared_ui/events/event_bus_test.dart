@@ -4,7 +4,7 @@
 ///   CometChatMessageEvents  / CometChatMessageEventListener
 ///   CometChatUIEvents       / CometChatUIEventListener
 ///   CometChatCallEvents     / CometChatCallEventListener
-///   CometChatUserEvents     / CometChatUserEventListener
+///   ConvoKitUserEvents     / ConvoKitUserEventListener
 ///   ChatSDKEventInitializer (the MessageListener the kit installs on the SDK)
 ///
 /// Each bus is a static `Map<String, listener>` plus one `forEach` per event.
@@ -379,7 +379,7 @@ class _CallRecorder with CometChatCallEventListener {
 
 class _SilentCallListener with CometChatCallEventListener {}
 
-class _UserRecorder with CometChatUserEventListener {
+class _UserRecorder with ConvoKitUserEventListener {
   final List<_Call> calls = [];
 
   @override
@@ -390,9 +390,9 @@ class _UserRecorder with CometChatUserEventListener {
       calls.add(_Call('ccUserUnblocked', [user]));
 }
 
-class _SilentUserListener with CometChatUserEventListener {}
+class _SilentUserListener with ConvoKitUserEventListener {}
 
-class _GroupRecorder with CometChatGroupEventListener {
+class _GroupRecorder with ConvoKitGroupEventListener {
   final List<_Call> calls = [];
 
   List<String> get names => calls.map((c) => c.name).toList();
@@ -485,7 +485,7 @@ class _GroupRecorder with CometChatGroupEventListener {
       calls.add(_Call('ccOwnershipChanged', [group, newOwner]));
 }
 
-class _SilentGroupListener with CometChatGroupEventListener {}
+class _SilentGroupListener with ConvoKitGroupEventListener {}
 
 class _ConversationRecorder with ConvoKitConversationEventListener {
   final List<_Call> calls = [];
@@ -943,31 +943,31 @@ void main() {
   });
 
   // ===========================================================================
-  group('CometChatUserEvents', () {
+  group('ConvoKitUserEvents', () {
     late _UserRecorder rec;
 
     setUp(() {
-      CometChatUserEvents.usersListener.clear();
+      ConvoKitUserEvents.usersListener.clear();
       rec = _UserRecorder();
-      CometChatUserEvents.addUsersListener('rec', rec);
-      CometChatUserEvents.addUsersListener('silent', _SilentUserListener());
+      ConvoKitUserEvents.addUsersListener('rec', rec);
+      ConvoKitUserEvents.addUsersListener('silent', _SilentUserListener());
     });
 
-    tearDown(() => CometChatUserEvents.usersListener.clear());
+    tearDown(() => ConvoKitUserEvents.usersListener.clear());
 
     test('addUsersListener stores under the id it was given', () {
-      expect(CometChatUserEvents.usersListener['rec'], same(rec));
+      expect(ConvoKitUserEvents.usersListener['rec'], same(rec));
     });
 
     test('a removed listener stops receiving', () {
-      CometChatUserEvents.removeUsersListener('rec');
-      CometChatUserEvents.ccUserBlocked(_bob);
+      ConvoKitUserEvents.removeUsersListener('rec');
+      ConvoKitUserEvents.ccUserBlocked(_bob);
       expect(rec.calls, isEmpty);
     });
 
     test('block and unblock stay distinct and carry the user', () {
-      CometChatUserEvents.ccUserBlocked(_bob);
-      CometChatUserEvents.ccUserUnblocked(_bob);
+      ConvoKitUserEvents.ccUserBlocked(_bob);
+      ConvoKitUserEvents.ccUserUnblocked(_bob);
       expect(rec.calls.map((c) => c.name), [
         'ccUserBlocked',
         'ccUserUnblocked',
@@ -1181,16 +1181,16 @@ void main() {
   });
 
   // ===========================================================================
-  group('CometChatGroupEvents', () {
+  group('ConvoKitGroupEvents', () {
     late _GroupRecorder rec;
     late cc.Action action;
     late GroupMember owner;
 
     setUp(() {
-      CometChatGroupEvents.groupsListener.clear();
+      ConvoKitGroupEvents.groupsListener.clear();
       rec = _GroupRecorder();
-      CometChatGroupEvents.addGroupsListener('rec', rec);
-      CometChatGroupEvents.addGroupsListener('silent', _SilentGroupListener());
+      ConvoKitGroupEvents.addGroupsListener('rec', rec);
+      ConvoKitGroupEvents.addGroupsListener('silent', _SilentGroupListener());
       action = cc.Action(
         receiverUid: 'g1',
         receiverType: ReceiverTypeConstants.group,
@@ -1205,34 +1205,34 @@ void main() {
       );
     });
 
-    tearDown(() => CometChatGroupEvents.groupsListener.clear());
+    tearDown(() => ConvoKitGroupEvents.groupsListener.clear());
 
     test('addGroupsListener stores under the id it was given', () {
-      expect(CometChatGroupEvents.groupsListener['rec'], same(rec));
+      expect(ConvoKitGroupEvents.groupsListener['rec'], same(rec));
     });
 
     test('a removed listener stops receiving', () {
-      CometChatGroupEvents.removeGroupsListener('rec');
-      CometChatGroupEvents.ccGroupCreated(_team);
+      ConvoKitGroupEvents.removeGroupsListener('rec');
+      ConvoKitGroupEvents.ccGroupCreated(_team);
       expect(rec.calls, isEmpty);
     });
 
     test('created and deleted stay distinct and carry the group', () {
-      CometChatGroupEvents.ccGroupCreated(_team);
-      CometChatGroupEvents.ccGroupDeleted(_team);
+      ConvoKitGroupEvents.ccGroupCreated(_team);
+      ConvoKitGroupEvents.ccGroupDeleted(_team);
       expect(rec.names, ['ccGroupCreated', 'ccGroupDeleted']);
       expect(rec.calls.first.args, [same(_team)]);
       expect(rec.calls.last.args, [same(_team)]);
     });
 
     test('ccGroupLeft carries the action, the member and the group', () {
-      CometChatGroupEvents.ccGroupLeft(action, _bob, _team);
+      ConvoKitGroupEvents.ccGroupLeft(action, _bob, _team);
       expect(rec.only.name, 'ccGroupLeft');
       expect(rec.only.args, [same(action), same(_bob), same(_team)]);
     });
 
     test('ccGroupMemberScopeChanged carries both scopes in order', () {
-      CometChatGroupEvents.ccGroupMemberScopeChanged(
+      ConvoKitGroupEvents.ccGroupMemberScopeChanged(
         action,
         _bob,
         GroupMemberScope.admin,
@@ -1250,9 +1250,9 @@ void main() {
     });
 
     test('banned / kicked / unbanned stay distinct and keep actor order', () {
-      CometChatGroupEvents.ccGroupMemberBanned(action, _bob, _alice, _team);
-      CometChatGroupEvents.ccGroupMemberKicked(action, _bob, _alice, _team);
-      CometChatGroupEvents.ccGroupMemberUnbanned(action, _bob, _alice, _team);
+      ConvoKitGroupEvents.ccGroupMemberBanned(action, _bob, _alice, _team);
+      ConvoKitGroupEvents.ccGroupMemberKicked(action, _bob, _alice, _team);
+      ConvoKitGroupEvents.ccGroupMemberUnbanned(action, _bob, _alice, _team);
       expect(rec.names, [
         'ccGroupMemberBanned',
         'ccGroupMemberKicked',
@@ -1266,13 +1266,13 @@ void main() {
     });
 
     test('ccGroupMemberJoined carries the member and the group', () {
-      CometChatGroupEvents.ccGroupMemberJoined(_bob, _team);
+      ConvoKitGroupEvents.ccGroupMemberJoined(_bob, _team);
       expect(rec.only.name, 'ccGroupMemberJoined');
       expect(rec.only.args, [same(_bob), same(_team)]);
     });
 
     test('ccGroupMemberAdded carries the batch of actions and users', () {
-      CometChatGroupEvents.ccGroupMemberAdded([action], [_bob], _team, _alice);
+      ConvoKitGroupEvents.ccGroupMemberAdded([action], [_bob], _team, _alice);
       expect(rec.only.name, 'ccGroupMemberAdded');
       expect(rec.only.args, [
         [same(action)],
@@ -1283,7 +1283,7 @@ void main() {
     });
 
     test('ccOwnershipChanged carries the group and the new owner', () {
-      CometChatGroupEvents.ccOwnershipChanged(_team, owner);
+      ConvoKitGroupEvents.ccOwnershipChanged(_team, owner);
       expect(rec.only.name, 'ccOwnershipChanged');
       expect(rec.only.args, [same(_team), same(owner)]);
     });

@@ -68,7 +68,7 @@ class GroupMembersBloc extends Bloc<GroupMembersEvent, GroupMembersState>
   /// The group whose members are being managed
   final Group group;
 
-  /// The app's request builder, from `CometChatGroupMembers`'
+  /// The app's request builder, from `ConvoKitGroupMembers`'
   /// `groupMembersRequestBuilder`. Threaded down to
   /// GroupMembersRemoteDataSourceImpl, which builds each first page from it
   /// with [group]'s guid and the search keyword on top, and leaves it
@@ -939,8 +939,8 @@ class GroupMembersBloc extends Bloc<GroupMembersEvent, GroupMembersState>
         parentMessageId: 0,
       );
 
-      // Emit CometChatGroupEvents.ccGroupMemberKicked
-      CometChatGroupEvents.ccGroupMemberKicked(
+      // Emit ConvoKitGroupEvents.ccGroupMemberKicked
+      ConvoKitGroupEvents.ccGroupMemberKicked(
         actionMessage,
         event.member,
         _loggedInUser!,
@@ -996,8 +996,8 @@ class GroupMembersBloc extends Bloc<GroupMembersEvent, GroupMembersState>
         parentMessageId: 0,
       );
 
-      // Emit CometChatGroupEvents.ccGroupMemberBanned
-      CometChatGroupEvents.ccGroupMemberBanned(
+      // Emit ConvoKitGroupEvents.ccGroupMemberBanned
+      ConvoKitGroupEvents.ccGroupMemberBanned(
         actionMessage,
         event.member,
         _loggedInUser!,
@@ -1077,8 +1077,8 @@ class GroupMembersBloc extends Bloc<GroupMembersEvent, GroupMembersState>
         parentMessageId: 0,
       );
 
-      // Emit CometChatGroupEvents.ccGroupMemberScopeChanged
-      CometChatGroupEvents.ccGroupMemberScopeChanged(
+      // Emit ConvoKitGroupEvents.ccGroupMemberScopeChanged
+      ConvoKitGroupEvents.ccGroupMemberScopeChanged(
         actionMessage,
         event.member,
         event.newScope,

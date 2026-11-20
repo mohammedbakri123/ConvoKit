@@ -1,4 +1,4 @@
-/// Render-verified prop matrix for [CometChatGroups] — Track 3 PROP1.
+/// Render-verified prop matrix for [ConvoKitGroups] — Track 3 PROP1.
 ///
 /// Same pattern as `users_props_test.dart`: mock the bloc, inject it through
 /// the component's own `groupsBloc` parameter, seed a state, then set one prop
@@ -13,12 +13,12 @@
 /// assertions.
 ///
 /// `groupsRequestBuilder` still reads as uncovered, and that is accurate
-/// rather than an omission. CometChatGroups reads it only on the branch that
+/// rather than an omission. ConvoKitGroups reads it only on the branch that
 /// builds its own GroupsBloc, and that branch resolves use cases through the
 /// service locator and reaches the SDK. The test below verifies the half that
 /// was actually broken — bloc → use case → repository → datasource — by
 /// constructing the bloc with stubbed use cases. Passing the prop to a
-/// CometChatGroups that has a bloc injected would score as render-verified
+/// ConvoKitGroups that has a bloc injected would score as render-verified
 /// while proving nothing, so it is deliberately not done.
 ///
 ///   flutter test test/chat_ui/groups/groups_props_test.dart
@@ -107,7 +107,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(groupsBloc: _loadedBloc(), title: 'Pick a channel'),
+            ConvoKitGroups(groupsBloc: _loadedBloc(), title: 'Pick a channel'),
           ),
         ),
       );
@@ -119,7 +119,7 @@ void main() {
     testWidgets('with no title the localized default is used', (tester) async {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
-          _wrap(CometChatGroups(groupsBloc: _loadedBloc())),
+          _wrap(ConvoKitGroups(groupsBloc: _loadedBloc())),
         ),
       );
       await tester.pump();
@@ -132,7 +132,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loadedBloc(selected: {'g1', 'g2'}),
               title: 'Pick a channel',
             ),
@@ -149,7 +149,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loadedBloc(),
               titleView: (context, group) => Text('title-${group.guid}'),
             ),
@@ -165,7 +165,7 @@ void main() {
     testWidgets('hideAppbar removes the app bar', (tester) async {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
-          _wrap(CometChatGroups(groupsBloc: _loadedBloc(), hideAppbar: true)),
+          _wrap(ConvoKitGroups(groupsBloc: _loadedBloc(), hideAppbar: true)),
         ),
       );
       await tester.pump();
@@ -177,7 +177,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(groupsBloc: _loadedBloc(), showBackButton: false),
+            ConvoKitGroups(groupsBloc: _loadedBloc(), showBackButton: false),
           ),
         ),
       );
@@ -190,7 +190,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loadedBloc(),
               backButton: const Text('custom-back'),
             ),
@@ -208,7 +208,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(groupsBloc: _loadedBloc(), onBack: () => backs++),
+            ConvoKitGroups(groupsBloc: _loadedBloc(), onBack: () => backs++),
           ),
         ),
       );
@@ -224,7 +224,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loadedBloc(),
               appBarOptions: (context) => const [Text('menu-option')],
             ),
@@ -242,7 +242,7 @@ void main() {
     testWidgets('hideSearch removes the search field', (tester) async {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
-          _wrap(CometChatGroups(groupsBloc: _loadedBloc(), hideSearch: true)),
+          _wrap(ConvoKitGroups(groupsBloc: _loadedBloc(), hideSearch: true)),
         ),
       );
       await tester.pump();
@@ -254,7 +254,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loadedBloc(),
               searchPlaceholder: 'Find a channel',
             ),
@@ -271,7 +271,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(groupsBloc: _loadedBloc(), searchKeyword: 'design'),
+            ConvoKitGroups(groupsBloc: _loadedBloc(), searchKeyword: 'design'),
           ),
         ),
       );
@@ -285,7 +285,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loadedBloc(),
               searchBoxIcon: const Text('search-glyph'),
             ),
@@ -304,7 +304,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(groupsBloc: _loadedBloc(), height: 320, width: 260),
+            ConvoKitGroups(groupsBloc: _loadedBloc(), height: 320, width: 260),
           ),
         ),
       );
@@ -324,9 +324,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loadedBloc(),
-              groupsStyle: const CometChatGroupsStyle(
+              groupsStyle: const ConvoKitGroupsStyle(
                 borderRadius: BorderRadius.all(Radius.circular(18)),
               ),
             ),
@@ -346,7 +346,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loadedBloc(),
               scrollController: controller,
             ),
@@ -355,7 +355,7 @@ void main() {
       );
       await tester.pump();
 
-      expect(find.byType(CometChatGroups), findsOneWidget);
+      expect(find.byType(ConvoKitGroups), findsOneWidget);
     });
   });
 
@@ -367,10 +367,10 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loadedBloc(),
               title: 'Channels',
-              groupsStyle: const CometChatGroupsStyle(
+              groupsStyle: const ConvoKitGroupsStyle(
                 titleTextColor: Color(0xFF115577),
                 titleTextStyle: TextStyle(fontSize: 27),
               ),
@@ -389,9 +389,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loadedBloc(),
-              groupsStyle: const CometChatGroupsStyle(
+              groupsStyle: const ConvoKitGroupsStyle(
                 backIconColor: Color(0xFF902040),
               ),
             ),
@@ -411,9 +411,9 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loadedBloc(),
-              groupsStyle: const CometChatGroupsStyle(
+              groupsStyle: const ConvoKitGroupsStyle(
                 backgroundColor: Color(0xFFEDF2F2),
               ),
             ),
@@ -438,7 +438,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loadedBloc(selected: {'g1'}),
               selectionMode: SelectionMode.single,
             ),
@@ -456,7 +456,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loadedBloc(selected: {'g1'}),
               submitIcon: const Text('done-glyph'),
             ),
@@ -474,7 +474,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loadedBloc(selected: {'g1'}),
               onSelection: (groups) => handed = groups,
             ),
@@ -495,7 +495,7 @@ void main() {
     ) async {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
-          _wrap(CometChatGroups(groupsBloc: _loadedBloc(selected: {'g1'}))),
+          _wrap(ConvoKitGroups(groupsBloc: _loadedBloc(selected: {'g1'}))),
         ),
       );
       await tester.pump();
@@ -510,7 +510,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loadedBloc(),
               selectionMode: SelectionMode.multiple,
               activateSelection: ActivateSelection.onClick,
@@ -530,7 +530,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loadedBloc(),
               listItemView: (group) => Text('row-${group.guid}'),
             ),
@@ -548,7 +548,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loadedBloc(),
               subtitleView: (context, group) => Text('sub-${group.guid}'),
             ),
@@ -565,7 +565,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loadedBloc(),
               leadingView: (context, group) => Text('lead-${group.guid}'),
               trailingView: (context, group) => Text('trail-${group.guid}'),
@@ -583,7 +583,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _blocIn(const GroupsLoading()),
               loadingStateView: (context) => const Text('custom-loading'),
             ),
@@ -599,7 +599,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _blocIn(const GroupsEmpty()),
               emptyStateView: (context) => const Text('custom-empty'),
             ),
@@ -615,7 +615,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _blocIn(const GroupsError(message: 'boom')),
               errorStateView: (context) => const Text('custom-error'),
             ),
@@ -634,7 +634,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loadedBloc(),
               privateGroupIcon: const Text('private-glyph'),
             ),
@@ -651,7 +651,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loadedBloc(),
               passwordGroupIcon: const Text('locked-glyph'),
             ),
@@ -669,7 +669,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loadedBloc(),
               privateGroupIcon: const Text('private-glyph'),
               passwordGroupIcon: const Text('locked-glyph'),
@@ -692,7 +692,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loadedBloc(),
               onItemTap: (context, group) => tapped = group,
             ),
@@ -712,7 +712,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loadedBloc(),
               onItemLongPress: (context, group) => pressed = group,
             ),
@@ -735,7 +735,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _loadedBloc(),
               onLoad: (groups) => reported.add(groups),
             ),
@@ -753,7 +753,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _blocIn(const GroupsEmpty()),
               onEmpty: () => empties++,
             ),
@@ -770,7 +770,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _blocIn(const GroupsLoaded(groups: [])),
               onEmpty: () => empties++,
             ),
@@ -787,7 +787,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _blocIn(const GroupsError(message: 'boom')),
               onError: (e) => reported = e,
             ),
@@ -809,7 +809,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _blocIn(const GroupsError(message: 'boom')),
               errorStateView: (context) => const Text('custom-error'),
               hideError: true,
@@ -828,7 +828,7 @@ void main() {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
           _wrap(
-            CometChatGroups(
+            ConvoKitGroups(
               groupsBloc: _blocIn(const GroupsError(message: 'boom')),
               errorStateView: (context) => const Text('custom-error'),
             ),
@@ -841,7 +841,7 @@ void main() {
     });
 
     testWidgets('groupsRequestBuilder reaches the fetch', (tester) async {
-      // Built here rather than left to the component: CometChatGroups only
+      // Built here rather than left to the component: ConvoKitGroups only
       // reads the prop on the branch that constructs its own GroupsBloc, and
       // that branch resolves real use cases through the service locator and
       // reaches the SDK. Constructing the bloc with stubbed use cases keeps
@@ -882,7 +882,7 @@ void main() {
       addTearDown(bloc.close);
 
       await mockNetworkImagesFor(
-        () => tester.pumpWidget(_wrap(CometChatGroups(groupsBloc: bloc))),
+        () => tester.pumpWidget(_wrap(ConvoKitGroups(groupsBloc: bloc))),
       );
       await tester.pump();
       await tester.pump();

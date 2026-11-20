@@ -1,4 +1,4 @@
-/// CometChatUsers.usersRequestBuilder keeps its limit and its search keyword —
+/// ConvoKitUsers.usersRequestBuilder keeps its limit and its search keyword —
 /// ENG-38688.
 ///
 /// Shipped in 6.1.1: the data source built the first request by writing into

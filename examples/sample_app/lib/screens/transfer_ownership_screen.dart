@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:convokit/cometchat_chat_uikit.dart';
 
 /// Transfer Ownership screen — select a member to transfer group ownership to.
-/// Uses CometChatGroupMembers with single selection mode.
+/// Uses ConvoKitGroupMembers with single selection mode.
 class TransferOwnershipScreen extends StatefulWidget {
   final Group group;
 
@@ -21,7 +21,7 @@ class _TransferOwnershipScreenState extends State<TransferOwnershipScreen> {
   bool _isLoading = false;
 
   /// Controller reference obtained via stateCallBack — no GetX needed.
-  CometChatGroupMembersController? _membersController;
+  ConvoKitGroupMembersController? _membersController;
 
   @override
   void didChangeDependencies() {
@@ -121,7 +121,7 @@ class _TransferOwnershipScreenState extends State<TransferOwnershipScreen> {
       onSuccess: (_) {
         if (!mounted) return;
         widget.group.owner = member.uid;
-        CometChatGroupEvents.ccOwnershipChanged(widget.group, member);
+        ConvoKitGroupEvents.ccOwnershipChanged(widget.group, member);
         Navigator.of(dialogContext).pop(); // close dialog
         Navigator.pop(context, 'LeaveGroup'); // close screen, signal leave
       },
@@ -158,7 +158,7 @@ class _TransferOwnershipScreenState extends State<TransferOwnershipScreen> {
       body: Column(
         children: [
           Expanded(
-            child: CometChatGroupMembers(
+            child: ConvoKitGroupMembers(
               stateCallBack: (controller) => _membersController = controller,
               hideAppbar: true,
               selectionMode: SelectionMode.single,

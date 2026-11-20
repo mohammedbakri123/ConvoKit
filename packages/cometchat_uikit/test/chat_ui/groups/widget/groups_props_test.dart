@@ -1,9 +1,9 @@
-/// Render-verified prop matrix for [CometChatGroups] — ENG-38688 (Track 3
+/// Render-verified prop matrix for [ConvoKitGroups] — ENG-38688 (Track 3
 /// PROP1, coverage part 2).
 ///
 /// Fixtures follow `conversations_props_test.dart` and `users_props_test.dart`:
 /// a mock bloc injected through the component's own `groupsBloc` parameter and
-/// seeded with fake SDK groups, so every row renders real CometChatGroups UI
+/// seeded with fake SDK groups, so every row renders real ConvoKitGroups UI
 /// without touching the SDK.
 ///
 /// One table, one row per prop. Each row pumps the component twice inside a
@@ -114,7 +114,7 @@ _MockGroupsBloc _blocIn(GroupsState state) {
 }
 
 /// A fresh app per pass. Keying it by pass stops the sentinel pump inheriting
-/// the default pass's State — CometChatGroups reads its bloc and its search
+/// the default pass's State — ConvoKitGroups reads its bloc and its search
 /// seed once, in initState — or its navigator.
 Widget _wrap(String pass, Widget child) => MaterialApp(
   key: ValueKey(pass),
@@ -139,7 +139,7 @@ class _Probe {
 class _Props {
   Widget? Function(BuildContext, Group)? subtitleView;
   Widget Function(Group)? listItemView;
-  CometChatGroupsStyle? groupsStyle;
+  ConvoKitGroupsStyle? groupsStyle;
   ScrollController? scrollController;
   String? searchPlaceholder;
   Widget? backButton;
@@ -246,7 +246,7 @@ class _Case {
     this.act,
   });
 
-  /// The CometChatGroups prop this row is about.
+  /// The ConvoKitGroups prop this row is about.
   final String prop;
 
   /// What the sentinel should do to the rendered tree.
@@ -284,7 +284,7 @@ class _Case {
 int _count(Finder f) => f.evaluate().length;
 
 Finder get _appBar => find.descendant(
-  of: find.byType(CometChatGroups),
+  of: find.byType(ConvoKitGroups),
   matching: find.byType(AppBar),
 );
 
@@ -524,7 +524,7 @@ final _cases = <_Case>[
   _Case(
     'groupsStyle',
     'paints the surface, the heading and the row titles',
-    apply: (p, _) => p.groupsStyle = const CometChatGroupsStyle(
+    apply: (p, _) => p.groupsStyle = const ConvoKitGroupsStyle(
       backgroundColor: _surfaceColour,
       titleTextColor: _headingColour,
       itemTitleTextColor: _rowTitleColour,
@@ -533,7 +533,7 @@ final _cases = <_Case>[
       t
           .widget<Scaffold>(
             find.descendant(
-              of: find.byType(CometChatGroups),
+              of: find.byType(ConvoKitGroups),
               matching: find.byType(Scaffold),
             ),
           )
@@ -819,8 +819,8 @@ final _cases = <_Case>[
     observe: (t, probe, _) => [...probe.calls],
     expected: ['star:g3'],
   ),
-  // Android's CometChatGroups joins the two lists, setOptions first
-  // (preparePopupMenu). CometChatUsers differs: there setOptions wins.
+  // Android's ConvoKitGroups joins the two lists, setOptions first
+  // (preparePopupMenu). ConvoKitUsers differs: there setOptions wins.
   _Case(
     'setOptions',
     'goes ahead of addOptions in the menu when both are set',
@@ -907,7 +907,7 @@ final _cases = <_Case>[
 // ─── Tests ───────────────────────────────────────────────────────────────────
 
 void main() {
-  group('CometChatGroups prop matrix', () {
+  group('ConvoKitGroups prop matrix', () {
     for (final c in _cases) {
       testWidgets('${c.prop}: ${c.effect}', (tester) async {
         // Pass 1 renders the construction with only the row's base applied,
@@ -928,7 +928,7 @@ void main() {
             () => tester.pumpWidget(
               _wrap(
                 pass,
-                CometChatGroups(
+                ConvoKitGroups(
                   groupsBloc: bloc,
                   subtitleView: p.subtitleView,
                   listItemView: p.listItemView,

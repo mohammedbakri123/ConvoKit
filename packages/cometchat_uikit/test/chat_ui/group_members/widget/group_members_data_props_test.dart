@@ -1,4 +1,4 @@
-/// Data-driven prop matrix for [CometChatGroupMembers] — the props that only
+/// Data-driven prop matrix for [ConvoKitGroupMembers] — the props that only
 /// render once member data exists (Track 3 PROP1, ENG-38767).
 ///
 /// These were previously out of reach: the component built its bloc in
@@ -89,7 +89,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatGroupMembers(
+            body: ConvoKitGroupMembers(
               group: _group,
               groupMembersBloc: _mock(),
               listItemView: (member) => Text('ROW_${member.uid}'),
@@ -107,7 +107,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatGroupMembers(
+            body: ConvoKitGroupMembers(
               group: _group,
               groupMembersBloc: _mock(),
               titleView: (context, member) => Text('TITLE_${member.uid}'),
@@ -123,7 +123,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatGroupMembers(
+            body: ConvoKitGroupMembers(
               group: _group,
               groupMembersBloc: _mock(),
               subtitleView: (context, member) => Text('SUB_${member.uid}'),
@@ -140,7 +140,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatGroupMembers(
+            body: ConvoKitGroupMembers(
               group: _group,
               groupMembersBloc: _mock(),
               leadingView: (context, member) => Text('LEAD_${member.uid}'),
@@ -156,7 +156,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatGroupMembers(
+            body: ConvoKitGroupMembers(
               group: _group,
               groupMembersBloc: _mock(),
               trailingView: (context, member) => Text('TAIL_${member.uid}'),
@@ -172,7 +172,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatGroupMembers(
+            body: ConvoKitGroupMembers(
               group: _group,
               groupMembersBloc: _mock(state: GroupMembersEmpty()),
               emptyStateView: (context) => const Text('EMPTY_SLOT'),
@@ -191,7 +191,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatGroupMembers(
+            body: ConvoKitGroupMembers(
               group: _group,
               groupMembersBloc: _mock(),
               onItemTap: (member) => tapped = member,
@@ -212,7 +212,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatGroupMembers(
+            body: ConvoKitGroupMembers(
               group: _group,
               groupMembersBloc: _mock(),
               onItemLongPress: (member) => held = member,
@@ -231,7 +231,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatGroupMembers(
+            body: ConvoKitGroupMembers(
               group: _group,
               groupMembersBloc: _mock(),
               selectionMode: SelectionMode.multiple,
@@ -259,7 +259,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatGroupMembers(
+            body: ConvoKitGroupMembers(
               group: _group,
               groupMembersBloc: _mock(selected: const {'u1'}),
               selectionMode: SelectionMode.multiple,
@@ -280,7 +280,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatGroupMembers(
+            body: ConvoKitGroupMembers(
               group: _group,
               groupMembersBloc: _mock(),
               selectionMode: SelectionMode.multiple,
@@ -304,7 +304,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatGroupMembers(
+            body: ConvoKitGroupMembers(
               group: _group,
               groupMembersBloc: _mock(),
               setOptions: (group, member, controller, context) => [
@@ -327,7 +327,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatGroupMembers(
+            body: ConvoKitGroupMembers(
               group: _group,
               groupMembersBloc: _mock(),
               options: (group, member, controller, context) => [
@@ -355,7 +355,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatGroupMembers(
+            body: ConvoKitGroupMembers(
               group: _group,
               groupMembersBloc: _mock(),
               addOptions: (group, member, controller, context) => [
@@ -380,7 +380,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CometChatGroupMembers(
+            body: ConvoKitGroupMembers(
               group: _group,
               groupMembersBloc: _mock(),
               controller: controller,

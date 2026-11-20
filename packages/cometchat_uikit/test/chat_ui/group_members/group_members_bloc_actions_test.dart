@@ -6,7 +6,7 @@
 /// `disableSDKListeners: true`, so no SDK listener is registered and the
 /// public events are dispatched directly.
 ///
-/// The three member actions announce themselves on [CometChatGroupEvents],
+/// The three member actions announce themselves on [ConvoKitGroupEvents],
 /// a plain in-process map, so the action message each one broadcasts is
 /// asserted too — that message is what the message list renders as
 /// "X kicked Y", and it is built from four different sources.
@@ -79,7 +79,7 @@ class FakeConversation extends Fake implements Conversation {
 }
 
 /// Records the member-action broadcasts the bloc puts on the kit group bus.
-class GroupEventRecorder with CometChatGroupEventListener {
+class GroupEventRecorder with ConvoKitGroupEventListener {
   final List<(String, Action, GroupMember)> events = [];
 
   @override
@@ -121,7 +121,7 @@ void main() {
     repo = MockRepo();
     theGroup = FakeGroup();
     groupEvents = GroupEventRecorder();
-    CometChatGroupEvents.addGroupsListener('gm_actions', groupEvents);
+    ConvoKitGroupEvents.addGroupsListener('gm_actions', groupEvents);
     when(() => repo.resetPagination()).thenReturn(null);
     when(
       () => repo.getLoggedInUser(),
@@ -139,7 +139,7 @@ void main() {
   });
 
   tearDown(() {
-    CometChatGroupEvents.removeGroupsListener('gm_actions');
+    ConvoKitGroupEvents.removeGroupsListener('gm_actions');
   });
 
   GroupMembersBloc makeBloc() => GroupMembersBloc(

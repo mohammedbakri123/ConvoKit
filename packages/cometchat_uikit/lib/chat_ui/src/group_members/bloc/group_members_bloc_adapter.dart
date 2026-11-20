@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:convokit/cometchat_chat_uikit.dart';
 
-/// Adapter that wraps [GroupMembersBloc] to implement [CometChatGroupMembersControllerProtocol].
+/// Adapter that wraps [GroupMembersBloc] to implement [ConvoKitGroupMembersControllerProtocol].
 ///
 /// This adapter allows the BLoC-based group members list to work with existing
 /// code that expects the controller protocol, enabling backward compatibility
@@ -16,7 +16,7 @@ import 'package:convokit/cometchat_chat_uikit.dart';
 /// );
 ///
 /// // Use adapter with stateCallBack
-/// CometChatGroupMembers(
+/// ConvoKitGroupMembers(
 ///   group: myGroup,
 ///   stateCallBack: (controller) {
 ///     // controller is the adapter
@@ -24,7 +24,7 @@ import 'package:convokit/cometchat_chat_uikit.dart';
 /// );
 /// ```
 class GroupMembersBlocAdapter
-    implements CometChatGroupMembersControllerProtocol {
+    implements ConvoKitGroupMembersControllerProtocol {
   /// The underlying BLoC instance
   final GroupMembersBloc bloc;
 
@@ -40,7 +40,7 @@ class GroupMembersBlocAdapter
   }
 
   // ============================================================
-  // CometChatGroupMembersControllerProtocol Implementation
+  // ConvoKitGroupMembersControllerProtocol Implementation
   // ============================================================
 
   @override
