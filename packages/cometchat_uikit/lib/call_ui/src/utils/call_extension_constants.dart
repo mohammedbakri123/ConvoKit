@@ -1,1 +1,0 @@
-enum CallWorkFlow { defaultCalling, directCalling }

@@ -11,12 +11,6 @@ class UIKitSettings {
   ///[enableCalls] deprecated in v1; calling is deferred.
   final bool enableCalls;
 
-  ///[callingConfiguration] deprecated in v1; calling is deferred.
-  final dynamic callingConfiguration;
-
-  ///[callPushBridge] deprecated in v1; calling is deferred.
-  final dynamic callPushBridge;
-
   ///[enableThreadSubscription] feature gate for the thread follow/unfollow
   ///surfaces (the message action-sheet option and the threaded-header
   ///control). Defaults to false: with the gate off neither surface renders
@@ -38,8 +32,6 @@ class UIKitSettings {
           builder.autoEstablishSocketConnection ?? true,
       authKey = builder.authKey,
       enableCalls = builder.enableCalls,
-      callingConfiguration = builder.callingConfiguration,
-      callPushBridge = builder.callPushBridge,
       enableThreadSubscription = builder.enableThreadSubscription,
       adminHost = builder.adminHost,
       clientHost = builder.clientHost,
@@ -58,12 +50,6 @@ class UIKitSettingsBuilder {
 
   ///[enableCalls] deprecated in v1; calling is deferred.
   bool enableCalls = false;
-
-  ///[callingConfiguration] deprecated in v1; calling is deferred.
-  dynamic callingConfiguration;
-
-  ///[callPushBridge] deprecated in v1; calling is deferred.
-  dynamic callPushBridge;
 
   ///[enableThreadSubscription] feature gate for the thread follow/unfollow
   ///surfaces. Defaults to false (both surfaces stay hidden).
