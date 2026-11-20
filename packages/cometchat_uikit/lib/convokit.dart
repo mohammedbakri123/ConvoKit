@@ -20,3 +20,4 @@ export 'src/core/stores/stores.dart';
 // Public UI widgets and scope
 export 'src/ui/convo_kit_scope.dart';
 export 'src/ui/views/conversations_view.dart';
+export 'src/ui/views/message_list_view.dart';
