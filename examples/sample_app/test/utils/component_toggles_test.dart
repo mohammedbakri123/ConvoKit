@@ -44,8 +44,6 @@ void main() {
       expect(toggles.disableReactions.value, isFalse);
       expect(toggles.enableSwipeToReply.value, isTrue);
       expect(toggles.hideGroupActionMessages.value, isFalse);
-      expect(toggles.enableSmartReplies.value, isFalse);
-      expect(toggles.enableConversationStarters.value, isFalse);
       expect(toggles.startFromUnreadMessages.value, isFalse);
       expect(toggles.showMarkAsUnreadOption.value, isTrue);
     });

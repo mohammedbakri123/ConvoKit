@@ -174,18 +174,6 @@ class CometChatMessageList extends StatefulWidget {
     this.hideTranslateMessageOption = false,
     this.hideShareMessageOption = false,
     this.hideModerationView,
-    this.enableConversationStarters = false,
-    this.enableSmartReplies = false,
-    this.smartRepliesDelayDuration = 10000,
-    this.smartRepliesKeywords = const [
-      'what',
-      'when',
-      'why',
-      'who',
-      'where',
-      'how',
-      '?',
-    ],
     this.suggestedMessages,
     this.hideSuggestedMessages = false,
     this.errorStateText,
@@ -332,10 +320,6 @@ class CometChatMessageList extends StatefulWidget {
   final bool? hideTranslateMessageOption;
   final bool? hideShareMessageOption;
   final bool? hideModerationView;
-  final bool? enableConversationStarters;
-  final bool? enableSmartReplies;
-  final int? smartRepliesDelayDuration;
-  final List<String>? smartRepliesKeywords;
 
   ///[suggestedMessages] the prompts offered in an empty AI-assistant
   ///conversation. Replaces the list read from the assistant's metadata.
@@ -695,8 +679,6 @@ class _CometChatMessageListState extends State<CometChatMessageList>
                 animated: op.animated,
               ),
             );
-            // Trigger smart replies for incoming text messages
-            _checkForSmartReplies(op.message!);
           }
           break;
         case MessageOperationType.insertAll:
@@ -820,71 +802,6 @@ class _CometChatMessageListState extends State<CometChatMessageList>
     }
   }
 
-  // ============================================================
-  // AI Feature Triggers
-  // ============================================================
-
-  /// Show conversation starters when the message list is empty.
-  void _showConversationStarters() {
-    if (widget.enableConversationStarters != true) return;
-    if (widget.parentMessageId != null) return; // Not in threads
-
-    CometChatUIEvents.showPanel(
-      _messageListId,
-      CustomUIPosition.messageListBottom,
-      (context) => CometChatAIConversationStarterView(
-        user: widget.user,
-        group: widget.group,
-      ),
-    );
-  }
-
-  /// Check if a received text message should trigger smart replies.
-  void _checkForSmartReplies(BaseMessage message) {
-    if (widget.enableSmartReplies != true) return;
-    if (message is! TextMessage) return;
-
-    // Don't show smart replies for own messages
-    final loggedInUid = _messageListBloc.state.loggedInUser?.uid;
-    if (message.sender?.uid == loggedInUid) return;
-
-    final keywords = widget.smartRepliesKeywords ?? [];
-    final delay = widget.smartRepliesDelayDuration ?? 10000;
-
-    // If keywords are specified, check if message contains any
-    if (keywords.isNotEmpty) {
-      final textLower = message.text.toLowerCase();
-      final hasKeyword = keywords.any(
-        (kw) => textLower.contains(kw.toLowerCase()),
-      );
-      if (!hasKeyword) return;
-    }
-
-    // Debounce: show smart replies after delay
-    Future.delayed(Duration(milliseconds: delay), () {
-      if (!mounted) return;
-
-      User? user;
-      Group? group;
-      if (message.receiverType == ReceiverTypeConstants.user) {
-        user = message.sender;
-      } else {
-        group = message.receiver as Group?;
-      }
-
-      final id = <String, dynamic>{
-        ..._messageListId,
-        AIUtils.extensionKey: AIFeatureConstants.aiSmartReplies,
-      };
-
-      CometChatUIEvents.showPanel(
-        id,
-        CustomUIPosition.messageListBottom,
-        (context) => CometChatAISmartRepliesView(user: user, group: group),
-      );
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider<MessageListBloc>.value(
@@ -956,10 +873,6 @@ class _CometChatMessageListState extends State<CometChatMessageList>
     }
     if (state.status == MessageListStatus.empty && widget.onEmpty != null) {
       widget.onEmpty!();
-    }
-    // Trigger conversation starters when the list is empty
-    if (state.status == MessageListStatus.empty) {
-      _showConversationStarters();
     }
     // Hide shimmer on error — no content to wait for
     if (state.status == MessageListStatus.error &&

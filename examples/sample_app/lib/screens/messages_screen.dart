@@ -261,8 +261,6 @@ class _MessagesScreenState extends State<MessagesScreen>
       disableReactions: t.disableReactions.value,
       enableSwipeToReply: t.enableSwipeToReply.value,
       hideGroupActionMessages: t.hideGroupActionMessages.value,
-      enableSmartReplies: false,
-      enableConversationStarters: false,
       hideCopyMessageOption: t.hideCopyMessageOption.value,
       hideDeleteMessageOption: t.hideDeleteMessageOption.value,
       hideEditMessageOption: t.hideEditMessageOption.value,

@@ -32,8 +32,6 @@ class ComponentToggles {
   final disableReactions = ValueNotifier<bool>(false);
   final enableSwipeToReply = ValueNotifier<bool>(true);
   final hideGroupActionMessages = ValueNotifier<bool>(false);
-  final enableSmartReplies = ValueNotifier<bool>(false);
-  final enableConversationStarters = ValueNotifier<bool>(false);
   final startFromUnreadMessages = ValueNotifier<bool>(false);
   final showMarkAsUnreadOption = ValueNotifier<bool>(true);
 
