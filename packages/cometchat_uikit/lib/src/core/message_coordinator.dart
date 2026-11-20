@@ -13,6 +13,7 @@ import 'stores/message_store.dart';
 class MessageCoordinator {
   final ConvoKit kit;
   final Map<String, MessageStore> _stores = {};
+  Map<String, MessageStore> get stores => Map.unmodifiable(_stores);
   final Map<String, CancellationToken> _activeUploads = {};
   int _sequence = 0;
 
