@@ -558,6 +558,13 @@ class _MessagesScreenState extends State<MessagesScreen>
       disableMentions: t.disableMentions.value,
       hideBottomSafeArea: t.hideBottomSafeArea.value,
       layout: cc.CometChatComposerLayout.singleLine,
+      textFormatters: [
+        CometChatMentionsFormatter(user: _user, group: _group),
+        MarkdownTextFormatter(),
+        CometChatUrlFormatter(),
+        CometChatPhoneNumberFormatter(),
+        CometChatEmailFormatter(),
+      ],
       // Trailing Toolbar Buttons DD — the canonical colour-picker exemplar.
       // All colour logic is consumer code (§1.1.1): the kit only exposes the
       // slot, the controller, and getMentionRanges.
@@ -568,13 +575,6 @@ class _MessagesScreenState extends State<MessagesScreen>
           icon: const Icon(Icons.palette_outlined),
           onToolbarTap: _onTextColorTap,
         ),
-      ],
-      textFormatters: [
-        CometChatMentionsFormatter(user: _user, group: _group),
-        MarkdownTextFormatter(),
-        CometChatUrlFormatter(),
-        CometChatPhoneNumberFormatter(),
-        CometChatEmailFormatter(),
       ],
       enableRichTextFormatting: true,
       showRichTextFormattingOptions: true,
