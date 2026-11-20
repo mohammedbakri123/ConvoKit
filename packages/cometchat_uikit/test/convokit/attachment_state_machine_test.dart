@@ -68,6 +68,7 @@ void main() {
         localPath: '/tmp/report.pdf',
         state: AttachmentState.local,
       );
+      expect(local.state, AttachmentState.local);
 
       // 2. Uploading
       const uploading = ChatAttachment(
@@ -77,6 +78,7 @@ void main() {
         state: AttachmentState.uploading,
         uploadProgress: 0.1,
       );
+      expect(uploading.state, AttachmentState.uploading);
 
       // 3. Upload fails
       const failureError = ChatError(ChatErrorCode.uploadFailed, 'Network timeout during upload');
