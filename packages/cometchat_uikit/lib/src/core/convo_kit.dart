@@ -1,0 +1,58 @@
+/// The ConvoKit composition root holder according to API-DESIGN.md §11.1.
+library;
+
+import '../contracts/capabilities.dart';
+import '../contracts/conversation_repository.dart';
+import '../contracts/event_source.dart';
+import '../contracts/group_repository.dart';
+import '../contracts/media_provider.dart';
+import '../contracts/message_repository.dart';
+import '../contracts/session.dart';
+import '../contracts/user_repository.dart';
+
+/// The composition root. A plain Dart holder — it groups the contracts so
+/// call sites stay short. It is NOT an interface with methods.
+/// Required providers are non-nullable; optional ones are nullable, and
+/// "not implemented" is expressed by absence (null), never by a stub.
+class ConvoKit {
+  // Required in v1.
+  final ChatSession session;
+  final UserRepository users;
+  final ConversationRepository conversations;
+  final MessageRepository messages;
+  final ChatEventSource events;
+  final ChatCapabilities capabilities;
+
+  // Optional in v1 — null means the feature is absent.
+  final GroupRepository? groups; // null ⟺ capabilities.groups == false
+  final ChatMediaProvider? media; // null ⟺ capabilities.media == false
+
+  /// Not const: validation runs in the constructor body, so it throws
+  /// `ArgumentError` in release builds too.
+  ConvoKit({
+    required this.session,
+    required this.users,
+    required this.conversations,
+    required this.messages,
+    required this.events,
+    this.capabilities = const ChatCapabilities(),
+    this.groups,
+    this.media,
+  }) {
+    if ((groups == null) != !capabilities.groups) {
+      throw ArgumentError(
+        'groups provider and capabilities.groups disagree: '
+        'pass a GroupRepository exactly when capabilities.groups is true.',
+      );
+    }
+    if ((media == null) != !capabilities.media) {
+      throw ArgumentError(
+        'media provider and capabilities.media disagree: '
+        'pass a ChatMediaProvider exactly when capabilities.media is true.',
+      );
+    }
+    if (capabilities.mediaDelete && media == null) {
+      throw ArgumentError('mediaDelete requires a media provider.');
+    }
+  }
+}
