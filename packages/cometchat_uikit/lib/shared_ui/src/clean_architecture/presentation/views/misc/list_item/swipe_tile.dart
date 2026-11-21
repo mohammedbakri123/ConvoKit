@@ -68,15 +68,18 @@ class _SwipeTileState extends State<SwipeTile>
             }
           : null,
       onHorizontalDragUpdate: (inputData) {
+        final delta = inputData.primaryDelta;
+        final width = context.size?.width;
+        if (delta == null || width == null || width == 0) return;
         setState(() {
-          _controller.value -= (inputData.primaryDelta! / context.size!.width);
+          _controller.value -= delta / width;
         });
       },
       onHorizontalDragEnd: (inputData) {
-        if (inputData.primaryVelocity! > 500) {
+        final velocity = inputData.primaryVelocity ?? 0;
+        if (velocity > 500) {
           _controller.animateTo(0.0);
-        } else if (_controller.value >= 0.5 ||
-            inputData.primaryVelocity! < -500) {
+        } else if (_controller.value >= 0.5 || velocity < -500) {
           _controller.animateTo(1.0);
         } else {
           _controller.animateTo(0.0);
@@ -145,14 +148,17 @@ class SwipeTileOptions extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                item.icon!,
-                excludeFromSemantics: true,
-                package: item.packageName,
-                color: Colors.white,
-                height: 24,
-                width: 24,
-              ),
+              if (item.iconWidget != null)
+                item.iconWidget!
+              else if (item.icon != null)
+                Image.asset(
+                  item.icon!,
+                  excludeFromSemantics: true,
+                  package: item.packageName,
+                  color: item.iconTint ?? Colors.white,
+                  height: 24,
+                  width: 24,
+                ),
               if (item.title != null)
                 Text(
                   item.title!,

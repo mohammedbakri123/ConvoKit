@@ -82,6 +82,10 @@ class ConvoKitMessageListStyle
     this.emptyChatGreetingTitleTextStyle,
     this.emptyChatGreetingSubtitleTextColor,
     this.emptyChatGreetingSubtitleTextStyle,
+    this.showBubbleTail,
+    this.bubbleShadow,
+    this.messageEntryCurve,
+    this.messageEntryDuration,
   });
 
   ///[backgroundColor] defines the background color of the message list
@@ -160,6 +164,22 @@ class ConvoKitMessageListStyle
   ///[emptyChatGreetingSubtitleTextStyle] is a parameter used to set the text style for the Empty Chat Greeting Subtitle
   final TextStyle? emptyChatGreetingSubtitleTextStyle;
 
+  ///[showBubbleTail] paints a directional tail on message bubbles when `true`.
+  ///Defaults to `null` (no tail).
+  final bool? showBubbleTail;
+
+  ///[bubbleShadow] applies optional elevation shadows to message bubbles.
+  final List<BoxShadow>? bubbleShadow;
+
+  ///[messageEntryCurve] optional animation curve for message row entry.
+  ///When both [messageEntryCurve] and [messageEntryDuration] are `null`,
+  ///messages render instantaneously.
+  final Curve? messageEntryCurve;
+
+  ///[messageEntryDuration] optional animation duration for message row entry.
+  ///Automatically skipped when `MediaQuery.disableAnimationsOf(context)` is true.
+  final Duration? messageEntryDuration;
+
   /// Copy with some properties replaced
   @override
   ConvoKitMessageListStyle copyWith({
@@ -191,6 +211,10 @@ class ConvoKitMessageListStyle
     TextStyle? emptyChatGreetingTitleTextStyle,
     Color? emptyChatGreetingSubtitleTextColor,
     TextStyle? emptyChatGreetingSubtitleTextStyle,
+    bool? showBubbleTail,
+    List<BoxShadow>? bubbleShadow,
+    Curve? messageEntryCurve,
+    Duration? messageEntryDuration,
   }) {
     return ConvoKitMessageListStyle(
       backgroundColor: backgroundColor ?? this.backgroundColor,
@@ -234,6 +258,10 @@ class ConvoKitMessageListStyle
       emptyChatGreetingSubtitleTextStyle:
           emptyChatGreetingSubtitleTextStyle ??
           this.emptyChatGreetingSubtitleTextStyle,
+      showBubbleTail: showBubbleTail ?? this.showBubbleTail,
+      bubbleShadow: bubbleShadow ?? this.bubbleShadow,
+      messageEntryCurve: messageEntryCurve ?? this.messageEntryCurve,
+      messageEntryDuration: messageEntryDuration ?? this.messageEntryDuration,
     );
   }
 
@@ -268,6 +296,10 @@ class ConvoKitMessageListStyle
           other.emptyChatGreetingSubtitleTextColor,
       emptyChatGreetingSubtitleTextStyle:
           other.emptyChatGreetingSubtitleTextStyle,
+      showBubbleTail: other.showBubbleTail,
+      bubbleShadow: other.bubbleShadow,
+      messageEntryCurve: other.messageEntryCurve,
+      messageEntryDuration: other.messageEntryDuration,
     );
   }
 
@@ -373,6 +405,11 @@ class ConvoKitMessageListStyle
         other.emptyChatGreetingSubtitleTextStyle,
         t,
       ),
+      showBubbleTail: t < 0.5 ? showBubbleTail : other.showBubbleTail,
+      bubbleShadow: BoxShadow.lerpList(bubbleShadow, other.bubbleShadow, t),
+      messageEntryCurve: t < 0.5 ? messageEntryCurve : other.messageEntryCurve,
+      messageEntryDuration:
+          t < 0.5 ? messageEntryDuration : other.messageEntryDuration,
     );
   }
 }

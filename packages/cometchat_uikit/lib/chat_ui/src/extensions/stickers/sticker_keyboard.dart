@@ -105,10 +105,10 @@ class _CometChatStickerKeyboardState extends State<CometChatStickerKeyboard> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 200,
+              Expanded(
                 child: Center(
-                  child: Text(
+                  child: SingleChildScrollView(
+                    child: Text(
                     "${Translations.of(context).looksLikeSomethingWrong} \n ${Translations.of(context).pleaseTryAgain}",
                     textAlign: TextAlign.center,
                     style:
@@ -122,6 +122,7 @@ class _CometChatStickerKeyboardState extends State<CometChatStickerKeyboard> {
                             )
                             .merge(style.errorStateTextStyle)
                             .copyWith(color: style.errorStateTextColor),
+                    ),
                   ),
                 ),
               ),
@@ -167,12 +168,13 @@ class _CometChatStickerKeyboardState extends State<CometChatStickerKeyboard> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 200,
+              Expanded(
                 child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
                       Padding(
                         padding: EdgeInsets.only(bottom: spacing.padding3 ?? 0),
                         child: Image.asset(
@@ -225,6 +227,7 @@ class _CometChatStickerKeyboardState extends State<CometChatStickerKeyboard> {
                       ),
                     ],
                   ),
+                ),
                 ),
               ),
             ],

@@ -1,0 +1,22 @@
+name: showcase_app
+description: "ConvoKit Showcase App — 100% ConvoKit UIKit components with Light and Dark WhatsApp-inspired theming."
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: '>=3.10.8 <4.0.0'
+  flutter: '>=3.38.9'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  convokit:
+    path: ../../packages/cometchat_uikit
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true

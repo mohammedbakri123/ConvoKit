@@ -50,6 +50,7 @@ class ConvoKitUsers extends StatefulWidget {
     this.trailingView,
     this.pageLimit = 30,
     this.debounceDuration = const Duration(milliseconds: 300),
+    this.listPadding,
   });
 
   final Widget? Function(BuildContext, ChatUser)? subtitleView;
@@ -104,6 +105,9 @@ class ConvoKitUsers extends StatefulWidget {
   final Widget? Function(BuildContext context, ChatUser user)? titleView;
   final int pageLimit;
   final Duration debounceDuration;
+
+  /// Optional padding forwarded to the underlying [ListView].
+  final EdgeInsetsGeometry? listPadding;
 
   @override
   State<ConvoKitUsers> createState() => ConvoKitUsersState();
@@ -512,6 +516,7 @@ class ConvoKitUsersState extends State<ConvoKitUsers>
             stickyHeaderVisibility: widget.stickyHeaderVisibility,
             avatarStyle: avatarStyle,
             statusIndicatorStyle: statusIndicatorStyle,
+            listPadding: widget.listPadding,
           ),
         ),
       ),

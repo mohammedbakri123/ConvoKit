@@ -72,6 +72,17 @@ class _ConvoKitAvatarState extends State<ConvoKitAvatar> {
   bool _themeInitialized = false;
   Brightness? _cachedBrightness;
 
+  // Deterministic 32-bit FNV-1a hash so monogram colors stay stable across runs.
+  static int _stablePaletteIndex(String? name, int length) {
+    final normalized = (name ?? '').trim().toLowerCase();
+    var hash = 0x811c9dc5;
+    for (final unit in normalized.codeUnits) {
+      hash ^= unit;
+      hash = (hash * 0x01000193) & 0x7fffffff;
+    }
+    return hash % length;
+  }
+
   // Helper to safely extract initials (handles emojis & multi-byte chars)
   String _getInitials(String name) {
     List<String> parts = name.trim().split(RegExp(r'\s+'));
@@ -150,6 +161,29 @@ class _ConvoKitAvatarState extends State<ConvoKitAvatar> {
     }
   }
 
+  Widget _buildImageErrorFallback(
+    String text,
+    ConvoKitAvatarStyle avatarStyle,
+    ConvoKitTypography typography,
+    ConvoKitColorPalette colorPalette,
+  ) {
+    return Center(
+      child: Text(
+        text,
+        style: TextStyle(
+          color: avatarStyle.placeHolderTextColor ?? colorPalette.buttonIconColor,
+          fontSize: typography.heading2?.bold?.fontSize,
+          fontWeight: typography.heading2?.bold?.fontWeight,
+          fontFamily: typography.heading2?.bold?.fontFamily,
+        )
+            .merge(avatarStyle.placeHolderTextStyle)
+            .copyWith(
+              color: avatarStyle.placeHolderTextColor,
+            ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     String url = "";
@@ -172,49 +206,60 @@ class _ConvoKitAvatarState extends State<ConvoKitAvatar> {
       text = _getInitials(widget.name ?? "");
     }
 
+    final palette = avatarStyle.monogramPalette;
+    final Color? resolvedBackgroundColor =
+        url.isEmpty && palette != null && palette.isNotEmpty
+            ? palette[_stablePaletteIndex(widget.name, palette.length)]
+            : avatarStyle.backgroundColor ?? colorPalette.extendedPrimary500;
+    final hasShadow =
+        avatarStyle.boxShadow != null && avatarStyle.boxShadow!.isNotEmpty;
+
     return Container(
       margin: widget.margin,
       padding: widget.padding,
       width: widget.width ?? avatarSize,
       height: widget.height ?? avatarSize,
-      clipBehavior: Clip.hardEdge,
+      clipBehavior: hasShadow ? Clip.none : Clip.hardEdge,
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
         borderRadius:
             avatarStyle.borderRadius ??
             BorderRadius.all(Radius.circular(spacing.radiusMax ?? 0)),
         border: avatarStyle.border,
-        color: avatarStyle.backgroundColor ?? colorPalette.extendedPrimary500,
+        color: avatarStyle.backgroundGradient == null
+            ? resolvedBackgroundColor
+            : null,
+        gradient: avatarStyle.backgroundGradient,
+        boxShadow: avatarStyle.boxShadow,
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(spacing.radiusMax ?? 0)),
         child: url.isNotEmpty
-            ? Image.network(
-                url,
-                fit: BoxFit.cover,
-                errorBuilder: (context, object, stackTrace) {
-                  return Center(
-                    child: Text(
-                      text,
-                      style:
-                          TextStyle(
-                                color:
-                                    avatarStyle.placeHolderTextColor ??
-                                    colorPalette.buttonIconColor,
-                                fontSize: typography.heading2?.bold?.fontSize,
-                                fontWeight:
-                                    typography.heading2?.bold?.fontWeight,
-                                fontFamily:
-                                    typography.heading2?.bold?.fontFamily,
-                              )
-                              .merge(avatarStyle.placeHolderTextStyle)
-                              .copyWith(
-                                color: avatarStyle.placeHolderTextColor,
-                              ),
-                    ),
-                  );
-                },
-              )
+            ? (url.startsWith('asset:')
+                  ? Image.asset(
+                      url.substring(6),
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, object, stackTrace) {
+                        return _buildImageErrorFallback(
+                          text,
+                          avatarStyle,
+                          typography,
+                          colorPalette,
+                        );
+                      },
+                    )
+                  : Image.network(
+                      url,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, object, stackTrace) {
+                        return _buildImageErrorFallback(
+                          text,
+                          avatarStyle,
+                          typography,
+                          colorPalette,
+                        );
+                      },
+                    ))
             : Center(
                 child: Text(
                   text,

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui' show ImageFilter;
 
 import 'package:convokit/convokit.dart';
 import 'package:flutter/material.dart';
@@ -490,6 +491,64 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
 
   @override
   Widget build(BuildContext context) {
+    final blurSigma = headerStyle.blurSigma ?? 0;
+    final headerRow = Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        _getBackButtonView(context, headerStyle, colorPalette),
+        Flexible(
+          child: Padding(
+            padding: EdgeInsets.only(left: spacing.padding4 ?? 0),
+            child: _getListItem(context),
+          ),
+        ),
+        if (widget.listItemView != null && widget.trailingView != null)
+          ...?widget.trailingView!(_user, _group, context),
+      ],
+    );
+
+    if (blurSigma > 0) {
+      return Stack(
+        children: [
+          Positioned.fill(
+            child: IgnorePointer(
+              child: ClipRect(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(
+                    sigmaX: blurSigma,
+                    sigmaY: blurSigma,
+                  ),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color:
+                          headerStyle.backgroundColor ??
+                          colorPalette.background1,
+                      border: headerStyle.border,
+                      borderRadius:
+                          headerStyle.borderRadius ?? BorderRadius.zero,
+                      boxShadow: headerStyle.boxShadow,
+                    ),
+                    child: const SizedBox.expand(),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          SafeArea(
+            bottom: false,
+            child: Container(
+              width: double.infinity,
+              height: widget.height ?? 65,
+              padding:
+                  widget.padding ??
+                  EdgeInsets.only(left: spacing.padding4 ?? 0),
+              child: headerRow,
+            ),
+          ),
+        ],
+      );
+    }
+
     return SafeArea(
       child: Container(
         height: widget.height,
@@ -500,21 +559,9 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
           color: headerStyle.backgroundColor ?? colorPalette.background1,
           border: headerStyle.border,
           borderRadius: headerStyle.borderRadius ?? BorderRadius.circular(0),
+          boxShadow: headerStyle.boxShadow,
         ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _getBackButtonView(context, headerStyle, colorPalette),
-            Flexible(
-              child: Padding(
-                padding: EdgeInsets.only(left: spacing.padding4 ?? 0),
-                child: _getListItem(context),
-              ),
-            ),
-            if (widget.listItemView != null && widget.trailingView != null)
-              ...?widget.trailingView!(_user, _group, context),
-          ],
-        ),
+        child: headerRow,
       ),
     );
   }
@@ -532,6 +579,7 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
         button: true,
         label: cc.Translations.of(context).back,
         child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
           onTap: widget.onBack ?? () => Navigator.pop(context),
           child:
               style.backIcon ??
@@ -540,6 +588,8 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
                 excludeFromSemantics: true,
                 package: UIConstants.packageName,
                 color: style.backIconColor ?? colorPalette.iconPrimary,
+                width: 24,
+                height: 24,
               ),
         ),
       );

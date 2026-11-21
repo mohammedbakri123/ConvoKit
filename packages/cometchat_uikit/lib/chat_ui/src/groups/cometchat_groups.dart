@@ -53,6 +53,7 @@ class ConvoKitGroups extends StatefulWidget {
     this.trailingView,
     this.pageLimit = 30,
     this.debounceDuration = const Duration(milliseconds: 300),
+    this.listPadding,
   });
 
   final Widget? Function(BuildContext context, ChatGroup group)? subtitleView;
@@ -108,6 +109,9 @@ class ConvoKitGroups extends StatefulWidget {
   final Widget? Function(BuildContext context, ChatGroup group)? titleView;
   final int pageLimit;
   final Duration debounceDuration;
+
+  /// Optional padding forwarded to the underlying [ListView].
+  final EdgeInsetsGeometry? listPadding;
 
   @override
   State<ConvoKitGroups> createState() => ConvoKitGroupsState();
@@ -540,6 +544,7 @@ class ConvoKitGroupsState extends State<ConvoKitGroups>
             statusIndicatorStyle: statusIndicatorStyle,
             privateGroupIcon: widget.privateGroupIcon,
             protectedGroupIcon: widget.passwordGroupIcon,
+            listPadding: widget.listPadding,
           ),
         ),
       ),

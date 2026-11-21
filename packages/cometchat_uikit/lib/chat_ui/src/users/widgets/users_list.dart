@@ -39,6 +39,7 @@ class UsersList extends StatelessWidget {
     this.stickyHeaderVisibility,
     this.avatarStyle,
     this.statusIndicatorStyle,
+    this.listPadding,
   });
 
   final List<ChatUser> users;
@@ -81,6 +82,7 @@ class UsersList extends StatelessWidget {
   final bool? stickyHeaderVisibility;
   final ConvoKitAvatarStyle? avatarStyle;
   final ConvoKitStatusIndicatorStyle? statusIndicatorStyle;
+  final EdgeInsetsGeometry? listPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -212,6 +214,7 @@ class UsersList extends StatelessWidget {
   Widget _buildUsersList(BuildContext context) {
     return ListView.builder(
       controller: scrollController,
+      padding: listPadding,
       itemCount: hasMore ? users.length + 1 : users.length,
       itemBuilder: (context, index) {
         if (index >= users.length) {

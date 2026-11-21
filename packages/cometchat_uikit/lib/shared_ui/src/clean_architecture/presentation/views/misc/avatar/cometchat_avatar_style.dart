@@ -21,6 +21,9 @@ class ConvoKitAvatarStyle extends ThemeExtension<ConvoKitAvatarStyle> {
     this.placeHolderTextStyle,
     this.placeHolderTextColor,
     this.borderRadius,
+    this.monogramPalette,
+    this.backgroundGradient,
+    this.boxShadow,
   });
 
   ///[backgroundColor] background color of the avatar
@@ -38,6 +41,16 @@ class ConvoKitAvatarStyle extends ThemeExtension<ConvoKitAvatarStyle> {
   ///[borderRadius] border radius of the avatar
   final BorderRadiusGeometry? borderRadius;
 
+  ///[monogramPalette] optional palette used to deterministically assign a
+  ///background color from the avatar's name when no image is provided.
+  final List<Color>? monogramPalette;
+
+  ///[backgroundGradient] optional gradient painted behind the avatar content.
+  final Gradient? backgroundGradient;
+
+  ///[boxShadow] optional elevation shadows around the avatar container.
+  final List<BoxShadow>? boxShadow;
+
   static ConvoKitAvatarStyle of(BuildContext context) =>
       const ConvoKitAvatarStyle();
 
@@ -48,6 +61,9 @@ class ConvoKitAvatarStyle extends ThemeExtension<ConvoKitAvatarStyle> {
     TextStyle? placeHolderTextStyle,
     Color? placeHolderTextColor,
     BorderRadiusGeometry? borderRadius,
+    List<Color>? monogramPalette,
+    Gradient? backgroundGradient,
+    List<BoxShadow>? boxShadow,
   }) {
     return ConvoKitAvatarStyle(
       backgroundColor: backgroundColor ?? this.backgroundColor,
@@ -55,6 +71,9 @@ class ConvoKitAvatarStyle extends ThemeExtension<ConvoKitAvatarStyle> {
       placeHolderTextStyle: placeHolderTextStyle ?? this.placeHolderTextStyle,
       placeHolderTextColor: placeHolderTextColor ?? this.placeHolderTextColor,
       borderRadius: borderRadius ?? this.borderRadius,
+      monogramPalette: monogramPalette ?? this.monogramPalette,
+      backgroundGradient: backgroundGradient ?? this.backgroundGradient,
+      boxShadow: boxShadow ?? this.boxShadow,
     );
   }
 
@@ -66,6 +85,9 @@ class ConvoKitAvatarStyle extends ThemeExtension<ConvoKitAvatarStyle> {
       placeHolderTextStyle: style.placeHolderTextStyle,
       placeHolderTextColor: style.placeHolderTextColor,
       borderRadius: style.borderRadius,
+      monogramPalette: style.monogramPalette,
+      backgroundGradient: style.backgroundGradient,
+      boxShadow: style.boxShadow,
     );
   }
 
@@ -95,6 +117,32 @@ class ConvoKitAvatarStyle extends ThemeExtension<ConvoKitAvatarStyle> {
         other.borderRadius,
         t,
       ),
+      monogramPalette: _lerpColorList(
+        monogramPalette,
+        other.monogramPalette,
+        t,
+      ),
+      backgroundGradient: Gradient.lerp(
+        backgroundGradient,
+        other.backgroundGradient,
+        t,
+      ),
+      boxShadow: BoxShadow.lerpList(boxShadow, other.boxShadow, t),
+    );
+  }
+
+  static List<Color>? _lerpColorList(
+    List<Color>? a,
+    List<Color>? b,
+    double t,
+  ) {
+    if (a == null && b == null) return null;
+    if (a == null) return t < 0.5 ? null : b;
+    if (b == null) return t < 0.5 ? a : null;
+    if (a.length != b.length) return t < 0.5 ? a : b;
+    return List<Color>.generate(
+      a.length,
+      (index) => Color.lerp(a[index], b[index], t) ?? a[index],
     );
   }
 }

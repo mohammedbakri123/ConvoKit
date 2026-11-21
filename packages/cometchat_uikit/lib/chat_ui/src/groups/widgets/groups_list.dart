@@ -41,6 +41,7 @@ class GroupsList extends StatelessWidget {
     this.statusIndicatorStyle,
     this.privateGroupIcon,
     this.protectedGroupIcon,
+    this.listPadding,
   });
 
   final List<ChatGroup> groups;
@@ -79,6 +80,7 @@ class GroupsList extends StatelessWidget {
   final ConvoKitStatusIndicatorStyle? statusIndicatorStyle;
   final Widget? privateGroupIcon;
   final Widget? protectedGroupIcon;
+  final EdgeInsetsGeometry? listPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -234,6 +236,7 @@ class GroupsList extends StatelessWidget {
   Widget _buildGroupsList(BuildContext context) {
     return ListView.builder(
       controller: scrollController,
+      padding: listPadding,
       itemCount: hasMore ? groups.length + 1 : groups.length,
       itemBuilder: (context, index) {
         if (index >= groups.length) {

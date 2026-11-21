@@ -59,6 +59,7 @@ class ConvoKitGroupMembers extends StatefulWidget {
     this.hideScopeChangeOption,
     this.usersStatusVisibility = true,
     this.pageLimit = 30,
+    this.listPadding,
   });
 
   final ChatGroup group;
@@ -132,6 +133,11 @@ class ConvoKitGroupMembers extends StatefulWidget {
   final bool? hideBanMemberOption;
   final bool? hideScopeChangeOption;
   final int pageLimit;
+
+  /// Optional padding forwarded to the underlying [ListView].
+  ///
+  /// When non-null, takes precedence over [ConvoKitGroupMembersStyle.listPadding].
+  final EdgeInsetsGeometry? listPadding;
 
   @override
   State<ConvoKitGroupMembers> createState() => _ConvoKitGroupMembersState();
@@ -824,7 +830,7 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
       },
       child: ListView.builder(
         controller: widget.controller,
-        padding: style.listPadding,
+        padding: widget.listPadding ?? style.listPadding,
         itemCount: members.length + (_controller.isLoadingMore ? 1 : 0),
         itemBuilder: (ctx, index) {
           if (index >= members.length) {

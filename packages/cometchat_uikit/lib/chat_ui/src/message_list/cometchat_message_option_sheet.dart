@@ -240,8 +240,10 @@ class _CometchatMessageOptionSheetState
                   shrinkWrap: true,
                   itemCount: widget.actionItems.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                      minVerticalPadding: 0,
+                    return Material(
+                      type: MaterialType.transparency,
+                      child: ListTile(
+                        minVerticalPadding: 0,
                       minTileHeight: 0,
                       horizontalTitleGap: spacing.padding2,
                       onTap: () {
@@ -305,6 +307,7 @@ class _CometchatMessageOptionSheetState
                                           ?.titleColor ??
                                       optionStyle.titleColor,
                                 ),
+                        ),
                       ),
                     );
                   },

@@ -91,6 +91,7 @@ class ConvoKitMessageList extends StatefulWidget {
     this.errorStateView,
     this.emptyChatGreetingView,
     this.style,
+    this.listPadding,
     this.scrollController,
     this.alignment = ChatAlignment.standard,
     this.onError,
@@ -146,6 +147,7 @@ class ConvoKitMessageList extends StatefulWidget {
   final StateViewBuilder? errorStateView;
   final StateViewBuilder? emptyChatGreetingView;
   final ConvoKitMessageListStyle? style;
+  final EdgeInsetsGeometry? listPadding;
   final ScrollController? scrollController;
   final ChatAlignment alignment;
   final OnError? onError;
@@ -412,8 +414,90 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList> {
     }
   }
 
+  List<ChatMessage> get _visibleMessages {
+    final parentId = widget.parentMessageId;
+    if (parentId == null || parentId.isEmpty) return _messages;
+    return _messages.where((m) {
+      final parent = m.repliedTo;
+      if (parent == null) return false;
+      return parent.id == parentId || parent.localId == parentId;
+    }).toList(growable: false);
+  }
+
+  int _replyCountFor(ChatMessage message) {
+    final msgId = message.id;
+    final msgLocalId = message.localId;
+    var count = 0;
+    for (final candidate in _messages) {
+      final parent = candidate.repliedTo;
+      if (parent == null) continue;
+      if ((msgId != null && parent.id == msgId) ||
+          (msgLocalId.isNotEmpty && parent.localId == msgLocalId)) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  (String, String) _messageCategoryAndType(ChatMessage message) {
+    return switch (message) {
+      TextMessage() => (
+        MessageCategoryConstants.message,
+        MessageTypeConstants.text,
+      ),
+      MediaMessage(:final attachment) => (
+        MessageCategoryConstants.message,
+        switch (attachment.kind) {
+          AttachmentKind.image => MessageTypeConstants.image,
+          AttachmentKind.video => MessageTypeConstants.video,
+          AttachmentKind.audio => MessageTypeConstants.audio,
+          AttachmentKind.file => MessageTypeConstants.file,
+        },
+      ),
+      CustomMessage(:final kind) => (
+        MessageCategoryConstants.custom,
+        kind,
+      ),
+    };
+  }
+
+  (CometChatMessageTemplate?, Widget?, Widget?) _resolveAddedTemplate(
+    BuildContext context,
+    ChatMessage message,
+    BubbleAlignment alignment,
+  ) {
+    final added = widget.addTemplate;
+    if (added == null || added.isEmpty) return (null, null, null);
+    final (category, type) = _messageCategoryAndType(message);
+    for (final template in added) {
+      final typeMatches = template.type == type;
+      final categoryMatches =
+          template.category.isEmpty || template.category == category;
+      if (!typeMatches || !categoryMatches) continue;
+
+      if (template.bubbleView != null) {
+        final bubble = template.bubbleView!(message, context, alignment);
+        if (bubble != null) {
+          return (template, bubble, null);
+        }
+      }
+      if (template.contentView != null) {
+        final customContent = template.contentView!(
+          message,
+          context,
+          alignment,
+        );
+        if (customContent != null) {
+          return (template, null, customContent);
+        }
+      }
+    }
+    return (null, null, null);
+  }
+
   Future<bool> jumpToMessage(String messageId) async {
-    final idx = _messages.indexWhere(
+    final visible = _visibleMessages;
+    final idx = visible.indexWhere(
       (m) => m.id == messageId || m.localId == messageId,
     );
     if (idx == -1 || !_scrollController.hasClients) return false;
@@ -608,7 +692,9 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList> {
           );
     }
 
-    if (_messages.isEmpty) {
+    final visibleMessages = _visibleMessages;
+
+    if (visibleMessages.isEmpty) {
       return widget.emptyStateView?.call(context) ??
           widget.emptyChatGreetingView?.call(context) ??
           Center(
@@ -630,11 +716,13 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList> {
       },
       child: ListView.builder(
         controller: _scrollController,
-        padding: EdgeInsets.symmetric(
-          horizontal: spacing.padding3 ?? 12,
-          vertical: spacing.padding2 ?? 8,
-        ),
-        itemCount: _messages.length + (_isLoadingOlder ? 1 : 0),
+        padding:
+            widget.listPadding ??
+            EdgeInsets.symmetric(
+              horizontal: spacing.padding3 ?? 12,
+              vertical: spacing.padding2 ?? 8,
+            ),
+        itemCount: visibleMessages.length + (_isLoadingOlder ? 1 : 0),
         itemBuilder: (context, index) {
           if (_isLoadingOlder && index == 0) {
             return const Padding(
@@ -643,7 +731,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList> {
             );
           }
           final msgIndex = _isLoadingOlder ? index - 1 : index;
-          final message = _messages[msgIndex];
+          final message = visibleMessages[msgIndex];
           return _buildMessageRow(
             context,
             message,
@@ -693,14 +781,27 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList> {
             : incomingStyle?.borderRadius) ??
         BorderRadius.circular(12);
 
-    final content = MessageTemplateUtils.buildDefaultBubbleContent(
-      context,
-      message,
-      alignment: bubbleAlignment,
-      textStyle: bubbleTextStyle,
-      outgoingTextColor: widget.style?.outgoingTextColor,
-      loggedInUserId: myId,
-    );
+    final (
+      matchedTemplate,
+      customBubbleView,
+      customContentView,
+    ) = _resolveAddedTemplate(context, message, bubbleAlignment);
+
+    final content =
+        customContentView ??
+        MessageTemplateUtils.buildDefaultBubbleContent(
+          context,
+          message,
+          alignment: bubbleAlignment,
+          textStyle: bubbleTextStyle,
+          outgoingTextColor: widget.style?.outgoingTextColor,
+          loggedInUserId: myId,
+        );
+
+    final showThreadReplies =
+        widget.onThreadRepliesClick != null &&
+        (widget.parentMessageId == null || widget.parentMessageId!.isEmpty);
+    final replyCount = showThreadReplies ? _replyCountFor(message) : 0;
 
     Widget? statusWidget;
     if (isMe) {
@@ -740,15 +841,164 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList> {
           readIcon: widget.readIcon,
           deliveredIcon: widget.deliveredIcon,
           sentIcon: widget.sentIcon,
+          style: outgoingStyle?.messageReceiptStyle,
         );
       }
     }
 
-    return Padding(
+    final isRight = bubbleAlignment == BubbleAlignment.right;
+    final bubbleBorder = isRight
+        ? outgoingStyle?.border
+        : incomingStyle?.border;
+    final bubbleShadow = widget.style?.bubbleShadow;
+    final showTail = widget.style?.showBubbleTail == true;
+
+    final resolvedBorderRadius = bubbleBorderRadius.resolve(
+      Directionality.of(context),
+    );
+    final effectiveBubbleRadius = showTail
+        ? BorderRadius.only(
+            topLeft: resolvedBorderRadius.topLeft,
+            topRight: resolvedBorderRadius.topRight,
+            bottomLeft: isRight
+                ? resolvedBorderRadius.bottomLeft
+                : const Radius.circular(6),
+            bottomRight: isRight
+                ? const Radius.circular(6)
+                : resolvedBorderRadius.bottomRight,
+          )
+        : bubbleBorderRadius;
+
+    Widget bubbleWidget =
+        customBubbleView ??
+        Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 8,
+          ),
+          decoration: BoxDecoration(
+            color: bubbleBackgroundColor,
+            borderRadius: effectiveBubbleRadius,
+            border: bubbleBorder,
+            boxShadow: bubbleShadow,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              content,
+              if (statusWidget != null || !widget.hideTimestamp) ...[
+                const SizedBox(height: 4),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (!widget.hideTimestamp)
+                      Text(
+                        widget.datePattern?.call(message) ??
+                            '${message.createdAt.hour.toString().padLeft(2, '0')}:${message.createdAt.minute.toString().padLeft(2, '0')}',
+                        style:
+                            bubbleDateStyle ??
+                            TextStyle(
+                              fontSize: 11,
+                              color: isRight
+                                  ? Colors.white70
+                                  : colorPalette.textSecondary,
+                            ),
+                      ),
+                    if (statusWidget != null) ...[
+                      const SizedBox(width: 4),
+                      statusWidget,
+                    ],
+                  ],
+                ),
+              ],
+              if (showThreadReplies && replyCount > 0) ...[
+                const SizedBox(height: 4),
+                InkWell(
+                  key: Key(
+                    'thread_replies_${message.id ?? message.localId}',
+                  ),
+                  onTap: () => widget.onThreadRepliesClick!(
+                    message,
+                    context,
+                    template: matchedTemplate,
+                  ),
+                  borderRadius: BorderRadius.circular(6),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.reply_rounded,
+                          size: 14,
+                          color: isRight
+                              ? (widget.style?.outgoingTextColor ??
+                                    Colors.white70)
+                              : (colorPalette.textHighlight ??
+                                    colorPalette.primary),
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          replyCount == 1
+                              ? '1 reply'
+                              : '$replyCount replies',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: isRight
+                                ? (widget.style?.outgoingTextColor ??
+                                      Colors.white70)
+                                : (colorPalette.textHighlight ??
+                                      colorPalette.primary),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          ),
+        );
+
+    if (showTail && customBubbleView == null) {
+      bubbleWidget = Padding(
+        padding: EdgeInsets.only(
+          left: isRight ? 0 : 6,
+          right: isRight ? 6 : 0,
+        ),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            bubbleWidget,
+            Positioned(
+              bottom: 0,
+              left: isRight ? null : -6,
+              right: isRight ? -6 : null,
+              child: ExcludeSemantics(
+                child: CustomPaint(
+                  key: Key(
+                    isRight ? 'outgoing_bubble_tail' : 'incoming_bubble_tail',
+                  ),
+                  size: const Size(8, 12),
+                  painter: _BubbleTailPainter(
+                    color: bubbleBackgroundColor,
+                    isOutgoing: isRight,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    final Widget row = Padding(
       key: ValueKey(message.id ?? message.localId),
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
-        mainAxisAlignment: bubbleAlignment == BubbleAlignment.right
+        mainAxisAlignment: isRight
             ? MainAxisAlignment.end
             : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -760,6 +1010,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList> {
               name: message.sender.name,
               width: 32,
               height: 32,
+              style: widget.style?.avatarStyle,
             ),
             const SizedBox(width: 8),
           ],
@@ -767,54 +1018,75 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList> {
             child: InkWell(
               onTap: () => widget.onMessageTap?.call(message),
               onLongPress: () => _showOptionsForMessage(message),
-              borderRadius: BorderRadius.circular(12),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
-                decoration: BoxDecoration(
-                  color: bubbleBackgroundColor,
-                  borderRadius: bubbleBorderRadius,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    content,
-                    if (statusWidget != null || !widget.hideTimestamp) ...[
-                      const SizedBox(height: 4),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (!widget.hideTimestamp)
-                            Text(
-                              widget.datePattern?.call(message) ??
-                                  '${message.createdAt.hour.toString().padLeft(2, '0')}:${message.createdAt.minute.toString().padLeft(2, '0')}',
-                              style:
-                                  bubbleDateStyle ??
-                                  TextStyle(
-                                    fontSize: 11,
-                                    color:
-                                        bubbleAlignment == BubbleAlignment.right
-                                        ? Colors.white70
-                                        : colorPalette.textSecondary,
-                                  ),
-                            ),
-                          if (statusWidget != null) ...[
-                            const SizedBox(width: 4),
-                            statusWidget,
-                          ],
-                        ],
-                      ),
-                    ],
-                  ],
-                ),
+              borderRadius: effectiveBubbleRadius.resolve(
+                Directionality.of(context),
               ),
+              child: bubbleWidget,
             ),
           ),
         ],
       ),
     );
+
+    final entryCurve = widget.style?.messageEntryCurve;
+    final entryDuration = widget.style?.messageEntryDuration;
+    if ((entryCurve != null || entryDuration != null) &&
+        !MediaQuery.disableAnimationsOf(context)) {
+      return TweenAnimationBuilder<double>(
+        key: ValueKey('entry_${message.id ?? message.localId}'),
+        tween: Tween<double>(begin: 0.0, end: 1.0),
+        duration: entryDuration ?? const Duration(milliseconds: 240),
+        curve: entryCurve ?? Curves.easeOutCubic,
+        child: row,
+        builder: (context, value, child) {
+          return Opacity(
+            opacity: value.clamp(0.0, 1.0),
+            child: Transform.translate(
+              offset: Offset(0, (1.0 - value) * 10.0),
+              child: child,
+            ),
+          );
+        },
+      );
+    }
+
+    return row;
+  }
+}
+
+
+class _BubbleTailPainter extends CustomPainter {
+  const _BubbleTailPainter({
+    required this.color,
+    required this.isOutgoing,
+  });
+
+  final Color color;
+  final bool isOutgoing;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.fill;
+
+    final path = Path();
+    if (isOutgoing) {
+      path.moveTo(0, 0);
+      path.quadraticBezierTo(size.width * 0.25, size.height * 0.72, size.width, size.height);
+      path.lineTo(0, size.height);
+      path.close();
+    } else {
+      path.moveTo(size.width, 0);
+      path.quadraticBezierTo(size.width * 0.75, size.height * 0.72, 0, size.height);
+      path.lineTo(size.width, size.height);
+      path.close();
+    }
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant _BubbleTailPainter oldDelegate) {
+    return oldDelegate.color != color || oldDelegate.isOutgoing != isOutgoing;
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui' show ImageFilter;
 
 import 'package:convokit/convokit.dart';
 import 'package:convokit/convokit_uikit.dart';
@@ -43,7 +44,7 @@ class ConvoKitMessageComposer extends StatefulWidget {
     this.placeholderText,
     this.disableTypingEvents = false,
     this.disableSoundForMessages = false,
-    this.parentMessageId = 0,
+    this.parentMessageId,
     this.customSoundForMessage,
     this.customSoundForMessagePackage,
     this.auxiliaryButtonView,
@@ -153,7 +154,7 @@ class ConvoKitMessageComposer extends StatefulWidget {
   final bool? hideVoiceRecordingButton;
   final bool useInlineAudioRecorder;
   final Widget? voiceRecordingIcon;
-  final int parentMessageId;
+  final String? parentMessageId;
   final bool? disableMentions;
   final TextEditingController? textEditingController;
   final EdgeInsetsGeometry? padding;
@@ -303,6 +304,36 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer> {
     );
   }
 
+  ChatMessage? _resolveEffectiveReplyMessage(
+    EventHub hub,
+    String conversationId,
+  ) {
+    final explicitReply = _controller.replyMessage ?? widget.replyMessage;
+    if (explicitReply != null) return explicitReply;
+
+    final parentId = widget.parentMessageId;
+    if (parentId == null || parentId.isEmpty) return null;
+
+    final store = hub.getMessageStore(conversationId);
+    for (final msg in store.messages) {
+      if (msg.id == parentId || msg.localId == parentId) {
+        return msg;
+      }
+    }
+    final sender =
+        _kit?.session.currentUser ?? const ChatUser(id: '', name: '');
+    return TextMessage(
+      id: parentId,
+      localId: parentId,
+      conversationId: conversationId,
+      sender: sender,
+      createdAt: DateTime.now(),
+      sendState: SendState.sent,
+      deliveryState: DeliveryState.none,
+      text: '',
+    );
+  }
+
   Future<void> _handleSend() async {
     final kit = _kit;
     final hub = _hub;
@@ -324,7 +355,7 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer> {
       tray.setCaption(_textController.text);
       _textController.clear();
       _controller.stopTyping(kit: kit, conversationId: conversationId);
-      final repliedTo = _controller.replyMessage;
+      final repliedTo = _resolveEffectiveReplyMessage(hub, conversationId);
       _controller.clearReplyMessage();
 
       final results = await tray.sendAll(
@@ -350,6 +381,13 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer> {
     final rawText = _textController.text;
     if (rawText.trim().isEmpty) return;
 
+    if (_controller.replyMessage == null) {
+      final threadParent = _resolveEffectiveReplyMessage(hub, conversationId);
+      if (threadParent != null) {
+        _controller.setReplyMessage(threadParent);
+      }
+    }
+
     _textController.clear();
     final result = await _controller.sendText(
       kit: kit,
@@ -372,6 +410,16 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer> {
     final hub = _hub;
     _controller.stopAudioRecording();
     if (kit == null || hub == null) return;
+
+    if (_controller.replyMessage == null) {
+      final threadParent = _resolveEffectiveReplyMessage(
+        hub,
+        widget.resolvedConversationId,
+      );
+      if (threadParent != null) {
+        _controller.setReplyMessage(threadParent);
+      }
+    }
 
     final result = await _controller.sendLocalMedia(
       kit: kit,
@@ -554,7 +602,7 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer> {
                       tile.fileId,
                       coordinator: hub.coordinator,
                       sender: sender,
-                      repliedTo: _controller.replyMessage,
+                      repliedTo: _resolveEffectiveReplyMessage(hub, widget.resolvedConversationId),
                     ),
                   );
                 },
@@ -567,13 +615,19 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer> {
                     vertical: spacing.padding1 ?? 4,
                   ),
               decoration: BoxDecoration(
-                color: style.filledColor ?? colorPalette.background2,
-                borderRadius: style.borderRadius ?? BorderRadius.circular(spacing.radius2 ?? 8),
-                border:
-                    style.border ??
-                    Border.all(
-                      color: colorPalette.borderDefault ?? Colors.transparent,
-                    ),
+                color: (style.blurSigma ?? 0) > 0
+                    ? (style.filledColor ?? Colors.transparent)
+                    : (style.filledColor ?? colorPalette.background2),
+                borderRadius:
+                    style.borderRadius ??
+                    BorderRadius.circular(spacing.radius2 ?? 8),
+                border: (style.blurSigma ?? 0) > 0
+                    ? null
+                    : (style.border ??
+                        Border.all(
+                          color:
+                              colorPalette.borderDefault ?? Colors.transparent,
+                        )),
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -646,13 +700,55 @@ class _ConvoKitMessageComposerState extends State<ConvoKitMessageComposer> {
       },
     );
 
-    content = Container(
-      color: style.backgroundColor ?? colorPalette.background1,
-      padding:
-          widget.padding ??
-          EdgeInsets.all(spacing.padding2 ?? 8),
-      child: content,
-    );
+    final blurSigma = style.blurSigma ?? 0;
+    final outerMargin = style.outerMargin;
+    final boxShadow = style.boxShadow;
+    final effectivePadding =
+        widget.padding ?? EdgeInsets.all(spacing.padding2 ?? 8);
+
+    if (blurSigma > 0) {
+      final capsuleRadius =
+          style.borderRadius ?? BorderRadius.circular(28);
+      content = Container(
+        margin: outerMargin,
+        decoration: BoxDecoration(
+          borderRadius: capsuleRadius,
+          boxShadow: boxShadow,
+        ),
+        child: ClipRRect(
+          borderRadius: capsuleRadius,
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma),
+            child: Container(
+              padding: effectivePadding,
+              decoration: BoxDecoration(
+                color: style.backgroundColor ?? colorPalette.background1,
+                borderRadius: capsuleRadius,
+                border: style.border,
+              ),
+              child: content,
+            ),
+          ),
+        ),
+      );
+    } else if (outerMargin != null || boxShadow != null) {
+      content = Container(
+        margin: outerMargin,
+        padding: effectivePadding,
+        decoration: BoxDecoration(
+          color: style.backgroundColor ?? colorPalette.background1,
+          borderRadius: style.borderRadius,
+          boxShadow: boxShadow,
+        ),
+        child: content,
+      );
+    } else {
+      content = Container(
+        color: style.backgroundColor ?? colorPalette.background1,
+        padding: effectivePadding,
+        child: content,
+      );
+    }
 
     if (!widget.hideBottomSafeArea) {
       content = SafeArea(top: false, child: content);

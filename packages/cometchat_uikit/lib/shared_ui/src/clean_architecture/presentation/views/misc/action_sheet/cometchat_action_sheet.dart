@@ -100,8 +100,10 @@ class _CometChatAttachmentOptionSheetState
                   shrinkWrap: true,
                   itemCount: widget.actionItems.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                      minTileHeight: 0,
+                    return Material(
+                      type: MaterialType.transparency,
+                      child: ListTile(
+                        minTileHeight: 0,
                       minVerticalPadding: 0,
                       onTap: () {
                         FocusManager.instance.primaryFocus?.unfocus();
@@ -165,6 +167,7 @@ class _CometChatAttachmentOptionSheetState
                                           ?.titleColor ??
                                       actionSheetStyle.titleColor,
                                 ),
+                        ),
                       ),
                     );
                   },

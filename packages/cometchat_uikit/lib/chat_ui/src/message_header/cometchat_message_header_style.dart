@@ -1,3 +1,5 @@
+import 'dart:ui' show lerpDouble;
+
 import 'package:flutter/material.dart';
 import 'package:convokit/convokit_uikit.dart';
 
@@ -29,6 +31,8 @@ class ConvoKitMessageHeaderStyle
     this.newChatIconColor,
     this.chatHistoryIconColor,
     this.menuIconColor,
+    this.blurSigma,
+    this.boxShadow,
   });
 
   ///[typingIndicatorTextStyle] is text style for setting typing indicator text
@@ -98,6 +102,13 @@ class ConvoKitMessageHeaderStyle
   ///to [backIconColor], then to the palette's primary icon colour.
   final Color? menuIconColor;
 
+  ///[blurSigma] enables frosted glass [BackdropFilter] spanning the status bar
+  ///and header when greater than `0`. Defaults to `null` (opaque).
+  final double? blurSigma;
+
+  ///[boxShadow] applies optional elevation shadows to the header container.
+  final List<BoxShadow>? boxShadow;
+
   static ConvoKitMessageHeaderStyle of(BuildContext context) =>
       const ConvoKitMessageHeaderStyle();
 
@@ -126,6 +137,8 @@ class ConvoKitMessageHeaderStyle
     Color? newChatIconColor,
     Color? chatHistoryIconColor,
     Color? menuIconColor,
+    double? blurSigma,
+    List<BoxShadow>? boxShadow,
   }) {
     return ConvoKitMessageHeaderStyle(
       typingIndicatorTextStyle:
@@ -158,6 +171,8 @@ class ConvoKitMessageHeaderStyle
       newChatIconColor: newChatIconColor ?? this.newChatIconColor,
       chatHistoryIconColor: chatHistoryIconColor ?? this.chatHistoryIconColor,
       menuIconColor: menuIconColor ?? this.menuIconColor,
+      blurSigma: blurSigma ?? this.blurSigma,
+      boxShadow: boxShadow ?? this.boxShadow,
     );
   }
 
@@ -187,6 +202,8 @@ class ConvoKitMessageHeaderStyle
       newChatIconColor: style.newChatIconColor,
       chatHistoryIconColor: style.chatHistoryIconColor,
       menuIconColor: style.menuIconColor,
+      blurSigma: style.blurSigma,
+      boxShadow: style.boxShadow,
     );
   }
 
@@ -264,6 +281,8 @@ class ConvoKitMessageHeaderStyle
         t,
       ),
       menuIconColor: Color.lerp(menuIconColor, other?.menuIconColor, t),
+      blurSigma: lerpDouble(blurSigma, other?.blurSigma, t),
+      boxShadow: BoxShadow.lerpList(boxShadow, other?.boxShadow, t),
     );
   }
 }

@@ -265,21 +265,23 @@ class _MessageListViewState extends State<MessageListView> {
           mainAxisAlignment:
               isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
           children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: isMe ? Colors.blue.shade100 : Colors.grey.shade200,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  content,
-                  if (indicator != null) ...[
-                    const SizedBox(width: 6),
-                    indicator,
+            Flexible(
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: isMe ? Colors.blue.shade100 : Colors.grey.shade200,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Flexible(child: content),
+                    if (indicator != null) ...[
+                      const SizedBox(width: 6),
+                      indicator,
+                    ],
                   ],
-                ],
+                ),
               ),
             ),
           ],

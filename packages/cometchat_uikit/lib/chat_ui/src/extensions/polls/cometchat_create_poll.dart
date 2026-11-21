@@ -16,6 +16,7 @@ class CometChatCreatePoll extends StatefulWidget {
   const CometChatCreatePoll({
     super.key,
     this.title,
+    this.conversationId,
     this.user,
     this.group,
     this.quotedMessage,
@@ -26,6 +27,9 @@ class CometChatCreatePoll extends StatefulWidget {
 
   ///[title] title default is 'Create Poll'
   final String? title;
+
+  ///[conversationId] explicit conversation id; falls back to [user]/[group] when null
+  final String? conversationId;
 
   ///[user] user id
   final String? user;
@@ -731,7 +735,10 @@ class _CometChatCreatePollState extends State<CometChatCreatePoll> {
 
     final kit = ConvoKitScope.maybeOf(context);
     final sender = kit?.session.currentUser;
-    final conversationId = receiverUid;
+    final conversationId =
+        (widget.conversationId != null && widget.conversationId!.isNotEmpty)
+        ? widget.conversationId!
+        : receiverUid;
     if (kit != null && sender != null && conversationId.isNotEmpty) {
       final msg = CustomMessage(
         localId: ConvoKitScope.hubOf(context).coordinator.generateLocalId(),
@@ -776,6 +783,7 @@ Future<String?> showCometChatCreatePoll({
   required BuildContext context,
   required ConvoKitColorPalette colorPalette,
   required ConvoKitSpacing spacing,
+  String? conversationId,
   String? uid,
   String? guid,
   String? title,
@@ -805,6 +813,7 @@ Future<String?> showCometChatCreatePoll({
               bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
             child: CometChatCreatePoll(
+              conversationId: conversationId,
               user: uid,
               group: guid,
               title: title,

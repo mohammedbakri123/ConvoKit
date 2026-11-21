@@ -38,6 +38,9 @@ class ConvoKitMessageComposerStyle
     this.inlineAudioRecorderStyle,
     this.attachmentTrayStyle,
     this.stickerKeyboardStyle,
+    this.blurSigma,
+    this.outerMargin,
+    this.boxShadow,
   });
 
   ///[closeIconTint] provides color to the close Icon/widget
@@ -137,6 +140,17 @@ class ConvoKitMessageComposerStyle
   ///on the theme.
   final CometChatStickerKeyboardStyle? stickerKeyboardStyle;
 
+  ///[blurSigma] enables frosted glass [BackdropFilter] blur around the composer
+  ///capsule when greater than `0`. Defaults to `null` (opaque).
+  final double? blurSigma;
+
+  ///[outerMargin] adds optional outer margin around the composer container
+  ///(e.g., for floating pill layouts).
+  final EdgeInsetsGeometry? outerMargin;
+
+  ///[boxShadow] applies optional elevation shadows to the composer capsule.
+  final List<BoxShadow>? boxShadow;
+
   @override
   ConvoKitMessageComposerStyle copyWith({
     Color? closeIconTint,
@@ -169,6 +183,9 @@ class ConvoKitMessageComposerStyle
     CometChatInlineAudioRecorderStyle? inlineAudioRecorderStyle,
     ConvoKitAttachmentTrayStyle? attachmentTrayStyle,
     CometChatStickerKeyboardStyle? stickerKeyboardStyle,
+    double? blurSigma,
+    EdgeInsetsGeometry? outerMargin,
+    List<BoxShadow>? boxShadow,
   }) {
     return ConvoKitMessageComposerStyle(
       closeIconTint: closeIconTint ?? this.closeIconTint,
@@ -214,6 +231,9 @@ class ConvoKitMessageComposerStyle
           inlineAudioRecorderStyle ?? this.inlineAudioRecorderStyle,
       attachmentTrayStyle: attachmentTrayStyle ?? this.attachmentTrayStyle,
       stickerKeyboardStyle: stickerKeyboardStyle ?? this.stickerKeyboardStyle,
+      blurSigma: blurSigma ?? this.blurSigma,
+      outerMargin: outerMargin ?? this.outerMargin,
+      boxShadow: boxShadow ?? this.boxShadow,
     );
   }
 
@@ -255,6 +275,9 @@ class ConvoKitMessageComposerStyle
       inlineAudioRecorderStyle: style.inlineAudioRecorderStyle,
       attachmentTrayStyle: style.attachmentTrayStyle,
       stickerKeyboardStyle: style.stickerKeyboardStyle,
+      blurSigma: style.blurSigma,
+      outerMargin: style.outerMargin,
+      boxShadow: style.boxShadow,
     );
   }
 
@@ -368,6 +391,9 @@ class ConvoKitMessageComposerStyle
         other?.stickerKeyboardStyle,
         t,
       ),
+      blurSigma: lerpDouble(blurSigma, other?.blurSigma, t),
+      outerMargin: EdgeInsetsGeometry.lerp(outerMargin, other?.outerMargin, t),
+      boxShadow: BoxShadow.lerpList(boxShadow, other?.boxShadow, t),
     );
   }
 }
