@@ -7,23 +7,28 @@ import 'package:flutter_test/flutter_test.dart';
 /// convention as every other UIKit bubble. These tests pin that wiring.
 void main() {
   MediaMessage fileMessage({int count = 1}) {
-    final msg = MediaMessage(
-      receiverUid: 'uid',
-      receiverType: 'user',
-      type: 'file',
-      muid: 'm1',
+    final attachments = List.generate(
+      count,
+      (i) => ChatAttachment(
+        id: 'att_f$i.pdf',
+        remoteId: 'rem_f$i.pdf',
+        kind: AttachmentKind.file,
+        url: 'https://example.com/f$i.pdf',
+        state: AttachmentState.uploaded,
+        mimeType: 'application/pdf',
+        sizeBytes: 1024,
+        name: 'f$i.pdf',
+      ),
     );
-    msg.attachments = [
-      for (var i = 0; i < count; i++)
-        Attachment(
-          'https://example.com/f$i.pdf',
-          'f$i.pdf',
-          'pdf',
-          'application/pdf',
-          1024,
-        ),
-    ];
-    return msg;
+    return MediaMessage(
+      id: 'm1',
+      localId: 'm1',
+      conversationId: 'c1',
+      sender: const ChatUser(id: 'uid', name: 'User'),
+      createdAt: DateTime(2026),
+      attachment: attachments.first,
+      metadata: count != 1 ? {'attachments': attachments} : null,
+    );
   }
 
   Widget host(

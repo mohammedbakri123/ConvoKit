@@ -29,7 +29,8 @@ class DropdownElement extends BaseInputElement<String> {
     return map;
   }
 
-  factory DropdownElement.fromMap(dynamic map) {
+  factory DropdownElement.fromMap(dynamic rawMap) {
+    final map = rawMap as Map<dynamic, dynamic>;
     return DropdownElement(
       elementType: map[ModelFieldConstants.elementType],
       elementId: map[ModelFieldConstants.elementId],
@@ -37,7 +38,7 @@ class DropdownElement extends BaseInputElement<String> {
       label: map[ModelFieldConstants.label],
       defaultValue: map[ModelFieldConstants.defaultValue],
       response: map[ModelFieldConstants.response],
-      options: (map[ModelFieldConstants.options] ?? [])
+      options: ((map[ModelFieldConstants.options] as List?) ?? const [])
           .map<OptionElement>((optionMap) => OptionElement.fromMap(optionMap))
           .toList(),
     );

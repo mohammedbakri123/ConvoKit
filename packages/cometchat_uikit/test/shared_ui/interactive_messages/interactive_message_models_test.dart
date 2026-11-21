@@ -7,8 +7,8 @@
 /// conversions, which is where the interesting behaviour is:
 ///
 ///   * the constructor, which packs its fields into `interactiveData`
-///   * `toInteractiveMessage()`, which repacks them
-///   * `fromInteractiveMessage()`, which unpacks them again
+///   * `toConvoKitInteractiveMessage()`, which repacks them
+///   * `fromConvoKitInteractiveMessage()`, which unpacks them again
 ///
 /// A round trip through those three is the contract the message list depends
 /// on, and none of it was exercised.
@@ -22,11 +22,11 @@ import 'package:flutter_test/flutter_test.dart';
 ButtonElement _button(String id, String label) =>
     ButtonElement(elementId: id, buttonText: label);
 
-final _sender = User(uid: 'u1', name: 'Alice');
+final _sender = ChatUser(id: 'u1', name: 'Alice');
 
 /// `InteractiveMessage.toJson` in the SDK casts `receiver` to `User`
 /// unconditionally, so a message with no receiver throws on serialisation.
-final _receiver = User(uid: 'u2', name: 'Bob');
+final _receiver = ChatUser(id: 'u2', name: 'Bob');
 
 void main() {
   // -------------------------------------------------------------------------
@@ -36,7 +36,7 @@ void main() {
       imageUrl: 'https://x/card.png',
       cardActions: [_button('b1', 'Yes'), _button('b2', 'No')],
       receiverUid: 'u2',
-      receiverType: CometChatReceiverType.user,
+      receiverType: ReceiverTypeConstants.user,
       sender: _sender,
       receiver: _receiver,
     );
@@ -92,13 +92,13 @@ void main() {
       expect(restored.cardActions, hasLength(2));
       expect(restored.cardActions.first.elementId, 'b1');
       expect(restored.receiverUid, 'u2');
-      expect(restored.sender?.uid, 'u1');
+      expect(restored.sender?.id, 'u1');
     });
 
     test('fromInteractiveMessage tolerates missing actions and text', () {
-      final bare = InteractiveMessage(
+      final bare = ConvoKitInteractiveMessage(
         receiverUid: 'u2',
-        receiverType: CometChatReceiverType.user,
+        receiverType: ReceiverTypeConstants.user,
         type: MessageTypeConstants.card,
         interactiveData: {},
         interactionGoal: InteractionGoal(
@@ -130,7 +130,7 @@ void main() {
       submitElement: _button('submit', 'Send'),
       goalCompletionText: 'Thanks',
       receiverUid: 'u2',
-      receiverType: CometChatReceiverType.user,
+      receiverType: ReceiverTypeConstants.user,
       sender: _sender,
       receiver: _receiver,
       interactionGoal: InteractionGoal(
@@ -142,7 +142,7 @@ void main() {
     test('the constructor holds its fields but does NOT pack them', () {
       // Asymmetry worth knowing: CardMessage packs interactiveData eagerly in
       // its constructor, FormMessage leaves it empty — the packing lines are
-      // commented out — and relies on toInteractiveMessage(), which
+      // commented out — and relies on toConvoKitInteractiveMessage(), which
       // sdk_methods.dart calls on the send path.
       final form = build();
       expect(form.title, 'Sign up');
@@ -151,7 +151,7 @@ void main() {
       expect(
         form.interactiveData,
         isEmpty,
-        reason: 'packing is deferred to toInteractiveMessage()',
+        reason: 'packing is deferred to toConvoKitInteractiveMessage()',
       );
     });
 
@@ -193,7 +193,7 @@ void main() {
   group('SchedulerMessage', () {
     SchedulerMessage build() => SchedulerMessage(
       receiverUid: 'u2',
-      receiverType: CometChatReceiverType.user,
+      receiverType: ReceiverTypeConstants.user,
       sender: _sender,
       receiver: _receiver,
       title: 'Book a slot',
@@ -235,7 +235,7 @@ void main() {
     /// its true arm.
     SchedulerMessage buildFull() => SchedulerMessage(
       receiverUid: 'u2',
-      receiverType: CometChatReceiverType.user,
+      receiverType: ReceiverTypeConstants.user,
       sender: _sender,
       receiver: _receiver,
       title: 'Book a slot',
@@ -287,7 +287,7 @@ void main() {
       // zero are treated as absent and the constructor's value stands.
       final s = SchedulerMessage(
         receiverUid: 'u2',
-        receiverType: CometChatReceiverType.user,
+        receiverType: ReceiverTypeConstants.user,
         sender: _sender,
         receiver: _receiver,
         title: '   ',
@@ -366,7 +366,7 @@ void main() {
     test('toJson omits the optional fields that are blank or non-positive', () {
       final json = SchedulerMessage(
         receiverUid: 'u2',
-        receiverType: CometChatReceiverType.user,
+        receiverType: ReceiverTypeConstants.user,
         sender: _sender,
         receiver: _receiver,
         title: 'Only a title',
@@ -399,7 +399,7 @@ void main() {
     test('toJson keeps an empty goalCompletionText, since it checks null', () {
       final json = SchedulerMessage(
         receiverUid: 'u2',
-        receiverType: CometChatReceiverType.user,
+        receiverType: ReceiverTypeConstants.user,
         sender: _sender,
         receiver: _receiver,
         goalCompletionText: '',

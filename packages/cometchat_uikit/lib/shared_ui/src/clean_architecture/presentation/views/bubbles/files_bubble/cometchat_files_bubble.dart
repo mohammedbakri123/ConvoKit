@@ -106,7 +106,7 @@ class CometChatFilesBubble extends StatelessWidget {
 class _FileList extends StatefulWidget {
   const _FileList({required this.files, required this.alignment, this.style});
 
-  final List<Attachment> files;
+  final List<ChatAttachment> files;
   final BubbleAlignment alignment;
   final CometChatFilesBubbleStyle? style;
 
@@ -221,7 +221,7 @@ class _FileCard extends StatefulWidget {
     this.standalone = false,
   });
 
-  final Attachment attachment;
+  final ChatAttachment attachment;
   final BubbleAlignment alignment;
 
   /// True when this is the message's only file — the card fill goes fully
@@ -241,7 +241,7 @@ class _FileCardState extends State<_FileCard> {
   bool _busy = false;
   String? _localPath;
 
-  Attachment get a => widget.attachment;
+  ChatAttachment get a => widget.attachment;
   bool get _sent => widget.alignment == BubbleAlignment.right;
 
   /// The trailing ↓ (Save as) is always available — it opens the location
@@ -259,8 +259,8 @@ class _FileCardState extends State<_FileCard> {
   Future<void> _restoreDownloaded() async {
     if (kIsWeb) return;
     final p = await platform_file.getDownloadedFilePath(
-      a.fileName,
-      fileUrl: a.fileUrl,
+      a.name ?? "",
+      fileUrl: a.url ?? "",
     );
     if (p == null || !mounted) return;
     setState(() => _localPath = p);
@@ -270,10 +270,10 @@ class _FileCardState extends State<_FileCard> {
   /// browser's downloader; native caches it locally (spinner in the icon box).
   Future<void> _onDownloadTap() async {
     if (_busy) return;
-    final url = a.fileUrl;
+    final url = a.url ?? "";
     if (url.isEmpty) return;
     if (kIsWeb) {
-      web_download.triggerBrowserDownload(url, a.fileName);
+      web_download.triggerBrowserDownload(url, a.name ?? "");
       return;
     }
     setState(() => _busy = true);
@@ -282,8 +282,8 @@ class _FileCardState extends State<_FileCard> {
       // where the file lands (reusing the cached copy when one exists).
       await platform_file.saveFileWithPicker(
         url,
-        a.fileName,
-        a.fileMimeType,
+        a.name ?? "",
+        a.mimeType ?? "",
         localPath: _localPath,
       );
     } catch (e) {
@@ -294,9 +294,15 @@ class _FileCardState extends State<_FileCard> {
   }
 
   String _ext() {
-    final n = a.fileName;
-    final e = n.contains('.') ? n.split('.').last : a.fileExtension;
-    return e.toLowerCase();
+    final n = a.name ?? "";
+    if (n.contains('.')) return n.split('.').last.toLowerCase();
+    final url = a.url ?? "";
+    if (url.isNotEmpty) {
+      final path = Uri.tryParse(url)?.path ?? "";
+      final seg = path.isNotEmpty ? path.split('/').last : "";
+      if (seg.contains('.')) return seg.split('.').last.toLowerCase();
+    }
+    return "";
   }
 
   String _fmtSize(int b) {
@@ -307,7 +313,7 @@ class _FileCardState extends State<_FileCard> {
 
   Future<void> _openTap() async {
     if (_busy) return;
-    final url = a.fileUrl;
+    final url = a.url ?? "";
     if (url.isEmpty) return;
     if (kIsWeb) {
       final uri = Uri.tryParse(url);
@@ -324,10 +330,10 @@ class _FileCardState extends State<_FileCard> {
       // open_file fails until the row is rebuilt and _restoreDownloaded runs.
       var path = _localPath;
       if (path == null || !platform_file.fileExistsSync(path)) {
-        await BubbleUtils.downloadFile(url, a.fileName);
+        await BubbleUtils.downloadFile(url, a.name ?? "");
         path = await platform_file.getDownloadedFilePath(
-          a.fileName,
-          fileUrl: a.fileUrl,
+          a.name ?? "",
+          fileUrl: a.url ?? "",
         );
         _localPath = path;
       }
@@ -335,7 +341,7 @@ class _FileCardState extends State<_FileCard> {
         const channel = MethodChannel('cometchat_chat_uikit');
         await channel.invokeMethod('open_file', {
           'file_path': path,
-          'file_type': a.fileMimeType,
+          'file_type': a.mimeType ?? "",
         });
       }
     } catch (e) {
@@ -399,9 +405,9 @@ class _FileCardState extends State<_FileCard> {
                           ),
                         )
                       : attachmentSvgIcon(
-                          fileName: a.fileName,
+                          fileName: a.name ?? "",
                           extension: _ext(),
-                          mimeType: a.fileMimeType,
+                          mimeType: a.mimeType ?? "",
                           size: 34,
                         ),
                 ),
@@ -413,7 +419,7 @@ class _FileCardState extends State<_FileCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      a.fileName,
+                      a.name ?? "",
                       maxLines: scaledMaxLines(context),
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -425,7 +431,7 @@ class _FileCardState extends State<_FileCard> {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      '${_fmtSize(a.fileSize ?? 0)} • ${_ext().toUpperCase()}',
+                      '${_fmtSize(a.sizeBytes ?? 0)} • ${_ext().toUpperCase()}',
                       maxLines: scaledMaxLines(context),
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(

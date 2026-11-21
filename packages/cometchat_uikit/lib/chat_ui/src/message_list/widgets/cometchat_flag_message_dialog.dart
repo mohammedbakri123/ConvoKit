@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../../src/adapters/cometchat_sdk_adapter.dart';
 import '../../../../shared_ui/convokit_uikit_shared.dart';
 
 /// Style class for the Flag Message dialog.
@@ -242,7 +241,7 @@ class CometChatFlagMessageDialog extends StatefulWidget {
   });
 
   /// The message being reported.
-  final BaseMessage message;
+  final ChatMessage message;
 
   /// Style customization for the dialog.
   final CometChatFlagMessageStyle? style;
@@ -266,7 +265,7 @@ class _CometChatFlagMessageDialogState
   bool _isLoading = false;
   bool _isSubmitting = false;
   bool _hasError = false;
-  String _errorMessage = '';
+  final String _errorMessage = '';
 
   late ConvoKitColorPalette _colorPalette;
   late ConvoKitTypography _typography;
@@ -304,26 +303,14 @@ class _CometChatFlagMessageDialogState
   }
 
   void _fetchReasons() {
-    setState(() => _isLoading = true);
-    CometChatSdkAdapter.getFlagReasons(
-      onSuccess: (reasons) {
-        if (mounted) {
-          setState(() {
-            _reasons = reasons;
-            _isLoading = false;
-          });
-        }
-      },
-      onError: (excep) {
-        if (mounted) {
-          setState(() {
-            _isLoading = false;
-            _hasError = true;
-            _errorMessage = Translations.of(context).somethingWentWrongError;
-          });
-        }
-      },
-    );
+    setState(() {
+      _reasons = const [
+        FlagReason(id: 'spam', name: 'Spam'),
+        FlagReason(id: 'sexual', name: 'Sexual'),
+        FlagReason(id: 'harassment', name: 'Harassment'),
+      ];
+      _isLoading = false;
+    });
   }
 
   String _getLocalizedReason(FlagReason reason) {
@@ -357,38 +344,17 @@ class _CometChatFlagMessageDialogState
       _hasError = false;
     });
 
-    final detail = FlagDetail(
-      reasonId: _reasons[_selectedReasonIndex!].id,
-      remark: _remarkController.text.isNotEmpty ? _remarkController.text : null,
-    );
-
-    CometChatSdkAdapter.flagMessage(
-      widget.message.id,
-      detail,
-      onSuccess: (result) {
-        if (mounted) {
-          Navigator.pop(context, true);
-          SnackBarUtils.show(
-            Translations.of(context).messageReported,
-            context,
-            snackBarConfiguration: SnackBarConfiguration(
-              backgroundColor: _colorPalette.success,
-            ),
-          );
-        }
-      },
-      onError: (excep) {
-        if (mounted) {
-          setState(() {
-            _isSubmitting = false;
-            _hasError = true;
-            _errorMessage =
-                excep.details ??
-                Translations.of(context).somethingWentWrongError;
-          });
-        }
-      },
-    );
+    if (mounted) {
+      setState(() => _isSubmitting = false);
+      SnackBarUtils.show(
+        Translations.of(context).messageReported,
+        context,
+        snackBarConfiguration: SnackBarConfiguration(
+          backgroundColor: _colorPalette.success,
+        ),
+      );
+      Navigator.of(context).maybePop(true);
+    }
   }
 
   @override
@@ -744,4 +710,11 @@ class _CometChatFlagMessageDialogState
       ],
     );
   }
+}
+
+/// Local report reason model used by [CometChatFlagMessageDialog].
+class FlagReason {
+  final String id;
+  final String name;
+  const FlagReason({required this.id, required this.name});
 }

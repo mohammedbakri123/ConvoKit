@@ -146,7 +146,7 @@ class CometChatMessageActionOverlay extends StatefulWidget {
   });
 
   /// The message object
-  final BaseMessage message;
+  final ChatMessage message;
 
   /// The bubble widget to display
   final Widget bubbleWidget;
@@ -161,10 +161,10 @@ class CometChatMessageActionOverlay extends StatefulWidget {
   final List<String>? favoriteReactions;
 
   /// Callback when a reaction is tapped
-  final Function(BaseMessage message, String reaction)? onReactionTap;
+  final Function(ChatMessage message, String reaction)? onReactionTap;
 
   /// Callback when add reaction icon is tapped
-  final Function(BaseMessage message)? onAddReactionTap;
+  final Function(ChatMessage message)? onAddReactionTap;
 
   /// Custom add reaction icon
   final Widget? addReactionIcon;
@@ -805,15 +805,15 @@ class _CometChatMessageActionOverlayState
 /// Returns the selected [ActionItem] or null if dismissed.
 Future<ActionItem?> showMessageActionOverlay({
   required BuildContext context,
-  required BaseMessage message,
+  required ChatMessage message,
   required Widget bubbleWidget,
   required List<ActionItem> actionItems,
   required BubbleAlignment bubbleAlignment,
   String? heroTag,
   Size? bubbleSize,
   List<String>? favoriteReactions,
-  Function(BaseMessage message, String reaction)? onReactionTap,
-  Function(BaseMessage message)? onAddReactionTap,
+  Function(ChatMessage message, String reaction)? onReactionTap,
+  Function(ChatMessage message)? onAddReactionTap,
   Widget? addReactionIcon,
   bool hideReactions = false,
   CometChatMessageActionOverlayStyle? style,

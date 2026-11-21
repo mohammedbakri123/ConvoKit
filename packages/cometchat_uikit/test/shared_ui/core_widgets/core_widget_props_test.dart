@@ -4,41 +4,21 @@
 ///   flutter test test/shared_ui/core_widgets/core_widget_props_test.dart
 library;
 
-import 'package:bloc_test/bloc_test.dart';
 import 'package:convokit/convokit_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class MockThreadedHeaderBloc
-    extends MockBloc<ThreadedHeaderEvent, ThreadedHeaderState>
-    implements ThreadedHeaderBloc {}
-
-final _me = User(uid: 'u1', name: 'Alice');
-final _them = User(uid: 'u2', name: 'Bob');
+const _me = ChatUser(id: 'u1', name: 'Alice');
 final _sentAt = DateTime.fromMillisecondsSinceEpoch(1700000000000);
 
-TextMessage _message({User? sender}) => TextMessage(
-  id: 1,
-  text: 'hello',
+TextMessage _message({ChatUser? sender}) => TextMessage(
+  id: '1',
+  localId: 'm1',
+  conversationId: 'c1',
   sender: sender ?? _me,
-  receiver: _them,
-  receiverUid: 'u2',
-  type: MessageTypeConstants.text,
-  receiverType: ReceiverTypeConstants.user,
-  sentAt: _sentAt,
+  createdAt: _sentAt,
+  text: 'hello',
 );
-
-MockThreadedHeaderBloc _threadBloc() {
-  final state = ThreadedHeaderState(
-    status: ThreadedHeaderStatus.loaded,
-    parentMessage: _message(),
-    replyCount: 3,
-    loggedInUser: _me,
-  );
-  final b = MockThreadedHeaderBloc();
-  whenListen(b, Stream<ThreadedHeaderState>.value(state), initialState: state);
-  return b;
-}
 
 Widget _host(Widget child) => MaterialApp(
   home: Scaffold(body: SizedBox(width: 400, child: child)),
@@ -132,39 +112,6 @@ void main() {
     });
   });
 
-  group('ConvoKitThreadedHeader', () {
-    testWidgets('every property reaches the header', (tester) async {
-      _ignorePlatformOnlyErrors();
-      await tester.pumpWidget(
-        _host(
-          Builder(
-            builder: (context) => ConvoKitThreadedHeader(
-              parentMessage: _message(),
-              loggedInUser: _me,
-              threadedHeaderBloc: _threadBloc(),
-              messageActionView: (message, context) =>
-                  const Text('actions', key: Key('actions')),
-              template: MessageTemplateUtils.getTextMessageTemplate(),
-              height: 191,
-              width: 251,
-              receiptsVisibility: true,
-              textFormatters: const [],
-              colorPalette: ConvoKitThemeHelper.getColorPalette(context),
-              spacing: ConvoKitThemeHelper.getSpacing(context),
-              typography: ConvoKitThemeHelper.getTypography(context),
-              style: const ConvoKitThreadedHeaderStyle(
-                bubbleContainerBackGroundColor: Color(0xFF261010),
-              ),
-            ),
-          ),
-        ),
-      );
-      await _settle(tester);
-      expect(find.byKey(const Key('actions')), findsOneWidget);
-      expect(_boxHeights(tester), contains(191.0));
-      expect(_boxWidths(tester), contains(251.0));
-    });
-  });
 
   group('SegmentComposerWidget', () {
     testWidgets('every property reaches the composer field', (tester) async {
@@ -343,32 +290,6 @@ void main() {
     });
   });
 
-  group('NotificationFeedFilterChips', () {
-    testWidgets('every property reaches the chip row', (tester) async {
-      String? selected;
-      await tester.pumpWidget(
-        _host(
-          NotificationFeedFilterChips(
-            categories: [
-              NotificationCategory(id: 'orders', label: 'Orders'),
-              NotificationCategory(id: 'alerts', label: 'Alerts'),
-            ],
-            activeCategory: 'orders',
-            totalUnreadCount: 5,
-            categoryUnreadCounts: const {'orders': 3, 'alerts': 2},
-            style: const CometChatNotificationFeedStyle(),
-            onCategorySelected: (id) => selected = id,
-          ),
-        ),
-      );
-      await _settle(tester);
-      expect(find.text('Orders'), findsOneWidget);
-      expect(find.text('Alerts'), findsOneWidget);
-      await tester.tap(find.text('Alerts'));
-      await tester.pump();
-      expect(selected, 'alerts');
-    });
-  });
 
   group('SliverSpacing', () {
     testWidgets('every property reaches the sliver', (tester) async {
@@ -405,7 +326,7 @@ void main() {
   group('CometchatMessageOptionSheet', () {
     testWidgets('every property reaches the option sheet', (tester) async {
       _ignorePlatformOnlyErrors();
-      BaseMessage? reacted;
+      ChatMessage? reacted;
       var addTapped = false;
       await tester.pumpWidget(
         _host(

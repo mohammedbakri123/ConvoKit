@@ -1,10 +1,10 @@
-import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
+import 'interactive_message_base.dart';
 import '../../../../../convokit_uikit_shared.dart'
     show MessageTypeConstants, MessageCategoryConstants, ModelFieldConstants;
 import '../interactive_elements/element_entity.dart';
 
 /// Represents a message that includes various types of messages for interactive elements.
-class CustomInteractiveMessage extends InteractiveMessage {
+class CustomInteractiveMessage extends ConvoKitInteractiveMessage {
   /// Creates a new [CustomInteractiveMessage] instance.
   /// The rest of the parameters are optional and are inherited from [InteractiveMessage].
   CustomInteractiveMessage({
@@ -44,13 +44,13 @@ class CustomInteractiveMessage extends InteractiveMessage {
   Map<String, dynamic> customData;
   String subType;
 
-  InteractiveMessage toInteractiveMessage() {
+  ConvoKitInteractiveMessage toInteractiveMessage() {
     interactiveData[ModelFieldConstants.customData] = customData;
     return this;
   }
 
   factory CustomInteractiveMessage.fromInteractiveMessage(
-    InteractiveMessage message,
+    ConvoKitInteractiveMessage message,
   ) {
     List<ElementEntity> elementList = [];
     if (message.interactiveData[ModelFieldConstants.formFields] != null) {

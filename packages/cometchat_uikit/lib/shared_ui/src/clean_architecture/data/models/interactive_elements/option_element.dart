@@ -19,7 +19,8 @@ class OptionElement {
     return map;
   }
 
-  factory OptionElement.fromMap(dynamic map) {
+  factory OptionElement.fromMap(dynamic rawMap) {
+    final map = rawMap as Map<dynamic, dynamic>;
     return OptionElement(
       // id: map[ModelColumns.id],
       value: map[ModelFieldConstants.value],

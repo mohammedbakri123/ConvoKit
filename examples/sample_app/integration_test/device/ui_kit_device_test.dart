@@ -119,7 +119,7 @@ Map<String, Widget Function(BuildContext)> _surfaces() => {
   ),
   'deleted bubble': (context) => const ConvoKitDeletedBubble(),
   'deleted bubble via its factory': (context) =>
-      DeletedBubbleFactory().build(context, _FakeMessage(), BubbleAlignment.left),
+      DeletedBubbleFactory().build(context, CustomMessage(id: '1', localId: '1', conversationId: 'c1', sender: const ChatUser(id: 'u1', name: 'Alice'), createdAt: DateTime(2026), kind: 'deleted', data: const {}), BubbleAlignment.left),
   'shared list item': (context) => const ConvoKitListItem(
     title: 'Alexandra Constantinou',
     avatarName: 'Alexandra Constantinou',
@@ -155,16 +155,7 @@ Map<String, Widget Function(BuildContext)> _surfaces() => {
   ),
 };
 
-class _FakeMessage extends Fake implements BaseMessage {
-  @override
-  int get id => 1;
-  @override
-  String get category => 'message';
-  @override
-  String get type => 'text';
-  @override
-  DateTime? get deletedAt => DateTime.fromMillisecondsSinceEpoch(1700000000000);
-}
+
 
 void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();

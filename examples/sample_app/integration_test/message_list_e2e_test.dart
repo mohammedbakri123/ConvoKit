@@ -1,3 +1,4 @@
+import 'package:convokit/convokit.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -122,7 +123,7 @@ void main() {
     });
 
     testWidgets('Primary flow: list renders seeded messages', (tester) async {
-      final peer = User(uid: SeedData.testPeerUid, name: 'E2E Peer');
+      final peer = ChatUser(id: SeedData.testPeerUid, name: 'E2E Peer');
 
       await tester.pumpWidget(
         appHost(ConvoKitMessageList(user: peer)),
@@ -166,10 +167,7 @@ void main() {
       // A UID we never seed messages for: the list should resolve to empty
       // (or at worst loading), but it must not crash and must not show the
       // seed-message bubbles.
-      final emptyUser = User(
-        uid: 'e2e_empty_user_${DateTime.now().millisecondsSinceEpoch}',
-        name: 'Empty User',
-      );
+      final emptyUser = ChatUser(id: 'e2e_empty_user_${DateTime.now().millisecondsSinceEpoch}', name: 'Empty User');
 
       await tester.pumpWidget(
         appHost(ConvoKitMessageList(user: emptyUser)),
@@ -191,10 +189,7 @@ void main() {
 
     testWidgets('Custom emptyStateView renders when there are no messages',
         (tester) async {
-      final emptyUser = User(
-        uid: 'e2e_empty_view_user_${DateTime.now().millisecondsSinceEpoch}',
-        name: 'Empty View User',
-      );
+      final emptyUser = ChatUser(id: 'e2e_empty_view_user_${DateTime.now().millisecondsSinceEpoch}', name: 'Empty View User');
 
       await tester.pumpWidget(
         appHost(
@@ -226,7 +221,7 @@ void main() {
     });
 
     testWidgets('Custom headerView renders above the list', (tester) async {
-      final peer = User(uid: SeedData.testPeerUid, name: 'E2E Peer');
+      final peer = ChatUser(id: SeedData.testPeerUid, name: 'E2E Peer');
 
       await tester.pumpWidget(
         appHost(
@@ -255,7 +250,7 @@ void main() {
     });
 
     testWidgets('Custom footerView renders below the list', (tester) async {
-      final peer = User(uid: SeedData.testPeerUid, name: 'E2E Peer');
+      final peer = ChatUser(id: SeedData.testPeerUid, name: 'E2E Peer');
 
       await tester.pumpWidget(
         appHost(
@@ -284,7 +279,7 @@ void main() {
     });
 
     testWidgets('Custom style applies background colour', (tester) async {
-      final peer = User(uid: SeedData.testPeerUid, name: 'E2E Peer');
+      final peer = ChatUser(id: SeedData.testPeerUid, name: 'E2E Peer');
 
       await tester.pumpWidget(
         appHost(
@@ -311,16 +306,13 @@ void main() {
       // suggests. The point of this smoke test is to confirm that passing a
       // custom MessagesRequestBuilder doesn't crash the widget and the list
       // still renders bubbles.
-      final peer = User(uid: SeedData.testPeerUid, name: 'E2E Peer');
-      final builder = MessagesRequestBuilder()
-        ..limit = 30
-        ..hideReplies = true;
+      final peer = ChatUser(id: SeedData.testPeerUid, name: 'E2E Peer');
+      
 
       await tester.pumpWidget(
         appHost(
           ConvoKitMessageList(
             user: peer,
-            messagesRequestBuilder: builder,
           ),
         ),
       );
@@ -347,7 +339,7 @@ void main() {
 
     testWidgets('Long-press on a message opens the action sheet',
         (tester) async {
-      final peer = User(uid: SeedData.testPeerUid, name: 'E2E Peer');
+      final peer = ChatUser(id: SeedData.testPeerUid, name: 'E2E Peer');
 
       await tester.pumpWidget(
         appHost(ConvoKitMessageList(user: peer)),

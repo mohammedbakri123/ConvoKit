@@ -124,32 +124,50 @@ void main() {
       );
     }
 
-    testWidgets('isVoiceNote recognises both the current and the legacy '
-        'marker, and nothing else', (tester) async {
-      MediaMessage withMarker(Object? marker) {
-        final m = MediaMessage(
-          receiverUid: 'priya',
-          receiverType: ReceiverTypeConstants.user,
-          type: MessageTypeConstants.audio,
-          muid: 'm',
-        );
-        m.metadata = marker == null ? null : {'audioType': marker};
-        return m;
-      }
-
-      expect(
-        CometChatVoiceNoteBubble.isVoiceNote(withMarker('voice_note')),
-        isTrue,
+    testWidgets('isVoiceNote returns true for voice-note metadata and false for plain MediaMessage', (tester) async {
+      const att = ChatAttachment(
+        id: 'att_1',
+        remoteId: 'rem_1',
+        kind: AttachmentKind.audio,
+        url: 'https://files.invalid/note.m4a',
+        state: AttachmentState.uploaded,
+        mimeType: 'audio/mp4',
+        name: 'note.m4a',
       );
-      expect(
-        CometChatVoiceNoteBubble.isVoiceNote(withMarker('voiceNote')),
-        isTrue,
+      final plain = MediaMessage(
+        id: 'm',
+        localId: 'm',
+        conversationId: 'conv_priya',
+        sender: const ChatUser(id: 'priya', name: 'Priya'),
+        createdAt: DateTime(2026),
+        attachment: att,
       );
-      expect(
-        CometChatVoiceNoteBubble.isVoiceNote(withMarker('audio')),
-        isFalse,
+      final voiceNote = MediaMessage(
+        id: 'm_vn',
+        localId: 'm_vn',
+        conversationId: 'conv_priya',
+        sender: const ChatUser(id: 'priya', name: 'Priya'),
+        createdAt: DateTime(2026),
+        attachment: att,
+        metadata: const {
+          CometChatVoiceNoteBubble.audioTypeKey:
+              CometChatVoiceNoteBubble.audioTypeVoiceNote,
+        },
       );
-      expect(CometChatVoiceNoteBubble.isVoiceNote(withMarker(null)), isFalse);
+      final legacyVoiceNote = MediaMessage(
+        id: 'm_vn_legacy',
+        localId: 'm_vn_legacy',
+        conversationId: 'conv_priya',
+        sender: const ChatUser(id: 'priya', name: 'Priya'),
+        createdAt: DateTime(2026),
+        attachment: att,
+        metadata: const {
+          CometChatVoiceNoteBubble.audioTypeKey: 'voiceNote',
+        },
+      );
+      expect(CometChatVoiceNoteBubble.isVoiceNote(plain), isFalse);
+      expect(CometChatVoiceNoteBubble.isVoiceNote(voiceNote), isTrue);
+      expect(CometChatVoiceNoteBubble.isVoiceNote(legacyVoiceNote), isTrue);
     });
 
     testWidgets('a cached recording opens its local file and shows its '

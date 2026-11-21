@@ -115,6 +115,10 @@ class MediaMessage extends ChatMessage {
   final ChatAttachment attachment;
   final String? caption;
 
+  /// Optional extensible metadata map (e.g. `audioType`, `audioDurationsMs`,
+  /// `localPath`, or multi-attachment carriers). Null by default.
+  final Map<String, dynamic>? metadata;
+
   const MediaMessage({
     super.id,
     required super.localId,
@@ -128,6 +132,7 @@ class MediaMessage extends ChatMessage {
     super.repliedTo,
     required this.attachment,
     this.caption,
+    this.metadata,
   });
 
   @override
@@ -255,6 +260,7 @@ extension ChatMessageStateCopyX on ChatMessage {
           repliedTo: repliedTo,
           attachment: m.attachment,
           caption: m.caption,
+          metadata: m.metadata,
         ),
       CustomMessage c => CustomMessage(
           id: id,
@@ -308,6 +314,7 @@ extension ChatMessageStateCopyX on ChatMessage {
           repliedTo: repliedTo,
           attachment: m.attachment,
           caption: m.caption,
+          metadata: m.metadata,
         ),
       CustomMessage c => CustomMessage(
           id: id ?? this.id,

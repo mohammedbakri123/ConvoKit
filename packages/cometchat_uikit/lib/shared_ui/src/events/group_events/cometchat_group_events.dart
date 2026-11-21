@@ -14,30 +14,30 @@ class ConvoKitGroupEvents {
     groupsListener.remove(listenerId);
   }
 
-  static void ccGroupCreated(Group group) {
+  static void ccGroupCreated(ChatGroup group) {
     groupsListener.forEach((key, value) {
       value.ccGroupCreated(group);
     });
   }
 
-  static void ccGroupDeleted(Group group) {
+  static void ccGroupDeleted(ChatGroup group) {
     groupsListener.forEach((key, value) {
       value.ccGroupDeleted(group);
     });
   }
 
-  static void ccGroupLeft(Action message, User leftUser, Group leftGroup) {
+  static void ccGroupLeft(ChatMessage message, ChatUser leftUser, ChatGroup leftGroup) {
     groupsListener.forEach((key, value) {
       value.ccGroupLeft(message, leftUser, leftGroup);
     });
   }
 
   static void ccGroupMemberScopeChanged(
-    Action message,
-    User updatedUser,
+    ChatMessage message,
+    ChatUser updatedUser,
     String scopeChangedTo,
     String scopeChangedFrom,
-    Group group,
+    ChatGroup group,
   ) {
     groupsListener.forEach((key, value) {
       value.ccGroupMemberScopeChanged(
@@ -51,10 +51,10 @@ class ConvoKitGroupEvents {
   }
 
   static void ccGroupMemberBanned(
-    Action message,
-    User bannedUser,
-    User bannedBy,
-    Group bannedFrom,
+    ChatMessage message,
+    ChatUser bannedUser,
+    ChatUser bannedBy,
+    ChatGroup bannedFrom,
   ) {
     groupsListener.forEach((key, value) {
       value.ccGroupMemberBanned(message, bannedUser, bannedBy, bannedFrom);
@@ -62,10 +62,10 @@ class ConvoKitGroupEvents {
   }
 
   static void ccGroupMemberKicked(
-    Action message,
-    User kickedUser,
-    User kickedBy,
-    Group kickedFrom,
+    ChatMessage message,
+    ChatUser kickedUser,
+    ChatUser kickedBy,
+    ChatGroup kickedFrom,
   ) {
     groupsListener.forEach((key, value) {
       value.ccGroupMemberKicked(message, kickedUser, kickedBy, kickedFrom);
@@ -73,10 +73,10 @@ class ConvoKitGroupEvents {
   }
 
   static void ccGroupMemberUnbanned(
-    Action message,
-    User unbannedUser,
-    User unbannedBy,
-    Group unbannedFrom,
+    ChatMessage message,
+    ChatUser unbannedUser,
+    ChatUser unbannedBy,
+    ChatGroup unbannedFrom,
   ) {
     groupsListener.forEach((key, value) {
       value.ccGroupMemberUnbanned(
@@ -88,24 +88,24 @@ class ConvoKitGroupEvents {
     });
   }
 
-  static void ccGroupMemberJoined(User joinedUser, Group joinedGroup) {
+  static void ccGroupMemberJoined(ChatUser joinedUser, ChatGroup joinedGroup) {
     groupsListener.forEach((key, value) {
       value.ccGroupMemberJoined(joinedUser, joinedGroup);
     });
   }
 
   static void ccGroupMemberAdded(
-    List<Action> messages,
-    List<User> usersAdded,
-    Group groupAddedIn,
-    User addedBy,
+    List<ChatMessage> messages,
+    List<ChatUser> usersAdded,
+    ChatGroup groupAddedIn,
+    ChatUser addedBy,
   ) {
     groupsListener.forEach((key, value) {
       value.ccGroupMemberAdded(messages, usersAdded, groupAddedIn, addedBy);
     });
   }
 
-  static void ccOwnershipChanged(Group group, GroupMember newOwner) {
+  static void ccOwnershipChanged(ChatGroup group, ChatMember newOwner) {
     groupsListener.forEach((key, value) {
       value.ccOwnershipChanged(group, newOwner);
     });

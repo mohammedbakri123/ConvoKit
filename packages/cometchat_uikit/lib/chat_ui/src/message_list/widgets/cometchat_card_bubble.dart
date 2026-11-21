@@ -7,12 +7,11 @@ import '../../../../shared_ui/src/views/no_intrinsic_card_wrapper.dart';
 
 /// Content view widget for developer card messages (category: "card").
 ///
-/// Renders the raw card schema via [CometChatCardView] from the
-/// `cometchat_cards` renderer package. Mirrors the notification-feed
-/// card rendering pattern.
+/// Renders the raw card schema via the pure-Flutter [ConvoKitCardView]
+/// fallback renderer. Mirrors the notification-feed card rendering pattern.
 ///
 /// Handles:
-/// - Normal render: getCard() → jsonEncode → CometChatCardView
+/// - Normal render: getCard() → jsonEncode → ConvoKitCardView
 /// - Null/empty card: shows getFallbackText() → getText() → "Card Message"
 /// - Deleted message: handled at the template level (not here)
 class CometChatCardBubble extends StatelessWidget {
@@ -25,23 +24,24 @@ class CometChatCardBubble extends StatelessWidget {
   });
 
   /// The [CardMessage] from the SDK (category: "card").
-  final CardMessage message;
+  final CustomMessage message;
 
   /// Callback when the user taps an action within the card.
   /// Fires alongside the [ConvoKitUIEvents.ccCardActionClicked] event.
-  final void Function(CardMessage message, CometChatCardActionEvent action)?
+  final void Function(CustomMessage message, ConvoKitCardActionEvent action)?
   onCardAction;
 
   /// Theme mode for the card renderer.
   /// If null, auto-detected from the current [Brightness].
-  final CometChatCardThemeMode? themeMode;
+  final ConvoKitCardThemeMode? themeMode;
 
   /// Theme override for the card renderer.
-  final CometChatCardThemeOverride? themeOverride;
+  final ConvoKitCardThemeOverride? themeOverride;
 
   @override
   Widget build(BuildContext context) {
-    final cardData = message.getCard();
+    final rawCard = message.data['card'];
+    final cardData = rawCard is Map<String, dynamic> ? rawCard : null;
 
     // If card payload is null/empty, show fallback text
     if (cardData == null || cardData.isEmpty) {
@@ -57,11 +57,11 @@ class CometChatCardBubble extends StatelessWidget {
 
     return NoIntrinsicCardWrapper(
       width: cardWidth,
-      child: CometChatCardView(
+      child: ConvoKitCardView(
         cardJson: cardJson,
         themeMode: resolvedThemeMode,
         themeOverride: themeOverride,
-        onAction: (CometChatCardActionEvent action) {
+        onAction: (ConvoKitCardActionEvent action) {
           // Fire the callback prop (for apps using the bubble directly)
           onCardAction?.call(message, action);
 
@@ -79,8 +79,8 @@ class CometChatCardBubble extends StatelessWidget {
     final typography = ConvoKitThemeHelper.getTypography(context);
 
     final fallbackText =
-        message.getFallbackText() ??
-        message.getText() ??
+        (message.data['fallbackText'] as String?) ??
+        (message.data['text'] as String?) ??
         Translations.of(context).cardMessage;
 
     return Padding(
@@ -98,10 +98,10 @@ class CometChatCardBubble extends StatelessWidget {
   }
 
   /// Resolves theme mode from the platform brightness.
-  CometChatCardThemeMode _resolveThemeMode(BuildContext context) {
+  ConvoKitCardThemeMode _resolveThemeMode(BuildContext context) {
     final brightness = Theme.of(context).brightness;
     return brightness == Brightness.dark
-        ? CometChatCardThemeMode.dark
-        : CometChatCardThemeMode.light;
+        ? ConvoKitCardThemeMode.dark
+        : ConvoKitCardThemeMode.light;
   }
 }

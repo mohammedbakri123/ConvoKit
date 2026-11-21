@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-
 import '../../../convokit_uikit_shared.dart';
 
 /// class for handling call events.
@@ -30,22 +29,22 @@ class CometChatCallEvents {
   }
 
   /// Called when an outgoing call is initiated by the logged-in user.
-  static void ccOutgoingCall(Call call) {
+  static void ccOutgoingCall(Object call) {
     _dispatch('ccOutgoingCall', (listener) => listener.ccOutgoingCall(call));
   }
 
   /// Called when a call is accepted by the logged-in user.
-  static void ccCallAccepted(Call call) {
+  static void ccCallAccepted(Object call) {
     _dispatch('ccCallAccepted', (listener) => listener.ccCallAccepted(call));
   }
 
   /// Called when a call is rejected by the logged-in user.
-  static void ccCallRejected(Call call) {
+  static void ccCallRejected(Object call) {
     _dispatch('ccCallRejected', (listener) => listener.ccCallRejected(call));
   }
 
   /// Called when a call is ended by the logged-in user.
-  static void ccCallEnded(Call call) {
+  static void ccCallEnded(Object call) {
     _dispatch('ccCallEnded', (listener) => listener.ccCallEnded(call));
   }
 

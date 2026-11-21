@@ -27,24 +27,32 @@ const _fileSize = 2048;
 const _sizeLabel = '2 KB';
 
 MediaMessage _audioMessage({required int attachmentCount, String? localPath}) {
-  final msg = MediaMessage(
-    receiverUid: 'uid',
-    receiverType: 'user',
-    type: MessageTypeConstants.audio,
-    muid: 'm1',
+  final attachments = List.generate(
+    attachmentCount,
+    (i) => ChatAttachment(
+      id: 'att_clip_$i.mp3',
+      remoteId: 'rem_clip_$i.mp3',
+      kind: AttachmentKind.audio,
+      url: 'https://files.invalid/clip_$i.mp3',
+      state: AttachmentState.uploaded,
+      mimeType: 'audio/mpeg',
+      sizeBytes: _fileSize,
+      name: 'clip_$i.mp3',
+    ),
   );
-  msg.attachments = [
-    for (var i = 0; i < attachmentCount; i++)
-      Attachment(
-        'https://example.com/a$i.m4a',
-        'a$i.m4a',
-        'm4a',
-        'audio/mp4',
-        _fileSize,
-      ),
-  ];
-  if (localPath != null) msg.metadata = {'localPath': localPath};
-  return msg;
+  final meta = <String, dynamic>{
+    'localPath': ?localPath,
+    if (attachmentCount != 1) 'attachments': attachments,
+  };
+  return MediaMessage(
+    id: 'm1',
+    localId: 'm1',
+    conversationId: 'c1',
+    sender: const ChatUser(id: 'uid', name: 'User'),
+    createdAt: DateTime(2026),
+    attachment: attachments.first,
+    metadata: meta.isEmpty ? null : meta,
+  );
 }
 
 Future<void> _pump(WidgetTester tester, MediaMessage message) async {

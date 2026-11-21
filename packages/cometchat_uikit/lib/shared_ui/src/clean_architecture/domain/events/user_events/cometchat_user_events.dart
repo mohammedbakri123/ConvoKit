@@ -1,4 +1,4 @@
-import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
+import 'package:convokit/src/core/models/models.dart';
 import 'cometchat_user_event_listener.dart';
 
 class ConvoKitUserEvents {
@@ -15,13 +15,13 @@ class ConvoKitUserEvents {
     usersListener.remove(listenerId);
   }
 
-  static void ccUserBlocked(User user) {
+  static void ccUserBlocked(ChatUser user) {
     usersListener.forEach((key, value) {
       value.ccUserBlocked(user);
     });
   }
 
-  static void ccUserUnblocked(User user) {
+  static void ccUserUnblocked(ChatUser user) {
     usersListener.forEach((key, value) {
       value.ccUserUnblocked(user);
     });

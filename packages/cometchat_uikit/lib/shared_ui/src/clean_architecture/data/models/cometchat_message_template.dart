@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
+import 'package:convokit/src/core/models/models.dart'
+    show ChatUser, ChatGroup, ChatMessage;
 import '../../../../convokit_uikit_shared.dart'
     show BubbleAlignment, AdditionalConfigurations;
 import 'cometchat_message_option.dart';
@@ -42,20 +43,20 @@ class CometChatMessageTemplate {
   String category;
 
   ///[bubbleView] widget to be shown in the center of the bubble
-  Widget? Function(BaseMessage, BuildContext, BubbleAlignment alignment)?
+  Widget? Function(ChatMessage, BuildContext, BubbleAlignment alignment)?
   bubbleView;
 
   ///[headerView] widget to be shown on the top of the bubble
-  Widget? Function(BaseMessage, BuildContext, BubbleAlignment alignment)?
+  Widget? Function(ChatMessage, BuildContext, BubbleAlignment alignment)?
   headerView;
 
   ///[footerView] widget to be shown under the [bottomView] of the bubble
-  Widget? Function(BaseMessage, BuildContext, BubbleAlignment alignment)?
+  Widget? Function(ChatMessage, BuildContext, BubbleAlignment alignment)?
   footerView;
 
   ///[contentView] widget to be shown in the center of the bubble
   Widget? Function(
-    BaseMessage,
+    ChatMessage,
     BuildContext,
     BubbleAlignment alignment, {
     AdditionalConfigurations? additionalConfigurations,
@@ -64,28 +65,28 @@ class CometChatMessageTemplate {
 
   ///[options] list of options to be shown on the message bubble
   List<CometChatMessageOption>? Function(
-    User loggedInUser,
-    BaseMessage messageObject,
+    ChatUser loggedInUser,
+    ChatMessage messageObject,
     BuildContext context,
-    Group? group,
+    ChatGroup? group,
     AdditionalConfigurations? additionalConfigurations,
   )?
   options;
 
   ///[bottomView] widget to be shown under the [statusInfoView] of the bubble
-  Widget? Function(BaseMessage, BuildContext, BubbleAlignment alignment)?
+  Widget? Function(ChatMessage, BuildContext, BubbleAlignment alignment)?
   bottomView;
 
   ///[statusInfoView] widget to be shown under the [contentView] of the bubble
-  Widget? Function(BaseMessage, BuildContext, BubbleAlignment alignment)?
+  Widget? Function(ChatMessage, BuildContext, BubbleAlignment alignment)?
   statusInfoView;
 
   ///[threadView] widget to be shown at the bottom of the bubble
-  Widget? Function(BaseMessage, BuildContext, BubbleAlignment alignment)?
+  Widget? Function(ChatMessage, BuildContext, BubbleAlignment alignment)?
   threadView;
 
   ///[replyView] widget to be shown inside the bubble above content (quoted reply)
-  Widget? Function(BaseMessage, BuildContext, BubbleAlignment alignment)?
+  Widget? Function(ChatMessage, BuildContext, BubbleAlignment alignment)?
   replyView;
 
   @override

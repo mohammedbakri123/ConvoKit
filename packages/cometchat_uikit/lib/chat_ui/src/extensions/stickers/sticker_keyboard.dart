@@ -1,7 +1,5 @@
-import 'package:convokit/src/adapters/cometchat_sdk_adapter.dart';
 import 'package:flutter/material.dart';
 import '../../../../convokit_uikit.dart';
-import '../../../../shared_ui/src/logging/cometchat_log.dart';
 
 /// [CometChatStickerKeyboard] renders a keyboard consisting of stickers provided by the extension
 ///
@@ -68,93 +66,9 @@ class _CometChatStickerKeyboardState extends State<CometChatStickerKeyboard> {
   @override
   void initState() {
     super.initState();
-
-    CometChatSdkAdapter.callExtension(
-      ExtensionConstants.stickers,
-      'GET',
-      ExtensionUrls.stickers,
-      null,
-      // The keyboard can close before the fetch answers.
-      onSuccess: (Map<String, dynamic> map) {
-        if (mounted) _getStickers(map);
-      },
-      onError: (CometChatException excep) {
-        ccLog('$excep');
-        if (!mounted) return;
-        isError = true;
-        isLoading = false;
-        setState(() {});
-      },
-    );
-  }
-
-  void _getStickers(Map<String, dynamic> map) {
-    List<Map<String, dynamic>> defaultStickers =
-        List<Map<String, dynamic>>.from(map["data"]['defaultStickers']);
-    List<Map<String, dynamic>> customStickers = List<Map<String, dynamic>>.from(
-      map["data"]['customStickers'],
-    );
-    for (Map<String, dynamic> sticker in defaultStickers) {
-      if (defaultStickersMap.containsKey(
-        int.parse(sticker["stickerSetOrder"]),
-      )) {
-        defaultStickersMap[int.parse(sticker["stickerSetOrder"])]?.add(
-          Sticker.fromJson(sticker),
-        );
-      } else {
-        defaultStickersMap[int.parse(sticker["stickerSetOrder"])] = [
-          Sticker.fromJson(sticker),
-        ];
-      }
-    }
-
-    int defaultCategories = defaultStickersMap.keys.toList().length;
-
-    for (Map<String, dynamic> sticker in customStickers) {
-      if (defaultStickersMap.containsKey(
-        int.parse(sticker["stickerSetOrder"]) + defaultCategories,
-      )) {
-        defaultStickersMap[int.parse(sticker["stickerSetOrder"]) +
-                defaultCategories]
-            ?.add(
-              Sticker(
-                modifiedAt: sticker['modifiedAt'],
-                stickerOrder: int.parse(sticker['stickerOrder']),
-                stickerSetId: sticker['stickerSetId'],
-                stickerUrl: sticker['stickerUrl'],
-                createdAt: sticker['createdAt'],
-                stickerSetName: sticker['stickerSetName'],
-                id: sticker['id'],
-                stickerSetOrder: int.parse(sticker['stickerSetOrder']),
-                stickerName: sticker['stickerName'],
-              ),
-            );
-      } else {
-        defaultStickersMap[int.parse(sticker["stickerSetOrder"]) +
-            defaultCategories] = [
-          Sticker(
-            modifiedAt: sticker['modifiedAt'],
-            stickerOrder: int.parse(sticker['stickerOrder']),
-            stickerSetId: sticker['stickerSetId'],
-            stickerUrl: sticker['stickerUrl'],
-            createdAt: sticker['createdAt'],
-            stickerSetName: sticker['stickerSetName'],
-            id: sticker['id'],
-            stickerSetOrder: int.parse(sticker['stickerSetOrder']),
-            stickerName: sticker['stickerName'],
-          ),
-        ];
-      }
-    }
-
-    stickerSets = defaultStickersMap.keys.toList();
-    stickerSets.sort();
-    // No sets at all is the empty state. Indexing the empty list here threw,
-    // and the SDK routed that to onError, so the empty state was unreachable.
-    if (stickerSets.isNotEmpty) selectedSet = stickerSets[0];
     isLoading = false;
-    setState(() {});
   }
+
 
   Widget _getOnError(
     BuildContext context,

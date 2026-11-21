@@ -1,27 +1,12 @@
+import 'package:convokit/convokit.dart';
 import 'package:convokit/convokit_uikit.dart';
 import 'package:flutter/material.dart';
 
-///[ConvoKitChangeScope] is a stateful widget which allows user to change the scope of a group member
+/// [ConvoKitChangeScope] is a stateful widget which allows changing the role
+/// (scope) of a [ChatMember] in a [ChatGroup].
 ///
-/// ```dart
-/// ConvoKitChangeScope(
-///  group: group,
-///  member: member,
-///  onSave: (group, member, newScope, oldScope) async {
-///  // code to save the new scope
-///  },
-///  style: ConvoKitChangeScopeStyle(
-///  backgroundColor: Colors.white,
-///  iconColor: Colors.black,
-///  iconBackgroundColor: Colors.grey.shade100,
-///  titleTextStyle: TextStyle(
-///  color: Colors.black,
-///  fontSize: 20,
-///  fontWeight: FontWeight.bold,
-///  ),
-///  ),
-/// );
-/// ```
+/// When rendered inside a [ConvoKitScope] with `capabilities.groups == false`
+/// or `kit.groups == null`, renders [SizedBox.shrink] cleanly.
 class ConvoKitChangeScope extends StatefulWidget {
   const ConvoKitChangeScope({
     super.key,
@@ -32,24 +17,18 @@ class ConvoKitChangeScope extends StatefulWidget {
     this.padding,
   });
 
-  ///[group] is the group for which scope is to be changed
-  final Group group;
+  final ChatGroup group;
+  final ChatMember member;
 
-  ///[member] is the member for which scope is to be changed
-  final GroupMember member;
-
-  ///[onSave] is a callback which will be called when scope is changed
   final Future<void> Function(
-    Group group,
-    GroupMember member,
+    ChatGroup group,
+    ChatMember member,
     String newScope,
     String oldScope,
   )?
   onSave;
 
-  ///[style] to be used to style this widget
   final ConvoKitChangeScopeStyle? style;
-
   final EdgeInsetsGeometry? padding;
 
   @override
@@ -59,20 +38,39 @@ class ConvoKitChangeScope extends StatefulWidget {
 class _ConvoKitChangeScopeState extends State<ConvoKitChangeScope> {
   List<String> scopes = ['Admin', 'Moderator', 'Participant'];
   late String? selectedScope;
+  late String _initialScope;
+  ConvoKit? _kit;
 
   late ConvoKitColorPalette colorPalette;
   late ConvoKitTypography typography;
   late ConvoKitSpacing spacing;
   late ConvoKitChangeScopeStyle style;
 
+  static String _roleToScope(GroupRole role) {
+    switch (role) {
+      case GroupRole.owner:
+        return GroupMemberScope.owner;
+      case GroupRole.admin:
+        return GroupMemberScope.admin;
+      case GroupRole.member:
+        return GroupMemberScope.participant;
+    }
+  }
+
   @override
   void initState() {
-    selectedScope = widget.member.scope ?? "";
+    _initialScope = _roleToScope(widget.member.role);
+    selectedScope = _initialScope;
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
+    try {
+      _kit = ConvoKitScope.of(context);
+    } on StateError {
+      _kit = null;
+    }
     colorPalette = ConvoKitThemeHelper.getColorPalette(context);
     typography = ConvoKitThemeHelper.getTypography(context);
     spacing = ConvoKitThemeHelper.getSpacing(context);
@@ -85,6 +83,10 @@ class _ConvoKitChangeScopeState extends State<ConvoKitChangeScope> {
 
   @override
   Widget build(BuildContext context) {
+    if (_kit != null && (!_kit!.capabilities.groups || _kit!.groups == null)) {
+      return const SizedBox.shrink();
+    }
+
     return ClipRRect(
       borderRadius:
           style.borderRadius ??
@@ -110,7 +112,6 @@ class _ConvoKitChangeScopeState extends State<ConvoKitChangeScope> {
           ),
         ),
         child: Column(
-          // mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
@@ -153,7 +154,6 @@ class _ConvoKitChangeScopeState extends State<ConvoKitChangeScope> {
             ),
             const SizedBox(height: 12),
             Container(
-              // padding: EdgeInsets.all(0.5),
               clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(
                 border:
@@ -232,20 +232,18 @@ class _ConvoKitChangeScopeState extends State<ConvoKitChangeScope> {
                     ),
                   ),
                 ),
-
                 Expanded(
                   child: TextButton(
                     onPressed: () async {
                       if (selectedScope != null) {
-                        String oldScope = widget.member.scope ?? "";
-                        if (oldScope == selectedScope) return;
+                        if (_initialScope == selectedScope) return;
                         if (widget.onSave != null) {
                           try {
                             await widget.onSave!(
                               widget.group,
                               widget.member,
                               selectedScope!,
-                              oldScope,
+                              _initialScope,
                             );
                           } catch (_) {}
                         }
@@ -257,7 +255,7 @@ class _ConvoKitChangeScopeState extends State<ConvoKitChangeScope> {
                     style: ButtonStyle(
                       backgroundColor: WidgetStateProperty.all(
                         style.saveButtonBackgroundColor ??
-                            ((widget.member.scope == selectedScope)
+                            ((_initialScope == selectedScope)
                                 ? colorPalette.neutral300
                                 : colorPalette.buttonBackground),
                       ),
@@ -265,7 +263,7 @@ class _ConvoKitChangeScopeState extends State<ConvoKitChangeScope> {
                         style.saveButtonBorder ??
                             BorderSide(
                               color:
-                                  ((widget.member.scope == selectedScope)
+                                  ((_initialScope == selectedScope)
                                       ? colorPalette.neutral300
                                       : colorPalette.borderHighlight) ??
                                   Colors.transparent,
@@ -296,9 +294,7 @@ class _ConvoKitChangeScopeState extends State<ConvoKitChangeScope> {
                         fontSize: typography.button?.medium?.fontSize,
                         fontWeight: typography.button?.medium?.fontWeight,
                         fontFamily: typography.button?.medium?.fontFamily,
-                        color:
-                            // confirmDialogStyle.confirmButtonTextColor ??
-                            colorPalette.white,
+                        color: colorPalette.white,
                       ).merge(style.saveButtonTextStyle),
                     ),
                   ),
@@ -318,8 +314,8 @@ class _ConvoKitChangeScopeState extends State<ConvoKitChangeScope> {
     ConvoKitTypography typography,
     ConvoKitSpacing spacing,
   ) {
-    bool isSelected = scopes[index].toLowerCase() == selectedScope;
-    final tile = Container(
+    final isSelected = scopes[index].toLowerCase() == selectedScope;
+    return Container(
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: isSelected
@@ -358,15 +354,14 @@ class _ConvoKitChangeScopeState extends State<ConvoKitChangeScope> {
               ),
         ),
         contentPadding: EdgeInsets.symmetric(horizontal: spacing.padding4 ?? 0),
-        // minLeadingWidth: 0,
         minVerticalPadding: 0,
         selected: isSelected,
         trailing: Transform.scale(
           scale: 1.2,
           origin: const Offset(-10, 0),
-          child: Radio(
+          child: Radio<String>(
             value: scopes[index].toLowerCase(),
-            // ignore: deprecated_member_use  (RadioGroup requires Flutter 3.32+, above this package's floor)
+            // ignore: deprecated_member_use
             groupValue: selectedScope,
             fillColor: WidgetStatePropertyAll(
               isSelected
@@ -384,7 +379,5 @@ class _ConvoKitChangeScopeState extends State<ConvoKitChangeScope> {
         ),
       ),
     );
-
-    return tile;
   }
 }

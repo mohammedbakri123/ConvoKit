@@ -1,8 +1,9 @@
-import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
+import 'package:convokit/src/core/models/models.dart'
+    show ChatGroup, ChatMember;
 import 'cometchat_base_options.dart';
 import '../../presentation/view_models/cometchat_group_members_controller_protocol.dart';
 
-///[CometChatGroupMemberOption] is a model class which contains information about options available to execute for every [GroupMember]
+///[CometChatGroupMemberOption] is a model class which contains information about options available to execute for every [ChatMember]
 ///
 /// ```dart
 ///
@@ -22,8 +23,8 @@ import '../../presentation/view_models/cometchat_group_members_controller_protoc
 class CometChatGroupMemberOption extends CometChatBaseOptions {
   ///[onClick] call function which takes 2 parameters
   Function(
-    Group group,
-    GroupMember member,
+    ChatGroup group,
+    ChatMember member,
     ConvoKitGroupMembersControllerProtocol state,
   )?
   onClick;

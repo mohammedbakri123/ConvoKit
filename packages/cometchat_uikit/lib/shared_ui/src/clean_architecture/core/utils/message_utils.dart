@@ -1,4 +1,4 @@
-import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
+import 'package:convokit/src/core/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../data/models/additional_configurations.dart';
@@ -17,7 +17,11 @@ import '../../../../convokit_uikit_shared.dart'
         ConvoKitActionBubbleStyle,
         ConvoKitMessageBubble,
         ConvoKitMessageBubbleStyle,
-        ConvoKitAvatar,
+        CometChatTextBubble,
+        CometChatImagesBubble,
+        CometChatVideosBubble,
+        CometChatAudiosBubble,
+        CometChatFilesBubble,
         ConvoKitDate,
         ConvoKitReceipt,
         MessageReceiptUtils,
@@ -28,7 +32,6 @@ import '../../../../convokit_uikit_shared.dart'
         CallTypeConstants,
         ExtensionType,
         DateTimePattern,
-        Translations,
         ErrorConstants;
 import 'moderation_check_util.dart';
 import '../../data/models/extension_bubble_styles/cometchat_outgoing_message_bubble_style.dart';
@@ -52,7 +55,7 @@ import '../constants/enums.dart';
 ///  ```
 class MessageUtils {
   static Widget getMessageBubble({
-    required BaseMessage message,
+    required ChatMessage message,
     CometChatMessageTemplate? template,
     required BubbleAlignment bubbleAlignment,
     required ConvoKitColorPalette colorPalette,
@@ -82,7 +85,8 @@ class MessageUtils {
     // Adds a bookmark glyph beside it when the message is also saved.
     bool showSaveIndicator = false,
   }) {
-    if (message.deletedAt == null && template?.bubbleView != null) {
+    final isDeleted = message is CustomMessage && message.kind == 'deleted';
+    if (!isDeleted && template?.bubbleView != null) {
       return template?.bubbleView!(message, context, BubbleAlignment.left) ??
           const SizedBox();
     }
@@ -221,18 +225,21 @@ class MessageUtils {
   }
 
   static Color _getBubbleBackgroundColor(
-    BaseMessage messageObject,
+    ChatMessage messageObject,
     CometChatMessageTemplate? template,
     ConvoKitColorPalette colorPalette,
     BubbleAlignment alignment,
   ) {
-    return messageObject.sender?.uid == ConvoKitUIKit.loggedInUser?.uid
+    final isSent =
+        ConvoKitUIKit.loggedInUser != null &&
+        messageObject.sender.id == ConvoKitUIKit.loggedInUser!.id;
+    return isSent
         ? colorPalette.primary ?? Colors.transparent
         : colorPalette.neutral300 ?? Colors.transparent;
   }
 
   static Widget? _getSuitableContentView(
-    BaseMessage messageObject,
+    ChatMessage messageObject,
     ConvoKitColorPalette colorPalette,
     BuildContext context,
     CometChatMessageTemplate? template,
@@ -246,9 +253,41 @@ class MessageUtils {
         alignment,
         additionalConfigurations: additionalConfigurations,
       );
-    } else {
-      return const SizedBox();
     }
+    return switch (messageObject) {
+      TextMessage t => CometChatTextBubble(
+        text: t.text,
+        alignment: alignment,
+        formatters: additionalConfigurations?.textFormatters,
+      ),
+      MediaMessage m => switch (m.attachment.kind) {
+        AttachmentKind.image => CometChatImagesBubble(
+          message: m,
+          alignment: alignment,
+          formatters: additionalConfigurations?.textFormatters,
+        ),
+        AttachmentKind.video => CometChatVideosBubble(
+          message: m,
+          alignment: alignment,
+          formatters: additionalConfigurations?.textFormatters,
+        ),
+        AttachmentKind.audio => CometChatAudiosBubble(
+          message: m,
+          alignment: alignment,
+          formatters: additionalConfigurations?.textFormatters,
+        ),
+        AttachmentKind.file => CometChatFilesBubble(
+          message: m,
+          alignment: alignment,
+          formatters: additionalConfigurations?.textFormatters,
+        ),
+      },
+      CustomMessage c => CometChatTextBubble(
+        text: (c.data['text'] as String?) ?? c.kind,
+        alignment: alignment,
+        formatters: additionalConfigurations?.textFormatters,
+      ),
+    };
   }
 
   /// Separator between a state glyph and whatever follows it in the caption
@@ -267,7 +306,7 @@ class MessageUtils {
 
   static Widget? _getStatusInfoView(
     BubbleAlignment alignment,
-    BaseMessage message,
+    ChatMessage message,
     BuildContext context,
     ConvoKitColorPalette colorPalette,
     ConvoKitTypography typography,
@@ -285,44 +324,17 @@ class MessageUtils {
       final statusForeground = alignment == BubbleAlignment.right
           ? colorPalette.white
           : colorPalette.neutral600;
-      final isSaved = message.savedAt != null;
       return Padding(
         padding: EdgeInsets.only(top: spacing.padding1 ?? 0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Any edited `message`-category message shows the tag — that's text
-            // plus image/video/audio/file, whose captions became editable with
-            // multi-attachment. Restricting this to `type == text` dated from
-            // when the SDK rejected editing anything else, and silently hid the
-            // tag on edited media captions. Custom/action/call are other
-            // categories and stay excluded.
-            if (message.editedAt != null &&
-                message.category == MessageCategoryConstants.message)
-              Padding(
-                padding: EdgeInsets.only(right: spacing.padding1 ?? 0),
-                child: Text(
-                  Translations.of(context).edited,
-                  style: TextStyle(
-                    color: alignment == BubbleAlignment.right
-                        ? colorPalette.white
-                        : colorPalette.neutral600,
-                    fontSize: typography.caption2?.regular?.fontSize,
-                    fontWeight: typography.caption2?.regular?.fontWeight,
-                    fontFamily: typography.caption2?.regular?.fontFamily,
-                  ),
-                ),
-              ),
             // State glyphs sit ahead of the time, each closed by its own
             // bullet: pinned when the row is a pin, saved when the reader
             // saved it too, so "pin • save • time" reads as three items.
             if (showPinIndicator) ...[
               Icon(Icons.push_pin, size: 12, color: statusForeground),
-              _statusBullet(statusForeground, typography),
-            ],
-            if (showSaveIndicator && isSaved) ...[
-              Icon(Icons.bookmark, size: 12, color: statusForeground),
               _statusBullet(statusForeground, typography),
             ],
             _getTime(
@@ -348,7 +360,7 @@ class MessageUtils {
 
   static Widget? _getAvatar(
     BubbleAlignment alignment,
-    BaseMessage message,
+    ChatMessage message,
     BuildContext context,
     ConvoKitColorPalette colorPalette,
     ConvoKitTypography typography,
@@ -356,26 +368,12 @@ class MessageUtils {
     CometChatMessageTemplate? template,
     ConvoKitAvatarStyle? avatarStyle,
   ) {
-    return (message.sender != null &&
-            message.receiver != null &&
-            message.receiver is Group &&
-            alignment == BubbleAlignment.left)
-        ? Padding(
-            padding: EdgeInsets.only(right: spacing.padding2 ?? 0),
-            child: ConvoKitAvatar(
-              image: message.sender?.avatar,
-              name: message.sender?.name,
-              width: 36,
-              height: 36,
-              style: avatarStyle,
-            ),
-          )
-        : const SizedBox();
+    return const SizedBox();
   }
 
   static Widget? _getHeaderView(
     BubbleAlignment alignment,
-    BaseMessage message,
+    ChatMessage message,
     BuildContext context,
     ConvoKitColorPalette colorPalette,
     ConvoKitTypography typography,
@@ -389,11 +387,7 @@ class MessageUtils {
     // Renders the sent date beside the name, bullet-separated.
     bool showSentDate = false,
   }) {
-    if (message.sender != null &&
-        (alwaysShowName ||
-            (message.receiver != null &&
-                message.receiver is Group &&
-                alignment == BubbleAlignment.left))) {
+    if (alwaysShowName) {
       if (template?.headerView != null) {
         return template?.headerView!(message, context, alignment);
       } else {
@@ -419,7 +413,7 @@ class MessageUtils {
 
   static Widget _getName(
     BubbleAlignment alignment,
-    BaseMessage message,
+    ChatMessage message,
     BuildContext context,
     ConvoKitColorPalette colorPalette,
     ConvoKitTypography typography,
@@ -434,7 +428,7 @@ class MessageUtils {
     // caption above the message.
     final baseNameSize = typography.caption1?.medium?.fontSize;
     final nameText = Text(
-      senderNameOverride ?? message.sender!.name,
+      senderNameOverride ?? message.sender.name,
       style: TextStyle(
         fontSize: showSentDate && baseNameSize != null
             ? baseNameSize + 2
@@ -449,13 +443,13 @@ class MessageUtils {
       overflow: TextOverflow.ellipsis,
     );
 
-    final sentAt = message.sentAt;
+    final sentAt = message.serverCreatedAt ?? message.createdAt;
     return Padding(
       padding: EdgeInsets.only(
         right: spacing.padding2 ?? 0,
         left: spacing.padding2 ?? 0,
       ),
-      child: (!showSentDate || sentAt == null)
+      child: !showSentDate
           ? nameText
           : Row(
               mainAxisSize: MainAxisSize.min,
@@ -479,18 +473,15 @@ class MessageUtils {
   }
 
   static Widget _getTime(
-    BaseMessage messageObject,
+    ChatMessage messageObject,
     ConvoKitColorPalette? colorPalette,
     ConvoKitTypography? typography,
     BubbleAlignment alignment,
     ConvoKitDateStyle? dateStyle, {
     bool compact = false,
   }) {
-    if (messageObject.sentAt == null) {
-      return const SizedBox();
-    }
-
-    DateTime lastMessageTime = messageObject.sentAt!;
+    final DateTime lastMessageTime =
+        messageObject.serverCreatedAt ?? messageObject.createdAt;
     return ConvoKitDate(
       date: lastMessageTime,
       pattern: DateTimePattern.timeFormat,
@@ -512,7 +503,7 @@ class MessageUtils {
   }
 
   static Widget _getReceiptIcon(
-    BaseMessage message,
+    ChatMessage message,
     ConvoKitColorPalette colorPalette,
     ConvoKitSpacing spacing,
     CometChatMessageReceiptStyle? receiptStyle,
@@ -538,15 +529,17 @@ class MessageUtils {
 ///the following extension [BubbleUIBuilder] is used to build the UI of the message bubbles.
 extension BubbleUIBuilder on MessageUtils {
   static ConvoKitMessageBubbleStyleData? getBubbleStyle(
-    BaseMessage message,
+    ChatMessage message,
     CometChatOutgoingMessageBubbleStyle? outgoingMessageBubbleStyle,
     CometChatIncomingMessageBubbleStyle? incomingMessageBubbleStyle,
     ConvoKitColorPalette colorPalette,
     ConvoKitTypography typography,
     ConvoKitSpacing spacing,
   ) {
-    bool isSent = message.sender?.uid == ConvoKitUIKit.loggedInUser?.uid;
-    if (message.deletedAt != null) {
+    final isSent =
+        ConvoKitUIKit.loggedInUser != null &&
+        message.sender.id == ConvoKitUIKit.loggedInUser!.id;
+    if (message is CustomMessage && message.kind == 'deleted') {
       return ConvoKitMessageBubbleStyleData(
         backgroundColor: isSent
             ? outgoingMessageBubbleStyle?.deletedBubbleStyle?.backgroundColor
@@ -599,7 +592,22 @@ extension BubbleUIBuilder on MessageUtils {
       );
     }
 
-    String key = "${message.category}${message.type}";
+    final String msgCategory = message is CustomMessage
+        ? (message.kind == MessageTypeConstants.card
+            ? MessageCategoryConstants.card
+            : MessageCategoryConstants.custom)
+        : MessageCategoryConstants.message;
+    final String msgType = switch (message) {
+      TextMessage _ => MessageTypeConstants.text,
+      MediaMessage m => switch (m.attachment.kind) {
+        AttachmentKind.image => MessageTypeConstants.image,
+        AttachmentKind.video => MessageTypeConstants.video,
+        AttachmentKind.audio => MessageTypeConstants.audio,
+        AttachmentKind.file => MessageTypeConstants.file,
+      },
+      CustomMessage c => c.kind,
+    };
+    String key = "$msgCategory$msgType";
     if (key ==
             MessageCategoryConstants.action +
                 MessageTypeConstants.groupActions ||
@@ -1167,9 +1175,8 @@ extension BubbleUIBuilder on MessageUtils {
           MessageTypeConstants.meeting):
         CustomMessage msg = message as CustomMessage;
         String? callType;
-        if (msg.customData != null &&
-            msg.customData?.containsKey('callType') == true) {
-          callType = msg.customData?['callType'];
+        if (msg.data.containsKey('callType')) {
+          callType = msg.data['callType'] as String?;
         }
         if (callType == CallTypeConstants.audioCall) {
           messageBubbleStyleData = ConvoKitMessageBubbleStyleData(
@@ -1332,7 +1339,7 @@ extension BubbleUIBuilder on MessageUtils {
 
   static AdditionalConfigurations? getAdditionalConfigurations(
     BuildContext context,
-    BaseMessage message,
+    ChatMessage message,
     List<CometChatTextFormatter>? formatters,
     CometChatIncomingMessageBubbleStyle? incomingMessageBubbleStyle2,
     CometChatOutgoingMessageBubbleStyle? outgoingMessageBubbleStyle2,
@@ -1349,7 +1356,9 @@ extension BubbleUIBuilder on MessageUtils {
           context: context,
           defaultTheme: CometChatIncomingMessageBubbleStyle.of,
         ).merge(incomingMessageBubbleStyle2);
-    bool isSent = message.sender?.uid == ConvoKitUIKit.loggedInUser?.uid;
+    final isSent =
+        ConvoKitUIKit.loggedInUser != null &&
+        message.sender.id == ConvoKitUIKit.loggedInUser!.id;
 
     final actionBubbleStyle =
         ConvoKitThemeHelper.getTheme<ConvoKitActionBubbleStyle>(
@@ -1461,7 +1470,7 @@ extension BubbleUIBuilder on MessageUtils {
   }
 
   static List<CometChatTextFormatter> getTextFormatters(
-    BaseMessage message,
+    ChatMessage message,
     List<CometChatTextFormatter> textFormatters,
   ) {
     if (message is TextMessage) {
@@ -1475,16 +1484,17 @@ extension BubbleUIBuilder on MessageUtils {
   // This method is used to get the border radius for sent text and media messages.
   // If the message is disapproved, it returns a specific border radius.
   static BorderRadiusGeometry? getSentTextMediaBorderRadiusGeometry(
-    BaseMessage message,
+    ChatMessage message,
     BorderRadiusGeometry? borderRadius,
     ConvoKitColorPalette colorPalette,
     ConvoKitTypography typography,
     ConvoKitSpacing spacing,
   ) {
     final moderationUtil = ModerationCheckUtil.instance;
-    if (message.metadata != null &&
-        (message.metadata!.containsValue(ErrorConstants.fileErrorCodeAndroid) ||
-            message.metadata!.containsValue(ErrorConstants.fileErrorCodeIOS))) {
+    final meta = message is CustomMessage ? message.data : null;
+    if (meta != null &&
+        (meta.containsValue(ErrorConstants.fileErrorCodeAndroid) ||
+            meta.containsValue(ErrorConstants.fileErrorCodeIOS))) {
       return BorderRadius.only(
         topLeft: Radius.circular(spacing.radius4 ?? 16),
         topRight: Radius.circular(spacing.radius4 ?? 16),

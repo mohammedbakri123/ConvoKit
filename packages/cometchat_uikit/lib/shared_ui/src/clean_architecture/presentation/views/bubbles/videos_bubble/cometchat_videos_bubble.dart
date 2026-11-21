@@ -71,8 +71,8 @@ class CometChatVideosBubble extends StatelessWidget {
       for (var i = 0; i < attachments.length; i++)
         ThumbnailExtractionUtil.thumbnailForAttachment(
           message.metadata,
-          url: attachments[i].fileUrl,
-          name: attachments[i].fileName,
+          url: attachments[i].url ?? "",
+          name: attachments[i].name ?? "",
           index: i,
         ),
     ];

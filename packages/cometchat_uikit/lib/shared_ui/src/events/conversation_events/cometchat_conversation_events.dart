@@ -16,13 +16,13 @@ class ConvoKitConversationEvents {
     conversationListListener.remove(listenerId);
   }
 
-  static void ccConversationDeleted(Conversation conversation) {
+  static void ccConversationDeleted(ChatConversation conversation) {
     conversationListListener.forEach((key, value) {
       value.ccConversationDeleted(conversation);
     });
   }
 
-  static void ccUpdateConversation(Conversation conversation) {
+  static void ccUpdateConversation(ChatConversation conversation) {
     conversationListListener.forEach((key, value) {
       value.ccUpdateConversation(conversation);
     });

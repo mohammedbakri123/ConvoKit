@@ -39,7 +39,8 @@ class DateTimeElement extends BaseInputElement<String> {
     return map;
   }
 
-  factory DateTimeElement.fromMap(dynamic map) {
+  factory DateTimeElement.fromMap(dynamic rawMap) {
+    final map = rawMap as Map<dynamic, dynamic>;
     DateTimeVisibilityMode mode;
 
     switch (map[ModelFieldConstants.mode]) {

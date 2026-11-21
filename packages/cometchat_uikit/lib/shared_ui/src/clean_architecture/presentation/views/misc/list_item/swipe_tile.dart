@@ -59,7 +59,12 @@ class _SwipeTileState extends State<SwipeTile>
     return GestureDetector(
       onTap: widget.onTap != null
           ? () {
-              widget.onTap!();
+              final onTap = widget.onTap;
+              if (onTap is void Function()) {
+                onTap();
+              } else if (onTap != null) {
+                Function.apply(onTap, const []);
+              }
             }
           : null,
       onHorizontalDragUpdate: (inputData) {

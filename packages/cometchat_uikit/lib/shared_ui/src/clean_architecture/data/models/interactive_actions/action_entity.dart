@@ -19,7 +19,8 @@ class ActionEntity {
 
   String actionType;
 
-  factory ActionEntity.fromMap(dynamic map) {
+  factory ActionEntity.fromMap(dynamic rawMap) {
+    final map = rawMap as Map<dynamic, dynamic>;
     if (map[ModelFieldConstants.actionType] == ActionTypeConstants.apiAction) {
       return APIAction.fromMap(map);
     } else if (map[ModelFieldConstants.actionType] ==

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
+import 'package:convokit/src/core/models/models.dart'
+    show ChatUser, ChatGroup;
 import 'cometchat_details_option.dart';
 
 ///[ConvoKitDetailsTemplate] is the section of options displayed in `ConvoKitDetails`
@@ -22,7 +23,7 @@ import 'cometchat_details_option.dart';
 ///       ),
 ///     ];
 ///   },
-///   title: "User Details",
+///   title: "ChatUser Details",
 ///   titleStyle: TextStyle(
 ///     fontSize: 18,
 ///     fontWeight: FontWeight.bold,
@@ -40,8 +41,8 @@ class ConvoKitDetailsTemplate {
 
   ///[options] is a function which returns list of [ConvoKitDetailsOption] for every [ConvoKitDetailsTemplate]
   final List<ConvoKitDetailsOption> Function(
-    User? user,
-    Group? group,
+    ChatUser? user,
+    ChatGroup? group,
     BuildContext? context,
   )?
   options;

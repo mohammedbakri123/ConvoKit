@@ -1,28 +1,18 @@
+import 'dart:async';
+
+import 'package:convokit/convokit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../convokit_uikit.dart';
 import '../../../../convokit_uikit.dart' as cc;
 
-/// [CometChatMessageInformation] is a widget which is used to display message information.
+/// [CometChatMessageInformation] displays delivery and send-state information
+/// for a [ChatMessage] directly from [ChatMessage.sendState] and
+/// [ChatMessage.deliveryState].
 ///
-/// This widget uses BLoC for state management and follows Clean Architecture
-/// patterns. It displays receipt information (read/delivered status) for a message.
-///
-/// For user conversations: Shows a single receipt with read/delivered timestamps
-/// For group conversations: Fetches and displays receipts for all group members
-///
-/// ```dart
-/// CometChatMessageInformation(
-///   message: message,
-///   title: "Message Information",
-///   template: CometChatMessageTemplate(),
-///   messageInformationStyle: CometChatMessageInformationStyle(),
-/// );
-/// ```
-///
-/// **Requirements: 1.1, 7.1**
+/// Receipt rows are gated on `ConvoKitScope.of(context).capabilities.receipts`:
+/// when `false`, all receipt rows are hidden.
 class CometChatMessageInformation extends StatefulWidget {
   const CometChatMessageInformation({
     super.key,
@@ -31,43 +21,34 @@ class CometChatMessageInformation extends StatefulWidget {
     this.template,
     this.messageInformationStyle,
     this.textFormatters,
-    // Optional pre-cached theme values for optimization
     this.colorPalette,
     this.typography,
     this.spacing,
-    this.messageInformationBloc,
   });
 
-  /// [message] parent message for message information
-  final BaseMessage message;
+  /// Message whose information is displayed.
+  final ChatMessage message;
 
-  /// [title] to be shown at head
+  /// Optional sheet title; defaults to localized "Message Info".
   final String? title;
 
-  /// [template] to get the message template
+  /// Optional custom message template for rendering the preview bubble.
   final CometChatMessageTemplate? template;
 
-  /// [messageInformationStyle] style parameter
+  /// Style configuration.
   final CometChatMessageInformationStyle? messageInformationStyle;
 
-  /// [textFormatters] list of text formatters. null = use defaults, empty = no formatters
+  /// Optional text formatters for the preview bubble.
   final List<CometChatTextFormatter>? textFormatters;
 
-  /// [colorPalette] optional pre-cached color palette for optimization
+  /// Optional pre-cached color palette.
   final ConvoKitColorPalette? colorPalette;
 
-  /// [typography] optional pre-cached typography for optimization
+  /// Optional pre-cached typography.
   final ConvoKitTypography? typography;
 
-  /// [spacing] optional pre-cached spacing for optimization
+  /// Optional pre-cached spacing.
   final ConvoKitSpacing? spacing;
-
-  ///[messageInformationBloc] Optional external MessageInformationBloc
-  ///instance. If provided, it is used instead of creating one internally and
-  ///the widget does not close it on dispose. Mirrors
-  ///[ConvoKitConversations.conversationsBloc] — the seam that lets a test
-  ///supply receipts without a live SDK.
-  final MessageInformationBloc? messageInformationBloc;
 
   @override
   State<CometChatMessageInformation> createState() =>
@@ -76,103 +57,108 @@ class CometChatMessageInformation extends StatefulWidget {
 
 class _CometChatMessageInformationState
     extends State<CometChatMessageInformation> {
-  /// BLoC for managing message information state
-  late MessageInformationBloc _bloc;
-  bool _isExternalBloc = false;
-
-  /// Theme caching - initialized once in didChangeDependencies
+  // Theme caching
   late ConvoKitColorPalette _colorPalette;
   late ConvoKitTypography _typography;
   late ConvoKitSpacing _spacing;
   bool _themeInitialized = false;
   Brightness? _cachedBrightness;
 
-  /// Merged style
   late CometChatMessageInformationStyle _messageInfoStyle;
 
-  /// Message template for rendering the parent message bubble
-  late CometChatMessageTemplate _messageTemplate;
+  // Optional live store observation for real-time delivery/send state updates
+  EventHub? _hub;
+  ConvoKit? _kit;
+  StreamSubscription<List<ChatMessage>>? _storeSub;
+  String? _subscribedConversationId;
+  late ChatMessage _message;
 
   @override
   void initState() {
     super.initState();
-
-    // Initialize service locator if not already initialized
-    if (!MessageInformationServiceLocator.instance.isInitialized) {
-      MessageInformationServiceLocator.instance.setup();
-    }
-
-    // Resolve message template from data source based on message category/type
-    _resolveMessageTemplate();
-
-    // Create BLoC and dispatch initialization event
-    if (widget.messageInformationBloc != null) {
-      _bloc = widget.messageInformationBloc!;
-      _isExternalBloc = true;
-    } else {
-      _bloc = MessageInformationBloc();
-      _bloc.add(InitializeMessageInformation(parentMessage: widget.message));
-    }
-  }
-
-  /// Resolve the message template from use case or use custom template
-  ///
-  /// If a custom template is provided via the `template` parameter, it takes
-  /// precedence. Otherwise, the template is resolved from the data source
-  /// based on the message's category and type.
-  ///
-  /// **Requirements: 8.1, 8.2**
-  void _resolveMessageTemplate() {
-    // If custom template is provided, use it directly (Requirement 8.2)
-    if (widget.template != null) {
-      _messageTemplate = widget.template!;
-      return;
-    }
-
-    // Get all templates directly (Requirement 8.1)
-    final templates = MessageTemplateUtils.getAllMessageTemplates();
-
-    // Find matching template based on message category and type
-    CometChatMessageTemplate? resolvedTemplate;
-    for (final template in templates) {
-      if (widget.message.category == template.category &&
-          widget.message.type == template.type) {
-        resolvedTemplate = template;
-        break;
-      }
-    }
-
-    // Use resolved template or fall back to first available template
-    _messageTemplate = resolvedTemplate ?? templates.first;
+    _message = widget.message;
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    // Only initialize theme once to avoid expensive lookups during rebuilds
-    // **Requirements: 6.1, 6.2**
     final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
     if (!_themeInitialized || brightnessChanged) {
       _cachedBrightness = currentBrightness;
-      // Use passed values or fallback to lookups (for standalone usage)
-      // **Requirement: 6.3**
       _colorPalette =
           widget.colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
       _typography =
           widget.typography ?? ConvoKitThemeHelper.getTypography(context);
       _spacing = widget.spacing ?? ConvoKitThemeHelper.getSpacing(context);
-
-      // Merge style with theme
       _messageInfoStyle =
           ConvoKitThemeHelper.getTheme<CometChatMessageInformationStyle>(
             context: context,
             defaultTheme: CometChatMessageInformationStyle.of,
           ).merge(widget.messageInformationStyle);
-
       _themeInitialized = true;
+    }
+
+    _attachToStore();
+  }
+
+  void _attachToStore() {
+    ConvoKit? kit;
+    EventHub? hub;
+    try {
+      kit = ConvoKitScope.of(context);
+      hub = ConvoKitScope.hubOf(context);
+    } on StateError {
+      kit = null;
+      hub = null;
+    }
+
+    final convId = widget.message.conversationId;
+    if (identical(_hub, hub) && _subscribedConversationId == convId) {
+      _kit = kit;
+      return;
+    }
+
+    _detachFromStore();
+    _kit = kit;
+    _hub = hub;
+    _subscribedConversationId = convId;
+
+    if (hub != null) {
+      final store = hub.getMessageStore(convId);
+      _syncFromMessages(store.messages, notify: false);
+      _storeSub = store.stream.listen((messages) {
+        if (!mounted) return;
+        _syncFromMessages(messages, notify: true);
+      });
+    }
+  }
+
+  void _detachFromStore() {
+    unawaited(_storeSub?.cancel());
+    _storeSub = null;
+    _subscribedConversationId = null;
+  }
+
+  bool _isSameMessage(ChatMessage a, ChatMessage b) {
+    if (a.id != null && b.id != null && a.id == b.id) return true;
+    return a.localId == b.localId;
+  }
+
+  void _syncFromMessages(List<ChatMessage> messages, {required bool notify}) {
+    for (final msg in messages) {
+      if (_isSameMessage(msg, widget.message)) {
+        if (msg != _message) {
+          if (notify && mounted) {
+            setState(() => _message = msg);
+          } else {
+            _message = msg;
+          }
+        }
+        return;
+      }
     }
   }
 
@@ -180,7 +166,6 @@ class _CometChatMessageInformationState
   void didUpdateWidget(CometChatMessageInformation oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    // Update cached theme values if they changed
     if (widget.colorPalette != oldWidget.colorPalette &&
         widget.colorPalette != null) {
       _colorPalette = widget.colorPalette!;
@@ -192,8 +177,6 @@ class _CometChatMessageInformationState
     if (widget.spacing != oldWidget.spacing && widget.spacing != null) {
       _spacing = widget.spacing!;
     }
-
-    // Update style if it changed
     if (widget.messageInformationStyle != oldWidget.messageInformationStyle) {
       _messageInfoStyle =
           ConvoKitThemeHelper.getTheme<CometChatMessageInformationStyle>(
@@ -201,25 +184,24 @@ class _CometChatMessageInformationState
             defaultTheme: CometChatMessageInformationStyle.of,
           ).merge(widget.messageInformationStyle);
     }
-
-    // Re-resolve template if parent message or custom template changed
-    if (widget.message != oldWidget.message ||
-        widget.template != oldWidget.template) {
-      _resolveMessageTemplate();
+    if (widget.message != oldWidget.message) {
+      _message = widget.message;
+      if (widget.message.conversationId != oldWidget.message.conversationId) {
+        _attachToStore();
+      }
     }
   }
 
   @override
   void dispose() {
-    // an injected bloc belongs to its owner, so only close what we created
-    if (!_isExternalBloc) {
-      _bloc.close();
-    }
+    _detachFromStore();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final receiptsEnabled = _kit?.capabilities.receipts ?? true;
+
     return SafeArea(
       child: DraggableScrollableSheet(
         initialChildSize: 0.5,
@@ -243,103 +225,44 @@ class _CometChatMessageInformationState
               ),
               child: Column(
                 children: [
-                  // Notch and the Name
                   _buildHeader(),
-                  // Content with BlocBuilder
-                  BlocBuilder<MessageInformationBloc, MessageInformationState>(
-                    bloc: _bloc,
-                    builder: (context, state) {
-                      if (state.hasError) {
-                        // Error view
-                        return const SizedBox();
-                      } else if (state.receipts.isEmpty &&
-                          state.status == MessageInformationStatus.loading) {
-                        // Loading view
-                        return Expanded(
-                          child: SingleChildScrollView(
-                            child: Column(children: [_buildLoadingView()]),
-                          ),
-                        );
-                      } else {
-                        // Loaded view
-                        return Expanded(
-                          child: SingleChildScrollView(
-                            controller: scrollController,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Message bubble
-                                IgnorePointer(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color:
-                                          _messageInfoStyle
-                                              .backgroundHighLightColor ??
-                                          _colorPalette.background2,
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.all(
-                                        _spacing.padding4 ?? 0,
-                                      ),
-                                      child: MessageUtils.getMessageBubble(
-                                        context: context,
-                                        colorPalette: _colorPalette,
-                                        spacing: _spacing,
-                                        typography: _typography,
-                                        bubbleAlignment: BubbleAlignment.right,
-                                        message:
-                                            state.parentMessage ??
-                                            widget.message,
-                                        template: _messageTemplate,
-                                        textFormatters:
-                                            widget.textFormatters ??
-                                            MessageTemplateUtils.getDefaultTextFormatters(),
-                                      ),
-                                    ),
-                                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      controller: scrollController,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          IgnorePointer(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color:
+                                    _messageInfoStyle
+                                        .backgroundHighLightColor ??
+                                    _colorPalette.background2,
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.all(
+                                  _spacing.padding4 ?? 0,
                                 ),
-                                // Receipt list
-                                // For group conversations, filter receipts with no timestamps
-                                // before display for efficiency **Requirement: 9.4**
-                                Builder(
-                                  builder: (context) {
-                                    final receiptsToDisplay =
-                                        state.isGroupConversation
-                                        ? state.receipts
-                                              .where(
-                                                (r) =>
-                                                    r.readAt != null ||
-                                                    r.deliveredAt != null,
-                                              )
-                                              .toList()
-                                        : state.receipts;
-
-                                    return ListView.builder(
-                                      itemCount: receiptsToDisplay.length,
-                                      shrinkWrap: true,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      itemBuilder: (context, index) {
-                                        final messageReceipt =
-                                            receiptsToDisplay[index];
-                                        if (state.isUserConversation) {
-                                          return _buildUserView(
-                                            messageReceipt: messageReceipt,
-                                          );
-                                        }
-                                        return _buildGroupView(
-                                          messageReceipt: messageReceipt,
-                                        );
-                                      },
-                                    );
-                                  },
+                                child: MessageUtils.getMessageBubble(
+                                  context: context,
+                                  colorPalette: _colorPalette,
+                                  spacing: _spacing,
+                                  typography: _typography,
+                                  bubbleAlignment: BubbleAlignment.right,
+                                  message: _message,
+                                  template: widget.template,
+                                  textFormatters:
+                                      widget.textFormatters ?? const [],
+                                  receiptsVisibility: receiptsEnabled,
                                 ),
-                              ],
+                              ),
                             ),
                           ),
-                        );
-                      }
-                    },
+                          if (receiptsEnabled) _buildReceiptStatusSection(),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -350,7 +273,6 @@ class _CometChatMessageInformationState
     );
   }
 
-  /// Build the header with notch and title
   Widget _buildHeader() {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -403,7 +325,6 @@ class _CometChatMessageInformationState
     );
   }
 
-  /// Build time text widget
   Widget _buildTimeText(
     String text,
     TextStyle? mergeTextStyle,
@@ -420,22 +341,72 @@ class _CometChatMessageInformationState
     );
   }
 
-  /// Convert time to formatted string
-  static String _convertTime(DateTime? time, String receiptDatePattern) {
-    String formattedDate = "";
-    if (time != null) {
-      formattedDate = DateFormat(receiptDatePattern).format(time);
-    }
-    return formattedDate;
+  static String _formatTimestamp(DateTime? time) {
+    if (time == null) return "----";
+    return DateFormat("dd/M/yyyy, h:mm a").format(time);
   }
 
-  /// Build user view for 1-on-1 conversations
-  ///
-  /// **Requirement: 9.1**
-  Widget _buildUserView({required MessageReceipt messageReceipt}) {
+  /// Renders receipt and send-state rows directly from [ChatMessage.sendState]
+  /// and [ChatMessage.deliveryState].
+  Widget _buildReceiptStatusSection() {
+    final timestamp = _message.serverCreatedAt ?? _message.createdAt;
+    final isSent = _message.sendState == SendState.sent;
+    final isRead = isSent && _message.deliveryState == DeliveryState.read;
+    final isDelivered =
+        isSent &&
+        (_message.deliveryState == DeliveryState.delivered ||
+            _message.deliveryState == DeliveryState.read);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if (_message.sendState == SendState.sending ||
+            _message.sendState == SendState.failed)
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: _spacing.padding4 ?? 0,
+              vertical: _spacing.padding3 ?? 0,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(bottom: _spacing.padding1 ?? 0),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(right: _spacing.padding1 ?? 0),
+                        child: ConvoKitReceipt(
+                          status: MessageReceiptUtils.getReceiptStatus(
+                            _message,
+                          ),
+                          size: 16,
+                          style: _messageInfoStyle.messageReceiptStyle,
+                        ),
+                      ),
+                      _buildTimeText(
+                        _message.sendState == SendState.failed
+                            ? (_message.failure?.message ??
+                                  cc.Translations.of(
+                                    context,
+                                  ).somethingWentWrongError)
+                            : cc.Translations.of(context).sent,
+                        _messageInfoStyle.deliveredTextStyle,
+                        _message.sendState == SendState.failed
+                            ? _colorPalette.error
+                            : _messageInfoStyle.deliveredTextColor,
+                      ),
+                    ],
+                  ),
+                ),
+                _buildTimeText(
+                  "----",
+                  _messageInfoStyle.deliveredDateTextStyle,
+                  _messageInfoStyle.deliveredDateTextColor,
+                ),
+              ],
+            ),
+          ),
         Padding(
           padding: EdgeInsets.symmetric(
             horizontal: _spacing.padding4 ?? 0,
@@ -464,17 +435,11 @@ class _CometChatMessageInformationState
                   ],
                 ),
               ),
-              (messageReceipt.readAt == null)
-                  ? _buildTimeText(
-                      "----",
-                      _messageInfoStyle.readDateTextStyle,
-                      _messageInfoStyle.readDateTextColor,
-                    )
-                  : _buildTimeText(
-                      _convertTime(messageReceipt.readAt, "dd/M/yyyy, h:mm a"),
-                      _messageInfoStyle.readDateTextStyle,
-                      _messageInfoStyle.readDateTextColor,
-                    ),
+              _buildTimeText(
+                isRead ? _formatTimestamp(timestamp) : "----",
+                _messageInfoStyle.readDateTextStyle,
+                _messageInfoStyle.readDateTextColor,
+              ),
             ],
           ),
         ),
@@ -506,198 +471,23 @@ class _CometChatMessageInformationState
                   ],
                 ),
               ),
-              (messageReceipt.deliveredAt == null)
-                  ? _buildTimeText(
-                      "----",
-                      _messageInfoStyle.deliveredDateTextStyle,
-                      _messageInfoStyle.deliveredDateTextColor,
-                    )
-                  : _buildTimeText(
-                      _convertTime(
-                        messageReceipt.deliveredAt,
-                        "dd/M/yyyy, h:mm a",
-                      ),
-                      _messageInfoStyle.deliveredDateTextStyle,
-                      _messageInfoStyle.deliveredDateTextColor,
-                    ),
+              _buildTimeText(
+                isDelivered ? _formatTimestamp(timestamp) : "----",
+                _messageInfoStyle.deliveredDateTextStyle,
+                _messageInfoStyle.deliveredDateTextColor,
+              ),
             ],
           ),
         ),
       ],
     );
   }
-
-  /// Build group view for group conversations
-  ///
-  /// Displays each member's avatar, name, and receipt timestamps.
-  /// Shows placeholder indicator ("----") when a timestamp is null.
-  ///
-  /// **Requirements: 9.2, 9.3**
-  Widget _buildGroupView({required MessageReceipt messageReceipt}) {
-    return ListTile(
-      minLeadingWidth: 0,
-      minVerticalPadding: 0,
-      horizontalTitleGap: _spacing.padding3 ?? 0,
-      leading: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ConvoKitAvatar(
-            height: 40,
-            width: 40,
-            name: messageReceipt.sender.name,
-            image: messageReceipt.sender.avatar,
-            style: _messageInfoStyle.avatarStyle,
-          ),
-        ],
-      ),
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          // Member name **Requirement: 9.2**
-          Text(
-            messageReceipt.sender.name,
-            style:
-                TextStyle(
-                      color:
-                          _messageInfoStyle.nameTextColor ??
-                          _colorPalette.textPrimary,
-                      fontSize: _typography.heading4?.medium?.fontSize,
-                      fontWeight: _typography.heading4?.medium?.fontWeight,
-                      fontFamily: _typography.heading4?.medium?.fontFamily,
-                    )
-                    .merge(_messageInfoStyle.nameTextStyle)
-                    .copyWith(color: _messageInfoStyle.nameTextColor),
-          ),
-          // Read timestamp row - shows placeholder if null **Requirements: 9.2, 9.3**
-          Row(
-            children: [
-              _buildTimeText(
-                cc.Translations.of(context).read,
-                _messageInfoStyle.readTextStyle,
-                _messageInfoStyle.readTextColor,
-              ),
-              const Spacer(),
-              _buildTimeText(
-                messageReceipt.readAt != null
-                    ? _convertTime(messageReceipt.readAt, "dd/M/yyyy, h:mm a")
-                    : "----", // Placeholder indicator **Requirement: 9.3**
-                _messageInfoStyle.readDateTextStyle,
-                _messageInfoStyle.readDateTextColor,
-              ),
-            ],
-          ),
-          // Delivered timestamp row - shows placeholder if null **Requirements: 9.2, 9.3**
-          Row(
-            children: [
-              _buildTimeText(
-                cc.Translations.of(context).delivered,
-                _messageInfoStyle.deliveredTextStyle,
-                _messageInfoStyle.deliveredTextColor,
-              ),
-              const Spacer(),
-              _buildTimeText(
-                messageReceipt.deliveredAt != null
-                    ? _convertTime(
-                        messageReceipt.deliveredAt,
-                        "dd/M/yyyy, h:mm a",
-                      )
-                    : "----", // Placeholder indicator **Requirement: 9.3**
-                _messageInfoStyle.deliveredDateTextStyle,
-                _messageInfoStyle.deliveredDateTextColor,
-              ),
-            ],
-          ),
-        ],
-      ),
-      contentPadding: EdgeInsets.symmetric(
-        horizontal: _spacing.padding4 ?? 0,
-        vertical: _spacing.padding3 ?? 0,
-      ),
-    );
-  }
-
-  /// Build loading view with shimmer effect
-  Widget _buildLoadingView() {
-    return ConvoKitShimmerEffect(
-      child: ListView.builder(
-        shrinkWrap: true,
-        itemCount: 10,
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: _spacing.padding4 ?? 0,
-              vertical: _spacing.padding3 ?? 0,
-            ),
-            child: Row(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(right: 8.0),
-                  child: CircleAvatar(radius: 24, backgroundColor: Colors.grey),
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Title shimmer bar
-                      Container(
-                        height: 19.0,
-                        width: 120,
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(
-                            _spacing.radius2 ?? 0,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      // Row for shimmer bars
-                      Row(
-                        children: [
-                          // Shimmer bars
-                          Container(
-                            height: 19.0,
-                            width: 50,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(
-                                _spacing.radius2 ?? 0,
-                              ),
-                            ),
-                          ),
-                          const Spacer(),
-                          Container(
-                            height: 19.0,
-                            width: 50,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(
-                                _spacing.radius2 ?? 0,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-    );
-  }
 }
 
-/// Function to show message information
-///
-/// **Requirement: 7.4**
+/// Shows [CometChatMessageInformation] in a modal bottom sheet.
 Future showMessageInformation({
   required BuildContext context,
-  required final BaseMessage message,
+  required final ChatMessage message,
   final String? title,
   final CometChatMessageTemplate? template,
   final CometChatMessageInformationStyle? messageInformationStyle,

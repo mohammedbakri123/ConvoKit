@@ -35,7 +35,7 @@ class _StubFormatter extends CometChatTextFormatter {
   void init() {}
 
   @override
-  void handlePreMessageSend(BuildContext context, BaseMessage baseMessage) {}
+  ChatMessage handlePreMessageSend(BuildContext context, ChatMessage message) => message;
 
   @override
   void onScrollToBottom(TextEditingController textEditingController) {}

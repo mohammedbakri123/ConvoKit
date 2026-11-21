@@ -17,13 +17,13 @@ abstract class ConvoKitDetailsControllerProtocol {
 
   void useOption(ConvoKitDetailsOption option, String sectionId);
 
-  void onAddMemberClicked(Group group);
+  void onAddMemberClicked(ChatGroup group);
 
-  void onTransferOwnershipClicked(Group group);
+  void onTransferOwnershipClicked(ChatGroup group);
 
-  void onBanMemberClicked(Group group);
+  void onBanMemberClicked(ChatGroup group);
 
-  void onViewMemberClicked(Group group);
+  void onViewMemberClicked(ChatGroup group);
 
   List<ConvoKitDetailsTemplate> getDetailsTemplateList();
 

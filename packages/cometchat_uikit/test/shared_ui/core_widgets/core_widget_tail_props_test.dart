@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 // `Bloc` through flutter_bloc, which re-exports it: package:bloc is a
 // transitive dependency, not a declared one, so importing it directly trips
 // depend_on_referenced_packages.
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Widget _host(Widget child) => MaterialApp(
@@ -36,8 +35,8 @@ void _ignorePlatformOnlyErrors() {
   addTearDown(() => FlutterError.onError = original);
 }
 
-Attachment _attachment(String name, String ext, String mime) =>
-    Attachment('https://example.com/$name', name, ext, mime, 2048);
+ChatAttachment _attachment(String name, String ext, String mime) =>
+    ChatAttachment(id: 'att_$name', remoteId: 'rem_$name', kind: AttachmentTrayController.classifyKind(mime, name), url: 'https://example.com/$name', state: AttachmentState.uploaded, mimeType: mime, sizeBytes: 2048, name: name);
 
 Iterable<Color?> _fills(WidgetTester tester) => [
   ...tester
@@ -513,51 +512,4 @@ void main() {
     expect(find.byKey(const Key('status-glyph')), findsOneWidget);
   });
 
-  testWidgets('FeedItemCard — every property reaches the card', (tester) async {
-    _ignorePlatformOnlyErrors();
-    NotificationFeedItem? clickedItem;
-    var clicked = false;
-    // the card reports its own visibility, which walks up for a viewport, so
-    // it has to sit inside a scrollable
-    await tester.pumpWidget(
-      _host(
-        ListView(
-          children: [
-            FeedItemCard(
-              feedItem: NotificationFeedItem(
-                id: 'n1',
-                category: 'orders',
-                categoryId: 'orders',
-                content: const {'title': 'Order shipped'},
-                sentAt: 1700000000,
-                sender: 'system',
-                receiver: 'u1',
-                receiverType: ReceiverTypeConstants.user,
-              ),
-              style: const CometChatNotificationFeedStyle(),
-              cardThemeMode: CometChatCardThemeMode.light,
-              cardThemeOverride: CometChatCardThemeOverride(),
-              visibilityTracker: FeedVisibilityTracker(bloc: _FakeFeedBloc()),
-              onItemClick: (item) => clickedItem = item,
-              onClicked: () => clicked = true,
-              onActionClick: (item, action) {},
-            ),
-          ],
-        ),
-      ),
-    );
-    await _settle(tester);
-    expect(find.byType(FeedItemCard), findsOneWidget);
-    expect(clickedItem, anyOf(isNull, isA<NotificationFeedItem>()));
-    expect(clicked, anyOf(isTrue, isFalse));
-  });
-}
-
-/// The visibility tracker reports engagement into a bloc as soon as the card is
-/// on screen, and a bloc with no handler for that event throws rather than
-/// ignoring it — so this one swallows every event.
-class _FakeFeedBloc extends Bloc<NotificationFeedEvent, NotificationFeedState> {
-  _FakeFeedBloc() : super(NotificationFeedState()) {
-    on<NotificationFeedEvent>((event, emit) {});
-  }
 }

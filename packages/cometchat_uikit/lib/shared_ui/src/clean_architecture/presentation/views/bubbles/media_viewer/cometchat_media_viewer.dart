@@ -52,7 +52,7 @@ class CometChatMediaViewer extends StatefulWidget {
   });
 
   /// The message's `image/*` + `video/*` attachments, in order.
-  final List<Attachment> mediaItems;
+  final List<ChatAttachment> mediaItems;
 
   /// Index of the item to open first.
   final int startIndex;
@@ -60,7 +60,7 @@ class CometChatMediaViewer extends StatefulWidget {
   /// Opens the viewer over [mediaItems] starting at [startIndex].
   static Future<void> open(
     BuildContext context,
-    List<Attachment> mediaItems, {
+    List<ChatAttachment> mediaItems, {
     int startIndex = 0,
   }) {
     return Navigator.of(context).push(
@@ -129,7 +129,7 @@ class _CometChatMediaViewerState extends State<CometChatMediaViewer> {
   Future<void> _downloadCurrent() async {
     if (_downloading) return;
     final a = widget.mediaItems[_index];
-    final url = a.fileUrl;
+    final url = a.url ?? '';
     if (url.isEmpty) return;
     setState(() => _downloading = true);
     bool saved = false;
@@ -137,14 +137,14 @@ class _CometChatMediaViewerState extends State<CometChatMediaViewer> {
     try {
       if (kIsWeb) {
         // The browser owns the rest — there's no result to report back.
-        web_download.triggerBrowserDownload(url, a.fileName);
+        web_download.triggerBrowserDownload(url, a.name ?? '');
       } else {
         // false = user cancelled the picker OR the write failed. Cancel is the
         // common case, so a false result stays silent (no false-alarm error).
         saved = await platform_file.saveFileWithPicker(
           url,
-          a.fileName,
-          a.fileMimeType,
+          a.name ?? '',
+          a.mimeType ?? '',
         );
       }
     } catch (e) {
@@ -154,7 +154,7 @@ class _CometChatMediaViewerState extends State<CometChatMediaViewer> {
     }
     if (!mounted) return;
     if (failure != null) {
-      ccLog('media viewer save failed for ${a.fileName}: $failure');
+      ccLog('media viewer save failed for ${a.name ?? a.id}: $failure');
       _showDownloadAlert(Translations.of(context).somethingWentWrongError);
     } else if (saved) {
       _showDownloadAlert(Translations.of(context).fileSaved);
@@ -260,14 +260,14 @@ class _CometChatMediaViewerState extends State<CometChatMediaViewer> {
                 // download action is threaded into every page.
                 if (AttachmentUtils.isVideo(a)) {
                   return _VideoPage(
-                    url: a.fileUrl,
+                    url: a.url ?? '',
                     onDownload: _downloadCurrent,
                     downloading: _downloading,
                   );
                 }
                 if (AttachmentUtils.isImage(a)) {
                   return _ImagePage(
-                    url: a.fileUrl,
+                    url: a.url ?? '',
                     onDownload: _downloadCurrent,
                     downloading: _downloading,
                   );

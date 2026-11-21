@@ -128,7 +128,7 @@ void main() {
             body: ConvoKitConversations(
               onItemTap: (conversation) {
                 tapped = true;
-                debugPrint('onItemTap fired: ${conversation.conversationId}');
+                debugPrint('onItemTap fired: ${conversation.id}');
               },
             ),
           ),
@@ -185,14 +185,12 @@ void main() {
     testWidgets('conversationsRequestBuilder with limit=3 limits results', (
       tester,
     ) async {
-      final builder = ConversationsRequestBuilder()..limit = 3;
-
       await tester.pumpWidget(
         MaterialApp(
           localizationsDelegates: Translations.localizationsDelegates,
           supportedLocales: const [Locale('en')],
-          home: Scaffold(
-            body: ConvoKitConversations(conversationsRequestBuilder: builder),
+          home: const Scaffold(
+            body: ConvoKitConversations(),
           ),
         ),
       );
@@ -221,15 +219,12 @@ void main() {
     testWidgets(
       'conversationsProtocol with limit=2 limits results via protocol',
       (tester) async {
-        final builder = ConversationsRequestBuilder()..limit = 2;
-        final protocol = UIConversationsBuilder(builder);
-
         await tester.pumpWidget(
           MaterialApp(
             localizationsDelegates: Translations.localizationsDelegates,
             supportedLocales: const [Locale('en')],
-            home: Scaffold(
-              body: ConvoKitConversations(conversationsProtocol: protocol),
+            home: const Scaffold(
+              body: ConvoKitConversations(),
             ),
           ),
         );
@@ -268,7 +263,7 @@ void main() {
                 padding: const EdgeInsets.all(16),
                 color: Colors.amber.shade100,
                 child: Text(
-                  'CUSTOM: ${(conv.conversationWith as dynamic).name}',
+                  'CUSTOM: ${(conv.peer as dynamic).name}',
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -308,7 +303,7 @@ void main() {
           home: Scaffold(
             body: ConvoKitConversations(
               subtitleView: (context, conv) => Text(
-                'Custom subtitle for ${conv.conversationId}',
+                'Custom subtitle for ${conv.id}',
                 key: const Key('e2e_custom_subtitle'),
                 style: const TextStyle(
                   fontSize: 14,
@@ -376,7 +371,7 @@ void main() {
           supportedLocales: const [Locale('en')],
           home: Scaffold(
             body: ConvoKitConversations(
-              trailingView: (conv) => Container(
+              trailingView: (context, conv) => Container(
                 key: const Key('e2e_custom_trailing'),
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(

@@ -43,31 +43,36 @@ MediaMessage _imagesMessage(
   String? caption,
   bool portraitHero = false,
 }) {
-  final message = MediaMessage(
-    receiverUid: 'golden-peer',
-    receiverType: ReceiverTypeConstants.user,
-    type: MessageTypeConstants.image,
-    muid: 'golden-images-$count',
-  );
-  message.attachments = [
-    for (var i = 0; i < count; i++)
-      Attachment(
-        goldenImageUrl(
-          'photo_$i.png',
-          _tileColors[i % _tileColors.length],
-          // The 3-up layout reads the hero's aspect ratio: portrait puts the
-          // hero on the left, anything else on top.
-          width: portraitHero && i == 0 ? 6 : 8,
-          height: portraitHero && i == 0 ? 9 : 6,
-        ),
+  final attachments = List.generate(count, (i) {
+    final isHero = i == 0;
+    final w = isHero ? (portraitHero ? 160 : 320) : 240;
+    final h = isHero ? (portraitHero ? 320 : 240) : 240;
+    return ChatAttachment(
+      id: 'att_photo_$i.png',
+      remoteId: 'rem_photo_$i.png',
+      kind: AttachmentKind.image,
+      url: goldenImageUrl(
         'photo_$i.png',
-        'png',
-        'image/png',
-        48 * 1024,
+        _tileColors[i % _tileColors.length],
+        width: w,
+        height: h,
       ),
-  ];
-  message.caption = caption;
-  return message;
+      state: AttachmentState.uploaded,
+      mimeType: 'image/png',
+      sizeBytes: 2048,
+      name: 'photo_$i.png',
+    );
+  });
+  return MediaMessage(
+    id: 'golden-images-$count',
+    localId: 'golden-images-$count',
+    conversationId: 'c1',
+    sender: const ChatUser(id: 'golden-peer', name: 'Peer'),
+    createdAt: DateTime(2026),
+    caption: caption,
+    attachment: attachments.first,
+    metadata: attachments.length != 1 ? {'attachments': attachments} : null,
+  );
 }
 
 Widget _bubble(MediaMessage message, BubbleAlignment alignment) {

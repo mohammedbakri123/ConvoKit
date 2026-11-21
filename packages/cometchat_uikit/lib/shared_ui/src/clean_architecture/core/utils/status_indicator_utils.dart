@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
-import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
-import '../constants/ui_kit_constants.dart';
+import 'package:convokit/src/core/models/models.dart';
 import '../../presentation/theme/theme/cometchat_theme_helper.dart';
 
 class StatusIndicatorUtils {
@@ -10,9 +8,9 @@ class StatusIndicatorUtils {
   static StatusIndicatorUtils getStatusIndicatorFromParams({
     required BuildContext context,
     bool? isSelected,
-    User? user,
-    Group? group,
-    GroupMember? groupMember,
+    ChatUser? user,
+    ChatGroup? group,
+    ChatMember? groupMember,
     Widget? protectedGroupIcon,
     Widget? privateGroupIcon,
     Color? onlineStatusIndicatorColor,
@@ -26,39 +24,35 @@ class StatusIndicatorUtils {
     Color? backgroundColor;
     Widget? icon;
     final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
-    //TODO add icons color to other icons when needed
     if (isSelected == true) {
       icon =
           selectIcon ??
           Icon(Icons.check, color: selectIconTint ?? Colors.white, size: 12);
     } else if (user != null && usersStatusVisibility == true) {
-      backgroundColor =
-          user.status != null && user.status == UserStatusConstants.online
-          ? (onlineStatusIndicatorColor)
+      backgroundColor = user.presence == UserPresence.online
+          ? onlineStatusIndicatorColor
           : null;
     } else if (group != null && groupTypeVisibility == true) {
-      if (group.type == GroupTypeConstants.password) {
+      if (group.type == GroupType.passwordProtected) {
         backgroundColor = protectedGroupIconBackground ?? colorPalette.success;
         icon =
             protectedGroupIcon ??
             Icon(Icons.lock, color: colorPalette.background1, size: 7);
-      } else if (group.type == GroupTypeConstants.private) {
+      } else if (group.type == GroupType.private) {
         backgroundColor = privateGroupIconBackground ?? colorPalette.warning;
         icon =
             privateGroupIcon ??
             Icon(Icons.shield, color: colorPalette.background1, size: 7);
       }
     } else if (groupMember != null && usersStatusVisibility == true) {
-      backgroundColor =
-          groupMember.status != null &&
-              groupMember.status == UserStatusConstants.online
+      backgroundColor = groupMember.user.presence == UserPresence.online
           ? onlineStatusIndicatorColor
           : null;
     }
-    StatusIndicatorUtils utility = StatusIndicatorUtils();
-    utility.icon = icon;
-    utility.statusIndicatorColor = backgroundColor;
-    return utility;
+    return StatusIndicatorUtils(
+      icon: icon,
+      statusIndicatorColor: backgroundColor,
+    );
   }
 
   Widget? icon;

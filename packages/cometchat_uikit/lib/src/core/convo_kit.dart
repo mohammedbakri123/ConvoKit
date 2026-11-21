@@ -75,4 +75,26 @@ class ConvoKit {
     }
     return requested;
   }
+
+  /// Convenience initializer returning a validated [ConvoKit] instance for
+  /// `ConvoKitUIKit.init()` -> `ConvoKit.init()` -> `ConvoKitScope`.
+  static ConvoKit init({
+    required ChatSession session,
+    required UserRepository users,
+    required ConversationRepository conversations,
+    required MessageRepository messages,
+    required ChatEventSource events,
+    ChatCapabilities capabilities = const ChatCapabilities(),
+    GroupRepository? groups,
+    ChatMediaProvider? media,
+  }) => ConvoKit(
+    session: session,
+    users: users,
+    conversations: conversations,
+    messages: messages,
+    events: events,
+    capabilities: capabilities,
+    groups: groups,
+    media: media,
+  );
 }

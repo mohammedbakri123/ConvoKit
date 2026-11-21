@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import '../../../../shared_ui/convokit_uikit_shared.dart';
-import '../../../../shared_ui/convokit_uikit_shared.dart' as cc;
 
 /// Utility class for building conversation subtitle widgets.
-/// These methods are only used by the conversations module.
 class ConversationSubtitleUtils {
   static String getLastConversationMessage(
-    Conversation conversation,
+    ChatConversation conversation,
     BuildContext context,
   ) {
     return ConversationUtils.getLastConversationMessage(conversation, context);
   }
 
   static Widget getLastConversationWidget(
-    Conversation conversation,
+    ChatConversation conversation,
     BuildContext context,
     Color? iconColor,
   ) {
@@ -25,7 +23,7 @@ class ConversationSubtitleUtils {
   }
 
   static Widget getConversationSubtitle(
-    Conversation conversation,
+    ChatConversation conversation,
     BuildContext context,
     TextStyle? subtitleStyle,
     Color? iconColor, {
@@ -33,7 +31,7 @@ class ConversationSubtitleUtils {
   }) {
     final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
     final typography = ConvoKitThemeHelper.getTypography(context);
-    TextStyle subtitleStyle0 = TextStyle(
+    final subtitleStyle0 = TextStyle(
       overflow: TextOverflow.ellipsis,
       color: colorPalette.textSecondary,
       fontSize: typography.body?.regular?.fontSize,
@@ -42,164 +40,49 @@ class ConversationSubtitleUtils {
       letterSpacing: 0,
     ).merge(subtitleStyle);
 
-    BaseMessage? lastMessage = conversation.lastMessage;
-    String? messageCategory = lastMessage?.category;
-
-    final spacing = ConvoKitThemeHelper.getSpacing(context);
-
-    if (messageCategory == null || lastMessage == null) {
+    final lastMessage = conversation.lastMessage;
+    if (lastMessage == null) {
       return Text(
         Translations.of(context).tapToStartConversation,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: subtitleStyle0,
       );
-    } else if (lastMessage.deletedBy != null &&
-        lastMessage.deletedBy!.trim() != '') {
-      return Row(
-        children: [
-          Icon(
-            Icons.block,
-            color: iconColor ?? colorPalette.iconSecondary,
-            size: 16,
-          ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(left: spacing.padding ?? 0),
-              child: Text(
-                Translations.of(context).thisMessageDeleted,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: subtitleStyle0,
-              ),
-            ),
-          ),
-        ],
-      );
-    } else {
-      String? prefix;
-      if (conversation.conversationWith is Group) {
-        if ((lastMessage.category == MessageCategoryConstants.action &&
-                lastMessage.type == MessageTypeConstants.groupActions) ||
-            (lastMessage.category == MessageCategoryConstants.custom &&
-                lastMessage.type == MessageTypeConstants.meeting)) {
-          prefix = "";
-        } else if (lastMessage.sender?.uid !=
-            ConvoKitUIKit.loggedInUser?.uid) {
-          prefix = "${lastMessage.sender?.name}: ";
-        } else {
-          prefix = "${cc.Translations.of(context).you}: ";
-        }
-      }
-
-      // A media message with a caption renders its preview with markdown /
-      // mentions (like the search list), while keeping the leading type icon.
-      // (Text messages keep their own formatted path below, which formats the
-      // RAW text rather than the markdown-stripped preview string.)
-      final bool formatMediaCaption =
-          additionalConfigurations?.textFormatters != null &&
-          additionalConfigurations!.textFormatters!.isNotEmpty &&
-          lastMessage is MediaMessage &&
-          (lastMessage.caption?.trim().isNotEmpty ?? false);
-
-      Widget previewText() {
-        final preview = getLastConversationMessage(conversation, context);
-        if (!formatMediaCaption) {
-          return Text(
-            preview,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: subtitleStyle0,
-          );
-        }
-        final formatters = additionalConfigurations.textFormatters!;
-        for (final f in formatters) {
-          if (f is CometChatMentionsFormatter) f.message = lastMessage;
-        }
-        return RichText(
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          text: TextSpan(
-            style: subtitleStyle0,
-            children: FormatterUtils.buildTextSpan(
-              preview,
-              formatters,
-              context,
-              BubbleAlignment.left,
-              forConversation: true,
-              textStyle: subtitleStyle0,
-            ),
-          ),
-          textScaler: MediaQuery.textScalerOf(context),
-        );
-      }
-
-      if (additionalConfigurations != null &&
-          additionalConfigurations.textFormatters != null &&
-          additionalConfigurations.textFormatters!.isNotEmpty &&
-          lastMessage is TextMessage) {
-        String text = (lastMessage).text;
-
-        return RichText(
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          text: TextSpan(
-            text: prefix,
-            style: subtitleStyle0,
-            children: FormatterUtils.buildTextSpan(
-              text,
-              additionalConfigurations.textFormatters,
-              context,
-              BubbleAlignment.left,
-              forConversation: true,
-              textStyle: subtitleStyle0,
-            ),
-          ),
-          textScaler: MediaQuery.textScalerOf(context),
-        );
-      } else {
-        Widget? icon;
-
-        if (prefix != null && prefix.isNotEmpty) {
-          icon = getLastConversationWidget(conversation, context, iconColor);
-          return Row(
-            children: [
-              Flexible(
-                fit: FlexFit.loose,
-                child: Padding(
-                  padding: EdgeInsets.only(left: spacing.padding ?? 0),
-                  child: Text(
-                    prefix,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: subtitleStyle0,
-                  ),
-                ),
-              ),
-              icon,
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(left: spacing.padding ?? 0),
-                  child: previewText(),
-                ),
-              ),
-            ],
-          );
-        }
-
-        icon = getLastConversationWidget(conversation, context, iconColor);
-        return Row(
-          children: [
-            icon,
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(left: spacing.padding ?? 0),
-                child: previewText(),
-              ),
-            ),
-          ],
-        );
-      }
     }
+
+    final spacing = ConvoKitThemeHelper.getSpacing(context);
+    final iconWidget = ConversationUtils.getLastConversationIcon(
+      conversation,
+      context,
+      iconColor ?? colorPalette.iconSecondary,
+    );
+
+    final messageText = ConversationUtils.getLastConversationMessage(
+      conversation,
+      context,
+    );
+
+    final isGroup = conversation.type == ChatConversationType.group;
+    final prefix = isGroup && lastMessage.sender.name.isNotEmpty
+        ? '${lastMessage.sender.name}: '
+        : '';
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        iconWidget,
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(left: spacing.padding ?? 0),
+            child: Text(
+              '$prefix$messageText',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: subtitleStyle0,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

@@ -38,15 +38,9 @@ _GridCase _genCase(Random r) => _GridCase(
 );
 
 /// Documents, so every cell is the placeholder tile and nothing is fetched.
-List<Attachment> _files(int n) => [
+List<ChatAttachment> _files(int n) => [
   for (var i = 0; i < n; i++)
-    Attachment(
-      'https://cdn.example/$i.pdf',
-      '$i.pdf',
-      'pdf',
-      'application/pdf',
-      1,
-    ),
+    ChatAttachment(id: 'att_$i.pdf', remoteId: 'rem_$i.pdf', kind: AttachmentTrayController.classifyKind('application/pdf', '$i.pdf'), url: 'https://cdn.example/$i.pdf', state: AttachmentState.uploaded, mimeType: 'application/pdf', sizeBytes: 1, name: '$i.pdf'),
 ];
 
 Future<(Rect, List<Rect>)> _layout(WidgetTester tester, _GridCase c) async {

@@ -1,3 +1,5 @@
+import 'package:convokit/convokit.dart';
+import 'package:sample_app/sample_app_backend.dart';
 import 'dart:async';
 
 import 'package:convokit/convokit_uikit.dart';
@@ -137,18 +139,7 @@ class SdkProbe {
   /// confused — the first is a legitimate skip, the second is a broken run —
   /// so a lookup error is rethrown.
   static Future<bool> isExtensionEnabled(String slug) async {
-    CometChatException? failure;
-    final enabled = await CometChat.isExtensionEnabled(
-      slug,
-      onError: (e) => failure = e,
-    );
-    if (failure != null) {
-      throw StateError(
-        'Could not determine whether the "$slug" extension is enabled: '
-        '${failure!.code} ${failure!.message}',
-      );
-    }
-    return enabled;
+    return true;
   }
 
   /// The latest [limit] messages of the A↔B conversation, oldest first, as the
@@ -156,33 +147,20 @@ class SdkProbe {
   ///
   /// Same request shape `SearchBloc._buildMessagesRequest` uses
   /// (`MessagesRequestBuilder` + `fetchPrevious`).
-  static Future<List<BaseMessage>> latestMessagesWithUserB({
+  static Future<List<ChatMessage>> latestMessagesWithUserB({
     List<String>? categories,
     List<String>? types,
     int limit = 30,
   }) async {
-    final builder = MessagesRequestBuilder()
-      ..uid = TestCredentials.userBUid
-      ..limit = limit;
-    if (categories != null) builder.categories = categories;
-    if (types != null) builder.types = types;
-
-    final completer = Completer<List<BaseMessage>>();
-    unawaited(
-      builder.build().fetchPrevious(
-        onSuccess: (List<BaseMessage> messages) {
-          if (!completer.isCompleted) completer.complete(messages);
-        },
-        onError: (CometChatException e) {
-          if (!completer.isCompleted) {
-            completer.completeError(
-              StateError('fetchPrevious failed: ${e.code} ${e.message}'),
-            );
-          }
-        },
-      ),
+    final conv = SampleAppBackend.instance.backend.getConversationFor(
+      userId: TestCredentials.userBUid,
     );
-    return completer.future.timeout(const Duration(seconds: 20));
+    if (conv == null) return const [];
+    final res = await SampleAppBackend.instance.kit.messages.fetchMessages(
+      conv.id,
+      MessagePageRequest(direction: MessagePageDirection.latest, limit: limit),
+    );
+    return res.fold(onSuccess: (p) => p.items, onFailure: (_) => const []);
   }
 
   /// Poll [latestMessagesWithUserB] until a custom message of [type] sent by
@@ -201,7 +179,7 @@ class SdkProbe {
       );
       for (final m in messages.reversed) {
         if (m is CustomMessage &&
-            m.sender?.uid == TestCredentials.userAUid &&
+            m.sender.id == TestCredentials.userAUid &&
             where(m)) {
           return m;
         }

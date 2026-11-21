@@ -9,10 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:network_image_mock/network_image_mock.dart';
 
-Attachment _img(String name) =>
-    Attachment('https://example.com/$name', name, 'jpg', 'image/jpeg', 1024);
-Attachment _vid(String name) =>
-    Attachment('https://example.com/$name', name, 'mp4', 'video/mp4', 4096);
+ChatAttachment _img(String name) =>
+    ChatAttachment(id: 'att_$name', remoteId: 'rem_$name', kind: AttachmentTrayController.classifyKind('image/jpeg', name), url: 'https://example.com/$name', state: AttachmentState.uploaded, mimeType: 'image/jpeg', sizeBytes: 1024, name: name);
+ChatAttachment _vid(String name) =>
+    ChatAttachment(id: 'att_$name', remoteId: 'rem_$name', kind: AttachmentTrayController.classifyKind('video/mp4', name), url: 'https://example.com/$name', state: AttachmentState.uploaded, mimeType: 'video/mp4', sizeBytes: 4096, name: name);
 
 Widget _wrap(Widget child) => MaterialApp(
   localizationsDelegates: Translations.localizationsDelegates,
@@ -256,12 +256,7 @@ void main() {
               style: const CometChatStickerBubbleStyle(
                 backgroundColor: Color(0xFF334455),
               ),
-              message: CustomMessage(
-                receiverUid: 'u1',
-                type: 'extension_sticker',
-                customData: const {'url': 'https://example.com/s.png'},
-                receiverType: '',
-              ),
+              message: CustomMessage(id: 'c1', localId: 'c1', conversationId: 'conv_1', sender: const ChatUser(id: 'u1', name: 'Alice'), createdAt: DateTime(2026), kind: ExtensionType.sticker, data: const {'sticker_url': 'https://example.com/s.png'}),
             ),
           ),
         );

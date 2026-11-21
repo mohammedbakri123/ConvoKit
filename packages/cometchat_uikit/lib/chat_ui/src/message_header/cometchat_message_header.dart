@@ -1,30 +1,17 @@
+import 'dart:async';
+
+import 'package:convokit/convokit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../convokit_uikit.dart';
 import '../../../convokit_uikit.dart' as cc;
-import '../../../shared_ui/src/clean_architecture/core/utils/thread_toast.dart';
-import '../../../src/adapters/cometchat_sdk_adapter.dart';
-import 'package:intl/intl.dart';
 
-/// [ConvoKitMessageHeader] is a widget which shows [user]/[group] details using [ConvoKitListItem]
-/// if its being shown for an [User] then the name of the user will be in the [ConvoKitListItem.title] of [ConvoKitListItem] and their online/offline status will be in the [subtitleView]
-/// if its being shown for an [Group] then the name of the group will be in the [ConvoKitListItem.title] of [ConvoKitListItem] and their member count will be in the [subtitleView]
+/// [ConvoKitMessageHeader] displays details for a [ChatUser] or [ChatGroup]
+/// using [ConvoKitListItem], observing [EventHub.presenceRegistry] and
+/// [EventHub.typingRegistry] directly via [ConvoKitScope].
 ///
-/// ```dart
-/// ConvoKitMessageHeader(
-///   user: <user>,
-///   messageHeaderStyle: MessageHeaderStyle(),
-/// );
-///
-/// ```
-/// For Group
-/// ```dart
-/// ConvoKitMessageHeader(
-///   group: <group>,
-///  messageHeaderStyle: MessageHeaderStyle(),
-/// );
-///
-/// ```
+/// Typing indicator rendering is gated on `capabilities.typing`. User and group
+/// details are refreshed via [UserRepository.getUser] / [GroupRepository.getGroup].
 class ConvoKitMessageHeader extends StatefulWidget
     implements PreferredSizeWidget {
   const ConvoKitMessageHeader({
@@ -33,13 +20,13 @@ class ConvoKitMessageHeader extends StatefulWidget
     this.messageHeaderStyle,
     this.group,
     this.user,
+    this.conversationId,
     this.trailingView,
     this.listItemView,
     this.showBackButton = true,
     this.subtitleView,
     this.listItemStyle,
     this.onBack,
-    this.threadSubscriptionVisibility = true,
     this.parentMessage,
     this.pinnedMessagesVisibility = true,
     this.onPinnedMessageItemTap,
@@ -57,13 +44,6 @@ class ConvoKitMessageHeader extends StatefulWidget
     this.auxiliaryButtonView,
     this.usersStatusVisibility = true,
     this.dateTimeFormatterCallback,
-    this.hideNewChatButton,
-    this.hideChatHistoryButton,
-    this.chatHistoryButtonClick,
-    this.newChatButtonClick,
-    this.newChatIcon,
-    this.chatHistoryIcon,
-    this.messageHeaderBloc,
   }) : assert(
          user != null || group != null,
          "One of user or group should be passed",
@@ -73,204 +53,343 @@ class ConvoKitMessageHeader extends StatefulWidget
          "Only one of user or group should be passed",
        );
 
-  ///[messageHeaderBloc] Optional external MessageHeaderBloc instance.
-  ///If provided, it is used instead of creating one internally and the
-  ///widget does not close it on dispose. Mirrors
-  ///[ConvoKitConversations.conversationsBloc].
-  final MessageHeaderBloc? messageHeaderBloc;
-
-  /// [backButton] used to set back button widget
+  /// Custom back button widget.
   final WidgetBuilder? backButton;
 
-  /// [subtitleView] to set subtitle view
-  final Widget? Function(Group? group, User? user, BuildContext context)?
+  /// Custom subtitle builder.
+  final Widget? Function(
+    ChatGroup? group,
+    ChatUser? user,
+    BuildContext context,
+  )?
   subtitleView;
 
-  /// set [User] object, one is mandatory either [user] or [group]
-  final User? user;
+  /// Direct-chat peer user (mutually exclusive with [group]).
+  final ChatUser? user;
 
-  /// set [Group] object, one is mandatory either [user] or [group]
-  final Group? group;
+  /// Group (mutually exclusive with [user]).
+  final ChatGroup? group;
 
-  /// [listItemView] set custom view for listItem
-  final Widget Function(Group? group, User? user, BuildContext context)?
+  /// Optional conversation ID used to observe [TypingRegistry]; defaults to
+  /// `user?.id ?? group?.id`.
+  final String? conversationId;
+
+  /// Custom replacement for the list item body.
+  final Widget Function(
+    ChatGroup? group,
+    ChatUser? user,
+    BuildContext context,
+  )?
   listItemView;
 
-  /// [ConvoKitMessageHeaderStyle] set styling props for message header
+  /// Style configuration.
   final ConvoKitMessageHeaderStyle? messageHeaderStyle;
 
-  /// [showBackButton] toggle visibility for back button
+  /// Whether to show the back button.
   final bool? showBackButton;
 
-  /// [listItemStyle] style for every list item
+  /// Optional [ListItemStyle] override.
   final ListItemStyle? listItemStyle;
 
-  /// [trailingView] set appbar options
-  final List<Widget>? Function(User? user, Group? group, BuildContext context)?
+  /// Trailing widgets placed in the header.
+  final List<Widget>? Function(
+    ChatUser? user,
+    ChatGroup? group,
+    BuildContext context,
+  )?
   trailingView;
 
-  /// [onBack] callback triggered on closing this screen
+  /// Back button callback.
   final VoidCallback? onBack;
 
-  /// [threadSubscriptionVisibility] controls the thread mute/unmute
-  /// notification bell rendered in the header's trailing area (pinned right,
-  /// sized to the back icon) when [parentMessage] is set. Defaults to
-  /// visible; the bell additionally requires the thread-subscription feature
-  /// gate ([UIKitSettings.enableThreadSubscription]) to be on.
-  ///
-  /// Naming note: the cross-platform design doc (§6.2) defines this flag on
-  /// each platform's *threaded-header* component, because that is where the
-  /// other four kits render the control. On Flutter the landed design places
-  /// the bell in the message header's top bar instead, so the same flag name
-  /// lives here — one concept, one name, per-platform placement.
-  final bool? threadSubscriptionVisibility;
+  /// Optional thread root message (puts the header in thread mode).
+  final ChatMessage? parentMessage;
 
-  /// [parentMessage] the thread's root message the notification bell acts
-  /// on. The bell renders only when this is set (and
-  /// [threadSubscriptionVisibility] is not false).
-  final BaseMessage? parentMessage;
-
-  /// [pinnedMessagesVisibility] controls the pinned-messages entry in the
-  /// header's overflow (⋯) menu, which opens the conversation's
-  /// [ConvoKitPinnedMessages] as a pushed screen. Defaults to visible; the
-  /// entry additionally requires the server Pin feature flag
-  /// ([CometChatSdkAdapter.isPinMessageEnabled]) and renders only on a conversation
-  /// header (never when [parentMessage] puts the header in thread mode).
+  /// Controls visibility of the pinned-messages overflow entry when
+  /// [onPinnedMessagesTap] is provided.
   final bool? pinnedMessagesVisibility;
 
-  /// [onPinnedMessageItemTap] forwarded to the pinned-messages screen — fires
-  /// when a pinned row is tapped (after that screen pops) so the host screen
-  /// can jump its message list to the tapped message.
-  final Function(BaseMessage message)? onPinnedMessageItemTap;
+  /// Callback when a pinned message item is tapped.
+  final void Function(ChatMessage message)? onPinnedMessageItemTap;
 
-  /// [pinnedMessagesStyle] styling for the pinned-messages screen opened from
-  /// the header's overflow (⋯) menu.
+  /// Styling for pinned messages.
   final ConvoKitPinnedMessagesStyle? pinnedMessagesStyle;
 
-  /// [onInfoTap] when set, the header's ⋯ overflow menu carries a
-  /// "Group Info"/"User Info" entry that invokes it (the host app owns the
-  /// info screen).
+  /// Overflow menu "Group Info" / "User Info" callback.
   final VoidCallback? onInfoTap;
 
-  /// [onSearchTap] when set, the header's ⋯ overflow menu carries a
-  /// "Search" entry that invokes it.
+  /// Overflow menu "Search" callback.
   final VoidCallback? onSearchTap;
 
-  /// [onHeaderTap] fires when the avatar/name/subtitle area is tapped, or
-  /// the [listItemView] that replaces it — typically wired to open the info
-  /// screen.
+  /// Callback when the avatar/name/subtitle area is tapped.
   final VoidCallback? onHeaderTap;
 
-  /// [onPinnedMessagesTap] when set, the ⋯ menu's pinned-messages entry
-  /// invokes this instead of pushing [ConvoKitPinnedMessages] itself — so a
-  /// host with its own layout (a desktop side panel, say) can decide where
-  /// the list appears. [onPinnedMessageItemTap] still forwards row taps when
-  /// the kit does the presenting.
+  /// Overflow menu "Pinned messages" callback.
   final VoidCallback? onPinnedMessagesTap;
 
-  /// [avatarHeight] set height for avatar
+  /// Avatar height override.
   final double? avatarHeight;
 
-  /// [avatarWidth] set width for avatar
+  /// Avatar width override.
   final double? avatarWidth;
 
-  /// [height] set height for message header
+  /// Header height override.
   final double? height;
 
-  /// [padding] set padding for message header
+  /// Header padding override.
   final EdgeInsetsGeometry? padding;
 
-  /// [leadingStateView] to set leading View
-  final Widget? Function(Group? group, User? user, BuildContext context)?
+  /// Custom leading view slot.
+  final Widget? Function(
+    ChatGroup? group,
+    ChatUser? user,
+    BuildContext context,
+  )?
   leadingStateView;
 
-  /// [titleView] to set to set titleView view
-  final Widget? Function(Group? group, User? user, BuildContext context)?
+  /// Custom title view slot.
+  final Widget? Function(
+    ChatGroup? group,
+    ChatUser? user,
+    BuildContext context,
+  )?
   titleView;
 
-  /// [auxiliaryButtonView] to set auxiliary view
-  final Widget? Function(Group? group, User? user, BuildContext context)?
+  /// Custom auxiliary button slot.
+  final Widget? Function(
+    ChatGroup? group,
+    ChatUser? user,
+    BuildContext context,
+  )?
   auxiliaryButtonView;
 
-  /// [usersStatusVisibility] controls visibility of status indicator shown if a user is online
+  /// Controls visibility of user online/offline status.
   final bool? usersStatusVisibility;
 
-  /// [dateTimeFormatterCallback] is a callback that can be used to format the date and time
+  /// Optional date/time formatter callback.
   final DateTimeFormatterCallback? dateTimeFormatterCallback;
-
-  /// [hideChatHistoryButton] is a [bool] that can be used to hide/display chat history button
-  final bool? hideChatHistoryButton;
-
-  /// [hideNewChatButton] is a [bool] that can be used to hide/display chat button button
-  final bool? hideNewChatButton;
-
-  /// [newChatButtonClick] callback triggered on new chat button click
-  final VoidCallback? newChatButtonClick;
-
-  /// [chatHistoryButtonClick] callback triggered on chat history button click
-  final VoidCallback? chatHistoryButtonClick;
-
-  /// [newChatIcon] provides new chat icon
-  final IconData? newChatIcon;
-
-  /// [chatHistoryIcon] provides chat history icon
-  final IconData? chatHistoryIcon;
 
   @override
   State<ConvoKitMessageHeader> createState() => _ConvoKitMessageHeaderState();
 
   @override
-  Size get preferredSize {
-    return Size.fromHeight(height ?? 65);
-  }
+  Size get preferredSize => Size.fromHeight(height ?? 65);
 }
 
 class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
-  /// Whether the thread notification bell should render: a root message to
-  /// act on ([ConvoKitMessageHeader.parentMessage]), visibility not turned
-  /// off, and the thread-subscription feature gate on.
-  bool get _showThreadBell =>
-      widget.parentMessage != null &&
-      widget.threadSubscriptionVisibility != false &&
-      ConvoKitUIKit.authenticationSettings?.enableThreadSubscription == true;
+  // Theme caching
+  late ConvoKitMessageHeaderStyle headerStyle;
+  late ConvoKitColorPalette colorPalette;
+  late ConvoKitTypography typography;
+  late ConvoKitSpacing spacing;
+  late ConvoKitStatusIndicatorStyle statusIndicatorStyle;
+  bool _themeInitialized = false;
+  Brightness? _cachedBrightness;
+  double _cachedWidth = 300;
 
-  /// Whether the overflow menu's pinned-messages entry should render: a
-  /// conversation header (not a thread header), visibility not turned off,
-  /// and the server Pin feature flag enabled.
+  // Core wiring
+  ConvoKit? _kit;
+  EventHub? _hub;
+  StreamSubscription<Map<String, UserPresence>>? _presenceSub;
+  StreamSubscription<Map<String, List<ChatUser>>>? _typingSub;
+  int _fetchSeq = 0;
+
+  ChatUser? _user;
+  ChatGroup? _group;
+  UserPresence _presence = UserPresence.unknown;
+  List<ChatUser> _typingUsers = const [];
+
+  String get _effectiveConversationId =>
+      widget.conversationId ?? widget.user?.id ?? widget.group?.id ?? '';
+
+  bool get _typingEnabled => _kit?.capabilities.typing ?? false;
+
   bool get _showPinnedMessagesButton =>
       widget.parentMessage == null &&
       widget.pinnedMessagesVisibility != false &&
-      CometChatSdkAdapter.isPinMessageEnabled();
+      widget.onPinnedMessagesTap != null;
 
-  void _openPinnedMessages() {
-    // A host that owns its own layout (e.g. a desktop side panel) can take
-    // over the presentation; otherwise the kit pushes the screen itself.
-    final opener = widget.onPinnedMessagesTap;
-    if (opener != null) {
-      opener();
-      return;
-    }
-    ConvoKitPinnedMessages.show(
-      context,
-      user: widget.user,
-      group: widget.group,
-      onItemTap: widget.onPinnedMessageItemTap,
-      style: widget.pinnedMessagesStyle,
-    );
-  }
-
-  /// Whether the ⋯ overflow menu renders: conversation headers only.
   bool get _showOverflowMenu =>
       widget.parentMessage == null &&
       (_showPinnedMessagesButton ||
           widget.onInfoTap != null ||
           widget.onSearchTap != null);
 
-  /// One overflow entry: label + icon + action + whether it is destructive.
-  ///
-  /// Menu order: search, pinned messages, info. No entry is destructive
-  /// today — the delete-chat entry was removed — but the flag and its
-  /// styling are kept for the next one that is.
+  @override
+  void initState() {
+    super.initState();
+    _user = widget.user;
+    _group = widget.group;
+    _presence = widget.user?.presence ?? UserPresence.unknown;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
+    final brightnessChanged =
+        _cachedBrightness != null && _cachedBrightness != currentBrightness;
+    if (!_themeInitialized || brightnessChanged) {
+      _cachedBrightness = currentBrightness;
+      _themeInitialized = true;
+      _cachedWidth = MediaQuery.sizeOf(context).width;
+
+      headerStyle = ConvoKitThemeHelper.getTheme<ConvoKitMessageHeaderStyle>(
+        context: context,
+        defaultTheme: ConvoKitMessageHeaderStyle.of,
+      ).merge(widget.messageHeaderStyle);
+      statusIndicatorStyle =
+          ConvoKitThemeHelper.getTheme<ConvoKitStatusIndicatorStyle>(
+            context: context,
+            defaultTheme: ConvoKitStatusIndicatorStyle.of,
+          ).merge(headerStyle.statusIndicatorStyle);
+      typography = ConvoKitThemeHelper.getTypography(context);
+      colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+      spacing = ConvoKitThemeHelper.getSpacing(context);
+    }
+
+    _attachToScope();
+  }
+
+  void _attachToScope() {
+    ConvoKit? kit;
+    EventHub? hub;
+    try {
+      kit = ConvoKitScope.of(context);
+      hub = ConvoKitScope.hubOf(context);
+    } on StateError {
+      kit = null;
+      hub = null;
+    }
+
+    if (identical(_kit, kit) && identical(_hub, hub)) {
+      return;
+    }
+
+    _unsubscribeRegistries();
+    _kit = kit;
+    _hub = hub;
+    _subscribeRegistries();
+    unawaited(_refreshEntityDetails());
+  }
+
+  void _subscribeRegistries() {
+    final hub = _hub;
+    if (hub == null) return;
+
+    final user = _user;
+    if (user != null) {
+      final existing = hub.presenceRegistry.getPresence(user.id);
+      _presence = existing != UserPresence.unknown ? existing : user.presence;
+      _presenceSub = hub.presenceRegistry.stream.listen((presenceMap) {
+        if (!mounted) return;
+        final next = presenceMap[user.id];
+        if (next != null && next != _presence) {
+          setState(() => _presence = next);
+        }
+      });
+    }
+
+    if (_typingEnabled) {
+      final convId = _effectiveConversationId;
+      _typingUsers = hub.typingRegistry.getTypingUsers(convId);
+      _typingSub = hub.typingRegistry.stream.listen((typingMap) {
+        if (!mounted) return;
+        final next = typingMap[convId] ?? const <ChatUser>[];
+        setState(() => _typingUsers = next);
+      });
+    } else {
+      _typingUsers = const [];
+    }
+  }
+
+  void _unsubscribeRegistries() {
+    unawaited(_presenceSub?.cancel());
+    _presenceSub = null;
+    unawaited(_typingSub?.cancel());
+    _typingSub = null;
+  }
+
+  Future<void> _refreshEntityDetails() async {
+    final kit = _kit;
+    if (kit == null) return;
+    final seq = ++_fetchSeq;
+
+    if (widget.user != null) {
+      final res = await kit.users.getUser(widget.user!.id);
+      if (!mounted || seq != _fetchSeq) return;
+      res.fold(
+        onSuccess: (fetched) {
+          setState(() {
+            _user = fetched;
+            if (_presence == UserPresence.unknown) {
+              _presence = fetched.presence;
+            }
+          });
+        },
+        onFailure: (_) {},
+      );
+    } else if (widget.group != null &&
+        kit.capabilities.groups &&
+        kit.groups != null) {
+      final res = await kit.groups!.getGroup(widget.group!.id);
+      if (!mounted || seq != _fetchSeq) return;
+      res.fold(
+        onSuccess: (fetched) {
+          setState(() => _group = fetched);
+        },
+        onFailure: (_) {},
+      );
+    }
+  }
+
+  @override
+  void didUpdateWidget(ConvoKitMessageHeader oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.messageHeaderStyle != oldWidget.messageHeaderStyle) {
+      headerStyle = ConvoKitThemeHelper.getTheme<ConvoKitMessageHeaderStyle>(
+        context: context,
+        defaultTheme: ConvoKitMessageHeaderStyle.of,
+      ).merge(widget.messageHeaderStyle);
+      statusIndicatorStyle =
+          ConvoKitThemeHelper.getTheme<ConvoKitStatusIndicatorStyle>(
+            context: context,
+            defaultTheme: ConvoKitStatusIndicatorStyle.of,
+          ).merge(headerStyle.statusIndicatorStyle);
+    }
+
+    final targetChanged =
+        widget.user?.id != oldWidget.user?.id ||
+        widget.group?.id != oldWidget.group?.id ||
+        widget.conversationId != oldWidget.conversationId;
+
+    if (targetChanged) {
+      _unsubscribeRegistries();
+      _user = widget.user;
+      _group = widget.group;
+      _presence = widget.user?.presence ?? UserPresence.unknown;
+      _typingUsers = const [];
+      _subscribeRegistries();
+      unawaited(_refreshEntityDetails());
+    } else if (widget.user != oldWidget.user) {
+      _user = widget.user;
+      if (widget.user != null && _presence == UserPresence.unknown) {
+        _presence = widget.user!.presence;
+      }
+    } else if (widget.group != oldWidget.group) {
+      _group = widget.group;
+    }
+  }
+
+  @override
+  void dispose() {
+    _fetchSeq++;
+    _unsubscribeRegistries();
+    super.dispose();
+  }
+
   List<({String label, IconData icon, VoidCallback action, bool isDestructive})>
   get _overflowEntries {
     final translations = cc.Translations.of(context);
@@ -286,12 +405,12 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
         (
           label: translations.pinnedMessagesTitle,
           icon: Icons.push_pin_outlined,
-          action: _openPinnedMessages,
+          action: widget.onPinnedMessagesTap!,
           isDestructive: false,
         ),
       if (widget.onInfoTap != null)
         (
-          label: widget.group != null
+          label: _group != null
               ? translations.groupInfo
               : translations.userInfo,
           icon: Icons.info_outline,
@@ -301,23 +420,11 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
     ];
   }
 
-  /// Builds the native Material 3 dropdown for the ⋯ button.
-  ///
-  /// Uses [MenuAnchor]/[MenuItemButton] — the M3 menu primitives — so the
-  /// surface, elevation, shape, ripple and leading-icon layout come from the
-  /// theme instead of being hand-rolled. Same presentation on every platform
-  /// (Flutter's Cupertino library has no anchored menu widget).
   Widget _buildOverflowMenu(
     ConvoKitMessageHeaderStyle headerStyle,
     ConvoKitColorPalette colorPalette,
   ) {
     final entries = _overflowEntries;
-    // M3 menu spec, expressed in kit tokens: container is a surface at
-    // elevation 2 with a 4dp corner and 8dp vertical padding; items are 48dp
-    // tall with a 12dp gutter, label-large text (14/500, +0.1 tracking) in
-    // the primary text colour, and a 24dp leading icon in the secondary icon
-    // colour. Spelled out rather than left to ThemeData so the menu matches
-    // the kit palette in apps that never configured a Material theme.
     return MenuAnchor(
       alignmentOffset: const Offset(0, 4),
       style: MenuStyle(
@@ -381,149 +488,37 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
     );
   }
 
-  late MessageHeaderBloc _bloc;
-  bool _isExternalBloc = false;
-  late ConvoKitMessageHeaderStyle headerStyle;
-  late ConvoKitColorPalette colorPalette;
-  late ConvoKitTypography typography;
-  late ConvoKitSpacing spacing;
-  late ConvoKitStatusIndicatorStyle statusIndicatorStyle;
-  bool _themeInitialized = false;
-  Brightness? _cachedBrightness;
-  double _cachedWidth = 300; // Cached to avoid MediaQuery in build()
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.messageHeaderBloc != null) {
-      _bloc = widget.messageHeaderBloc!;
-      _isExternalBloc = true;
-    } else {
-      _bloc = MessageHeaderBloc(
-        usersStatusVisibility: widget.usersStatusVisibility ?? true,
-      );
-      _isExternalBloc = false;
-    }
-
-    // Set initial user or group
-    if (widget.user != null) {
-      _bloc.add(SetUser(widget.user!));
-    } else if (widget.group != null) {
-      _bloc.add(SetGroup(widget.group!));
-    }
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    // Only initialize theme once to avoid expensive lookups during keyboard animation
-    // But re-initialize when brightness changes (dark mode toggle)
-    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
-    final brightnessChanged =
-        _cachedBrightness != null && _cachedBrightness != currentBrightness;
-    if (_themeInitialized && !brightnessChanged) return;
-    _cachedBrightness = currentBrightness;
-    _themeInitialized = true;
-
-    // Cache width to avoid MediaQuery in build()
-    _cachedWidth = MediaQuery.sizeOf(context).width;
-
-    headerStyle = ConvoKitThemeHelper.getTheme<ConvoKitMessageHeaderStyle>(
-      context: context,
-      defaultTheme: ConvoKitMessageHeaderStyle.of,
-    ).merge(widget.messageHeaderStyle);
-    statusIndicatorStyle =
-        ConvoKitThemeHelper.getTheme<ConvoKitStatusIndicatorStyle>(
-          context: context,
-          defaultTheme: ConvoKitStatusIndicatorStyle.of,
-        ).merge(headerStyle.statusIndicatorStyle);
-    typography = ConvoKitThemeHelper.getTypography(context);
-    colorPalette = ConvoKitThemeHelper.getColorPalette(context);
-    spacing = ConvoKitThemeHelper.getSpacing(context);
-  }
-
-  @override
-  void didUpdateWidget(ConvoKitMessageHeader oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    // Update bloc if user/group changed
-    if (widget.user != oldWidget.user && widget.user != null) {
-      _bloc.add(SetUser(widget.user!));
-    } else if (widget.group != oldWidget.group && widget.group != null) {
-      _bloc.add(SetGroup(widget.group!));
-    }
-  }
-
-  @override
-  void dispose() {
-    if (!_isExternalBloc) {
-      _bloc.close();
-    }
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: _bloc,
-      child: SafeArea(
-        child: Container(
-          height: widget.height,
-          width: _cachedWidth,
-          padding:
-              widget.padding ?? EdgeInsets.only(left: spacing.padding4 ?? 0),
-          decoration: BoxDecoration(
-            color: headerStyle.backgroundColor ?? colorPalette.background1,
-            border: headerStyle.border,
-            borderRadius: headerStyle.borderRadius ?? BorderRadius.circular(0),
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _getBackButtonView(context, headerStyle, colorPalette),
-              // When the thread bell occupies the trailing slot beside a
-              // custom listItemView, the body must EXPAND so the bell pins to
-              // the right edge (a loose Flexible would leave it hugging the
-              // title on wide layouts).
-              if (_showThreadBell && widget.listItemView != null)
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: spacing.padding4 ?? 0),
-                    child: _getBody(context),
-                  ),
-                )
-              else
-                Flexible(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: spacing.padding4 ?? 0),
-                    child: _getBody(context),
-                  ),
-                ),
-              // A custom listItemView replaces the whole list item including
-              // its tail, so the thread notification bell gets its trailing
-              // slot here in that case — pinned to the right edge.
-              if (_showThreadBell && widget.listItemView != null)
-                Padding(
-                  padding: EdgeInsets.only(right: spacing.padding2 ?? 0),
-                  child: _ThreadNotificationBell(
-                    parentMessage: widget.parentMessage!,
-                  ),
-                ),
-              // ...and any host-supplied trailing controls sit AFTER it, so a
-              // close/dismiss affordance lands beside the bell rather than
-              // replacing it. (On the default list-item path trailingView is
-              // consumed by the list item itself — see _getTrailingView.)
-              if (widget.listItemView != null && widget.trailingView != null)
-                ...?widget.trailingView!(widget.user, widget.group, context),
-            ],
-          ),
+    return SafeArea(
+      child: Container(
+        height: widget.height,
+        width: _cachedWidth,
+        padding:
+            widget.padding ?? EdgeInsets.only(left: spacing.padding4 ?? 0),
+        decoration: BoxDecoration(
+          color: headerStyle.backgroundColor ?? colorPalette.background1,
+          border: headerStyle.border,
+          borderRadius: headerStyle.borderRadius ?? BorderRadius.circular(0),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _getBackButtonView(context, headerStyle, colorPalette),
+            Flexible(
+              child: Padding(
+                padding: EdgeInsets.only(left: spacing.padding4 ?? 0),
+                child: _getListItem(context),
+              ),
+            ),
+            if (widget.listItemView != null && widget.trailingView != null)
+              ...?widget.trailingView!(_user, _group, context),
+          ],
         ),
       ),
     );
   }
 
-  // Back Button view
   Widget _getBackButtonView(
     BuildContext context,
     ConvoKitMessageHeaderStyle style,
@@ -533,16 +528,11 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
       if (widget.backButton != null) {
         return widget.backButton!(context);
       }
-      Widget leading;
-      leading = Semantics(
+      return Semantics(
         button: true,
         label: cc.Translations.of(context).back,
         child: GestureDetector(
-          onTap:
-              widget.onBack ??
-              () {
-                Navigator.pop(context);
-              },
+          onTap: widget.onBack ?? () => Navigator.pop(context),
           child:
               style.backIcon ??
               Image.asset(
@@ -553,53 +543,22 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
               ),
         ),
       );
-
-      return leading;
-    } else {
-      return const SizedBox(height: 0, width: 0);
     }
+    return const SizedBox(height: 0, width: 0);
   }
 
-  // Body / Title view using BLoC
-  Widget _getBody(BuildContext context) {
-    return BlocBuilder<MessageHeaderBloc, MessageHeaderState>(
-      builder: (context, state) {
-        // Handle initial/loading state - use widget's user/group directly
-        // until the BLoC state is populated
-        if (state.status == MessageHeaderStatus.initial ||
-            state.status == MessageHeaderStatus.loading) {
-          // Use widget's user/group as fallback during initial load
-          if (widget.user == null && widget.group == null) {
-            return const SizedBox.shrink();
-          }
-          // Create a temporary state with widget data
-          final tempState = MessageHeaderState(
-            status: MessageHeaderStatus.loaded,
-            user: widget.user,
-            group: widget.group,
-            memberCount: widget.group?.membersCount ?? 0,
-          );
-          return _getListItem(context, tempState);
-        }
-        return _getListItem(context, state);
-      },
-    );
-  }
-
-  // typing indicator view
   Widget _getTypingIndicator(
     BuildContext context,
-    MessageHeaderState state,
     TextStyle? typingIndicatorTextStyle,
     ConvoKitTypography typography,
     Color? color,
   ) {
-    String text;
-    if (state.user != null) {
+    final String text;
+    if (_user != null) {
       text = cc.Translations.of(context).typing;
     } else {
-      text =
-          "${state.typingUser?.name ?? ''}: ${cc.Translations.of(context).typing}";
+      final firstName = _typingUsers.isNotEmpty ? _typingUsers.first.name : '';
+      text = "$firstName: ${cc.Translations.of(context).typing}";
     }
     return Text(
       text,
@@ -612,15 +571,12 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
     );
   }
 
-  // subtitle view
   Widget? _getSubtitleView(
     BuildContext context,
-    MessageHeaderState state,
     ConvoKitMessageHeaderStyle style,
     ConvoKitColorPalette colorPalette,
     ConvoKitTypography typography,
   ) {
-    Widget? subtitle;
     final subtitleStyle = TextStyle(
       color:
           style.subtitleTextColor ??
@@ -637,24 +593,26 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
           typography.caption1?.regular?.fontWeight,
     );
 
-    if (state.isTyping && state.userIsNotBlocked) {
-      subtitle = _getTypingIndicator(
+    final userIsNotBlocked = !(_user?.isBlocked ?? false);
+    final isTyping = _typingEnabled && _typingUsers.isNotEmpty;
+
+    if (isTyping && userIsNotBlocked) {
+      return _getTypingIndicator(
         context,
-        state,
         style.typingIndicatorTextStyle,
         typography,
         colorPalette.primary,
       );
-    } else if (widget.subtitleView != null) {
-      subtitle = widget.subtitleView!(state.group, state.user, context);
-    } else if (state.user != null) {
-      if (widget.usersStatusVisibility == true && state.userIsNotBlocked) {
-        final statusText = state.isUserOnline
+    }
+    if (widget.subtitleView != null) {
+      return widget.subtitleView!(_group, _user, context);
+    }
+    if (_user != null) {
+      if (widget.usersStatusVisibility == true && userIsNotBlocked) {
+        final statusText = _presence == UserPresence.online
             ? cc.Translations.of(context).online
-            : _getUserActivityStatus(context, state);
-        // Wrap in LayoutBuilder so the marquee is constrained to the
-        // available width and does not overflow into trailing widgets.
-        subtitle = LayoutBuilder(
+            : cc.Translations.of(context).offline;
+        return LayoutBuilder(
           builder: (context, constraints) {
             return SizedBox(
               width: constraints.maxWidth,
@@ -666,169 +624,99 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
             );
           },
         );
-      } else {
-        subtitle = null;
       }
-    } else {
-      subtitle = Text(
-        '${state.memberCount} ${state.memberCount == 1 ? cc.Translations.of(context).member : cc.Translations.of(context).members}',
-        style: subtitleStyle,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      );
-    }
-    return subtitle;
-  }
-
-  // title view
-  Widget? _getTitleView(BuildContext context, MessageHeaderState state) {
-    if (widget.titleView != null) {
-      return widget.titleView!(state.group, state.user, context);
-    }
-    return null;
-  }
-
-  // leading view
-  Widget? _getLeadingView(BuildContext context, MessageHeaderState state) {
-    if (widget.leadingStateView != null) {
-      return widget.leadingStateView!(state.group, state.user, context);
-    }
-    return null;
-  }
-
-  // auxiliary header view
-  Widget? _getAuxiliaryButtonView(
-    BuildContext context,
-    MessageHeaderState state,
-    ConvoKitMessageHeaderStyle style,
-    ConvoKitColorPalette colorPalette,
-    ConvoKitTypography typography,
-    ConvoKitSpacing spacing,
-  ) {
-    if (widget.auxiliaryButtonView != null) {
-      return widget.auxiliaryButtonView!(state.group, state.user, context);
-    } else {
       return null;
     }
+    final memberCount = _group?.memberCount ?? 0;
+    return Text(
+      '$memberCount ${memberCount == 1 ? cc.Translations.of(context).member : cc.Translations.of(context).members}',
+      style: subtitleStyle,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+    );
   }
 
-  // trailing view
-  List<Widget>? _getTrailingView(
-    BuildContext context,
-    MessageHeaderState state,
-    ConvoKitMessageHeaderStyle style,
-  ) {
-    if (widget.trailingView != null) {
-      return widget.trailingView!(state.user, state.group, context);
-    }
-    return null;
-  }
-
-  Widget _getListItem(BuildContext context, MessageHeaderState state) {
+  Widget _getListItem(BuildContext context) {
     if (widget.listItemView != null) {
-      // The custom view replaces the item, not the header's tap: it gets the
-      // same tap target the default item does (its own controls win first).
       return GestureDetector(
         onTap: widget.onHeaderTap,
-        child: widget.listItemView!(widget.group, widget.user, context),
+        child: widget.listItemView!(_group, _user, context),
       );
     }
 
-    // Safety check - if both user and group are null, show empty widget
-    if (state.user == null && state.group == null) {
+    if (_user == null && _group == null) {
       return const SizedBox.shrink();
     }
 
-    String? avatarName;
-    String? avatarUrl;
-    String? title;
-    Color? statusIndicatorColor;
-    Widget? icon;
-    Widget? leadingStateView;
-    Widget? titleView;
-    Widget? subtitleView;
-    Widget? auxiliaryHeaderMenu;
-    Widget? tailView;
+    final ChatUser? effectiveUser = _user != null
+        ? ChatUser(
+            id: _user!.id,
+            name: _user!.name,
+            avatarUrl: _user!.avatarUrl,
+            presence: _presence,
+            isBlocked: _user!.isBlocked,
+          )
+        : null;
 
-    if (state.user != null) {
-      avatarName = state.user?.name;
-      avatarUrl = state.user?.avatar;
-      title = state.user?.name;
-    } else {
-      avatarName = state.group?.name;
-      avatarUrl = state.group?.icon;
-      title = state.group?.name;
-    }
+    final avatarName = effectiveUser?.name ?? _group?.name;
+    final avatarUrl = effectiveUser?.avatarUrl ?? _group?.avatarUrl;
+    final title = avatarName;
 
-    StatusIndicatorUtils util =
-        StatusIndicatorUtils.getStatusIndicatorFromParams(
-          context: context,
-          user: state.user,
-          group: state.group,
-          privateGroupIcon: headerStyle.privateGroupBadgeIcon,
-          protectedGroupIcon: headerStyle.passwordProtectedGroupBadgeIcon,
-          onlineStatusIndicatorColor:
-              statusIndicatorStyle.backgroundColor ??
-              headerStyle.onlineStatusColor ??
-              colorPalette.success,
-          usersStatusVisibility: !_hideUserPresence(state),
-          // Without this the helper never takes its group branch, so the
-          // private/protected badge icons and their backgrounds were inert.
-          groupTypeVisibility: true,
-          privateGroupIconBackground: headerStyle.privateGroupBadgeIconColor,
-          protectedGroupIconBackground:
-              headerStyle.passwordProtectedGroupBadgeIconColor,
-        );
+    final userIsNotBlocked = !(effectiveUser?.isBlocked ?? false);
+    final hideUserPresence =
+        effectiveUser != null &&
+        (widget.usersStatusVisibility == false || !userIsNotBlocked);
 
-    statusIndicatorColor = util.statusIndicatorColor;
-    List<Widget>? tailWidgetList = [];
-    icon = util.icon;
-    leadingStateView = _getLeadingView(context, state);
-    titleView = _getTitleView(context, state);
-    subtitleView = _getSubtitleView(
+    final util = StatusIndicatorUtils.getStatusIndicatorFromParams(
+      context: context,
+      user: effectiveUser,
+      group: _group,
+      privateGroupIcon: headerStyle.privateGroupBadgeIcon,
+      protectedGroupIcon: headerStyle.passwordProtectedGroupBadgeIcon,
+      onlineStatusIndicatorColor:
+          statusIndicatorStyle.backgroundColor ??
+          headerStyle.onlineStatusColor ??
+          colorPalette.success,
+      usersStatusVisibility: !hideUserPresence,
+      groupTypeVisibility: true,
+      privateGroupIconBackground: headerStyle.privateGroupBadgeIconColor,
+      protectedGroupIconBackground:
+          headerStyle.passwordProtectedGroupBadgeIconColor,
+    );
+
+    final leadingStateView = widget.leadingStateView?.call(
+      _group,
+      effectiveUser,
       context,
-      state,
+    );
+    final titleView = widget.titleView?.call(_group, effectiveUser, context);
+    final subtitleView = _getSubtitleView(
+      context,
       headerStyle,
       colorPalette,
       typography,
     );
 
-    auxiliaryHeaderMenu = _getAuxiliaryButtonView(
+    final tailWidgetList = <Widget>[];
+    final auxiliaryHeaderMenu = widget.auxiliaryButtonView?.call(
+      _group,
+      effectiveUser,
       context,
-      state,
-      headerStyle,
-      colorPalette,
-      typography,
-      spacing,
     );
     if (auxiliaryHeaderMenu != null) {
       tailWidgetList.add(auxiliaryHeaderMenu);
     }
-
-    if (_showThreadBell) {
-      tailWidgetList.add(
-        _ThreadNotificationBell(parentMessage: widget.parentMessage!),
-      );
-    }
-
     if (widget.trailingView != null) {
-      var temp = _getTrailingView(context, state, headerStyle);
-
-      if (temp != null) {
-        tailWidgetList.addAll(temp);
+      final trailing = widget.trailingView!(effectiveUser, _group, context);
+      if (trailing != null) {
+        tailWidgetList.addAll(trailing);
       }
     }
-
-    if (state.isUserAgentic) {
-      tailWidgetList.addAll(_getAgenticButtons());
-    }
-
-    // ⋯ overflow menu — rightmost: View pinned messages, Pin conversation,
-    // Group/User info, Search. Platform-adaptive presentation.
     if (_showOverflowMenu) {
       tailWidgetList.add(_buildOverflowMenu(headerStyle, colorPalette));
     }
 
+    Widget? tailView;
     if (tailWidgetList.isNotEmpty) {
       tailView = Padding(
         padding: EdgeInsets.only(
@@ -845,8 +733,6 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
     }
 
     return GestureDetector(
-      // Tapping the avatar/name/subtitle area opens the info screen (tail
-      // buttons claim their own taps first).
       onTap: widget.onHeaderTap,
       child: ConvoKitListItem(
         avatarName: avatarName,
@@ -857,12 +743,12 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
         subtitleView: subtitleView,
         titlePadding: EdgeInsets.only(left: spacing.padding2 ?? 0),
         avatarStyle: ConvoKitAvatarStyle(
-          backgroundColor: widget.group != null
+          backgroundColor: _group != null
               ? headerStyle.groupIconBackgroundColor
               : null,
         ).merge(headerStyle.avatarStyle),
-        statusIndicatorColor: statusIndicatorColor,
-        statusIndicatorIcon: icon,
+        statusIndicatorColor: util.statusIndicatorColor,
+        statusIndicatorIcon: util.icon,
         statusIndicatorStyle: ConvoKitStatusIndicatorStyle(
           border: Border.all(
             width: spacing.spacing ?? 0,
@@ -896,309 +782,6 @@ class _ConvoKitMessageHeaderState extends State<ConvoKitMessageHeader> {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-      ),
-    );
-  }
-
-  Widget _buildTightIconButton({
-    required IconData icon,
-    required Color color,
-    required VoidCallback onPressed,
-    required String tooltip,
-    EdgeInsetsGeometry? padding,
-  }) {
-    return Padding(
-      padding: padding ?? EdgeInsets.zero,
-      child: SizedBox(
-        width: 30,
-        height: 30,
-        child: IconButton(
-          onPressed: onPressed,
-          tooltip: tooltip,
-          padding: EdgeInsets.zero,
-          constraints: const BoxConstraints(),
-          icon: Icon(icon, color: color, size: 24),
-        ),
-      ),
-    );
-  }
-
-  List<Widget> _getAgenticButtons() {
-    return [
-      if (!(widget.hideNewChatButton ?? false))
-        _buildTightIconButton(
-          color:
-              headerStyle.newChatIconColor ??
-              colorPalette.iconSecondary ??
-              Colors.transparent,
-          icon: widget.newChatIcon ?? Icons.add,
-          tooltip: Translations.of(context).newChat,
-          onPressed:
-              widget.newChatButtonClick ??
-              () {
-                FocusManager.instance.primaryFocus?.unfocus();
-              },
-          padding: EdgeInsets.only(right: spacing.padding2 ?? 0),
-        ),
-      if (!(widget.hideChatHistoryButton ?? false))
-        _buildTightIconButton(
-          color:
-              headerStyle.chatHistoryIconColor ??
-              colorPalette.iconSecondary ??
-              Colors.transparent,
-          icon: widget.chatHistoryIcon ?? Icons.history,
-          tooltip: Translations.of(context).chatHistory,
-          onPressed:
-              widget.chatHistoryButtonClick ??
-              () {
-                FocusManager.instance.primaryFocus?.unfocus();
-              },
-          padding: EdgeInsets.only(right: spacing.padding4 ?? 0),
-        ),
-    ];
-  }
-
-  bool _hideUserPresence(MessageHeaderState state) {
-    return state.user != null &&
-        (widget.usersStatusVisibility == false || !state.userIsNotBlocked);
-  }
-
-  String _getUserActivityStatus(
-    BuildContext context,
-    MessageHeaderState state,
-  ) {
-    if (state.user == null) {
-      return "";
-    }
-    if (state.user?.lastActiveAt == null) {
-      return cc.Translations.of(context).offline;
-    }
-    return _getLastSeenText(state.user!.lastActiveAt!, context);
-  }
-
-  String _getLastSeenText(DateTime lastActiveAt, BuildContext context) {
-    final DateTime now = DateTime.now();
-    final Duration difference = now.difference(lastActiveAt);
-
-    if (difference.inMinutes <= 1) {
-      return _getMinute(lastActiveAt, context);
-    } else if (difference.inMinutes < 60) {
-      return _getMinutes(difference, lastActiveAt, context);
-    } else if (difference.inHours < 2) {
-      return _getHour(difference, lastActiveAt, context);
-    } else if (difference.inHours < 24) {
-      int diffInHours = difference.inHours;
-      return _getHours(difference, diffInHours, lastActiveAt, context);
-    } else {
-      return _getFormattedDateWithTime(lastActiveAt, context);
-    }
-  }
-
-  String _getMinute(DateTime date, BuildContext context) {
-    if (widget.dateTimeFormatterCallback?.minute(date.millisecondsSinceEpoch) !=
-        null) {
-      return widget.dateTimeFormatterCallback?.minute(
-            date.millisecondsSinceEpoch,
-          ) ??
-          "${cc.Translations.of(context).lastSeen} 1 ${cc.Translations.of(context).minuteAgo}";
-    } else {
-      return ConvoKitUIKit.authenticationSettings?.dateTimeFormatterCallback
-              ?.minute(date.millisecondsSinceEpoch) ??
-          "${cc.Translations.of(context).lastSeen} 1 ${cc.Translations.of(context).minuteAgo}";
-    }
-  }
-
-  String _getMinutes(Duration difference, DateTime date, BuildContext context) {
-    int diffInMinutes = difference.inMinutes;
-    if (widget.dateTimeFormatterCallback?.minutes(
-          diffInMinutes,
-          date.millisecondsSinceEpoch,
-        ) !=
-        null) {
-      return widget.dateTimeFormatterCallback?.minutes(
-            diffInMinutes,
-            date.millisecondsSinceEpoch,
-          ) ??
-          "${cc.Translations.of(context).lastSeen} ${difference.inMinutes} ${cc.Translations.of(context).minutesAgo}";
-    } else {
-      return ConvoKitUIKit.authenticationSettings?.dateTimeFormatterCallback
-              ?.minutes(diffInMinutes, date.millisecondsSinceEpoch) ??
-          "${cc.Translations.of(context).lastSeen} ${difference.inMinutes} ${cc.Translations.of(context).minutesAgo}";
-    }
-  }
-
-  String _getHour(Duration difference, DateTime date, BuildContext context) {
-    if (widget.dateTimeFormatterCallback?.hour(date.millisecondsSinceEpoch) !=
-        null) {
-      return widget.dateTimeFormatterCallback?.hour(
-            date.millisecondsSinceEpoch,
-          ) ??
-          "${cc.Translations.of(context).lastSeen} ${difference.inHours} ${cc.Translations.of(context).hourAgo}";
-    } else {
-      return ConvoKitUIKit.authenticationSettings?.dateTimeFormatterCallback
-              ?.hour(date.millisecondsSinceEpoch) ??
-          "${cc.Translations.of(context).lastSeen} ${difference.inHours} ${cc.Translations.of(context).hourAgo}";
-    }
-  }
-
-  String _getHours(
-    Duration difference,
-    int diffInHours,
-    DateTime date,
-    BuildContext context,
-  ) {
-    if (widget.dateTimeFormatterCallback?.hours(
-          diffInHours,
-          date.millisecondsSinceEpoch,
-        ) !=
-        null) {
-      return widget.dateTimeFormatterCallback?.hours(
-            diffInHours,
-            date.millisecondsSinceEpoch,
-          ) ??
-          "${cc.Translations.of(context).lastSeen} ${difference.inHours} ${cc.Translations.of(context).hoursAgo}";
-    } else {
-      return ConvoKitUIKit.authenticationSettings?.dateTimeFormatterCallback
-              ?.hours(diffInHours, date.millisecondsSinceEpoch) ??
-          "${cc.Translations.of(context).lastSeen} ${difference.inHours} ${cc.Translations.of(context).hoursAgo}";
-    }
-  }
-
-  String _getFormattedDateWithTime(
-    DateTime lastActiveAt,
-    BuildContext context,
-  ) {
-    final now = DateTime.now();
-    final isSameYear = now.year == lastActiveAt.year;
-
-    String datePattern = isSameYear ? 'dd MMM' : 'dd MMM yyyy';
-    String formattedDate = DateFormat(datePattern).format(lastActiveAt);
-    String formattedTime = DateFormat.jm().format(lastActiveAt);
-
-    if (widget.dateTimeFormatterCallback?.otherDays(
-          lastActiveAt.millisecondsSinceEpoch,
-        ) !=
-        null) {
-      return widget.dateTimeFormatterCallback?.otherDays(
-            lastActiveAt.millisecondsSinceEpoch,
-          ) ??
-          "${cc.Translations.of(context).lastSeen} $formattedDate ${cc.Translations.of(context).at} $formattedTime";
-    } else {
-      return ConvoKitUIKit.authenticationSettings?.dateTimeFormatterCallback
-              ?.otherDays(lastActiveAt.millisecondsSinceEpoch) ??
-          "${cc.Translations.of(context).lastSeen} $formattedDate ${cc.Translations.of(context).at} $formattedTime";
-    }
-  }
-}
-
-/// Thread mute/unmute notification bell rendered by [ConvoKitMessageHeader]
-/// when [ConvoKitMessageHeader.showThreadNotificationButton] is on.
-///
-/// State: the root message's [BaseMessage.threadSubscribed] is the truth
-/// (stateless redesign — the SDK keeps no cache); kept in sync with every
-/// other surface via the kit event bus (`ccThreadSubscriptionChanged`). Tap =
-/// optimistic flip + idempotent subscribe/unsubscribe, revert + failure
-/// toast on error. Private to the header — not public kit API.
-class _ThreadNotificationBell extends StatefulWidget {
-  const _ThreadNotificationBell({required this.parentMessage});
-
-  final BaseMessage parentMessage;
-
-  @override
-  State<_ThreadNotificationBell> createState() =>
-      _ThreadNotificationBellState();
-}
-
-class _ThreadNotificationBellState extends State<_ThreadNotificationBell>
-    with ConvoKitMessageEventListener {
-  late bool _subscribed;
-  bool _inFlight = false;
-  late final String _listenerId;
-
-  @override
-  void initState() {
-    super.initState();
-    _subscribed = widget.parentMessage.threadSubscribed;
-    _listenerId =
-        'message_header_thread_bell_${DateTime.now().millisecondsSinceEpoch}';
-    ConvoKitMessageEvents.addMessagesListener(_listenerId, this);
-  }
-
-  @override
-  void didUpdateWidget(covariant _ThreadNotificationBell oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    // A new root is a different thread: show its state, not the last one's.
-    if (widget.parentMessage.id != oldWidget.parentMessage.id) {
-      _subscribed = widget.parentMessage.threadSubscribed;
-    }
-  }
-
-  @override
-  void dispose() {
-    ConvoKitMessageEvents.removeMessagesListener(_listenerId);
-    super.dispose();
-  }
-
-  @override
-  void ccThreadSubscriptionChanged(int parentMessageId, bool subscribed) {
-    if (!mounted || parentMessageId != widget.parentMessage.id) return;
-    setState(() => _subscribed = subscribed);
-  }
-
-  Future<void> _toggle() async {
-    if (_inFlight) return;
-    _inFlight = true;
-    // The thread tapped, held across the await: parentMessage may have moved
-    // on to another root by the time the server answers.
-    final message = widget.parentMessage;
-    final target = !_subscribed;
-    setState(() => _subscribed = target); // optimistic flip
-    try {
-      final result = target
-          ? await CometChatSdkAdapter.subscribeToThread(message.id)
-          : await CometChatSdkAdapter.unsubscribeFromThread(message.id);
-      if (!mounted) return;
-      if (result != null) {
-        // The message object is the state (stateless redesign) — stamp it,
-        // then tell the other surfaces through the kit event bus.
-        message.threadSubscribed = target;
-        ConvoKitMessageEvents.ccThreadSubscriptionChanged(message.id, target);
-        CometChatThreadToast.show(
-          context,
-          target
-              ? Translations.of(context).threadUnmutedToast
-              : Translations.of(context).threadMutedToast,
-        );
-      } else {
-        if (message.id == widget.parentMessage.id) {
-          setState(() => _subscribed = !target); // revert
-        }
-        CometChatThreadToast.show(
-          context,
-          Translations.of(context).threadSubscriptionFailed,
-        );
-      }
-    } finally {
-      _inFlight = false;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = ConvoKitThemeHelper.getColorPalette(context);
-    final label = _subscribed
-        ? Translations.of(context).threadMute
-        : Translations.of(context).threadUnmute;
-    return IconButton(
-      onPressed: _toggle,
-      tooltip: label,
-      iconSize: 26,
-      visualDensity: VisualDensity.compact,
-      icon: Icon(
-        _subscribed
-            ? Icons.notifications_outlined
-            : Icons.notifications_off_outlined,
-        color: palette.iconPrimary,
       ),
     );
   }

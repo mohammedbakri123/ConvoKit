@@ -1,38 +1,17 @@
-import 'package:convokit/convokit_uikit.dart';
+import 'package:convokit/src/core/models/models.dart';
+import '../../presentation/views/misc/receipt/cometchat_receipt.dart';
 
-///[MessageReceiptUtils] is a utility class to determine receipt status
+/// Utility class to determine receipt status from a [ChatMessage].
 class MessageReceiptUtils {
-  static ReceiptStatus getReceiptStatus(BaseMessage message) {
-    ReceiptStatus receiptStatus = ReceiptStatus.waiting;
-
-    // Moderation-based receipt override for Text and Media messages
-    if (message is TextMessage) {
-      if (message.moderationStatus?.value ==
-          ModerationStatusEnum.DISAPPROVED.value) {
-        return ReceiptStatus.error;
-      }
-    } else if (message is MediaMessage) {
-      if (message.moderationStatus?.value ==
-          ModerationStatusEnum.DISAPPROVED.value) {
-        return ReceiptStatus.error;
-      }
-    }
-
-    if (message.metadata != null &&
-        message.metadata!.containsKey("error") &&
-        (message.metadata?["error"] is Exception ||
-            message.metadata?["error"] is String)) {
-      receiptStatus = ReceiptStatus.error;
-    } else if (message.readAt != null) {
-      receiptStatus = ReceiptStatus.read;
-    } else if (message.deliveredAt != null) {
-      receiptStatus = ReceiptStatus.delivered;
-    } else if (message.sentAt != null && message.id != 0) {
-      receiptStatus = ReceiptStatus.sent;
-    } else {
-      receiptStatus = ReceiptStatus.waiting;
-    }
-
-    return receiptStatus;
+  static ReceiptStatus getReceiptStatus(ChatMessage message) {
+    return switch (message.sendState) {
+      SendState.failed => ReceiptStatus.error,
+      SendState.sending => ReceiptStatus.waiting,
+      SendState.sent => switch (message.deliveryState) {
+        DeliveryState.read => ReceiptStatus.read,
+        DeliveryState.delivered => ReceiptStatus.delivered,
+        DeliveryState.none => ReceiptStatus.sent,
+      },
+    };
   }
 }

@@ -9,7 +9,8 @@ class CustomAction extends ActionEntity {
   CustomAction({String? actionType})
     : super(actionType: actionType ?? ActionTypeConstants.customAction);
 
-  factory CustomAction.fromMap(dynamic map) {
+  factory CustomAction.fromMap(dynamic rawMap) {
+    final map = rawMap as Map<dynamic, dynamic>;
     return CustomAction(actionType: map['actionType']);
   }
 }

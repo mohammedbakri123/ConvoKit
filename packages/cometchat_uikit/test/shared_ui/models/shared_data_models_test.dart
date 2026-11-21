@@ -136,8 +136,8 @@ void main() {
 
     test('the options callback is invoked with the user, group and context '
         'it is given', () {
-      User? seenUser;
-      Group? seenGroup;
+      ChatUser? seenUser;
+      ChatGroup? seenGroup;
       BuildContext? seenContext;
 
       final template = ConvoKitDetailsTemplate(
@@ -151,7 +151,7 @@ void main() {
         },
       );
 
-      final user = User(uid: 'u1', name: 'Alice');
+      final user = ChatUser(id: 'u1', name: 'Alice');
       final options = template.options!(user, null, null);
 
       expect(seenUser, same(user));
@@ -255,7 +255,7 @@ void main() {
 
     test('toActionItem carries id, title, icon and the click handler', () {
       const icon = Icon(Icons.reply);
-      void handler(BaseMessage message, dynamic state) {}
+      void handler(ChatMessage message, dynamic state) {}
 
       final item = CometChatMessageOption(
         id: 'reply',
@@ -304,8 +304,8 @@ void main() {
     test('toActionItemFromFunction substitutes the handler and keeps '
         'everything else', () {
       const icon = Icon(Icons.reply);
-      void original(BaseMessage message, dynamic state) {}
-      void replacement(BaseMessage message, dynamic state) {}
+      void original(ChatMessage message, dynamic state) {}
+      void replacement(ChatMessage message, dynamic state) {}
 
       final item = CometChatMessageOption(
         id: 'reply',

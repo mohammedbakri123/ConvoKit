@@ -61,20 +61,30 @@ class CometChatLinkPreviewBubble extends StatelessWidget {
     final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
     final spacing = ConvoKitThemeHelper.getSpacing(context);
 
+    final Map<dynamic, dynamic>? firstLink =
+        links.isNotEmpty && links[0] is Map
+        ? links[0] as Map<dynamic, dynamic>
+        : null;
+    final String? linkImage = firstLink?["image"]?.toString();
+    final String? linkUrl = firstLink?["url"]?.toString();
+    final String? linkTitle = firstLink?["title"]?.toString();
+    final String? linkDescription = firstLink?["description"]?.toString();
+    final String? linkFavicon = firstLink?["favicon"]?.toString();
+
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 232),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (links.isNotEmpty &&
-              (links[0]["image"] != null ||
-                  (links[0]["url"] != null ||
-                      links[0]["title"] != null ||
-                      links[0]["favicon"] != null)))
+          if (firstLink != null &&
+              (linkImage != null ||
+                  linkUrl != null ||
+                  linkTitle != null ||
+                  linkFavicon != null))
             GestureDetector(
               onTap: () async {
-                if (links.isNotEmpty && links[0]["url"] != null) {
-                  await onTapUrl(links[0]['url']);
+                if (linkUrl != null) {
+                  await onTapUrl(linkUrl);
                 }
               },
               child: DecoratedBox(
@@ -94,14 +104,12 @@ class CometChatLinkPreviewBubble extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    if (links.isNotEmpty &&
-                        links[0]["image"] != null &&
-                        links[0]["image"].toString().isNotEmpty)
+                    if (linkImage != null && linkImage.isNotEmpty)
                       Container(
                         alignment: Alignment.topCenter,
                         constraints: const BoxConstraints(maxWidth: 232),
                         child: Image.network(
-                          links[0]["image"],
+                          linkImage,
                           fit: BoxFit.cover,
                           errorBuilder: (context, object, stack) {
                             return defaultImage ??
@@ -109,11 +117,10 @@ class CometChatLinkPreviewBubble extends StatelessWidget {
                           },
                         ),
                       ),
-                    if (links.isNotEmpty &&
-                        (links[0]["title"] != null ||
-                            links[0]["url"] != null ||
-                            links[0]["description"] != null ||
-                            links[0]["favicon"] != null))
+                    if (linkTitle != null ||
+                        linkUrl != null ||
+                        linkDescription != null ||
+                        linkFavicon != null)
                       Padding(
                         padding: EdgeInsets.all(spacing.padding2 ?? 0),
                         child: DecoratedBox(
@@ -122,10 +129,9 @@ class CometChatLinkPreviewBubble extends StatelessWidget {
                             contentPadding: const EdgeInsets.all(0),
                             minVerticalPadding: 0.0,
                             minLeadingWidth: 0,
-                            title:
-                                (links.isNotEmpty && links[0]["title"] != null)
+                            title: linkTitle != null
                                 ? Text(
-                                    links[0]["title"],
+                                    linkTitle,
                                     style: TextStyle(
                                       fontSize: typography.body?.bold?.fontSize,
                                       fontWeight:
@@ -137,18 +143,15 @@ class CometChatLinkPreviewBubble extends StatelessWidget {
                                   )
                                 : null,
                             subtitle:
-                                (links.isNotEmpty &&
-                                    (links[0]["description"] != null ||
-                                        links[0]["url"] != null))
+                                (linkDescription != null || linkUrl != null)
                                 ? Column(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      if (links.isNotEmpty &&
-                                          links[0]["description"] != null)
+                                      if (linkDescription != null)
                                         Text(
-                                          links[0]["description"],
+                                          linkDescription,
                                           style: TextStyle(
                                             fontSize: typography
                                                 .caption1
@@ -165,10 +168,9 @@ class CometChatLinkPreviewBubble extends StatelessWidget {
                                                 : colorPalette.white),
                                           ).merge(style.descriptionStyle),
                                         ),
-                                      if (links.isNotEmpty &&
-                                          links[0]["url"] != null)
+                                      if (linkUrl != null)
                                         Text(
-                                          links[0]["url"],
+                                          linkUrl,
                                           style: TextStyle(
                                             fontSize: typography
                                                 .caption1
@@ -188,14 +190,12 @@ class CometChatLinkPreviewBubble extends StatelessWidget {
                                     ],
                                   )
                                 : null,
-
                             trailing:
-                                (links.isNotEmpty &&
-                                    links[0]["image"] == null &&
-                                    links[0]["favicon"] != null &&
-                                    links[0]["favicon"].toString().isNotEmpty)
+                                (linkImage == null &&
+                                    linkFavicon != null &&
+                                    linkFavicon.isNotEmpty)
                                 ? Image.network(
-                                    links[0]["favicon"],
+                                    linkFavicon,
                                     height: 36,
                                     width: 36,
                                     errorBuilder: (context, object, stack) {

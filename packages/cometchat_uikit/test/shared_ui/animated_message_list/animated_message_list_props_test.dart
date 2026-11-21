@@ -9,42 +9,27 @@
 ///   flutter test test/shared_ui/animated_message_list/animated_message_list_props_test.dart
 library;
 
-import 'package:bloc_test/bloc_test.dart';
 import 'package:convokit/convokit_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 
-class MockAnimatedMessageListBloc
-    extends MockBloc<MessageListEvent, AnimatedMessageListState>
-    implements AnimatedMessageListBloc {}
-
-final _me = User(uid: 'u1', name: 'Alice');
+const _me = ChatUser(id: 'u1', name: 'Alice');
 final _sentAt = DateTime.fromMillisecondsSinceEpoch(1700000000000);
 
-TextMessage _msg(int id) => TextMessage(
-  id: id,
-  text: 'msg $id',
+TextMessage _msg(int id, [String text = 'hello']) => TextMessage(
+  id: '$id',
+  localId: 'm_$id',
+  conversationId: 'conv_1',
   sender: _me,
-  receiverUid: 'u2',
-  type: MessageTypeConstants.text,
-  receiverType: ReceiverTypeConstants.user,
-  sentAt: _sentAt,
+  createdAt: _sentAt,
+  text: text,
 );
 
-MockAnimatedMessageListBloc _bloc({List<BaseMessage>? messages}) {
-  final msgs = messages ?? <BaseMessage>[_msg(1), _msg(2)];
-  final state = AnimatedMessageListState(messages: msgs);
-  final b = MockAnimatedMessageListBloc();
-  whenListen(
-    b,
-    Stream<AnimatedMessageListState>.value(state),
-    initialState: state,
-  );
-  when(() => b.operationsStream).thenAnswer(
-    (_) => Stream<MessageOperation>.fromIterable([
-      MessageOperation.set(msgs, animated: false),
-    ]),
+AnimatedMessageListBloc _bloc({List<ChatMessage>? messages}) {
+  final b = AnimatedMessageListBloc();
+  b.setMessages(
+    messages ?? [_msg(1, 'msg 1'), _msg(2, 'msg 2')],
+    animated: false,
   );
   return b;
 }

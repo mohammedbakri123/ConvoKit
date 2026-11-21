@@ -23,7 +23,8 @@ class ElementEntity {
     return map;
   }
 
-  factory ElementEntity.fromMap(dynamic map) {
+  factory ElementEntity.fromMap(dynamic rawMap) {
+    final map = rawMap as Map<dynamic, dynamic>;
     if (map[ModelFieldConstants.elementType] == UIElementTypeConstants.label) {
       ccLog("mapping from label");
       return LabelElement.fromMap(map);

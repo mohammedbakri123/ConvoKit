@@ -1,43 +1,19 @@
+import 'dart:async';
+
+import 'package:convokit/convokit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../convokit_uikit.dart';
 import '../../../convokit_uikit.dart' as cc;
 
-/// [ConvoKitGroups] is a component that displays a list of groups available in the app
-/// using Clean Architecture with BLoC pattern.
+/// [ConvoKitGroups] displays a paginated list of [ChatGroup]s backed by the
+/// optional [GroupRepository] via [ConvoKitScope].
 ///
-/// Fetched groups are listed down alphabetically and in order of recent activity.
-/// Groups are fetched using [GroupsBloc] which internally uses [GroupsRepository].
-///
-/// This widget supports:
-/// - External BLoC injection via [groupsBloc] parameter (Requirement 9.2)
-/// - All existing constructor parameters for backward compatibility (Requirement 9.1)
-/// - BlocProvider to provide GroupsBloc to child widgets (Requirement 5.1)
-///
-/// ```dart
-/// ConvoKitGroups(
-///   groupsStyle: ConvoKitGroupsStyle(),
-///   onItemTap: (context, group) => navigateToGroup(group),
-/// );
-/// ```
+/// Gated on `kit.capabilities.groups && kit.groups != null`. When groups are
+/// disabled or absent, renders an empty/disabled state cleanly without invoking
+/// any repository methods or throwing null-check errors.
 class ConvoKitGroups extends StatefulWidget {
-  // Deprecated in 6.2.0: no effect, removed in 7.0.0.
-
-  /// Custom groups request builder protocol.
-  @Deprecated(
-    'Has no effect. Use groupsRequestBuilder, which is honoured from 6.2.0. Will be removed in 7.0.0.',
-  )
-  final GroupsBuilderProtocol? groupsProtocol;
-
-  /// Tag of a controller from the GetX-based implementation.
-  @Deprecated(
-    'Has no effect. To supply your own bloc, use groupsBloc. Will be removed in 7.0.0.',
-  )
-  final String? controllerTag;
-
   const ConvoKitGroups({
     super.key,
-    this.groupsBloc,
     this.subtitleView,
     this.listItemView,
     this.groupsStyle,
@@ -50,7 +26,6 @@ class ConvoKitGroups extends StatefulWidget {
     this.selectionMode,
     this.onSelection,
     this.title,
-    this.groupsRequestBuilder,
     this.hideError,
     this.loadingStateView,
     this.emptyStateView,
@@ -76,236 +51,160 @@ class ConvoKitGroups extends StatefulWidget {
     this.titleView,
     this.leadingView,
     this.trailingView,
-    this.groupsProtocol,
-    this.controllerTag,
+    this.pageLimit = 30,
+    this.debounceDuration = const Duration(milliseconds: 300),
   });
 
-  /// [groupsBloc] Optional external GroupsBloc instance.
-  /// If provided, this bloc will be used instead of creating a new one internally.
-  /// This allows for custom bloc implementations with overridden hooks.
-  /// Requirement: 9.2
-  final GroupsBloc? groupsBloc;
-
-  /// [groupsRequestBuilder] sets the request the list fetches groups with:
-  /// its limit is the page size, and its filters (tags, joinedOnly, search
-  /// keyword) apply to every page. A keyword typed into the search box
-  /// replaces the builder's own while the search runs; the builder itself is
-  /// never changed. Ignored when [groupsBloc] is given — pass it to that bloc.
-  final GroupsRequestBuilder? groupsRequestBuilder;
-
-  /// [subtitleView] to set subtitle for each group
-  final Widget? Function(BuildContext context, Group group)? subtitleView;
-
-  /// [listItemView] set custom view for each group
-  final Widget Function(Group group)? listItemView;
-
-  /// [groupsStyle] sets style
+  final Widget? Function(BuildContext context, ChatGroup group)? subtitleView;
+  final Widget Function(ChatGroup group)? listItemView;
   final ConvoKitGroupsStyle? groupsStyle;
-
-  /// [scrollController] sets controller for the list
   final ScrollController? scrollController;
-
-  /// [searchPlaceholder] placeholder text of search input
   final String? searchPlaceholder;
-
-  /// [backButton] back button
   final Widget? backButton;
-
-  /// [showBackButton] switch on/off back button
   final bool showBackButton;
-
-  /// [searchBoxIcon] search icon
   final Widget? searchBoxIcon;
-
-  /// [hideSearch] switch on/ff search input
   final bool hideSearch;
-
-  /// [selectionMode] specifies mode groups module is opening in
   final SelectionMode? selectionMode;
-
-  /// [onSelection] function will be performed
-  final Function(List<Group>?)? onSelection;
-
-  /// [title] sets title for the list
+  final Function(List<ChatGroup>?)? onSelection;
   final String? title;
-
-  /// [loadingStateView] returns view for loading state
   final WidgetBuilder? loadingStateView;
-
-  /// [emptyStateView] returns view for empty state
   final WidgetBuilder? emptyStateView;
-
-  /// [errorStateView] returns view for error state behind the dialog
   final WidgetBuilder? errorStateView;
-
-  /// [hideError] toggle visibility of error dialog
   final bool? hideError;
-
-  /// [appBarOptions] list of options to be visible in app bar
   final List<Widget> Function(BuildContext context)? appBarOptions;
-
-  /// [passwordGroupIcon] sets icon in status indicator for password group
   final Widget? passwordGroupIcon;
-
-  /// [privateGroupIcon] sets icon in status indicator for private group
   final Widget? privateGroupIcon;
-
-  /// [activateSelection] lets the widget know if groups are allowed to be selected
   final ActivateSelection? activateSelection;
-
-  /// [onBack] callback triggered on closing this screen
   final VoidCallback? onBack;
-
-  /// [onItemTap] callback triggered on tapping a group item
-  final Function(BuildContext context, Group group)? onItemTap;
-
-  /// [onItemLongPress] callback triggered on pressing for long on a group item
-  final Function(BuildContext context, Group group)? onItemLongPress;
+  final Function(BuildContext context, ChatGroup group)? onItemTap;
+  final Function(BuildContext context, ChatGroup group)? onItemLongPress;
 
   /// [setOptions] sets the list of actions a long press on a group offers.
-  /// [addOptions], when also set, is appended to it: both are shown,
-  /// [setOptions] first, as on Android. Starting a long-press selection comes
-  /// first, then [onItemLongPress], when set, takes the long press instead.
+  /// [addOptions], when also set, is appended to it.
   final List<CometChatOption>? Function(
-    Group group,
-    GroupsBloc bloc,
+    ChatGroup group,
     BuildContext context,
   )?
   setOptions;
 
-  /// [addOptions] appends to the actions a long press on a group offers:
-  /// its entries follow those of [setOptions], as on Android. The menu has no
-  /// built-in entries, so on its own it is the whole menu.
+  /// [addOptions] appends to the actions a long press on a group offers.
   final List<CometChatOption>? Function(
-    Group group,
-    GroupsBloc bloc,
+    ChatGroup group,
     BuildContext context,
   )?
   addOptions;
 
-  /// [submitIcon] will override the default submit icon
   final Widget? submitIcon;
-
-  /// [hideAppbar] toggle visibility for app bar
   final bool? hideAppbar;
-
-  /// [onError] callback triggered on error
   final OnError? onError;
-
-  /// [height] provides height to the widget
   final double? height;
-
-  /// [width] provides width to the widget
   final double? width;
-
-  /// [searchKeyword] Used to set searchKeyword to fetch initial list with
   final String? searchKeyword;
-
-  /// [onLoad] callback triggered when list is fetched and load
-  final OnLoad<Group>? onLoad;
-
-  /// [onEmpty] callback triggered when the list is empty
+  final OnLoad<ChatGroup>? onLoad;
   final OnEmpty? onEmpty;
-
-  /// [groupTypeVisibility] Hide the group type icon which is visible on the group icon.
   final bool? groupTypeVisibility;
-
-  /// [trailingView] to set tailView for each group
-  final Widget? Function(BuildContext context, Group group)? trailingView;
-
-  /// [leadingView] to set leading view for each group
-  final Widget? Function(BuildContext context, Group group)? leadingView;
-
-  /// [titleView] to set title view for each group
-  final Widget? Function(BuildContext context, Group group)? titleView;
+  final Widget? Function(BuildContext context, ChatGroup group)? trailingView;
+  final Widget? Function(BuildContext context, ChatGroup group)? leadingView;
+  final Widget? Function(BuildContext context, ChatGroup group)? titleView;
+  final int pageLimit;
+  final Duration debounceDuration;
 
   @override
-  State<ConvoKitGroups> createState() => _ConvoKitGroupsState();
+  State<ConvoKitGroups> createState() => ConvoKitGroupsState();
 }
 
-class _ConvoKitGroupsState extends State<ConvoKitGroups>
+enum _GroupsLoadStatus { loading, loaded, empty, error, disabled }
+
+class ConvoKitGroupsState extends State<ConvoKitGroups>
     with AutomaticKeepAliveClientMixin {
-  /// BLoC to manage groups state
-  late GroupsBloc groupsBloc;
+  ConvoKit? _kit;
+  Timer? _debounceTimer;
+  int _requestSeq = 0;
+  String _searchKeyword = '';
+  _GroupsLoadStatus _status = _GroupsLoadStatus.loading;
+  List<ChatGroup> _allGroups = const [];
+  String? _nextCursor;
+  bool _hasMore = false;
+  bool _isLoadingMore = false;
+  ChatError? _error;
+  final Set<String> _selectedGroupIds = <String>{};
+  _GroupsLoadStatus? _lastReportedStatus;
 
-  /// Track if bloc is external (should not be closed by this widget)
-  bool _isExternalBloc = false;
-
-  /// Flag to track if theme has been initialized
   bool _themeInitialized = false;
   Brightness? _cachedBrightness;
+
   @override
   bool get wantKeepAlive => true;
 
   late ConvoKitColorPalette colorPalette;
   late ConvoKitTypography typography;
   late ConvoKitSpacing spacing;
-
   late ConvoKitGroupsStyle style;
   late ConvoKitAvatarStyle avatarStyle;
   late ConvoKitStatusIndicatorStyle statusIndicatorStyle;
 
+  GroupRepository? get _groupsRepo {
+    final kit = _kit;
+    if (kit == null || !kit.capabilities.groups) return null;
+    return kit.groups;
+  }
+
+  List<ChatGroup> get _visibleGroups {
+    if (_searchKeyword.isEmpty) return _allGroups;
+    final needle = _searchKeyword.toLowerCase();
+    return _allGroups
+        .where(
+          (g) =>
+              g.name.toLowerCase().contains(needle) ||
+              (g.description?.toLowerCase().contains(needle) ?? false),
+        )
+        .toList();
+  }
+
   @override
   void initState() {
     super.initState();
-
-    // Use external bloc if provided, otherwise create a new one (Requirement 9.2)
-    if (widget.groupsBloc != null) {
-      groupsBloc = widget.groupsBloc!;
-      _isExternalBloc = true;
-    } else {
-      // Initialize service locator if not already initialized
-      _initializeServiceLocator();
-
-      // Create BLoC with dependencies from service locator
-      groupsBloc = GroupsBloc(
-        groupsRequestBuilder: widget.groupsRequestBuilder,
-      );
-      _isExternalBloc = false;
-    }
-
-    // Dispatch LoadGroups event on init (Requirement 5.1)
-    groupsBloc.add(LoadGroups(searchKeyword: widget.searchKeyword));
-  }
-
-  /// Initialize service locator if not already initialized
-  void _initializeServiceLocator() {
-    if (!GroupsServiceLocator.instance.isInitialized) {
-      GroupsServiceLocator.instance.setup();
-    }
+    _searchKeyword = widget.searchKeyword?.trim() ?? '';
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    // Only initialize theme once to avoid expensive lookups during keyboard animation
-    // But re-initialize when brightness changes (dark mode toggle)
+    ConvoKit? newKit;
+    try {
+      newKit = ConvoKitScope.of(context);
+    } on StateError {
+      newKit = null;
+    }
+
+    if (!identical(_kit, newKit)) {
+      _kit = newKit;
+      unawaited(_loadGroups(reset: true));
+    }
+
     final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
-    if (_themeInitialized && !brightnessChanged) return;
-    _cachedBrightness = currentBrightness;
-    _themeInitialized = true;
-
-    // Initialize typography, color palette, and spacing
-    typography = ConvoKitThemeHelper.getTypography(context);
-    colorPalette = ConvoKitThemeHelper.getColorPalette(context);
-    spacing = ConvoKitThemeHelper.getSpacing(context);
-
-    _resolveStyles();
+    if (!_themeInitialized || brightnessChanged) {
+      _cachedBrightness = currentBrightness;
+      _themeInitialized = true;
+      typography = ConvoKitThemeHelper.getTypography(context);
+      colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+      spacing = ConvoKitThemeHelper.getSpacing(context);
+      _resolveStyles();
+    }
   }
 
   @override
   void didUpdateWidget(covariant ConvoKitGroups oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // didChangeDependencies re-resolves only on a theme or brightness change,
-    // so a groupsStyle that changes after the first build is picked up here.
     if (oldWidget.groupsStyle != widget.groupsStyle) _resolveStyles();
+    if (oldWidget.searchKeyword != widget.searchKeyword) {
+      _onSearchChanged(widget.searchKeyword ?? '');
+    }
   }
 
-  /// Merges [ConvoKitGroups.groupsStyle] over the theme's groups style, and
-  /// the avatar and status indicator styles over theirs.
   void _resolveStyles() {
     style = ConvoKitThemeHelper.getTheme<ConvoKitGroupsStyle>(
       context: context,
@@ -326,187 +225,376 @@ class _ConvoKitGroupsState extends State<ConvoKitGroups>
 
   @override
   void dispose() {
-    // Only close the bloc if we created it internally
-    if (!_isExternalBloc) {
-      groupsBloc.close();
-    }
+    _debounceTimer?.cancel();
+    _requestSeq++;
     super.dispose();
   }
 
-  /// Reports a state transition to the caller's callbacks exactly once per
-  /// entry into that state. ENG-39104: `onLoad`, `onEmpty` and `onError` were
-  /// declared, documented and never read — GroupsList does not even take them
-  /// — so an integrator's "no groups yet" affordance never ran.
-  ///
-  /// Keyed on the state's runtime type rather than the state itself: a loaded
-  /// state that gains a group is still `loaded`, and re-reporting on every such
-  /// rebuild would turn `onLoad` into a per-frame callback.
-  Type? _lastReportedState;
+  /// Reloads the groups list from the beginning.
+  Future<void> refresh() => _loadGroups(reset: true);
 
-  void _reportGroupsState(GroupsState state) {
-    if (state.runtimeType == _lastReportedState) return;
-    _lastReportedState = state.runtimeType;
+  /// Fetches a single group by [groupId] via [GroupRepository.getGroup] and
+  /// updates it in the local list if present.
+  Future<ChatGroup?> fetchGroup(String groupId) async {
+    final repo = _groupsRepo;
+    if (repo == null) return null;
+    final result = await repo.getGroup(groupId);
+    ChatGroup? fetched;
+    result.fold(
+      onSuccess: (group) {
+        fetched = group;
+        if (!mounted) return;
+        final idx = _allGroups.indexWhere((g) => g.id == group.id);
+        if (idx != -1) {
+          setState(() {
+            final updated = List<ChatGroup>.of(_allGroups);
+            updated[idx] = group;
+            _allGroups = updated;
+          });
+        }
+      },
+      onFailure: (err) {
+        widget.onError?.call(Exception(err.message));
+      },
+    );
+    return fetched;
+  }
 
-    if (state is GroupsError) {
-      widget.onError?.call(Exception(state.message));
-    } else if (state is GroupsEmpty) {
-      widget.onEmpty?.call();
-    } else if (state is GroupsLoaded) {
-      if (state.groups.isEmpty) {
-        widget.onEmpty?.call();
+  /// Joins [groupId] via [GroupRepository.joinGroup] and refreshes the group.
+  Future<ChatResult<void>> joinGroup(String groupId) async {
+    final repo = _groupsRepo;
+    if (repo == null) {
+      return const ChatFailure(
+        ChatError(ChatErrorCode.unsupported, 'Groups capability is disabled'),
+      );
+    }
+    final result = await repo.joinGroup(groupId);
+    result.fold(
+      onSuccess: (_) => unawaited(fetchGroup(groupId)),
+      onFailure: (err) => widget.onError?.call(Exception(err.message)),
+    );
+    return result;
+  }
+
+  /// Leaves [groupId] via [GroupRepository.leaveGroup] and refreshes the group.
+  Future<ChatResult<void>> leaveGroup(String groupId) async {
+    final repo = _groupsRepo;
+    if (repo == null) {
+      return const ChatFailure(
+        ChatError(ChatErrorCode.unsupported, 'Groups capability is disabled'),
+      );
+    }
+    final result = await repo.leaveGroup(groupId);
+    result.fold(
+      onSuccess: (_) => unawaited(fetchGroup(groupId)),
+      onFailure: (err) => widget.onError?.call(Exception(err.message)),
+    );
+    return result;
+  }
+
+  void _onSearchChanged(String raw) {
+    _debounceTimer?.cancel();
+    final trimmed = raw.trim();
+
+    if (widget.debounceDuration == Duration.zero) {
+      _applySearchFilter(trimmed);
+    } else {
+      _debounceTimer = Timer(widget.debounceDuration, () {
+        if (!mounted) return;
+        _applySearchFilter(trimmed);
+      });
+    }
+  }
+
+  void _applySearchFilter(String trimmed) {
+    if (_groupsRepo == null) return;
+    setState(() {
+      _searchKeyword = trimmed;
+      if (_status == _GroupsLoadStatus.loaded ||
+          _status == _GroupsLoadStatus.empty) {
+        _status = _visibleGroups.isEmpty
+            ? _GroupsLoadStatus.empty
+            : _GroupsLoadStatus.loaded;
+      }
+    });
+  }
+
+  Future<void> _loadGroups({required bool reset}) async {
+    final repo = _groupsRepo;
+    if (repo == null) {
+      if (!mounted) return;
+      setState(() {
+        _status = _GroupsLoadStatus.disabled;
+        _allGroups = const [];
+        _nextCursor = null;
+        _hasMore = false;
+        _isLoadingMore = false;
+        _error = null;
+      });
+      _reportStatus(_GroupsLoadStatus.disabled);
+      return;
+    }
+
+    if (!reset && (!_hasMore || _isLoadingMore)) return;
+
+    final seq = ++_requestSeq;
+    if (reset) {
+      setState(() {
+        _status = _GroupsLoadStatus.loading;
+        _error = null;
+        _isLoadingMore = false;
+        _nextCursor = null;
+        _hasMore = false;
+      });
+    } else {
+      setState(() {
+        _isLoadingMore = true;
+      });
+    }
+
+    try {
+      final result = await repo.listGroups(
+        cursor: reset ? null : _nextCursor,
+        limit: widget.pageLimit,
+      );
+
+      if (!mounted || seq != _requestSeq) return;
+
+      result.fold(
+        onSuccess: (page) {
+          final merged = reset
+              ? List<ChatGroup>.of(page.items)
+              : <ChatGroup>[..._allGroups, ...page.items];
+          _allGroups = merged;
+          final visible = _visibleGroups;
+          final nextStatus = visible.isEmpty
+              ? _GroupsLoadStatus.empty
+              : _GroupsLoadStatus.loaded;
+          setState(() {
+            _nextCursor = page.olderCursor;
+            _hasMore = page.hasOlder;
+            _isLoadingMore = false;
+            _error = null;
+            _status = nextStatus;
+          });
+          _reportStatus(nextStatus);
+        },
+        onFailure: (err) {
+          if (reset) {
+            setState(() {
+              _error = err;
+              _allGroups = const [];
+              _nextCursor = null;
+              _hasMore = false;
+              _isLoadingMore = false;
+              _status = _GroupsLoadStatus.error;
+            });
+            _reportStatus(_GroupsLoadStatus.error, error: err);
+          } else {
+            setState(() {
+              _isLoadingMore = false;
+            });
+            widget.onError?.call(Exception(err.message));
+          }
+        },
+      );
+    } catch (e) {
+      if (!mounted || seq != _requestSeq) return;
+      final err = ChatError(ChatErrorCode.unknown, e.toString(), cause: e);
+      if (reset) {
+        setState(() {
+          _error = err;
+          _allGroups = const [];
+          _nextCursor = null;
+          _hasMore = false;
+          _isLoadingMore = false;
+          _status = _GroupsLoadStatus.error;
+        });
+        _reportStatus(_GroupsLoadStatus.error, error: err);
       } else {
-        widget.onLoad?.call(state.groups);
+        setState(() {
+          _isLoadingMore = false;
+        });
+        widget.onError?.call(Exception(err.message));
       }
     }
   }
 
+  void _reportStatus(_GroupsLoadStatus status, {ChatError? error}) {
+    if (status == _lastReportedStatus) return;
+    _lastReportedStatus = status;
+
+    if (status == _GroupsLoadStatus.error && error != null) {
+      widget.onError?.call(Exception(error.message));
+    } else if (status == _GroupsLoadStatus.empty ||
+        status == _GroupsLoadStatus.disabled) {
+      widget.onEmpty?.call();
+    } else if (status == _GroupsLoadStatus.loaded) {
+      final visible = _visibleGroups;
+      if (visible.isEmpty) {
+        widget.onEmpty?.call();
+      } else {
+        widget.onLoad?.call(visible);
+      }
+    }
+  }
+
+  void _toggleSelection(String groupId) {
+    setState(() {
+      if (widget.selectionMode == SelectionMode.single) {
+        if (_selectedGroupIds.contains(groupId)) {
+          _selectedGroupIds.clear();
+        } else {
+          _selectedGroupIds
+            ..clear()
+            ..add(groupId);
+        }
+      } else {
+        if (_selectedGroupIds.contains(groupId)) {
+          _selectedGroupIds.remove(groupId);
+        } else {
+          _selectedGroupIds.add(groupId);
+        }
+      }
+    });
+  }
+
+  void _clearSelection() {
+    setState(() {
+      _selectedGroupIds.clear();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Required for AutomaticKeepAliveClientMixin
     super.build(context);
 
-    // Use BlocProvider to provide GroupsBloc to child widgets (Requirement 5.1)
+    final groupsEnabled = _groupsRepo != null;
+    final effectiveHideSearch = widget.hideSearch || !groupsEnabled;
+
     return RepaintBoundary(
-      child: BlocListener<GroupsBloc, GroupsState>(
-        bloc: groupsBloc,
-        listener: (context, state) => _reportGroupsState(state),
-        child: BlocProvider.value(
-          value: groupsBloc,
-          child: ClipRRect(
-            borderRadius: style.borderRadius ?? BorderRadius.circular(0),
-            child: CometChatListBase(
-              titleView: _buildTitleView(),
-              titleSpacing: widget.showBackButton ? 0 : 16,
-              hideSearch: widget.hideSearch,
-              backIcon: _buildBackIcon(),
-              placeholder: widget.searchPlaceholder,
-              showBackButton: widget.showBackButton,
-              searchBoxIcon: widget.searchBoxIcon,
-              onSearch: (keyword) => groupsBloc.add(SearchGroups(keyword)),
-              hideAppBar: widget.hideAppbar,
-              searchText: widget.searchKeyword,
-              searchPadding: EdgeInsets.symmetric(
-                horizontal: spacing.padding4 ?? 0,
-                vertical: spacing.padding3 ?? 0,
-              ),
-              searchContentPadding: EdgeInsets.symmetric(
-                horizontal: spacing.padding3 ?? 0,
-                vertical: spacing.padding2 ?? 0,
-              ),
-              searchBoxHeight: 40,
-              menuOptions: [
-                if (widget.appBarOptions != null)
-                  ...widget.appBarOptions!(context),
-                _buildSelectionWidget(),
-              ],
-              onBack: widget.onBack,
-              style: _buildListBaseStyle(),
-              container: GroupsList(
-                groupsBloc: groupsBloc,
-                style: style,
-                colorPalette: colorPalette,
-                spacing: spacing,
-                typography: typography,
-                scrollController: widget.scrollController,
-                loadingStateView: widget.loadingStateView,
-                emptyStateView: widget.emptyStateView,
-                errorStateView: widget.errorStateView,
-                hideError: widget.hideError,
-                listItemView: widget.listItemView,
-                subtitleView: widget.subtitleView,
-                trailingView: widget.trailingView,
-                leadingView: widget.leadingView,
-                titleView: widget.titleView,
-                hideGroupTypeIcon: !(widget.groupTypeVisibility ?? true),
-                selectionMode: widget.selectionMode,
-                activateSelection: widget.activateSelection,
-                onItemTap: widget.onItemTap,
-                onItemLongPress: widget.onItemLongPress,
-                options: widget.setOptions == null && widget.addOptions == null
-                    ? null
-                    : _longPressOptions,
-                avatarStyle: avatarStyle,
-                statusIndicatorStyle: statusIndicatorStyle,
-                privateGroupIcon: widget.privateGroupIcon,
-                protectedGroupIcon: widget.passwordGroupIcon,
-              ),
-            ),
+      child: ClipRRect(
+        borderRadius: style.borderRadius ?? BorderRadius.circular(0),
+        child: CometChatListBase(
+          titleView: _buildTitleView(),
+          titleSpacing: widget.showBackButton ? 0 : 16,
+          hideSearch: effectiveHideSearch,
+          backIcon: _buildBackIcon(),
+          placeholder: widget.searchPlaceholder,
+          showBackButton: widget.showBackButton,
+          searchBoxIcon: widget.searchBoxIcon,
+          onSearch: _onSearchChanged,
+          hideAppBar: widget.hideAppbar,
+          searchText: widget.searchKeyword,
+          searchPadding: EdgeInsets.symmetric(
+            horizontal: spacing.padding4 ?? 0,
+            vertical: spacing.padding3 ?? 0,
+          ),
+          searchContentPadding: EdgeInsets.symmetric(
+            horizontal: spacing.padding3 ?? 0,
+            vertical: spacing.padding2 ?? 0,
+          ),
+          searchBoxHeight: 40,
+          menuOptions: [
+            if (widget.appBarOptions != null) ...widget.appBarOptions!(context),
+            _buildSelectionWidget(),
+          ],
+          onBack: widget.onBack,
+          style: _buildListBaseStyle(),
+          container: GroupsList(
+            groups: _visibleGroups,
+            isLoading: _status == _GroupsLoadStatus.loading,
+            isEmpty:
+                _status == _GroupsLoadStatus.empty ||
+                _status == _GroupsLoadStatus.disabled,
+            error: _status == _GroupsLoadStatus.error ? _error : null,
+            hasMore: _searchKeyword.isEmpty && _hasMore,
+            isLoadingMore: _isLoadingMore,
+            selectedGroupIds: _selectedGroupIds,
+            onLoadMore: () => unawaited(_loadGroups(reset: false)),
+            onRetry: () => unawaited(_loadGroups(reset: true)),
+            onToggleSelection: _toggleSelection,
+            style: style,
+            colorPalette: colorPalette,
+            spacing: spacing,
+            typography: typography,
+            scrollController: widget.scrollController,
+            loadingStateView: widget.loadingStateView,
+            emptyStateView: widget.emptyStateView,
+            errorStateView: widget.errorStateView,
+            hideError: widget.hideError,
+            listItemView: widget.listItemView,
+            subtitleView: widget.subtitleView,
+            trailingView: widget.trailingView,
+            leadingView: widget.leadingView,
+            titleView: widget.titleView,
+            hideGroupTypeIcon: !(widget.groupTypeVisibility ?? true),
+            selectionMode: widget.selectionMode,
+            activateSelection: widget.activateSelection,
+            onItemTap: widget.onItemTap,
+            onItemLongPress: widget.onItemLongPress,
+            options: widget.setOptions == null && widget.addOptions == null
+                ? null
+                : _longPressOptions,
+            avatarStyle: avatarStyle,
+            statusIndicatorStyle: statusIndicatorStyle,
+            privateGroupIcon: widget.privateGroupIcon,
+            protectedGroupIcon: widget.passwordGroupIcon,
           ),
         ),
       ),
     );
   }
 
-  /// The long-press menu for [group]: the [ConvoKitGroups.setOptions]
-  /// entries, then the [ConvoKitGroups.addOptions] ones. Android's
-  /// ConvoKitGroups joins the two lists; GroupsList opens nothing when the
-  /// result is empty.
-  List<CometChatOption> _longPressOptions(BuildContext context, Group group) =>
-      [
-        ...?widget.setOptions?.call(group, groupsBloc, context),
-        ...?widget.addOptions?.call(group, groupsBloc, context),
-      ];
+  List<CometChatOption> _longPressOptions(
+    BuildContext context,
+    ChatGroup group,
+  ) => [
+    ...?widget.setOptions?.call(group, context),
+    ...?widget.addOptions?.call(group, context),
+  ];
 
-  /// Builds the title view for the app bar
   Widget _buildTitleView() {
-    return BlocBuilder<GroupsBloc, GroupsState>(
-      bloc: groupsBloc,
-      builder: (context, state) {
-        final selectedCount = state is GroupsLoaded
-            ? state.selectedGroups.length
-            : 0;
-        return Text(
-          selectedCount > 0
-              ? "$selectedCount"
-              : widget.title ?? cc.Translations.of(context).groups,
-          style: TextStyle(
-            color: colorPalette.textPrimary,
-            fontSize: typography.heading1?.bold?.fontSize,
-            fontWeight: typography.heading1?.bold?.fontWeight,
-            fontFamily: typography.heading1?.bold?.fontFamily,
-          ).merge(style.titleTextStyle).copyWith(color: style.titleTextColor),
-        );
-      },
+    final selectedCount = _selectedGroupIds.length;
+    return Text(
+      selectedCount > 0
+          ? '$selectedCount'
+          : widget.title ?? cc.Translations.of(context).groups,
+      style: TextStyle(
+        color: colorPalette.textPrimary,
+        fontSize: typography.heading1?.bold?.fontSize,
+        fontWeight: typography.heading1?.bold?.fontWeight,
+        fontFamily: typography.heading1?.bold?.fontFamily,
+      ).merge(style.titleTextStyle).copyWith(color: style.titleTextColor),
     );
   }
 
-  /// Builds the back icon for the app bar
   Widget _buildBackIcon() {
-    return BlocBuilder<GroupsBloc, GroupsState>(
-      bloc: groupsBloc,
-      builder: (context, state) {
-        final hasSelection =
-            state is GroupsLoaded && state.selectedGroups.isNotEmpty;
-        return hasSelection
-            ? IconButton(
-                tooltip: Translations.of(context).clearSearch,
-                onPressed: () => groupsBloc.add(const ClearGroupSelection()),
+    final hasSelection = _selectedGroupIds.isNotEmpty;
+    return hasSelection
+        ? IconButton(
+            tooltip: Translations.of(context).clearSearch,
+            onPressed: _clearSelection,
+            icon: Icon(
+              Icons.clear,
+              color: colorPalette.iconPrimary,
+              size: 24,
+            ),
+            padding: EdgeInsets.zero,
+          )
+        : (widget.backButton ??
+              IconButton(
+                tooltip: Translations.of(context).back,
+                onPressed: widget.onBack,
                 icon: Icon(
-                  Icons.clear,
-                  color: colorPalette.iconPrimary,
+                  Icons.arrow_back,
+                  color: style.backIconColor ?? colorPalette.iconPrimary,
                   size: 24,
                 ),
                 padding: EdgeInsets.zero,
-              )
-            : (widget.backButton ??
-                  IconButton(
-                    tooltip: Translations.of(context).back,
-                    onPressed: widget.onBack,
-                    icon: Icon(
-                      Icons.arrow_back,
-                      // Resolve the style before the palette: ListBase applies
-                      // backIconTint as IconButton.color, which cannot reach an
-                      // icon that sets its own. ENG-39105.
-                      color: style.backIconColor ?? colorPalette.iconPrimary,
-                      size: 24,
-                    ),
-                    padding: EdgeInsets.zero,
-                  ));
-      },
-    );
+              ));
   }
 
-  /// Builds the list base style
   ListBaseStyle _buildListBaseStyle() {
     return ListBaseStyle(
       width: widget.width,
@@ -560,29 +648,25 @@ class _ConvoKitGroupsState extends State<ConvoKitGroups>
     );
   }
 
-  /// Builds the selection widget for the app bar
   Widget _buildSelectionWidget() {
-    return BlocBuilder<GroupsBloc, GroupsState>(
-      bloc: groupsBloc,
-      builder: (context, state) {
-        if (state is GroupsLoaded && state.selectedGroups.isNotEmpty) {
-          return IconButton(
-            tooltip: Translations.of(context).done,
-            onPressed: () {
-              final selectedGroups = groupsBloc.getSelectedGroups();
-              widget.onSelection?.call(selectedGroups);
-            },
-            icon:
-                widget.submitIcon ??
-                Icon(
-                  Icons.check,
-                  color: style.submitIconColor ?? colorPalette.iconPrimary,
-                  size: 24,
-                ),
-          );
-        }
-        return const SizedBox.shrink();
-      },
-    );
+    if (_selectedGroupIds.isNotEmpty) {
+      return IconButton(
+        tooltip: Translations.of(context).done,
+        onPressed: () {
+          final selectedGroups = _allGroups
+              .where((g) => _selectedGroupIds.contains(g.id))
+              .toList();
+          widget.onSelection?.call(selectedGroups);
+        },
+        icon:
+            widget.submitIcon ??
+            Icon(
+              Icons.check,
+              color: style.submitIconColor ?? colorPalette.iconPrimary,
+              size: 24,
+            ),
+      );
+    }
+    return const SizedBox.shrink();
   }
 }

@@ -28,7 +28,8 @@ class RadioButtonElement extends BaseInputElement<String> {
     return map;
   }
 
-  factory RadioButtonElement.fromMap(dynamic map) {
+  factory RadioButtonElement.fromMap(dynamic rawMap) {
+    final map = rawMap as Map<dynamic, dynamic>;
     return RadioButtonElement(
       elementType: map[ModelFieldConstants.elementType],
       elementId: map[ModelFieldConstants.elementId],

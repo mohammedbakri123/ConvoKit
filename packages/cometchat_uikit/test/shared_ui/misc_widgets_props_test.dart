@@ -51,9 +51,9 @@ ConvoKitSpacing _spacing() => ConvoKitSpacing(
   margin2: 23,
 );
 
-class FakeUser extends Fake implements User {
+class FakeUser extends Fake implements ChatUser {
   @override
-  String get uid => 'ai_bot';
+  String get id => 'ai_bot';
   @override
   String get name => 'AI Bot';
 }

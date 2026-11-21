@@ -1,3 +1,5 @@
+import 'package:convokit/convokit.dart';
+import 'package:sample_app/sample_app_backend.dart';
 import 'package:convokit/convokit_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -91,18 +93,21 @@ void main() {
     }
     final end = DateTime.now().add(const Duration(seconds: 15));
     while (DateTime.now().isBefore(end)) {
-      final builder = MessagesRequestBuilder()..limit = 30;
-      if (guid != null) {
-        builder.guid = guid;
-      } else {
-        builder.uid = TestCredentials.userBUid;
-      }
-      final page = await builder.build().fetchPrevious(
-        onSuccess: null,
-        onError: (_) {},
+      final conv = SampleAppBackend.instance.backend.getConversationFor(
+        userId: guid == null ? TestCredentials.userBUid : null,
+        groupId: guid,
       );
+      final pageRes = conv == null
+          ? null
+          : await SampleAppBackend.instance.kit.messages.fetchMessages(
+              conv.id,
+              const MessagePageRequest(direction: MessagePageDirection.latest, limit: 30),
+            );
+      final page = pageRes?.fold(onSuccess: (p) => p.items, onFailure: (_) => const <ChatMessage>[]) ?? const <ChatMessage>[];
       for (final m in page.reversed) {
-        if (m is TextMessage && m.text == text && m.id > 0) return m.id;
+        if (m is TextMessage && m.text == text && m.id != null) {
+          return int.tryParse(m.id!) ?? 1;
+        }
       }
       await pumpFor(tester, const Duration(seconds: 1));
     }

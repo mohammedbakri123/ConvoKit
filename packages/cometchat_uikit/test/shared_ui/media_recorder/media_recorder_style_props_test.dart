@@ -9,20 +9,12 @@
 ///   flutter test test/shared_ui/media_recorder/media_recorder_style_props_test.dart
 library;
 
-import 'package:bloc_test/bloc_test.dart';
 import 'package:convokit/convokit_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class MockMediaRecorderBloc
-    extends MockBloc<MediaRecorderEvent, MediaRecorderState>
-    implements MediaRecorderBloc {}
-
-MockMediaRecorderBloc _bloc(MediaRecorderState state) {
-  final b = MockMediaRecorderBloc();
-  whenListen(b, Stream<MediaRecorderState>.value(state), initialState: state);
-  return b;
-}
+MediaRecorderController _bloc(MediaRecorderState state) =>
+    MediaRecorderController(state);
 
 /// Recording, with time on the clock — the state that shows the delete button,
 /// the pause button and the stop button all at once.
@@ -72,7 +64,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_recording),
+              mediaRecorderController: _bloc(_recording),
               style: CometChatMediaRecorderStyle(
                 backgroundColor: Color(0xFF110101),
               ),
@@ -89,7 +81,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_recording),
+              mediaRecorderController: _bloc(_recording),
               style: CometChatMediaRecorderStyle(
                 border: Border.fromBorderSide(
                   BorderSide(color: Color(0xFF110202), width: 3),
@@ -115,7 +107,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_recording),
+              mediaRecorderController: _bloc(_recording),
               style: CometChatMediaRecorderStyle(
                 borderRadius: BorderRadius.all(Radius.circular(17)),
               ),
@@ -137,7 +129,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_recording),
+              mediaRecorderController: _bloc(_recording),
               style: CometChatMediaRecorderStyle(textColor: Color(0xFF110303)),
             ),
           ),
@@ -155,7 +147,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_recording),
+              mediaRecorderController: _bloc(_recording),
               style: CometChatMediaRecorderStyle(
                 textStyle: TextStyle(fontSize: 19, color: Color(0xFF110404)),
               ),
@@ -182,7 +174,7 @@ void main() {
             home: Scaffold(
               body: CometChatMediaRecorder(
                 key: UniqueKey(),
-                mediaRecorderBloc: _bloc(_recording),
+                mediaRecorderController: _bloc(_recording),
                 style: CometChatMediaRecorderStyle(
                   recordIndicatorColor: recordIndicatorColor,
                 ),
@@ -210,7 +202,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_recording),
+              mediaRecorderController: _bloc(_recording),
               style: CometChatMediaRecorderStyle(
                 recordIndicatorColor: ring,
                 recordIndicatorBackgroundColor: fill,
@@ -231,7 +223,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_recording),
+              mediaRecorderController: _bloc(_recording),
               style: CometChatMediaRecorderStyle(
                 recordIndicatorBackgroundColor: Color(0xFF110505),
               ),
@@ -248,7 +240,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_recording),
+              mediaRecorderController: _bloc(_recording),
               style: CometChatMediaRecorderStyle(
                 recordIndicatorBorderRadius: BorderRadius.all(
                   Radius.circular(21),
@@ -270,7 +262,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_recording),
+              mediaRecorderController: _bloc(_recording),
               style: CometChatMediaRecorderStyle(
                 recordIndicatorBorder: Border.fromBorderSide(
                   BorderSide(color: Color(0xFF110606), width: 4),
@@ -296,7 +288,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_recording),
+              mediaRecorderController: _bloc(_recording),
               style: CometChatMediaRecorderStyle(
                 recordIndicatorIconColor: Color(0xFF110707),
               ),
@@ -315,7 +307,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_recording),
+              mediaRecorderController: _bloc(_recording),
               style: CometChatMediaRecorderStyle(
                 deleteButtonIconColor: Color(0xFF110808),
               ),
@@ -332,7 +324,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_recording),
+              mediaRecorderController: _bloc(_recording),
               style: CometChatMediaRecorderStyle(
                 deleteButtonBackgroundColor: Color(0xFF110909),
               ),
@@ -349,7 +341,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_recording),
+              mediaRecorderController: _bloc(_recording),
               style: CometChatMediaRecorderStyle(
                 deleteButtonBorderRadius: BorderRadius.all(Radius.circular(23)),
               ),
@@ -369,7 +361,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_recording),
+              mediaRecorderController: _bloc(_recording),
               style: CometChatMediaRecorderStyle(
                 deleteButtonBorder: Border.fromBorderSide(
                   BorderSide(color: Color(0xFF110A0A), width: 5),
@@ -397,7 +389,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_recording),
+              mediaRecorderController: _bloc(_recording),
               style: CometChatMediaRecorderStyle(
                 pauseButtonIconColor: Color(0xFF110B0B),
               ),
@@ -414,7 +406,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_recording),
+              mediaRecorderController: _bloc(_recording),
               style: CometChatMediaRecorderStyle(
                 pauseButtonBackgroundColor: Color(0xFF110C0C),
               ),
@@ -431,7 +423,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_recording),
+              mediaRecorderController: _bloc(_recording),
               style: CometChatMediaRecorderStyle(
                 pauseButtonBorderRadius: BorderRadius.all(Radius.circular(25)),
               ),
@@ -451,7 +443,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_recording),
+              mediaRecorderController: _bloc(_recording),
               style: CometChatMediaRecorderStyle(
                 pauseButtonBorder: Border.fromBorderSide(
                   BorderSide(color: Color(0xFF110D0D), width: 6),
@@ -479,7 +471,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_recording),
+              mediaRecorderController: _bloc(_recording),
               style: CometChatMediaRecorderStyle(
                 stopButtonIconColor: Color(0xFF110E0E),
               ),
@@ -496,7 +488,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_recording),
+              mediaRecorderController: _bloc(_recording),
               style: CometChatMediaRecorderStyle(
                 stopButtonBackgroundColor: Color(0xFF110F0F),
               ),
@@ -513,7 +505,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_recording),
+              mediaRecorderController: _bloc(_recording),
               style: CometChatMediaRecorderStyle(
                 stopButtonBorderRadius: BorderRadius.all(Radius.circular(27)),
               ),
@@ -533,7 +525,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_recording),
+              mediaRecorderController: _bloc(_recording),
               style: CometChatMediaRecorderStyle(
                 stopButtonBorder: Border.fromBorderSide(
                   BorderSide(color: Color(0xFF111010), width: 7),
@@ -561,7 +553,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_paused),
+              mediaRecorderController: _bloc(_paused),
               style: CometChatMediaRecorderStyle(
                 startButtonIconColor: Color(0xFF111111),
               ),
@@ -578,7 +570,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_paused),
+              mediaRecorderController: _bloc(_paused),
               style: CometChatMediaRecorderStyle(
                 startButtonBackgroundColor: Color(0xFF111212),
               ),
@@ -595,7 +587,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_paused),
+              mediaRecorderController: _bloc(_paused),
               style: CometChatMediaRecorderStyle(
                 startButtonBorderRadius: BorderRadius.all(Radius.circular(29)),
               ),
@@ -615,7 +607,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_paused),
+              mediaRecorderController: _bloc(_paused),
               style: CometChatMediaRecorderStyle(
                 startButtonBorder: Border.fromBorderSide(
                   BorderSide(color: Color(0xFF111313), width: 8),
@@ -643,7 +635,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_completed),
+              mediaRecorderController: _bloc(_completed),
               style: CometChatMediaRecorderStyle(
                 sendButtonIconColor: Color(0xFF111414),
               ),
@@ -660,7 +652,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_completed),
+              mediaRecorderController: _bloc(_completed),
               style: CometChatMediaRecorderStyle(
                 sendButtonBackgroundColor: Color(0xFF111515),
               ),
@@ -677,7 +669,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_completed),
+              mediaRecorderController: _bloc(_completed),
               style: CometChatMediaRecorderStyle(
                 sendButtonBorderRadius: BorderRadius.all(Radius.circular(31)),
               ),
@@ -697,7 +689,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_completed),
+              mediaRecorderController: _bloc(_completed),
               style: CometChatMediaRecorderStyle(
                 sendButtonBorder: Border.fromBorderSide(
                   BorderSide(color: Color(0xFF111616), width: 9),
@@ -723,7 +715,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_completed),
+              mediaRecorderController: _bloc(_completed),
               style: CometChatMediaRecorderStyle(
                 playButtonIconColor: Color(0xFF111717),
               ),
@@ -740,7 +732,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_completed),
+              mediaRecorderController: _bloc(_completed),
               style: CometChatMediaRecorderStyle(
                 audioBubbleStyle: CometChatVoiceNoteBubbleStyle(
                   backgroundColor: Color(0xFF111818),
@@ -761,7 +753,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_recording),
+              mediaRecorderController: _bloc(_recording),
               padding: const EdgeInsets.only(left: 37),
             ),
           ),
@@ -781,7 +773,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_recording),
+              mediaRecorderController: _bloc(_recording),
               deleteButtonIcon: const Icon(Icons.delete, key: Key('del')),
               pauseButtonIcon: const Icon(Icons.pause, key: Key('pause')),
               stopButtonIcon: const Icon(Icons.stop, key: Key('stop')),
@@ -805,7 +797,7 @@ void main() {
           MaterialApp(
             home: Scaffold(
               body: CometChatMediaRecorder(
-                mediaRecorderBloc: _bloc(_completed),
+                mediaRecorderController: _bloc(_completed),
                 startButtonIcon: const Icon(Icons.mic, key: Key('start')),
                 sendButtonIcon: const Icon(Icons.send, key: Key('send')),
               ),
@@ -826,7 +818,7 @@ void main() {
           MaterialApp(
             home: Scaffold(
               body: CometChatMediaRecorder(
-                mediaRecorderBloc: _bloc(_recording),
+                mediaRecorderController: _bloc(_recording),
                 onClose: () => closed = true,
                 deleteButtonIcon: const Icon(Icons.delete, key: Key('del')),
               ),
@@ -846,7 +838,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CometChatMediaRecorder(
-              mediaRecorderBloc: _bloc(_completed),
+              mediaRecorderController: _bloc(_completed),
               onSubmit: (_, path) => submitted = path,
               sendButtonIcon: const Icon(Icons.send, key: Key('send')),
             ),

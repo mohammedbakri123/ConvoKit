@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:convokit/convokit.dart';
 import 'package:convokit/convokit_uikit.dart';
+import 'package:sample_app/sample_app_backend.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sample_app/screens/home_screen.dart';
@@ -12,7 +14,7 @@ void main() {
         MaterialApp(
           localizationsDelegates: Translations.localizationsDelegates,
           supportedLocales: const [Locale('en')],
-          home: const HomeScreen(),
+          home: ConvoKitScope(kit: SampleAppBackend.instance.kit, child: const HomeScreen()),
         ),
       );
       await tester.pump();
@@ -26,7 +28,7 @@ void main() {
     });
 
     testWidgets('Message header exposes no AI buttons for regular user', (tester) async {
-      final testUser = User(uid: 'u_tester', name: 'Tester', status: 'online');
+      const testUser = ChatUser(id: 'u_tester', name: 'Tester', presence: UserPresence.online);
 
       await tester.pumpWidget(
         MaterialApp(
@@ -35,8 +37,6 @@ void main() {
           home: Scaffold(
             appBar: ConvoKitMessageHeader(
               user: testUser,
-              hideNewChatButton: true,
-              hideChatHistoryButton: true,
             ),
           ),
         ),
@@ -50,7 +50,7 @@ void main() {
     });
 
     testWidgets('Message header exposes no AI action buttons even for role=ai user', (tester) async {
-      final aiUser = User(uid: 'u_ai_agent', name: 'AI Assistant', status: 'online', role: 'ai');
+      const aiUser = ChatUser(id: 'u_ai_agent', name: 'AI Assistant', presence: UserPresence.online);
 
       await tester.pumpWidget(
         MaterialApp(
@@ -59,8 +59,6 @@ void main() {
           home: Scaffold(
             appBar: ConvoKitMessageHeader(
               user: aiUser,
-              hideNewChatButton: true,
-              hideChatHistoryButton: true,
             ),
           ),
         ),

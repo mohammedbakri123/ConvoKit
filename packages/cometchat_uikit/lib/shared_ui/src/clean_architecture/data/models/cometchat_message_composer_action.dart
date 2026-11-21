@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
+import 'package:convokit/src/core/models/models.dart'
+    show ChatUser, ChatGroup;
 import '../../../../convokit_uikit_shared.dart'
     show CometChatAttachmentOptionSheetStyle;
 
@@ -44,7 +45,7 @@ class ConvoKitMessageComposerAction {
   final CometChatAttachmentOptionSheetStyle? style;
 
   ///[onItemClick] executes some task when this message composer action is selected
-  final Function(BuildContext, User?, Group?)? onItemClick;
+  final Function(BuildContext, ChatUser?, ChatGroup?)? onItemClick;
 
   ///[onToolbarTap] executes when this action is tapped from the rich-text
   ///toolbar's trailing slot (Trailing Toolbar Buttons DD §3.4). Receives the

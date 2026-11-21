@@ -2,17 +2,36 @@
 // This is the main export file for the entire clean architecture
 
 // External Dependencies
-export 'package:cometchat_sdk/cometchat_sdk.dart';
+export '../../../src/core/models/models.dart'
+    show
+        ChatUser,
+        UserPresence,
+        ChatGroup,
+        ChatMember,
+        GroupRole,
+        GroupType,
+        ChatConversation,
+        ChatConversationType,
+        ChatMessage,
+        TextMessage,
+        MediaMessage,
+        CustomMessage,
+        SendState,
+        DeliveryState,
+        ChatAttachment,
+        AttachmentKind,
+        AttachmentState;
+export '../../../src/contracts/result.dart';
 
 // Legacy exports needed by clean architecture
 export '../../l10n/translations.dart';
-export '../cometchat_ui_kit/cometchat_ui_kit.dart' show ConvoKitUIKit;
+export '../../../src/convokit_ui_kit.dart' show ConvoKitUIKit;
 
 // Core Layer
 export 'core/core.dart';
 
 // Domain Layer
-export 'domain/domain.dart';
+export 'domain/domain.dart' hide MessageRepository, UserRepository, GroupRepository;
 
 // Data Layer
 export 'data/data.dart';

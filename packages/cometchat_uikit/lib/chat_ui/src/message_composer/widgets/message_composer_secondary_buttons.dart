@@ -104,19 +104,16 @@ class MessageComposerSecondaryButtons extends StatelessWidget {
         effectiveColorPalette.iconSecondary ??
         Colors.grey;
 
-    return Semantics(
-      label: Translations.of(context).attachmentButton,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: secondaryButtonIconBackgroundColor,
-          borderRadius: secondaryButtonBorderRadius,
-        ),
-        child: _buildAttachmentButton(
-          context,
-          effectiveColorPalette,
-          effectiveSpacing,
-          iconColor,
-        ),
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: secondaryButtonIconBackgroundColor,
+        borderRadius: secondaryButtonBorderRadius,
+      ),
+      child: _buildAttachmentButton(
+        context,
+        effectiveColorPalette,
+        effectiveSpacing,
+        iconColor,
       ),
     );
   }

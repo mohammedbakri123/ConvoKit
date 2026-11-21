@@ -13,14 +13,13 @@ import 'package:convokit/convokit_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-final _group = Group(guid: 'g1', name: 'Team', type: GroupTypeConstants.public);
+const _group = ChatGroup(id: 'g1', name: 'Team', type: GroupType.public);
 
 /// A participant, so exactly one of the three scope tiles renders selected and
 /// the other two render unselected — both branches in one pump.
-final _member = GroupMember(
-  uid: 'u2',
-  name: 'Bob',
-  scope: GroupMemberScope.participant,
+const _member = ChatMember(
+  user: ChatUser(id: 'u2', name: 'Bob'),
+  role: GroupRole.member,
 );
 
 Widget _sheet(ConvoKitChangeScopeStyle style, {EdgeInsetsGeometry? padding}) =>

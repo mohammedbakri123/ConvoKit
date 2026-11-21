@@ -9,7 +9,7 @@ class ConvoKitUIKitHelper {
   ///[onMessageSent] is used to inform the listeners
   ///when the logged-in user is sending a message
   static void onMessageSent(
-    BaseMessage message,
+    ChatMessage message,
     core_enums.MessageStatus messageStatus,
   ) {
     ConvoKitMessageEvents.ccMessageSent(message, messageStatus);
@@ -17,19 +17,19 @@ class ConvoKitUIKitHelper {
 
   ///[onMessageEdited] is used to inform the listeners
   ///when the logged-in user is editing a message
-  static void onMessageEdited(BaseMessage message, MessageEditStatus status) {
+  static void onMessageEdited(ChatMessage message, MessageEditStatus status) {
     ConvoKitMessageEvents.ccMessageEdited(message, status);
   }
 
   ///[onMessageDeleted] is used to inform the listeners
   ///when the logged-in user has deleted a message
-  static void onMessageDeleted(BaseMessage message, EventStatus status) {
+  static void onMessageDeleted(ChatMessage message, EventStatus status) {
     ConvoKitMessageEvents.ccMessageDeleted(message, status);
   }
 
   ///[onMessageRead] is used to inform the listeners
   ///when the logged-in user has read a message
-  static void onMessageRead(BaseMessage message) {
+  static void onMessageRead(ChatMessage message) {
     ConvoKitMessageEvents.ccMessageRead(message);
   }
 
@@ -39,44 +39,44 @@ class ConvoKitUIKitHelper {
     ConvoKitMessageEvents.ccLiveReaction(reaction, receiverId);
   }
 
-  //---------- User Events ----------
+  //---------- ChatUser Events ----------
   ///[onUserBlocked] is used to inform the listeners
   ///when the logged-in user blocks another user
-  static void onUserBlocked(User user) {
+  static void onUserBlocked(ChatUser user) {
     ConvoKitUserEvents.ccUserBlocked(user);
   }
 
   ///[onUserUnblocked] is used to inform the listeners
   ///when the logged-in user unblocks a blocked user
-  static void onUserUnblocked(User user) {
+  static void onUserUnblocked(ChatUser user) {
     ConvoKitUserEvents.ccUserUnblocked(user);
   }
 
   ///[onMessageModerated] is used to inform the listeners
   ///when the logged-in user has moderated a message
-  static void onMessageModerated(BaseMessage message) {
+  static void onMessageModerated(ChatMessage message) {
     ConvoKitMessageEvents.onMessageModerated(message);
   }
 
-  //---------- Group Events ----------
+  //---------- ChatGroup Events ----------
   ///[onGroupCreated] is used to inform the listeners
-  ///when the logged-in user creates a Group
-  static void onGroupCreated(Group group) {
+  ///when the logged-in user creates a ChatGroup
+  static void onGroupCreated(ChatGroup group) {
     ConvoKitGroupEvents.ccGroupCreated(group);
   }
 
   ///[onGroupDeleted] is used to inform the listeners
-  ///when the logged-in user deletes a Group
-  static void onGroupDeleted(Group group) {
+  ///when the logged-in user deletes a ChatGroup
+  static void onGroupDeleted(ChatGroup group) {
     ConvoKitGroupEvents.ccGroupDeleted(group);
   }
 
   ///[onGroupLeft] is used to inform the listeners
-  ///when the logged-in user leaves a Group
+  ///when the logged-in user leaves a ChatGroup
   static void onGroupLeft(
-    ui_kit.Action message,
-    User leftUser,
-    Group leftGroup,
+    ui_kit.ChatMessage message,
+    ChatUser leftUser,
+    ChatGroup leftGroup,
   ) {
     ConvoKitGroupEvents.ccGroupLeft(message, leftUser, leftGroup);
   }
@@ -85,11 +85,11 @@ class ConvoKitUIKitHelper {
   ///when the logged-in user changes the scope of a group member
   ///in a group
   static void onGroupMemberScopeChanged(
-    ui_kit.Action message,
-    User updatedUser,
+    ui_kit.ChatMessage message,
+    ChatUser updatedUser,
     String scopeChangedTo,
     String scopeChangedFrom,
-    Group group,
+    ChatGroup group,
   ) {
     ConvoKitGroupEvents.ccGroupMemberScopeChanged(
       message,
@@ -103,10 +103,10 @@ class ConvoKitUIKitHelper {
   ///[onGroupMemberBanned] is used to inform the listeners
   ///when the logged-in user bans a group member
   static void onGroupMemberBanned(
-    ui_kit.Action message,
-    User bannedUser,
-    User bannedBy,
-    Group bannedFrom,
+    ui_kit.ChatMessage message,
+    ChatUser bannedUser,
+    ChatUser bannedBy,
+    ChatGroup bannedFrom,
   ) {
     ConvoKitGroupEvents.ccGroupMemberBanned(
       message,
@@ -119,10 +119,10 @@ class ConvoKitUIKitHelper {
   ///[onGroupMemberKicked] is used to inform the listeners
   ///when the logged-in user kicks a group member from a group
   static void onGroupMemberKicked(
-    ui_kit.Action message,
-    User kickedUser,
-    User kickedBy,
-    Group kickedFrom,
+    ui_kit.ChatMessage message,
+    ChatUser kickedUser,
+    ChatUser kickedBy,
+    ChatGroup kickedFrom,
   ) {
     ConvoKitGroupEvents.ccGroupMemberKicked(
       message,
@@ -135,10 +135,10 @@ class ConvoKitUIKitHelper {
   ///[onGroupMemberUnbanned] is used to inform the listeners
   ///when the logged-in user unbans a banned user of a group
   static void onGroupMemberUnbanned(
-    ui_kit.Action message,
-    User unbannedUser,
-    User unbannedBy,
-    Group unbannedFrom,
+    ui_kit.ChatMessage message,
+    ChatUser unbannedUser,
+    ChatUser unbannedBy,
+    ChatGroup unbannedFrom,
   ) {
     ConvoKitGroupEvents.ccGroupMemberUnbanned(
       message,
@@ -150,17 +150,17 @@ class ConvoKitUIKitHelper {
 
   ///[onGroupMemberJoined] is used to inform the listeners
   ///when the logged-in user joins a group
-  static void onGroupMemberJoined(User joinedUser, Group joinedGroup) {
+  static void onGroupMemberJoined(ChatUser joinedUser, ChatGroup joinedGroup) {
     ConvoKitGroupEvents.ccGroupMemberJoined(joinedUser, joinedGroup);
   }
 
   ///[onGroupMemberAdded] is used to inform the listeners
   ///when the logged-in user adds users to a group
   static void onGroupMemberAdded(
-    List<ui_kit.Action> messages,
-    List<User> usersAdded,
-    Group groupAddedIn,
-    User addedBy,
+    List<ChatMessage> messages,
+    List<ChatUser> usersAdded,
+    ChatGroup groupAddedIn,
+    ChatUser addedBy,
   ) {
     ConvoKitGroupEvents.ccGroupMemberAdded(
       messages,
@@ -172,20 +172,20 @@ class ConvoKitUIKitHelper {
 
   ///[onOwnershipChanged] is used to inform the listeners
   ///when the logged-in user transfers their ownership to some other group member
-  static void onOwnershipChanged(Group group, GroupMember newOwner) {
+  static void onOwnershipChanged(ChatGroup group, ChatMember newOwner) {
     ConvoKitGroupEvents.ccOwnershipChanged(group, newOwner);
   }
 
-  //---------- Conversation Events ----------
+  //---------- ChatConversation Events ----------
   ///[onConversationDeleted] is used to inform the listeners
   ///when the logged-in user deletes a conversation
-  static void onConversationDeleted(Conversation conversation) {
+  static void onConversationDeleted(ChatConversation conversation) {
     ConvoKitConversationEvents.ccConversationDeleted(conversation);
   }
 
   ///[onConversationUpdate] is used to inform the listeners
   ///when a conversation is updated (e.g., mark as unread)
-  static void onConversationUpdate(Conversation conversation) {
+  static void onConversationUpdate(ChatConversation conversation) {
     ConvoKitConversationEvents.ccUpdateConversation(conversation);
   }
 
@@ -208,9 +208,9 @@ class ConvoKitUIKitHelper {
   ///has moved on to a different conversation
   static void ccActiveChatChanged(
     Map<String, dynamic>? id,
-    BaseMessage? lastMessage,
-    User? user,
-    Group? group,
+    ChatMessage? lastMessage,
+    ChatUser? user,
+    ChatGroup? group,
     int unreadMessageCount,
   ) {
     ConvoKitUIEvents.ccActiveChatChanged(
@@ -224,7 +224,7 @@ class ConvoKitUIKitHelper {
 
   ///[onOpenChat] used to open the chat conversation
   ///of a user or a group
-  static void onOpenChat(User? user, Group? group) {
+  static void onOpenChat(ChatUser? user, ChatGroup? group) {
     ConvoKitUIEvents.openChat(user, group);
   }
 

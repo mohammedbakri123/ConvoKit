@@ -1,42 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../convokit_uikit.dart';
 import '../../shared/list_options_menu.dart';
 
-/// A widget that displays the list of groups with state handling and pagination.
-///
-/// This widget uses [BlocBuilder] to listen to [GroupsBloc] and renders
-/// the appropriate view based on the current state:
-/// - [GroupsLoading] → Loading view with shimmer effect
-/// - [GroupsEmpty] → Empty state view
-/// - [GroupsError] → Error view with retry button
-/// - [GroupsLoaded] → ListView.builder with [CometChatGroupListItem]
-///
-/// The widget handles pagination by dispatching [LoadMoreGroups] event
-/// when the user scrolls to the bottom of the list.
-///
-/// ## Usage
-///
-/// ```dart
-/// GroupsList(
-///   groupsBloc: groupsBloc,
-///   style: ConvoKitGroupsStyle(),
-///   colorPalette: colorPalette,
-///   spacing: spacing,
-///   typography: typography,
-///   onItemTap: (context, group) => navigateToGroup(group),
-/// )
-/// ```
-///
-/// Requirements: 5.2, 5.6
+/// Stateless widget that displays a list of [ChatGroup]s with state handling
+/// and cursor pagination.
 class GroupsList extends StatelessWidget {
   const GroupsList({
     super.key,
-    required this.groupsBloc,
+    required this.groups,
     required this.style,
     required this.colorPalette,
     required this.spacing,
     required this.typography,
+    this.isLoading = false,
+    this.isEmpty = false,
+    this.error,
+    this.hasMore = false,
+    this.isLoadingMore = false,
+    this.selectedGroupIds = const <String>{},
+    this.onLoadMore,
+    this.onRetry,
+    this.onToggleSelection,
     this.scrollController,
     this.loadingStateView,
     this.emptyStateView,
@@ -59,133 +43,58 @@ class GroupsList extends StatelessWidget {
     this.protectedGroupIcon,
   });
 
-  /// The BLoC managing groups state.
-  final GroupsBloc groupsBloc;
+  final List<ChatGroup> groups;
+  final bool isLoading;
+  final bool isEmpty;
+  final ChatError? error;
+  final bool hasMore;
+  final bool isLoadingMore;
+  final Set<String> selectedGroupIds;
+  final VoidCallback? onLoadMore;
+  final VoidCallback? onRetry;
+  final void Function(String groupId)? onToggleSelection;
 
-  /// The style configuration for the groups widget.
   final ConvoKitGroupsStyle style;
-
-  /// The color palette used for styling.
   final ConvoKitColorPalette colorPalette;
-
-  /// The spacing configuration for padding and margins.
   final ConvoKitSpacing spacing;
-
-  /// The typography configuration for text styles.
   final ConvoKitTypography typography;
-
-  /// Optional scroll controller for the list.
   final ScrollController? scrollController;
-
-  /// Custom loading state view builder.
   final WidgetBuilder? loadingStateView;
-
-  /// Custom empty state view builder.
   final WidgetBuilder? emptyStateView;
-
-  /// Custom error state view builder.
   final WidgetBuilder? errorStateView;
-
-  /// Hides the error view, including a custom [errorStateView], when true.
-  /// Matches ConvoKitGroupMembers.
   final bool? hideError;
-
-  /// Custom list item view builder for full customization.
-  /// When provided, this completely replaces the default [CometChatGroupListItem].
-  final Widget Function(Group)? listItemView;
-
-  /// Custom subtitle view builder.
-  final Widget? Function(BuildContext, Group)? subtitleView;
-
-  /// Custom trailing view builder.
-  final Widget? Function(BuildContext, Group)? trailingView;
-
-  /// Custom leading view builder.
-  final Widget? Function(BuildContext, Group)? leadingView;
-
-  /// Custom title view builder.
-  final Widget? Function(BuildContext, Group)? titleView;
-
-  /// Whether to hide the group type icon (private/password indicators).
+  final Widget Function(ChatGroup)? listItemView;
+  final Widget? Function(BuildContext, ChatGroup)? subtitleView;
+  final Widget? Function(BuildContext, ChatGroup)? trailingView;
+  final Widget? Function(BuildContext, ChatGroup)? leadingView;
+  final Widget? Function(BuildContext, ChatGroup)? titleView;
   final bool? hideGroupTypeIcon;
-
-  /// The selection mode for the groups list.
   final SelectionMode? selectionMode;
-
-  /// When selection should be activated.
   final ActivateSelection? activateSelection;
-
-  /// Callback when an item is tapped.
-  final Function(BuildContext, Group)? onItemTap;
-
-  /// Callback when an item is long-pressed.
-  final Function(BuildContext, Group)? onItemLongPress;
-
-  /// Builds the menu a long press opens on a group. Nothing opens when it is
-  /// null or returns no options. [onItemLongPress], when set, takes the long
-  /// press instead, and starting a long-press selection comes first.
-  final List<CometChatOption> Function(BuildContext context, Group group)?
+  final Function(BuildContext, ChatGroup)? onItemTap;
+  final Function(BuildContext, ChatGroup)? onItemLongPress;
+  final List<CometChatOption> Function(BuildContext context, ChatGroup group)?
   options;
-
-  /// Style for the avatar.
   final ConvoKitAvatarStyle? avatarStyle;
-
-  /// Style for the status indicator.
   final ConvoKitStatusIndicatorStyle? statusIndicatorStyle;
-
-  /// Custom icon for private groups.
   final Widget? privateGroupIcon;
-
-  /// Custom icon for protected (password) groups.
   final Widget? protectedGroupIcon;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GroupsBloc, GroupsState>(
-      bloc: groupsBloc,
-      // Optimization: Only rebuild on state type changes or significant data changes
-      // Requirement: 5.6
-      buildWhen: (previous, current) {
-        // Always rebuild if state type changes
-        if (previous.runtimeType != current.runtimeType) return true;
-
-        // For GroupsLoaded, rebuild on list length, loading more, or selection changes
-        if (previous is GroupsLoaded && current is GroupsLoaded) {
-          return previous.groups.length != current.groups.length ||
-              previous.isLoadingMore != current.isLoadingMore ||
-              previous.selectedGroups != current.selectedGroups;
-        }
-        return true;
-      },
-      builder: (context, state) {
-        // Handle error state
-        if (state is GroupsError) {
-          if (hideError == true) return const SizedBox.shrink();
-          return _buildErrorState(context, state);
-        }
-
-        // Handle loading state
-        if (state is GroupsLoading) {
-          return _buildLoadingState(context);
-        }
-
-        // Handle empty state
-        if (state is GroupsEmpty) {
-          return _buildEmptyState(context);
-        }
-
-        // Handle loaded state
-        if (state is GroupsLoaded) {
-          return _buildGroupsList(context, state);
-        }
-
-        // Default to loading view for initial/unknown states
-        return _buildLoadingState(context);
-      },
-    );
+    if (error != null) {
+      if (hideError == true) return const SizedBox.shrink();
+      return _buildErrorState(context);
+    }
+    if (isLoading) {
+      return _buildLoadingState(context);
+    }
+    if (isEmpty || groups.isEmpty) {
+      return _buildEmptyState(context);
+    }
+    return _buildGroupsList(context);
   }
 
-  /// Builds the loading state view with shimmer effect.
   Widget _buildLoadingState(BuildContext context) {
     if (loadingStateView != null) {
       return Center(child: loadingStateView!(context));
@@ -246,7 +155,6 @@ class GroupsList extends StatelessWidget {
     );
   }
 
-  /// Builds the empty state view.
   Widget _buildEmptyState(BuildContext context) {
     if (emptyStateView != null) {
       return Center(child: emptyStateView!(context));
@@ -298,10 +206,9 @@ class GroupsList extends StatelessWidget {
     );
   }
 
-  /// Builds the error state view with retry button.
-  Widget _buildErrorState(BuildContext context, GroupsError state) {
+  Widget _buildErrorState(BuildContext context) {
     if (hideError == true) {
-      return const SizedBox();
+      return const SizedBox.shrink();
     }
     if (errorStateView != null) {
       return Center(child: errorStateView!(context));
@@ -311,7 +218,7 @@ class GroupsList extends StatelessWidget {
       colorPalette,
       typography,
       spacing,
-      () => groupsBloc.add(const RefreshGroups()),
+      () => onRetry?.call(),
       errorStateTextColor: style.errorStateTextColor,
       errorStateTextStyle: style.errorStateTextStyle,
       errorStateSubtitleColor: style.errorStateSubTitleTextColor,
@@ -324,29 +231,24 @@ class GroupsList extends StatelessWidget {
     );
   }
 
-  /// Builds the groups list for the loaded state.
-  Widget _buildGroupsList(BuildContext context, GroupsLoaded state) {
-    final groups = state.groups;
-    final hasMore = state.hasMore;
-    final selectedGroups = state.selectedGroups;
-
+  Widget _buildGroupsList(BuildContext context) {
     return ListView.builder(
       controller: scrollController,
       itemCount: hasMore ? groups.length + 1 : groups.length,
       itemBuilder: (context, index) {
-        // Handle pagination - load more when reaching the end
         if (index >= groups.length) {
-          groupsBloc.add(const LoadMoreGroups());
+          if (!isLoadingMore) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              onLoadMore?.call();
+            });
+          }
           return _buildLoadingIndicator();
         }
-
-        final group = groups[index];
-        return _buildGroupItem(context, group, selectedGroups);
+        return _buildGroupItem(context, groups[index]);
       },
     );
   }
 
-  /// Builds the loading indicator for pagination.
   Widget _buildLoadingIndicator() {
     return Padding(
       padding: EdgeInsets.all(spacing.padding4 ?? 16),
@@ -356,26 +258,18 @@ class GroupsList extends StatelessWidget {
     );
   }
 
-  /// Builds a single group item.
-  Widget _buildGroupItem(
-    BuildContext context,
-    Group group,
-    Set<String> selectedGroups,
-  ) {
-    // Use custom listItemView if provided for full customization
+  Widget _buildGroupItem(BuildContext context, ChatGroup group) {
     if (listItemView != null) {
       return listItemView!(group);
     }
 
-    final isSelected = selectedGroups.contains(group.guid);
+    final isSelected = selectedGroupIds.contains(group.id);
 
-    // The row's own context anchors the options menu on the row.
     return Builder(
       builder: (rowContext) => _buildGroupListItem(
         context,
         rowContext,
         group,
-        selectedGroups,
         isSelected,
       ),
     );
@@ -384,20 +278,19 @@ class GroupsList extends StatelessWidget {
   Widget _buildGroupListItem(
     BuildContext context,
     BuildContext rowContext,
-    Group group,
-    Set<String> selectedGroups,
+    ChatGroup group,
     bool isSelected,
   ) {
     return CometChatGroupListItem(
       group: group,
-      onItemClick: (g) => _handleItemTap(context, g, selectedGroups),
+      onItemClick: (g) => _handleItemTap(context, g),
       onItemLongClick:
           onItemLongPress != null ||
               options != null ||
               activateSelection == ActivateSelection.onLongClick
-          ? (g) => _handleItemLongPress(context, g, selectedGroups, rowContext)
+          ? (g) => _handleItemLongPress(context, g, rowContext)
           : null,
-      onSelectionToggle: () => _handleSelectionToggle(group),
+      onSelectionToggle: () => onToggleSelection?.call(group.id),
       isSelected: isSelected,
       selectionMode: selectionMode ?? SelectionMode.none,
       hideGroupTypeIcon: hideGroupTypeIcon ?? false,
@@ -410,7 +303,6 @@ class GroupsList extends StatelessWidget {
       colorPalette: colorPalette,
       spacing: spacing,
       typography: typography,
-      // Pass custom view slots
       leadingView: leadingView != null ? (g) => leadingView!(context, g) : null,
       titleView: titleView != null ? (g) => titleView!(context, g) : null,
       subtitleView: subtitleView != null
@@ -419,7 +311,6 @@ class GroupsList extends StatelessWidget {
       trailingView: trailingView != null
           ? (g) => trailingView!(context, g)
           : null,
-      // Pass item-level styles from ConvoKitGroupsStyle
       style: CometChatGroupListItemStyle(
         titleTextStyle: style.itemTitleTextStyle,
         titleTextColor: style.itemTitleTextColor,
@@ -428,8 +319,6 @@ class GroupsList extends StatelessWidget {
         selectedBackgroundColor: style.listItemSelectedBackgroundColor,
         checkBoxBackgroundColor: style.checkBoxBackgroundColor,
         checkBoxCheckedBackgroundColor: style.checkBoxCheckedBackgroundColor,
-        // Resolved rather than cast: the style takes any geometry, and a
-        // BorderRadiusDirectional used to throw here.
         checkBoxBorderRadius: style.checkBoxBorderRadius?.resolve(
           Directionality.of(context),
         ),
@@ -442,35 +331,26 @@ class GroupsList extends StatelessWidget {
     );
   }
 
-  /// Handles tap on a group item.
-  void _handleItemTap(
-    BuildContext context,
-    Group group,
-    Set<String> selectedGroups,
-  ) {
-    // If selection mode is active, toggle selection
+  void _handleItemTap(BuildContext context, ChatGroup group) {
     if ((activateSelection == ActivateSelection.onClick ||
             (activateSelection == ActivateSelection.onLongClick &&
-                selectedGroups.isNotEmpty)) &&
+                selectedGroupIds.isNotEmpty)) &&
         !(selectionMode == null || selectionMode == SelectionMode.none)) {
-      groupsBloc.add(ToggleGroupSelection(group.guid));
+      onToggleSelection?.call(group.id);
     } else if (onItemTap != null) {
       onItemTap!(context, group);
     }
   }
 
-  /// Handles long press on a group item.
   void _handleItemLongPress(
     BuildContext context,
-    Group group,
-    Set<String> selectedGroups,
+    ChatGroup group,
     BuildContext rowContext,
   ) {
-    // If selection mode is active and no items selected, start selection
     if (activateSelection == ActivateSelection.onLongClick &&
-        selectedGroups.isEmpty &&
+        selectedGroupIds.isEmpty &&
         !(selectionMode == null || selectionMode == SelectionMode.none)) {
-      groupsBloc.add(ToggleGroupSelection(group.guid));
+      onToggleSelection?.call(group.id);
     } else if (onItemLongPress != null) {
       onItemLongPress!(context, group);
     } else if (options != null) {
@@ -481,10 +361,5 @@ class GroupsList extends StatelessWidget {
         spacing: spacing,
       );
     }
-  }
-
-  /// Handles selection toggle for a group.
-  void _handleSelectionToggle(Group group) {
-    groupsBloc.add(ToggleGroupSelection(group.guid));
   }
 }

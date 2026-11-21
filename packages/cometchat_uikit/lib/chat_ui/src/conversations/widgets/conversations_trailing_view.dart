@@ -1,18 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../../convokit_uikit.dart';
 
-/// A widget that displays the trailing area for a conversation list item.
-///
-/// This widget renders the trailing content which includes:
-/// - Timestamp showing when the last message was sent/updated
-/// - Unread message count badge
-///
-/// The widget handles AI user hiding by returning an empty SizedBox when
-/// the conversation is with an AI role user.
-///
-/// The trailing view uses:
-/// - [ConvoKitDate] for displaying the timestamp
-/// - [ConvoKitBadge] for displaying the unread count
+/// A widget that displays the trailing area for a conversation list item:
+/// timestamp of the last message/update and unread message count badge.
 class ConversationsTrailingView extends StatelessWidget {
   const ConversationsTrailingView({
     super.key,
@@ -33,62 +23,24 @@ class ConversationsTrailingView extends StatelessWidget {
     this.dateTimeFormatterCallback,
   });
 
-  /// The conversation to display the trailing view for.
-  final Conversation conversation;
-
-  /// The style configuration for the conversations widget.
+  final ChatConversation conversation;
   final ConvoKitConversationsStyle style;
-
-  /// The style configuration for the date widget.
   final ConvoKitDateStyle datesStyle;
-
-  /// The color palette used for styling.
   final ConvoKitColorPalette colorPalette;
-
-  /// The spacing configuration for padding and margins.
   final ConvoKitSpacing spacing;
-
-  /// The typography configuration for text styles.
   final ConvoKitTypography typography;
-
-  /// Custom date pattern callback for formatting the date.
-  /// If provided, the returned string will be used as the custom date string.
-  final String Function(Conversation)? datePattern;
-
-  /// Padding for the date widget.
+  final String Function(ChatConversation)? datePattern;
   final EdgeInsets? datePadding;
-
-  /// Height for the date widget.
   final double? dateHeight;
-
-  /// Width for the date widget.
   final double? dateWidth;
-
-  /// Whether the date background should be transparent.
   final bool? dateBackgroundIsTransparent;
-
-  /// Width for the badge widget.
   final double? badgeWidth;
-
-  /// Height for the badge widget.
   final double? badgeHeight;
-
-  /// Padding for the badge widget.
   final EdgeInsetsGeometry? badgePadding;
-
-  /// Callback for custom date/time formatting.
   final DateTimeFormatterCallback? dateTimeFormatterCallback;
 
   @override
   Widget build(BuildContext context) {
-    // Hide trailing view (timestamp + unread) for AI agent conversations
-    if (conversation.conversationWith is User) {
-      final user = conversation.conversationWith as User;
-      if (user.role == AIConstants.aiRole || user.role == 'ai') {
-        return const SizedBox();
-      }
-    }
-
     return Padding(
       padding: EdgeInsets.only(left: spacing.padding2 ?? 0),
       child: Column(
@@ -98,46 +50,23 @@ class ConversationsTrailingView extends StatelessWidget {
         children: [
           Flexible(child: _getTime(context)),
           const SizedBox(height: 6.5),
-          Flexible(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Pin Conversation indicator — beside the unread badge, shown
-                // whenever the conversation carries a pin, regardless of who
-                // placed it (a self pin or an admin/app_system pin).
-                if (conversation.pinnedBy != null)
-                  Padding(
-                    padding: EdgeInsets.only(right: spacing.padding1 ?? 4),
-                    child: Icon(
-                      Icons.push_pin,
-                      size: typography.caption1?.regular?.fontSize ?? 12,
-                      color: colorPalette.iconSecondary,
-                    ),
-                  ),
-                Flexible(child: _getUnreadCount(context)),
-              ],
-            ),
-          ),
+          Flexible(child: _getUnreadCount(context)),
         ],
       ),
     );
   }
 
-  /// Returns the timestamp widget for the last message.
   Widget _getTime(BuildContext context) {
-    DateTime? lastMessageTime =
-        conversation.lastMessage?.updatedAt ?? conversation.lastMessage?.sentAt;
-    if (lastMessageTime == null) return const SizedBox();
+    final lastMessageTime =
+        conversation.lastMessage?.serverCreatedAt ??
+        conversation.lastMessage?.createdAt ??
+        conversation.updatedAt;
 
-    String? customDateString;
-
-    if (datePattern != null) {
-      customDateString = datePattern!(conversation);
-    }
+    final customDateString = datePattern?.call(conversation);
 
     return ConvoKitDate(
       date: lastMessageTime,
-      padding: datePadding ?? const EdgeInsets.all(0),
+      padding: datePadding ?? EdgeInsets.zero,
       height: dateHeight,
       isTransparentBackground: dateBackgroundIsTransparent,
       width: dateWidth,
@@ -161,10 +90,9 @@ class ConversationsTrailingView extends StatelessWidget {
     );
   }
 
-  /// Returns the unread message count badge widget.
   Widget _getUnreadCount(BuildContext context) {
     return ConvoKitBadge(
-      count: conversation.unreadMessageCount,
+      count: conversation.unreadCount,
       width: badgeWidth,
       height: badgeHeight ?? 20,
       style: style.badgeStyle ?? const ConvoKitBadgeStyle(),

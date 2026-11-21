@@ -49,8 +49,8 @@ void main() {
         _host(
           CometChatReactions(
             reactionList: [
-              ReactionCount(reaction: '👍', count: 2, reactedByMe: true),
-              ReactionCount(reaction: '🎉', count: 1, reactedByMe: false),
+              {'reaction': '👍', 'count': 2, 'reactedByMe': true},
+              {'reaction': '🎉', 'count': 1, 'reactedByMe': false},
             ],
             alignment: BubbleAlignment.left,
             style: CometChatReactionsStyle(
@@ -398,7 +398,7 @@ void main() {
             Builder(
               builder: (context) => CometChatReactions(
                 reactionList: [
-                  ReactionCount(reaction: 'A', count: 2, reactedByMe: true),
+                  {'reaction': 'A', 'count': 2, 'reactedByMe': true},
                 ],
                 alignment: BubbleAlignment.left,
                 height: 49,

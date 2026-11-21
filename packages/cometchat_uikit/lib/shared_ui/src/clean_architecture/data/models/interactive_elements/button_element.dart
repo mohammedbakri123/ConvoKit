@@ -21,7 +21,8 @@ class ButtonElement extends BaseInteractiveElement {
     return map;
   }
 
-  factory ButtonElement.fromMap(dynamic map) {
+  factory ButtonElement.fromMap(dynamic rawMap) {
+    final map = rawMap as Map<dynamic, dynamic>;
     return ButtonElement(
       elementType: map[ModelFieldConstants.elementType],
       elementId: map[ModelFieldConstants.elementId],

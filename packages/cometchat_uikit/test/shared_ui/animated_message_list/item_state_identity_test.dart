@@ -21,41 +21,25 @@
 ///   flutter test test/shared_ui/animated_message_list/item_state_identity_test.dart
 library;
 
-import 'package:bloc_test/bloc_test.dart';
 import 'package:convokit/convokit_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 
-class MockAnimatedMessageListBloc
-    extends MockBloc<MessageListEvent, AnimatedMessageListState>
-    implements AnimatedMessageListBloc {}
-
-final _me = User(uid: 'u1', name: 'Alice');
+const _me = ChatUser(id: 'u1', name: 'Alice');
 final _sentAt = DateTime.fromMillisecondsSinceEpoch(1700000000000);
 
 TextMessage _msg(int id, {required String muid}) => TextMessage(
-  id: id,
-  text: 'msg $id',
+  id: id == 0 ? null : '$id',
+  localId: muid,
+  conversationId: 'conv_1',
   sender: _me,
-  receiverUid: 'u2',
-  type: MessageTypeConstants.text,
-  receiverType: ReceiverTypeConstants.user,
-  sentAt: _sentAt,
-  muid: muid,
+  createdAt: _sentAt,
+  text: 'msg $id',
 );
 
-MockAnimatedMessageListBloc _bloc(List<BaseMessage> messages) {
-  final state = AnimatedMessageListState(messages: messages);
-  final b = MockAnimatedMessageListBloc();
-  whenListen(
-    b,
-    Stream<AnimatedMessageListState>.value(state),
-    initialState: state,
-  );
-  when(
-    () => b.operationsStream,
-  ).thenAnswer((_) => const Stream<MessageOperation>.empty());
+AnimatedMessageListBloc _bloc(List<ChatMessage> messages) {
+  final b = AnimatedMessageListBloc();
+  b.setMessages(messages, animated: false);
   return b;
 }
 
@@ -76,7 +60,7 @@ List<String> _itemKeys(WidgetTester tester) => tester
 
 Future<List<String>> _keysFor(
   WidgetTester tester,
-  List<BaseMessage> messages,
+  List<ChatMessage> messages,
 ) async {
   await tester.pumpWidget(
     MaterialApp(
@@ -98,7 +82,7 @@ void main() {
   testWidgets('every item carries a per-message identity key — ENG-39490', (
     tester,
   ) async {
-    final keys = await _keysFor(tester, <BaseMessage>[
+    final keys = await _keysFor(tester, <ChatMessage>[
       _msg(1, muid: 'a'),
       _msg(2, muid: 'b'),
       _msg(3, muid: 'c'),
@@ -123,11 +107,11 @@ void main() {
     tester,
   ) async {
     // Optimistic: the server has not answered, so id is still 0.
-    final pending = await _keysFor(tester, <BaseMessage>[
+    final pending = await _keysFor(tester, <ChatMessage>[
       _msg(0, muid: 'pending-muid'),
     ]);
     // Acknowledged: a real id arrives; the composer preserves the muid.
-    final acked = await _keysFor(tester, <BaseMessage>[
+    final acked = await _keysFor(tester, <ChatMessage>[
       _msg(4321, muid: 'pending-muid'),
     ]);
 
@@ -141,7 +125,7 @@ void main() {
   });
 
   testWidgets('a message with no muid still gets a key', (tester) async {
-    final keys = await _keysFor(tester, <BaseMessage>[_msg(7, muid: '')]);
+    final keys = await _keysFor(tester, <ChatMessage>[_msg(7, muid: '')]);
     expect(keys, ['id:7']);
   });
 }

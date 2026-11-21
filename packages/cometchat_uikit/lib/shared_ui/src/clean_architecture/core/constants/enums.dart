@@ -1,4 +1,3 @@
-import 'package:cometchat_sdk/cometchat_sdk.dart' hide CardMessage;
 
 ///[ChatAlignment] is an enum that defines the alignment of the messages in the message list
 enum ChatAlignment { leftAligned, standard }

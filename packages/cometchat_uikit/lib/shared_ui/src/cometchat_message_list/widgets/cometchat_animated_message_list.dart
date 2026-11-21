@@ -4,10 +4,9 @@ import 'dart:math';
 import 'package:diffutil_dart/diffutil.dart' as diffutil;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:cometchat_sdk/cometchat_sdk.dart' hide CardMessage;
+import 'package:convokit/src/core/models/models.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 
-import '../../../../chat_ui/src/message_list/bloc/message_list_bloc.dart';
 import '../../../../chat_ui/src/message_list/utils/message_operation.dart';
 import '../../../../chat_ui/src/message_list/utils/message_list_diff.dart';
 import '../utils/composer_height_notifier.dart';
@@ -32,7 +31,7 @@ enum InitialScrollToEndMode {
 typedef MessageItemBuilder =
     Widget Function(
       BuildContext context,
-      BaseMessage message,
+      ChatMessage message,
       int index,
       Animation<double> animation,
     );
@@ -140,7 +139,7 @@ class ConvoKitAnimatedMessageList extends StatefulWidget {
 
   /// Optional O(1) message index lookup function
   /// If provided, used instead of O(n) indexWhere in findChildIndexCallback
-  final int? Function(int messageId)? findMessageIndex;
+  final int? Function(String messageId)? findMessageIndex;
 
   /// Logged-in user ID for determining message ownership
   /// Used to decide auto-scroll behavior (always scroll for own messages)
@@ -218,7 +217,7 @@ class _ConvoKitAnimatedMessageListState
   Timer? _scrollToBottomShowTimer;
 
   // State tracking
-  late List<BaseMessage> _messages;
+  late List<ChatMessage> _messages;
   late ValueNotifier<bool> _isEmptyNotifier;
   late StreamSubscription<MessageOperation> _operationsSubscription;
 
@@ -235,7 +234,7 @@ class _ConvoKitAnimatedMessageListState
   bool _userHasScrolled = false;
   bool _isScrollingToBottom = false;
   late bool _needsInitialScrollPositionAdjustment;
-  int _lastInsertedMessageId = 0;
+  String? _lastInsertedMessageId;
 
   // Pagination flags
   bool _olderPaginationShouldTrigger = false;
@@ -416,7 +415,7 @@ class _ConvoKitAnimatedMessageListState
     // list as the anchor. This is the newest message the user was looking at
     // (they're at the bottom = offset 0 in reversed list). We DON'T use the
     // SliverViewObserver here because it returns 0 items when offset is 0.0.
-    int? anchorMessageId;
+    String? anchorMessageId;
     if (isNewerInsert && _messages.isNotEmpty) {
       anchorMessageId = _messages[oldLength - 1].id;
     }
@@ -509,7 +508,7 @@ class _ConvoKitAnimatedMessageListState
   /// then unconditionally reveals the list so the user never stares at a
   /// blank screen.
   void _restoreScrollAfterNewerInsert(
-    int anchorMessageId, {
+    String anchorMessageId, {
     int maxAttempts = 8,
   }) {
     int attempt = 0;
@@ -587,7 +586,7 @@ class _ConvoKitAnimatedMessageListState
   }
 
   /// Build widget for removed item animation
-  Widget _buildRemovedItem(BaseMessage message, Animation<double> animation) {
+  Widget _buildRemovedItem(ChatMessage message, Animation<double> animation) {
     return RepaintBoundary(
       child: SizeTransition(
         sizeFactor: animation,
@@ -685,7 +684,7 @@ class _ConvoKitAnimatedMessageListState
 
     // Calculate diff
     final updates = diffutil
-        .calculateDiff<BaseMessage>(
+        .calculateDiff<ChatMessage>(
           MessageListDiff(oldMessages, newMessages),
           detectMoves: false,
         )
@@ -853,7 +852,7 @@ class _ConvoKitAnimatedMessageListState
   // ============================================================
 
   /// Handle auto-scroll when new message is inserted
-  void _scrollToEnd(BaseMessage message) {
+  void _scrollToEnd(ChatMessage message) {
     if (_loadMoreNotifier.isLoadingNewer) return;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -883,7 +882,7 @@ class _ConvoKitAnimatedMessageListState
   /// For reversed lists (chat default):
   /// - Always scroll when user sends a message (if shouldScrollToEndWhenSendingMessage)
   /// - Only scroll for incoming messages if user is at bottom (if shouldScrollToEndWhenAtBottom)
-  void _subsequentScrollToEnd(BaseMessage message) {
+  void _subsequentScrollToEnd(ChatMessage message) {
     if (message.id != _lastInsertedMessageId) {
       return;
     }
@@ -896,7 +895,7 @@ class _ConvoKitAnimatedMessageListState
     // Check if this message was sent by the logged-in user
     final isOwnMessage =
         widget.loggedInUserId != null &&
-        message.sender?.uid == widget.loggedInUserId;
+        message.sender.id == widget.loggedInUserId;
 
     if (widget.reversed) {
       // For reversed lists (chat default - newest at bottom)
@@ -1089,7 +1088,7 @@ class _ConvoKitAnimatedMessageListState
 
   /// Scroll to a specific message by ID
   Future<bool> _scrollToMessageId(
-    int messageId, {
+    String messageId, {
     double alignment = 0,
     Duration duration = const Duration(milliseconds: 250),
   }) async {
@@ -1202,8 +1201,7 @@ class _ConvoKitAnimatedMessageListState
     if (contentIndex < 0 || contentIndex >= _messages.length) return;
 
     final message = _messages[contentIndex];
-    final date = message.sentAt ?? message.updatedAt;
-    if (date == null) return;
+    final date = message.serverCreatedAt ?? message.createdAt;
 
     final dateOnly = DateTime(date.year, date.month, date.day);
     _lastReportedDate = dateOnly;
@@ -1311,16 +1309,14 @@ class _ConvoKitAnimatedMessageListState
             : topVisualIndex;
         if (contentIndex >= 0 && contentIndex < _messages.length) {
           final message = _messages[contentIndex];
-          final date = message.sentAt ?? message.updatedAt;
-          if (date != null) {
-            final dateOnly = DateTime(date.year, date.month, date.day);
-            if (_lastReportedDate == null ||
-                _lastReportedDate!.year != dateOnly.year ||
-                _lastReportedDate!.month != dateOnly.month ||
-                _lastReportedDate!.day != dateOnly.day) {
-              _lastReportedDate = dateOnly;
-              widget.onTopVisibleDateChanged!(dateOnly);
-            }
+          final date = message.serverCreatedAt ?? message.createdAt;
+          final dateOnly = DateTime(date.year, date.month, date.day);
+          if (_lastReportedDate == null ||
+              _lastReportedDate!.year != dateOnly.year ||
+              _lastReportedDate!.month != dateOnly.month ||
+              _lastReportedDate!.day != dateOnly.day) {
+            _lastReportedDate = dateOnly;
+            widget.onTopVisibleDateChanged!(dateOnly);
           }
         }
       }
@@ -1367,8 +1363,7 @@ class _ConvoKitAnimatedMessageListState
     if (contentIndex < 0 || contentIndex >= _messages.length) return;
 
     final message = _messages[contentIndex];
-    final date = message.sentAt ?? message.updatedAt;
-    if (date == null) return;
+    final date = message.serverCreatedAt ?? message.createdAt;
 
     final dateOnly = DateTime(date.year, date.month, date.day);
     // Skip if same day AND we've already reported (not first time)
@@ -1543,8 +1538,8 @@ class _ConvoKitAnimatedMessageListState
   /// server answers. Keying on `id` would re-key the sender's own message the
   /// moment it was acknowledged and rebuild that bubble for nothing — the
   /// same reason the voice-note bubble derives its cache tag from muid.
-  static String _identityOf(BaseMessage message) =>
-      message.muid.isNotEmpty ? 'muid:${message.muid}' : 'id:${message.id}';
+  static String _identityOf(ChatMessage message) =>
+      message.localId.isNotEmpty ? 'muid:${message.localId}' : 'id:${message.id ?? ""}';
 
   /// Resolves a child's key back to its visual index so the framework can keep
   /// elements paired with their message when the list shifts.
@@ -1559,23 +1554,24 @@ class _ConvoKitAnimatedMessageListState
       final value = key.value;
       if (value.startsWith('muid:')) {
         final muid = value.substring(5);
-        index = _messages.indexWhere((m) => m.muid == muid);
+        index =
+            widget.findMessageIndex?.call(muid) ??
+            _messages.indexWhere((m) => m.localId == muid);
       } else {
         final idPart = value.startsWith('id:')
             ? value.substring(3)
             : value.split('-').first;
-        final id = int.tryParse(idPart);
-        if (id != null) index = _indexOfId(id);
+        if (idPart.isNotEmpty) index = _indexOfId(idPart);
       }
     } else if (key is ValueKey<int>) {
-      index = _indexOfId(key.value);
+      index = _indexOfId(key.value.toString());
     }
 
     return index == -1 ? null : visualPosition(index);
   }
 
   /// O(1) where the caller supplied a lookup, O(n) otherwise.
-  int _indexOfId(int id) =>
+  int _indexOfId(String id) =>
       widget.findMessageIndex?.call(id) ??
       _messages.indexWhere((m) => m.id == id);
 

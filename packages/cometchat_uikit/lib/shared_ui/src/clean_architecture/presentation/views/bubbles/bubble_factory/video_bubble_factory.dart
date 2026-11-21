@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cometchat_sdk/cometchat_sdk.dart' hide CardMessage;
+import 'package:convokit/src/core/models/models.dart';
 import '../../../../core/constants/enums.dart';
-import '../../../../core/utils/thumbnail_extraction_util.dart';
 import '../../../theme/colors/cometchat_color_palette.dart';
 import '../../../theme/typography/cometchat_typography.dart';
 import '../../../theme/spacing/cometchat_spacing.dart';
@@ -11,15 +10,11 @@ import 'bubble_factory.dart';
 
 /// Factory for creating video message bubbles.
 class VideoBubbleFactory extends BubbleFactory<MediaMessage> {
-  // Deprecated in 6.2.0: no effect, removed in 7.0.0.
-
-  /// Placeholder image for the video.
   @Deprecated(
     'Has no effect. For the colour shown while a thumbnail loads, use CometChatVideosBubbleStyle.placeholderColor. Will be removed in 7.0.0.',
   )
   final String? placeHolderImage;
 
-  /// Package of the placeholder image.
   @Deprecated(
     'Has no effect. For the colour shown while a thumbnail loads, use CometChatVideosBubbleStyle.placeholderColor. Will be removed in 7.0.0.',
   )
@@ -46,17 +41,13 @@ class VideoBubbleFactory extends BubbleFactory<MediaMessage> {
     ConvoKitTypography? typography,
     ConvoKitSpacing? spacing,
   }) {
-    final thumbnailUrl = ThumbnailExtractionUtil.extractFromMetadata(
-      message.metadata,
-    );
-
+    final att = message.attachment;
     return CometChatVideoBubble(
-      videoUrl: message.attachment?.fileUrl,
-      thumbnailUrl: thumbnailUrl,
+      videoUrl: att.url ?? att.localPath,
+      thumbnailUrl: att.thumbnailUrl,
       style: style,
       playIcon: playIcon,
       onClick: onClick,
-      metadata: message.metadata,
     );
   }
 }

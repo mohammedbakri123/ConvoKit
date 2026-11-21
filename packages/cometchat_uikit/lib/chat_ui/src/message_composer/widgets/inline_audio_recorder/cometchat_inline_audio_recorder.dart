@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:convokit/convokit_uikit.dart';
 
 import '../../../../../shared_ui/src/logging/cometchat_log.dart';
@@ -77,7 +76,7 @@ class CometChatInlineAudioRecorder extends StatefulWidget {
 
 class _CometChatInlineAudioRecorderState
     extends State<CometChatInlineAudioRecorder> {
-  late InlineAudioRecorderBloc _bloc;
+  late InlineAudioRecorderController _controller;
   late CometChatInlineAudioRecorderStyle _style;
   late ConvoKitColorPalette _colorPalette;
   late ConvoKitSpacing _spacing;
@@ -98,7 +97,7 @@ class _CometChatInlineAudioRecorderState
   @override
   void initState() {
     super.initState();
-    _bloc = InlineAudioRecorderBloc();
+    _controller = InlineAudioRecorderController();
     // Start recording
     if (kIsWeb) {
       _startWebRecording();
@@ -131,7 +130,7 @@ class _CometChatInlineAudioRecorderState
     } else {
       _releaseMediaResources();
     }
-    _bloc.close();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -142,22 +141,20 @@ class _CometChatInlineAudioRecorderState
 
       // Listen to amplitude updates
       _webAmplitudeSubscription = _webRecorder!.amplitudeStream.listen((amp) {
-        _bloc.add(UpdateAmplitude(amp));
+        _controller.updateAmplitude(amp);
       });
 
       final started = await _webRecorder!.startRecording();
       if (started) {
-        _bloc.add(const StartRecording());
+        _controller.startRecording();
       } else {
-        _bloc.add(
-          const RecordingError(
-            'Failed to start recording — microphone permission may be denied',
-          ),
+        _controller.recordingError(
+          'Failed to start recording — microphone permission may be denied',
         );
       }
     } catch (e) {
       ccLog('[InlineAudioRecorder] Web recording error: $e');
-      _bloc.add(RecordingError(e.toString()));
+      _controller.recordingError(e.toString());
     }
   }
 
@@ -207,18 +204,18 @@ class _CometChatInlineAudioRecorderState
       }
 
       if (result == true) {
-        _bloc.add(const StartRecording());
+        _controller.startRecording();
       } else {
         if (kDebugMode) {
           ccLog('[InlineAudioRecorder] Failed to start native recording');
         }
-        _bloc.add(const RecordingError('Failed to start recording'));
+        _controller.recordingError('Failed to start recording');
       }
     } catch (e) {
       if (kDebugMode) {
         ccLog('[InlineAudioRecorder] Error starting native recording: $e');
       }
-      _bloc.add(RecordingError(e.toString()));
+      _controller.recordingError(e.toString());
     }
   }
 
@@ -274,7 +271,7 @@ class _CometChatInlineAudioRecorderState
       );
     }
     if (waveform.isNotEmpty) {
-      _bloc.add(SetExtractedWaveform(waveform));
+      _controller.setExtractedWaveform(waveform);
     }
   }
 
@@ -386,10 +383,10 @@ class _CometChatInlineAudioRecorderState
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: _bloc,
-      child: BlocBuilder<InlineAudioRecorderBloc, InlineAudioRecorderState>(
-        builder: (context, state) {
+    return ListenableBuilder(
+      listenable: _controller,
+      builder: (context, _) {
+        final state = _controller.state;
           return Container(
             padding: EdgeInsets.symmetric(
               horizontal: _spacing.padding3 ?? 12,
@@ -439,8 +436,7 @@ class _CometChatInlineAudioRecorderState
               ],
             ),
           );
-        },
-      ),
+      },
     );
   }
 
@@ -456,7 +452,7 @@ class _CometChatInlineAudioRecorderState
           } else {
             await _stopNativeRecording();
           }
-          _bloc.add(const CancelRecording());
+          _controller.cancelRecording();
           widget.onCancel?.call();
         },
         child: Container(
@@ -490,8 +486,22 @@ class _CometChatInlineAudioRecorderState
       return _buildPlayPauseButton(state);
     }
 
-    // Default - show recording indicator
-    return _buildRecordingIndicator();
+    // Idle/cancelled - show static indicator without infinite animation
+    return Container(
+      width: 32,
+      height: 32,
+      alignment: Alignment.center,
+      child: Container(
+        width: 14,
+        height: 14,
+        decoration: BoxDecoration(
+          color: _style.recordingIndicatorColor ??
+              _colorPalette.error ??
+              Colors.red,
+          shape: BoxShape.circle,
+        ),
+      ),
+    );
   }
 
   Widget _buildRecordingIndicator() {
@@ -518,21 +528,21 @@ class _CometChatInlineAudioRecorderState
           if (isPlaying) {
             // Pause playback
             await _pausePlayingRecordedAudio();
-            _bloc.add(const PausePlayback());
+            _controller.pausePlayback();
           } else {
             // Get current state from bloc
-            final currentState = _bloc.state;
+            final currentState = _controller.state;
 
             // Check if we should resume from current position or start fresh
             if (currentState.currentPosition > Duration.zero &&
                 currentState.currentPosition < currentState.duration) {
               // Resume from current position
               await _resumePlayingRecordedAudio();
-              _bloc.add(const ResumePlayback());
+              _controller.resumePlayback();
             } else {
               // Start from beginning - this will finalize the recording file
               await _playRecordedAudio();
-              _bloc.add(const PlayRecording());
+              _controller.playRecording();
 
               // Extract waveform after file is finalized (playRecordedAudio stops the recorder)
               // Only extract if we don't have extracted waveform yet
@@ -624,7 +634,7 @@ class _CometChatInlineAudioRecorderState
       amplitudes: !isAnimating ? playbackAmplitudes : null,
       // Store amplitudes during recording
       onAmplitudeReceived: isAnimating
-          ? (amplitude) => _bloc.add(UpdateAmplitude(amplitude))
+          ? (amplitude) => _controller.updateAmplitude(amplitude)
           : null,
       // Allow seeking only when not recording and has recording
       allowSeeking: !isAnimating && state.hasRecording,
@@ -641,7 +651,7 @@ class _CometChatInlineAudioRecorderState
               await _seekRecordedAudio(positionMs);
 
               // Update bloc state - SeekToPosition will set status to playing
-              _bloc.add(SeekToPosition(progress));
+              _controller.seekToPosition(progress);
             }
           : null,
     );
@@ -697,7 +707,7 @@ class _CometChatInlineAudioRecorderState
           } else {
             await _pauseNativeRecording();
           }
-          _bloc.add(const PauseRecording());
+          _controller.pauseRecording();
         },
         child: Container(
           width: 32,
@@ -729,11 +739,11 @@ class _CometChatInlineAudioRecorderState
           if (isResume) {
             if (kIsWeb) {
               await _webRecorder?.resumeRecording();
-              _bloc.add(const ResumeRecording(isFreshRestart: false));
+              _controller.resumeRecording(isFreshRestart: false);
             } else {
               final wasRealResume = await _resumeNativeRecording();
               // If it wasn't a real resume (had to restart), reset duration/amplitudes
-              _bloc.add(ResumeRecording(isFreshRestart: !wasRealResume));
+              _controller.resumeRecording(isFreshRestart: !wasRealResume);
             }
           } else {
             // Re-record: start fresh recording
@@ -787,7 +797,7 @@ class _CometChatInlineAudioRecorderState
                   } else {
                     filePath = await _stopNativeRecording();
                   }
-                  _bloc.add(const StopRecording());
+                  _controller.stopRecording();
                 }
 
                 // Submit the recording with the file path

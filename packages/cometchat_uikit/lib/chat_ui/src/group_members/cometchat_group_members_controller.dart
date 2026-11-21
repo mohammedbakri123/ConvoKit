@@ -1,313 +1,332 @@
-import 'package:flutter/foundation.dart';
+import 'package:convokit/convokit.dart';
 import 'package:flutter/material.dart';
 import '../../../convokit_uikit.dart';
-import '../../../convokit_uikit.dart' as cc;
-import '../../../shared_ui/src/logging/cometchat_log.dart';
-import '../../../src/adapters/cometchat_sdk_adapter.dart';
 
-///[ConvoKitGroupMembersController] is the view model for [ConvoKitGroupMembers]
-///it contains all the business logic involved in changing the state of the UI of [ConvoKitGroupMembers]
-class ConvoKitGroupMembersController
-    extends CometChatSearchListController<GroupMember, String>
-    with
-        CometChatSelectable,
-        GroupListener,
-        UserListener,
-        ConvoKitGroupEventListener
-    implements ConvoKitGroupMembersControllerProtocol {
-  //Class members
-  late GroupMembersBuilderProtocol groupMembersBuilderProtocol;
-  late String dateStamp;
-  late String groupSDKListenerID;
-  late String userSDKListenerID;
-  late String groupUIListenerID;
-  final Group group;
-  bool usersStatusVisibility = true;
-  User? loggedInUser;
-  bool? isOwner;
-  Conversation? _conversation;
-
-  ///[hideKickMemberOption] This prop defines whether a member can be kicked or not.
-  final bool? hideKickMemberOption;
-
-  ///[hideBanMemberOption] This prop defines whether a member can be banned or not.
-  final bool? hideBanMemberOption;
-
-  ///[hideScopeChangeOption] This prop defines whether a member's scope can be changed or not.
-  final bool? hideScopeChangeOption;
-
-  String? _conversationId;
-  ConvoKitConfirmDialogStyle? confirmDialogStyle;
-  ConvoKitChangeScopeStyle? changeScopeStyle;
-
-  //Constructor
+/// Plain [ChangeNotifier] controller for [ConvoKitGroupMembers], backed by
+/// [GroupRepository] (`listMembers`, `addMembers`, `removeMember`) via
+/// [ConvoKitScope].
+///
+/// Gated on `capabilities.groups && kit.groups != null`. When groups are
+/// disabled or absent, mutations return a [ChatFailure] with
+/// [ChatErrorCode.unsupported] and reads settle cleanly into a disabled/empty
+/// state without throwing.
+class ConvoKitGroupMembersController extends ChangeNotifier {
   ConvoKitGroupMembersController({
-    required this.groupMembersBuilderProtocol,
     required this.group,
-    SelectionMode? mode,
-    bool? userStatusVisibility,
+    GroupRepository? groupRepository,
+    bool groupsEnabled = false,
+    this.loggedInUser,
+    this.selectionMode = SelectionMode.none,
+    this.usersStatusVisibility = true,
     this.confirmDialogStyle,
     this.changeScopeStyle,
-    super.onError,
-    super.onEmpty,
-    super.onLoad,
+    this.onError,
+    this.onEmpty,
+    this.onLoad,
     this.hideBanMemberOption,
     this.hideKickMemberOption,
     this.hideScopeChangeOption,
-  }) : super(builderProtocol: groupMembersBuilderProtocol) {
-    usersStatusVisibility = userStatusVisibility ?? true;
-    selectionMode = mode ?? SelectionMode.none;
-    dateStamp = DateTime.now().microsecondsSinceEpoch.toString();
-    groupSDKListenerID = "${dateStamp}groupMembers_listener";
-    userSDKListenerID = "${dateStamp}user_listener";
-    groupUIListenerID = "${dateStamp}_ui_group_listener";
+    this.pageLimit = 30,
+    String? initialSearchKeyword,
+  }) : _groupRepository = groupRepository,
+       _groupsEnabled = groupsEnabled,
+       _searchQuery = initialSearchKeyword?.trim() ?? '';
+
+  final ChatGroup group;
+  GroupRepository? _groupRepository;
+  bool _groupsEnabled;
+  ChatUser? loggedInUser;
+  SelectionMode selectionMode;
+  bool usersStatusVisibility;
+  ConvoKitConfirmDialogStyle? confirmDialogStyle;
+  ConvoKitChangeScopeStyle? changeScopeStyle;
+  final OnError? onError;
+  final OnEmpty? onEmpty;
+  final OnLoad<ChatMember>? onLoad;
+  final bool? hideKickMemberOption;
+  final bool? hideBanMemberOption;
+  final bool? hideScopeChangeOption;
+  final int pageLimit;
+
+  final ValueNotifier<bool> isActionRunning = ValueNotifier<bool>(false);
+
+  List<ChatMember> _members = const [];
+  String _searchQuery = '';
+  String? _nextCursor;
+  bool _hasMore = false;
+  bool _isLoading = false;
+  bool _isLoadingMore = false;
+  bool _isDisabled = false;
+  bool _hasLoadedOnce = false;
+  ChatError? _error;
+  int _requestSeq = 0;
+
+  final Set<String> _selectedMemberIds = <String>{};
+  final Map<String, ChatMember> selectionMap = <String, ChatMember>{};
+
+  bool get isGroupsEnabled => _groupsEnabled && _groupRepository != null;
+  List<ChatMember> get members => List.unmodifiable(_members);
+  String get searchQuery => _searchQuery;
+  bool get hasMore => _searchQuery.isEmpty && _hasMore;
+  bool get isLoading => _isLoading;
+  bool get isLoadingMore => _isLoadingMore;
+  bool get isDisabled => _isDisabled;
+  bool get hasLoadedOnce => _hasLoadedOnce;
+  ChatError? get error => _error;
+  Set<String> get selectedMemberIds => Set.unmodifiable(_selectedMemberIds);
+  bool get isOwner =>
+      loggedInUser != null &&
+      _members.any(
+        (m) => m.user.id == loggedInUser!.id && m.role == GroupRole.owner,
+      );
+
+  List<ChatMember> get visibleMembers {
+    if (_searchQuery.isEmpty) return _members;
+    final needle = _searchQuery.toLowerCase();
+    return _members
+        .where((m) => m.user.name.toLowerCase().contains(needle))
+        .toList();
   }
 
-  //initialization functions
-  @override
-  void onInit() {
-    CometChatSdkAdapter.addGroupListener(groupSDKListenerID, this);
-    ConvoKitGroupEvents.addGroupsListener(groupUIListenerID, this);
+  /// Binds this controller to a [ConvoKit] instance from [ConvoKitScope].
+  void attachKit(ConvoKit? kit) {
+    _groupsEnabled = kit?.capabilities.groups ?? false;
+    _groupRepository = _groupsEnabled ? kit?.groups : null;
+    loggedInUser = kit?.session.currentUser;
+  }
 
-    if (usersStatusVisibility == true) {
-      //Adding listener when presence is needed
-      CometChatSdkAdapter.addUserListener(userSDKListenerID, this);
+  /// Loads the first page of members via [GroupRepository.listMembers].
+  Future<void> loadMembers() async {
+    final repo = isGroupsEnabled ? _groupRepository : null;
+    if (repo == null) {
+      _isDisabled = true;
+      _isLoading = false;
+      _isLoadingMore = false;
+      _hasLoadedOnce = true;
+      _members = const [];
+      _nextCursor = null;
+      _hasMore = false;
+      _error = null;
+      notifyListeners();
+      onEmpty?.call();
+      return;
     }
-    initializeInternalDependencies();
-    super.onInit();
-  }
 
-  void initializeInternalDependencies() async {
-    _conversation ??= (await CometChatSdkAdapter.getConversation(
-      group.guid,
-      ConversationType.group,
-      onSuccess: (conversation) {
-        if (conversation.lastMessage != null) {}
-      },
-      onError: (_) {},
-    ));
-    _conversationId ??= _conversation?.conversationId;
-  }
+    final seq = ++_requestSeq;
+    _isDisabled = false;
+    _isLoading = true;
+    _isLoadingMore = false;
+    _error = null;
+    _nextCursor = null;
+    _hasMore = false;
+    notifyListeners();
 
-  @override
-  void onClose() {
-    CometChatSdkAdapter.removeGroupListener(groupSDKListenerID);
-    ConvoKitGroupEvents.removeGroupsListener(groupUIListenerID);
-    if (usersStatusVisibility == true) {
-      CometChatSdkAdapter.removeUserListener(userSDKListenerID);
-    }
-
-    super.onClose();
-  }
-
-  //------------------User SDK Listeners------------------
-  @override
-  void onUserOffline(User user) {
-    int matchingIndex = getMatchingIndexFromKey(user.uid);
-    if (matchingIndex != -1) {
-      list[matchingIndex].status = user.status;
-      update();
-    }
-  }
-
-  @override
-  void onUserOnline(User user) {
-    int matchingIndex = getMatchingIndexFromKey(user.uid);
-    if (matchingIndex != -1) {
-      list[matchingIndex].status = user.status;
-      update();
-    }
-  }
-
-  //------------------Group SDK Listeners------------------
-  @override
-  void onGroupMemberScopeChanged(
-    cc.Action action,
-    User updatedBy,
-    User updatedUser,
-    String scopeChangedTo,
-    String scopeChangedFrom,
-    Group group,
-  ) {
-    if (group.guid == this.group.guid) {
-      int matchingIndex = getMatchingIndexFromKey(updatedUser.uid);
-      if (matchingIndex != -1) {
-        list[matchingIndex].scope = scopeChangedTo;
-        update();
-      }
-    }
-  }
-
-  GroupMember? getGroupMemberFromUser(User user) {
     try {
-      return list.cast<GroupMember?>().firstWhere(
-        (element) => element!.uid == user.uid,
-        orElse: () => null,
+      final result = await repo.listMembers(group.id, limit: pageLimit);
+      if (seq != _requestSeq) return;
+
+      result.fold(
+        onSuccess: (page) {
+          _members = List<ChatMember>.of(page.items);
+          _nextCursor = page.olderCursor;
+          _hasMore = page.hasOlder;
+          _isLoading = false;
+          _hasLoadedOnce = true;
+          _error = null;
+          _syncSelectionMap();
+          notifyListeners();
+          if (visibleMembers.isEmpty) {
+            onEmpty?.call();
+          } else {
+            onLoad?.call(visibleMembers);
+          }
+        },
+        onFailure: (err) {
+          _members = const [];
+          _nextCursor = null;
+          _hasMore = false;
+          _isLoading = false;
+          _hasLoadedOnce = true;
+          _error = err;
+          notifyListeners();
+          onError?.call(Exception(err.message));
+        },
       );
     } catch (e) {
-      if (kDebugMode) {
-        ccLog('Error in getGroupMemberFromUser: $e');
+      if (seq != _requestSeq) return;
+      final err = ChatError(ChatErrorCode.unknown, e.toString(), cause: e);
+      _members = const [];
+      _nextCursor = null;
+      _hasMore = false;
+      _isLoading = false;
+      _hasLoadedOnce = true;
+      _error = err;
+      notifyListeners();
+      onError?.call(Exception(err.message));
+    }
+  }
+
+  /// Loads the next page of members via [GroupRepository.listMembers].
+  Future<void> loadMoreMembers() async {
+    final repo = isGroupsEnabled ? _groupRepository : null;
+    if (repo == null || !_hasMore || _isLoadingMore || _isLoading) return;
+
+    final seq = ++_requestSeq;
+    _isLoadingMore = true;
+    notifyListeners();
+
+    try {
+      final result = await repo.listMembers(
+        group.id,
+        cursor: _nextCursor,
+        limit: pageLimit,
+      );
+      if (seq != _requestSeq) return;
+
+      result.fold(
+        onSuccess: (page) {
+          _members = <ChatMember>[..._members, ...page.items];
+          _nextCursor = page.olderCursor;
+          _hasMore = page.hasOlder;
+          _isLoadingMore = false;
+          _syncSelectionMap();
+          notifyListeners();
+        },
+        onFailure: (err) {
+          _isLoadingMore = false;
+          notifyListeners();
+          onError?.call(Exception(err.message));
+        },
+      );
+    } catch (e) {
+      if (seq != _requestSeq) return;
+      _isLoadingMore = false;
+      notifyListeners();
+      onError?.call(Exception(e.toString()));
+    }
+  }
+
+  /// Filters loaded members by [query].
+  void onSearch(String query) {
+    final trimmed = query.trim();
+    if (_searchQuery == trimmed) return;
+    _searchQuery = trimmed;
+    notifyListeners();
+  }
+
+  /// Adds [userIds] to the group via [GroupRepository.addMembers].
+  Future<ChatResult<void>> addMembers(List<String> userIds) async {
+    final repo = isGroupsEnabled ? _groupRepository : null;
+    if (repo == null) {
+      return const ChatFailure(
+        ChatError(ChatErrorCode.unsupported, 'Groups capability is disabled'),
+      );
+    }
+    isActionRunning.value = true;
+    try {
+      final result = await repo.addMembers(group.id, userIds);
+      result.fold(
+        onSuccess: (_) => loadMembers(),
+        onFailure: (err) => onError?.call(Exception(err.message)),
+      );
+      return result;
+    } finally {
+      isActionRunning.value = false;
+    }
+  }
+
+  /// Removes [userId] from the group via [GroupRepository.removeMember].
+  Future<ChatResult<void>> removeMember(String userId) async {
+    final repo = isGroupsEnabled ? _groupRepository : null;
+    if (repo == null) {
+      return const ChatFailure(
+        ChatError(ChatErrorCode.unsupported, 'Groups capability is disabled'),
+      );
+    }
+    isActionRunning.value = true;
+    try {
+      final result = await repo.removeMember(group.id, userId);
+      result.fold(
+        onSuccess: (_) {
+          _members = _members.where((m) => m.user.id != userId).toList();
+          _selectedMemberIds.remove(userId);
+          _syncSelectionMap();
+          notifyListeners();
+          if (visibleMembers.isEmpty) {
+            onEmpty?.call();
+          }
+        },
+        onFailure: (err) => onError?.call(Exception(err.message)),
+      );
+      return result;
+    } finally {
+      isActionRunning.value = false;
+    }
+  }
+
+  /// Updates a member's local role representation after an external scope save.
+  void updateMemberRole(String userId, GroupRole newRole) {
+    final idx = _members.indexWhere((m) => m.user.id == userId);
+    if (idx == -1) return;
+    final updated = List<ChatMember>.of(_members);
+    updated[idx] = ChatMember(user: updated[idx].user, role: newRole);
+    _members = updated;
+    _syncSelectionMap();
+    notifyListeners();
+  }
+
+  void toggleSelection(String userId) {
+    if (selectionMode == SelectionMode.single) {
+      if (_selectedMemberIds.contains(userId)) {
+        _selectedMemberIds.clear();
+      } else {
+        _selectedMemberIds
+          ..clear()
+          ..add(userId);
       }
-      return null;
-    }
-  }
-
-  @override
-  void onGroupMemberKicked(
-    cc.Action action,
-    User kickedUser,
-    User kickedBy,
-    Group kickedFrom,
-  ) {
-    if (kickedFrom.guid == group.guid) {
-      GroupMember? member = getGroupMemberFromUser(kickedUser);
-      if (member != null) {
-        removeElement(member);
-      }
-    }
-  }
-
-  @override
-  void onGroupMemberLeft(cc.Action action, User leftUser, Group leftGroup) {
-    if (leftGroup.guid == group.guid) {
-      GroupMember? member = getGroupMemberFromUser(leftUser);
-      if (member != null) {
-        removeElement(member);
-      }
-    }
-  }
-
-  @override
-  void onGroupMemberBanned(
-    cc.Action action,
-    User bannedUser,
-    User bannedBy,
-    Group bannedFrom,
-  ) {
-    if (bannedFrom.guid == group.guid) {
-      GroupMember? member = getGroupMemberFromUser(bannedUser);
-      if (member != null) {
-        removeElement(member);
-      }
-    }
-  }
-
-  @override
-  void onGroupMemberJoined(
-    cc.Action action,
-    User joinedUser,
-    Group joinedGroup,
-  ) {
-    if (joinedGroup.guid == group.guid) {
-      addElement(joinedUser as GroupMember);
-    }
-  }
-
-  @override
-  void onMemberAddedToGroup(
-    cc.Action action,
-    User addedby,
-    User userAdded,
-    Group addedTo,
-  ) {
-    if (addedTo.guid == group.guid) {
-      addElement(addedTo as GroupMember);
-    }
-  }
-
-  Future<void> changeScope(
-    Group group,
-    GroupMember member,
-    String newScope,
-    String oldScope,
-  ) async {
-    await CometChatSdkAdapter.updateGroupMemberScope(
-      guid: group.guid,
-      uid: member.uid,
-      scope: newScope,
-      onSuccess: (String res) {
-        member.scope = newScope;
-        ConvoKitGroupEvents.ccGroupMemberScopeChanged(
-          cc.Action(
-            conversationId: _conversationId!,
-            message: "${loggedInUser?.name} made ${member.name} $newScope",
-            oldScope: oldScope,
-            newScope: newScope,
-            muid: DateTime.now().microsecondsSinceEpoch.toString(),
-            sender: loggedInUser!,
-            receiverUid: group.guid,
-            type: MessageTypeConstants.groupActions,
-            receiverType: ReceiverTypeConstants.group,
-            parentMessageId: 0,
-          ),
-          member,
-          newScope,
-          oldScope,
-          group,
-        );
-        updateElement(member);
-      },
-      onError: onError,
-    );
-  }
-
-  @override
-  ccGroupMemberAdded(
-    List<cc.Action> messages,
-    List<User> usersAdded,
-    Group groupAddedIn,
-    User addedBy,
-  ) {
-    if (groupAddedIn.guid == group.guid) {
-      for (User user in usersAdded) {
-        addElement(user as GroupMember);
-      }
-    }
-  }
-
-  @override
-  ccOwnershipChanged(Group group, GroupMember newOwner) {
-    if (group.guid == group.guid) {
-      updateElement(newOwner);
-    }
-  }
-
-  //CometChatListController override  functions
-  @override
-  bool match(GroupMember elementA, GroupMember elementB) {
-    return elementA.uid == elementB.uid;
-  }
-
-  @override
-  String getKey(GroupMember element) {
-    return element.uid;
-  }
-
-  @override
-  loadMoreElements({bool Function(GroupMember element)? isIncluded}) async {
-    if (loggedInUser == null) {
-      loggedInUser = await CometChatSdkAdapter.getLoggedInUser();
-      if (loggedInUser?.uid == group.owner) {
-        isOwner = true;
+    } else {
+      if (_selectedMemberIds.contains(userId)) {
+        _selectedMemberIds.remove(userId);
+      } else {
+        _selectedMemberIds.add(userId);
       }
     }
-    await super.loadMoreElements(isIncluded: isIncluded);
+    _syncSelectionMap();
+    notifyListeners();
   }
 
-  //default functions
-  @override
+  void clearSelection() {
+    _selectedMemberIds.clear();
+    selectionMap.clear();
+    notifyListeners();
+  }
+
+  List<ChatMember> getSelectedList() {
+    return _members
+        .where((m) => _selectedMemberIds.contains(m.user.id))
+        .toList();
+  }
+
+  void _syncSelectionMap() {
+    selectionMap
+      ..clear()
+      ..addEntries(
+        _members
+            .where((m) => _selectedMemberIds.contains(m.user.id))
+            .map((m) => MapEntry(m.user.id, m)),
+      );
+  }
+
+  /// Builds default member options filtered by role & hide flags.
   List<CometChatOption> defaultFunction(
-    Group group,
-    GroupMember member,
+    ChatGroup group,
+    ChatMember member,
     BuildContext context,
     ConvoKitColorPalette colorPalette,
     ConvoKitTypography typography,
     ConvoKitSpacing spacing,
   ) {
-    List<CometChatOption> optionList = [];
-    List<CometChatGroupMemberOption> groupMemberOptions = [];
-
-    groupMemberOptions = DetailUtils.getDefaultGroupMemberOptions(
+    final groupMemberOptions = DetailUtils.getDefaultGroupMemberOptions(
       loggedInUser: loggedInUser,
       group: group,
       member: member,
@@ -317,8 +336,8 @@ class ConvoKitGroupMembersController
       hideScopeChangeOption: hideScopeChangeOption,
     );
 
-    for (CometChatGroupMemberOption option in groupMemberOptions) {
-      optionList.add(
+    return [
+      for (final option in groupMemberOptions)
         CometChatOption(
           id: option.id,
           title: option.title,
@@ -326,286 +345,15 @@ class ConvoKitGroupMembersController
           backgroundColor: option.backgroundColor,
           icon: option.icon,
           iconTint: colorPalette.iconSecondary,
-          onClick: () {
-            final operations = _getOptionFunctionality(
-              option.id,
-              group,
-              member,
-              context,
-              colorPalette,
-              typography,
-              spacing,
-            );
-            if (operations != null) {
-              operations();
-            }
-          },
           iconWidget: option.iconWidget,
         ),
-      );
-    }
-
-    return optionList;
+    ];
   }
 
-  final ValueNotifier<bool> isActionRunning = ValueNotifier<bool>(false);
-  dynamic Function()? _getOptionFunctionality(
-    String optionId,
-    Group group,
-    GroupMember member,
-    BuildContext context,
-    ConvoKitColorPalette colorPalette,
-    ConvoKitTypography typography,
-    ConvoKitSpacing spacing,
-  ) {
-    switch (optionId) {
-      case GroupMemberOptionConstants.ban:
-        return () async {
-          showConfirmDialog(
-            context,
-            colorPalette,
-            typography,
-            spacing,
-            title: "Ban ${member.name}?",
-            icon: Icon(
-              Icons.not_interested,
-              size: 48,
-              color: confirmDialogStyle?.iconColor ?? colorPalette.error,
-            ),
-            messageText:
-                "${cc.Translations.of(context).areYouSureBan} ${member.name} ${cc.Translations.of(context).from} ${group.name}?",
-            onConfirm: (dialogContext) {
-              isActionRunning.value = true;
-              CometChatSdkAdapter.banGroupMember(
-                guid: group.guid,
-                uid: member.uid,
-                onSuccess: (String result) async {
-                  group.membersCount--;
-                  ConvoKitGroupEvents.ccGroupMemberBanned(
-                    cc.Action(
-                      conversationId: _conversationId!,
-                      message: "${loggedInUser?.name} banned ${member.name}",
-                      oldScope: GroupMemberScope.participant,
-                      newScope: '',
-                      muid: DateTime.now().microsecondsSinceEpoch.toString(),
-                      sender: loggedInUser!,
-                      receiver: group,
-                      receiverUid: group.guid,
-                      type: MessageTypeConstants.groupActions,
-                      receiverType: ReceiverTypeConstants.group,
-                      parentMessageId: 0,
-                    ),
-                    member,
-                    loggedInUser!,
-                    group,
-                  );
-                  removeElement(member);
-                  isActionRunning.value = false;
-                  Navigator.of(dialogContext).pop();
-                },
-                onError: (exception) {
-                  if (onError != null) {
-                    onError!(exception);
-                  }
-                  isActionRunning.value = false;
-                  Navigator.of(dialogContext).pop();
-                },
-              );
-            },
-            confirmButtonText: cc.Translations.of(context).ban.toUpperCase(),
-          );
-        };
-      case GroupMemberOptionConstants.kick:
-        return () async {
-          showConfirmDialog(
-            context,
-            colorPalette,
-            typography,
-            spacing,
-            title: "${cc.Translations.of(context).kick} ${member.name}?",
-            icon: Icon(
-              Icons.delete_outline_rounded,
-              size: 48,
-              color: confirmDialogStyle?.iconColor ?? colorPalette.error,
-            ),
-            messageText:
-                "${cc.Translations.of(context).areYouSureRemove} ${member.name} ${cc.Translations.of(context).from} ${group.name}?",
-            onConfirm: (dialogContext) {
-              isActionRunning.value = true;
-              CometChatSdkAdapter.kickGroupMember(
-                guid: group.guid,
-                uid: member.uid,
-                onSuccess: (String result) async {
-                  group.membersCount--;
-                  ConvoKitGroupEvents.ccGroupMemberKicked(
-                    cc.Action(
-                      conversationId: _conversationId!,
-                      message: '${loggedInUser?.name} kicked ${member.name}',
-                      oldScope: GroupMemberScope.participant,
-                      newScope: '',
-                      muid: DateTime.now().microsecondsSinceEpoch.toString(),
-                      sender: loggedInUser!,
-                      receiver: group,
-                      receiverUid: group.guid,
-                      type: MessageTypeConstants.groupActions,
-                      receiverType: ReceiverTypeConstants.group,
-                      parentMessageId: 0,
-                    ),
-                    member,
-                    loggedInUser!,
-                    group,
-                  );
-                  removeElement(member);
-                  isActionRunning.value = false;
-                  Navigator.of(dialogContext).pop();
-                },
-                onError: (excep) {
-                  if (onError != null) {
-                    onError!(excep);
-                  }
-                  isActionRunning.value = false;
-                  Navigator.of(dialogContext).pop();
-                },
-              );
-            },
-            confirmButtonText: cc.Translations.of(context).kick.toUpperCase(),
-          );
-        };
-      case GroupMemberOptionConstants.changeScope:
-        showModalBottomSheet(
-          context: context,
-          barrierColor: (colorPalette.textPrimary ?? const Color(0xFF141414))
-              .withValues(alpha: 0.8),
-          builder: (context) => SingleChildScrollView(
-            child: ConvoKitChangeScope(
-              group: group,
-              member: member,
-              onSave: changeScope,
-              style: changeScopeStyle,
-            ),
-          ),
-        );
-        break;
-      default:
-        return null;
-    }
-    return null;
-  }
-
-  void clearSelection() {
-    selectionMap.clear();
-    update();
-  }
-
-  void showConfirmDialog(
-    BuildContext context,
-    ConvoKitColorPalette colorPalette,
-    ConvoKitTypography typography,
-    ConvoKitSpacing spacing, {
-    Function(BuildContext)? onConfirm,
-    Widget? icon,
-    String? title,
-    String? messageText,
-    String? confirmButtonText,
-  }) {
-    ConvoKitConfirmDialog(
-      context: context,
-      confirmButtonText: cc.Translations.of(context).deleteCapital,
-      cancelButtonText: cc.Translations.of(context).cancelCapital,
-      icon: icon,
-      title: Text(title ?? "", textAlign: TextAlign.center),
-      messageText: Text(messageText ?? "", textAlign: TextAlign.center),
-      onCancel: (dialogContext) {
-        isActionRunning.value = false;
-        Navigator.of(dialogContext).pop();
-      },
-      style: ConvoKitConfirmDialogStyle(
-        iconColor: confirmDialogStyle?.iconColor ?? colorPalette.error,
-        backgroundColor: confirmDialogStyle?.backgroundColor,
-        shadow: confirmDialogStyle?.shadow,
-        iconBackgroundColor: confirmDialogStyle?.iconBackgroundColor,
-        borderRadius: confirmDialogStyle?.borderRadius,
-        border: confirmDialogStyle?.border,
-        cancelButtonBackground:
-            confirmDialogStyle?.cancelButtonBackground ??
-            colorPalette.borderLight,
-        confirmButtonBackground:
-            confirmDialogStyle?.confirmButtonBackground ?? colorPalette.error,
-        cancelButtonTextColor: confirmDialogStyle?.cancelButtonTextColor,
-        confirmButtonTextColor: confirmDialogStyle?.confirmButtonTextColor,
-        messageTextColor: confirmDialogStyle?.messageTextColor,
-        titleTextColor: confirmDialogStyle?.titleTextColor,
-        titleTextStyle:
-            TextStyle(
-                  color:
-                      confirmDialogStyle?.titleTextColor ??
-                      colorPalette.textPrimary,
-                  fontSize: typography.heading2?.medium?.fontSize,
-                  fontWeight: typography.heading2?.medium?.fontWeight,
-                  fontFamily: typography.heading2?.medium?.fontFamily,
-                )
-                .merge(confirmDialogStyle?.titleTextStyle)
-                .copyWith(color: confirmDialogStyle?.titleTextColor),
-        messageTextStyle:
-            TextStyle(
-                  color:
-                      confirmDialogStyle?.messageTextColor ??
-                      colorPalette.textSecondary,
-                  fontSize: typography.body?.regular?.fontSize,
-                  fontWeight: typography.body?.regular?.fontWeight,
-                  fontFamily: typography.body?.regular?.fontFamily,
-                )
-                .merge(confirmDialogStyle?.messageTextStyle)
-                .copyWith(color: confirmDialogStyle?.messageTextColor),
-        confirmButtonTextStyle:
-            TextStyle(
-                  color:
-                      confirmDialogStyle?.confirmButtonTextColor ??
-                      colorPalette.white,
-                  fontSize: typography.button?.medium?.fontSize,
-                  fontWeight: typography.button?.medium?.fontWeight,
-                  fontFamily: typography.button?.medium?.fontFamily,
-                )
-                .merge(confirmDialogStyle?.confirmButtonTextStyle)
-                .copyWith(color: confirmDialogStyle?.confirmButtonTextColor),
-        cancelButtonTextStyle:
-            TextStyle(
-                  color:
-                      confirmDialogStyle?.cancelButtonTextColor ??
-                      colorPalette.textPrimary,
-                  fontSize: typography.button?.medium?.fontSize,
-                  fontWeight: typography.button?.medium?.fontWeight,
-                  fontFamily: typography.button?.medium?.fontFamily,
-                )
-                .merge(confirmDialogStyle?.cancelButtonTextStyle)
-                .copyWith(color: confirmDialogStyle?.cancelButtonTextColor),
-      ),
-      onConfirm: onConfirm,
-      confirmButtonTextWidget: ValueListenableBuilder<bool>(
-        valueListenable: isActionRunning,
-        builder: (context, running, _) => running
-            ? SizedBox(
-                height: 25,
-                width: 25,
-                child: CircularProgressIndicator(color: colorPalette.white),
-              )
-            : Text(
-                confirmButtonText ?? "",
-                style:
-                    TextStyle(
-                          color:
-                              confirmDialogStyle?.confirmButtonTextColor ??
-                              colorPalette.white,
-                          fontSize: typography.button?.medium?.fontSize,
-                          fontWeight: typography.button?.medium?.fontWeight,
-                          fontFamily: typography.button?.medium?.fontFamily,
-                        )
-                        .merge(confirmDialogStyle?.confirmButtonTextStyle)
-                        .copyWith(
-                          color: confirmDialogStyle?.confirmButtonTextColor,
-                        ),
-              ),
-      ),
-    ).show();
+  @override
+  void dispose() {
+    _requestSeq++;
+    isActionRunning.dispose();
+    super.dispose();
   }
 }

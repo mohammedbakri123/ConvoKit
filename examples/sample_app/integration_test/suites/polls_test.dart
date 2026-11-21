@@ -384,9 +384,9 @@ void main() {
         // `extension_poll` whose customData carries the question + options.
         final sent = await SdkProbe.waitForCustomMessageFromA(
           type: ExtensionType.extensionPoll,
-          where: (m) => m.customData?['question'] == question,
+          where: (m) => m.data['question'] == question,
         );
-        final sentOptions = sent.customData?['options'];
+        final sentOptions = sent.data['options'];
         final sentTexts = sentOptions is Map
             ? sentOptions.values.map((v) => v.toString()).toList()
             : (sentOptions as List).map((v) => v.toString()).toList();

@@ -1,18 +1,22 @@
+import 'dart:async';
+
+import 'package:convokit/convokit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../convokit_uikit.dart';
 import '../../../convokit_uikit.dart' as cc;
 
-/// [ConvoKitGroupMembers] displays all members of a [Group] as a list.
+/// [ConvoKitGroupMembers] displays members of a [ChatGroup] backed by
+/// [GroupRepository] (`listMembers`, `addMembers`, `removeMember`) via
+/// [ConvoKitScope].
 ///
-/// Migrated from GetX controller to BLoC architecture.
-/// The widget now owns a [GroupMembersBloc] that is created in `initState`
-/// and disposed in `dispose`, fixing the bug where `onInit` was never called
-/// because the controller was created inside `build()` of a StatelessWidget.
+/// Gated on `kit.capabilities.groups && kit.groups != null`. When groups are
+/// disabled or absent, renders an empty/disabled state cleanly without invoking
+/// any repository methods or throwing null-check errors.
 class ConvoKitGroupMembers extends StatefulWidget {
   const ConvoKitGroupMembers({
     super.key,
-    this.groupMembersProtocol,
+    required this.group,
+    this.membersController,
     this.subtitleView,
     this.hideSeparator,
     this.listItemView,
@@ -26,14 +30,12 @@ class ConvoKitGroupMembers extends StatefulWidget {
     this.selectionMode,
     this.onSelection,
     this.stateCallBack,
-    this.groupMembersRequestBuilder,
     this.hideError,
     this.loadingStateView,
     this.emptyStateView,
     this.errorStateView,
     this.appBarOptions,
     this.options,
-    required this.group,
     this.trailingView,
     this.selectIcon,
     this.submitIcon,
@@ -44,7 +46,6 @@ class ConvoKitGroupMembers extends StatefulWidget {
     this.activateSelection,
     this.height,
     this.width,
-    this.controllerTag,
     this.hideAppbar,
     this.searchKeyword,
     this.onLoad,
@@ -57,40 +58,21 @@ class ConvoKitGroupMembers extends StatefulWidget {
     this.hideKickMemberOption,
     this.hideScopeChangeOption,
     this.usersStatusVisibility = true,
-    this.groupMembersBloc,
+    this.pageLimit = 30,
   });
 
-  // ── Props ──────────────────────────────────────────────────────────────────
-
-  ///[groupMembersBloc] Optional external GroupMembersBloc instance.
-  ///If provided, this bloc is used instead of creating one internally, and the
-  ///widget will not close it on dispose. Mirrors
-  ///[ConvoKitConversations.conversationsBloc]; it is the seam that lets a test
-  ///supply member data without a live SDK.
-  final GroupMembersBloc? groupMembersBloc;
-
-  final GroupMembersBuilderProtocol? groupMembersProtocol;
-
-  /// [groupMembersRequestBuilder] sets the request the list fetches members
-  /// with: its limit is the page size, and its filters (scopes, status, search
-  /// keyword) apply to every page. [group] decides whose members load — the
-  /// builder's own guid is set aside when it differs. A keyword typed into the
-  /// search box replaces the builder's own while the search runs; clearing it
-  /// brings the builder's back. The builder itself is never changed. Ignored
-  /// when [groupMembersBloc] is given — pass it to that bloc.
-  final GroupMembersRequestBuilder? groupMembersRequestBuilder;
-  final Widget? Function(BuildContext context, GroupMember groupMember)?
+  final ChatGroup group;
+  final ConvoKitGroupMembersController? membersController;
+  final Widget? Function(BuildContext context, ChatMember groupMember)?
   subtitleView;
   final bool? hideSeparator;
-  final Widget Function(GroupMember groupMember)? listItemView;
+  final Widget Function(ChatMember groupMember)? listItemView;
   final ConvoKitGroupMembersStyle? style;
   final ScrollController? controller;
 
-  /// Legacy options callback — kept for backward compatibility.
-  /// Receives a [ConvoKitGroupMembersController] stub that delegates to the BLoC.
   final List<CometChatOption>? Function(
-    Group group,
-    GroupMember member,
+    ChatGroup group,
+    ChatMember member,
     ConvoKitGroupMembersController controller,
     BuildContext context,
   )?
@@ -102,119 +84,173 @@ class ConvoKitGroupMembers extends StatefulWidget {
   final Widget? searchBoxIcon;
   final bool hideSearch;
   final SelectionMode? selectionMode;
-  final Function(List<GroupMember>?)? onSelection;
-
-  /// Legacy stateCallBack — kept for backward compatibility.
+  final Function(List<ChatMember>?)? onSelection;
   final Function(ConvoKitGroupMembersController controller)? stateCallBack;
-
   final bool? hideError;
   final WidgetBuilder? loadingStateView;
   final WidgetBuilder? emptyStateView;
   final WidgetBuilder? errorStateView;
   final List<Widget>? appBarOptions;
-  final Group group;
-  final Function(BuildContext context, GroupMember groupMember)? trailingView;
+  final Widget Function(BuildContext context, ChatMember groupMember)?
+  trailingView;
   final Widget? submitIcon;
   final Widget? selectIcon;
   final VoidCallback? onBack;
-  final Function(GroupMember groupMember)? onItemTap;
-  final Function(GroupMember groupMember)? onItemLongPress;
+  final Function(ChatMember groupMember)? onItemTap;
+  final Function(ChatMember groupMember)? onItemLongPress;
   final ActivateSelection? activateSelection;
   final OnError? onError;
   final double? height;
   final double? width;
-  final String? controllerTag;
   final bool? hideAppbar;
   final String? searchKeyword;
-  final OnLoad<GroupMember>? onLoad;
+  final OnLoad<ChatMember>? onLoad;
   final OnEmpty? onEmpty;
 
   final List<CometChatOption>? Function(
-    Group group,
-    GroupMember groupMember,
+    ChatGroup group,
+    ChatMember groupMember,
     ConvoKitGroupMembersController controller,
     BuildContext context,
   )?
   setOptions;
 
   final List<CometChatOption>? Function(
-    Group group,
-    GroupMember groupMember,
+    ChatGroup group,
+    ChatMember groupMember,
     ConvoKitGroupMembersController controller,
     BuildContext context,
   )?
   addOptions;
 
-  final Widget? Function(BuildContext context, GroupMember groupMember)?
+  final Widget? Function(BuildContext context, ChatMember groupMember)?
   leadingView;
-  final Widget? Function(BuildContext context, GroupMember groupMember)?
+  final Widget? Function(BuildContext context, ChatMember groupMember)?
   titleView;
   final bool? usersStatusVisibility;
   final bool? hideKickMemberOption;
   final bool? hideBanMemberOption;
   final bool? hideScopeChangeOption;
+  final int pageLimit;
 
   @override
   State<ConvoKitGroupMembers> createState() => _ConvoKitGroupMembersState();
 }
 
 class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
-  late GroupMembersBloc _bloc;
-  bool _isExternalBloc = false;
-  final ValueNotifier<bool> _isSelectionOn = ValueNotifier<bool>(false);
+  late ConvoKitGroupMembersController _controller;
+  bool _isExternalController = false;
+  bool _kitBound = false;
+  ConvoKit? _kit;
+  EventHub? _hub;
+  StreamSubscription<Map<String, UserPresence>>? _presenceSub;
+  Map<String, UserPresence> _presenceMap = const {};
 
-  // Cached theme values (theme-caching pattern)
   late ConvoKitColorPalette _colorPalette;
   late ConvoKitTypography _typography;
   late ConvoKitSpacing _spacing;
   bool _themeInitialized = false;
+  Brightness? _cachedBrightness;
 
   @override
   void initState() {
     super.initState();
-    if (widget.groupMembersBloc != null) {
-      // An externally supplied bloc owns its own dependencies and lifecycle.
-      _bloc = widget.groupMembersBloc!;
-      _isExternalBloc = true;
+    if (widget.membersController != null) {
+      _controller = widget.membersController!;
+      _isExternalController = true;
     } else {
-      _bloc = GroupMembersBloc(
+      _controller = ConvoKitGroupMembersController(
         group: widget.group,
-        groupMembersRequestBuilder: widget.groupMembersRequestBuilder,
+        selectionMode: widget.selectionMode ?? SelectionMode.none,
         usersStatusVisibility: widget.usersStatusVisibility ?? true,
-        hideKickMemberOption: widget.hideKickMemberOption ?? false,
-        hideBanMemberOption: widget.hideBanMemberOption ?? false,
-        hideScopeChangeOption: widget.hideScopeChangeOption ?? false,
+        onError: widget.onError,
+        onEmpty: widget.onEmpty,
+        onLoad: widget.onLoad,
+        hideBanMemberOption: widget.hideBanMemberOption,
+        hideKickMemberOption: widget.hideKickMemberOption,
+        hideScopeChangeOption: widget.hideScopeChangeOption,
+        pageLimit: widget.pageLimit,
+        initialSearchKeyword: widget.searchKeyword,
       );
-      _isExternalBloc = false;
+      _isExternalController = false;
     }
-    // Trigger initial load — this is the fix: onInit was never called before
-    _bloc.add(const LoadGroupMembers());
-    if (widget.stateCallBack != null) {
-      widget.stateCallBack!(_buildLegacyControllerStub());
-    }
+    widget.stateCallBack?.call(_controller);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (!_themeInitialized) {
+
+    ConvoKit? newKit;
+    EventHub? newHub;
+    try {
+      newKit = ConvoKitScope.of(context);
+      newHub = ConvoKitScope.hubOf(context);
+    } on StateError {
+      newKit = null;
+      newHub = null;
+    }
+
+    if (!_kitBound || !identical(_kit, newKit)) {
+      _kitBound = true;
+      _kit = newKit;
+      _hub = newHub;
+      _bindPresence();
+      if (!_isExternalController) {
+        _controller.attachKit(newKit);
+        unawaited(_controller.loadMembers());
+      } else if (!_controller.hasLoadedOnce) {
+        if (!_controller.isGroupsEnabled && newKit != null) {
+          _controller.attachKit(newKit);
+        }
+        unawaited(_controller.loadMembers());
+      }
+    }
+
+    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
+    final brightnessChanged =
+        _cachedBrightness != null && _cachedBrightness != currentBrightness;
+    if (!_themeInitialized || brightnessChanged) {
+      _cachedBrightness = currentBrightness;
+      _themeInitialized = true;
       _colorPalette = ConvoKitThemeHelper.getColorPalette(context);
       _typography = ConvoKitThemeHelper.getTypography(context);
       _spacing = ConvoKitThemeHelper.getSpacing(context);
-      _themeInitialized = true;
     }
   }
 
   @override
-  void dispose() {
-    if (!_isExternalBloc) {
-      _bloc.close();
+  void didUpdateWidget(covariant ConvoKitGroupMembers oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.searchKeyword != widget.searchKeyword) {
+      _controller.onSearch(widget.searchKeyword ?? '');
     }
-    _isSelectionOn.dispose();
-    super.dispose();
   }
 
-  // ── Helpers ────────────────────────────────────────────────────────────────
+  void _bindPresence() {
+    _presenceSub?.cancel();
+    _presenceSub = null;
+    final hub = _hub;
+    if (hub == null) {
+      _presenceMap = const {};
+      return;
+    }
+    _presenceSub = hub.presenceRegistry.stream.listen((map) {
+      if (!mounted) return;
+      setState(() {
+        _presenceMap = map;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _presenceSub?.cancel();
+    if (!_isExternalController) {
+      _controller.dispose();
+    }
+    super.dispose();
+  }
 
   ConvoKitGroupMembersStyle _resolvedStyle(BuildContext context) {
     return ConvoKitThemeHelper.getTheme<ConvoKitGroupMembersStyle>(
@@ -223,53 +259,44 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
     ).merge(widget.style);
   }
 
-  /// Build the scope badge shown as trailing on each member row.
   Widget _buildScopeBadge(
-    GroupMember member,
+    ChatMember member,
     ConvoKitGroupMembersStyle style,
   ) {
     Color? bg;
     BoxBorder? border;
     Color? textColor;
     TextStyle? textStyle;
-    String scope = member.scope ?? GroupMemberScope.participant;
+    String label;
 
-    if (member.uid == widget.group.owner) {
-      scope = GroupMemberScope.owner;
-      bg = style.ownerMemberScopeBackgroundColor ?? _colorPalette.primary;
-      textColor =
-          style.ownerMemberScopeTextColor ??
-          style.ownerMemberScopeTextStyle?.color ??
-          _colorPalette.white;
-      border = style.ownerMemberScopeBorder;
-      textStyle = style.ownerMemberScopeTextStyle;
-    } else if (scope == GroupMemberScope.admin) {
-      bg =
-          style.adminMemberScopeBackgroundColor ??
-          _colorPalette.extendedPrimary100;
-      border =
-          style.adminMemberScopeBorder ??
-          Border.all(
-            color: _colorPalette.borderHighlight ?? Colors.transparent,
-            width: 1,
-          );
-      textColor =
-          style.adminMemberScopeTextColor ??
-          style.adminMemberScopeTextStyle?.color ??
-          _colorPalette.textHighlight;
-      textStyle = style.adminMemberScopeTextStyle;
-    } else if (scope == GroupMemberScope.moderator) {
-      bg =
-          style.moderatorMemberScopeBackgroundColor ??
-          _colorPalette.extendedPrimary100;
-      textColor =
-          style.moderatorMemberScopeTextColor ??
-          style.moderatorMemberScopeTextStyle?.color ??
-          _colorPalette.textHighlight;
-      border = style.moderatorMemberScopeBorder;
-      textStyle = style.moderatorMemberScopeTextStyle;
-    } else {
-      return const SizedBox();
+    switch (member.role) {
+      case GroupRole.owner:
+        label = 'Owner';
+        bg = style.ownerMemberScopeBackgroundColor ?? _colorPalette.primary;
+        textColor =
+            style.ownerMemberScopeTextColor ??
+            style.ownerMemberScopeTextStyle?.color ??
+            _colorPalette.white;
+        border = style.ownerMemberScopeBorder;
+        textStyle = style.ownerMemberScopeTextStyle;
+      case GroupRole.admin:
+        label = 'Admin';
+        bg =
+            style.adminMemberScopeBackgroundColor ??
+            _colorPalette.extendedPrimary100;
+        border =
+            style.adminMemberScopeBorder ??
+            Border.all(
+              color: _colorPalette.borderHighlight ?? Colors.transparent,
+              width: 1,
+            );
+        textColor =
+            style.adminMemberScopeTextColor ??
+            style.adminMemberScopeTextStyle?.color ??
+            _colorPalette.textHighlight;
+        textStyle = style.adminMemberScopeTextStyle;
+      case GroupRole.member:
+        return const SizedBox();
     }
 
     return Container(
@@ -284,9 +311,7 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
         borderRadius: BorderRadius.circular(_spacing.radiusMax ?? 0),
       ),
       child: Text(
-        scope.isNotEmpty
-            ? '${scope[0].toUpperCase()}${scope.substring(1)}'
-            : '',
+        label,
         style: TextStyle(
           fontSize: _typography.caption1?.regular?.fontSize,
           fontWeight: _typography.caption1?.regular?.fontWeight,
@@ -296,10 +321,8 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
     );
   }
 
-  /// Build a single member list item.
   Widget _buildListItem(
-    GroupMember member,
-    GroupMembersLoaded state,
+    ChatMember member,
     ConvoKitGroupMembersStyle groupMemberStyle,
     GlobalKey itemKey,
   ) {
@@ -307,27 +330,39 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
       return widget.listItemView!(member);
     }
 
-    Widget? subtitle = widget.subtitleView?.call(context, member);
-    Widget? title = widget.titleView?.call(context, member);
-    Widget? leading = widget.leadingView?.call(context, member);
-    Widget tail = widget.trailingView != null
+    final subtitle = widget.subtitleView?.call(context, member);
+    final title = widget.titleView?.call(context, member);
+    final leading = widget.leadingView?.call(context, member);
+    final Widget tail = widget.trailingView != null
         ? widget.trailingView!(context, member)
         : _buildScopeBadge(member, groupMemberStyle);
 
-    final isSelected = state.selectedMembers.contains(member.uid);
-    final hasSelection = state.selectedMembers.isNotEmpty;
+    final isSelected = _controller.selectedMemberIds.contains(member.user.id);
+    final hasSelection = _controller.selectedMemberIds.isNotEmpty;
+
+    final livePresence = _presenceMap[member.user.id] ?? member.user.presence;
+    final effectiveMember = ChatMember(
+      user: ChatUser(
+        id: member.user.id,
+        name: member.user.name,
+        avatarUrl: member.user.avatarUrl,
+        presence: livePresence,
+        isBlocked: member.user.isBlocked,
+      ),
+      role: member.role,
+    );
 
     final statusUtils = StatusIndicatorUtils.getStatusIndicatorFromParams(
       context: context,
-      groupMember: member,
-      // Without isSelected the utility never takes its selected branch, so
-      // selectIcon was inert. Groups, Search and Conversations all pass it.
+      groupMember: effectiveMember,
       isSelected: isSelected,
       onlineStatusIndicatorColor:
           groupMemberStyle.onlineStatusColor ?? _colorPalette.success,
       usersStatusVisibility: widget.usersStatusVisibility,
       selectIcon: widget.selectIcon,
     );
+
+    final currentUserId = _controller.loggedInUser?.id;
 
     return Container(
       decoration: BoxDecoration(
@@ -343,9 +378,8 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
         bottom: _spacing.padding2 ?? 0,
       ),
       child: GestureDetector(
-        onLongPress: () =>
-            _onItemLongPress(member, state, groupMemberStyle, itemKey),
-        onTap: () => _onItemTap(member, state),
+        onLongPress: () => _onItemLongPress(member, groupMemberStyle, itemKey),
+        onTap: () => _onItemTap(member),
         child: Row(
           children: [
             if (hasSelection)
@@ -360,7 +394,7 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
                             _colorPalette.transparent,
                       ),
                 value: isSelected,
-                onChanged: (_) => _onItemTap(member, state),
+                onChanged: (_) => _onItemTap(member),
                 shape: RoundedRectangleBorder(
                   borderRadius:
                       groupMemberStyle.checkboxBorderRadius ??
@@ -384,15 +418,13 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
               const SizedBox(),
             Expanded(
               child: ConvoKitListItem(
-                id: member.uid,
-                avatarName: member.name,
-                avatarURL: member.avatar,
-                title:
-                    (_bloc.loggedInUser != null &&
-                        _bloc.loggedInUser!.uid == member.uid)
+                id: member.user.id,
+                avatarName: member.user.name,
+                avatarURL: member.user.avatarUrl,
+                title: (currentUserId != null &&
+                        currentUserId == member.user.id)
                     ? cc.Translations.of(context).you
-                    : member.name,
-                key: UniqueKey(),
+                    : member.user.name,
                 subtitleView: subtitle,
                 tailView: tail,
                 avatarStyle:
@@ -425,48 +457,38 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
     );
   }
 
-  void _onItemTap(GroupMember member, GroupMembersLoaded state) {
-    final isOwner = member.uid == widget.group.owner;
+  void _onItemTap(ChatMember member) {
+    final isOwner = member.role == GroupRole.owner;
     final canSelect =
         !isOwner &&
         (widget.activateSelection == ActivateSelection.onClick ||
             (widget.activateSelection == ActivateSelection.onLongClick &&
-                state.selectedMembers.isNotEmpty)) &&
+                _controller.selectedMemberIds.isNotEmpty)) &&
         !(widget.selectionMode == null ||
             widget.selectionMode == SelectionMode.none);
 
     if (canSelect) {
-      _bloc.add(ToggleMemberSelection(member.uid));
-      final willBeEmpty =
-          state.selectedMembers.length == 1 &&
-          state.selectedMembers.contains(member.uid);
-      if (willBeEmpty) {
-        _isSelectionOn.value = false;
-      } else if (widget.activateSelection == ActivateSelection.onClick) {
-        _isSelectionOn.value = true;
-      }
+      _controller.toggleSelection(member.user.id);
     } else if (widget.onItemTap != null) {
       widget.onItemTap!(member);
     }
   }
 
   void _onItemLongPress(
-    GroupMember member,
-    GroupMembersLoaded state,
+    ChatMember member,
     ConvoKitGroupMembersStyle groupMemberStyle,
     GlobalKey itemKey,
   ) {
-    final isOwner = member.uid == widget.group.owner;
+    final isOwner = member.role == GroupRole.owner;
     final canStartSelection =
         !isOwner &&
         widget.activateSelection == ActivateSelection.onLongClick &&
-        state.selectedMembers.isEmpty &&
+        _controller.selectedMemberIds.isEmpty &&
         !(widget.selectionMode == null ||
             widget.selectionMode == SelectionMode.none);
 
     if (canStartSelection) {
-      _bloc.add(ToggleMemberSelection(member.uid));
-      _isSelectionOn.value = true;
+      _controller.toggleSelection(member.user.id);
       return;
     }
 
@@ -475,29 +497,21 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
       return;
     }
 
-    // Build options with wired onClick closures
-    final legacyController = _buildLegacyControllerStub();
     List<CometChatOption> opts = [];
 
     if (widget.options != null) {
-      // Legacy full-replacement hook, kept ahead of setOptions for the v4
-      // call shape.
-      opts =
-          widget.options!(widget.group, member, legacyController, context) ??
-          [];
+      opts = widget.options!(widget.group, member, _controller, context) ?? [];
     } else if (widget.setOptions != null) {
       opts =
-          widget.setOptions!(widget.group, member, legacyController, context) ??
-          [];
+          widget.setOptions!(widget.group, member, _controller, context) ?? [];
     } else {
       if (widget.addOptions != null) {
         opts.addAll(
-          widget.addOptions!(widget.group, member, legacyController, context) ??
-              [],
+          widget.addOptions!(widget.group, member, _controller, context) ?? [],
         );
       }
-      // Get permission-filtered option metadata, then wire real actions
-      final metaOptions = _bloc.getDefaultOptions(
+      final metaOptions = _controller.defaultFunction(
+        widget.group,
         member,
         context,
         _colorPalette,
@@ -519,21 +533,14 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
           ),
         ),
       );
-
-      if (widget.addOptions != null &&
-          widget.group.owner != ConvoKitUIKit.loggedInUser?.uid &&
-          member.scope == GroupMemberScope.admin) {
-        return;
-      }
     }
 
     _showPopupMenu(opts, groupMemberStyle, itemKey, member);
   }
 
-  /// Dispatch the correct action for a member option tap.
   void _handleMemberOptionClick(
     String optionId,
-    GroupMember member,
+    ChatMember member,
     ConvoKitGroupMembersStyle groupMemberStyle,
   ) {
     final confirmDialogStyle =
@@ -550,42 +557,36 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
     switch (optionId) {
       case GroupMemberOptionConstants.kick:
         _showConfirmDialog(
-          title: '${cc.Translations.of(context).kick} ${member.name}?',
+          title: '${cc.Translations.of(context).kick} ${member.user.name}?',
           icon: Icon(
             Icons.delete_outline_rounded,
             size: 48,
             color: confirmDialogStyle.iconColor ?? _colorPalette.error,
           ),
           message:
-              '${cc.Translations.of(context).areYouSureRemove} ${member.name} ${cc.Translations.of(context).from} ${widget.group.name}?',
+              '${cc.Translations.of(context).areYouSureRemove} ${member.user.name} ${cc.Translations.of(context).from} ${widget.group.name}?',
           confirmText: cc.Translations.of(context).kick.toUpperCase(),
           confirmDialogStyle: confirmDialogStyle,
           onConfirm: () {
-            Navigator.of(context).pop();
-            _bloc.add(KickMember(member));
+            unawaited(_controller.removeMember(member.user.id));
           },
         );
-        break;
-
       case GroupMemberOptionConstants.ban:
         _showConfirmDialog(
-          title: '${cc.Translations.of(context).ban} ${member.name}?',
+          title: '${cc.Translations.of(context).ban} ${member.user.name}?',
           icon: Icon(
             Icons.not_interested,
             size: 48,
             color: confirmDialogStyle.iconColor ?? _colorPalette.error,
           ),
           message:
-              '${cc.Translations.of(context).areYouSureBan} ${member.name} ${cc.Translations.of(context).from} ${widget.group.name}?',
+              '${cc.Translations.of(context).areYouSureBan} ${member.user.name} ${cc.Translations.of(context).from} ${widget.group.name}?',
           confirmText: cc.Translations.of(context).ban.toUpperCase(),
           confirmDialogStyle: confirmDialogStyle,
           onConfirm: () {
-            Navigator.of(context).pop();
-            _bloc.add(BanMember(member));
+            unawaited(_controller.removeMember(member.user.id));
           },
         );
-        break;
-
       case GroupMemberOptionConstants.changeScope:
         showModalBottomSheet(
           context: context,
@@ -597,12 +598,14 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
               member: member,
               style: changeScopeStyle,
               onSave: (group, m, newScope, oldScope) async {
-                _bloc.add(ChangeMemberScope(member: m, newScope: newScope));
+                final role = newScope.toLowerCase() == 'admin'
+                    ? GroupRole.admin
+                    : GroupRole.member;
+                _controller.updateMemberRole(m.user.id, role);
               },
             ),
           ),
         );
-        break;
     }
   }
 
@@ -659,36 +662,11 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
     ).show();
   }
 
-  /// Minimal legacy controller stub — only used when [setOptions]/[addOptions] callbacks
-  /// are provided by the consumer and need a controller reference.
-  /// The legacy controller handed to [ConvoKitGroupMembers.stateCallBack],
-  /// [ConvoKitGroupMembers.setOptions] and
-  /// [ConvoKitGroupMembers.addOptions]. Built once so callers keep a stable
-  /// reference, and its selectionMap is synced from bloc state — otherwise
-  /// `stateCallBack` hands back a controller whose selection is always empty.
-  ConvoKitGroupMembersController? _legacyController;
-
-  ConvoKitGroupMembersController _buildLegacyControllerStub() {
-    return _legacyController ??= ConvoKitGroupMembersController(
-      groupMembersBuilderProtocol:
-          widget.groupMembersProtocol ??
-          UIGroupMembersBuilder(
-            widget.groupMembersRequestBuilder ??
-                (GroupMembersRequestBuilder(widget.group.guid)
-                  ..searchKeyword = widget.searchKeyword),
-          ),
-      group: widget.group,
-      hideBanMemberOption: widget.hideBanMemberOption,
-      hideKickMemberOption: widget.hideKickMemberOption,
-      hideScopeChangeOption: widget.hideScopeChangeOption,
-    );
-  }
-
   void _showPopupMenu(
     List<CometChatOption> options,
     ConvoKitGroupMembersStyle groupMemberStyle,
     GlobalKey widgetKey,
-    GroupMember member,
+    ChatMember member,
   ) {
     if (options.isEmpty) return;
     final position = WidgetPositionUtil.getWidgetPosition(context, widgetKey);
@@ -723,8 +701,6 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
       if (selected?.onClick != null) selected!.onClick!();
     });
   }
-
-  // ── State views ────────────────────────────────────────────────────────────
 
   Widget _buildLoading(ConvoKitGroupMembersStyle style) {
     if (widget.loadingStateView != null) {
@@ -819,7 +795,7 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
       _colorPalette,
       _typography,
       _spacing,
-      () => _bloc.add(const LoadGroupMembers()),
+      () => unawaited(_controller.loadMembers()),
       errorStateTextStyle: style.errorStateTextStyle,
       errorStateSubtitleStyle: style.errorStateSubtitleStyle,
       buttonTextStyle: style.retryButtonTextStyle,
@@ -831,30 +807,27 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
   }
 
   Widget _buildList(
-    GroupMembersLoaded state,
+    List<ChatMember> members,
     ConvoKitGroupMembersStyle style,
   ) {
-    final keys = List.generate(state.members.length, (_) => GlobalKey());
+    final keys = List.generate(members.length, (_) => GlobalKey());
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) {
-        // Trigger load-more when near the bottom
         if (notification is ScrollEndNotification &&
             notification.metrics.pixels >=
                 notification.metrics.maxScrollExtent - 200 &&
-            state.hasMore &&
-            !state.isLoadingMore) {
-          _bloc.add(const LoadMoreGroupMembers());
+            _controller.hasMore &&
+            !_controller.isLoadingMore) {
+          unawaited(_controller.loadMoreMembers());
         }
         return false;
       },
       child: ListView.builder(
         controller: widget.controller,
         padding: style.listPadding,
-        // Only add the loader slot when actively loading more
-        itemCount: state.members.length + (state.isLoadingMore ? 1 : 0),
+        itemCount: members.length + (_controller.isLoadingMore ? 1 : 0),
         itemBuilder: (ctx, index) {
-          if (index >= state.members.length) {
-            // Pagination loader slot — only shown when isLoadingMore is true
+          if (index >= members.length) {
             return Center(
               child: Padding(
                 padding: EdgeInsets.all(_spacing.padding4 ?? 16),
@@ -870,12 +843,7 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
           }
           return SizedBox(
             key: keys[index],
-            child: _buildListItem(
-              state.members[index],
-              state,
-              style,
-              keys[index],
-            ),
+            child: _buildListItem(members[index], style, keys[index]),
           );
         },
       ),
@@ -883,12 +851,13 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
   }
 
   Widget _buildSelectionWidget(ConvoKitGroupMembersStyle style) {
-    if (!_isSelectionOn.value) return const SizedBox(height: 0, width: 0);
+    if (_controller.selectedMemberIds.isEmpty) {
+      return const SizedBox(height: 0, width: 0);
+    }
     return IconButton(
       tooltip: Translations.of(context).done,
       onPressed: () {
-        final selected = _bloc.getSelectedList();
-        widget.onSelection?.call(selected);
+        widget.onSelection?.call(_controller.getSelectedList());
       },
       icon:
           widget.submitIcon ??
@@ -900,191 +869,146 @@ class _ConvoKitGroupMembersState extends State<ConvoKitGroupMembers> {
     );
   }
 
-  // ── Build ──────────────────────────────────────────────────────────────────
-
   @override
   Widget build(BuildContext context) {
     final groupMemberStyle = _resolvedStyle(context);
 
-    return BlocProvider<GroupMembersBloc>.value(
-      value: _bloc,
-      child: BlocConsumer<GroupMembersBloc, GroupMembersState>(
-        // Lifecycle callbacks, matching ConversationsList: onLoad, onEmpty and
-        // onError are part of the documented public API, so they have to fire
-        // on the state transitions they describe.
-        listener: (ctx, state) {
-          if (state is GroupMembersLoaded && widget.onLoad != null) {
-            widget.onLoad!(state.members);
-          }
-          if (state is GroupMembersEmpty && widget.onEmpty != null) {
-            widget.onEmpty!();
-          }
-          if (state is GroupMembersError && widget.onError != null) {
-            widget.onError!(
-              CometChatException(
-                'GROUP_MEMBERS_ERROR',
-                state.message,
-                state.message,
-              ),
-            );
-          }
-        },
-        builder: (ctx, state) {
-          // Title: show selection count or "Members"
-          final titleText =
-              (state is GroupMembersLoaded && state.selectedMembers.isNotEmpty)
-              ? '${state.selectedMembers.length}'
-              : cc.Translations.of(context).members;
+    return ListenableBuilder(
+      listenable: _controller,
+      builder: (ctx, _) {
+        final hasSelection = _controller.selectedMemberIds.isNotEmpty;
+        final titleText = hasSelection
+            ? '${_controller.selectedMemberIds.length}'
+            : cc.Translations.of(context).members;
+        final effectiveHideSearch =
+            widget.hideSearch || !_controller.isGroupsEnabled;
 
-          final hasSelection =
-              state is GroupMembersLoaded && state.selectedMembers.isNotEmpty;
-
-          return CometChatListBase(
-            titleSpacing: widget.showBackButton ? 0 : 16,
-            titleView: Text(
-              titleText,
-              style: TextStyle(
-                color: _colorPalette.textPrimary,
-                fontSize: _typography.heading1?.bold?.fontSize,
-                fontWeight: _typography.heading1?.bold?.fontWeight,
-                fontFamily: _typography.heading1?.bold?.fontFamily,
-              ).merge(groupMemberStyle.titleStyle),
-            ),
-            hideSearch: widget.hideSearch,
-            hideAppBar: widget.hideAppbar ?? false,
-            backIcon: hasSelection
-                ? IconButton(
-                    tooltip: Translations.of(context).clearSearch,
-                    onPressed: () {
-                      _bloc.add(const ClearMemberSelection());
-                      _isSelectionOn.value = false;
-                    },
-                    icon: Icon(
-                      Icons.clear,
-                      color: _colorPalette.iconPrimary,
-                      size: 24,
-                    ),
-                    padding: EdgeInsets.zero,
-                  )
-                : (widget.backButton ??
-                      IconButton(
-                        tooltip: Translations.of(context).back,
-                        onPressed: () => Navigator.pop(context),
-                        icon: Icon(
-                          Icons.arrow_back,
-                          color:
-                              groupMemberStyle.backIconColor ??
-                              _colorPalette.iconPrimary,
-                          size: 24,
-                        ),
-                        padding: EdgeInsets.zero,
-                      )),
-            onBack: widget.onBack,
-            placeholder: widget.searchPlaceholder,
-            searchText: widget.searchKeyword,
-            showBackButton: widget.showBackButton,
-            searchBoxIcon: widget.searchBoxIcon,
-            onSearch: (val) => _bloc.add(SearchGroupMembers(val)),
-            menuOptions: [
-              if (widget.appBarOptions != null &&
-                  widget.appBarOptions!.isNotEmpty)
-                ...widget.appBarOptions!,
-              ValueListenableBuilder<bool>(
-                valueListenable: _isSelectionOn,
-                builder: (_, _, _) => _buildSelectionWidget(groupMemberStyle),
-              ),
-            ],
-            searchPadding: EdgeInsets.symmetric(
-              horizontal: _spacing.padding4 ?? 0,
-              vertical: _spacing.padding3 ?? 0,
-            ),
-            searchContentPadding: EdgeInsets.symmetric(
-              horizontal: _spacing.padding3 ?? 0,
-              vertical: _spacing.padding2 ?? 0,
-            ),
-            searchBoxHeight: 40,
-            style: ListBaseStyle(
-              background:
-                  groupMemberStyle.backgroundColor ?? _colorPalette.background1,
-              titleStyle: TextStyle(
-                color: _colorPalette.textPrimary,
-                fontSize: _typography.heading1?.bold?.fontSize,
-                fontWeight: _typography.heading1?.bold?.fontWeight,
-                fontFamily: _typography.heading1?.bold?.fontFamily,
-              ).merge(groupMemberStyle.titleStyle),
-              height: widget.height,
-              width: widget.width,
-              backIconTint: groupMemberStyle.backIconColor,
-              searchIconTint:
-                  groupMemberStyle.searchIconColor ??
-                  _colorPalette.iconSecondary,
-              border: groupMemberStyle.border,
-              borderRadius: groupMemberStyle.borderRadius,
-              searchTextStyle: TextStyle(
-                color: _colorPalette.textPrimary,
-                fontSize: _typography.heading4?.regular?.fontSize,
-                fontWeight: _typography.heading4?.regular?.fontWeight,
-                fontFamily: _typography.heading4?.regular?.fontFamily,
-              ).merge(groupMemberStyle.searchTextStyle),
-              searchPlaceholderStyle: TextStyle(
-                color: _colorPalette.textTertiary,
-                fontSize: _typography.heading4?.regular?.fontSize,
-                fontWeight: _typography.heading4?.regular?.fontWeight,
-                fontFamily: _typography.heading4?.regular?.fontFamily,
-              ).merge(groupMemberStyle.searchPlaceholderStyle),
-              searchTextFieldRadius: groupMemberStyle.searchBorderRadius,
-              searchBoxBackground:
-                  groupMemberStyle.searchBackground ??
-                  _colorPalette.background3,
-              appBarShape: Border(
-                bottom: BorderSide(
-                  color:
-                      groupMemberStyle.separatorColor ??
-                      _colorPalette.borderLight ??
-                      Colors.transparent,
-                  width: groupMemberStyle.separatorHeight ?? 1,
-                ),
+        return CometChatListBase(
+          titleSpacing: widget.showBackButton ? 0 : 16,
+          titleView: Text(
+            titleText,
+            style: TextStyle(
+              color: _colorPalette.textPrimary,
+              fontSize: _typography.heading1?.bold?.fontSize,
+              fontWeight: _typography.heading1?.bold?.fontWeight,
+              fontFamily: _typography.heading1?.bold?.fontFamily,
+            ).merge(groupMemberStyle.titleStyle),
+          ),
+          hideSearch: effectiveHideSearch,
+          hideAppBar: widget.hideAppbar ?? false,
+          backIcon: hasSelection
+              ? IconButton(
+                  tooltip: Translations.of(context).clearSearch,
+                  onPressed: _controller.clearSelection,
+                  icon: Icon(
+                    Icons.clear,
+                    color: _colorPalette.iconPrimary,
+                    size: 24,
+                  ),
+                  padding: EdgeInsets.zero,
+                )
+              : (widget.backButton ??
+                    IconButton(
+                      tooltip: Translations.of(context).back,
+                      onPressed: () {
+                        if (widget.onBack != null) {
+                          widget.onBack!();
+                        } else {
+                          Navigator.maybePop(context);
+                        }
+                      },
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color:
+                            groupMemberStyle.backIconColor ??
+                            _colorPalette.iconPrimary,
+                        size: 24,
+                      ),
+                      padding: EdgeInsets.zero,
+                    )),
+          onBack: widget.onBack,
+          placeholder: widget.searchPlaceholder,
+          searchText: widget.searchKeyword,
+          showBackButton: widget.showBackButton,
+          searchBoxIcon: widget.searchBoxIcon,
+          onSearch: _controller.onSearch,
+          menuOptions: [
+            if (widget.appBarOptions != null &&
+                widget.appBarOptions!.isNotEmpty)
+              ...widget.appBarOptions!,
+            _buildSelectionWidget(groupMemberStyle),
+          ],
+          searchPadding: EdgeInsets.symmetric(
+            horizontal: _spacing.padding4 ?? 0,
+            vertical: _spacing.padding3 ?? 0,
+          ),
+          searchContentPadding: EdgeInsets.symmetric(
+            horizontal: _spacing.padding3 ?? 0,
+            vertical: _spacing.padding2 ?? 0,
+          ),
+          searchBoxHeight: 40,
+          style: ListBaseStyle(
+            background:
+                groupMemberStyle.backgroundColor ?? _colorPalette.background1,
+            titleStyle: TextStyle(
+              color: _colorPalette.textPrimary,
+              fontSize: _typography.heading1?.bold?.fontSize,
+              fontWeight: _typography.heading1?.bold?.fontWeight,
+              fontFamily: _typography.heading1?.bold?.fontFamily,
+            ).merge(groupMemberStyle.titleStyle),
+            height: widget.height,
+            width: widget.width,
+            backIconTint: groupMemberStyle.backIconColor,
+            searchIconTint:
+                groupMemberStyle.searchIconColor ?? _colorPalette.iconSecondary,
+            border: groupMemberStyle.border,
+            borderRadius: groupMemberStyle.borderRadius,
+            searchTextStyle: TextStyle(
+              color: _colorPalette.textPrimary,
+              fontSize: _typography.heading4?.regular?.fontSize,
+              fontWeight: _typography.heading4?.regular?.fontWeight,
+              fontFamily: _typography.heading4?.regular?.fontFamily,
+            ).merge(groupMemberStyle.searchTextStyle),
+            searchPlaceholderStyle: TextStyle(
+              color: _colorPalette.textTertiary,
+              fontSize: _typography.heading4?.regular?.fontSize,
+              fontWeight: _typography.heading4?.regular?.fontWeight,
+              fontFamily: _typography.heading4?.regular?.fontFamily,
+            ).merge(groupMemberStyle.searchPlaceholderStyle),
+            searchTextFieldRadius: groupMemberStyle.searchBorderRadius,
+            searchBoxBackground:
+                groupMemberStyle.searchBackground ?? _colorPalette.background3,
+            appBarShape: Border(
+              bottom: BorderSide(
+                color:
+                    groupMemberStyle.separatorColor ??
+                    _colorPalette.borderLight ??
+                    Colors.transparent,
+                width: groupMemberStyle.separatorHeight ?? 1,
               ),
             ),
-            container: _buildContainer(state, groupMemberStyle),
-          );
-        },
-      ),
+          ),
+          container: _buildContainer(groupMemberStyle),
+        );
+      },
     );
   }
 
-  /// Mirrors the bloc's selected uids onto the legacy controller's
-  /// selectionMap so integrators reading it through [stateCallBack] see the
-  /// same selection the list is showing.
-  void _syncLegacySelection(GroupMembersLoaded state) {
-    final controller = _legacyController;
-    if (controller == null) return;
-    controller.selectionMap
-      ..clear()
-      ..addEntries(
-        state.members
-            .where((m) => state.selectedMembers.contains(m.uid))
-            .map((m) => MapEntry(m.uid, m)),
-      );
-  }
-
-  Widget _buildContainer(
-    GroupMembersState state,
-    ConvoKitGroupMembersStyle style,
-  ) {
-    if (state is GroupMembersLoading || state is GroupMembersInitial) {
-      return _buildLoading(style);
-    } else if (state is GroupMembersEmpty) {
+  Widget _buildContainer(ConvoKitGroupMembersStyle style) {
+    if (_controller.isDisabled) {
       return _buildEmpty(style);
-    } else if (state is GroupMembersError) {
-      // hideError suppresses the error view, as on ConvoKitConversations.
+    }
+    if (_controller.isLoading) {
+      return _buildLoading(style);
+    }
+    if (_controller.error != null) {
       if (widget.hideError == true) return const SizedBox.shrink();
       return _buildError(style);
-    } else if (state is GroupMembersLoaded) {
-      _syncLegacySelection(state);
-      if (state.members.isEmpty) return _buildEmpty(style);
-      return _buildList(state, style);
     }
-    return _buildLoading(style);
+    final members = _controller.visibleMembers;
+    if (members.isEmpty) {
+      return _buildEmpty(style);
+    }
+    return _buildList(members, style);
   }
 }

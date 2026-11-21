@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import "package:cometchat_sdk/cometchat_sdk.dart";
+import 'package:convokit/src/core/models/models.dart';
 import '../../../core/utils/ui_event_handler.dart';
 import '../../../core/constants/enums.dart';
 import 'ui_events.dart';
@@ -15,13 +15,13 @@ mixin ConvoKitUIEventListener implements UIEventHandler {
 
   void ccActiveChatChanged(
     Map<String, dynamic>? id,
-    BaseMessage? lastMessage,
-    User? user,
-    Group? group,
+    ChatMessage? lastMessage,
+    ChatUser? user,
+    ChatGroup? group,
     int unreadMessageCount,
   ) {}
 
-  void openChat(User? user, Group? group) {}
+  void openChat(ChatUser? user, ChatGroup? group) {}
 
   void ccComposeMessage(String text, MessageEditStatus status) {}
 
@@ -49,5 +49,5 @@ mixin ConvoKitUIEventListener implements UIEventHandler {
   /// [message] is the owning message (CardMessage for developer cards,
   /// AIAssistantMessage for agent cards).
   /// [action] is the raw renderer action event.
-  void ccCardActionClicked(BaseMessage message, dynamic action) {}
+  void ccCardActionClicked(ChatMessage message, dynamic action) {}
 }

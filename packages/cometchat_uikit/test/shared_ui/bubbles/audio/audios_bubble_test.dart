@@ -16,24 +16,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-Attachment _audio(String name, {int size = 1024}) =>
-    Attachment('https://files.invalid/$name', name, 'mp3', 'audio/mpeg', size);
+ChatAttachment _audio(String name, {int size = 1024}) =>
+    ChatAttachment(id: 'att_$name', remoteId: 'rem_$name', kind: AttachmentTrayController.classifyKind('audio/mpeg', name), url: 'https://files.invalid/$name', state: AttachmentState.uploaded, mimeType: 'audio/mpeg', sizeBytes: size, name: name);
 
 MediaMessage _message(
-  List<Attachment> attachments, {
+  List<ChatAttachment> attachments, {
   String? caption,
   Map<String, dynamic>? metadata,
 }) {
-  final m = MediaMessage(
-    receiverUid: 'priya',
-    receiverType: ReceiverTypeConstants.user,
-    type: MessageTypeConstants.audio,
-    muid: 'audios-bubble-test',
+  final mergedMeta = <String, dynamic>{
+    ...?metadata,
+    if (attachments.length != 1) 'attachments': attachments,
+  };
+  return MediaMessage(
+    id: 'audios-bubble-test',
+    localId: 'audios-bubble-test',
+    conversationId: 'conv_priya',
+    sender: const ChatUser(id: 'priya', name: 'Priya'),
+    createdAt: DateTime(2026),
+    attachment: attachments.isNotEmpty
+        ? attachments.first
+        : const ChatAttachment(
+            id: 'att_empty',
+            remoteId: 'rem_empty',
+            kind: AttachmentKind.audio,
+            url: '',
+            state: AttachmentState.uploaded,
+            name: '',
+          ),
+    caption: caption,
+    metadata: mergedMeta.isEmpty ? null : mergedMeta,
   );
-  m.attachments = attachments;
-  m.caption = caption;
-  m.metadata = metadata;
-  return m;
 }
 
 void main() {
@@ -166,7 +179,7 @@ void main() {
   });
 
   group('the "+N more" collapse', () {
-    List<Attachment> many(int n) =>
+    List<ChatAttachment> many(int n) =>
         List.generate(n, (i) => _audio('track-$i.mp3'));
 
     testWidgets('three audios are all shown, with no toggle', (tester) async {
@@ -376,13 +389,7 @@ void main() {
   });
 
   group('an attachment that is not actually audio', () {
-    Attachment pdf() => Attachment(
-      'https://files.invalid/contract.pdf',
-      'contract.pdf',
-      'pdf',
-      'application/pdf',
-      2048,
-    );
+    ChatAttachment pdf() => ChatAttachment(id: 'att_contract.pdf', remoteId: 'rem_contract.pdf', kind: AttachmentTrayController.classifyKind('application/pdf', 'contract.pdf'), url: 'https://files.invalid/contract.pdf', state: AttachmentState.uploaded, mimeType: 'application/pdf', sizeBytes: 2048, name: 'contract.pdf');
 
     testWidgets('renders as a file card — no player, no clock', (tester) async {
       await pumpBubble(tester, _message([pdf()]));
@@ -426,7 +433,7 @@ void main() {
     testWidgets('an empty url makes the card inert', (tester) async {
       await pumpBubble(
         tester,
-        _message([Attachment('', 'ghost.pdf', 'pdf', 'application/pdf', 10)]),
+        _message([ChatAttachment(id: 'att_ghost.pdf', remoteId: 'rem_ghost.pdf', kind: AttachmentTrayController.classifyKind('application/pdf', 'ghost.pdf'), url: '', state: AttachmentState.uploaded, mimeType: 'application/pdf', sizeBytes: 10, name: 'ghost.pdf')]),
       );
 
       await tester.tap(find.text('ghost.pdf'));

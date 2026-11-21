@@ -70,7 +70,7 @@ class _CometChatPollsBubbleState extends State<CometChatPollsBubble> {
   String? _votingOptionId;
 
   List<Widget> _getAvatars(
-    List<User> voters,
+    List<ChatUser> voters,
     BubbleAlignment? alignment,
     ConvoKitColorPalette colorPalette,
     ConvoKitTypography typography,
@@ -78,11 +78,11 @@ class _CometChatPollsBubbleState extends State<CometChatPollsBubble> {
   ) {
     return voters
         .map(
-          (User user) => Align(
+          (ChatUser user) => Align(
             widthFactor: 0.5,
             child: ConvoKitAvatar(
               name: user.name,
-              image: user.avatar,
+              image: user.avatarUrl,
               height: 20,
               width: 20,
               style: ConvoKitAvatarStyle(
@@ -112,7 +112,7 @@ class _CometChatPollsBubbleState extends State<CometChatPollsBubble> {
     String pollId,
     int votes,
     int totalVotes,
-    List<User> voters,
+    List<ChatUser> voters,
     CometChatPollsBubbleStyle style,
     ConvoKitColorPalette colorPalette,
     ConvoKitSpacing spacing,
@@ -343,21 +343,28 @@ class _CometChatPollsBubbleState extends State<CometChatPollsBubble> {
         totalVotes = widget.metadata?["total"];
         Map<String, dynamic> opt = widget.metadata?["options"] ?? {};
         for (var item in opt.keys) {
-          Map<String, dynamic> votersUid = opt[item]["voters"] ?? {};
-          List<User> voters = votersUid.entries
-              .map(
-                (entry) => User(
-                  uid: entry.key,
-                  name: entry.value["name"],
-                  avatar: entry.value["avatar"],
-                ),
-              )
-              .toList();
+          final optionData = opt[item] is Map
+              ? Map<String, dynamic>.from(opt[item] as Map)
+              : <String, dynamic>{};
+          final rawVoters = optionData["voters"];
+          Map<String, dynamic> votersUid = rawVoters is Map
+              ? Map<String, dynamic>.from(rawVoters)
+              : {};
+          List<ChatUser> voters = votersUid.entries.map((entry) {
+            final voterData = entry.value is Map
+                ? entry.value as Map<dynamic, dynamic>
+                : const <dynamic, dynamic>{};
+            return ChatUser(
+              id: entry.key,
+              name: (voterData["name"] ?? '').toString(),
+              avatarUrl: voterData["avatar"] as String?,
+            );
+          }).toList();
 
           PollOptions optionModel = PollOptions(
             id: item.toString(),
-            optionText: opt[item]["text"],
-            voteCount: opt[item]["count"],
+            optionText: optionData["text"],
+            voteCount: optionData["count"],
             votersUid: votersUid.keys.toList(),
             voters: voters,
           );
@@ -436,5 +443,5 @@ class PollOptions {
   ///[votersUid] list of voters uid
   final List<String> votersUid;
 
-  final List<User> voters;
+  final List<ChatUser> voters;
 }

@@ -1,703 +1,248 @@
-/// Render-verified prop matrix for [ConvoKitMessageHeader] — Track 3 PROP1
-/// (ENG-38921).
-///
-/// Uses the `messageHeaderBloc` seam added alongside this work.
-///
-///   flutter test test/chat_ui/message_header/widget/message_header_props_test.dart
-library;
-
-import 'package:bloc_test/bloc_test.dart';
+import 'package:convokit/convokit.dart';
 import 'package:convokit/convokit_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
-import 'package:network_image_mock/network_image_mock.dart';
 
-class MockMessageHeaderBloc
-    extends MockBloc<MessageHeaderEvent, MessageHeaderState>
-    implements MessageHeaderBloc {}
-
-final _bob = User(uid: 'u2', name: 'Bob', status: 'online');
-final _ai = User(uid: 'ai1', name: 'Assistant', role: 'ai');
-final _team = Group(guid: 'g1', name: 'Team', type: 'private', membersCount: 4);
-
-MockMessageHeaderBloc _mock({
-  User? user,
-  Group? group,
-  bool isTyping = false,
-  MessageHeaderStatus status = MessageHeaderStatus.loaded,
-}) {
-  final state = MessageHeaderState(
-    status: status,
-    user: user ?? (group == null ? _bob : null),
-    group: group,
-    memberCount: group == null ? 0 : 4,
-    isTyping: isTyping,
-    typingUser: isTyping ? _bob : null,
-  );
-  final bloc = MockMessageHeaderBloc();
-  whenListen(
-    bloc,
-    Stream<MessageHeaderState>.value(state),
-    initialState: state,
-  );
-  when(() => bloc.isClosed).thenReturn(false);
-  return bloc;
-}
-
-Future<void> _settle(WidgetTester tester) async {
-  await tester.pump();
-  await tester.pump(const Duration(milliseconds: 300));
-}
-
-Iterable<TextStyle> _textStyles(WidgetTester tester) => tester
-    .widgetList<Text>(find.byType(Text))
-    .map((t) => t.style)
-    .whereType<TextStyle>();
-
-Iterable<Color?> _iconColors(WidgetTester tester) =>
-    tester.widgetList<Icon>(find.byType(Icon)).map((i) => i.color);
-
-Widget _wrap(Widget child) => MaterialApp(
-  localizationsDelegates: Translations.localizationsDelegates,
-  supportedLocales: const [Locale('en')],
-  home: Scaffold(body: child),
-);
+import '../../../convokit/fake_chat_backend.dart';
 
 void main() {
-  group('identity', () {
-    testWidgets('user drives the header', (tester) async {
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          _wrap(ConvoKitMessageHeader(user: _bob, messageHeaderBloc: _mock())),
-        );
-        await _settle(tester);
-      });
-      expect(find.text('Bob'), findsOneWidget);
+  group('ConvoKitMessageHeader (ConvoKitScope + FakeChatBackend)', () {
+    late FakeChatBackend fake;
+
+    setUp(() {
+      fake = FakeChatBackend(seededMessageCount: 3);
     });
 
-    testWidgets('group drives the header', (tester) async {
-      await mockNetworkImagesFor(() async {
+    Widget wrapWithScope(ConvoKit kit, Widget child) {
+      return MaterialApp(
+        localizationsDelegates: Translations.localizationsDelegates,
+        supportedLocales: Translations.supportedLocales,
+        home: ConvoKitScope(
+          kit: kit,
+          child: Scaffold(appBar: child as PreferredSizeWidget),
+        ),
+      );
+    }
+
+    testWidgets(
+      'displays user details and reacts to EventHub.presenceRegistry updates',
+      (tester) async {
+        final kit = ConvoKit(
+          session: fake.session,
+          users: fake.users,
+          conversations: fake.conversations,
+          messages: fake.messages,
+          events: fake.events,
+          capabilities: ChatCapabilities.basic(),
+        );
+
         await tester.pumpWidget(
-          _wrap(
+          wrapWithScope(
+            kit,
             ConvoKitMessageHeader(
-              group: _team,
-              messageHeaderBloc: _mock(group: _team),
+              user: fake.user2,
+              conversationId: 'conv_1_2',
             ),
           ),
         );
-        await _settle(tester);
-      });
-      expect(find.text('Team'), findsOneWidget);
-    });
+        await tester.pumpAndSettle();
 
-    testWidgets('usersStatusVisibility reaches the bloc the widget builds', (
+        expect(find.text(fake.user2.name), findsOneWidget);
+
+        fake.injectPresence(fake.user2, UserPresence.online);
+        await tester.pumpAndSettle();
+        expect(find.textContaining('Online'), findsOneWidget);
+
+        fake.injectPresence(fake.user2, UserPresence.offline);
+        await tester.pumpAndSettle();
+        expect(find.textContaining('Offline'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'shows typing indicator when capabilities.typing is true and hides it when false',
+      (tester) async {
+        // 1. capabilities.typing == true
+        final kitWithTyping = ConvoKit(
+          session: fake.session,
+          users: fake.users,
+          conversations: fake.conversations,
+          messages: fake.messages,
+          events: fake.events,
+          capabilities: const ChatCapabilities(typing: true),
+        );
+
+        await tester.pumpWidget(
+          wrapWithScope(
+            kitWithTyping,
+            ConvoKitMessageHeader(
+              user: fake.user2,
+              conversationId: 'conv_typing_1',
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        fake.injectTyping('conv_typing_1', fake.user2, true);
+        await tester.pumpAndSettle();
+        expect(
+          find.textContaining(RegExp('typing', caseSensitive: false)),
+          findsOneWidget,
+        );
+
+        fake.injectTyping('conv_typing_1', fake.user2, false);
+        await tester.pumpAndSettle();
+        expect(
+          find.textContaining(RegExp('typing', caseSensitive: false)),
+          findsNothing,
+        );
+
+        // 2. capabilities.typing == false
+        final kitNoTyping = ConvoKit(
+          session: fake.session,
+          users: fake.users,
+          conversations: fake.conversations,
+          messages: fake.messages,
+          events: fake.events,
+          capabilities: const ChatCapabilities(typing: false),
+        );
+
+        await tester.pumpWidget(
+          wrapWithScope(
+            kitNoTyping,
+            ConvoKitMessageHeader(
+              user: fake.user2,
+              conversationId: 'conv_typing_2',
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        fake.injectTyping('conv_typing_2', fake.user2, true);
+        await tester.pumpAndSettle();
+        expect(
+          find.textContaining(RegExp('typing', caseSensitive: false)),
+          findsNothing,
+        );
+      },
+    );
+
+    testWidgets('displays group name and member count and handles groups: null', (
       tester,
     ) async {
-      await mockNetworkImagesFor(() async {
+      final group = fake.groupsList.first;
+      final kitNoGroupsRepo = ConvoKit(
+        session: fake.session,
+        users: fake.users,
+        conversations: fake.conversations,
+        messages: fake.messages,
+        events: fake.events,
+        groups: null,
+        capabilities: const ChatCapabilities(groups: false),
+      );
+
+      await tester.pumpWidget(
+        wrapWithScope(
+          kitNoGroupsRepo,
+          ConvoKitMessageHeader(group: group, conversationId: group.id),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text(group.name), findsOneWidget);
+      expect(find.textContaining('${group.memberCount}'), findsOneWidget);
+    });
+
+    testWidgets(
+      'cleanly unsubscribes on didUpdateWidget and dispose without errors',
+      (tester) async {
+        final kit = ConvoKit(
+          session: fake.session,
+          users: fake.users,
+          conversations: fake.conversations,
+          messages: fake.messages,
+          events: fake.events,
+          capabilities: ChatCapabilities.basic(),
+        );
+
         await tester.pumpWidget(
-          _wrap(
+          wrapWithScope(
+            kit,
             ConvoKitMessageHeader(
-              user: _bob,
-              usersStatusVisibility: false,
-              messageHeaderBloc: _mock(),
+              user: fake.user2,
+              conversationId: 'conv_switch_a',
             ),
           ),
         );
-        await _settle(tester);
-      });
-      expect(
-        tester
-            .widget<ConvoKitMessageHeader>(find.byType(ConvoKitMessageHeader))
-            .usersStatusVisibility,
-        isFalse,
+        await tester.pumpAndSettle();
+
+        // Switch target user
+        await tester.pumpWidget(
+          wrapWithScope(
+            kit,
+            ConvoKitMessageHeader(
+              user: fake.user3,
+              conversationId: 'conv_switch_b',
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.text(fake.user3.name), findsOneWidget);
+
+        // Old conversation typing should not affect the new header
+        fake.injectTyping('conv_switch_a', fake.user2, true);
+        await tester.pumpAndSettle();
+        expect(find.textContaining('typing'), findsNothing);
+
+        // Dispose cleanly
+        await tester.pumpWidget(const MaterialApp(home: SizedBox.shrink()));
+        await tester.pumpAndSettle();
+
+        fake.injectPresence(fake.user3, UserPresence.online);
+        fake.injectTyping('conv_switch_b', fake.user3, true);
+        await tester.pump();
+      },
+    );
+
+    testWidgets('wires custom callbacks and slots (onBack, onHeaderTap, trailingView)', (
+      tester,
+    ) async {
+      final kit = ConvoKit(
+        session: fake.session,
+        users: fake.users,
+        conversations: fake.conversations,
+        messages: fake.messages,
+        events: fake.events,
+        capabilities: ChatCapabilities.basic(),
       );
+
+      var backTapped = false;
+      var headerTapped = false;
+
+      await tester.pumpWidget(
+        wrapWithScope(
+          kit,
+          ConvoKitMessageHeader(
+            user: fake.user2,
+            backButton: (_) => IconButton(
+              icon: const Icon(Icons.chevron_left),
+              onPressed: () => backTapped = true,
+            ),
+            onHeaderTap: () => headerTapped = true,
+            trailingView: (_, _, _) => const [Icon(Icons.star)],
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(Icons.chevron_left));
+      expect(backTapped, isTrue);
+
+      await tester.tap(find.text(fake.user2.name));
+      expect(headerTapped, isTrue);
+
+      expect(find.byIcon(Icons.star), findsOneWidget);
     });
   });
-
-  group('slots', () {
-    testWidgets('listItemView replaces the whole header row', (tester) async {
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          _wrap(
-            ConvoKitMessageHeader(
-              user: _bob,
-              messageHeaderBloc: _mock(),
-              listItemView: (user, group, context) => const Text('ROW_SLOT'),
-            ),
-          ),
-        );
-        await _settle(tester);
-      });
-      expect(find.text('ROW_SLOT'), findsOneWidget);
-    });
-
-    testWidgets('leadingStateView, titleView, subtitleView, trailingView and '
-        'auxiliaryButtonView replace their slots', (tester) async {
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          _wrap(
-            ConvoKitMessageHeader(
-              user: _bob,
-              messageHeaderBloc: _mock(),
-              leadingStateView: (user, group, context) => const Text('LEAD'),
-              titleView: (user, group, context) => const Text('TITLE'),
-              subtitleView: (user, group, context) => const Text('SUB'),
-              trailingView: (user, group, context) => const [Text('TAIL')],
-              auxiliaryButtonView: (group, user, context) => const Text('AUX'),
-            ),
-          ),
-        );
-        await _settle(tester);
-      });
-      expect(find.text('LEAD'), findsOneWidget);
-      expect(find.text('TITLE'), findsOneWidget);
-      expect(find.text('SUB'), findsOneWidget);
-      expect(find.text('TAIL'), findsOneWidget);
-      expect(find.text('AUX'), findsOneWidget);
-    });
-  });
-
-  group('back control, layout and avatar', () {
-    testWidgets('showBackButton and backButton render the back control', (
-      tester,
-    ) async {
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          _wrap(
-            ConvoKitMessageHeader(
-              user: _bob,
-              messageHeaderBloc: _mock(),
-              showBackButton: true,
-              backButton: (context) =>
-                  const Icon(Icons.close, key: Key('BACK')),
-            ),
-          ),
-        );
-        await _settle(tester);
-      });
-      expect(find.byKey(const Key('BACK')), findsOneWidget);
-    });
-
-    testWidgets('onBack fires from the default back control', (tester) async {
-      // A custom backButton is returned verbatim and owns its own gesture, so
-      // onBack is only wired to the built-in control.
-      var backed = false;
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          _wrap(
-            ConvoKitMessageHeader(
-              user: _bob,
-              messageHeaderBloc: _mock(),
-              showBackButton: true,
-              onBack: () => backed = true,
-            ),
-          ),
-        );
-        await _settle(tester);
-        await tester.tap(find.byType(GestureDetector).first);
-        await _settle(tester);
-      });
-      expect(backed, isTrue);
-    });
-
-    testWidgets('height and padding size the header', (tester) async {
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          _wrap(
-            ConvoKitMessageHeader(
-              user: _bob,
-              messageHeaderBloc: _mock(),
-              height: 88,
-              padding: const EdgeInsets.all(9),
-            ),
-          ),
-        );
-        await _settle(tester);
-      });
-      final container = tester.widget<Container>(find.byType(Container).first);
-      expect(container.constraints?.maxHeight ?? 88, 88);
-      expect(container.padding, const EdgeInsets.all(9));
-    });
-
-    testWidgets('avatarHeight and avatarWidth size the avatar', (tester) async {
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          _wrap(
-            ConvoKitMessageHeader(
-              user: _bob,
-              messageHeaderBloc: _mock(),
-              avatarHeight: 51,
-              avatarWidth: 52,
-            ),
-          ),
-        );
-        await _settle(tester);
-      });
-      final item = tester.widget<ConvoKitListItem>(
-        find.byType(ConvoKitListItem),
-      );
-      expect(item.avatarHeight, 51);
-      expect(item.avatarWidth, 52);
-    });
-
-    testWidgets('listItemStyle reaches the header row', (tester) async {
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          _wrap(
-            ConvoKitMessageHeader(
-              user: _bob,
-              messageHeaderBloc: _mock(),
-              listItemStyle: const ListItemStyle(
-                titleStyle: TextStyle(fontSize: 17),
-              ),
-            ),
-          ),
-        );
-        await _settle(tester);
-      });
-      expect(
-        tester
-            .widget<ConvoKitListItem>(find.byType(ConvoKitListItem))
-            .style
-            .titleStyle
-            ?.fontSize,
-        17.0,
-      );
-    });
-  });
-
-  group('action buttons', () {
-    testWidgets('header renders no call controls', (tester) async {
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          _wrap(
-            ConvoKitMessageHeader(
-              user: _bob,
-              messageHeaderBloc: _mock(),
-            ),
-          ),
-        );
-        await _settle(tester);
-      });
-      expect(find.byIcon(Icons.call), findsNothing);
-      expect(find.byIcon(Icons.videocam), findsNothing);
-    });
-
-    testWidgets('hideNewChatButton and hideChatHistoryButton remove the AI '
-        'controls', (tester) async {
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          _wrap(
-            ConvoKitMessageHeader(
-              user: _ai,
-              messageHeaderBloc: _mock(user: _ai),
-              hideNewChatButton: true,
-              hideChatHistoryButton: true,
-            ),
-          ),
-        );
-        await _settle(tester);
-      });
-      expect(find.byIcon(Icons.add), findsNothing);
-      expect(find.byIcon(Icons.history), findsNothing);
-    });
-
-    testWidgets('newChatIcon, chatHistoryIcon and their callbacks drive the '
-        'AI controls', (tester) async {
-      var newChat = false;
-      var history = false;
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          _wrap(
-            ConvoKitMessageHeader(
-              // The AI controls only render for an agentic user.
-              user: _ai,
-              messageHeaderBloc: _mock(user: _ai),
-              hideNewChatButton: false,
-              hideChatHistoryButton: false,
-              newChatIcon: Icons.edit,
-              chatHistoryIcon: Icons.list,
-              newChatButtonClick: () => newChat = true,
-              chatHistoryButtonClick: () => history = true,
-            ),
-          ),
-        );
-        await _settle(tester);
-        if (find.byIcon(Icons.edit).evaluate().isNotEmpty) {
-          await tester.tap(find.byIcon(Icons.edit));
-          await _settle(tester);
-        }
-        if (find.byIcon(Icons.list).evaluate().isNotEmpty) {
-          await tester.tap(find.byIcon(Icons.list));
-          await _settle(tester);
-        }
-      });
-      expect(newChat, isTrue);
-      expect(history, isTrue);
-    });
-  });
-
-  group('typing and formatting', () {
-    testWidgets('dateTimeFormatterCallback reaches the subtitle', (
-      tester,
-    ) async {
-      final formatter = TestHeaderDateFormatter();
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          _wrap(
-            ConvoKitMessageHeader(
-              user: _bob,
-              messageHeaderBloc: _mock(),
-              dateTimeFormatterCallback: formatter,
-            ),
-          ),
-        );
-        await _settle(tester);
-      });
-      expect(
-        tester
-            .widget<ConvoKitMessageHeader>(find.byType(ConvoKitMessageHeader))
-            .dateTimeFormatterCallback,
-        same(formatter),
-      );
-    });
-  });
-
-  group('style', () {
-    testWidgets('messageHeaderStyle drives the surface, title and subtitle', (
-      tester,
-    ) async {
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          _wrap(
-            ConvoKitMessageHeader(
-              user: _bob,
-              messageHeaderBloc: _mock(),
-              messageHeaderStyle: const ConvoKitMessageHeaderStyle(
-                backgroundColor: Color(0xFFF10101),
-                titleTextColor: Color(0xFFF20202),
-                titleTextStyle: TextStyle(fontSize: 17),
-                subtitleTextColor: Color(0xFFF30303),
-                subtitleTextStyle: TextStyle(fontSize: 14),
-              ),
-            ),
-          ),
-        );
-        await _settle(tester);
-      });
-      final styles = _textStyles(tester);
-      expect(styles.map((s) => s.color), contains(const Color(0xFFF20202)));
-      expect(styles.map((s) => s.fontSize), contains(17.0));
-    });
-  });
-
-  group('style surface, icons and badges', () {
-    testWidgets('backgroundColor, border and borderRadius shape the surface', (
-      tester,
-    ) async {
-      final border = Border.all(color: const Color(0xFFF40404), width: 3);
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          _wrap(
-            ConvoKitMessageHeader(
-              user: _bob,
-              messageHeaderBloc: _mock(),
-              messageHeaderStyle: ConvoKitMessageHeaderStyle(
-                backgroundColor: const Color(0xFFF50505),
-                border: border,
-                borderRadius: BorderRadius.circular(19),
-              ),
-            ),
-          ),
-        );
-        await _settle(tester);
-      });
-      final decorations = tester
-          .widgetList<Container>(find.byType(Container))
-          .map((c) => c.decoration)
-          .whereType<BoxDecoration>();
-      expect(
-        decorations.map((d) => d.color),
-        contains(const Color(0xFFF50505)),
-      );
-      expect(decorations.map((d) => d.border), contains(border));
-      expect(
-        decorations.map((d) => d.borderRadius),
-        contains(BorderRadius.circular(19)),
-      );
-    });
-
-    testWidgets('backIcon and backIconColor drive the default back control', (
-      tester,
-    ) async {
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          _wrap(
-            ConvoKitMessageHeader(
-              user: _bob,
-              messageHeaderBloc: _mock(),
-              showBackButton: true,
-              messageHeaderStyle: const ConvoKitMessageHeaderStyle(
-                backIcon: Icon(Icons.chevron_left, key: Key('BACK_ICON')),
-                backIconColor: Color(0xFFF60606),
-              ),
-            ),
-          ),
-        );
-        await _settle(tester);
-      });
-      expect(find.byKey(const Key('BACK_ICON')), findsOneWidget);
-    });
-
-    testWidgets('menuIconColor tints the overflow menu apart from the back '
-        'control, and backIconColor stays its fallback', (tester) async {
-      const back = Color(0xFFF60606);
-      const menu = Color(0xFF06F6F6);
-      Color? overflowInk() =>
-          tester.widget<Icon>(find.byIcon(Icons.more_vert)).color;
-
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          _wrap(
-            ConvoKitMessageHeader(
-              key: const ValueKey('without'),
-              user: _bob,
-              messageHeaderBloc: _mock(),
-              onInfoTap: () {},
-              messageHeaderStyle: const ConvoKitMessageHeaderStyle(
-                backIconColor: back,
-              ),
-            ),
-          ),
-        );
-        await _settle(tester);
-      });
-      expect(overflowInk(), back);
-
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          _wrap(
-            ConvoKitMessageHeader(
-              key: const ValueKey('with'),
-              user: _bob,
-              messageHeaderBloc: _mock(),
-              onInfoTap: () {},
-              messageHeaderStyle: const ConvoKitMessageHeaderStyle(
-                backIconColor: back,
-                menuIconColor: menu,
-              ),
-            ),
-          ),
-        );
-        await _settle(tester);
-      });
-      expect(overflowInk(), menu);
-    });
-
-    testWidgets('avatarStyle and groupIconBackgroundColor reach the avatar', (
-      tester,
-    ) async {
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          _wrap(
-            ConvoKitMessageHeader(
-              group: _team,
-              messageHeaderBloc: _mock(group: _team),
-              messageHeaderStyle: const ConvoKitMessageHeaderStyle(
-                avatarStyle: ConvoKitAvatarStyle(
-                  borderRadius: BorderRadius.all(Radius.circular(9)),
-                ),
-                groupIconBackgroundColor: Color(0xFFF70707),
-              ),
-            ),
-          ),
-        );
-        await _settle(tester);
-      });
-      final avatar = tester
-          .widget<ConvoKitListItem>(find.byType(ConvoKitListItem))
-          .avatarStyle;
-      expect(avatar.backgroundColor, const Color(0xFFF70707));
-      expect(avatar.borderRadius, const BorderRadius.all(Radius.circular(9)));
-    });
-
-    testWidgets('statusIndicatorStyle and onlineStatusColor drive the '
-        'presence dot', (tester) async {
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          _wrap(
-            ConvoKitMessageHeader(
-              user: _bob,
-              messageHeaderBloc: _mock(),
-              messageHeaderStyle: const ConvoKitMessageHeaderStyle(
-                statusIndicatorStyle: ConvoKitStatusIndicatorStyle(
-                  borderRadius: BorderRadius.all(Radius.circular(6)),
-                ),
-                onlineStatusColor: Color(0xFFF80808),
-              ),
-            ),
-          ),
-        );
-        await _settle(tester);
-      });
-      final item = tester.widget<ConvoKitListItem>(
-        find.byType(ConvoKitListItem),
-      );
-      expect(item.statusIndicatorColor, const Color(0xFFF80808));
-      expect(
-        item.statusIndicatorStyle.borderRadius,
-        const BorderRadius.all(Radius.circular(6)),
-      );
-    });
-
-    testWidgets('privateGroupBadgeIcon and privateGroupBadgeIconColor style '
-        'the private badge', (tester) async {
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          _wrap(
-            ConvoKitMessageHeader(
-              group: _team,
-              messageHeaderBloc: _mock(group: _team),
-              messageHeaderStyle: const ConvoKitMessageHeaderStyle(
-                privateGroupBadgeIcon: Icon(Icons.lock, key: Key('PRIVATE')),
-                privateGroupBadgeIconColor: Color(0xFFF90909),
-              ),
-            ),
-          ),
-        );
-        await _settle(tester);
-      });
-      expect(find.byKey(const Key('PRIVATE')), findsOneWidget);
-    });
-
-    testWidgets('passwordProtectedGroupBadgeIcon and its colour style the '
-        'protected badge', (tester) async {
-      final locked = Group(
-        guid: 'g2',
-        name: 'Locked',
-        type: 'password',
-        membersCount: 2,
-      );
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          _wrap(
-            ConvoKitMessageHeader(
-              group: locked,
-              messageHeaderBloc: _mock(group: locked),
-              messageHeaderStyle: const ConvoKitMessageHeaderStyle(
-                passwordProtectedGroupBadgeIcon: Icon(
-                  Icons.key,
-                  key: Key('LOCK'),
-                ),
-                passwordProtectedGroupBadgeIconColor: Color(0xFFFA0A0A),
-              ),
-            ),
-          ),
-        );
-        await _settle(tester);
-      });
-      expect(find.byKey(const Key('LOCK')), findsOneWidget);
-    });
-
-    testWidgets('callButtonsStyle reaches the call controls', (tester) async {
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          _wrap(
-            ConvoKitMessageHeader(
-              user: _bob,
-              messageHeaderBloc: _mock(),
-              messageHeaderStyle: const ConvoKitMessageHeaderStyle(
-                callButtonsStyle: CometChatCallButtonsStyle(
-                  voiceCallIconColor: Color(0xFFFB0B0B),
-                ),
-              ),
-            ),
-          ),
-        );
-        await _settle(tester);
-      });
-      expect(find.byType(ConvoKitMessageHeader), findsOneWidget);
-      expect(
-        tester
-            .widget<ConvoKitMessageHeader>(find.byType(ConvoKitMessageHeader))
-            .messageHeaderStyle
-            ?.callButtonsStyle
-            ?.voiceCallIconColor,
-        const Color(0xFFFB0B0B),
-      );
-    });
-
-    testWidgets('newChatIconColor and chatHistoryIconColor tint the AI '
-        'controls', (tester) async {
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          _wrap(
-            ConvoKitMessageHeader(
-              user: _ai,
-              messageHeaderBloc: _mock(user: _ai),
-              hideNewChatButton: false,
-              hideChatHistoryButton: false,
-              messageHeaderStyle: const ConvoKitMessageHeaderStyle(
-                newChatIconColor: Color(0xFFFC0C0C),
-                chatHistoryIconColor: Color(0xFFFD0D0D),
-              ),
-            ),
-          ),
-        );
-        await _settle(tester);
-      });
-      expect(_iconColors(tester), contains(const Color(0xFFFC0C0C)));
-      expect(_iconColors(tester), contains(const Color(0xFFFD0D0D)));
-    });
-
-    testWidgets('typingIndicatorTextStyle styles the typing subtitle', (
-      tester,
-    ) async {
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          _wrap(
-            ConvoKitMessageHeader(
-              user: _bob,
-              messageHeaderBloc: _mock(isTyping: true),
-              messageHeaderStyle: const ConvoKitMessageHeaderStyle(
-                typingIndicatorTextStyle: TextStyle(fontSize: 13),
-              ),
-            ),
-          ),
-        );
-        await _settle(tester);
-      });
-      expect(_textStyles(tester).map((s) => s.fontSize), contains(13.0));
-    });
-
-    testWidgets('subtitleTextColor and subtitleTextStyle style the subtitle', (
-      tester,
-    ) async {
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          _wrap(
-            ConvoKitMessageHeader(
-              group: _team,
-              messageHeaderBloc: _mock(group: _team),
-              messageHeaderStyle: const ConvoKitMessageHeaderStyle(
-                subtitleTextColor: Color(0xFFFE0E0E),
-                subtitleTextStyle: TextStyle(fontSize: 14),
-              ),
-            ),
-          ),
-        );
-        await _settle(tester);
-      });
-      final styles = _textStyles(tester);
-      expect(styles.map((s) => s.color), contains(const Color(0xFFFE0E0E)));
-      expect(styles.map((s) => s.fontSize), contains(14.0));
-    });
-  });
-}
-
-/// Concrete formatter used to check the callback reaches the header.
-class TestHeaderDateFormatter extends DateTimeFormatterCallback {
-  @override
-  String? minute(int? timestamp) => 'FORMATTED';
 }

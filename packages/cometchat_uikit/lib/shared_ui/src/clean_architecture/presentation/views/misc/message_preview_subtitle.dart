@@ -33,7 +33,7 @@ class MessagePreviewSubtitle extends StatelessWidget {
   });
 
   /// The message being previewed.
-  final BaseMessage message;
+  final ChatMessage message;
 
   /// Style for the preview text (and the prefix).
   final TextStyle textStyle;
@@ -62,11 +62,10 @@ class MessagePreviewSubtitle extends StatelessWidget {
   final TextMessage? richTextMessage;
 
   /// "You:" for own messages, otherwise the sender's first name.
-  static String senderPrefixFor(BaseMessage message, BuildContext context) {
+  static String senderPrefixFor(ChatMessage message, BuildContext context) {
     final sender = message.sender;
-    if (sender == null) return '';
-    final loggedInUid = ConvoKitUIKit.loggedInUser?.uid;
-    if (loggedInUid != null && sender.uid == loggedInUid) {
+    final loggedInUid = ConvoKitUIKit.loggedInUser?.id;
+    if (loggedInUid != null && sender.id == loggedInUid) {
       return '${Translations.of(context).you}:';
     }
     final name = sender.name.trim();
@@ -75,34 +74,34 @@ class MessagePreviewSubtitle extends StatelessWidget {
   }
 
   /// Type glyph for a media message, or null for text/card.
-  static IconData? _iconFor(BaseMessage message) {
-    switch (message.type) {
-      case MessageTypeConstants.image:
-        return Icons.image_outlined;
-      case MessageTypeConstants.video:
-        return Icons.videocam_outlined;
-      case MessageTypeConstants.file:
-        return Icons.description_outlined;
-      case MessageTypeConstants.audio:
-        return Icons.audiotrack_outlined;
-      default:
-        return null;
+  static IconData? _iconFor(ChatMessage message) {
+    if (message is MediaMessage) {
+      return switch (message.attachment.kind) {
+        AttachmentKind.image => Icons.image_outlined,
+        AttachmentKind.video => Icons.videocam_outlined,
+        AttachmentKind.file => Icons.description_outlined,
+        AttachmentKind.audio => Icons.audiotrack_outlined,
+      };
     }
+    return null;
   }
 
   /// Plain preview text for non-rich message types.
-  static String _textFor(BaseMessage message, BuildContext context) {
+  static String _textFor(ChatMessage message, BuildContext context) {
     if (message is MediaMessage) {
       return AttachmentUtils.previewSubtitleFor(message, context);
     }
-    if (message.type == MessageTypeConstants.card) {
-      final cardText = (message as CardMessage?)?.getText();
-      return cardText?.isNotEmpty == true
-          ? cardText!
-          : Translations.of(context).cardMessage;
+    if (message is CustomMessage) {
+      if (message.kind == MessageTypeConstants.card) {
+        final cardText = message.data['text'] as String?;
+        return (cardText != null && cardText.isNotEmpty)
+            ? cardText
+            : Translations.of(context).cardMessage;
+      }
+      return message.kind;
     }
     if (message is TextMessage) return message.text;
-    return message.type;
+    return '';
   }
 
   /// Rich-text span for a text message: markdown + the default formatters,
@@ -111,7 +110,9 @@ class MessagePreviewSubtitle extends StatelessWidget {
   Widget _richText(TextMessage message, BuildContext context) {
     final formatters = <CometChatTextFormatter>[
       MarkdownTextFormatter(),
-      ...MessageTemplateUtils.getDefaultTextFormatters(),
+      CometChatMentionsFormatter(),
+      CometChatUrlFormatter(),
+      CometChatPhoneNumberFormatter(),
     ];
     for (final formatter in formatters) {
       if (formatter is CometChatMentionsFormatter) formatter.message = message;
@@ -152,7 +153,7 @@ class MessagePreviewSubtitle extends StatelessWidget {
 
     return Row(
       children: [
-        if (showThreadIndicator && message.parentMessageId > 0)
+        if (showThreadIndicator && message.repliedTo != null)
           Padding(
             padding: EdgeInsets.only(right: gap),
             child: Icon(

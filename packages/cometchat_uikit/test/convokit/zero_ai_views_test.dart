@@ -109,17 +109,24 @@ void main() {
     test('message list bloc contains no addAIAssistantListener or AIAssistantListener references', () {
       final blocFile =
           File('lib/chat_ui/src/message_list/bloc/message_list_bloc.dart');
-      expect(blocFile.existsSync(), isTrue);
-      final content = blocFile.readAsStringSync();
+      expect(
+        blocFile.existsSync(),
+        isFalse,
+        reason: 'legacy message_list_bloc.dart was removed in Phase 7.5',
+      );
+      final listFile =
+          File('lib/chat_ui/src/message_list/widgets/cometchat_message_list.dart');
+      expect(listFile.existsSync(), isTrue);
+      final content = listFile.readAsStringSync();
       expect(
         content.contains('addAIAssistantListener'),
         isFalse,
-        reason: 'message_list_bloc.dart must not contain addAIAssistantListener',
+        reason: 'cometchat_message_list.dart must not contain addAIAssistantListener',
       );
       expect(
         content.contains('AIAssistantListener'),
         isFalse,
-        reason: 'message_list_bloc.dart must not contain AIAssistantListener',
+        reason: 'cometchat_message_list.dart must not contain AIAssistantListener',
       );
     });
   });

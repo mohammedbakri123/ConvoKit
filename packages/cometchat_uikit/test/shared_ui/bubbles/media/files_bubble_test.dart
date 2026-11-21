@@ -15,24 +15,48 @@ late List<MethodCall> _platformCalls;
 
 const _uikitChannel = MethodChannel('cometchat_chat_uikit');
 
-Attachment _attachment(
+ChatAttachment _attachment(
   String name, {
   String url = 'https://cdn.test/f',
   String extension = '',
   String mime = 'application/octet-stream',
   int size = 2048,
-}) => Attachment(url, name, extension, mime, size);
-
-MediaMessage _message(List<Attachment> attachments, {String? caption}) {
-  final message = MediaMessage(
-    receiverUid: 'peer',
-    receiverType: ReceiverTypeConstants.user,
-    type: MessageTypeConstants.file,
-    muid: 'files-test',
+}) {
+  final effectiveUrl = (extension.isNotEmpty && !name.contains('.') && url.isNotEmpty)
+      ? '$url.$extension'
+      : url;
+  return ChatAttachment(
+    id: 'att_$name',
+    remoteId: 'rem_$name',
+    kind: AttachmentTrayController.classifyKind(mime, name),
+    url: effectiveUrl,
+    state: AttachmentState.uploaded,
+    mimeType: mime,
+    sizeBytes: size,
+    name: name,
   );
-  message.attachments = attachments;
-  message.caption = caption;
-  return message;
+}
+
+MediaMessage _message(List<ChatAttachment> attachments, {String? caption}) {
+  return MediaMessage(
+    id: 'files-test',
+    localId: 'files-test',
+    conversationId: 'conv_peer',
+    sender: const ChatUser(id: 'peer', name: 'Peer'),
+    createdAt: DateTime(2026),
+    attachment: attachments.isNotEmpty
+        ? attachments.first
+        : const ChatAttachment(
+            id: 'att_empty',
+            remoteId: 'rem_empty',
+            kind: AttachmentKind.file,
+            url: '',
+            state: AttachmentState.uploaded,
+            name: '',
+          ),
+    caption: caption,
+    metadata: attachments.length != 1 ? {'attachments': attachments} : null,
+  );
 }
 
 Widget _host(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import "../../../../clean_architecture.dart";
-import 'list_base_bloc.dart';
+import 'list_base_controller.dart';
 
 ///[CometChatListBase] is a top level container widget
 ///used internally by components like [ConvoKitUsers], [ConvoKitGroups], [ConvoKitConversations], [ConvoKitGroupMembers]
@@ -112,20 +111,19 @@ class CometChatListBase extends StatefulWidget {
 
 class _CometChatListBaseState extends State<CometChatListBase> {
   late TextEditingController _searchController;
-  late ListBaseBloc _listBaseBloc;
+  late ListBaseController _listBaseController;
 
   @override
   void initState() {
     super.initState();
     _searchController = TextEditingController(text: widget.searchText ?? '');
-    _listBaseBloc = ListBaseBloc();
-    _listBaseBloc.add(const InitializeList());
+    _listBaseController = ListBaseController();
   }
 
   @override
   void dispose() {
     _searchController.dispose();
-    _listBaseBloc.close();
+    _listBaseController.dispose();
     super.dispose();
   }
 
@@ -159,11 +157,9 @@ class _CometChatListBaseState extends State<CometChatListBase> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ListBaseBloc, ListBaseState>(
-      bloc: _listBaseBloc,
-      buildWhen: (previous, current) =>
-          previous.showScrollToBottom != current.showScrollToBottom,
-      builder: (context, state) {
+    return ListenableBuilder(
+      listenable: _listBaseController,
+      builder: (context, _) {
         return ClipRRect(
           borderRadius: widget.style.borderRadius ?? BorderRadius.zero,
           child: Container(

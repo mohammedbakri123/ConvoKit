@@ -7,22 +7,23 @@ class MessageMapper {
   /// Convert SDK BaseMessage to domain MessageEntity
   /// Note: Adjust property names based on actual SDK BaseMessage interface
   static MessageEntity fromSDK(dynamic message) {
+    final map = message as Map<dynamic, dynamic>;
     // This is a placeholder mapper - update property names to match actual SDK
     return MessageEntity(
-      id: message['id']?.toString() ?? 'unknown',
-      text: _extractText(message),
-      senderId: message['senderId'] ?? '',
-      senderName: message['senderName'] ?? 'Unknown',
-      senderAvatar: message['senderAvatar'],
+      id: map['id']?.toString() ?? 'unknown',
+      text: _extractText(map),
+      senderId: map['senderId'] ?? '',
+      senderName: map['senderName'] ?? 'Unknown',
+      senderAvatar: map['senderAvatar'],
       receiverId: null,
       receiverName: null,
-      timestamp: (message['timestamp'] ?? 0) as int,
+      timestamp: (map['timestamp'] ?? 0) as int,
       type: MessageType.text,
       status: MessageStatus.sent,
       isDeleted: false,
       deletedAt: null,
       attachmentUrls: null,
-      metadata: message['metadata'],
+      metadata: map['metadata'],
       parentMessageId: null,
       replyCount: null,
       reactionCount: null,
@@ -37,7 +38,8 @@ class MessageMapper {
   // Helper methods
 
   static String _extractText(dynamic message) {
-    return message['text'] ?? message['caption'] ?? '';
+    final map = message as Map<dynamic, dynamic>;
+    return map['text'] ?? map['caption'] ?? '';
   }
 }
 
@@ -46,15 +48,16 @@ class UserMapper {
   /// Convert SDK User to domain UserEntity
   /// Note: Adjust property names based on actual SDK User interface
   static UserEntity fromSDK(dynamic user) {
+    final map = user as Map<dynamic, dynamic>;
     return UserEntity(
-      id: user['id'] ?? 'unknown',
-      name: user['name'] ?? 'Unknown',
-      avatar: user['avatar'],
-      status: user['status'],
-      isOnline: user['status'] == 'online',
-      lastActive: user['lastActive'],
-      statusMessage: user['statusMessage'],
-      metadata: user['metadata'],
+      id: map['id'] ?? 'unknown',
+      name: map['name'] ?? 'Unknown',
+      avatar: map['avatar'],
+      status: map['status'],
+      isOnline: map['status'] == 'online',
+      lastActive: map['lastActive'],
+      statusMessage: map['statusMessage'],
+      metadata: map['metadata'],
     );
   }
 
@@ -69,16 +72,17 @@ class GroupMapper {
   /// Convert SDK Group to domain GroupEntity
   /// Note: Adjust property names based on actual SDK Group interface
   static GroupEntity fromSDK(dynamic group) {
+    final map = group as Map<dynamic, dynamic>;
     return GroupEntity(
-      id: group['id'] ?? 'unknown',
-      name: group['name'] ?? 'Unknown',
-      icon: group['icon'],
-      description: group['description'],
-      owner: group['owner'] ?? '',
-      memberCount: group['memberCount'] ?? 0,
+      id: map['id'] ?? 'unknown',
+      name: map['name'] ?? 'Unknown',
+      icon: map['icon'],
+      description: map['description'],
+      owner: map['owner'] ?? '',
+      memberCount: map['memberCount'] ?? 0,
       members: const [],
-      metadata: group['metadata'],
-      type: group['type'] ?? 'public',
+      metadata: map['metadata'],
+      type: map['type'] ?? 'public',
     );
   }
 

@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'dart:typed_data';
-
 import '../contracts/contracts.dart';
 import 'convo_kit.dart';
 import 'models/models.dart';
@@ -60,7 +57,7 @@ class MessageCoordinator {
     // 2. Call repository
     try {
       final result = await kit.messages.sendMessage(pending);
-      return result.fold(
+      return result.fold<ChatResult<ChatMessage>>(
         onSuccess: (confirmed) {
           // 4. Success -> reconcile
           store.addOrReconcile(confirmed);
@@ -231,7 +228,7 @@ class MessageCoordinator {
     // 3. Send message
     try {
       final sendResult = await kit.messages.sendMessage(pending);
-      return sendResult.fold(
+      return sendResult.fold<ChatResult<ChatMessage>>(
         onSuccess: (confirmed) {
           store.addOrReconcile(confirmed);
           return ChatResult.success(confirmed);

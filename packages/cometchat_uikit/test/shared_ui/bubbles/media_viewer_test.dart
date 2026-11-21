@@ -27,13 +27,13 @@ const String _pngBase64 =
     'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk'
     'YPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
 
-Attachment _attachment(
+ChatAttachment _attachment(
   String url,
   String name,
   String ext,
   String mime, [
   int size = 1024,
-]) => Attachment(url, name, ext, mime, size);
+]) => ChatAttachment(id: 'att_$name', remoteId: 'rem_$name', kind: AttachmentTrayController.classifyKind(mime, name), url: url, state: AttachmentState.uploaded, mimeType: mime, sizeBytes: size, name: name);
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -83,7 +83,7 @@ void main() {
 
   Future<void> pumpViewer(
     WidgetTester tester,
-    List<Attachment> items, {
+    List<ChatAttachment> items, {
     int startIndex = 0,
   }) async {
     await tester.pumpWidget(

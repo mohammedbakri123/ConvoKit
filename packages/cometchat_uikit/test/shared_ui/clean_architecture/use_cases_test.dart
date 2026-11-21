@@ -15,6 +15,8 @@ import 'package:convokit/convokit_uikit.dart';
 // The barrel exports a different `GetMessagesUseCase` (the chat_ui message
 // list's own), and the Params classes are not exported at all, so the
 // clean-architecture use cases are imported by path under a prefix.
+import 'package:convokit/shared_ui/src/clean_architecture/domain/repositories/repositories.dart'
+    as domain_repo;
 import 'package:convokit/shared_ui/src/clean_architecture/domain/use_cases/message_use_cases.dart'
     as domain;
 import 'package:flutter_test/flutter_test.dart';
@@ -38,7 +40,7 @@ MessageEntity _msg(
 /// Only the members the use cases touch are implemented; anything else throws
 /// through `noSuchMethod`, so a use case reaching for the wrong repository
 /// method fails loudly instead of quietly returning null.
-class _FakeMessageRepository implements MessageRepository {
+class _FakeMessageRepository implements domain_repo.MessageRepository {
   final List<String> calls = [];
 
   List<MessageEntity> messages = const [];

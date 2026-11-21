@@ -44,20 +44,13 @@ class APIAction extends ActionEntity {
     return map;
   }
 
-  factory APIAction.fromMap(dynamic map) {
-    Map<String, String> parsedMap = {};
-
-    if (map['headers'] != null && map['headers'] is Map<String, dynamic>) {
-      (map['headers'] as Map<String, dynamic>).forEach((key, value) {
-        parsedMap[key] = value?.toString() ?? "";
-      });
-    }
-
+  factory APIAction.fromMap(dynamic rawMap) {
+    final map = rawMap as Map<dynamic, dynamic>;
     return APIAction(
       url: map['url'] ?? "",
       method: map['method'] ?? ActionTypeConstants.urlNavigation,
-      payload: map['payload']?.cast<String, dynamic>(),
-      headers: map['headers']?.cast<String, String>(),
+      payload: (map['payload'] as Map?)?.cast<String, dynamic>(),
+      headers: (map['headers'] as Map?)?.cast<String, String>(),
       dataKey: map['dataKey'],
       type: map['actionType'],
     );

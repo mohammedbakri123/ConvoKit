@@ -144,7 +144,7 @@ class _ConvoKitAttachmentTileState extends State<ConvoKitAttachmentTile> {
               // yet never hovers, so tap must still explain there.
               // Non-error media tiles open the preview.
               onTap: tile.hasError
-                  ? (tile.status == AttachmentTileStatus.failed
+                  ? ((tile.status == AttachmentTileStatus.failed || tile.status == AttachmentTileStatus.sendFailed)
                         ? onRetry
                         : (_hoverCapable ? null : onErrorInteract))
                   : (isMedia ? onTap : null),
@@ -213,6 +213,7 @@ class _ConvoKitAttachmentTileState extends State<ConvoKitAttachmentTile> {
           ),
         );
       case AttachmentTileStatus.failed:
+      case AttachmentTileStatus.sendFailed:
         // Tapping anywhere on the tile (handled by the outer GestureDetector)
         // shows the error snackbar, which carries the retry action — the icon
         // itself is just a static indicator.
@@ -500,6 +501,7 @@ class _ConvoKitAttachmentTileState extends State<ConvoKitAttachmentTile> {
           ),
         );
       case AttachmentTileStatus.failed:
+      case AttachmentTileStatus.sendFailed:
         return SvgPicture.asset(
           kAttachmentRetryIconAsset,
           width: 20,
@@ -527,6 +529,7 @@ class _ConvoKitAttachmentTileState extends State<ConvoKitAttachmentTile> {
     ).merge(style?.errorTextStyle);
     switch (tile.status) {
       case AttachmentTileStatus.failed:
+      case AttachmentTileStatus.sendFailed:
         return Text(
           Translations.of(context).tapToRetry,
           maxLines: 1,
@@ -642,7 +645,7 @@ class _AudioTileCardState extends State<_AudioTileCard> {
     // The source can appear late (web bytes-staging gets a URL only once the
     // upload completes), and an upload failure should silence playback.
     _ensurePlayer();
-    if (tile.status == AttachmentTileStatus.failed ||
+    if ((tile.status == AttachmentTileStatus.failed || tile.status == AttachmentTileStatus.sendFailed) ||
         tile.status == AttachmentTileStatus.rejected) {
       final p = _player;
       if (p != null && p.value.isInitialized && p.value.isPlaying) p.pause();
@@ -824,6 +827,7 @@ class _AudioTileCardState extends State<_AudioTileCard> {
           ),
         );
       case AttachmentTileStatus.failed:
+      case AttachmentTileStatus.sendFailed:
         return SvgPicture.asset(
           kAttachmentRetryIconAsset,
           width: 20,
@@ -843,7 +847,7 @@ class _AudioTileCardState extends State<_AudioTileCard> {
   }
 
   Widget _errorSubtitle(BuildContext context, ConvoKitColorPalette colors) {
-    final text = tile.status == AttachmentTileStatus.failed
+    final text = (tile.status == AttachmentTileStatus.failed || tile.status == AttachmentTileStatus.sendFailed)
         ? Translations.of(context).tapToRetry
         : Translations.of(context).uploadFailed;
     return Padding(

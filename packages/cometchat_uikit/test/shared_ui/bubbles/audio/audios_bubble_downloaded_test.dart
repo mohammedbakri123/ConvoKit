@@ -36,35 +36,39 @@ import '../../../helpers/fake_video_player_platform.dart';
 
 late Directory _root;
 
-Attachment _audio(String name, {int size = 1024}) =>
-    Attachment('https://files.invalid/$name', name, 'mp3', 'audio/mpeg', size);
+ChatAttachment _audio(String name, {int size = 1024}) =>
+    ChatAttachment(id: 'att_$name', remoteId: 'rem_$name', kind: AttachmentTrayController.classifyKind('audio/mpeg', name), url: 'https://files.invalid/$name', state: AttachmentState.uploaded, mimeType: 'audio/mpeg', sizeBytes: size, name: name);
 
-Attachment _pdf(String name) => Attachment(
-  'https://files.invalid/$name',
-  name,
-  'pdf',
-  'application/pdf',
-  7,
-);
+ChatAttachment _pdf(String name) => ChatAttachment(id: 'att_$name', remoteId: 'rem_$name', kind: AttachmentTrayController.classifyKind('application/pdf', name), url: 'https://files.invalid/$name', state: AttachmentState.uploaded, mimeType: 'application/pdf', sizeBytes: 7, name: name);
 
-MediaMessage _message(List<Attachment> attachments) {
-  final m = MediaMessage(
-    receiverUid: 'priya',
-    receiverType: ReceiverTypeConstants.user,
-    type: MessageTypeConstants.audio,
-    muid: 'audios-downloaded-test',
+MediaMessage _message(List<ChatAttachment> attachments) {
+  return MediaMessage(
+    id: 'audios-downloaded-test',
+    localId: 'audios-downloaded-test',
+    conversationId: 'conv_priya',
+    sender: const ChatUser(id: 'priya', name: 'Priya'),
+    createdAt: DateTime(2026),
+    attachment: attachments.isNotEmpty
+        ? attachments.first
+        : const ChatAttachment(
+            id: 'att_empty',
+            remoteId: 'rem_empty',
+            kind: AttachmentKind.audio,
+            url: '',
+            state: AttachmentState.uploaded,
+            name: '',
+          ),
+    metadata: attachments.length != 1 ? {'attachments': attachments} : null,
   );
-  m.attachments = attachments;
-  return m;
 }
 
 /// Where the Kit looks for [a]'s cached copy: the download root plus the
 /// attachment's per-url bucket.
-String _cachePathFor(Attachment a) =>
-    '${_root.path}/${DownloadCacheKey.bucketFor(a.fileUrl)}/${a.fileName}';
+String _cachePathFor(ChatAttachment a) =>
+    '${_root.path}/${DownloadCacheKey.bucketFor(a.url ?? '')}/${a.name ?? ''}';
 
 /// Puts a real file where the Kit expects an earlier download to have landed.
-void _seedDownload(Attachment a) {
+void _seedDownload(ChatAttachment a) {
   final file = File(_cachePathFor(a));
   file.parent.createSync(recursive: true);
   file.writeAsBytesSync(const [0, 1, 2, 3, 4, 5, 6, 7]);
@@ -351,13 +355,7 @@ void main() {
     testWidgets('a file name with no extension still renders a card', (
       tester,
     ) async {
-      final doc = Attachment(
-        'https://files.invalid/readme',
-        'readme',
-        'pdf',
-        'application/pdf',
-        12,
-      );
+      final doc = ChatAttachment(id: 'att_readme', remoteId: 'rem_readme', kind: AttachmentTrayController.classifyKind('application/pdf', 'readme'), url: 'https://files.invalid/readme', state: AttachmentState.uploaded, mimeType: 'application/pdf', sizeBytes: 12, name: 'readme');
 
       await pumpBubble(tester, _message([doc]));
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cometchat_sdk/cometchat_sdk.dart' hide CardMessage;
+import 'package:convokit/src/core/models/models.dart';
 import '../../../../core/constants/enums.dart';
 import '../../../theme/colors/cometchat_color_palette.dart';
 import '../../../theme/typography/cometchat_typography.dart';
@@ -26,14 +26,13 @@ class AudioBubbleFactory extends BubbleFactory<MediaMessage> {
     ConvoKitSpacing? spacing,
   }) {
     return CometChatAudioPlayer(
-      audioUrl: message.attachment?.fileUrl,
-      title: message.attachment?.fileName,
+      audioUrl: message.attachment.url ?? message.attachment.localPath,
+      title: message.attachment.name,
       style: style,
       playIcon: playIcon,
       pauseIcon: pauseIcon,
       alignment: alignment,
-      id: message.id,
-      metadata: message.metadata,
+      id: int.tryParse(message.id ?? ''),
       colorPalette: colorPalette,
       typography: typography,
       spacing: spacing,

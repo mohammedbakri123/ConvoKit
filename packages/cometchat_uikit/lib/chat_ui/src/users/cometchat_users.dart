@@ -1,10 +1,15 @@
+import 'dart:async';
+
+import 'package:convokit/convokit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../convokit_uikit.dart';
 import '../../../convokit_uikit.dart' as cc;
 
-/// [ConvoKitUsers] is a component that displays a list of users
-/// using Clean Architecture with BLoC pattern.
+/// [ConvoKitUsers] displays a paginated, searchable list of [ChatUser]s
+/// backed directly by [UserRepository] via [ConvoKitScope].
+///
+/// Search input visibility is gated on `ConvoKitScope.of(context).capabilities.search`.
+/// User online presence updates are observed from [EventHub.presenceRegistry].
 class ConvoKitUsers extends StatefulWidget {
   const ConvoKitUsers({
     super.key,
@@ -43,17 +48,12 @@ class ConvoKitUsers extends StatefulWidget {
     this.titleView,
     this.leadingView,
     this.trailingView,
-    this.usersBloc,
-    this.usersRequestBuilder,
+    this.pageLimit = 30,
+    this.debounceDuration = const Duration(milliseconds: 300),
   });
 
-  final UsersBloc? usersBloc;
-
-  /// [usersRequestBuilder] custom request builder for filtering users
-  final UsersRequestBuilder? usersRequestBuilder;
-
-  final Widget? Function(BuildContext, User)? subtitleView;
-  final Widget Function(User)? listItemView;
+  final Widget? Function(BuildContext, ChatUser)? subtitleView;
+  final Widget Function(ChatUser)? listItemView;
   final ConvoKitUsersStyle usersStyle;
   final ScrollController? scrollController;
   final String? searchPlaceholder;
@@ -62,7 +62,7 @@ class ConvoKitUsers extends StatefulWidget {
   final Widget? searchBoxIcon;
   final bool hideSearch;
   final SelectionMode? selectionMode;
-  final Function(List<User>?, BuildContext)? onSelection;
+  final Function(List<ChatUser>?, BuildContext)? onSelection;
   final String? title;
   final WidgetBuilder? loadingStateView;
   final WidgetBuilder? emptyStateView;
@@ -72,51 +72,67 @@ class ConvoKitUsers extends StatefulWidget {
   final ActivateSelection? activateSelection;
   final OnError? onError;
   final VoidCallback? onBack;
-  final Function(BuildContext context, User)? onItemTap;
-  final Function(BuildContext context, User)? onItemLongPress;
+  final Function(BuildContext context, ChatUser)? onItemTap;
+  final Function(BuildContext context, ChatUser)? onItemLongPress;
 
   /// [setOptions] sets the list of actions a long press on a user offers.
-  /// When it is set, [addOptions] is ignored, as on Android. Starting a
-  /// long-press selection comes first, then [onItemLongPress], when set,
-  /// takes the long press instead.
+  /// When it is set, [addOptions] is ignored. Starting a long-press selection
+  /// comes first, then [onItemLongPress], when set, takes the long press instead.
   final List<CometChatOption>? Function(
-    User user,
-    UsersBloc bloc,
+    ChatUser user,
     BuildContext context,
   )?
   setOptions;
 
-  /// [addOptions] adds to the actions a long press on a user offers. The
-  /// list has no built-in entries, so on its own it behaves as [setOptions]
-  /// does; with [setOptions] set it is not used.
+  /// [addOptions] adds to the actions a long press on a user offers.
   final List<CometChatOption>? Function(
-    User user,
-    UsersBloc bloc,
+    ChatUser user,
     BuildContext context,
   )?
   addOptions;
+
   final Widget? submitIcon;
   final bool? hideAppbar;
   final double? height;
   final double? width;
   final bool? stickyHeaderVisibility;
   final String? searchKeyword;
-  final OnLoad<User>? onLoad;
+  final OnLoad<ChatUser>? onLoad;
   final OnEmpty? onEmpty;
-  final Widget? Function(BuildContext context, User user)? trailingView;
-  final Widget? Function(BuildContext context, User user)? leadingView;
-  final Widget? Function(BuildContext context, User user)? titleView;
+  final Widget? Function(BuildContext context, ChatUser user)? trailingView;
+  final Widget? Function(BuildContext context, ChatUser user)? leadingView;
+  final Widget? Function(BuildContext context, ChatUser user)? titleView;
+  final int pageLimit;
+  final Duration debounceDuration;
 
   @override
-  State<ConvoKitUsers> createState() => _ConvoKitUsersState();
+  State<ConvoKitUsers> createState() => ConvoKitUsersState();
 }
 
-class _ConvoKitUsersState extends State<ConvoKitUsers>
+enum _UsersLoadStatus { loading, loaded, empty, error }
+
+class ConvoKitUsersState extends State<ConvoKitUsers>
     with AutomaticKeepAliveClientMixin {
-  late UsersBloc usersBloc;
-  bool _isExternalBloc = false;
+  ConvoKit? _kit;
+  EventHub? _hub;
+  StreamSubscription<Map<String, UserPresence>>? _presenceSub;
+  Map<String, UserPresence> _presenceMap = const {};
+
+  Timer? _debounceTimer;
+  int _requestSeq = 0;
+  String _searchKeyword = '';
+  _UsersLoadStatus _status = _UsersLoadStatus.loading;
+  List<ChatUser> _users = const [];
+  String? _nextCursor;
+  bool _hasMore = false;
+  bool _isLoadingMore = false;
+  ChatError? _error;
+  final Set<String> _selectedUserIds = <String>{};
+  _UsersLoadStatus? _lastReportedStatus;
+
   bool _themeInitialized = false;
   Brightness? _cachedBrightness;
+
   @override
   bool get wantKeepAlive => true;
 
@@ -130,40 +146,57 @@ class _ConvoKitUsersState extends State<ConvoKitUsers>
   @override
   void initState() {
     super.initState();
-    if (widget.usersBloc != null) {
-      usersBloc = widget.usersBloc!;
-      _isExternalBloc = true;
-    } else {
-      _initializeServiceLocator();
-      usersBloc = UsersBloc(
-        usersStatusVisibility: widget.usersStatusVisibility ?? true,
-        usersRequestBuilder: widget.usersRequestBuilder,
-      );
-      _isExternalBloc = false;
-    }
-    usersBloc.add(LoadUsers(searchKeyword: widget.searchKeyword));
-  }
-
-  void _initializeServiceLocator() {
-    if (!UsersServiceLocator.instance.isInitialized) {
-      UsersServiceLocator.instance.setup();
-    }
+    _searchKeyword = widget.searchKeyword?.trim() ?? '';
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
+    ConvoKit? newKit;
+    EventHub? newHub;
+    try {
+      newKit = ConvoKitScope.of(context);
+      newHub = ConvoKitScope.hubOf(context);
+    } on StateError {
+      newKit = null;
+      newHub = null;
+    }
+
+    final kitChanged = !identical(_kit, newKit);
+    if (kitChanged) {
+      _kit = newKit;
+      _hub = newHub;
+      _bindPresence();
+      unawaited(_loadUsers(reset: true));
+    }
+
     final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
-    if (_themeInitialized && !brightnessChanged) return;
-    _cachedBrightness = currentBrightness;
-    _themeInitialized = true;
+    if (!_themeInitialized || brightnessChanged) {
+      _cachedBrightness = currentBrightness;
+      _themeInitialized = true;
 
-    typography = ConvoKitThemeHelper.getTypography(context);
-    colorPalette = ConvoKitThemeHelper.getColorPalette(context);
-    spacing = ConvoKitThemeHelper.getSpacing(context);
+      typography = ConvoKitThemeHelper.getTypography(context);
+      colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+      spacing = ConvoKitThemeHelper.getSpacing(context);
+      _resolveStyles();
+    }
+  }
 
+  @override
+  void didUpdateWidget(covariant ConvoKitUsers oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.usersStyle != widget.usersStyle) {
+      _resolveStyles();
+    }
+    if (oldWidget.searchKeyword != widget.searchKeyword) {
+      _onSearchChanged(widget.searchKeyword ?? '');
+    }
+  }
+
+  void _resolveStyles() {
     style = ConvoKitThemeHelper.getTheme<ConvoKitUsersStyle>(
       context: context,
       defaultTheme: ConvoKitUsersStyle.of,
@@ -181,177 +214,354 @@ class _ConvoKitUsersState extends State<ConvoKitUsers>
         ).merge(style.statusIndicatorStyle);
   }
 
+  void _bindPresence() {
+    _presenceSub?.cancel();
+    _presenceSub = null;
+    final hub = _hub;
+    if (hub == null) {
+      _presenceMap = const {};
+      return;
+    }
+    _presenceSub = hub.presenceRegistry.stream.listen((map) {
+      if (!mounted) return;
+      setState(() {
+        _presenceMap = map;
+      });
+    });
+  }
+
   @override
   void dispose() {
-    if (!_isExternalBloc) {
-      usersBloc.close();
-    }
+    _debounceTimer?.cancel();
+    _presenceSub?.cancel();
+    _requestSeq++;
     super.dispose();
   }
 
-  /// Reports a state transition to the caller's callbacks exactly once per
-  /// entry into that state. ENG-39104: `onLoad`, `onEmpty` and `onError` were
-  /// declared, documented and never read — the list widget does not even take
-  /// them — so an integrator's "no results yet" affordance never ran.
-  ///
-  /// Keyed on the state's runtime type rather than the state itself: a loaded
-  /// state that gains a user is still `loaded`, and re-reporting on every such
-  /// rebuild would turn `onLoad` into a per-frame callback.
-  Type? _lastReportedState;
+  /// Fetches a single user by [userId] via [UserRepository.getUser] and
+  /// updates the local list if present.
+  Future<ChatUser?> fetchUser(String userId) async {
+    final kit = _kit;
+    if (kit == null) return null;
+    final result = await kit.users.getUser(userId);
+    ChatUser? fetched;
+    result.fold(
+      onSuccess: (user) {
+        fetched = user;
+        if (!mounted) return;
+        final idx = _users.indexWhere((u) => u.id == user.id);
+        if (idx != -1) {
+          setState(() {
+            final updated = List<ChatUser>.of(_users);
+            updated[idx] = user;
+            _users = updated;
+          });
+        }
+      },
+      onFailure: (err) {
+        widget.onError?.call(Exception(err.message));
+      },
+    );
+    return fetched;
+  }
 
-  void _reportUsersState(UsersState state) {
-    if (state.runtimeType == _lastReportedState) return;
-    _lastReportedState = state.runtimeType;
+  /// Reloads the users list from the beginning.
+  Future<void> refresh() => _loadUsers(reset: true);
 
-    if (state is UsersError) {
-      widget.onError?.call(Exception(state.message));
-    } else if (state is UsersEmpty) {
-      widget.onEmpty?.call();
-    } else if (state is UsersLoaded) {
-      if (state.users.isEmpty) {
-        widget.onEmpty?.call();
+  void _onSearchChanged(String raw) {
+    _debounceTimer?.cancel();
+    final trimmed = raw.trim();
+    _searchKeyword = trimmed;
+
+    final kit = _kit;
+    if (trimmed.isNotEmpty && (kit == null || !kit.capabilities.search)) {
+      return;
+    }
+
+    if (widget.debounceDuration == Duration.zero) {
+      unawaited(_loadUsers(reset: true));
+    } else {
+      _debounceTimer = Timer(widget.debounceDuration, () {
+        if (!mounted) return;
+        unawaited(_loadUsers(reset: true));
+      });
+    }
+  }
+
+  Future<void> _loadUsers({required bool reset}) async {
+    final kit = _kit;
+    if (kit == null) {
+      if (!mounted) return;
+      setState(() {
+        _status = _UsersLoadStatus.empty;
+        _users = const [];
+        _nextCursor = null;
+        _hasMore = false;
+        _isLoadingMore = false;
+        _error = null;
+      });
+      _reportStatus(_UsersLoadStatus.empty);
+      return;
+    }
+
+    if (!reset && (!_hasMore || _isLoadingMore)) return;
+
+    final seq = ++_requestSeq;
+    if (reset) {
+      setState(() {
+        _status = _UsersLoadStatus.loading;
+        _error = null;
+        _isLoadingMore = false;
+        _nextCursor = null;
+        _hasMore = false;
+      });
+    } else {
+      setState(() {
+        _isLoadingMore = true;
+      });
+    }
+
+    final useSearch = _searchKeyword.isNotEmpty && kit.capabilities.search;
+    final cursor = reset ? null : _nextCursor;
+
+    try {
+      final result = useSearch
+          ? await kit.users.searchUsers(
+              _searchKeyword,
+              cursor: cursor,
+              limit: widget.pageLimit,
+            )
+          : await kit.users.listUsers(
+              cursor: cursor,
+              limit: widget.pageLimit,
+            );
+
+      if (!mounted || seq != _requestSeq) return;
+
+      result.fold(
+        onSuccess: (page) {
+          final merged = reset
+              ? List<ChatUser>.of(page.items)
+              : <ChatUser>[..._users, ...page.items];
+          final nextStatus = merged.isEmpty
+              ? _UsersLoadStatus.empty
+              : _UsersLoadStatus.loaded;
+          setState(() {
+            _users = merged;
+            _nextCursor = page.olderCursor;
+            _hasMore = page.hasOlder;
+            _isLoadingMore = false;
+            _error = null;
+            _status = nextStatus;
+          });
+          _reportStatus(nextStatus);
+        },
+        onFailure: (err) {
+          if (reset) {
+            setState(() {
+              _error = err;
+              _users = const [];
+              _nextCursor = null;
+              _hasMore = false;
+              _isLoadingMore = false;
+              _status = _UsersLoadStatus.error;
+            });
+            _reportStatus(_UsersLoadStatus.error, error: err);
+          } else {
+            setState(() {
+              _isLoadingMore = false;
+            });
+            widget.onError?.call(Exception(err.message));
+          }
+        },
+      );
+    } catch (e) {
+      if (!mounted || seq != _requestSeq) return;
+      final err = ChatError(ChatErrorCode.unknown, e.toString(), cause: e);
+      if (reset) {
+        setState(() {
+          _error = err;
+          _users = const [];
+          _nextCursor = null;
+          _hasMore = false;
+          _isLoadingMore = false;
+          _status = _UsersLoadStatus.error;
+        });
+        _reportStatus(_UsersLoadStatus.error, error: err);
       } else {
-        widget.onLoad?.call(state.users);
+        setState(() {
+          _isLoadingMore = false;
+        });
+        widget.onError?.call(Exception(err.message));
       }
     }
   }
 
+  void _reportStatus(_UsersLoadStatus status, {ChatError? error}) {
+    if (status == _lastReportedStatus) return;
+    _lastReportedStatus = status;
+
+    if (status == _UsersLoadStatus.error && error != null) {
+      widget.onError?.call(Exception(error.message));
+    } else if (status == _UsersLoadStatus.empty) {
+      widget.onEmpty?.call();
+    } else if (status == _UsersLoadStatus.loaded) {
+      if (_users.isEmpty) {
+        widget.onEmpty?.call();
+      } else {
+        widget.onLoad?.call(_users);
+      }
+    }
+  }
+
+  void _toggleSelection(String userId) {
+    setState(() {
+      if (widget.selectionMode == SelectionMode.single) {
+        if (_selectedUserIds.contains(userId)) {
+          _selectedUserIds.clear();
+        } else {
+          _selectedUserIds
+            ..clear()
+            ..add(userId);
+        }
+      } else {
+        if (_selectedUserIds.contains(userId)) {
+          _selectedUserIds.remove(userId);
+        } else {
+          _selectedUserIds.add(userId);
+        }
+      }
+    });
+  }
+
+  void _clearSelection() {
+    setState(() {
+      _selectedUserIds.clear();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Required for AutomaticKeepAliveClientMixin
     super.build(context);
 
+    final searchAllowed = _kit?.capabilities.search ?? false;
+    final effectiveHideSearch = widget.hideSearch || !searchAllowed;
+
     return RepaintBoundary(
-      child: BlocListener<UsersBloc, UsersState>(
-        bloc: usersBloc,
-        listener: (context, state) => _reportUsersState(state),
-        child: BlocProvider.value(
-          value: usersBloc,
-          child: ClipRRect(
-            borderRadius: style.borderRadius ?? BorderRadius.circular(0),
-            child: CometChatListBase(
-              titleView: _buildTitleView(),
-              titleSpacing: widget.showBackButton ? 0 : 16,
-              hideSearch: widget.hideSearch,
-              backIcon: _buildBackIcon(),
-              placeholder: widget.searchPlaceholder,
-              showBackButton: widget.showBackButton,
-              searchBoxIcon: widget.searchBoxIcon,
-              onSearch: (keyword) => usersBloc.add(SearchUsers(keyword)),
-              hideAppBar: widget.hideAppbar,
-              searchText: widget.searchKeyword,
-              searchPadding: EdgeInsets.symmetric(
-                horizontal: spacing.padding4 ?? 0,
-                vertical: spacing.padding3 ?? 0,
-              ),
-              searchContentPadding: EdgeInsets.symmetric(
-                horizontal: spacing.padding3 ?? 0,
-                vertical: spacing.padding2 ?? 0,
-              ),
-              searchBoxHeight: 40,
-              menuOptions: [
-                if (widget.appBarOptions != null)
-                  ...widget.appBarOptions!(context),
-                _getSelectionWidget(),
-              ],
-              onBack: widget.onBack,
-              style: _buildListBaseStyle(),
-              container: UsersList(
-                usersBloc: usersBloc,
-                style: style,
-                colorPalette: colorPalette,
-                spacing: spacing,
-                typography: typography,
-                scrollController: widget.scrollController,
-                loadingStateView: widget.loadingStateView,
-                emptyStateView: widget.emptyStateView,
-                errorStateView: widget.errorStateView,
-                listItemView: widget.listItemView,
-                subtitleView: widget.subtitleView,
-                trailingView: widget.trailingView,
-                leadingView: widget.leadingView,
-                titleView: widget.titleView,
-                usersStatusVisibility: widget.usersStatusVisibility,
-                selectionMode: widget.selectionMode,
-                activateSelection: widget.activateSelection,
-                onItemTap: widget.onItemTap,
-                onItemLongPress: widget.onItemLongPress,
-                options: widget.setOptions == null && widget.addOptions == null
-                    ? null
-                    : _longPressOptions,
-                stickyHeaderVisibility: widget.stickyHeaderVisibility,
-                avatarStyle: avatarStyle,
-                statusIndicatorStyle: statusIndicatorStyle,
-              ),
-            ),
+      child: ClipRRect(
+        borderRadius: style.borderRadius ?? BorderRadius.circular(0),
+        child: CometChatListBase(
+          titleView: _buildTitleView(),
+          titleSpacing: widget.showBackButton ? 0 : 16,
+          hideSearch: effectiveHideSearch,
+          backIcon: _buildBackIcon(),
+          placeholder: widget.searchPlaceholder,
+          showBackButton: widget.showBackButton,
+          searchBoxIcon: widget.searchBoxIcon,
+          onSearch: _onSearchChanged,
+          hideAppBar: widget.hideAppbar,
+          searchText: widget.searchKeyword,
+          searchPadding: EdgeInsets.symmetric(
+            horizontal: spacing.padding4 ?? 0,
+            vertical: spacing.padding3 ?? 0,
+          ),
+          searchContentPadding: EdgeInsets.symmetric(
+            horizontal: spacing.padding3 ?? 0,
+            vertical: spacing.padding2 ?? 0,
+          ),
+          searchBoxHeight: 40,
+          menuOptions: [
+            if (widget.appBarOptions != null) ...widget.appBarOptions!(context),
+            _getSelectionWidget(),
+          ],
+          onBack: widget.onBack,
+          style: _buildListBaseStyle(),
+          container: UsersList(
+            isLoading: _status == _UsersLoadStatus.loading,
+            isEmpty: _status == _UsersLoadStatus.empty,
+            error: _status == _UsersLoadStatus.error ? _error : null,
+            users: _users,
+            hasMore: _hasMore,
+            isLoadingMore: _isLoadingMore,
+            selectedUserIds: _selectedUserIds,
+            presenceMap: _presenceMap,
+            onLoadMore: () => unawaited(_loadUsers(reset: false)),
+            onRetry: () => unawaited(_loadUsers(reset: true)),
+            onToggleSelection: _toggleSelection,
+            style: style,
+            colorPalette: colorPalette,
+            spacing: spacing,
+            typography: typography,
+            scrollController: widget.scrollController,
+            loadingStateView: widget.loadingStateView,
+            emptyStateView: widget.emptyStateView,
+            errorStateView: widget.errorStateView,
+            listItemView: widget.listItemView,
+            subtitleView: widget.subtitleView,
+            trailingView: widget.trailingView,
+            leadingView: widget.leadingView,
+            titleView: widget.titleView,
+            usersStatusVisibility: widget.usersStatusVisibility,
+            selectionMode: widget.selectionMode,
+            activateSelection: widget.activateSelection,
+            onItemTap: widget.onItemTap,
+            onItemLongPress: widget.onItemLongPress,
+            options: widget.setOptions == null && widget.addOptions == null
+                ? null
+                : _longPressOptions,
+            stickyHeaderVisibility: widget.stickyHeaderVisibility,
+            avatarStyle: avatarStyle,
+            statusIndicatorStyle: statusIndicatorStyle,
           ),
         ),
       ),
     );
   }
 
-  /// The long-press menu for [user]: [ConvoKitUsers.setOptions] when set,
-  /// else [ConvoKitUsers.addOptions] — Android's ConvoKitUsers rule.
-  List<CometChatOption> _longPressOptions(BuildContext context, User user) {
+  List<CometChatOption> _longPressOptions(BuildContext context, ChatUser user) {
     final build = widget.setOptions ?? widget.addOptions!;
-    return build(user, usersBloc, context) ?? const <CometChatOption>[];
+    return build(user, context) ?? const <CometChatOption>[];
   }
 
   Widget _buildTitleView() {
-    return BlocBuilder<UsersBloc, UsersState>(
-      bloc: usersBloc,
-      builder: (context, state) {
-        final selectedCount = state is UsersLoaded
-            ? state.selectedUsers.length
-            : 0;
-        return Text(
-          selectedCount > 0
-              ? "$selectedCount"
-              : widget.title ?? cc.Translations.of(context).users,
-          style: TextStyle(
-            color: colorPalette.textPrimary,
-            fontSize: typography.heading1?.bold?.fontSize,
-            fontWeight: typography.heading1?.bold?.fontWeight,
-            fontFamily: typography.heading1?.bold?.fontFamily,
-          ).merge(style.titleTextStyle).copyWith(color: style.titleTextColor),
-        );
-      },
+    final selectedCount = _selectedUserIds.length;
+    return Text(
+      selectedCount > 0
+          ? '$selectedCount'
+          : widget.title ?? cc.Translations.of(context).users,
+      style: TextStyle(
+        color: colorPalette.textPrimary,
+        fontSize: typography.heading1?.bold?.fontSize,
+        fontWeight: typography.heading1?.bold?.fontWeight,
+        fontFamily: typography.heading1?.bold?.fontFamily,
+      ).merge(style.titleTextStyle).copyWith(color: style.titleTextColor),
     );
   }
 
   Widget _buildBackIcon() {
-    return BlocBuilder<UsersBloc, UsersState>(
-      bloc: usersBloc,
-      builder: (context, state) {
-        final hasSelection =
-            state is UsersLoaded && state.selectedUsers.isNotEmpty;
-        return hasSelection
-            ? IconButton(
-                tooltip: Translations.of(context).clearSearch,
-                onPressed: () => usersBloc.add(const ClearUserSelection()),
+    final hasSelection = _selectedUserIds.isNotEmpty;
+    return hasSelection
+        ? IconButton(
+            tooltip: Translations.of(context).clearSearch,
+            onPressed: _clearSelection,
+            icon: Icon(
+              Icons.clear,
+              color: colorPalette.iconPrimary,
+              size: 24,
+            ),
+            padding: EdgeInsets.zero,
+          )
+        : (widget.backButton ??
+              IconButton(
+                tooltip: Translations.of(context).back,
+                onPressed: widget.onBack,
                 icon: Icon(
-                  Icons.clear,
-                  color: colorPalette.iconPrimary,
+                  Icons.arrow_back,
+                  color: style.backIconColor ?? colorPalette.iconPrimary,
                   size: 24,
                 ),
                 padding: EdgeInsets.zero,
-              )
-            : (widget.backButton ??
-                  IconButton(
-                    tooltip: Translations.of(context).back,
-                    onPressed: widget.onBack,
-                    icon: Icon(
-                      Icons.arrow_back,
-                      // Resolve the style before the palette: ListBase applies
-                      // backIconTint as IconButton.color, which cannot reach an
-                      // icon that sets its own. ENG-39105.
-                      color: style.backIconColor ?? colorPalette.iconPrimary,
-                      size: 24,
-                    ),
-                    padding: EdgeInsets.zero,
-                  ));
-      },
-    );
+              ));
   }
 
   ListBaseStyle _buildListBaseStyle() {
@@ -400,30 +610,24 @@ class _ConvoKitUsersState extends State<ConvoKitUsers>
   }
 
   Widget _getSelectionWidget() {
-    return BlocBuilder<UsersBloc, UsersState>(
-      bloc: usersBloc,
-      builder: (context, state) {
-        if (state is UsersLoaded && state.selectedUsers.isNotEmpty) {
-          return IconButton(
-            tooltip: Translations.of(context).done,
-            onPressed: () {
-              final selectedIds = state.selectedUsers;
-              final selectedUsers = state.users
-                  .where((u) => selectedIds.contains(u.uid))
-                  .toList();
-              widget.onSelection?.call(selectedUsers, context);
-            },
-            icon:
-                widget.submitIcon ??
-                Icon(
-                  Icons.check,
-                  color: style.submitIconColor ?? colorPalette.iconPrimary,
-                  size: 24,
-                ),
-          );
-        }
-        return const SizedBox.shrink();
-      },
-    );
+    if (_selectedUserIds.isNotEmpty) {
+      return IconButton(
+        tooltip: Translations.of(context).done,
+        onPressed: () {
+          final selectedUsers = _users
+              .where((u) => _selectedUserIds.contains(u.id))
+              .toList();
+          widget.onSelection?.call(selectedUsers, context);
+        },
+        icon:
+            widget.submitIcon ??
+            Icon(
+              Icons.check,
+              color: style.submitIconColor ?? colorPalette.iconPrimary,
+              size: 24,
+            ),
+      );
+    }
+    return const SizedBox.shrink();
   }
 }

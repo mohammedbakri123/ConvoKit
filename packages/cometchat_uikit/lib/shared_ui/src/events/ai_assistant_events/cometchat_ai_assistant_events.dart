@@ -18,7 +18,7 @@ class CometChatAIAssistantEvents {
 
   /// Called when an AI assistant event is received.
   static void onAIAssistantEventReceived(
-    AIAssistantBaseEvent aiAssistantBaseEvent,
+    Object aiAssistantBaseEvent,
   ) {
     _aiAssistantListeners.forEach((key, value) {
       value.onAIAssistantEventReceived(aiAssistantBaseEvent);

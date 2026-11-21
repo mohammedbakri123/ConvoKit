@@ -1,19 +1,15 @@
+import 'package:convokit/src/core/models/models.dart';
 import 'package:flutter/material.dart';
-import 'package:cometchat_sdk/cometchat_sdk.dart';
-import 'package:cometchat_sdk/cometchat_sdk.dart' as cc;
 
 // Import all necessary dependencies
 import '../constants/ui_kit_constants.dart';
 import '../constants/asset_constants.dart';
 import 'attachment_utils.dart';
 import '../../data/models/cometchat_option.dart';
-import '../../data/models/interactive_message/scheduler_message.dart';
 import '../../presentation/theme/theme/cometchat_theme_helper.dart';
 import '../../presentation/theme/colors/cometchat_color_palette.dart';
 import '../../presentation/formatters/mentions/cometchat_mentions_formatter.dart';
-import 'scheduler_utils.dart';
 import '../../../../l10n/translations.dart';
-import '../../../../src/cometchat_ui_kit/cometchat_ui_kit.dart';
 
 ///[ConversationUtils] is an Utility class that helps to
 ///the last message for any conversation and also
@@ -28,7 +24,7 @@ class ConversationUtils {
     'See CONVERSATIONS_MIGRATION_GUIDE.md for migration instructions.',
   )
   static List<CometChatOption>? getDefaultOptions(
-    Conversation conversation,
+    ChatConversation conversation,
     dynamic controller,
     BuildContext context,
     ConvoKitColorPalette colorPalette,
@@ -46,10 +42,10 @@ class ConversationUtils {
   /// This is the new recommended way to get default conversation options.
   /// Provide a custom [onDelete] callback to handle deletion.
   static List<CometChatOption>? getDefaultOptionsWithCallback({
-    required Conversation conversation,
+    required ChatConversation conversation,
     required BuildContext context,
     required ConvoKitColorPalette colorPalette,
-    required Function(Conversation)? onDelete,
+    required Function(ChatConversation)? onDelete,
   }) {
     return [
       CometChatOption(
@@ -68,13 +64,36 @@ class ConversationUtils {
     ];
   }
 
+  static String _messageTypeOf(ChatMessage message) {
+    return switch (message) {
+      TextMessage _ => MessageTypeConstants.text,
+      MediaMessage m => switch (m.attachment.kind) {
+        AttachmentKind.image => MessageTypeConstants.image,
+        AttachmentKind.video => MessageTypeConstants.video,
+        AttachmentKind.audio => MessageTypeConstants.audio,
+        AttachmentKind.file => MessageTypeConstants.file,
+      },
+      CustomMessage c => c.kind,
+    };
+  }
+
+  static String _messageCategoryOf(ChatMessage message) {
+    return switch (message) {
+      TextMessage _ => MessageCategoryConstants.message,
+      MediaMessage _ => MessageCategoryConstants.message,
+      CustomMessage c => c.kind == MessageTypeConstants.card
+          ? MessageCategoryConstants.card
+          : MessageCategoryConstants.custom,
+    };
+  }
+
   static String getLastCustomMessage(
-    Conversation conversation,
+    ChatConversation conversation,
     BuildContext context,
   ) {
     if (conversation.lastMessage is CustomMessage) {
       CustomMessage customMessage = conversation.lastMessage as CustomMessage;
-      String messageType = customMessage.type;
+      String messageType = customMessage.kind;
       String subtitle = '';
 
       switch (messageType) {
@@ -107,13 +126,13 @@ class ConversationUtils {
   /// If initiated by the logged-in user: "You've initiated a group call"
   /// If initiated by someone else: "{Name} has initiated a group call"
   static String _getGroupCallSubtitle(
-    BaseMessage message,
+    ChatMessage message,
     BuildContext context,
   ) {
-    if (message.sender?.uid == ConvoKitUIKit.loggedInUser?.uid) {
+    if (message.sender.id.isEmpty) {
       return Translations.of(context).youInitiatedGroupCall;
     } else {
-      return "${message.sender?.name} ${Translations.of(context).initiatedGroupCall}";
+      return "${message.sender.name} ${Translations.of(context).initiatedGroupCall}";
     }
   }
 
@@ -164,20 +183,21 @@ class ConversationUtils {
   }
 
   static String getLastMessage(
-    Conversation conversation,
+    ChatConversation conversation,
     BuildContext context,
   ) {
-    BaseMessage message = conversation.lastMessage!;
-    String messageType = message.type;
+    ChatMessage message = conversation.lastMessage!;
+    String messageType = _messageTypeOf(message);
     String subtitle;
 
     switch (messageType) {
       case MessageTypeConstants.text:
         subtitle = (message as TextMessage).text;
-        if (message.mentionedUsers.isNotEmpty) {
+        final mentioned = CometChatMentionsFormatter.getMentionedUsersFor(message);
+        if (mentioned.isNotEmpty) {
           subtitle = CometChatMentionsFormatter.getTextWithMentions(
             message.text,
-            message.mentionedUsers,
+            mentioned,
           );
         }
         // Strip markdown syntax so subtitle shows plain text
@@ -200,8 +220,8 @@ class ConversationUtils {
             message is MediaMessage &&
             (message.caption?.trim().isEmpty ?? true) &&
             AttachmentUtils.attachmentsOf(message).length == 1 &&
-            message.attachment?.fileName != null &&
-            _isVoiceNoteName(message.attachment!.fileName);
+            message.attachment.name != null &&
+            _isVoiceNoteName(message.attachment.name!);
         subtitle = isVoiceNote
             ? Translations.of(context).messageAudio
             : AttachmentUtils.previewSubtitleFor(message, context);
@@ -266,11 +286,11 @@ class ConversationUtils {
   }
 
   static String getLastInteractiveMessage(
-    Conversation conversation,
+    ChatConversation conversation,
     BuildContext context,
   ) {
-    BaseMessage message = conversation.lastMessage!;
-    String messageType = message.type;
+    ChatMessage message = conversation.lastMessage!;
+    String messageType = _messageTypeOf(message);
     String subtitle;
     switch (messageType) {
       case MessageTypeConstants.form:
@@ -280,15 +300,7 @@ class ConversationUtils {
         subtitle = Translations.of(context).cardMessage;
         break;
       case MessageTypeConstants.scheduler:
-        SchedulerMessage schedulerMessage =
-            SchedulerMessage.fromInteractiveMessage(
-              message as InteractiveMessage,
-            );
-        String meetingMessage = SchedulerUtils.getSchedulerTitle(
-          schedulerMessage,
-          context,
-        );
-        subtitle = "🗓️ $meetingMessage";
+        subtitle = Translations.of(context).schedulerMessage;
         break;
       default:
         subtitle = messageType;
@@ -297,105 +309,39 @@ class ConversationUtils {
   }
 
   static String getLastActionMessage(
-    Conversation conversation,
+    ChatConversation conversation,
     BuildContext context,
   ) {
-    BaseMessage message = conversation.lastMessage!;
+    ChatMessage message = conversation.lastMessage!;
     String subtitle;
 
-    if (message.type == MessageTypeConstants.groupActions) {
-      cc.Action actionMessage = message as cc.Action;
-      subtitle = actionMessage.message ?? "";
+    if (_messageTypeOf(message) == MessageTypeConstants.groupActions) {
+      subtitle = message is TextMessage
+          ? message.text
+          : (message is CustomMessage
+                ? (message.data['message'] as String? ?? '')
+                : '');
     } else {
-      subtitle = message.type;
+      subtitle = _messageTypeOf(message);
     }
 
     return subtitle;
   }
 
   static String getLastCallMessage(
-    Conversation conversation,
+    ChatConversation conversation,
     BuildContext context,
   ) {
-    Call call = conversation.lastMessage as Call;
-    User? conversationWithUser;
-    Group? conversationWithGroup;
-
-    if (conversation.conversationWith is User) {
-      conversationWithUser = conversation.conversationWith as User;
-    } else if (conversation.conversationWith is Group) {
-      conversationWithGroup = conversation.conversationWith as Group;
-    }
-
-    String subtitle = call.type;
-    Group? callInitiatorGroup;
-    User? callInitiatorUser;
-    if (call.callInitiator is User) {
-      callInitiatorUser = call.callInitiator as User;
-    } else if (call.callInitiator is Group) {
-      callInitiatorGroup = call.callInitiator as Group;
-    }
-    // If callInitiator is null, both will remain null
-
-    if (call.callStatus == CallStatusConstants.ongoing) {
-      subtitle = Translations.of(context).ongoingCall;
-    } else if (call.callStatus == CallStatusConstants.ended ||
-        call.callStatus == CallStatusConstants.initiated) {
-      if ((callInitiatorUser != null &&
-              conversationWithUser != null &&
-              callInitiatorUser.uid == conversationWithUser.uid) ||
-          (callInitiatorGroup != null &&
-              conversationWithGroup != null &&
-              callInitiatorGroup.guid == conversationWithGroup.guid)) {
-        if (call.type == MessageTypeConstants.audio) {
-          subtitle = Translations.of(context).incomingAudioCall;
-        } else {
-          subtitle = Translations.of(context).incomingVideoCall;
-        }
-      } else {
-        if (call.type == MessageTypeConstants.audio) {
-          subtitle = Translations.of(context).outgoingAudioCall;
-        } else {
-          subtitle = Translations.of(context).outgoingVdeoCall;
-        }
-      }
-    } else if (call.callStatus == CallStatusConstants.unanswered ||
-        call.callStatus == CallStatusConstants.cancelled) {
-      // Missed only for the person who did not start the call: the one rule
-      // the call bubbles and the call logs use too.
-      if ((callInitiatorUser != null &&
-              conversationWithUser != null &&
-              callInitiatorUser.uid == conversationWithUser.uid) ||
-          (callInitiatorGroup != null &&
-              conversationWithGroup != null &&
-              callInitiatorGroup.guid == conversationWithGroup.guid)) {
-        if (call.type == MessageTypeConstants.audio) {
-          subtitle = Translations.of(context).missedVoiceCall;
-        } else {
-          subtitle = Translations.of(context).missedVideoCall;
-        }
-      } else {
-        if (call.type == MessageTypeConstants.audio) {
-          subtitle = Translations.of(context).unansweredAudioCall;
-        } else {
-          subtitle = Translations.of(context).unansweredVideoCall;
-        }
-      }
-    } else if (call.callStatus == CallStatusConstants.rejected) {
-      // Never missed, and the same on both sides: the chat SDK names whoever
-      // declined as the call's initiator, so its direction cannot be trusted.
-      subtitle = Translations.of(context).callRejected;
-    } else if (call.callStatus == CallStatusConstants.busy) {
-      subtitle = Translations.of(context).callBusy;
-    }
-    return subtitle;
+    final msg = conversation.lastMessage;
+    if (msg == null) return '';
+    return _messageTypeOf(msg);
   }
 
   static String getLastConversationMessage(
-    Conversation conversation,
+    ChatConversation conversation,
     BuildContext context,
   ) {
-    String? messageCategory = conversation.lastMessage?.category;
+    String? messageCategory = conversation.lastMessage != null ? _messageCategoryOf(conversation.lastMessage!) : null;
     String subtitle;
     switch (messageCategory) {
       case MessageCategoryConstants.message:
@@ -416,13 +362,16 @@ class ConversationUtils {
         subtitle = Translations.of(context).unsupportedMessageType;
         break;
       case MessageCategoryConstants.card:
-        final cardMsg = conversation.lastMessage as CardMessage?;
-        subtitle = cardMsg?.getText()?.isNotEmpty == true
-            ? cardMsg!.getText()!
+        final msg = conversation.lastMessage;
+        final cardText = msg is CustomMessage ? msg.data['text'] as String? : null;
+        subtitle = (cardText != null && cardText.isNotEmpty)
+            ? cardText
             : Translations.of(context).cardMessage;
         break;
       default:
-        subtitle = conversation.lastMessage!.type;
+        subtitle = conversation.lastMessage != null
+            ? _messageTypeOf(conversation.lastMessage!)
+            : '';
         break;
     }
 
@@ -432,11 +381,11 @@ class ConversationUtils {
   // return icon widget to be shown in the prefix to the last message
 
   static Widget getLastConversationIcon(
-    Conversation conversation,
+    ChatConversation conversation,
     BuildContext context,
     Color? iconColor,
   ) {
-    String? messageCategory = conversation.lastMessage?.category;
+    String? messageCategory = conversation.lastMessage != null ? _messageCategoryOf(conversation.lastMessage!) : null;
     Widget subtitle;
     switch (messageCategory) {
       case MessageCategoryConstants.message:
@@ -464,12 +413,12 @@ class ConversationUtils {
   }
 
   static Widget getLastMessageWidget(
-    Conversation conversation,
+    ChatConversation conversation,
     BuildContext context,
     Color? iconColor,
   ) {
-    BaseMessage message = conversation.lastMessage!;
-    String messageType = message.type;
+    ChatMessage message = conversation.lastMessage!;
+    String messageType = _messageTypeOf(message);
     Widget subtitle;
 
     final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
@@ -508,7 +457,7 @@ class ConversationUtils {
   /// or MIME type. Falls back to the generic document icon when no
   /// attachment information is available.
   static Widget _getFileIconWidget(
-    BaseMessage message,
+    ChatMessage message,
     Color? iconColor,
     ConvoKitColorPalette colorPalette,
   ) {
@@ -518,8 +467,8 @@ class ConversationUtils {
     IconData icon = Icons.description;
 
     if (message is MediaMessage) {
-      final ext = (message.attachment?.fileExtension ?? '').toLowerCase();
-      final mime = (message.attachment?.fileMimeType ?? '').toLowerCase();
+      final ext = AttachmentUtils.extensionOf(message.attachment).toLowerCase();
+      final mime = (message.attachment.mimeType ?? '').toLowerCase();
 
       if (ext == 'pdf' || mime == 'application/pdf') {
         icon = Icons.picture_as_pdf;
@@ -572,7 +521,7 @@ class ConversationUtils {
   /// or other audio files (audiotrack), using the attachment's file name
   /// and extension as hints.
   static Widget _getAudioIconWidget(
-    BaseMessage message,
+    ChatMessage message,
     Color? iconColor,
     ConvoKitColorPalette colorPalette,
   ) {
@@ -582,8 +531,8 @@ class ConversationUtils {
     IconData icon = Icons.mic;
 
     if (message is MediaMessage) {
-      final fileName = message.attachment?.fileName ?? '';
-      final ext = (message.attachment?.fileExtension ?? '').toLowerCase();
+      final fileName = message.attachment.name ?? '';
+      final ext = AttachmentUtils.extensionOf(message.attachment).toLowerCase();
       const musicExtensions = {
         'mp3',
         'wav',
@@ -605,13 +554,13 @@ class ConversationUtils {
   }
 
   static Widget _getLastTextMessageWidget(
-    Conversation conversation,
+    ChatConversation conversation,
     BuildContext context,
     Color? iconColor,
   ) {
     final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
-    BaseMessage message = conversation.lastMessage!;
-    if (message.metadata != null && _checkForLinks(message.metadata!)) {
+    ChatMessage message = conversation.lastMessage!;
+    if (message is CustomMessage && _checkForLinks(message.data)) {
       return Icon(
         Icons.link,
         color: iconColor ?? colorPalette.iconSecondary,
@@ -625,19 +574,19 @@ class ConversationUtils {
   static bool _checkForLinks(Map<String, dynamic> metadata) {
     // Check if the metadata contains the '@injected' key
     if (metadata.containsKey('@injected')) {
-      var injected = metadata['@injected'];
+      final injected = metadata['@injected'];
 
       // Check if 'extensions' exists within 'injected'
-      if (injected != null && injected['extensions'] != null) {
-        var extensions = injected['extensions'];
+      if (injected is Map && injected['extensions'] is Map) {
+        final extensions = injected['extensions'] as Map;
 
         // Check if 'link-preview' exists within 'extensions'
-        if (extensions['link-preview'] != null) {
-          var linkPreview = extensions['link-preview'];
+        if (extensions['link-preview'] is Map) {
+          final linkPreview = extensions['link-preview'] as Map;
 
           // Check if 'links' exists within 'link-preview'
-          if (linkPreview['links'] != null) {
-            List<dynamic> links = linkPreview['links'];
+          if (linkPreview['links'] is List) {
+            final links = linkPreview['links'] as List;
 
             // Return true if the list of links is not empty
             return links.isNotEmpty;
@@ -651,12 +600,12 @@ class ConversationUtils {
   }
 
   static Widget getLastCustomWidget(
-    Conversation conversation,
+    ChatConversation conversation,
     BuildContext context,
     Color? iconColor,
   ) {
-    BaseMessage message = conversation.lastMessage!;
-    String messageType = message.type;
+    ChatMessage message = conversation.lastMessage!;
+    String messageType = _messageTypeOf(message);
     Widget subtitle;
 
     final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
@@ -710,120 +659,10 @@ class ConversationUtils {
   }
 
   static Widget getLastCallWidget(
-    Conversation conversation,
+    ChatConversation conversation,
     BuildContext context,
     Color? iconColor,
   ) {
-    Call call = conversation.lastMessage as Call;
-    User? conversationWithUser;
-    Group? conversationWithGroup;
-
-    final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
-
-    if (conversation.conversationWith is User) {
-      conversationWithUser = conversation.conversationWith as User;
-    } else if (conversation.conversationWith is Group) {
-      conversationWithGroup = conversation.conversationWith as Group;
-    }
-
-    Widget subtitle = const SizedBox();
-    Group? callInitiatorGroup;
-    User? callInitiatorUser;
-    if (call.callInitiator is User) {
-      callInitiatorUser = call.callInitiator as User;
-    } else if (call.callInitiator is Group) {
-      callInitiatorGroup = call.callInitiator as Group;
-    }
-    // If callInitiator is null, both will remain null
-
-    if (call.callStatus == CallStatusConstants.ongoing) {
-      subtitle = const SizedBox();
-    } else if (call.callStatus == CallStatusConstants.ended ||
-        call.callStatus == CallStatusConstants.initiated) {
-      if ((callInitiatorUser != null &&
-              conversationWithUser != null &&
-              callInitiatorUser.uid == conversationWithUser.uid) ||
-          (callInitiatorGroup != null &&
-              conversationWithGroup != null &&
-              callInitiatorGroup.guid == conversationWithGroup.guid)) {
-        if (call.type == MessageTypeConstants.audio) {
-          subtitle = Image.asset(
-            AssetConstants.voiceIncoming,
-            package: UIConstants.packageName,
-            color: iconColor ?? colorPalette.iconSecondary,
-            height: 16,
-            width: 16,
-          );
-        } else {
-          subtitle = Image.asset(
-            AssetConstants.videoIncoming,
-            package: UIConstants.packageName,
-            color: iconColor ?? colorPalette.iconSecondary,
-            height: 16,
-            width: 16,
-          );
-        }
-      } else {
-        if (call.type == MessageTypeConstants.audio) {
-          subtitle = Image.asset(
-            AssetConstants.voiceOutgoing,
-            package: UIConstants.packageName,
-            color: iconColor ?? colorPalette.iconSecondary,
-            height: 16,
-            width: 16,
-          );
-        } else {
-          subtitle = Image.asset(
-            AssetConstants.videoOutgoing,
-            package: UIConstants.packageName,
-            color: iconColor ?? colorPalette.iconSecondary,
-            height: 16,
-            width: 16,
-          );
-        }
-      }
-    } else if (call.callStatus == CallStatusConstants.unanswered ||
-        call.callStatus == CallStatusConstants.cancelled) {
-      // Missed only for the person who did not start the call; the caller's
-      // own cancelled or unanswered call shows as outgoing.
-      final missed =
-          (callInitiatorUser != null &&
-              conversationWithUser != null &&
-              callInitiatorUser.uid == conversationWithUser.uid) ||
-          (callInitiatorGroup != null &&
-              conversationWithGroup != null &&
-              callInitiatorGroup.guid == conversationWithGroup.guid);
-      final String asset;
-      if (call.type == MessageTypeConstants.audio) {
-        asset = missed
-            ? AssetConstants.audioMissed
-            : AssetConstants.voiceOutgoing;
-      } else {
-        asset = missed
-            ? AssetConstants.videoMissed
-            : AssetConstants.videoOutgoing;
-      }
-      subtitle = Image.asset(
-        asset,
-        package: UIConstants.packageName,
-        color: iconColor ?? colorPalette.iconSecondary,
-        height: 16,
-        width: 16,
-      );
-    } else if (call.callStatus == CallStatusConstants.rejected ||
-        call.callStatus == CallStatusConstants.busy) {
-      // Never missed, and with no direction: the chat SDK names whoever
-      // declined (or was busy) as the call's initiator.
-      subtitle = Image.asset(
-        call.type == MessageTypeConstants.audio
-            ? AssetConstants.callNoFill
-            : AssetConstants.videocamNoFill,
-        package: UIConstants.packageName,
-        color: iconColor ?? colorPalette.iconSecondary,
-        height: 16,
-        width: 16,
-      );
-    }
-    return subtitle;
+    return const SizedBox();
   }
 }

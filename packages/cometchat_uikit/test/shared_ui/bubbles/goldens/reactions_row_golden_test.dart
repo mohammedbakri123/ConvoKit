@@ -22,13 +22,16 @@ import '../../../helpers/golden_message_harness.dart';
 const _incoming = BubbleAlignment.left;
 const _outgoing = BubbleAlignment.right;
 
-ReactionCount _r(String emoji, int count, {bool mine = false}) =>
-    ReactionCount(reaction: emoji, count: count, reactedByMe: mine);
+Map<String, dynamic> _r(String emoji, int count, {bool mine = false}) => {
+  'reaction': emoji,
+  'count': count,
+  'reactedByMe': mine,
+};
 
 void _reactions(
   String fileName,
   String description, {
-  required List<ReactionCount> Function() reactions,
+  required List<Map<String, dynamic>> Function() reactions,
   BubbleAlignment alignment = _incoming,
 }) {
   goldenLightDark(

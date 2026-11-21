@@ -1,209 +1,211 @@
-import 'package:convokit/src/adapters/cometchat_sdk_adapter.dart';
+import 'dart:async';
+
+import 'package:convokit/convokit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../convokit_uikit.dart';
 import '../../../../convokit_uikit.dart' as cc;
-import '../../../../shared_ui/src/clean_architecture/core/utils/thread_toast.dart';
 
-/// [ConvoKitThreadedHeader] is a widget that displays a parent message
-/// and its reply count in a threaded conversation view.
-///
-/// This widget uses BLoC for state management and follows Clean Architecture
-/// patterns. It listens to SDK events for real-time reply count updates
-/// and parent message changes (edit/delete).
-///
-/// ```dart
-/// ConvoKitThreadedHeader(
-///   parentMessage: BaseMessage(),
-///   loggedInUser: User(),
-/// );
-/// ```
+/// [ConvoKitThreadedHeader] displays a parent [ChatMessage] and its live reply
+/// count in a threaded conversation view by observing
+/// [EventHub.getMessageStore] directly via [ConvoKitScope].
 class ConvoKitThreadedHeader extends StatefulWidget {
   const ConvoKitThreadedHeader({
     super.key,
     required this.parentMessage,
+    this.loggedInUser,
+    this.user,
+    this.group,
+    this.initialReplyCount = 0,
     this.messageActionView,
     this.style,
-    required this.loggedInUser,
     this.template,
     this.height,
     this.width,
     this.receiptsVisibility = true,
-    this.threadSubscriptionVisibility = true,
-    this.onThreadSubscriptionChange,
     this.textFormatters,
-    // Optional pre-cached theme values for optimization
     this.colorPalette,
     this.typography,
     this.spacing,
-    this.threadedHeaderBloc,
   });
 
-  /// [parentMessage] parent message for thread
-  final BaseMessage parentMessage;
+  /// Parent message for the thread.
+  final ChatMessage parentMessage;
 
-  /// [messageActionView] custom action view
-  final Function(BaseMessage message, BuildContext context)? messageActionView;
+  /// Optional logged-in user; defaults to `ConvoKitScope.of(context).session.currentUser`.
+  final ChatUser? loggedInUser;
 
-  /// [style] style parameter
+  /// Optional direct-chat peer user associated with the thread.
+  final ChatUser? user;
+
+  /// Optional group associated with the thread.
+  final ChatGroup? group;
+
+  /// Initial reply count displayed before/when [MessageStore] has no replies loaded.
+  final int initialReplyCount;
+
+  /// Custom action view replacing the default reply-count row.
+  final Widget Function(ChatMessage message, BuildContext context)?
+  messageActionView;
+
+  /// Style configuration.
   final ConvoKitThreadedHeaderStyle? style;
 
-  /// [loggedInUser] get logged in user
-  final User loggedInUser;
-
-  /// [template] to get the message template
+  /// Optional custom message template for the parent bubble.
   final CometChatMessageTemplate? template;
 
-  /// [height] provides height to the widget
+  /// Optional maximum height override.
   final double? height;
 
-  /// [width] provides width to the widget
+  /// Optional width override.
   final double? width;
 
-  /// [receiptsVisibility] controls visibility of receipts
+  /// Controls visibility of receipts (also gated on `capabilities.receipts`).
   final bool? receiptsVisibility;
 
-  /// [threadSubscriptionVisibility] controls visibility of the follow/unfollow
-  /// control in the reply-count row. Only takes effect when the
-  /// thread-subscription feature gate ([UIKitSettings.enableThreadSubscription])
-  /// is on — with the gate off the control never renders regardless of this
-  /// flag. [messageActionView] keeps winning as the full-replacement escape
-  /// hatch: when it is set, the built-in control (and this flag) is bypassed.
-  final bool? threadSubscriptionVisibility;
-
-  /// [onThreadSubscriptionChange] called after the follow/unfollow toggle
-  /// succeeds, with the parent message id and the new subscribed state.
-  final Function(int parentMessageId, bool subscribed)?
-  onThreadSubscriptionChange;
-
-  /// [textFormatters] list of text formatters. null = use defaults, empty = no formatters
+  /// Optional text formatters for rendering the parent message bubble.
   final List<CometChatTextFormatter>? textFormatters;
 
-  /// [colorPalette] optional pre-cached color palette for optimization
+  /// Optional pre-cached color palette.
   final ConvoKitColorPalette? colorPalette;
 
-  /// [typography] optional pre-cached typography for optimization
+  /// Optional pre-cached typography.
   final ConvoKitTypography? typography;
 
-  /// [spacing] optional pre-cached spacing for optimization
+  /// Optional pre-cached spacing.
   final ConvoKitSpacing? spacing;
 
-  ///[threadedHeaderBloc] Optional external ThreadedHeaderBloc instance.
-  ///If provided, it is used instead of creating one internally and the widget
-  ///does not close it on dispose. Mirrors
-  ///[ConvoKitConversations.conversationsBloc] — the seam that lets a test
-  ///supply a reply count without a live SDK.
-  final ThreadedHeaderBloc? threadedHeaderBloc;
-
   @override
-  State<ConvoKitThreadedHeader> createState() =>
-      _ConvoKitThreadedHeaderState();
+  State<ConvoKitThreadedHeader> createState() => _ConvoKitThreadedHeaderState();
 }
 
 class _ConvoKitThreadedHeaderState extends State<ConvoKitThreadedHeader> {
-  /// BLoC for managing threaded header state
-  late ThreadedHeaderBloc _bloc;
-  bool _isExternalBloc = false;
-
-  /// Theme caching - initialized once in didChangeDependencies
+  // Theme caching
   late ConvoKitColorPalette _colorPalette;
   late ConvoKitTypography _typography;
   late ConvoKitSpacing _spacing;
   bool _themeInitialized = false;
   Brightness? _cachedBrightness;
 
-  /// Merged style
   late ConvoKitThreadedHeaderStyle _threadedHeaderStyle;
-
-  /// Message template for rendering the parent message bubble
-  late CometChatMessageTemplate _messageTemplate;
-
-  /// Key for measuring bubble height
   final _bubbleKey = GlobalKey();
-
-  /// Cached screen height — avoids MediaQuery subscription in build()
   double _cachedScreenHeight = 0;
 
-  /// Cached bubble widget — avoids expensive recreation on every keyboard frame
+  // Store observation
+  EventHub? _hub;
+  ConvoKit? _kit;
+  MessageStore? _store;
+  StreamSubscription<List<ChatMessage>>? _storeSub;
+  String? _subscribedConversationId;
+
+  late ChatMessage _parentMessage;
+  late int _replyCount;
+
   Widget? _cachedBubble;
-  BaseMessage? _cachedBubbleMessage;
+  ChatMessage? _cachedBubbleMessage;
 
   @override
   void initState() {
     super.initState();
-
-    // Resolve message template from data source based on message category/type
-    _resolveMessageTemplate();
-
-    // Create BLoC and dispatch initialization event
-    if (widget.threadedHeaderBloc != null) {
-      _bloc = widget.threadedHeaderBloc!;
-      _isExternalBloc = true;
-    } else {
-      _bloc = ThreadedHeaderBloc();
-      _bloc.add(
-        InitializeThreadedHeader(
-          parentMessage: widget.parentMessage,
-          loggedInUser: widget.loggedInUser,
-        ),
-      );
-    }
-  }
-
-  /// Resolve the message template from data source or use custom template
-  void _resolveMessageTemplate() {
-    // If custom template is provided, use it
-    if (widget.template != null) {
-      _messageTemplate = widget.template!;
-      return;
-    }
-
-    // Get all templates from data source
-    final templates = MessageTemplateUtils.getAllMessageTemplates();
-
-    // Find matching template based on message category and type
-    CometChatMessageTemplate? resolvedTemplate;
-    for (final template in templates) {
-      if (widget.parentMessage.category == template.category &&
-          widget.parentMessage.type == template.type) {
-        resolvedTemplate = template;
-        break;
-      }
-    }
-
-    // Use resolved template or fallback to first template
-    _messageTemplate = resolvedTemplate ?? templates.first;
+    _parentMessage = widget.parentMessage;
+    _replyCount = widget.initialReplyCount;
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    // Only initialize theme once to avoid expensive lookups during rebuilds
     final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
     if (!_themeInitialized || brightnessChanged) {
       _cachedBrightness = currentBrightness;
-      // Use passed values or fallback to lookups (for standalone usage)
       _colorPalette =
           widget.colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
       _typography =
           widget.typography ?? ConvoKitThemeHelper.getTypography(context);
       _spacing = widget.spacing ?? ConvoKitThemeHelper.getSpacing(context);
-
-      // Merge style with theme
       _threadedHeaderStyle =
           ConvoKitThemeHelper.getTheme<ConvoKitThreadedHeaderStyle>(
             context: context,
             defaultTheme: ConvoKitThreadedHeaderStyle.of,
           ).merge(widget.style);
-
-      // Cache screen height so build() doesn't subscribe to MediaQuery
       _cachedScreenHeight = MediaQuery.sizeOf(context).height;
-
       _themeInitialized = true;
+    }
+
+    _attachToStore();
+  }
+
+  void _attachToStore() {
+    ConvoKit? kit;
+    EventHub? hub;
+    try {
+      kit = ConvoKitScope.of(context);
+      hub = ConvoKitScope.hubOf(context);
+    } on StateError {
+      kit = null;
+      hub = null;
+    }
+
+    final convId = widget.parentMessage.conversationId;
+    if (identical(_hub, hub) && _subscribedConversationId == convId) {
+      _kit = kit;
+      return;
+    }
+
+    _detachFromStore();
+    _kit = kit;
+    _hub = hub;
+    _subscribedConversationId = convId;
+
+    if (hub != null) {
+      _store = hub.getMessageStore(convId);
+      _syncFromMessages(_store!.messages, notify: false);
+      _storeSub = _store!.stream.listen((messages) {
+        if (!mounted) return;
+        _syncFromMessages(messages, notify: true);
+      });
+    }
+  }
+
+  void _detachFromStore() {
+    unawaited(_storeSub?.cancel());
+    _storeSub = null;
+    _store = null;
+    _subscribedConversationId = null;
+  }
+
+  bool _isSameMessage(ChatMessage a, ChatMessage b) {
+    if (a.id != null && b.id != null && a.id == b.id) return true;
+    return a.localId == b.localId;
+  }
+
+  void _syncFromMessages(List<ChatMessage> messages, {required bool notify}) {
+    ChatMessage updatedParent = _parentMessage;
+    var count = 0;
+
+    for (final msg in messages) {
+      if (_isSameMessage(msg, widget.parentMessage)) {
+        updatedParent = msg;
+      }
+      final replied = msg.repliedTo;
+      if (replied != null && _isSameMessage(replied, widget.parentMessage)) {
+        count++;
+      }
+    }
+
+    final resolvedCount = count > 0 ? count : widget.initialReplyCount;
+    if (updatedParent != _parentMessage || resolvedCount != _replyCount) {
+      if (notify && mounted) {
+        setState(() {
+          _parentMessage = updatedParent;
+          _replyCount = resolvedCount;
+        });
+      } else {
+        _parentMessage = updatedParent;
+        _replyCount = resolvedCount;
+      }
     }
   }
 
@@ -211,7 +213,6 @@ class _ConvoKitThreadedHeaderState extends State<ConvoKitThreadedHeader> {
   void didUpdateWidget(ConvoKitThreadedHeader oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    // Update cached theme values if they changed
     if (widget.colorPalette != oldWidget.colorPalette &&
         widget.colorPalette != null) {
       _colorPalette = widget.colorPalette!;
@@ -223,8 +224,6 @@ class _ConvoKitThreadedHeaderState extends State<ConvoKitThreadedHeader> {
     if (widget.spacing != oldWidget.spacing && widget.spacing != null) {
       _spacing = widget.spacing!;
     }
-
-    // Update style if it changed
     if (widget.style != oldWidget.style) {
       _threadedHeaderStyle =
           ConvoKitThemeHelper.getTheme<ConvoKitThreadedHeaderStyle>(
@@ -233,158 +232,35 @@ class _ConvoKitThreadedHeaderState extends State<ConvoKitThreadedHeader> {
           ).merge(widget.style);
     }
 
-    // Re-resolve template if parent message or custom template changed
-    if (widget.parentMessage != oldWidget.parentMessage ||
-        widget.template != oldWidget.template) {
-      _resolveMessageTemplate();
-    }
-
-    // A new root is a different thread. The header's own bloc is
-    // re-initialized so the bubble, reply count and follow control describe
-    // it; an injected bloc belongs to its owner, who re-initializes it.
-    if (widget.parentMessage.id != oldWidget.parentMessage.id) {
-      _lastSubscriptionToggleAt = null;
-      if (!_isExternalBloc) {
-        _bloc.add(
-          InitializeThreadedHeader(
-            parentMessage: widget.parentMessage,
-            loggedInUser: widget.loggedInUser,
-          ),
-        );
+    final parentChanged = !_isSameMessage(
+      widget.parentMessage,
+      oldWidget.parentMessage,
+    );
+    if (parentChanged ||
+        widget.parentMessage != oldWidget.parentMessage ||
+        widget.initialReplyCount != oldWidget.initialReplyCount) {
+      _parentMessage = widget.parentMessage;
+      _replyCount = widget.initialReplyCount;
+      _cachedBubble = null;
+      _cachedBubbleMessage = null;
+      if (widget.parentMessage.conversationId !=
+          oldWidget.parentMessage.conversationId) {
+        _attachToStore();
+      } else if (_store != null) {
+        _syncFromMessages(_store!.messages, notify: false);
       }
     }
   }
 
   @override
   void dispose() {
-    // an injected bloc belongs to its owner, so only close what we created
-    if (!_isExternalBloc) {
-      _bloc.close();
-    }
+    _detachFromStore();
     super.dispose();
   }
 
-  /// Debounce + one-in-flight guard for the follow toggle (§7.6): no queue,
-  /// no retry, no persistence — a failed toggle reverts visibly.
-  bool _subscriptionToggleInFlight = false;
-  DateTime? _lastSubscriptionToggleAt;
-
-  static const Duration _toggleDebounce = Duration(milliseconds: 400);
-
-  /// Whether the follow control should render: feature gate on (default off)
-  /// AND the per-component visibility flag not disabled.
-  bool get _showThreadSubscriptionControl =>
-      ConvoKitUIKit.authenticationSettings?.enableThreadSubscription == true &&
-      widget.threadSubscriptionVisibility != false;
-
-  /// Shows one of the thread toasts as a dark pill centered within the
-  /// enclosing chat/thread panel (the right-hand panel in a web side-by-side
-  /// layout), floating above the composer.
-  void _showThreadToast(String text) {
-    if (!mounted) return;
-    CometChatThreadToast.show(context, text);
-  }
-
-  /// Handle a tap on the mute/unmute control: optimistic flip, then the
-  /// idempotent SDK call; revert + failure snackbar on error.
-  Future<void> _onThreadSubscriptionTap(bool wasSubscribed) async {
-    final now = DateTime.now();
-    if (_subscriptionToggleInFlight) return;
-    if (_lastSubscriptionToggleAt != null &&
-        now.difference(_lastSubscriptionToggleAt!) < _toggleDebounce) {
-      return;
-    }
-    _lastSubscriptionToggleAt = now;
-    _subscriptionToggleInFlight = true;
-
-    // Act on the thread the header shows: the bloc's root. An injected bloc
-    // can lag widget.parentMessage until its owner re-initializes it, and the
-    // display, the SDK call and the report must all name the same thread.
-    final parentMessageId =
-        (_bloc.state.parentMessage ?? widget.parentMessage).id;
-    final target = !wasSubscribed;
-
-    // Optimistic flip — the bloc stamps the parent message object; the
-    // server call below is the acknowledgement (stateless redesign).
-    _bloc.add(UpdateThreadSubscription(target));
-
-    try {
-      final result = target
-          ? await CometChatSdkAdapter.subscribeToThread(parentMessageId)
-          : await CometChatSdkAdapter.unsubscribeFromThread(parentMessageId);
-
-      if (result != null) {
-        // Keep the action-sheet surface (and integrator lists) in agreement.
-        ConvoKitMessageEvents.ccThreadSubscriptionChanged(
-          parentMessageId,
-          target,
-        );
-        widget.onThreadSubscriptionChange?.call(parentMessageId, target);
-        if (mounted) {
-          _showThreadToast(
-            target
-                ? cc.Translations.of(context).threadUnmutedToast
-                : cc.Translations.of(context).threadMutedToast,
-          );
-        }
-      } else {
-        // Revert only while the header still shows that thread.
-        if (!_bloc.isClosed &&
-            (_bloc.state.parentMessage ?? widget.parentMessage).id ==
-                parentMessageId) {
-          _bloc.add(UpdateThreadSubscription(wasSubscribed));
-        }
-        if (mounted) {
-          _showThreadToast(
-            cc.Translations.of(context).threadSubscriptionFailed,
-          );
-        }
-      }
-    } finally {
-      _subscriptionToggleInFlight = false;
-    }
-  }
-
-  /// Build the mute/unmute control. Action-labelled per the landed design:
-  /// bell + "Mute thread" while notifications are on, bell-off +
-  /// "Unmute thread" while muted. An un-told state reads `false` and renders
-  /// as the muted affordance, enabled — an unnecessary subscribe is harmless
-  /// (idempotent endpoint). IconButton supplies the ≥40dp target,
-  /// ripple/hover, cursor, tooltip and the accessible name in one widget
-  /// (no manual Semantics — it would double-announce).
-  Widget _buildThreadSubscriptionControl(
-    bool isSubscribed,
-    BuildContext context,
-  ) {
-    final label = isSubscribed
-        ? cc.Translations.of(context).threadMute
-        : cc.Translations.of(context).threadUnmute;
-
-    return IconButton(
-      onPressed: () => _onThreadSubscriptionTap(isSubscribed),
-      tooltip: label,
-      iconSize: 20,
-      visualDensity: VisualDensity.compact,
-      constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
-      padding: EdgeInsets.zero,
-      icon: Icon(
-        isSubscribed
-            ? Icons.notifications_outlined
-            : Icons.notifications_off_outlined,
-        color:
-            _threadedHeaderStyle.countTextColor ?? _colorPalette.iconSecondary,
-      ),
-    );
-  }
-
-  /// Build the action view showing reply count
-  Widget _buildActionView(
-    int replyCount,
-    bool threadSubscribed,
-    BuildContext context,
-  ) {
+  Widget _buildActionView(int replyCount, BuildContext context) {
     if (widget.messageActionView != null) {
-      return widget.messageActionView!(widget.parentMessage, context);
+      return widget.messageActionView!(_parentMessage, context);
     }
 
     return Container(
@@ -425,8 +301,6 @@ class _ConvoKitThreadedHeaderState extends State<ConvoKitThreadedHeader> {
                       .copyWith(color: _threadedHeaderStyle.countTextColor),
             ),
           ),
-          if (_showThreadSubscriptionControl)
-            _buildThreadSubscriptionControl(threadSubscribed, context),
         ],
       ),
     );
@@ -434,83 +308,71 @@ class _ConvoKitThreadedHeaderState extends State<ConvoKitThreadedHeader> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ThreadedHeaderBloc, ThreadedHeaderState>(
-      bloc: _bloc,
-      builder: (context, state) {
-        // Use parent message from state if available, otherwise use widget's
-        final parentMessage = state.parentMessage ?? widget.parentMessage;
-        final replyCount = state.replyCount;
+    final currentUserId =
+        widget.loggedInUser?.id ?? _kit?.session.currentUser?.id;
+    final isOutgoing =
+        currentUserId != null && _parentMessage.sender.id == currentUserId;
+    final effectiveReceiptsVisibility =
+        (widget.receiptsVisibility ?? true) &&
+        (_kit?.capabilities.receipts ?? true);
 
-        // Only rebuild the bubble widget when the message actually changes,
-        // not on every keyboard animation frame
-        if (_cachedBubble == null || _cachedBubbleMessage != parentMessage) {
-          _cachedBubbleMessage = parentMessage;
-          _cachedBubble = MessageUtils.getMessageBubble(
-            context: context,
-            colorPalette: _colorPalette,
-            spacing: _spacing,
-            typography: _typography,
-            bubbleAlignment:
-                parentMessage.sender?.uid == widget.loggedInUser.uid
-                ? BubbleAlignment.right
-                : BubbleAlignment.left,
-            message: parentMessage,
-            template: _messageTemplate,
-            outgoingMessageBubbleStyle:
-                _threadedHeaderStyle.outgoingMessageBubbleStyle,
-            incomingMessageBubbleStyle:
-                _threadedHeaderStyle.incomingMessageBubbleStyle,
-            textFormatters:
-                widget.textFormatters ??
-                MessageTemplateUtils.getDefaultTextFormatters(),
-            key: _bubbleKey,
-            receiptsVisibility: widget.receiptsVisibility,
-          );
-        }
+    if (_cachedBubble == null || _cachedBubbleMessage != _parentMessage) {
+      _cachedBubbleMessage = _parentMessage;
+      _cachedBubble = MessageUtils.getMessageBubble(
+        context: context,
+        colorPalette: _colorPalette,
+        spacing: _spacing,
+        typography: _typography,
+        bubbleAlignment: isOutgoing
+            ? BubbleAlignment.right
+            : BubbleAlignment.left,
+        message: _parentMessage,
+        template: widget.template,
+        outgoingMessageBubbleStyle:
+            _threadedHeaderStyle.outgoingMessageBubbleStyle,
+        incomingMessageBubbleStyle:
+            _threadedHeaderStyle.incomingMessageBubbleStyle,
+        textFormatters: widget.textFormatters ?? const [],
+        key: _bubbleKey,
+        receiptsVisibility: effectiveReceiptsVisibility,
+      );
+    }
 
-        // Use cached screen height instead of MediaQuery.sizeOf(context)
-        // to avoid subscribing to MediaQuery changes during keyboard animation
-        final maxHeight = widget.height ?? _cachedScreenHeight * 0.30;
-        final minHeight = (_cachedScreenHeight * 0.10)
-            .clamp(0.0, maxHeight)
-            .toDouble();
+    final maxHeight = widget.height ?? _cachedScreenHeight * 0.30;
+    final minHeight = (_cachedScreenHeight * 0.10)
+        .clamp(0.0, maxHeight)
+        .toDouble();
 
-        return Container(
-          width: widget.width ?? double.infinity,
-          constraints:
-              _threadedHeaderStyle.constraints ??
-              BoxConstraints(minHeight: minHeight, maxHeight: maxHeight),
-          // The preview sizes to its content, clamped between 10% and 30%
-          // of screen (10:90 floor, 30:70 ceiling). IntrinsicHeight makes
-          // the clamp content-aware; Expanded hands any floor-forced extra
-          // space to the bubble area rather than leaving a dead strip.
-          child: IntrinsicHeight(
-            child: Column(
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color:
-                          _threadedHeaderStyle.bubbleContainerBackGroundColor ??
-                          _colorPalette.background3,
-                      borderRadius:
-                          _threadedHeaderStyle.bubbleContainerBorderRadius,
-                      border: _threadedHeaderStyle.bubbleContainerBorder,
-                    ),
-                    child: SingleChildScrollView(
-                      child: Padding(
-                        padding: EdgeInsets.only(top: _spacing.padding4 ?? 0),
-                        child: IgnorePointer(child: _cachedBubble),
-                      ),
-                    ),
+    return Container(
+      width: widget.width ?? double.infinity,
+      constraints:
+          _threadedHeaderStyle.constraints ??
+          BoxConstraints(minHeight: minHeight, maxHeight: maxHeight),
+      child: IntrinsicHeight(
+        child: Column(
+          children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color:
+                      _threadedHeaderStyle.bubbleContainerBackGroundColor ??
+                      _colorPalette.background3,
+                  borderRadius:
+                      _threadedHeaderStyle.bubbleContainerBorderRadius,
+                  border: _threadedHeaderStyle.bubbleContainerBorder,
+                ),
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: _spacing.padding4 ?? 0),
+                    child: IgnorePointer(child: _cachedBubble),
                   ),
                 ),
-                _buildActionView(replyCount, state.threadSubscribed, context),
-              ],
+              ),
             ),
-          ),
-        );
-      },
+            _buildActionView(_replyCount, context),
+          ],
+        ),
+      ),
     );
   }
 }

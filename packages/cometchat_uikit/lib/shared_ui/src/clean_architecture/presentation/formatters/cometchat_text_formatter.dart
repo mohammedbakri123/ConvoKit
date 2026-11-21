@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
+import 'package:convokit/src/core/models/models.dart';
+import 'package:convokit/src/contracts/user_repository.dart';
+import 'package:convokit/src/contracts/group_repository.dart';
 import 'formatter.dart';
 import 'attributed_text.dart';
 import '../theme/theme.dart';
@@ -25,8 +27,8 @@ abstract class CometChatTextFormatter implements Formatter {
     this.previousTextEventSink,
     this.user,
     this.group,
-    this.usersRequestBuilder,
-    this.groupMembersRequestBuilder,
+    this.userRepository,
+    this.groupRepository,
   });
 
   ///[showLoadingIndicator] is a boolean value which is used to show or hide the loading indicator
@@ -52,8 +54,8 @@ abstract class CometChatTextFormatter implements Formatter {
   ///[messageBubbleTextStyle] is a function which is used to style the message composer input text with formatting
   TextStyle Function(BuildContext context)? messageInputTextStyle;
 
-  ///[message] is a [BaseMessage] which is used to store the message
-  BaseMessage? message;
+  ///[message] is a [ChatMessage] which is used to store the message
+  ChatMessage? message;
 
   ///[composerId] is a [Map] which is used to store the composer id
   Map<String, dynamic>? composerId;
@@ -65,16 +67,16 @@ abstract class CometChatTextFormatter implements Formatter {
   StreamSink<String>? previousTextEventSink;
 
   ///sets [user] for the formatter
-  User? user;
+  ChatUser? user;
 
   ///set [group] for the formatter
-  Group? group;
+  ChatGroup? group;
 
   ///[groupMembersRequestBuilder] is a [GroupMembersRequestBuilder] object which is used to get the group members
-  GroupMembersRequestBuilder? groupMembersRequestBuilder;
+  GroupRepository? groupRepository;
 
   ///[usersRequestBuilder] is a [UsersRequestBuilder] object which is used to get the users
-  UsersRequestBuilder? usersRequestBuilder;
+  UserRepository? userRepository;
 
   void init();
 
@@ -113,7 +115,7 @@ abstract class CometChatTextFormatter implements Formatter {
   }
 
   ///[handlePreMessageSend] is a function which is used to perform some action before sending the message
-  void handlePreMessageSend(BuildContext context, BaseMessage baseMessage);
+  void handlePreMessageSend(BuildContext context, ChatMessage baseMessage);
 
   ///[onScrollToBottom] is a function which is used to perform some action when the scroll reaches the bottom of the suggestion list
   void onScrollToBottom(TextEditingController textEditingController);

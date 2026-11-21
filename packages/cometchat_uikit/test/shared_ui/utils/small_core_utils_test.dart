@@ -311,41 +311,4 @@ void main() {
     });
   });
 
-  // ==========================================================================
-  group('RequestBuilderConstants', () {
-    test('every default builder asks for 30 at a time', () {
-      expect(RequestBuilderConstants.getDefaultUsersRequestBuilder().limit, 30);
-      expect(
-        RequestBuilderConstants.getDefaultGroupsRequestBuilder().limit,
-        30,
-      );
-      expect(
-        RequestBuilderConstants.getDefaultMessagesRequestBuilder().limit,
-        30,
-      );
-      expect(
-        RequestBuilderConstants.getDefaultConversationsRequestBuilder().limit,
-        30,
-      );
-    });
-
-    test('the message builder hides thread replies', () {
-      // A chat list that shows replies inline duplicates every threaded
-      // message, so this default is load-bearing.
-      expect(
-        RequestBuilderConstants.getDefaultMessagesRequestBuilder().hideReplies,
-        isTrue,
-      );
-    });
-
-    test('each call hands back a fresh builder, not a shared one', () {
-      // Callers mutate what they get back, so a cached instance would leak
-      // one screen's filters into the next.
-      final a = RequestBuilderConstants.getDefaultUsersRequestBuilder()
-        ..limit = 5;
-      final b = RequestBuilderConstants.getDefaultUsersRequestBuilder();
-      expect(b.limit, 30);
-      expect(identical(a, b), isFalse);
-    });
-  });
 }

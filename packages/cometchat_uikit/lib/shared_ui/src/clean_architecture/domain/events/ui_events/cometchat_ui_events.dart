@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
+import 'package:convokit/src/core/models/models.dart';
 import '../../../core/constants/enums.dart';
 import 'ui_events.dart';
 
@@ -35,9 +35,9 @@ class ConvoKitUIEvents {
 
   static void ccActiveChatChanged(
     Map<String, dynamic>? id,
-    BaseMessage? lastMessage,
-    User? user,
-    Group? group,
+    ChatMessage? lastMessage,
+    ChatUser? user,
+    ChatGroup? group,
     int unreadMessageCount,
   ) {
     uiListener.forEach((key, value) {
@@ -51,7 +51,7 @@ class ConvoKitUIEvents {
     });
   }
 
-  static void openChat(User? user, Group? group) {
+  static void openChat(ChatUser? user, ChatGroup? group) {
     uiListener.forEach((key, value) {
       value.openChat(user, group);
     });
@@ -107,7 +107,7 @@ class ConvoKitUIEvents {
   /// [message] is the owning message (CardMessage for developer cards,
   /// AIAssistantMessage for agent cards).
   /// [action] is the raw renderer action event (CometChatCardActionEvent).
-  static void ccCardActionClicked(BaseMessage message, dynamic action) {
+  static void ccCardActionClicked(ChatMessage message, dynamic action) {
     uiListener.forEach((key, value) {
       value.ccCardActionClicked(message, action);
     });

@@ -16,26 +16,22 @@ import 'package:convokit/convokit_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-final _me = User(uid: 'u1', name: 'Alice');
-final _them = User(uid: 'u2', name: 'Bob');
+final _them = ChatUser(id: 'u2', name: 'Bob');
 final _sentAt = DateTime.fromMillisecondsSinceEpoch(1700000000000);
 
-Attachment _attachment(String name, String ext, String mime) =>
-    Attachment('https://example.com/$name', name, ext, mime, 2048);
+ChatAttachment _attachment(String name, String ext, String mime) =>
+    ChatAttachment(id: 'att_$name', remoteId: 'rem_$name', kind: AttachmentTrayController.classifyKind(mime, name), url: 'https://example.com/$name', state: AttachmentState.uploaded, mimeType: mime, sizeBytes: 2048, name: name);
 
 /// Three attachments, so the grid lays out and the overflow tile appears.
-MediaMessage _mediaMessage(String type, List<Attachment> attachments) {
-  final m = MediaMessage(
-    id: 2,
+MediaMessage _mediaMessage(String type, List<ChatAttachment> attachments) {
+  return MediaMessage(
+    id: '2',
+    localId: 'm_2',
+    conversationId: 'c1',
     sender: _them,
-    receiver: _me,
-    receiverUid: 'u1',
-    type: type,
-    receiverType: ReceiverTypeConstants.user,
-    sentAt: _sentAt,
+    createdAt: _sentAt,
+    attachment: attachments.first,
   );
-  m.attachments = attachments;
-  return m;
 }
 
 MediaMessage _images() => _mediaMessage(MessageTypeConstants.image, [

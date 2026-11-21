@@ -21,6 +21,12 @@ class ConvoKitScope extends StatefulWidget {
     this.signedOutBuilder,
   });
 
+  static ConvoKit? maybeOf(BuildContext context) {
+    final inherited =
+        context.dependOnInheritedWidgetOfExactType<_ConvoKitInherited>();
+    return inherited?.kit;
+  }
+
   static ConvoKit of(BuildContext context) {
     final inherited =
         context.dependOnInheritedWidgetOfExactType<_ConvoKitInherited>();

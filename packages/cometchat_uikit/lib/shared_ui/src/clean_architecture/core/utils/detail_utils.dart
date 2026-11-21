@@ -1,4 +1,4 @@
-import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
+import 'package:convokit/src/core/models/models.dart';
 import 'package:flutter/material.dart';
 
 // Import all necessary dependencies
@@ -15,9 +15,9 @@ import '../../../../l10n/translations.dart';
 ///group members to view, add, ban other members
 class DetailUtils {
   static List<CometChatGroupMemberOption> getDefaultGroupMemberOptions({
-    User? loggedInUser,
-    Group? group,
-    GroupMember? member,
+    ChatUser? loggedInUser,
+    ChatGroup? group,
+    ChatMember? member,
     required BuildContext context,
     bool? hideKickMemberOption,
     bool? hideBanMemberOption,
@@ -29,18 +29,16 @@ class DetailUtils {
       if (hideKickMemberOption != true) getKickOption(context),
     ].where((option) {
       final result = validateGroupMemberOptions(
-        loggedInUserScope: loggedInUser?.uid == group?.owner
+        loggedInUserScope: GroupMemberScope.participant,
+        memberScope: member?.role == GroupRole.owner
             ? GroupMemberScope.owner
-            : group?.scope ?? GroupMemberScope.participant,
-        memberScope: member?.uid == group?.owner
-            ? GroupMemberScope.owner
-            : member?.scope ?? GroupMemberScope.participant,
+            : member?.role == GroupRole.owner ? GroupMemberScope.owner : (member?.role == GroupRole.admin ? GroupMemberScope.admin : GroupMemberScope.participant),
         optionId: option.id,
       );
       if (option.id == GroupMemberOptionConstants.changeScope) {
-        return result.isNotEmpty;
+        return result is List && result.isNotEmpty;
       } else {
-        return result;
+        return result == true;
       }
     }).toList();
   }
@@ -168,9 +166,9 @@ class DetailUtils {
 
   static ConvoKitDetailsTemplate? getPrimaryDetailsTemplate(
     BuildContext context,
-    User? loggedInUser,
-    User? user,
-    Group? group,
+    ChatUser? loggedInUser,
+    ChatUser? user,
+    ChatGroup? group,
   ) {
     return ConvoKitDetailsTemplate(
       id: DetailsTemplateConstants.primaryActions,
@@ -185,9 +183,7 @@ class DetailUtils {
                 ]
                 .where(
                   (option) => validateDetailOptions(
-                    loggedInUserScope: loggedInUser?.uid == group?.owner
-                        ? GroupMemberScope.owner
-                        : group?.scope ?? GroupMemberScope.participant,
+                    loggedInUserScope: GroupMemberScope.participant,
                     optionId: option.id,
                   ),
                 )
@@ -197,9 +193,9 @@ class DetailUtils {
 
   static ConvoKitDetailsTemplate? getSecondaryDetailsTemplate(
     BuildContext context,
-    User? loggedInUser,
-    User? user,
-    Group? group,
+    ChatUser? loggedInUser,
+    ChatUser? user,
+    ChatGroup? group,
   ) {
     if (user != null) {
       return ConvoKitDetailsTemplate(
@@ -225,9 +221,7 @@ class DetailUtils {
             [getLeaveGroupOption(context!), getDeleteGroupOption(context)]
                 .where(
                   (option) => validateDetailOptions(
-                    loggedInUserScope: loggedInUser?.uid == group?.owner
-                        ? GroupMemberScope.owner
-                        : group?.scope ?? GroupMemberScope.participant,
+                    loggedInUserScope: GroupMemberScope.participant,
                     optionId: option.id,
                   ),
                 )
@@ -239,9 +233,9 @@ class DetailUtils {
 
   static List<ConvoKitDetailsTemplate> getDefaultDetailsTemplates(
     BuildContext context,
-    User? loggedInUser, {
-    User? user,
-    Group? group,
+    ChatUser? loggedInUser, {
+    ChatUser? user,
+    ChatGroup? group,
   }) {
     if (user != null || group != null) {
       ConvoKitDetailsTemplate? primaryTemplate = getPrimaryDetailsTemplate(
@@ -450,13 +444,13 @@ class DetailUtils {
     },
   };
 
-  static bool validateUserOptions(User? loggedInUser, User? user, String id) {
-    if (user?.uid == loggedInUser?.uid && id == UserOptionConstants.blockUser) {
+  static bool validateUserOptions(ChatUser? loggedInUser, ChatUser? user, String id) {
+    if (user?.id == loggedInUser?.id && id == UserOptionConstants.blockUser) {
       return false;
-    } else if ((user?.blockedByMe == true) &&
+    } else if ((user?.isBlocked == true) &&
         id == UserOptionConstants.blockUser) {
       return false;
-    } else if ((user?.blockedByMe == false || user?.blockedByMe == null) &&
+    } else if ((user?.isBlocked == false || user?.isBlocked == null) &&
         id == UserOptionConstants.unblockUser) {
       return false;
     }

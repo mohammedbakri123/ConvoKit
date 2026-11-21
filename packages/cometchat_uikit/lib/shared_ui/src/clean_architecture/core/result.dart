@@ -20,7 +20,7 @@ abstract class Result<T> {
 class Failure extends Result<Never> {
   final String message;
   final String? code;
-  final Exception? exception;
+  final Object? exception;
 
   const Failure({required this.message, this.code, this.exception});
 

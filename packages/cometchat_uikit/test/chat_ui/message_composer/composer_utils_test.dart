@@ -1,122 +1,73 @@
-/// The composer's two small pure helpers: the reply-preview icon and the
-/// message-type subtitle both the reply and edit previews show.
-///
-///   flutter test test/chat_ui/message_composer/composer_utils_test.dart
-library;
-
-import 'package:convokit/chat_ui/src/message_composer/utils/composer_attachment_utils.dart';
 import 'package:convokit/convokit_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-Future<BuildContext> _context(WidgetTester tester) async {
-  late BuildContext ctx;
-  await tester.pumpWidget(
-    MaterialApp(
-      localizationsDelegates: Translations.localizationsDelegates,
-      supportedLocales: const [Locale('en')],
-      home: Builder(
-        builder: (context) {
-          ctx = context;
-          return const SizedBox.shrink();
-        },
-      ),
-    ),
-  );
-  return ctx;
-}
-
-MediaMessage _media(String type) =>
-    MediaMessage(receiverUid: 'bob', receiverType: 'user', type: type);
-
 void main() {
-  group('ComposerUtils.getReplyIcon', () {
-    testWidgets('a text message gets no icon at all', (tester) async {
-      final ctx = await _context(tester);
-      final text = TextMessage(
-        text: 'hi',
-        receiverUid: 'bob',
-        receiverType: 'user',
-        type: CometChatMessageType.text,
+  const sender = ChatUser(id: 'u1', name: 'Alice');
+
+  MediaMessage media(AttachmentKind kind) => MediaMessage(
+        localId: 'loc_${kind.name}',
+        conversationId: 'conv_1',
+        sender: sender,
+        createdAt: DateTime(2026),
+        attachment: ChatAttachment(
+          id: 'att_${kind.name}',
+          kind: kind,
+          localPath: '/tmp/sample',
+          state: AttachmentState.local,
+        ),
       );
-      expect(ComposerUtils.getReplyIcon(text, ctx, null), isNull);
-    });
 
-    testWidgets('each media kind gets its own glyph, in the given colour', (
-      tester,
-    ) async {
-      final ctx = await _context(tester);
-      const tint = Color(0xFF123456);
-
-      IconData? iconFor(String type) {
-        final widget = ComposerUtils.getReplyIcon(_media(type), ctx, tint);
-        return (widget as Icon?)?.icon;
-      }
-
-      expect(iconFor(CometChatMessageType.image), Icons.image_outlined);
-      expect(iconFor(CometChatMessageType.video), Icons.videocam_outlined);
-      expect(iconFor(CometChatMessageType.audio), Icons.mic_outlined);
-      expect(
-        iconFor(CometChatMessageType.file),
-        Icons.insert_drive_file_outlined,
-      );
-      // Anything else still gets a generic paperclip rather than nothing.
-      expect(iconFor('hologram'), Icons.attachment_outlined);
-
-      final icon =
-          ComposerUtils.getReplyIcon(
-                _media(CometChatMessageType.image),
-                ctx,
-                tint,
-              )
-              as Icon;
-      expect(icon.color, tint);
-      expect(icon.size, 14);
-    });
+  testWidgets('ComposerUtils.getReplyIcon returns null for TextMessage', (
+    tester,
+  ) async {
+    Widget? icon;
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Builder(
+          builder: (context) {
+            icon = ComposerUtils.getReplyIcon(
+              TextMessage(
+                localId: 'loc_text',
+                conversationId: 'conv_1',
+                sender: sender,
+                createdAt: DateTime(2026),
+                text: 'hello',
+              ),
+              context,
+              Colors.grey,
+            );
+            return const SizedBox.shrink();
+          },
+        ),
+      ),
+    );
+    expect(icon, isNull);
   });
 
-  group('ComposerAttachmentUtils.getMessageTypeToSubtitle', () {
-    testWidgets('every known message type maps to its localized label', (
-      tester,
-    ) async {
-      final ctx = await _context(tester);
-      final t = Translations.of(ctx);
+  testWidgets('ComposerUtils.getReplyIcon maps AttachmentKind to Icons', (
+    tester,
+  ) async {
+    final icons = <AttachmentKind, IconData>{};
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Builder(
+          builder: (context) {
+            for (final kind in AttachmentKind.values) {
+              final widget =
+                  ComposerUtils.getReplyIcon(media(kind), context, Colors.blue)
+                      as Icon;
+              icons[kind] = widget.icon!;
+            }
+            return const SizedBox.shrink();
+          },
+        ),
+      ),
+    );
 
-      String subtitle(String type) =>
-          ComposerAttachmentUtils.getMessageTypeToSubtitle(type, ctx);
-
-      expect(subtitle(MessageTypeConstants.text), t.text);
-      expect(subtitle(MessageTypeConstants.image), t.messageImage);
-      expect(subtitle(MessageTypeConstants.video), t.messageVideo);
-      expect(subtitle(MessageTypeConstants.file), t.messageFile);
-      expect(subtitle(MessageTypeConstants.audio), t.messageAudio);
-      expect(subtitle(ExtensionType.extensionPoll), t.poll);
-      expect(subtitle(ExtensionType.document), t.collaborativeDocument);
-      expect(subtitle(ExtensionType.whiteboard), t.collaborativeWhiteboard);
-      expect(subtitle(ExtensionType.sticker), t.customMessageSticker);
-
-      // Every label is real copy, not the raw type name.
-      for (final type in [
-        MessageTypeConstants.text,
-        MessageTypeConstants.image,
-        MessageTypeConstants.video,
-        MessageTypeConstants.file,
-        MessageTypeConstants.audio,
-      ]) {
-        expect(subtitle(type), isNotEmpty);
-      }
-      expect(subtitle(MessageTypeConstants.image), isNot('image'));
-    });
-
-    testWidgets('an unknown type falls back to the type string itself', (
-      tester,
-    ) async {
-      final ctx = await _context(tester);
-      expect(
-        ComposerAttachmentUtils.getMessageTypeToSubtitle('hologram', ctx),
-        'hologram',
-      );
-      expect(ComposerAttachmentUtils.getMessageTypeToSubtitle('', ctx), '');
-    });
+    expect(icons[AttachmentKind.image], Icons.image_outlined);
+    expect(icons[AttachmentKind.video], Icons.videocam_outlined);
+    expect(icons[AttachmentKind.audio], Icons.mic_outlined);
+    expect(icons[AttachmentKind.file], Icons.insert_drive_file_outlined);
   });
 }

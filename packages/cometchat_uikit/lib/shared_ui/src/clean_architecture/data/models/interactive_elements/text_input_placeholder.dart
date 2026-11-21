@@ -11,7 +11,8 @@ class TextInputPlaceholder {
     return {ModelFieldConstants.text: text};
   }
 
-  factory TextInputPlaceholder.fromMap(dynamic map) {
+  factory TextInputPlaceholder.fromMap(dynamic rawMap) {
+    final map = rawMap as Map<dynamic, dynamic>;
     return TextInputPlaceholder(text: map[ModelFieldConstants.text]);
   }
 }

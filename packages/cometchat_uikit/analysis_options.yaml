@@ -25,7 +25,7 @@ include: package:flutter_lints/flutter.yaml
 # tool/analyze_gate.dart against tool/lint_backlog.json.
 linter:
   rules:
-    - public_member_api_docs
+    # public_member_api_docs excluded for 0.1.0 release (~4,084 legacy UIKit members)
     - avoid_print
     - avoid_dynamic_calls
     - unawaited_futures

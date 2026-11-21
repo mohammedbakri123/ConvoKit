@@ -1,24 +1,12 @@
-import "../../../../clean_architecture.dart";
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'reactions_bloc.dart';
+import '../../../../clean_architecture.dart';
 
-///[CometChatReactions] is a widget which is used to set the reactions
-///It takes [reactionList], [theme], [alignment], [onReactionTap], [onReactionLongPress], [style] as a parameter
+/// Displays reaction pills below a message bubble.
 ///
-/// ```dart
-/// CometChatReactions(
-///  reactionList: reactionList,
-///  theme: theme,
-///  alignment: BubbleAlignment.left,
-///  onReactionTap: (reaction) {
-///  print("reaction tapped");
-///  },
-///  onReactionLongPress: (reaction) {
-///  print("reaction long pressed");
-///  },
-///  );
-class CometChatReactions extends StatefulWidget {
+/// Reactions backend actions are deferred to ConvoKit v1.1 (`UI-ONLY-PLAN.md` §9);
+/// this widget renders any supplied reaction entries purely in Flutter without
+/// `flutter_bloc` or SDK dependencies.
+class CometChatReactions extends StatelessWidget {
   const CometChatReactions({
     super.key,
     required this.reactionList,
@@ -35,299 +23,155 @@ class CometChatReactions extends StatefulWidget {
     this.typography,
   });
 
-  ///[reactionList] is a list of ReactionCount which is used to set the reactions
-  final List<ReactionCount> reactionList;
-
-  ///[alignment] is used to set the alignment of the reactions
+  /// Reaction entries (duck-typed for `reaction`, `count`, `reactedByMe` or Map).
+  final List<dynamic> reactionList;
   final BubbleAlignment? alignment;
-
-  ///[onReactionTap] is a callback which gets called when a reaction is pressed
   final Function(String? reaction)? onReactionTap;
-
-  ///[onReactionLongPress] is a callback which gets called when a reaction is long pressed
   final Function(String? reaction)? onReactionLongPress;
-
-  ///[style] is a parameter used to set the style for the reactions
   final CometChatReactionsStyle? style;
-
-  ///[margin] can be used to apply margin around each reaction
   final EdgeInsets? margin;
-
-  ///[padding] can be used to apply padding inside each reaction
   final EdgeInsets? padding;
-
-  ///[width] provides width to the widget
   final double? width;
-
-  ///[height] provides height to the widget
   final double? height;
-
-  /// [colorPalette] optional pre-cached color palette to avoid expensive lookups during keyboard animation
   final ConvoKitColorPalette? colorPalette;
-
-  /// [spacing] optional pre-cached spacing to avoid expensive lookups during keyboard animation
   final ConvoKitSpacing? spacing;
-
-  /// [typography] optional pre-cached typography to avoid expensive lookups during keyboard animation
   final ConvoKitTypography? typography;
 
-  @override
-  State<CometChatReactions> createState() => _CometChatReactionsState();
-}
-
-class _CometChatReactionsState extends State<CometChatReactions> {
-  late ReactionsBloc _reactionsBloc;
-
-  @override
-  void initState() {
-    super.initState();
-    _reactionsBloc = ReactionsBloc(initialReactions: widget.reactionList);
-  }
-
-  @override
-  void didUpdateWidget(covariant CometChatReactions oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    // Update reactions bloc if reaction list changed
-    if (widget.reactionList != oldWidget.reactionList) {
-      _reactionsBloc.add(UpdateReactions(reactions: widget.reactionList));
-    }
-    // Update style if it changed
-    if (widget.style != oldWidget.style) {
-      style = ConvoKitThemeHelper.getTheme<CometChatReactionsStyle>(
-        context: context,
-        defaultTheme: CometChatReactionsStyle.of,
-      ).merge(widget.style);
-    }
-    // Update cached theme values if they changed
-    if (widget.colorPalette != oldWidget.colorPalette &&
-        widget.colorPalette != null) {
-      colorPalette = widget.colorPalette!;
-    }
-    if (widget.spacing != oldWidget.spacing && widget.spacing != null) {
-      spacing = widget.spacing!;
-    }
-    if (widget.typography != oldWidget.typography &&
-        widget.typography != null) {
-      typography = widget.typography!;
+  String _emojiOf(dynamic item) {
+    if (item is Map) return (item['reaction'] ?? '').toString();
+    try {
+      // ignore: avoid_dynamic_calls
+      return (item.reaction ?? '').toString();
+    } catch (_) {
+      return item.toString();
     }
   }
 
-  @override
-  void dispose() {
-    _reactionsBloc.close();
-    super.dispose();
-  }
-
-  late CometChatReactionsStyle style;
-  late ConvoKitColorPalette colorPalette;
-  late ConvoKitSpacing spacing;
-  late ConvoKitTypography typography;
-  bool _themeInitialized = false;
-  Brightness? _cachedBrightness;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Only initialize theme once to avoid expensive lookups during keyboard animation
-    final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
-    final brightnessChanged =
-        _cachedBrightness != null && _cachedBrightness != currentBrightness;
-    if (!_themeInitialized || brightnessChanged) {
-      _cachedBrightness = currentBrightness;
-      style = ConvoKitThemeHelper.getTheme<CometChatReactionsStyle>(
-        context: context,
-        defaultTheme: CometChatReactionsStyle.of,
-      ).merge(widget.style);
-      // Use passed values OR fallback to lookup (for standalone usage)
-      colorPalette =
-          widget.colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
-      spacing = widget.spacing ?? ConvoKitThemeHelper.getSpacing(context);
-      typography =
-          widget.typography ?? ConvoKitThemeHelper.getTypography(context);
-      _themeInitialized = true;
+  int _countOf(dynamic item) {
+    if (item is Map) return (item['count'] as int?) ?? 0;
+    try {
+      // ignore: avoid_dynamic_calls
+      return (item.count as int?) ?? 0;
+    } catch (_) {
+      return 0;
     }
   }
 
-  Widget? getExtraReactions(
-    ReactionsState state,
-    CometChatReactionsStyle style,
-    ConvoKitColorPalette colorPalette,
-    ConvoKitSpacing spacing,
-    ConvoKitTypography typography,
-  ) {
-    if (state.hasMore && state.extraCount > 1) {
-      return GestureDetector(
-        onTap: () {
-          if (widget.onReactionLongPress != null) {
-            widget.onReactionLongPress!(ReactionConstants.allReactions);
-          }
-        },
-        onLongPress: () {
-          if (widget.onReactionLongPress != null) {
-            widget.onReactionLongPress!(ReactionConstants.allReactions);
-          }
-        },
-        child: Container(
-          margin: widget.margin ?? getMargin(spacing),
-          padding:
-              widget.padding ??
-              EdgeInsets.symmetric(
-                horizontal: spacing.padding2 ?? 0,
-                vertical: spacing.padding ?? 0,
-              ),
-          constraints: const BoxConstraints(minHeight: 24),
-          decoration: BoxDecoration(
-            color:
-                (state.extraReactedByMe
-                    ? style.activeReactionBackgroundColor ??
-                          colorPalette.extendedPrimary100
-                    : style.backgroundColor ?? colorPalette.background1) ??
-                Colors.transparent,
-            border: state.extraReactedByMe == true
-                ? style.activeReactionBorder ??
-                      Border.all(
-                        color:
-                            colorPalette.extendedPrimary300 ??
-                            Colors.transparent,
-                        width: 1,
-                      )
-                : (style.border ??
-                      Border.all(
-                        color: colorPalette.borderLight ?? Colors.transparent,
-                        width: 1,
-                      )),
-            borderRadius:
-                style.borderRadius ??
-                BorderRadius.all(Radius.circular(spacing.radius5 ?? 0)),
-          ),
-          child: Text(
-            "+${state.extraCount}",
-            style: TextStyle(
-              fontSize: typography.body?.regular?.fontSize,
-              color: colorPalette.textPrimary,
-            ).merge(style.countTextStyle),
-          ),
-        ),
-      );
+  bool _reactedByMeOf(dynamic item) {
+    if (item is Map) return (item['reactedByMe'] as bool?) ?? false;
+    try {
+      // ignore: avoid_dynamic_calls
+      return (item.reactedByMe as bool?) ?? false;
+    } catch (_) {
+      return false;
     }
-    return null;
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ReactionsBloc, ReactionsState>(
-      bloc: _reactionsBloc,
-      buildWhen: (previous, current) =>
-          previous.reactionList != current.reactionList ||
-          previous.animatingReaction != current.animatingReaction,
-      builder: (context, state) {
-        final extraReactions = getExtraReactions(
-          state,
-          style,
-          colorPalette,
-          spacing,
-          typography,
-        );
+    if (reactionList.isEmpty) return const SizedBox.shrink();
+    final palette = colorPalette ?? ConvoKitThemeHelper.getColorPalette(context);
+    final typo = typography ?? ConvoKitThemeHelper.getTypography(context);
+    final space = spacing ?? ConvoKitThemeHelper.getSpacing(context);
+    final effectiveStyle = ConvoKitThemeHelper.getTheme<CometChatReactionsStyle>(
+      context: context,
+      defaultTheme: CometChatReactionsStyle.of,
+    ).merge(style);
 
-        return Row(
-          children: [
-            ...state.visibleReactions.map(
-              (reactionCount) => GestureDetector(
-                onTap: () {
-                  if (widget.onReactionTap != null) {
-                    widget.onReactionTap!(reactionCount.reaction);
-                  }
-                },
-                onLongPress: () {
-                  if (widget.onReactionLongPress != null) {
-                    widget.onReactionLongPress!(reactionCount.reaction);
-                  }
-                },
-                child: Container(
-                  height: widget.height,
-                  width: widget.width,
-                  alignment: Alignment.center,
-                  margin: widget.margin ?? getMargin(spacing),
-                  padding:
-                      widget.padding ??
-                      EdgeInsets.symmetric(
-                        horizontal: spacing.padding2 ?? 0,
-                        vertical: spacing.padding ?? 0,
+    final hasOverflow = reactionList.length > 4;
+    final visibleReactions = hasOverflow
+        ? reactionList.take(3).toList()
+        : reactionList;
+    final overflowCount = reactionList.length - visibleReactions.length;
+
+    final baseCountStyle = TextStyle(
+      color: effectiveStyle.countTextColor ?? palette.textPrimary,
+      fontSize: typo.caption1?.regular?.fontSize ?? 12,
+    ).merge(effectiveStyle.countTextStyle);
+
+    return Container(
+      width: width,
+      height: height,
+      padding: padding,
+      margin: margin,
+      child: Wrap(
+        spacing: space.padding1 ?? 4,
+        runSpacing: space.padding1 ?? 4,
+        alignment: alignment == BubbleAlignment.right
+            ? WrapAlignment.end
+            : WrapAlignment.start,
+        children: [
+          ...visibleReactions.map((item) {
+            final emoji = _emojiOf(item);
+            final count = _countOf(item);
+            final active = _reactedByMeOf(item);
+            final bg = active
+                ? (effectiveStyle.activeReactionBackgroundColor ??
+                    palette.extendedPrimary50)
+                : (effectiveStyle.backgroundColor ?? palette.background1);
+            final border = active
+                ? effectiveStyle.activeReactionBorder
+                : effectiveStyle.border;
+            final radius = effectiveStyle.borderRadius;
+
+            return GestureDetector(
+              onTap: () => onReactionTap?.call(emoji),
+              onLongPress: () => onReactionLongPress?.call(emoji),
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: space.padding2 ?? 6,
+                  vertical: space.padding ?? 2,
+                ),
+                decoration: BoxDecoration(
+                  color: bg,
+                  border: border ??
+                      Border.all(
+                        color: active
+                            ? (palette.primary ?? Colors.blue)
+                            : (palette.borderLight ?? Colors.grey.shade300),
                       ),
-                  decoration: BoxDecoration(
-                    color:
-                        (reactionCount.reactedByMe == true
-                            ? style.activeReactionBackgroundColor ??
-                                  colorPalette.extendedPrimary100
-                            : style.backgroundColor ??
-                                  colorPalette.background1) ??
-                        Colors.transparent,
-                    border: reactionCount.reactedByMe == true
-                        ? style.activeReactionBorder ??
-                              Border.all(
-                                color:
-                                    colorPalette.extendedPrimary300 ??
-                                    Colors.transparent,
-                                width: 1,
-                              )
-                        : (style.border ??
-                              Border.all(
-                                color:
-                                    colorPalette.borderLight ??
-                                    Colors.transparent,
-                                width: 1,
-                              )),
-                    borderRadius:
-                        style.borderRadius ??
-                        BorderRadius.all(Radius.circular(spacing.radius5 ?? 0)),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        reactionCount.reaction ?? "",
-                        style: TextStyle(
-                          fontSize: typography.body?.regular?.fontSize,
-                          fontWeight: typography.body?.regular?.fontWeight,
-                        ).merge(style.emojiTextStyle),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(right: spacing.padding1 ?? 0),
-                        child: Text(
-                          " ${reactionCount.count}",
-                          style: TextStyle(
-                            fontSize: typography.body?.regular?.fontSize,
-                            fontWeight: typography.body?.regular?.fontWeight,
-                            color:
-                                style.countTextColor ??
-                                colorPalette.textPrimary,
-                          ).merge(style.countTextStyle),
-                        ),
-                      ),
+                  borderRadius:
+                      radius ?? BorderRadius.circular(space.radiusMax ?? 1000),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      emoji,
+                      style: effectiveStyle.emojiTextStyle ??
+                          TextStyle(
+                            fontSize: typo.caption1?.regular?.fontSize ?? 12,
+                          ),
+                    ),
+                    if (count > 0) ...[
+                      SizedBox(width: space.padding ?? 2),
+                      Text('$count', style: baseCountStyle),
                     ],
-                  ),
+                  ],
                 ),
               ),
+            );
+          }),
+          if (hasOverflow)
+            Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: space.padding2 ?? 6,
+                vertical: space.padding ?? 2,
+              ),
+              decoration: BoxDecoration(
+                color: effectiveStyle.backgroundColor ?? palette.background1,
+                border: effectiveStyle.border ??
+                    Border.all(
+                      color: palette.borderLight ?? Colors.grey.shade300,
+                    ),
+                borderRadius:
+                    effectiveStyle.borderRadius ??
+                    BorderRadius.circular(space.radiusMax ?? 1000),
+              ),
+              child: Text('+$overflowCount', style: baseCountStyle),
             ),
-            ?extraReactions,
-          ],
-        );
-      },
+        ],
+      ),
     );
-  }
-
-  EdgeInsets getMargin(ConvoKitSpacing spacing) {
-    double leftAlignment = 0;
-    if (widget.alignment == BubbleAlignment.right) {
-      leftAlignment = spacing.margin ?? 0;
-    }
-
-    double rightAlignment = 0;
-    if (widget.alignment == BubbleAlignment.left) {
-      rightAlignment = spacing.margin ?? 0;
-    }
-    return EdgeInsets.only(left: leftAlignment, right: rightAlignment);
   }
 }

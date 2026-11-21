@@ -1,4 +1,4 @@
-import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
+import 'interactive_message_base.dart';
 import '../../../../../convokit_uikit_shared.dart'
     show
         MessageTypeConstants,
@@ -11,7 +11,7 @@ import '../../../../../convokit_uikit_shared.dart'
         SchedulerConstants;
 import '../interactive_elements/button_element.dart';
 
-class SchedulerMessage extends InteractiveMessage {
+class SchedulerMessage extends ConvoKitInteractiveMessage {
   SchedulerMessage({
     this.title,
     this.avatarUrl,
@@ -110,7 +110,7 @@ class SchedulerMessage extends InteractiveMessage {
   ButtonElement? scheduleElement;
 
   /// Converts the [SchedulerMessage] to an [InteractiveMessage].
-  InteractiveMessage toInteractiveMessage() {
+  ConvoKitInteractiveMessage toInteractiveMessage() {
     interactiveData[ModelFieldConstants.submitElement] = scheduleElement
         ?.toMap();
     if (Utils.isValidString(title)) {
@@ -158,7 +158,7 @@ class SchedulerMessage extends InteractiveMessage {
     return this;
   }
 
-  factory SchedulerMessage.fromInteractiveMessage(InteractiveMessage message) {
+  factory SchedulerMessage.fromInteractiveMessage(ConvoKitInteractiveMessage message) {
     ButtonElement? scheduleElement;
 
     if (message.interactiveData[ModelFieldConstants.scheduleElement] != null) {
@@ -182,14 +182,21 @@ class SchedulerMessage extends InteractiveMessage {
     // is what CardMessage.fromInteractiveMessage already does. ENG-39022.
     if (json is Map) {
       json.forEach((key, value) {
+        if (key is! String || value is! List) return;
         List<TimeRange> timeRanges = [];
-        for (var timeRange in value) {
-          timeRanges.add(
-            TimeRange(
-              from: timeRange[SchedulerConstants.from],
-              to: timeRange[SchedulerConstants.to],
-            ),
-          );
+        for (final rawRange in value) {
+          if (rawRange is Map) {
+            final from = rawRange[SchedulerConstants.from];
+            final to = rawRange[SchedulerConstants.to];
+            if (from is String && to is String) {
+              timeRanges.add(
+                TimeRange(
+                  from: from,
+                  to: to,
+                ),
+              );
+            }
+          }
         }
         availability[key] = timeRanges;
       });

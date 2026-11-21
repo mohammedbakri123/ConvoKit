@@ -44,7 +44,7 @@ class CometChatStickerBubble extends StatelessWidget {
     if (stickerUrl != null) {
       return stickerUrl;
     } else if (message != null) {
-      return message?.customData?["sticker_url"];
+      return message?.data["sticker_url"] as String?;
     }
     return null;
   }

@@ -56,18 +56,7 @@ void _ignoreWebViewPlatformError() {
   addTearDown(() => FlutterError.onError = original);
 }
 
-class _FakeMessage extends Fake implements BaseMessage {
-  @override
-  int get id => 1;
-  @override
-  String get type => 'text';
-  @override
-  String get category => 'message';
-  @override
-  DateTime get sentAt => DateTime.fromMillisecondsSinceEpoch(1700000000000);
-  @override
-  DateTime? get deletedAt => null;
-}
+
 
 void main() {
   // ===========================================================================
@@ -138,7 +127,14 @@ void main() {
       await tester.pumpWidget(
         _wrap(
           CometchatMessageOptionSheet(
-            messageObject: _FakeMessage(),
+            messageObject: TextMessage(
+              id: 'm1',
+              localId: 'm1',
+              conversationId: 'c1',
+              sender: const ChatUser(id: 'u1', name: 'Alice'),
+              createdAt: DateTime(2026),
+              text: 'hello',
+            ),
             hideReactions: true,
             actionItems: [
               ActionItem(

@@ -19,7 +19,8 @@ class LabelElement extends ElementEntity {
     return map;
   }
 
-  factory LabelElement.fromMap(dynamic map) {
+  factory LabelElement.fromMap(dynamic rawMap) {
+    final map = rawMap as Map<dynamic, dynamic>;
     return LabelElement(
       elementType: map[ModelFieldConstants.elementType],
       elementId: map[ModelFieldConstants.elementId],

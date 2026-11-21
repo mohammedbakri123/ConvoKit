@@ -20,7 +20,6 @@
 ///   flutter test test/shared_ui/clean_architecture/service_locator_test.dart
 library;
 
-import 'package:convokit/chat_ui/src/conversations/di/conversations_service_locator.dart';
 import 'package:convokit/shared_ui/src/clean_architecture/core/di/audio_service_locator.dart';
 import 'package:convokit/shared_ui/src/clean_architecture/core/di/service_locator.dart';
 import 'package:convokit/shared_ui/src/clean_architecture/data/repositories/repository_impl.dart';
@@ -41,25 +40,8 @@ void main() {
       },
     );
 
-    test('the conversations locator reports itself uninitialised', () {
-      expect(ConversationsServiceLocator.instance.isInitialized, isFalse);
-    });
 
-    test(
-      'an un-initialised conversations getter throws a StateError naming setup',
-      () {
-        expect(
-          () => ConversationsServiceLocator.instance.getConversationsUseCase,
-          throwsA(
-            isA<StateError>().having(
-              (e) => e.message,
-              'message',
-              contains('Call setup()'),
-            ),
-          ),
-        );
-      },
-    );
+
   });
 
   // ===========================================================================
@@ -72,9 +54,6 @@ void main() {
       expect(SharedUiServiceLocator(), same(SharedUiServiceLocator()));
     });
 
-    test('setup initialises the conversations locator too', () {
-      expect(ConversationsServiceLocator.instance.isInitialized, isTrue);
-    });
 
     test('repositories are built over the concrete data sources', () {
       final l = SharedUiServiceLocator();
@@ -231,126 +210,7 @@ void main() {
   });
 
   // ===========================================================================
-  group('ConversationsServiceLocator', () {
-    setUp(() async {
-      await ConversationsServiceLocator.instance.reset();
-      ConversationsServiceLocator.instance.setup();
-    });
-
-    test('instance is a singleton', () {
-      expect(
-        ConversationsServiceLocator.instance,
-        same(ConversationsServiceLocator.instance),
-      );
-    });
-
-    test('every use case shares the one repository instance', () {
-      final l = ConversationsServiceLocator.instance;
-      final repo = l.repository;
-      expect(l.getConversationsUseCase.repository, same(repo));
-      expect(l.loadMoreConversationsUseCase.repository, same(repo));
-      expect(l.deleteConversationUseCase.repository, same(repo));
-      expect(l.getLoggedInUserUseCase.repository, same(repo));
-      expect(l.getConversationUseCase.repository, same(repo));
-      expect(l.markAsDeliveredUseCase.repository, same(repo));
-    });
-
-    test('a second setup is a no-op — the graph is not rebuilt', () {
-      final l = ConversationsServiceLocator.instance;
-      final repo = l.repository;
-      l.setup();
-      expect(l.repository, same(repo));
-    });
-
-    test('setupAsync on an initialised locator is also a no-op', () async {
-      final l = ConversationsServiceLocator.instance;
-      final repo = l.repository;
-      await l.setupAsync();
-      expect(l.repository, same(repo));
-    });
-
-    test(
-      'setupAsync builds the same graph as setup when starting cold',
-      () async {
-        final l = ConversationsServiceLocator.instance;
-        await l.reset();
-        expect(l.isInitialized, isFalse);
-
-        await l.setupAsync();
-
-        expect(l.isInitialized, isTrue);
-        expect(l.getConversationsUseCase.repository, same(l.repository));
-        expect(l.markAsDeliveredUseCase.repository, same(l.repository));
-      },
-    );
-
-    test(
-      'reset flips isInitialized and re-arms the guard on every getter',
-      () async {
-        final l = ConversationsServiceLocator.instance;
-        await l.reset();
-
-        expect(l.isInitialized, isFalse);
-        expect(() => l.repository, throwsStateError);
-        expect(() => l.getConversationsUseCase, throwsStateError);
-        expect(() => l.loadMoreConversationsUseCase, throwsStateError);
-        expect(() => l.deleteConversationUseCase, throwsStateError);
-        expect(() => l.getLoggedInUserUseCase, throwsStateError);
-        expect(() => l.getConversationUseCase, throwsStateError);
-        expect(() => l.markAsDeliveredUseCase, throwsStateError);
-      },
-    );
-
-    test('setup after reset rebuilds with fresh objects', () async {
-      final l = ConversationsServiceLocator.instance;
-      final before = l.repository;
-      await l.reset();
-      l.setup();
-      expect(l.repository, isNot(same(before)));
-    });
-  });
 
   // ===========================================================================
   // Left until last: both of these tear the conversations locator down.
-  group('SharedUiServiceLocator teardown helpers', () {
-    setUp(() async {
-      await SharedUiServiceLocator.setup();
-    });
-
-    tearDownAll(() async {
-      await SharedUiServiceLocator.setup();
-    });
-
-    test('reset() tears down the conversations locator', () async {
-      expect(ConversationsServiceLocator.instance.isInitialized, isTrue);
-
-      await SharedUiServiceLocator.reset();
-
-      expect(ConversationsServiceLocator.instance.isInitialized, isFalse);
-    });
-
-    test('cleanup() does the same as reset()', () async {
-      expect(ConversationsServiceLocator.instance.isInitialized, isTrue);
-
-      await SharedUiServiceLocator.cleanup();
-
-      expect(ConversationsServiceLocator.instance.isInitialized, isFalse);
-    });
-
-    // FINDING: `SharedUiServiceLocator.reset()` is documented as "Reset all
-    // services (useful for testing)", but it only resets the *conversations*
-    // locator — its own repositories and use cases survive untouched, so a
-    // test that resets between cases still sees the previous graph. Same for
-    // `cleanup()`, which is documented as "Cleanup resources" and frees none.
-    // Pinned as-is.
-    test('reset() does NOT reset the shared locator it belongs to', () async {
-      final l = SharedUiServiceLocator();
-      final repo = l.messageRepository;
-
-      await SharedUiServiceLocator.reset();
-
-      expect(l.messageRepository, same(repo));
-      expect(l.getMessagesUseCase.repository, same(repo));
-    });
-  });
 }

@@ -35,7 +35,8 @@ class SingleSelectElement extends BaseInputElement<String> {
     return map;
   }
 
-  factory SingleSelectElement.fromMap(dynamic map) {
+  factory SingleSelectElement.fromMap(dynamic rawMap) {
+    final map = rawMap as Map<dynamic, dynamic>;
     return SingleSelectElement(
       elementType: map[ModelFieldConstants.elementType],
       elementId: map[ModelFieldConstants.elementId],

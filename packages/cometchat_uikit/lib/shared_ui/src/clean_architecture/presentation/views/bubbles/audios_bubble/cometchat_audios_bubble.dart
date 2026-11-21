@@ -84,7 +84,8 @@ class CometChatAudiosBubble extends StatelessWidget {
             // and there is no way to say which row it belongs to otherwise.
             // (Multi-attachment sends stamp no local path at all today.)
             stampedLocalPath: attachments.length == 1
-                ? FileUtils.getLocalFilePath(message.metadata)
+                ? (FileUtils.getLocalFilePath(message.metadata) ??
+                    attachments.first.localPath)
                 : null,
             alignment: alignment,
             rowRadius: rowRadius,
@@ -135,7 +136,7 @@ class _AudioList extends StatefulWidget {
     this.style,
   });
 
-  final List<Attachment> attachments;
+  final List<ChatAttachment> attachments;
 
   /// Sender-stamped per-attachment durations (ms), aligned with [attachments];
   /// an entry may be null/absent (older messages).
@@ -267,7 +268,7 @@ class _AudioRow extends StatefulWidget {
 
   final CometChatAudiosBubbleStyle? style;
 
-  final Attachment attachment;
+  final ChatAttachment attachment;
 
   /// A copy of this file already on the device, stamped by the composer when
   /// the message was sent. Null unless the message has a single attachment.
@@ -308,7 +309,7 @@ class _AudioRowState extends State<_AudioRow> {
   // Coordinates with every other audio player in the app (voice notes, other
   // rows in this same message, staged tray tiles) via the shared broadcast
   // stream so only one plays at a time.
-  late final int _tag = widget.attachment.fileUrl.hashCode;
+  late final int _tag = (widget.attachment.url ?? "").hashCode;
   StreamSubscription<AudioBubbleEvents>? _eventSub;
 
   bool get _sent => widget.alignment == BubbleAlignment.right;
@@ -373,8 +374,8 @@ class _AudioRowState extends State<_AudioRow> {
     }
 
     final p = await platform_file.getDownloadedFilePath(
-      widget.attachment.fileName,
-      fileUrl: widget.attachment.fileUrl,
+      widget.attachment.name ?? "",
+      fileUrl: widget.attachment.url ?? "",
     );
     if (p == null || !mounted || _isMismatch) return;
     _localPath = p;
@@ -406,7 +407,7 @@ class _AudioRowState extends State<_AudioRow> {
 
     final c = kIsWeb
         ? vp.VideoPlayerController.networkUrl(
-            Uri.parse(widget.attachment.fileUrl),
+            Uri.parse(widget.attachment.url ?? ""),
           )
         : platform_file.videoControllerForPath(_localPath!);
     if (c == null) {
@@ -451,8 +452,8 @@ class _AudioRowState extends State<_AudioRow> {
     setState(() => _busy = true);
     try {
       final path = await BubbleUtils.downloadFile(
-        widget.attachment.fileUrl,
-        widget.attachment.fileName,
+        widget.attachment.url ?? "",
+        widget.attachment.name ?? "",
       );
       if (path == null) {
         // A url handed back by a send that has only just completed can be
@@ -493,17 +494,17 @@ class _AudioRowState extends State<_AudioRow> {
     if (_busy) return;
     if (kIsWeb) {
       web_download.triggerBrowserDownload(
-        widget.attachment.fileUrl,
-        widget.attachment.fileName,
+        widget.attachment.url ?? "",
+        widget.attachment.name ?? "",
       );
       return;
     }
     setState(() => _busy = true);
     try {
       await platform_file.saveFileWithPicker(
-        widget.attachment.fileUrl,
-        widget.attachment.fileName,
-        widget.attachment.fileMimeType,
+        widget.attachment.url ?? "",
+        widget.attachment.name ?? "",
+        widget.attachment.mimeType ?? "",
         localPath: _localPath,
       );
     } finally {
@@ -574,10 +575,10 @@ class _AudioRowState extends State<_AudioRow> {
 
   /// Lower-cased extension from the file name (falling back to `fileExtension`).
   String _ext() {
-    final n = widget.attachment.fileName;
+    final n = widget.attachment.name ?? "";
     final e = n.contains('.')
         ? n.split('.').last
-        : widget.attachment.fileExtension;
+        : widget.attachment.name?.split(".").last ?? "";
     return e.toLowerCase();
   }
 
@@ -588,7 +589,7 @@ class _AudioRowState extends State<_AudioRow> {
   /// are openable, not just downloadable.
   Future<void> _openFileCardTap() async {
     if (_busy) return;
-    final url = widget.attachment.fileUrl;
+    final url = widget.attachment.url ?? "";
     if (url.isEmpty) return;
     if (kIsWeb) {
       final uri = Uri.tryParse(url);
@@ -603,10 +604,10 @@ class _AudioRowState extends State<_AudioRow> {
       // MediaStore "Downloads/<name>" display string on Android, not openable).
       var path = _localPath;
       if (path == null || !platform_file.fileExistsSync(path)) {
-        await BubbleUtils.downloadFile(url, widget.attachment.fileName);
+        await BubbleUtils.downloadFile(url, widget.attachment.name ?? "");
         path = await platform_file.getDownloadedFilePath(
-          widget.attachment.fileName,
-          fileUrl: widget.attachment.fileUrl,
+          widget.attachment.name ?? "",
+          fileUrl: widget.attachment.url ?? "",
         );
         _localPath = path;
       }
@@ -614,7 +615,7 @@ class _AudioRowState extends State<_AudioRow> {
         const channel = MethodChannel('cometchat_chat_uikit');
         await channel.invokeMethod('open_file', {
           'file_path': path,
-          'file_type': widget.attachment.fileMimeType,
+          'file_type': widget.attachment.mimeType ?? "",
         });
       }
     } catch (e) {
@@ -660,15 +661,15 @@ class _AudioRowState extends State<_AudioRow> {
         child: Row(
           children: [
             attachmentSvgIcon(
-              fileName: widget.attachment.fileName,
+              fileName: widget.attachment.name ?? "",
               extension: _ext(),
-              mimeType: widget.attachment.fileMimeType,
+              mimeType: widget.attachment.mimeType ?? "",
               size: 36,
             ),
             const SizedBox(width: 10),
             Expanded(
               child: Text(
-                widget.attachment.fileName,
+                widget.attachment.name ?? "",
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
@@ -735,7 +736,7 @@ class _AudioRowState extends State<_AudioRow> {
       clock =
           '00:00/${_fmt(Duration(milliseconds: widget.initialDurationMs!))}';
     } else if (!_downloaded) {
-      clock = _fmtSize(widget.attachment.fileSize ?? 0);
+      clock = _fmtSize(widget.attachment.sizeBytes ?? 0);
     } else {
       clock = '--:--';
     }
@@ -816,7 +817,7 @@ class _AudioRowState extends State<_AudioRow> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.attachment.fileName,
+                  widget.attachment.name ?? "",
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(

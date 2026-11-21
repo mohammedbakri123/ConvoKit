@@ -1,11 +1,9 @@
 import 'package:convokit/convokit_uikit.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:sample_app/screens/login_screen.dart';
 import 'package:sample_app/screens/messages_screen.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../config/test_credentials.dart';
 import '../helpers_v2/app_launcher.dart';

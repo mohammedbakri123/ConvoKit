@@ -413,8 +413,12 @@ class MediaPicker {
         "type": type,
         "allowedExtensions": allowedExtensions,
       });
-      if (result != null && result.first["path"] != null) {
-        Map<String, dynamic> file = Map<String, dynamic>.from(result.first);
+      if (result != null &&
+          result.first is Map &&
+          (result.first as Map)["path"] != null) {
+        Map<String, dynamic> file = Map<String, dynamic>.from(
+          result.first as Map,
+        );
         String name = file["name"];
         String extension = name
             .substring(name.lastIndexOf(".") + 1)

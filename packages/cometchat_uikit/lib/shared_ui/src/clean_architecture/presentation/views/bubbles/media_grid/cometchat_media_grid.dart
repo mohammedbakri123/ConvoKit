@@ -32,7 +32,7 @@ class CometChatMediaGrid extends StatelessWidget {
   });
 
   /// The media attachments to lay out, in order.
-  final List<Attachment> media;
+  final List<ChatAttachment> media;
 
   /// Fixed grid width (intrinsic-safe — message bubbles size to content via
   /// intrinsic width, where LayoutBuilder can't lay out).
@@ -83,7 +83,7 @@ class CometChatMediaGrid extends StatelessWidget {
       );
     } else {
       thumb = Image.network(
-        a.fileUrl,
+        a.url ?? '',
         fit: BoxFit.cover,
         gaplessPlayback: true,
         // CanvasKit needs CORS to fetch pixels; fall back to an <img> element
@@ -253,7 +253,7 @@ class _TripleGridState extends State<_TripleGrid> {
     // For a video hero, the poster thumbnail carries the frame's dimensions.
     final url = isVideo
         ? ((grid.thumbs.isNotEmpty ? grid.thumbs[0] : null) ?? '')
-        : a.fileUrl;
+        : (a.url ?? '');
     if (url.isEmpty) return;
     final stream = NetworkImage(url).resolve(const ImageConfiguration());
     final listener = ImageStreamListener((info, _) {
@@ -363,7 +363,7 @@ class _VideoCell extends StatefulWidget {
     this.style,
   });
 
-  final Attachment attachment;
+  final ChatAttachment attachment;
   final String? thumbUrl;
   final bool showDurationChip;
   final CometChatMediaGridStyle? style;
@@ -391,8 +391,8 @@ class _VideoCellState extends State<_VideoCell> {
     // client-side (the server's thumbnail generation fails for some formats,
     // e.g. iPhone .mov), falling to the doc-slash glyph when even that fails.
     Widget firstFrame() => CometChatVideoFirstFrame(
-      key: ValueKey('cc_grid_video_frame_${a.fileUrl}'),
-      source: a.fileUrl,
+      key: ValueKey('cc_grid_video_frame_${a.url ?? a.localPath ?? a.id}'),
+      source: a.url ?? a.localPath ?? '',
       fallback: CometChatMediaPlaceholder(
         backgroundColor: style?.placeholderColor,
       ),
@@ -438,7 +438,7 @@ class _VideoCellState extends State<_VideoCell> {
           Positioned(
             left: 4,
             bottom: 4,
-            child: _VideoDurationChip(url: a.fileUrl, style: style),
+            child: _VideoDurationChip(url: a.url ?? '', style: style),
           ),
       ],
     );

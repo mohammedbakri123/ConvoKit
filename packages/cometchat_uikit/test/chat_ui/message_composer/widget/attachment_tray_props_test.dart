@@ -1,3 +1,5 @@
+library;
+import 'dart:typed_data';
 /// Render-verified prop matrix for [ConvoKitAttachmentTrayStyle],
 /// [ConvoKitAttachmentTile] and [ConvoKitAttachmentTray] — Track 3
 /// PROP1/PROP2 (ENG-38929).
@@ -9,7 +11,6 @@
 /// layout that reads it.
 ///
 ///   flutter test test/chat_ui/message_composer/widget/attachment_tray_props_test.dart
-library;
 
 import 'package:convokit/convokit_uikit.dart';
 import 'package:flutter/material.dart';
@@ -476,11 +477,11 @@ void main() {
     AttachmentTrayController controllerWithTile() {
       final c = AttachmentTrayController();
       c.addLimitRejected(
-        UploadFile(
+        StagedUploadFile(
           name: 'clip.pdf',
           size: 1024,
           mimeType: 'application/pdf',
-          bytes: const <int>[0],
+          bytes: Uint8List.fromList(const <int>[0]),
         ),
         'too many files',
       );

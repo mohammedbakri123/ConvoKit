@@ -1,7 +1,7 @@
 import '../../../clean_architecture.dart';
 
 /// Represents a message with a card view that contains interactive elements.
-class CardMessage extends InteractiveMessage {
+class CardMessage extends ConvoKitInteractiveMessage {
   /// Creates a new [CardMessage] instance.
   ///
   /// The [text] is the main text content of the card.
@@ -70,7 +70,7 @@ class CardMessage extends InteractiveMessage {
   List<BaseInteractiveElement> cardActions;
 
   /// Converts the [CardMessage] to an [InteractiveMessage].
-  InteractiveMessage toInteractiveMessage() {
+  ConvoKitInteractiveMessage toInteractiveMessage() {
     //interactiveData??={};
     List<Map<String, dynamic>> cardActionMap = [];
     for (var element in cardActions) {
@@ -83,7 +83,7 @@ class CardMessage extends InteractiveMessage {
   }
 
   /// Creates a [CardMessage] from an [InteractiveMessage].
-  factory CardMessage.fromInteractiveMessage(InteractiveMessage message) {
+  factory CardMessage.fromInteractiveMessage(ConvoKitInteractiveMessage message) {
     List<BaseInteractiveElement> elementList = [];
 
     if (message.interactiveData[CardMessageKeys.cardActions] != null) {

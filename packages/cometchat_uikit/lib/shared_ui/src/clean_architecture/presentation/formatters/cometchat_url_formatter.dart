@@ -1,4 +1,4 @@
-import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
+import 'package:convokit/src/core/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'cometchat_text_formatter.dart';
@@ -46,7 +46,7 @@ class CometChatUrlFormatter extends CometChatTextFormatter {
   }
 
   @override
-  void handlePreMessageSend(BuildContext context, BaseMessage baseMessage) {
+  void handlePreMessageSend(BuildContext context, ChatMessage baseMessage) {
     // Nothing to do before send: this formatter only decorates text for display.
   }
 

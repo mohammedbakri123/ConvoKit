@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:convokit/convokit.dart';
 
@@ -48,10 +47,137 @@ class InMemoryChatBackend {
     _messages = _InMemoryMessageRepository(this);
     _groups = _InMemoryGroupRepository(this);
     _media = _InMemoryMediaProvider(this);
-    _events = _InMemoryEventSource(this);
+    _events = _InMemoryEventSource();
   }
 
   void updateUser(ChatUser? user) => _session.updateUser(user);
+
+  /// Switches the signed-in user offline (creates one if unknown).
+  ChatUser loginAs(String uid) {
+    final existingIdx = _allUsers.indexWhere((u) => u.id == uid);
+    late final ChatUser user;
+    if (existingIdx != -1) {
+      user = _allUsers[existingIdx];
+    } else {
+      user = ChatUser(
+        id: uid,
+        name: uid,
+        presence: UserPresence.online,
+      );
+      _allUsers.add(user);
+    }
+    _session.updateUser(user);
+    return user;
+  }
+
+  /// Creates a new group offline and adds its conversation.
+  ChatGroup createGroup({
+    required String id,
+    required String name,
+    GroupType type = GroupType.public,
+    String? description,
+  }) {
+    final owner = _session.currentUser ?? superhero1;
+    final group = ChatGroup(
+      id: id,
+      name: name,
+      description: description,
+      type: type,
+      memberCount: 1,
+      members: [ChatMember(user: owner, role: GroupRole.owner)],
+    );
+    _groupsList.insert(0, group);
+    final conv = ChatConversation.group(
+      id: 'conv_group_$id',
+      group: group,
+      unreadCount: 0,
+      updatedAt: DateTime.now(),
+    );
+    _conversationsList.insert(0, conv);
+    _events.emitEvent(
+      ConversationUpdated(conversation: conv, receivedAt: DateTime.now()),
+    );
+    return group;
+  }
+
+  /// Deletes a group and its conversation offline.
+  void deleteGroup(String groupId) {
+    _groupsList.removeWhere((g) => g.id == groupId);
+    _conversationsList.removeWhere((c) => c.group?.id == groupId);
+  }
+
+  /// Transfers group ownership offline.
+  void transferGroupOwnership(String groupId, String newOwnerUid) {
+    final idx = _groupsList.indexWhere((g) => g.id == groupId);
+    if (idx == -1) return;
+    final g = _groupsList[idx];
+    final updatedMembers = (g.members ?? const <ChatMember>[]).map((m) {
+      if (m.user.id == newOwnerUid) {
+        return ChatMember(user: m.user, role: GroupRole.owner);
+      }
+      if (m.role == GroupRole.owner) {
+        return ChatMember(user: m.user, role: GroupRole.admin);
+      }
+      return m;
+    }).toList();
+    _groupsList[idx] = ChatGroup(
+      id: g.id,
+      name: g.name,
+      avatarUrl: g.avatarUrl,
+      description: g.description,
+      type: g.type,
+      memberCount: updatedMembers.length,
+      members: updatedMembers,
+    );
+  }
+
+  /// Blocks or unblocks a user offline.
+  ChatUser? setUserBlocked(String uid, {required bool blocked}) {
+    final idx = _allUsers.indexWhere((u) => u.id == uid);
+    if (idx == -1) return null;
+    final u = _allUsers[idx];
+    final updated = ChatUser(
+      id: u.id,
+      name: u.name,
+      avatarUrl: u.avatarUrl,
+      presence: u.presence,
+      isBlocked: blocked,
+    );
+    _allUsers[idx] = updated;
+    return updated;
+  }
+
+  /// Looks up a message by its server or local ID across all conversations.
+  ChatMessage? getMessageById(String messageId) {
+    for (final list in _messagesByConversation.values) {
+      for (final msg in list) {
+        if (msg.id == messageId || msg.localId == messageId) {
+          return msg;
+        }
+      }
+    }
+    return null;
+  }
+
+  /// Finds the conversation for a direct peer or group ID.
+  ChatConversation? getConversationFor({String? userId, String? groupId}) {
+    for (final conv in _conversationsList) {
+      if (userId != null && conv.peer?.id == userId) return conv;
+      if (groupId != null && conv.group?.id == groupId) return conv;
+    }
+    return null;
+  }
+
+  /// Removes a user from the offline banned list (no-op if not banned).
+  void unbanGroupMember(String groupId, String uid) {
+    _bannedByGroup[groupId]?.removeWhere((u) => u.id == uid);
+  }
+
+  final Map<String, List<ChatUser>> _bannedByGroup = {};
+
+  List<ChatUser> bannedMembersFor(String groupId) =>
+      List.unmodifiable(_bannedByGroup[groupId] ?? const []);
+
 
   void injectMessage(ChatMessage message) {
     final list = _messagesByConversation.putIfAbsent(
@@ -793,13 +919,12 @@ class _InMemoryMediaProvider implements ChatMediaProvider {
 }
 
 class _InMemoryEventSource implements ChatEventSource {
-  final InMemoryChatBackend _backend;
   StreamController<ChatEvent> _eventController =
       StreamController<ChatEvent>.broadcast();
   StreamController<ConnectionStatus> _connectionController =
       StreamController<ConnectionStatus>.broadcast();
 
-  _InMemoryEventSource(this._backend) {
+  _InMemoryEventSource() {
     _connectionController.add(
       const ConnectionStatus(ConnectionState.connected),
     );

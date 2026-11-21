@@ -1,4 +1,4 @@
-import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
+import 'interactive_message_base.dart';
 import '../../../../../convokit_uikit_shared.dart'
     show
         MessageTypeConstants,
@@ -10,7 +10,7 @@ import '../interactive_elements/element_entity.dart';
 import '../interactive_elements/button_element.dart';
 
 /// Represents a message that includes a form with interactive elements.
-class FormMessage extends InteractiveMessage {
+class FormMessage extends ConvoKitInteractiveMessage {
   /// Creates a new [FormMessage] instance.
   ///
   /// The [formFields] represent the list of form fields within the message.
@@ -77,7 +77,7 @@ class FormMessage extends InteractiveMessage {
   String? goalCompletionText;
 
   /// Converts the [FormMessage] to an [InteractiveMessage].
-  InteractiveMessage toInteractiveMessage() {
+  ConvoKitInteractiveMessage toInteractiveMessage() {
     List<Map<String, dynamic>> formFieldMap = [];
     for (var element in formFields) {
       formFieldMap.add(element.toMap());
@@ -96,7 +96,7 @@ class FormMessage extends InteractiveMessage {
     return this;
   }
 
-  factory FormMessage.fromInteractiveMessage(InteractiveMessage message) {
+  factory FormMessage.fromInteractiveMessage(ConvoKitInteractiveMessage message) {
     List<ElementEntity> elementList = [];
     ButtonElement? submitElement;
     if (message.interactiveData[ModelFieldConstants.formFields] != null) {

@@ -82,7 +82,7 @@ class CustomTextEditingController extends TextEditingController {
   ) {
     final attributions = <AttributedText>[];
 
-    for (final formatter in formatters ?? []) {
+    for (final formatter in formatters ?? const <CometChatTextFormatter>[]) {
       final formatterAttributions = formatter.buildInputFieldText(
         text: text,
         style: style,

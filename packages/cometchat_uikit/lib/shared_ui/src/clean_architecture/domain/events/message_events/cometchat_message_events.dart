@@ -1,4 +1,4 @@
-import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
+import 'package:convokit/src/core/models/models.dart';
 import '../../../core/constants/enums.dart';
 import '../../../data/models/interactive_message/form_message.dart';
 import '../../../data/models/interactive_message/card_message.dart';
@@ -21,25 +21,25 @@ class ConvoKitMessageEvents {
     messagesListener.remove(listenerId);
   }
 
-  static void ccMessageSent(BaseMessage message, MessageStatus messageStatus) {
+  static void ccMessageSent(ChatMessage message, MessageStatus messageStatus) {
     messagesListener.forEach((key, value) {
       value.ccMessageSent(message, messageStatus);
     });
   }
 
-  static void ccMessageEdited(BaseMessage message, MessageEditStatus status) {
+  static void ccMessageEdited(ChatMessage message, MessageEditStatus status) {
     messagesListener.forEach((key, value) {
       value.ccMessageEdited(message, status);
     });
   }
 
-  static void ccMessageDeleted(BaseMessage message, EventStatus messageStatus) {
+  static void ccMessageDeleted(ChatMessage message, EventStatus messageStatus) {
     messagesListener.forEach((key, value) {
       value.ccMessageDeleted(message, messageStatus);
     });
   }
 
-  static void ccMessageRead(BaseMessage message) {
+  static void ccMessageRead(ChatMessage message) {
     messagesListener.forEach((key, value) {
       value.ccMessageRead(message);
     });
@@ -63,25 +63,25 @@ class ConvoKitMessageEvents {
   ///message from a kit surface. [message] is the full updated object (pin/
   ///save fields stamped or cleared) so panels like Pinned/Saved Messages can
   ///insert or drop rows without a refetch.
-  static void ccMessagePinned(BaseMessage message) {
+  static void ccMessagePinned(ChatMessage message) {
     messagesListener.forEach((key, value) {
       value.ccMessagePinned(message);
     });
   }
 
-  static void ccMessageUnpinned(BaseMessage message) {
+  static void ccMessageUnpinned(ChatMessage message) {
     messagesListener.forEach((key, value) {
       value.ccMessageUnpinned(message);
     });
   }
 
-  static void ccMessageSaved(BaseMessage message) {
+  static void ccMessageSaved(ChatMessage message) {
     messagesListener.forEach((key, value) {
       value.ccMessageSaved(message);
     });
   }
 
-  static void ccMessageUnsaved(BaseMessage message) {
+  static void ccMessageUnsaved(ChatMessage message) {
     messagesListener.forEach((key, value) {
       value.ccMessageUnsaved(message);
     });
@@ -94,9 +94,9 @@ class ConvoKitMessageEvents {
   }
 
   static void ccMessageForwarded(
-    BaseMessage message,
-    List<User>? usersSent,
-    List<Group>? groupsSent,
+    ChatMessage message,
+    List<ChatUser>? usersSent,
+    List<ChatGroup>? groupsSent,
     MessageStatus status,
   ) {
     messagesListener.forEach((key, value) {
@@ -104,7 +104,7 @@ class ConvoKitMessageEvents {
     });
   }
 
-  static void ccReplyToMessage(BaseMessage message) {
+  static void ccReplyToMessage(ChatMessage message) {
     messagesListener.forEach((key, value) {
       value.ccReplyToMessage(message);
     });
@@ -132,49 +132,49 @@ class ConvoKitMessageEvents {
   }
 
   /// Called when typing is started.
-  static void onTypingStarted(TypingIndicator typingIndicator) {
+  static void onTypingStarted(dynamic typingIndicator) {
     messagesListener.forEach((key, value) {
       value.onTypingStarted(typingIndicator);
     });
   }
 
   /// Called when typing is ended.
-  static void onTypingEnded(TypingIndicator typingIndicator) {
+  static void onTypingEnded(dynamic typingIndicator) {
     messagesListener.forEach((key, value) {
       value.onTypingEnded(typingIndicator);
     });
   }
 
   /// Called when messages are delivered.
-  static void onMessagesDelivered(MessageReceipt messageReceipt) {
+  static void onMessagesDelivered(dynamic messageReceipt) {
     messagesListener.forEach((key, value) {
       value.onMessagesDelivered(messageReceipt);
     });
   }
 
   /// Called when messages are read.
-  static void onMessagesRead(MessageReceipt messageReceipt) {
+  static void onMessagesRead(dynamic messageReceipt) {
     messagesListener.forEach((key, value) {
       value.onMessagesRead(messageReceipt);
     });
   }
 
   /// Called when a message is edited.
-  static void onMessageEdited(BaseMessage message) {
+  static void onMessageEdited(ChatMessage message) {
     messagesListener.forEach((key, value) {
       value.onMessageEdited(message);
     });
   }
 
   /// Called when a message is deleted.
-  static void onMessageDeleted(BaseMessage message) {
+  static void onMessageDeleted(ChatMessage message) {
     messagesListener.forEach((key, value) {
       value.onMessageDeleted(message);
     });
   }
 
   /// Called when a transient message is received.
-  static void onTransientMessageReceived(TransientMessage message) {
+  static void onTransientMessageReceived(dynamic message) {
     messagesListener.forEach((key, value) {
       value.onTransientMessageReceived(message);
     });
@@ -204,7 +204,7 @@ class ConvoKitMessageEvents {
   }
 
   /// Called when an interaction goal is completed.
-  static void onInteractionGoalCompleted(InteractionReceipt receipt) {
+  static void onInteractionGoalCompleted(dynamic receipt) {
     messagesListener.forEach((key, value) {
       value.onInteractionGoalCompleted(receipt);
     });
@@ -217,34 +217,34 @@ class ConvoKitMessageEvents {
     });
   }
 
-  static void onMessageReactionAdded(ReactionEvent reactionEvent) {
+  static void onMessageReactionAdded(dynamic reactionEvent) {
     messagesListener.forEach((key, value) {
       value.onMessageReactionAdded(reactionEvent);
     });
   }
 
-  static void onMessageReactionRemoved(ReactionEvent reactionEvent) {
+  static void onMessageReactionRemoved(dynamic reactionEvent) {
     messagesListener.forEach((key, value) {
       value.onMessageReactionRemoved(reactionEvent);
     });
   }
 
   /// Called when messages are delivered to all.
-  static void onMessagesDeliveredToAll(MessageReceipt messageReceipt) {
+  static void onMessagesDeliveredToAll(dynamic messageReceipt) {
     messagesListener.forEach((key, value) {
       value.onMessagesDeliveredToAll(messageReceipt);
     });
   }
 
   /// Called when messages are read by all.
-  static void onMessagesReadByAll(MessageReceipt messageReceipt) {
+  static void onMessagesReadByAll(dynamic messageReceipt) {
     messagesListener.forEach((key, value) {
       value.onMessagesReadByAll(messageReceipt);
     });
   }
 
   /// Called when a message is moderated.
-  static void onMessageModerated(BaseMessage message) {
+  static void onMessageModerated(ChatMessage message) {
     messagesListener.forEach((key, value) {
       value.onMessageModerated(message);
     });

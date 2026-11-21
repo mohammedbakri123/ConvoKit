@@ -1,53 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../convokit_uikit.dart';
 
-/// [CometChatGroupListItem] is a dedicated widget for displaying a single group list item.
-///
-/// This widget is purpose-built for groups and provides group-specific features including:
-/// - Avatar with group type indicator (private, password-protected, public)
-/// - Title (group name)
-/// - Subtitle (member count)
-/// - Trailing view (custom content)
-/// - Selection mode support with checkbox
-/// - Tap and long-press gesture handling
-/// - Full theme integration with ConvoKitTheme
-/// - Extensive customization through style objects and individual parameters
-///
-/// ## Basic Usage
-///
-/// ```dart
-/// CometChatGroupListItem(
-///   group: group,
-///   onItemClick: (group) => navigateToGroup(group),
-/// )
-/// ```
-///
-/// ## With Selection Mode
-///
-/// ```dart
-/// CometChatGroupListItem(
-///   group: group,
-///   onItemClick: (group) => handleClick(group),
-///   selectionMode: SelectionMode.multiple,
-///   isSelected: isSelected,
-///   onSelectionToggle: () => toggleSelection(),
-/// )
-/// ```
-///
-/// ## With Custom Views
-///
-/// ```dart
-/// CometChatGroupListItem(
-///   group: group,
-///   onItemClick: (group) => handleClick(group),
-///   leadingView: (group) => CustomAvatar(group: group),
-///   subtitleView: (group) => CustomSubtitle(group: group),
-/// )
-/// ```
-///
-/// See also:
-/// - [CometChatGroupListItemStyle] for comprehensive styling options
-/// - [GroupsList] for displaying a list of groups
+/// [CometChatGroupListItem] displays a single [ChatGroup] list item.
 class CometChatGroupListItem extends StatelessWidget {
   const CometChatGroupListItem({
     super.key,
@@ -81,88 +35,33 @@ class CometChatGroupListItem extends StatelessWidget {
     this.protectedGroupIconBackground,
   });
 
-  /// [group] is the group object to display
-  final Group group;
-
-  /// [onItemClick] callback triggered when the item is tapped
-  final Function(Group) onItemClick;
-
-  /// [onItemLongClick] callback triggered when the item is long-pressed
-  final Function(Group)? onItemLongClick;
-
-  /// [onSelectionToggle] callback triggered when the selection checkbox is toggled
+  final ChatGroup group;
+  final Function(ChatGroup) onItemClick;
+  final Function(ChatGroup)? onItemLongClick;
   final VoidCallback? onSelectionToggle;
-
-  /// [isSelected] whether this group is currently selected
   final bool isSelected;
-
-  /// [selectionMode] determines the selection behavior (none, single, multiple)
   final SelectionMode selectionMode;
-
-  /// [hideGroupTypeIcon] hides the group type indicator (private/password icons)
   final bool hideGroupTypeIcon;
-
-  /// [style] comprehensive style configuration for the list item
   final CometChatGroupListItemStyle? style;
-
-  /// [avatarStyle] style configuration for the avatar (overrides style.avatarStyle)
   final ConvoKitAvatarStyle? avatarStyle;
-
-  /// [statusIndicatorStyle] style configuration for the status indicator (overrides style.statusIndicatorStyle)
   final ConvoKitStatusIndicatorStyle? statusIndicatorStyle;
-
-  /// [avatarHeight] provides height to the avatar widget
   final double? avatarHeight;
-
-  /// [avatarWidth] provides width to the avatar widget
   final double? avatarWidth;
-
-  /// [avatarPadding] provides padding to the avatar widget
   final EdgeInsetsGeometry? avatarPadding;
-
-  /// [avatarMargin] provides margin to the avatar widget
   final EdgeInsetsGeometry? avatarMargin;
-
-  /// [statusIndicatorHeight] provides height to the status indicator
   final double? statusIndicatorHeight;
-
-  /// [statusIndicatorWidth] provides width to the status indicator
   final double? statusIndicatorWidth;
-
-  /// [statusIndicatorBorderRadius] provides border radius to the status indicator
   final BorderRadiusGeometry? statusIndicatorBorderRadius;
-
-  /// [leadingView] custom widget builder for the leading section (avatar area)
-  final Widget? Function(Group)? leadingView;
-
-  /// [titleView] custom widget builder for the title section
-  final Widget? Function(Group)? titleView;
-
-  /// [subtitleView] custom widget builder for the subtitle section
-  final Widget? Function(Group)? subtitleView;
-
-  /// [trailingView] custom widget builder for the trailing section
-  final Widget? Function(Group)? trailingView;
-
-  /// [colorPalette] custom color palette (overrides theme colors)
+  final Widget? Function(ChatGroup)? leadingView;
+  final Widget? Function(ChatGroup)? titleView;
+  final Widget? Function(ChatGroup)? subtitleView;
+  final Widget? Function(ChatGroup)? trailingView;
   final ConvoKitColorPalette? colorPalette;
-
-  /// [spacing] custom spacing configuration (overrides theme spacing)
   final ConvoKitSpacing? spacing;
-
-  /// [typography] custom typography configuration (overrides theme typography)
   final ConvoKitTypography? typography;
-
-  /// [privateGroupIcon] custom icon for private group indicator
   final Widget? privateGroupIcon;
-
-  /// [protectedGroupIcon] custom icon for protected (password) group indicator
   final Widget? protectedGroupIcon;
-
-  /// [privateGroupIconBackground] background colour for the private-group badge
   final Color? privateGroupIconBackground;
-
-  /// [protectedGroupIconBackground] background colour for the protected-group badge
   final Color? protectedGroupIconBackground;
 
   @override
@@ -249,19 +148,18 @@ class CometChatGroupListItem extends StatelessWidget {
   String _buildAccessibilityLabel(BuildContext context) {
     final parts = <String>[group.name];
 
-    // Add member count
-    final memberCount = group.membersCount;
+    final memberCount = group.memberCount;
     if (memberCount > 0) {
       parts.add('$memberCount ${memberCount == 1 ? 'member' : 'members'}');
     }
 
-    // Add group type
-    if (group.type == CometChatGroupType.private) {
-      parts.add('private group');
-    } else if (group.type == CometChatGroupType.password) {
-      parts.add('password protected group');
-    } else {
-      parts.add('public group');
+    switch (group.type) {
+      case GroupType.private:
+        parts.add('private group');
+      case GroupType.passwordProtected:
+        parts.add('password protected group');
+      case GroupType.public:
+        parts.add('public group');
     }
 
     if (isSelected) parts.add('selected');
@@ -327,7 +225,6 @@ class CometChatGroupListItem extends StatelessWidget {
       }
     }
 
-    // Create avatar style with explicit text size to match other list items
     final effectiveAvatarStyle =
         (avatarStyle ??
                 effectiveStyle.avatarStyle ??
@@ -345,7 +242,7 @@ class CometChatGroupListItem extends StatelessWidget {
       child: Stack(
         children: [
           ConvoKitAvatar(
-            image: group.icon,
+            image: group.avatarUrl,
             name: group.name,
             height: avatarHeight ?? 48,
             width: avatarWidth ?? 48,
@@ -362,9 +259,6 @@ class CometChatGroupListItem extends StatelessWidget {
                 width: statusIndicatorWidth ?? 14,
                 backgroundImage: _getStatusIndicatorIcon(effectiveColorPalette),
                 style: ConvoKitStatusIndicatorStyle(
-                  // borderRadius was absent here, so neither the widget's
-                  // statusIndicatorBorderRadius nor the style's borderRadius
-                  // could reach the badge. ENG-39124.
                   borderRadius:
                       statusIndicatorBorderRadius ??
                       statusIndicatorStyle?.borderRadius ??
@@ -431,8 +325,7 @@ class CometChatGroupListItem extends StatelessWidget {
       }
     }
 
-    // Default subtitle shows member count
-    final memberCount = group.membersCount;
+    final memberCount = group.memberCount;
     final memberText =
         '$memberCount ${memberCount == 1 ? Translations.of(context).member : Translations.of(context).members}';
 
@@ -468,20 +361,15 @@ class CometChatGroupListItem extends StatelessWidget {
       }
     }
 
-    // Default trailing view is empty
     return const SizedBox.shrink();
   }
 
   bool _shouldShowStatusIndicator() {
     if (hideGroupTypeIcon) return false;
-
-    // Show indicator for private and password-protected groups
-    return group.type == CometChatGroupType.private ||
-        group.type == CometChatGroupType.password;
+    return group.type == GroupType.private ||
+        group.type == GroupType.passwordProtected;
   }
 
-  /// The status dot's colour: the style's colour for this group type first,
-  /// then any status indicator style, then the palette.
   Color? _getStatusIndicatorBackgroundColor(
     CometChatGroupListItemStyle effectiveStyle,
     ConvoKitColorPalette effectiveColorPalette,
@@ -489,16 +377,13 @@ class CometChatGroupListItem extends StatelessWidget {
     final fromStatusStyle =
         statusIndicatorStyle?.backgroundColor ??
         effectiveStyle.statusIndicatorStyle?.backgroundColor;
-    if (group.type == CometChatGroupType.password) {
-      // Caller-supplied colour first, then the style, then the status-indicator
-      // style; protected groups default to the success colour (green).
+    if (group.type == GroupType.passwordProtected) {
       return protectedGroupIconBackground ??
           effectiveStyle.protectedGroupIconBackground ??
           fromStatusStyle ??
           effectiveColorPalette.success ??
           Colors.green;
-    } else if (group.type == CometChatGroupType.private) {
-      // Private groups default to the warning colour (yellow).
+    } else if (group.type == GroupType.private) {
       return privateGroupIconBackground ??
           effectiveStyle.privateGroupIconBackground ??
           fromStatusStyle ??
@@ -509,8 +394,7 @@ class CometChatGroupListItem extends StatelessWidget {
   }
 
   Widget? _getStatusIndicatorIcon(ConvoKitColorPalette effectiveColorPalette) {
-    // Use custom icons if provided, otherwise use default icons with proper color
-    if (group.type == CometChatGroupType.private) {
+    if (group.type == GroupType.private) {
       if (privateGroupIcon != null) {
         return privateGroupIcon;
       }
@@ -519,7 +403,7 @@ class CometChatGroupListItem extends StatelessWidget {
         color: effectiveColorPalette.background1 ?? Colors.white,
         size: 7,
       );
-    } else if (group.type == CometChatGroupType.password) {
+    } else if (group.type == GroupType.passwordProtected) {
       if (protectedGroupIcon != null) {
         return protectedGroupIcon;
       }
@@ -534,8 +418,6 @@ class CometChatGroupListItem extends StatelessWidget {
 }
 
 /// Style configuration for [CometChatGroupListItem].
-///
-/// This class provides comprehensive styling options for the group list item widget.
 @immutable
 class CometChatGroupListItemStyle {
   const CometChatGroupListItemStyle({
@@ -557,57 +439,23 @@ class CometChatGroupListItemStyle {
     this.protectedGroupIconBackground,
   });
 
-  /// Background color of the list item
   final Color? backgroundColor;
-
-  /// Background color when the item is selected
   final Color? selectedBackgroundColor;
-
-  /// Text style for the title (group name)
   final TextStyle? titleTextStyle;
-
-  /// Text color for the title
   final Color? titleTextColor;
-
-  /// Text style for the subtitle (member count)
   final TextStyle? subtitleTextStyle;
-
-  /// Text color for the subtitle
   final Color? subtitleTextColor;
-
-  /// Style for the avatar
   final ConvoKitAvatarStyle? avatarStyle;
-
-  /// Style for the status indicator (group type icon)
   final ConvoKitStatusIndicatorStyle? statusIndicatorStyle;
-
-  /// Background color for unchecked checkbox
   final Color? checkBoxBackgroundColor;
-
-  /// Background color for checked checkbox
   final Color? checkBoxCheckedBackgroundColor;
-
-  /// Border radius for checkbox
   final BorderRadius? checkBoxBorderRadius;
-
-  /// Stroke color for checkbox border
   final Color? checkBoxStrokeColor;
-
-  /// Stroke width for checkbox border
   final double? checkBoxStrokeWidth;
-
-  /// Colour of the check mark inside a checked checkbox
   final Color? checkBoxCheckColor;
-
-  /// Background of the status dot on a private group. Defaults to the
-  /// palette's warning colour.
   final Color? privateGroupIconBackground;
-
-  /// Background of the status dot on a password-protected group. Defaults to
-  /// the palette's success colour.
   final Color? protectedGroupIconBackground;
 
-  /// Creates a style from the current theme context
   factory CometChatGroupListItemStyle.fromTheme(BuildContext context) {
     final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
     final typography = ConvoKitThemeHelper.getTypography(context);
@@ -624,7 +472,6 @@ class CometChatGroupListItemStyle {
     );
   }
 
-  /// Creates a copy of this style with the given fields replaced
   CometChatGroupListItemStyle copyWith({
     Color? backgroundColor,
     Color? selectedBackgroundColor,
@@ -668,7 +515,6 @@ class CometChatGroupListItemStyle {
     );
   }
 
-  /// Merges this style with another, with the other style taking precedence
   CometChatGroupListItemStyle merge(CometChatGroupListItemStyle? other) {
     if (other == null) return this;
     return copyWith(
@@ -691,7 +537,6 @@ class CometChatGroupListItemStyle {
     );
   }
 
-  /// Gets the style from the current context
   static CometChatGroupListItemStyle of(BuildContext context) {
     return CometChatGroupListItemStyle.fromTheme(context);
   }

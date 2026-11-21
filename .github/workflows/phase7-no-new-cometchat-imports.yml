@@ -1,0 +1,25 @@
+name: Phase 7 — No New CometChat Imports Gate
+
+on:
+  pull_request:
+    branches:
+      - main
+      - 'convokit/**'
+  push:
+    branches:
+      - 'convokit/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cometchat-import-gate:
+    name: Enforce no new package:cometchat_* imports
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run SDK import count & regression gate
+        run: bash packages/cometchat_uikit/tool/count_sdk_imports.sh --check

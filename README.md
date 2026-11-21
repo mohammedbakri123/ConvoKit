@@ -5,10 +5,10 @@ ConvoKit is a backend-agnostic Flutter chat UI library. It provides high-perform
 ## Architecture & State Management
 
 ### Agnostic Public API
-ConvoKit's public API is 100% plain Dart contracts, models, streams, and widgets (`ConvoKitScope`, `ConversationsView`, `MessageListView`). Consumers are free to use any state management system (Riverpod, Provider, signals, or plain widgets). The library does not expose or force any BLoC types in its public API.
+ConvoKit's public API is 100% plain Dart contracts, models, streams, and widgets (`ConvoKitScope`, `ConversationsView`, `MessageListView`). Consumers are free to use any state management system (Riverpod, Provider, signals, or plain widgets).
 
-### Honest Dependency Position: `flutter_bloc` in v1
-In v1, `flutter_bloc` **remains an internal direct dependency** of the `convokit` package, used internally by legacy adapter blocs. While BLoC is completely absent from the public API and host applications never need to use or configure `BlocProvider`, the package itself still directly depends on `flutter_bloc`. Full removal of the internal `flutter_bloc` dependency in favor of direct Core store observation is planned for Phase 7.
+### Zero CometChat SDK & Zero `flutter_bloc` Dependencies
+As of **`convokit` 0.1.0**, the package has **zero CometChat SDK dependencies** (`cometchat_sdk`, `cometchat_cards`, `cometchat_calls_sdk`) and **zero `flutter_bloc` or `bloc_test` dependencies**. All widgets observe plain-Dart ConvoKit Core stores (`ConversationStore`, `MessageStore`, `UserStore`, `GroupStore`, `GroupMemberStore`, `PresenceRegistry`, `TypingRegistry`) and `MessageCoordinator` directly via `ConvoKitScope`.
 
 ## Installation
 

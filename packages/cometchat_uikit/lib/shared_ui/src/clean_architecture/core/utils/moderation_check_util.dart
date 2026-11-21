@@ -1,22 +1,18 @@
-import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
+import 'package:convokit/src/core/models/models.dart';
 
 class ModerationCheckUtil {
-  // Private constructor
   ModerationCheckUtil._();
 
-  // Singleton instance
   static final ModerationCheckUtil instance = ModerationCheckUtil._();
 
-  // Whether to hide moderation status (defaults to false)
   bool hideModerationStatus = false;
 
-  // Method to check if message is disapproved (respects hideModerationStatus flag)
-  bool isMessageDisapprovedFromModeration(BaseMessage message) {
-    return (message is TextMessage &&
-            message.moderationStatus?.value ==
-                ModerationStatusEnum.DISAPPROVED.value) ||
-        (message is MediaMessage &&
-            message.moderationStatus?.value ==
-                ModerationStatusEnum.DISAPPROVED.value);
+  bool isMessageDisapprovedFromModeration(ChatMessage message) {
+    if (hideModerationStatus) return false;
+    return switch (message) {
+      CustomMessage c => c.data['moderationStatus'] == 'disapproved',
+      TextMessage _ => false,
+      MediaMessage _ => false,
+    };
   }
 }

@@ -19,7 +19,8 @@ class URLNavigationAction extends ActionEntity {
     return map;
   }
 
-  factory URLNavigationAction.fromMap(dynamic map) {
+  factory URLNavigationAction.fromMap(dynamic rawMap) {
+    final map = rawMap as Map<dynamic, dynamic>;
     return URLNavigationAction(
       url: map['url'],
       // toMap writes `actionType`; reading `type` here meant a round trip

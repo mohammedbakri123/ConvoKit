@@ -14,24 +14,43 @@ void main() {
     int attachmentCount = 1,
     String? caption,
   }) {
-    final msg = MediaMessage(
-      receiverUid: 'uid',
-      receiverType: 'user',
-      type: type,
-      muid: 'm1',
+    final kind = switch (type) {
+      MessageTypeConstants.image => AttachmentKind.image,
+      MessageTypeConstants.video => AttachmentKind.video,
+      MessageTypeConstants.audio => AttachmentKind.audio,
+      _ => AttachmentKind.file,
+    };
+    final attachments = List.generate(
+      attachmentCount,
+      (i) => ChatAttachment(
+        id: 'att_f$i.bin',
+        remoteId: 'rem_f$i.bin',
+        kind: kind,
+        url: 'https://example.com/f$i.bin',
+        state: AttachmentState.uploaded,
+        mimeType: 'application/octet-stream',
+        sizeBytes: 1024,
+        name: 'f$i.bin',
+      ),
     );
-    msg.attachments = [
-      for (var i = 0; i < attachmentCount; i++)
-        Attachment(
-          'https://example.com/f$i.bin',
-          'f$i.bin',
-          'bin',
-          'application/octet-stream',
-          1024,
-        ),
-    ];
-    msg.caption = caption;
-    return msg;
+    return MediaMessage(
+      id: 'm1',
+      localId: 'm1',
+      conversationId: 'c1',
+      sender: const ChatUser(id: 'uid', name: 'User'),
+      createdAt: DateTime(2026),
+      caption: caption,
+      attachment: attachments.isNotEmpty
+          ? attachments.first
+          : ChatAttachment(
+              id: 'att_empty',
+              kind: kind,
+              state: AttachmentState.local,
+              localPath: '',
+              name: '',
+            ),
+      metadata: attachmentCount != 1 ? {'attachments': attachments} : null,
+    );
   }
 
   Widget host(Widget child) => MaterialApp(

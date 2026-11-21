@@ -37,7 +37,7 @@ export 'components/media_recorder/cometchat_media_recorder.dart';
 export 'components/media_recorder/cometchat_media_recorder_style.dart';
 // the bloc type names CometChatMediaRecorder.mediaRecorderBloc, so it has to be
 // nameable by anyone supplying one
-export 'components/media_recorder/media_recorder_bloc.dart';
+export 'components/media_recorder/media_recorder_controller.dart';
 export 'components/reaction_list/cometchat_reaction_list.dart';
 export 'components/reaction_list/cometchat_reaction_list_style.dart';
 // Exported wholesale. This used to carry a `show` naming seven of the file's
@@ -47,7 +47,6 @@ export 'components/reaction_list/cometchat_reaction_list_style.dart';
 // `reactionListBloc` parameter injectable but impossible to drive. The
 // reaction-list event is now RemoveOwnReaction, so there is no collision and
 // nothing needs hiding. ENG-39101.
-export 'components/reaction_list/reaction_list_bloc.dart';
 export 'components/reactions/cometchat_reactions.dart';
 export 'components/reactions/cometchat_reactions_style.dart';
 export 'components/message_input/cometchat_message_input.dart';

@@ -1,4 +1,6 @@
+import 'package:convokit/convokit.dart';
 import 'package:convokit/convokit_uikit.dart';
+import 'package:sample_app/sample_app_backend.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sample_app/screens/home_screen.dart';
@@ -7,7 +9,7 @@ import 'package:sample_app/screens/user_info_screen.dart';
 void main() {
   group('Phase 4: Sample app exposes no call buttons or call UI', () {
     testWidgets('ConvoKitMessageHeader exposes no call buttons or call action items', (tester) async {
-      final testUser = User(uid: 'u_tester', name: 'Tester', status: 'online');
+      const testUser = ChatUser(id: 'u_tester', name: 'Tester', presence: UserPresence.online);
 
       await tester.pumpWidget(
         MaterialApp(
@@ -74,7 +76,7 @@ void main() {
         MaterialApp(
           localizationsDelegates: Translations.localizationsDelegates,
           supportedLocales: const [Locale('en')],
-          home: const HomeScreen(),
+          home: ConvoKitScope(kit: SampleAppBackend.instance.kit, child: const HomeScreen()),
         ),
       );
       await tester.pump();
@@ -86,14 +88,14 @@ void main() {
     });
 
     testWidgets('UserInfoScreen exposes no call buttons', (tester) async {
-      final testUser = User(uid: 'u_info_tester', name: 'Info Tester', status: 'offline');
+      const testUser = ChatUser(id: 'u_info_tester', name: 'Info Tester', presence: UserPresence.offline);
 
       await tester.pumpWidget(
         MaterialApp(
           localizationsDelegates: Translations.localizationsDelegates,
           supportedLocales: const [Locale('en')],
           home: Scaffold(
-            body: UserInfoScreen(user: testUser),
+            body: ConvoKitScope(kit: SampleAppBackend.instance.kit, child: UserInfoScreen(user: testUser)),
           ),
         ),
       );

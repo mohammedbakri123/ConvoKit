@@ -1,27 +1,25 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'dart:async';
+
+import 'package:convokit/convokit.dart';
 import 'package:convokit/convokit_uikit.dart';
 import 'package:convokit/convokit_uikit.dart' as cc;
-import '../conversations/utils/conversation_subtitle_utils.dart';
-import '../../../shared_ui/src/clean_architecture/presentation/views/misc/message_preview_subtitle.dart';
+import 'package:flutter/material.dart';
 
-/// Full-screen search widget for conversations and messages.
+/// Full-screen user search widget backed by `UserRepository.searchUsers` via
+/// [ConvoKitScope].
 ///
-/// Supports text search with debounce, filter chips, dual-section results
-/// (Conversations + Messages), "See More" pagination, and custom view slots.
+/// Per `API-DESIGN.md` §13, v1 search is user search only and visibility is
+/// gated on `ConvoKitScope.of(context).capabilities.search`. When
+/// `capabilities.search` is `false`, this widget renders [SizedBox.shrink]
+/// without invoking [UserRepository.searchUsers].
 class CometChatSearch extends StatefulWidget {
   const CometChatSearch({
     super.key,
     this.onBack,
-    this.onConversationClicked,
-    this.onMessageClicked,
+    this.onUserClicked,
     this.onEmpty,
     this.onError,
-    this.onMessagesLoad,
-    this.onConversationsLoad,
-    this.searchFilters,
-    this.searchIn,
+    this.onUsersLoad,
     this.user,
     this.group,
     this.searchStyle,
@@ -31,37 +29,23 @@ class CometChatSearch extends StatefulWidget {
     this.emptyStateView,
     this.errorStateView,
     this.initialStateView,
-    this.conversationItemView,
-    this.conversationTitleView,
-    this.conversationLeadingView,
-    this.conversationSubtitleView,
-    this.conversationTailView,
-    this.usersStatusVisibility,
-    this.receiptsVisibility,
-    this.groupTypeVisibility,
-    this.dateSeparatorFormatterCallback,
-    this.timeSeparatorFormatterCallback,
-    this.searchTextMessageView,
-    this.searchImageMessageView,
-    this.searchVideoMessageView,
-    this.searchFileMessageView,
-    this.searchAudioMessageView,
-    this.conversationsRequestBuilder,
-    this.messagesRequestBuilder,
-    this.searchBloc,
+    this.userItemView,
+    this.userTitleView,
+    this.userLeadingView,
+    this.userSubtitleView,
+    this.userTailView,
+    this.usersStatusVisibility = true,
+    this.pageLimit = 30,
+    this.debounceDuration = const Duration(milliseconds: 300),
   });
 
   final VoidCallback? onBack;
-  final Function(Conversation conversation)? onConversationClicked;
-  final Function(BaseMessage message)? onMessageClicked;
+  final void Function(ChatUser user)? onUserClicked;
   final OnError? onError;
-  final OnLoad<Conversation>? onConversationsLoad;
-  final OnLoad<BaseMessage>? onMessagesLoad;
+  final OnLoad<ChatUser>? onUsersLoad;
   final OnEmpty? onEmpty;
-  final List<SearchFilter>? searchFilters;
-  final List<SearchScope>? searchIn;
-  final User? user;
-  final Group? group;
+  final ChatUser? user;
+  final ChatGroup? group;
   final CometChatSearchStyle? searchStyle;
   final Widget? searchBackIcon;
   final Widget? searchClearIcon;
@@ -69,48 +53,22 @@ class CometChatSearch extends StatefulWidget {
   final WidgetBuilder? emptyStateView;
   final WidgetBuilder? errorStateView;
   final WidgetBuilder? initialStateView;
-  final Widget? Function(BuildContext, Conversation)? conversationItemView;
-  final Widget? Function(BuildContext, Conversation)? conversationTitleView;
-  final Widget? Function(BuildContext, Conversation)? conversationLeadingView;
-  final Widget? Function(BuildContext, Conversation)? conversationSubtitleView;
-  final Widget? Function(BuildContext, Conversation)? conversationTailView;
+  final Widget? Function(BuildContext, ChatUser)? userItemView;
+  final Widget? Function(BuildContext, ChatUser)? userTitleView;
+  final Widget? Function(BuildContext, ChatUser)? userLeadingView;
+  final Widget? Function(BuildContext, ChatUser)? userSubtitleView;
+  final Widget? Function(BuildContext, ChatUser)? userTailView;
   final bool? usersStatusVisibility;
-  final bool? receiptsVisibility;
-
-  /// [searchBloc] injects the bloc instead of letting the component build
-  /// one.
-  ///
-  /// Mirrors `ConvoKitUsers.usersBloc`, `ConvoKitGroups.groupsBloc` and
-  /// `ConvoKitConversations.conversationsBloc`. Search was the only one of
-  /// the four without the seam, and because every builder here passes
-  /// `bloc: _searchBloc` explicitly, an ambient BlocProvider could not stand
-  /// in for it either — which left most of this component's props impossible
-  /// to render-verify. ENG-39114.
-  ///
-  /// An injected bloc is owned by the caller and is not closed on dispose.
-  final SearchBloc? searchBloc;
-  final bool? groupTypeVisibility;
-
-  /// Labels the month separators in the message results, which default to
-  /// "September, 2026". Only `otherDays` is used: it gets the send time of
-  /// the first message under the separator, and null keeps the default.
-  final DateTimeFormatterCallback? dateSeparatorFormatterCallback;
-  final DateTimeFormatterCallback? timeSeparatorFormatterCallback;
-  final Widget? Function(BuildContext, TextMessage)? searchTextMessageView;
-  final Widget? Function(BuildContext, MediaMessage)? searchImageMessageView;
-  final Widget? Function(BuildContext, MediaMessage)? searchVideoMessageView;
-  final Widget? Function(BuildContext, MediaMessage)? searchFileMessageView;
-  final Widget? Function(BuildContext, MediaMessage)? searchAudioMessageView;
-  final ConversationsRequestBuilder? conversationsRequestBuilder;
-  final MessagesRequestBuilder? messagesRequestBuilder;
+  final int pageLimit;
+  final Duration debounceDuration;
 
   @override
   State<CometChatSearch> createState() => _CometChatSearchState();
 }
 
+enum _UserSearchStatus { initial, loading, loaded, empty, error }
+
 class _CometChatSearchState extends State<CometChatSearch> {
-  late final SearchBloc _searchBloc;
-  bool _isExternalBloc = false;
   late final TextEditingController _textController;
   late final FocusNode _focusNode;
 
@@ -122,37 +80,21 @@ class _CometChatSearchState extends State<CometChatSearch> {
   bool _themeInitialized = false;
   Brightness? _cachedBrightness;
 
+  // Search state
+  ConvoKit? _kit;
+  Timer? _debounceTimer;
+  int _requestSeq = 0;
+  String _searchText = '';
+  _UserSearchStatus _status = _UserSearchStatus.initial;
+  List<ChatUser> _users = const [];
+  String? _nextCursor;
+  bool _hasMore = false;
+  bool _isLoadingMore = false;
+  ChatError? _error;
+
   @override
   void initState() {
     super.initState();
-    // Derive initial scope from searchIn (matches v5 sample_app behavior):
-    //   [messages]       → SearchScope.messages
-    //   [conversations]  → SearchScope.conversations
-    //   both / null      → SearchScope.both
-    SearchScope derivedScope;
-    final scopes = widget.searchIn;
-    if (scopes == null || scopes.isEmpty || scopes.length >= 2) {
-      derivedScope = SearchScope.both;
-    } else if (scopes.first == SearchScope.messages) {
-      derivedScope = SearchScope.messages;
-    } else {
-      derivedScope = SearchScope.conversations;
-    }
-    if (widget.searchBloc != null) {
-      _searchBloc = widget.searchBloc!;
-      _isExternalBloc = true;
-    } else {
-      _searchBloc = SearchBloc(
-        user: widget.user,
-        group: widget.group,
-        initialScope: derivedScope,
-        conversationsRequestBuilder: widget.conversationsRequestBuilder,
-        messagesRequestBuilder: widget.messagesRequestBuilder,
-        searchFilters: widget.searchFilters,
-        searchScopes: widget.searchIn,
-      );
-      _isExternalBloc = false;
-    }
     _textController = TextEditingController();
     _focusNode = FocusNode();
   }
@@ -160,6 +102,13 @@ class _CometChatSearchState extends State<CometChatSearch> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
+    try {
+      _kit = ConvoKitScope.of(context);
+    } on StateError {
+      _kit = null;
+    }
+
     final currentBrightness = ConvoKitThemeHelper.getBrightness(context);
     final brightnessChanged =
         _cachedBrightness != null && _cachedBrightness != currentBrightness;
@@ -177,107 +126,186 @@ class _CometChatSearchState extends State<CometChatSearch> {
   }
 
   @override
-  void dispose() {
-    if (!_isExternalBloc) {
-      _searchBloc.close();
+  void didUpdateWidget(CometChatSearch oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.searchStyle != oldWidget.searchStyle) {
+      style = ConvoKitThemeHelper.getTheme<CometChatSearchStyle>(
+        context: context,
+        defaultTheme: CometChatSearchStyle.of,
+      ).merge(widget.searchStyle);
     }
+  }
+
+  @override
+  void dispose() {
+    _debounceTimer?.cancel();
+    _requestSeq++;
     _textController.dispose();
     _focusNode.dispose();
     super.dispose();
   }
 
-  /// Reports search state transitions to the caller's callbacks, once per
-  /// entry into each status. ENG-39104: all four callbacks were declared,
-  /// documented, and read nowhere under `lib/chat_ui/src/search/`.
-  ///
-  /// Search differs from the Users and Groups lists in carrying two
-  /// independent result sets in one state, so each is tracked separately —
-  /// messages arriving must not re-report conversations. `onEmpty` fires only
-  /// when every list in scope has settled empty, which is the condition an
-  /// integrator would show a "nothing found" affordance for.
-  SearchStatus? _lastConversationsStatus;
-  SearchStatus? _lastMessagesStatus;
-  bool _reportedEmpty = false;
-  bool _reportedError = false;
+  void _onSearchChanged(String raw) {
+    _debounceTimer?.cancel();
+    final trimmed = raw.trim();
 
-  void _reportSearchState(SearchState state) {
-    final conversationsChanged =
-        state.conversationsStatus != _lastConversationsStatus;
-    final messagesChanged = state.messagesStatus != _lastMessagesStatus;
-    _lastConversationsStatus = state.conversationsStatus;
-    _lastMessagesStatus = state.messagesStatus;
-
-    if (state.conversationsStatus == SearchStatus.error ||
-        state.messagesStatus == SearchStatus.error) {
-      if (!_reportedError) {
-        _reportedError = true;
-        widget.onError?.call(Exception(state.errorMessage ?? 'Search failed'));
-      }
+    if (trimmed.isEmpty) {
+      _requestSeq++;
+      setState(() {
+        _searchText = '';
+        _status = _UserSearchStatus.initial;
+        _users = const [];
+        _nextCursor = null;
+        _hasMore = false;
+        _isLoadingMore = false;
+        _error = null;
+      });
       return;
     }
-    _reportedError = false;
 
-    if (conversationsChanged &&
-        state.conversationsStatus == SearchStatus.loaded &&
-        state.conversations.isNotEmpty) {
-      widget.onConversationsLoad?.call(state.conversations);
-    }
-    if (messagesChanged &&
-        state.messagesStatus == SearchStatus.loaded &&
-        state.messages.isNotEmpty) {
-      widget.onMessagesLoad?.call(state.messages);
-    }
+    setState(() {
+      _searchText = raw;
+    });
 
-    // Only the lists the current scope actually shows count toward empty.
-    final conversationsSettledEmpty =
-        !state.showConversations ||
-        state.conversationsStatus == SearchStatus.empty;
-    final messagesSettledEmpty =
-        !state.showMessages || state.messagesStatus == SearchStatus.empty;
-
-    if (conversationsSettledEmpty && messagesSettledEmpty) {
-      if (!_reportedEmpty) {
-        _reportedEmpty = true;
-        widget.onEmpty?.call();
-      }
+    if (widget.debounceDuration == Duration.zero) {
+      unawaited(_runSearch(trimmed));
     } else {
-      _reportedEmpty = false;
+      _debounceTimer = Timer(widget.debounceDuration, () {
+        if (!mounted) return;
+        unawaited(_runSearch(trimmed));
+      });
+    }
+  }
+
+  Future<void> _runSearch(String query) async {
+    final kit = _kit;
+    if (kit == null || !kit.capabilities.search) return;
+
+    final seq = ++_requestSeq;
+    setState(() {
+      _status = _UserSearchStatus.loading;
+      _error = null;
+      _isLoadingMore = false;
+    });
+
+    try {
+      final result = await kit.users.searchUsers(
+        query,
+        limit: widget.pageLimit,
+      );
+      if (!mounted || seq != _requestSeq) return;
+
+      result.fold(
+        onSuccess: (page) {
+          final items = page.items;
+          setState(() {
+            _users = items;
+            _nextCursor = page.olderCursor;
+            _hasMore = page.hasOlder;
+            _status = items.isEmpty
+                ? _UserSearchStatus.empty
+                : _UserSearchStatus.loaded;
+          });
+          if (items.isEmpty) {
+            widget.onEmpty?.call();
+          } else {
+            widget.onUsersLoad?.call(items);
+          }
+        },
+        onFailure: (err) {
+          setState(() {
+            _error = err;
+            _users = const [];
+            _nextCursor = null;
+            _hasMore = false;
+            _status = _UserSearchStatus.error;
+          });
+          widget.onError?.call(Exception(err.message));
+        },
+      );
+    } catch (e) {
+      if (!mounted || seq != _requestSeq) return;
+      final err = ChatError(ChatErrorCode.unknown, e.toString());
+      setState(() {
+        _error = err;
+        _users = const [];
+        _nextCursor = null;
+        _hasMore = false;
+        _status = _UserSearchStatus.error;
+      });
+      widget.onError?.call(Exception(err.message));
+    }
+  }
+
+  Future<void> _loadMore() async {
+    final kit = _kit;
+    if (kit == null || !kit.capabilities.search) return;
+    if (_isLoadingMore || !_hasMore || _nextCursor == null) return;
+
+    final seq = _requestSeq;
+    setState(() => _isLoadingMore = true);
+
+    try {
+      final result = await kit.users.searchUsers(
+        _searchText.trim(),
+        cursor: _nextCursor,
+        limit: widget.pageLimit,
+      );
+      if (!mounted || seq != _requestSeq) return;
+
+      result.fold(
+        onSuccess: (page) {
+          final merged = [..._users, ...page.items];
+          setState(() {
+            _users = merged;
+            _nextCursor = page.olderCursor;
+            _hasMore = page.hasOlder;
+            _isLoadingMore = false;
+          });
+          if (page.items.isNotEmpty) {
+            widget.onUsersLoad?.call(merged);
+          }
+        },
+        onFailure: (err) {
+          setState(() {
+            _isLoadingMore = false;
+            _error = err;
+          });
+          widget.onError?.call(Exception(err.message));
+        },
+      );
+    } catch (e) {
+      if (!mounted || seq != _requestSeq) return;
+      setState(() => _isLoadingMore = false);
+      widget.onError?.call(Exception(e.toString()));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SearchBloc, SearchState>(
-      bloc: _searchBloc,
-      listener: (context, state) => _reportSearchState(state),
-      child: BlocProvider.value(
-        value: _searchBloc,
-        child: Scaffold(
-          backgroundColor: style.backgroundColor ?? colorPalette.background1,
-          body: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: spacing.padding3 ?? 0,
-                horizontal: spacing.padding4 ?? 0,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildSearchBar(),
-                  _buildFilterChips(),
-                  Expanded(child: _buildResults()),
-                ],
-              ),
-            ),
+    if (_kit != null && !_kit!.capabilities.search) {
+      return const SizedBox.shrink();
+    }
+
+    return Scaffold(
+      backgroundColor: style.backgroundColor ?? colorPalette.background1,
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: spacing.padding3 ?? 0,
+            horizontal: spacing.padding4 ?? 0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildSearchBar(),
+              Expanded(child: _buildResults()),
+            ],
           ),
         ),
       ),
     );
   }
-
-  // ===========================================================================
-  // Search Bar
-  // ===========================================================================
 
   Widget _buildSearchBar() {
     return Padding(
@@ -289,7 +317,7 @@ class _CometChatSearchState extends State<CometChatSearch> {
             ConvoKitThemeHelper.getBrightness(context) == Brightness.dark
             ? Brightness.dark
             : Brightness.light,
-        onChanged: (val) => _searchBloc.add(SearchTextChanged(val)),
+        onChanged: _onSearchChanged,
         style: TextStyle(
           color: style.searchTextColor ?? colorPalette.textPrimary,
           fontSize: typography.heading4?.regular?.fontSize,
@@ -319,34 +347,27 @@ class _CometChatSearchState extends State<CometChatSearch> {
                   ),
             ),
           ),
-          suffixIcon: BlocBuilder<SearchBloc, SearchState>(
-            bloc: _searchBloc,
-            buildWhen: (p, c) => p.searchText.isEmpty != c.searchText.isEmpty,
-            builder: (context, state) {
-              if (state.searchText.isEmpty) {
-                return const SizedBox(width: 24);
-              }
-              return Semantics(
-                button: true,
-                label: cc.Translations.of(context).clearSearch,
-                child: GestureDetector(
-                  onTap: () {
-                    _textController.clear();
-                    _searchBloc.add(const SearchTextChanged(''));
-                  },
-                  child:
-                      widget.searchClearIcon ??
-                      Icon(
-                        Icons.close,
-                        color:
-                            style.searchClearIconColor ??
-                            colorPalette.iconSecondary,
-                        size: 24,
-                      ),
+          suffixIcon: _searchText.isEmpty
+              ? const SizedBox(width: 24)
+              : Semantics(
+                  button: true,
+                  label: cc.Translations.of(context).clearSearch,
+                  child: GestureDetector(
+                    onTap: () {
+                      _textController.clear();
+                      _onSearchChanged('');
+                    },
+                    child:
+                        widget.searchClearIcon ??
+                        Icon(
+                          Icons.close,
+                          color:
+                              style.searchClearIconColor ??
+                              colorPalette.iconSecondary,
+                          size: 24,
+                        ),
+                  ),
                 ),
-              );
-            },
-          ),
           hintStyle:
               TextStyle(
                     color:
@@ -382,239 +403,65 @@ class _CometChatSearchState extends State<CometChatSearch> {
     );
   }
 
-  // ===========================================================================
-  // Filter Chips
-  // ===========================================================================
-
-  Widget _buildFilterChips() {
-    return BlocBuilder<SearchBloc, SearchState>(
-      bloc: _searchBloc,
-      buildWhen: (p, c) =>
-          p.visibleFilters != c.visibleFilters ||
-          p.selectedFilters != c.selectedFilters,
-      builder: (context, state) {
-        if (state.visibleFilters.isEmpty) return const SizedBox.shrink();
-        return Padding(
-          padding: EdgeInsets.only(bottom: spacing.padding3 ?? 0),
-          child: Wrap(
-            spacing: spacing.padding2 ?? 0,
-            runSpacing: spacing.padding2 ?? 0,
-            children: state.visibleFilters.map((filter) {
-              final isSelected = state.selectedFilters.contains(filter.label);
-              return SearchFilterChip(
-                label: filter.label,
-                icon: filter.icon,
-                isSelected: isSelected,
-                onTap: () => _searchBloc.add(SearchFilterToggled(filter.label)),
-                colorPalette: colorPalette,
-                spacing: spacing,
-                typography: typography,
-                selectedColor: style.searchFilterChipSelectedBackgroundColor,
-                unselectedColor: style.searchFilterChipBackgroundColor,
-                selectedTextColor: style.searchFilterChipSelectedTextColor,
-                unselectedTextColor: style.searchFilterChipTextColor,
-                selectedBorder: style.searchFilterChipSelectedBorder,
-                unSelectedBorder: style.searchFilterChipBorder,
-                borderRadius: style.searchFilterChipBorderRadius,
-                selectedTextStyle: style.searchFilterChipSelectedTextStyle,
-                textStyle: style.searchFilterChipTextStyle,
-                selectedIconColor: style.searchFilterSelectedIconColor,
-                unselectedIconColor: style.searchFilterIconColor,
-              );
-            }).toList(),
-          ),
-        );
-      },
-    );
-  }
-
-  // ===========================================================================
-  // Results Area
-  // ===========================================================================
-
   Widget _buildResults() {
-    return BlocBuilder<SearchBloc, SearchState>(
-      bloc: _searchBloc,
-      builder: (context, state) {
-        if (state.isInitial) {
-          return widget.initialStateView?.call(context) ??
-              const SizedBox.shrink();
-        }
-
-        if (state.bothActive && state.allLoading) {
-          return widget.loadingStateView?.call(context) ?? _buildLoadingView();
-        }
-
-        if (state.bothActive && state.allEmpty) {
-          return widget.emptyStateView?.call(context) ?? _buildEmptyView(state);
-        }
-
-        if (state.bothActive && state.allError) {
-          return widget.errorStateView?.call(context) ?? _buildErrorView();
-        }
-
-        if (state.shouldShowNoResults()) {
-          return widget.emptyStateView?.call(context) ?? _buildEmptyView(state);
-        }
-
-        return CustomScrollView(
+    switch (_status) {
+      case _UserSearchStatus.initial:
+        return widget.initialStateView?.call(context) ??
+            const SizedBox.shrink();
+      case _UserSearchStatus.loading:
+        return widget.loadingStateView?.call(context) ?? _buildLoadingView();
+      case _UserSearchStatus.empty:
+        return widget.emptyStateView?.call(context) ?? _buildEmptyView();
+      case _UserSearchStatus.error:
+        return widget.errorStateView?.call(context) ?? _buildErrorView();
+      case _UserSearchStatus.loaded:
+        return ListView(
           physics: const AlwaysScrollableScrollPhysics(),
-          slivers: [
-            if (state.showConversations) ..._buildConversationsSlivers(state),
-            if (state.showMessages) ..._buildMessagesSlivers(state),
+          children: [
+            _sectionHeader(cc.Translations.of(context).users),
+            for (final user in _users) _buildUserItem(user),
+            if (_isLoadingMore) _buildSectionLoading(),
+            if (!_isLoadingMore && _hasMore)
+              _seeMoreButton(onTap: _loadMore),
           ],
         );
-      },
-    );
-  }
-
-  // ===========================================================================
-  // Conversations Section (Sliver-based for lazy rendering)
-  // ===========================================================================
-
-  List<Widget> _buildConversationsSlivers(SearchState state) {
-    if (!state.bothActive &&
-        state.conversationsStatus == SearchStatus.loading) {
-      return [
-        SliverFillRemaining(
-          child: widget.loadingStateView?.call(context) ?? _buildLoadingView(),
-        ),
-      ];
-    }
-
-    if (!state.bothActive &&
-        state.conversationsStatus != SearchStatus.loading &&
-        state.conversations.isEmpty) {
-      return [
-        SliverFillRemaining(
-          child: widget.emptyStateView?.call(context) ?? _buildEmptyView(state),
-        ),
-      ];
-    }
-
-    if (!state.bothActive && state.conversationsStatus == SearchStatus.error) {
-      return [
-        SliverFillRemaining(
-          child: widget.errorStateView?.call(context) ?? _buildErrorView(),
-        ),
-      ];
-    }
-
-    if (state.conversations.isEmpty) return [];
-
-    final itemCount = state.selectedFilters.isNotEmpty
-        ? (state.hasMoreConversations
-              ? state.conversations.length + 1
-              : state.conversations.length)
-        : state.conversations.length;
-
-    return [
-      SliverToBoxAdapter(
-        child: _sectionHeader(cc.Translations.of(context).chats),
-      ),
-      SliverList(
-        delegate: SliverChildBuilderDelegate((context, index) {
-          if (state.selectedFilters.isNotEmpty &&
-              index >= state.conversations.length) {
-            _searchBloc.add(const LoadMoreConversationResults());
-            return _buildSectionLoading();
-          }
-          return _buildConversationItem(state.conversations[index]);
-        }, childCount: itemCount),
-      ),
-      if (state.selectedFilters.isEmpty &&
-          state.conversations.isNotEmpty &&
-          state.conversations.length >= 3 &&
-          state.hasMoreConversations)
-        SliverToBoxAdapter(
-          child: _seeMoreButton(
-            onTap: () => _searchBloc.add(const LoadMoreConversationResults()),
-          ),
-        ),
-    ];
-  }
-
-  /// The tap behaviour every conversation row shares: report to the caller,
-  /// then re-run the search once navigation has settled so results that are no
-  /// longer matching (a now-read chat under the unread filter) drop out.
-  Future<void> _handleConversationTap(Conversation conversation) async {
-    widget.onConversationClicked?.call(conversation);
-    await WidgetsBinding.instance.endOfFrame;
-    if (mounted && !_searchBloc.isClosed) {
-      _searchBloc.add(const RefreshCurrentSearch());
     }
   }
 
-  Widget _buildConversationItem(Conversation conversation) {
-    if (widget.conversationItemView != null) {
-      final customView = widget.conversationItemView!(context, conversation);
+  Widget _buildUserItem(ChatUser user) {
+    if (widget.userItemView != null) {
+      final customView = widget.userItemView!(context, user);
       if (customView == null) return const SizedBox.shrink();
-      // Wrapped rather than returned bare: the early return used to skip the
-      // GestureDetector below, so supplying a custom row silently disabled
-      // onConversationClicked. _buildMessageItem already wraps its own custom
-      // view the same way, which is the precedent followed here.
       return GestureDetector(
-        onTap: () => _handleConversationTap(conversation),
+        onTap: () => widget.onUserClicked?.call(user),
         child: customView,
       );
-    }
-
-    User? conversationWithUser;
-    Group? conversationWithGroup;
-    if (conversation.conversationWith is User) {
-      conversationWithUser = conversation.conversationWith as User;
-    } else {
-      conversationWithGroup = conversation.conversationWith as Group;
     }
 
     final statusIndicatorUtils =
         StatusIndicatorUtils.getStatusIndicatorFromParams(
           context: context,
           isSelected: false,
-          user: conversationWithUser,
-          group: conversationWithGroup,
+          user: user,
           onlineStatusIndicatorColor:
               style.statusIndicatorStyle?.backgroundColor ??
               colorPalette.success,
-          privateGroupIcon: null,
-          protectedGroupIcon: null,
-          privateGroupIconBackground: null,
-          protectedGroupIconBackground: null,
           usersStatusVisibility: widget.usersStatusVisibility ?? true,
-          groupTypeVisibility: widget.groupTypeVisibility ?? true,
+          groupTypeVisibility: false,
         );
 
-    // Subtitle
-    Widget? subtitle;
-    if (widget.conversationSubtitleView != null) {
-      subtitle = widget.conversationSubtitleView!(context, conversation);
-    } else {
-      subtitle = _getConversationSubtitle(conversation);
-    }
-
-    // Tail
-    Widget? tail;
-    if (widget.conversationTailView != null) {
-      tail = widget.conversationTailView!(context, conversation);
-    } else {
-      tail = _getConversationTail(conversation);
-    }
-
     return GestureDetector(
-      onTap: () => _handleConversationTap(conversation),
+      onTap: () => widget.onUserClicked?.call(user),
       child: ConvoKitListItem(
         avatarHeight: 48,
         avatarWidth: 48,
-        id: conversation.conversationId,
-        avatarName: conversationWithUser?.name ?? conversationWithGroup?.name,
-        avatarURL: conversationWithUser?.avatar ?? conversationWithGroup?.icon,
-        title: conversationWithUser?.name ?? conversationWithGroup?.name,
-        key: UniqueKey(),
+        id: user.id,
+        avatarName: user.name,
+        avatarURL: user.avatarUrl,
+        title: user.name,
         avatarStyle: style.avatarStyle ?? const ConvoKitAvatarStyle(),
         statusIndicatorColor: statusIndicatorUtils.statusIndicatorColor,
         statusIndicatorIcon: statusIndicatorUtils.icon,
-        // The caller's statusIndicatorStyle is merged over the inline default
-        // rather than ignored — it was declared and never read. ENG-39121.
         statusIndicatorStyle: ConvoKitStatusIndicatorStyle(
           border: Border.all(
             width: spacing.spacing ?? 0,
@@ -642,713 +489,13 @@ class _CometChatSearchState extends State<CometChatSearch> {
                   .copyWith(color: style.searchConversationTitleTextColor),
           padding: EdgeInsets.symmetric(vertical: spacing.padding3 ?? 0),
         ),
-        subtitleView: subtitle,
-        tailView: tail,
-        leadingStateView: widget.conversationLeadingView != null
-            ? widget.conversationLeadingView!(context, conversation)
-            : null,
-        titleView: widget.conversationTitleView != null
-            ? widget.conversationTitleView!(context, conversation)
-            : null,
+        subtitleView: widget.userSubtitleView?.call(context, user),
+        tailView: widget.userTailView?.call(context, user),
+        leadingStateView: widget.userLeadingView?.call(context, user),
+        titleView: widget.userTitleView?.call(context, user),
       ),
     );
   }
-
-  Widget _getConversationSubtitle(Conversation conversation) {
-    final lastMessage = conversation.lastMessage;
-    if (lastMessage == null) return const SizedBox.shrink();
-
-    final subtitleStyle =
-        TextStyle(
-              overflow: TextOverflow.ellipsis,
-              color:
-                  style.searchConversationSubtitleTextColor ??
-                  colorPalette.textSecondary,
-              fontSize: typography.body?.regular?.fontSize,
-              fontWeight: typography.body?.regular?.fontWeight,
-              fontFamily: typography.body?.regular?.fontFamily,
-            )
-            .merge(style.searchConversationSubtitleTextStyle)
-            .copyWith(color: style.searchConversationSubtitleTextColor);
-
-    final body = ConversationSubtitleUtils.getConversationSubtitle(
-      conversation,
-      context,
-      subtitleStyle,
-      colorPalette.iconSecondary ?? Colors.grey,
-    );
-
-    final receipt = _buildConversationReceipt(conversation);
-    if (receipt == null) return body;
-
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        receipt,
-        SizedBox(width: spacing.padding1 ?? 4),
-        Expanded(child: body),
-      ],
-    );
-  }
-
-  /// The delivery receipt for a conversation row, or null when there is
-  /// nothing to show.
-  ///
-  /// ENG-39113: `receiptsVisibility` was declared and read nowhere, because
-  /// Search rendered no receipt at all. The gating mirrors
-  /// `ConvoKitConversationListItem._shouldShowReceipt` so the two surfaces
-  /// agree — a receipt belongs to an *outgoing* message, so it appears only
-  /// when the last message was sent by the logged-in user.
-  Widget? _buildConversationReceipt(Conversation conversation) {
-    if (widget.receiptsVisibility == false) return null;
-
-    final lastMessage = conversation.lastMessage;
-    if (lastMessage == null) return null;
-    if (lastMessage.deletedAt != null) return null;
-    if (lastMessage.sender?.uid != ConvoKitUIKit.loggedInUser?.uid) {
-      return null;
-    }
-
-    return ConvoKitReceipt(
-      status: _receiptStatusOf(lastMessage),
-      style: style.receiptStyle,
-    );
-  }
-
-  /// Same ladder as `ConvoKitConversationListItem._getReceiptStatus`, mapped
-  /// onto the shared `ReceiptStatus` enum rather than its private strings.
-  ReceiptStatus _receiptStatusOf(BaseMessage message) {
-    if (message.readAt != null && message.readAt!.millisecondsSinceEpoch > 0) {
-      return ReceiptStatus.read;
-    }
-    if (message.deliveredAt != null &&
-        message.deliveredAt!.millisecondsSinceEpoch > 0) {
-      return ReceiptStatus.delivered;
-    }
-    if (message.sentAt != null && message.sentAt!.millisecondsSinceEpoch > 0) {
-      return ReceiptStatus.sent;
-    }
-    return ReceiptStatus.waiting;
-  }
-
-  Widget _getConversationTail(Conversation conversation) {
-    final lastMessage = conversation.lastMessage;
-    final lastMessageTime = lastMessage?.updatedAt ?? lastMessage?.sentAt;
-    final unreadCount = conversation.unreadMessageCount;
-
-    return Padding(
-      padding: EdgeInsets.only(left: spacing.padding2 ?? 0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (lastMessageTime != null)
-            Flexible(
-              child: ConvoKitDate(
-                date: lastMessageTime,
-                padding: const EdgeInsets.all(0),
-                isTransparentBackground: true,
-                style: _rowDateStyle(colorPalette.textSecondary),
-                pattern: DateTimePattern.dayDateTimeFormat,
-                dateTimeFormatterCallback:
-                    widget.timeSeparatorFormatterCallback,
-              ),
-            ),
-          const SizedBox(height: 6.5),
-          if (unreadCount > 0)
-            Flexible(
-              child: ConvoKitBadge(
-                count: unreadCount,
-                height: 20,
-                style: style.badgeStyle ?? const ConvoKitBadgeStyle(),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-
-  // ===========================================================================
-  // Messages Section (Sliver-based for lazy rendering)
-  // ===========================================================================
-
-  List<Widget> _buildMessagesSlivers(SearchState state) {
-    if (!state.bothActive && state.messagesStatus == SearchStatus.loading) {
-      return [
-        SliverFillRemaining(
-          child: widget.loadingStateView?.call(context) ?? _buildLoadingView(),
-        ),
-      ];
-    }
-
-    if (!state.bothActive &&
-        state.messagesStatus != SearchStatus.loading &&
-        state.messages.isEmpty) {
-      return [
-        SliverFillRemaining(
-          child: widget.emptyStateView?.call(context) ?? _buildEmptyView(state),
-        ),
-      ];
-    }
-
-    if (!state.bothActive && state.messagesStatus == SearchStatus.error) {
-      return [
-        SliverFillRemaining(
-          child: widget.errorStateView?.call(context) ?? _buildErrorView(),
-        ),
-      ];
-    }
-
-    if (state.messages.isEmpty) return [];
-
-    final itemCount = state.selectedFilters.isNotEmpty
-        ? (state.hasMoreMessages
-              ? state.messages.length + 1
-              : state.messages.length)
-        : state.messages.length;
-
-    return [
-      SliverToBoxAdapter(
-        child: _sectionHeader(cc.Translations.of(context).message),
-      ),
-      SliverList(
-        delegate: SliverChildBuilderDelegate((context, index) {
-          if (state.selectedFilters.isNotEmpty &&
-              index >= state.messages.length) {
-            _searchBloc.add(const LoadMoreMessageResults());
-            return _buildSectionLoading();
-          }
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _getDateSeparator(index, state.messages),
-              _buildMessageItem(state.messages[index], index, state),
-            ],
-          );
-        }, childCount: itemCount),
-      ),
-      if (state.selectedFilters.isEmpty &&
-          state.messages.isNotEmpty &&
-          state.messages.length >= 3 &&
-          state.hasMoreMessages)
-        SliverToBoxAdapter(
-          child: _seeMoreButton(
-            onTap: () => _searchBloc.add(const LoadMoreMessageResults()),
-          ),
-        ),
-    ];
-  }
-
-  Widget _buildMessageItem(BaseMessage message, int index, SearchState state) {
-    if (message.deletedAt != null) return const SizedBox.shrink();
-
-    // Check custom view slots by message type
-    Widget? customView;
-    if (message is TextMessage && widget.searchTextMessageView != null) {
-      customView = widget.searchTextMessageView!(context, message);
-    } else if (message is MediaMessage) {
-      final type = message.type;
-      if (type == MessageTypeConstants.image &&
-          widget.searchImageMessageView != null) {
-        customView = widget.searchImageMessageView!(context, message);
-      } else if (type == MessageTypeConstants.video &&
-          widget.searchVideoMessageView != null) {
-        customView = widget.searchVideoMessageView!(context, message);
-      } else if (type == MessageTypeConstants.file &&
-          widget.searchFileMessageView != null) {
-        customView = widget.searchFileMessageView!(context, message);
-      } else if (type == MessageTypeConstants.audio &&
-          widget.searchAudioMessageView != null) {
-        customView = widget.searchAudioMessageView!(context, message);
-      }
-    }
-
-    if (customView != null) {
-      return GestureDetector(
-        onTap: () => widget.onMessageClicked?.call(message),
-        child: customView,
-      );
-    }
-
-    // Route to type-specific layout matching legacy buildMessageTypeBubble
-    return _buildMessageTypeBubble(message);
-  }
-
-  /// Routes each message to the correct visual layout based on message.type.
-  /// Matches the legacy SearchUtils.buildMessageTypeBubble pattern.
-  Widget _buildMessageTypeBubble(BaseMessage message) {
-    final conversationTitle = _getConversationTitle(message);
-
-    switch (message.type) {
-      case MessageTypeConstants.text:
-        final textMessage = message as TextMessage;
-        // Resolve mention tags (<@uid:..>) to display names instead of showing
-        // the raw id — matching the conversation-list subtitle behaviour.
-        String textSubtitle = textMessage.text;
-        if (textMessage.mentionedUsers.isNotEmpty) {
-          textSubtitle = CometChatMentionsFormatter.getTextWithMentions(
-            textSubtitle,
-            textMessage.mentionedUsers,
-          );
-        }
-        return _buildSearchItem(
-          message: message,
-          title: conversationTitle,
-          subtitle: textSubtitle,
-          richTextMessage: textMessage,
-          trailing: _buildMessageDate(message),
-        );
-
-      case MessageTypeConstants.image:
-        final mediaMsg = message as MediaMessage;
-        return _buildSearchItem(
-          message: message,
-          title: conversationTitle,
-          subtitlePrefix: _senderPrefix(message),
-          subtitleIcon: Icons.image_outlined,
-          subtitle: AttachmentUtils.previewSubtitleFor(mediaMsg, context),
-          trailing: _mediaThumb(mediaMsg, isVideo: false),
-        );
-
-      case MessageTypeConstants.video:
-        final mediaMsg = message as MediaMessage;
-        return _buildSearchItem(
-          message: message,
-          title: conversationTitle,
-          subtitlePrefix: _senderPrefix(message),
-          subtitleIcon: Icons.videocam_outlined,
-          subtitle: AttachmentUtils.previewSubtitleFor(mediaMsg, context),
-          trailing: _mediaThumb(mediaMsg, isVideo: true),
-        );
-
-      case MessageTypeConstants.file:
-        final mediaMsg = message as MediaMessage;
-        return _buildSearchItem(
-          message: message,
-          title: conversationTitle,
-          subtitlePrefix: _senderPrefix(message),
-          subtitleIcon: Icons.description_outlined,
-          subtitle: AttachmentUtils.previewSubtitleFor(mediaMsg, context),
-          // The dedicated "document in search" icon (flattened so flutter_svg
-          // renders it — the original nested-<svg>/<text> version came out
-          // blank).
-          leading: SvgPicture.asset(
-            kAttachmentDocumentSearchIconAsset,
-            width: 32,
-            height: 32,
-            package: kAttachmentIconPackage,
-          ),
-          trailing: _buildMessageDate(message),
-        );
-
-      case MessageTypeConstants.audio:
-        final mediaMsg = message as MediaMessage;
-        return _buildSearchItem(
-          message: message,
-          title: conversationTitle,
-          subtitlePrefix: _senderPrefix(message),
-          subtitleIcon: Icons.audiotrack_outlined,
-          subtitle: AttachmentUtils.previewSubtitleFor(mediaMsg, context),
-          leading: Container(
-            height: 32,
-            width: 32,
-            decoration: BoxDecoration(
-              color: colorPalette.buttonBackground,
-              shape: BoxShape.circle,
-            ),
-            child: Center(
-              child: Icon(
-                Icons.play_arrow,
-                color: colorPalette.buttonIconColor,
-                size: 20,
-              ),
-            ),
-          ),
-          trailing: _buildMessageDate(message),
-        );
-
-      case MessageTypeConstants.card:
-        final cardMsg = message as CardMessage?;
-        final cardText = cardMsg?.getText();
-        return _buildSearchItem(
-          message: message,
-          title: conversationTitle,
-          subtitle: cardText?.isNotEmpty == true
-              ? cardText!
-              : cc.Translations.of(context).cardMessage,
-          trailing: _buildMessageDate(message),
-        );
-
-      default:
-        return const SizedBox.shrink();
-    }
-  }
-
-  /// Returns the name of the **conversation** the [message] belongs to —
-  /// used as the search row title.
-  ///
-  /// Rules:
-  /// - Group message → the group name (from `message.receiver` as [Group]).
-  /// - 1:1 message →
-  ///   - If the logged-in user sent it, show the recipient (`message.receiver` as [User]).
-  ///   - Otherwise, show the sender (the other person who messaged us).
-  ///
-  /// Falls back gracefully when the expected objects aren't populated:
-  /// we use `receiverUid` / sender uid so the row never renders with a
-  /// blank title.
-  String _getConversationTitle(BaseMessage message) {
-    if (message.receiverType == ReceiverTypeConstants.group) {
-      final group = message.receiver;
-      if (group is Group && group.name.isNotEmpty) {
-        return group.name;
-      }
-      return message.receiverUid;
-    }
-
-    // 1:1 conversation — show the "other" party, not whichever side sent it.
-    final loggedInUid = ConvoKitUIKit.loggedInUser?.uid;
-    final senderUid = message.sender?.uid;
-    final sentByMe = loggedInUid != null && senderUid == loggedInUid;
-
-    if (sentByMe) {
-      final receiver = message.receiver;
-      if (receiver is User && receiver.name.isNotEmpty) {
-        return receiver.name;
-      }
-      return message.receiverUid;
-    }
-
-    return message.sender?.name ?? message.sender?.uid ?? '';
-  }
-
-  /// "You:" for own messages, otherwise the sender's first name — the prefix
-  /// before a media row's subtitle (reference design).
-  String _senderPrefix(BaseMessage message) {
-    final sender = message.sender;
-    if (sender == null) return '';
-    final loggedInUid = ConvoKitUIKit.loggedInUser?.uid;
-    if (loggedInUid != null && sender.uid == loggedInUid) {
-      return '${cc.Translations.of(context).you}:';
-    }
-    final name = sender.name.trim();
-    if (name.isEmpty) return '';
-    return '${name.split(' ').first}:';
-  }
-
-  /// Trailing thumbnail for an image/video search row — the message's first
-  /// attachment as a landscape rounded thumb, with a "+N" scrim overlay when
-  /// the message carries more attachments (reference design). Falls back to
-  /// the date widget when there is nothing to preview.
-  Widget _mediaThumb(MediaMessage msg, {required bool isVideo}) {
-    final attachments = AttachmentUtils.attachmentsOf(msg);
-    final first = attachments.isNotEmpty ? attachments.first : null;
-    final url = first?.fileUrl;
-    if (url == null || url.isEmpty) return _buildMessageDate(msg);
-
-    final thumbnailUrl =
-        ThumbnailExtractionUtil.thumbnailForIndex(msg.metadata, 0) ??
-        ThumbnailExtractionUtil.extractFromMetadata(msg.metadata);
-    final overflow = attachments.length - 1;
-
-    final Widget preview = isVideo
-        ? CometChatVideoBubble(
-            videoUrl: url,
-            thumbnailUrl: thumbnailUrl,
-            width: 96,
-            height: 64,
-            colorPalette: colorPalette,
-            spacing: spacing,
-            // Server thumbnail generation fails for some video formats
-            // (returns null / ERR_FILETYPE_NOT_SUPPORTED — e.g. iPhone .mov),
-            // so extract the first frame client-side like the other UIKit
-            // platforms do, with the standard media placeholder while it
-            // loads / on failure. A small play chip sits on top (the bubble's
-            // own 64px play icon is oversized for this 96×64 row).
-            placeHolder: thumbnailUrl == null
-                ? SizedBox.expand(
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        CometChatVideoFirstFrame(
-                          key: ValueKey('cc_search_video_frame_$url'),
-                          source: url,
-                          fallback: const CometChatMediaPlaceholder(
-                            glyphWidth: 28,
-                          ),
-                        ),
-                        const Center(
-                          child: CircleAvatar(
-                            radius: 13,
-                            backgroundColor: Colors.black45,
-                            child: Icon(
-                              Icons.play_arrow_rounded,
-                              color: Colors.white,
-                              size: 18,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                : null,
-          )
-        : CometChatImageBubble(
-            imageUrl: url,
-            thumbnailUrl: thumbnailUrl,
-            width: 96,
-            height: 64,
-            style: const CometChatImageBubbleStyle(
-              borderRadius: BorderRadius.zero,
-            ),
-            colorPalette: colorPalette,
-            spacing: spacing,
-          );
-
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(8),
-      child: SizedBox(
-        width: 96,
-        height: 64,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            preview,
-            // Same "+N" scrim idiom as the media grid's overflow cell.
-            if (overflow > 0)
-              IgnorePointer(
-                child: Container(
-                  alignment: Alignment.center,
-                  color: Colors.black45,
-                  child: Text(
-                    '+$overflow',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  /// The date style for a result row: the search's defaults underneath, the
-  /// style's [CometChatSearchStyle.dateStyle] over them, and the search-specific
-  /// date colour and text style over that. With no dateStyle this is exactly
-  /// the style the rows always had.
-  ConvoKitDateStyle _rowDateStyle(Color? defaultTextColor) {
-    final base = ConvoKitDateStyle(
-      backgroundColor: colorPalette.transparent,
-      textStyle: TextStyle(
-        color: defaultTextColor,
-        fontSize: typography.caption1?.regular?.fontSize,
-        fontWeight: typography.caption1?.regular?.fontWeight,
-        fontFamily: typography.caption1?.regular?.fontFamily,
-      ),
-      border: Border.all(width: 0, color: Colors.transparent),
-    ).merge(style.dateStyle);
-    return base.copyWith(
-      textStyle: (base.textStyle ?? const TextStyle())
-          .copyWith(color: style.searchMessageDateTextColor)
-          .merge(style.searchMessageDateTextStyle),
-    );
-  }
-
-  /// Builds a ConvoKitDate widget for message trailing.
-  Widget _buildMessageDate(BaseMessage message) {
-    return ConvoKitDate(
-      date: message.sentAt ?? DateTime.now(),
-      padding: const EdgeInsets.all(0),
-      isTransparentBackground: true,
-      style: _rowDateStyle(colorPalette.textTertiary),
-      pattern: DateTimePattern.dayDateFormat,
-      dateTimeFormatterCallback: widget.timeSeparatorFormatterCallback,
-    );
-  }
-
-  /// Builds a search result item row using the interstellar layout pattern.
-  /// leading (optional icon) | title + subtitle | trailing (date or thumbnail)
-  /// Builds the search preview with the SAME rich-text formatting the message
-  /// list and conversation subtitles use — markdown, mentions, links — so a
-  /// text result reads identically across surfaces (and cross-platform). Falls
-  /// back to plain [subtitleStyle] text for non-text rows.
-  Widget _buildSearchItem({
-    required BaseMessage message,
-    required String title,
-    required String subtitle,
-    String? subtitlePrefix,
-    IconData? subtitleIcon,
-    Widget? leading,
-    Widget? trailing,
-    // When set, the subtitle renders with rich-text formatting (markdown /
-    // mentions / links) instead of the plain [subtitle] string.
-    TextMessage? richTextMessage,
-  }) {
-    final titleStyle =
-        TextStyle(
-              color:
-                  style.searchMessageSenderTextColor ??
-                  colorPalette.textPrimary,
-              fontSize: typography.heading4?.medium?.fontSize,
-              fontWeight: typography.heading4?.medium?.fontWeight,
-              fontFamily: typography.heading4?.medium?.fontFamily,
-            )
-            .merge(style.searchMessageSenderTextStyle)
-            .copyWith(color: style.searchMessageSenderTextColor);
-
-    final subtitleStyle =
-        TextStyle(
-              color:
-                  style.searchMessagePreviewTextColor ??
-                  colorPalette.textSecondary,
-              fontSize: typography.body?.regular?.fontSize,
-              fontWeight: typography.body?.regular?.fontWeight,
-              fontFamily: typography.body?.regular?.fontFamily,
-            )
-            .merge(style.searchMessagePreviewTextStyle)
-            .copyWith(color: style.searchMessagePreviewTextColor);
-
-    return Semantics(
-      button: true,
-      label: Translations.of(context).messageFrom(title),
-      child: GestureDetector(
-        onTap: () => widget.onMessageClicked?.call(message),
-        behavior: HitTestBehavior.opaque,
-        child: Container(
-          padding: EdgeInsets.symmetric(vertical: spacing.padding2 ?? 0),
-          color: Colors.transparent,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (leading != null)
-                Padding(
-                  padding: EdgeInsets.only(right: spacing.padding3 ?? 0),
-                  child: leading,
-                ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: titleStyle,
-                    ),
-                    const SizedBox(height: 2),
-                    // Shared with the saved-messages list so both surfaces
-                    // preview messages identically. Explicit values are
-                    // passed through unchanged; the widget only derives what
-                    // is omitted.
-                    MessagePreviewSubtitle(
-                      message: message,
-                      textStyle: subtitleStyle,
-                      iconColor: colorPalette.iconSecondary,
-                      spacing: spacing.padding1 ?? 2,
-                      prefix: subtitlePrefix ?? '',
-                      icon: subtitleIcon,
-                      text: subtitle,
-                      richTextMessage: richTextMessage,
-                    ),
-                  ],
-                ),
-              ),
-              if (trailing != null)
-                Padding(
-                  padding: EdgeInsets.only(left: spacing.padding2 ?? 0),
-                  child: trailing,
-                ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _getDateSeparator(int index, List<BaseMessage> messages) {
-    if (messages[index].deletedAt != null) {
-      return const SizedBox(height: 0, width: 0);
-    }
-    // Show separator for first message or when month changes
-    if (index == 0 ||
-        !_isSameMonth(
-          dt1: messages[index].sentAt,
-          dt2: messages[index - 1].sentAt,
-        )) {
-      final date = messages[index].sentAt ?? DateTime.now();
-      return Padding(
-        padding: EdgeInsets.fromLTRB(0, spacing.padding2 ?? 0, 0, 0),
-        child: ConvoKitDate(
-          date: date,
-          // The label is always resolved here. Handing ConvoKitDate the
-          // formatter with no pattern made it format the separator as a time
-          // of day, so month separators read like "3:45 pm".
-          customDateString: _monthSeparatorLabel(date),
-          padding: EdgeInsets.zero,
-          style: ConvoKitDateStyle(
-            backgroundColor: colorPalette.transparent,
-            borderRadius: BorderRadius.zero,
-            border: const Border.fromBorderSide(BorderSide.none),
-            textStyle: TextStyle(
-              fontSize: typography.caption1?.medium?.fontSize,
-              fontWeight: typography.caption1?.medium?.fontWeight,
-              fontFamily: typography.caption1?.medium?.fontFamily,
-              letterSpacing: 0,
-              color: colorPalette.textSecondary,
-            ),
-          ).merge(style.dateStyle),
-        ),
-      );
-    }
-    return const SizedBox(height: 0, width: 0);
-  }
-
-  bool _isSameMonth({DateTime? dt1, DateTime? dt2}) {
-    if (dt1 == null || dt2 == null) return false;
-    return dt1.year == dt2.year && dt1.month == dt2.month;
-  }
-
-  /// The text of the separator above each month's message results, such as
-  /// "September, 2026".
-  ///
-  /// [widget.dateSeparatorFormatterCallback]'s `otherDays` can replace it: it
-  /// is called with the send time of the first message listed under the
-  /// separator, and returning null keeps the default.
-  String _monthSeparatorLabel(DateTime date) {
-    final defaultLabel = '${_monthName(date.month)}, ${date.year}';
-    return widget.dateSeparatorFormatterCallback?.otherDays(
-          date.millisecondsSinceEpoch,
-        ) ??
-        defaultLabel;
-  }
-
-  String _monthName(int month) {
-    const months = [
-      '',
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
-    return months[month];
-  }
-
-  // ===========================================================================
-  // Shared Helpers
-  // ===========================================================================
 
   Widget _sectionHeader(String title) {
     return Padding(
@@ -1391,15 +538,11 @@ class _CometChatSearchState extends State<CometChatSearch> {
     );
   }
 
-  // ===========================================================================
-  // State Views
-  // ===========================================================================
-
   Widget _buildLoadingView() {
     return ConvoKitShimmerEffect(
       colorPalette: colorPalette,
       child: ListView.builder(
-        itemCount: 30,
+        itemCount: 10,
         shrinkWrap: true,
         itemBuilder: (context, index) => Padding(
           padding: EdgeInsets.symmetric(
@@ -1414,30 +557,15 @@ class _CometChatSearchState extends State<CometChatSearch> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: MediaQuery.sizeOf(context).width * 0.4,
-                          height: 19,
-                          decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.circular(
-                              spacing.radius2 ?? 0,
-                            ),
-                          ),
+                    Container(
+                      width: MediaQuery.sizeOf(context).width * 0.4,
+                      height: 19,
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(
+                          spacing.radius2 ?? 0,
                         ),
-                        Container(
-                          width: MediaQuery.sizeOf(context).width * 0.2,
-                          height: 19,
-                          decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.circular(
-                              spacing.radius2 ?? 0,
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Container(
@@ -1460,12 +588,11 @@ class _CometChatSearchState extends State<CometChatSearch> {
     );
   }
 
-  Widget _buildEmptyView(SearchState state) {
+  Widget _buildEmptyView() {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(height: MediaQuery.sizeOf(context).height * 0.2),
           Padding(
             padding: EdgeInsets.only(bottom: spacing.padding5 ?? 0),
             child: Image.asset(
@@ -1487,9 +614,9 @@ class _CometChatSearchState extends State<CometChatSearch> {
               ).merge(style.emptyStateTextStyle),
             ),
           ),
-          if (state.searchText.isNotEmpty)
+          if (_searchText.isNotEmpty)
             Text(
-              '${cc.Translations.of(context).search} "${state.searchText}"',
+              '${cc.Translations.of(context).search} "$_searchText"',
               style: TextStyle(
                 color:
                     style.emptyStateSubTitleTextColor ??
@@ -1518,7 +645,9 @@ class _CometChatSearchState extends State<CometChatSearch> {
             ),
             SizedBox(height: spacing.padding3 ?? 0),
             Text(
-              cc.Translations.of(context).somethingWentWrongError,
+              _error?.message.isNotEmpty == true
+                  ? _error!.message
+                  : cc.Translations.of(context).somethingWentWrongError,
               style: TextStyle(
                 color: style.errorStateTextColor ?? colorPalette.textPrimary,
                 fontSize: typography.heading4?.medium?.fontSize,

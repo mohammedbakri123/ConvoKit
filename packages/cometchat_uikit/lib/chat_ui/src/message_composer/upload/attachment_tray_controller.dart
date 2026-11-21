@@ -1,184 +1,228 @@
-// @dart=3.0
-
 import 'dart:async';
-import 'package:cometchat_sdk/cometchat_sdk.dart';
-import 'package:flutter/foundation.dart';
-import '../../../../src/adapters/cometchat_sdk_adapter.dart';
 
-import '../../../../shared_ui/src/clean_architecture/core/utils/attachment_utils.dart';
-import '../../../../shared_ui/src/logging/cometchat_log.dart';
+import 'package:convokit/convokit.dart';
+import 'package:flutter/foundation.dart';
+
 import '../../../../shared_ui/src/clean_architecture/core/utils/platform_utils/platform_file_utils.dart'
     as platform;
+import '../../../../shared_ui/src/logging/cometchat_log.dart';
 
-enum AttachmentTileStatus { uploading, done, failed, rejected }
+/// Lifecycle state for a single staged tile in [AttachmentTrayController].
+///
+/// Preserves distinct [failed] (upload failed -> retry re-uploads) vs.
+/// [sendFailed] (upload succeeded, message send failed -> retry sends without
+/// re-uploading) states per API-DESIGN.md §§6–7.
+enum AttachmentTileStatus { uploading, done, failed, sendFailed, rejected }
 
-/// Thrown by [AttachmentTrayController.stage] when a batch cannot be staged at
-/// all — the composer hasn't bound a conversation yet. The caller (composer)
-/// surfaces [message] to the user so the failure isn't swallowed silently.
-/// [cause] is the original error, when there is one.
+/// Plain-Dart input describing a local file or in-memory byte buffer to stage
+/// in [AttachmentTrayController].
+class StagedUploadFile {
+  const StagedUploadFile({
+    required this.name,
+    required this.mimeType,
+    required this.size,
+    this.path,
+    this.bytes,
+  }) : assert(
+         (path != null && path.length > 0) || bytes != null,
+         'Either a non-empty file path or bytes must be provided',
+       );
+
+  final String name;
+  final String mimeType;
+  final int size;
+  final String? path;
+  final Uint8List? bytes;
+
+  AttachmentKind get kind => AttachmentTrayController.classifyKind(mimeType, name);
+}
+
+/// Thrown by [AttachmentTrayController.stage] when a batch cannot be staged
+/// (missing conversation context or unavailable [ChatMediaProvider]).
 class AttachmentStageException implements Exception {
   AttachmentStageException(this.message, [this.cause]);
 
-  /// User-facing reason.
   final String message;
-
-  /// The underlying error/exception, when there is one.
   final Object? cause;
 
   @override
-  String toString() => 'AttachmentStageException: $message'
+  String toString() =>
+      'AttachmentStageException: $message'
       '${cause != null ? ' (cause: $cause)' : ''}';
 }
 
-/// One staged item in the tray, keyed by the **app-supplied** `fileId`.
+/// One staged item in the composer attachment tray, keyed by client-generated [fileId].
 class AttachmentTile {
   AttachmentTile({
     required this.fileId,
     required this.name,
     required this.mimeType,
     required this.size,
+    this.localPath,
+    this.bytes,
     this.loaded = 0,
     this.status = AttachmentTileStatus.uploading,
     this.thumbUrl,
     this.attachment,
     this.durationMillis,
     this.errorMessage,
+    this.failure,
   });
 
   final String fileId;
   final String name;
   final String mimeType;
   final int size;
+  final String? localPath;
+  final Uint8List? bytes;
 
-  /// Human-readable reason this tile failed/was rejected (from the SDK error);
-  /// surfaced in the composer's error bar. Null while uploading/done.
+  /// Human-readable reason this tile failed or was rejected.
   String? errorMessage;
 
-  /// Video/audio playback length in milliseconds, probed from the local file at
-  /// staging (null until known, or for non-media / probe failure).
+  /// Structured [ChatError] from upload or send failure.
+  ChatError? failure;
+
+  /// Video/audio playback length in milliseconds, probed from the local source.
   int? durationMillis;
 
   /// Bytes uploaded so far.
   int loaded;
   AttachmentTileStatus status;
 
-  /// Local preview path while uploading; `attachment.fileUrl` once done.
+  /// Local preview path/object URL while uploading; remote URL fallback once done.
   String? thumbUrl;
 
-  /// Set on `onFileUploaded` — the message-ready attachment that gets sent.
-  Attachment? attachment;
+  /// Populated once upload completes (`state == AttachmentState.uploaded`).
+  /// Retained across send failures so retrying send does not re-upload.
+  ChatAttachment? attachment;
 
   int get percent =>
       size == 0 ? 0 : ((loaded / size) * 100).clamp(0, 100).round();
 
-  /// Kind of the staged file, by the **same rule the send path uses**
-  /// ([AttachmentUtils]) — mimeType OR extension. Classifying the tray on
-  /// mimeType alone disagreed with what was actually sent: a `.m4v`/`.flac`
-  /// picked up with a generic mimeType previewed as a plain file card but sent
-  /// as video/audio, and an `.ogg` reported as `video/ogg` previewed as video
-  /// but sent as audio.
-  bool get isImage => AttachmentUtils.isImageOf(mimeType, name);
-  bool get isVideo => AttachmentUtils.isVideoOf(mimeType, name);
-  bool get isAudio => AttachmentUtils.isAudioOf(mimeType, name);
+  AttachmentKind get kind => AttachmentTrayController.classifyKind(mimeType, name);
 
-  /// True for a failed upload (retryable) or a rejected one (over the
-  /// count/size limit — not retryable).
+  bool get isImage => AttachmentTrayController.isImageType(mimeType, name);
+  bool get isAudio => AttachmentTrayController.isAudioType(mimeType, name);
+  bool get isVideo =>
+      !isAudio && AttachmentTrayController.isVideoType(mimeType, name);
+
+  /// True for a failed upload, failed send, or rejected tile.
   bool get hasError =>
       status == AttachmentTileStatus.failed ||
+      status == AttachmentTileStatus.sendFailed ||
       status == AttachmentTileStatus.rejected;
+
+  /// True when upload succeeded and only sending the message failed.
+  bool get isSendFailed => status == AttachmentTileStatus.sendFailed;
+
+  /// True when upload itself failed (retry re-runs upload).
+  bool get isUploadFailed => status == AttachmentTileStatus.failed;
 }
 
-/// Owns the composer's staging model and drives the SDK's multi-upload surface:
-/// a per-composer [UploadFileRequest] (`CometChatSdkAdapter.createUploadFileRequest`).
+/// Owns the composer's multi-attachment staging tray and drives the two-step
+/// ConvoKit media flow:
+/// 1. Upload via [ChatMediaProvider.upload] (`UploadRequest.file` / `UploadRequest.bytes`)
+///    with live [UploadProgress] callbacks and per-tile [CancellationToken].
+/// 2. Send via [MessageCoordinator.sendMediaMessage] using the uploaded [ChatAttachment].
 ///
-/// One controller per composer instance. The controller **supplies each file's
-/// id**, so a tile is rendered at 0% the instant a file is staged — no waiting
-/// for the SDK to assign an id. The request's `getBatchId()` becomes the sent
-/// message's `metadata.batchId` (and its `muid`) for optimistic reconciliation.
+/// Cancelling an in-flight upload cancels its [CancellationToken] and deletes
+/// the pending tile immediately. Upload failures (`failed`) and send failures
+/// (`sendFailed`) are tracked distinctly so retrying a send failure never
+/// re-uploads already uploaded media.
 class AttachmentTrayController extends ChangeNotifier {
-  AttachmentTrayController({this.receiverId, this.receiverType}) {
-    _listener = _TrayUploadListener(this);
+  AttachmentTrayController({
+    this.mediaProvider,
+    this.conversationId,
+    int maxFileCount = 10,
+    int maxFileSize = 100 * 1024 * 1024,
+  }) : _maxFileCount = maxFileCount,
+       _maxFileSize = maxFileSize;
+
+  static const Set<String> _imageExts = {
+    'jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'heic', 'heif', 'svg',
+  };
+  static const Set<String> _videoExts = {
+    'mp4', 'mov', 'avi', 'mkv', 'webm', '3gp', 'm4v',
+  };
+  static const Set<String> _audioExts = {
+    'mp3', 'wav', 'aac', 'm4a', 'ogg', 'opus', 'flac', 'amr',
+  };
+
+  static bool isImageType(String mimeType, String name) {
+    final lowerMime = mimeType.toLowerCase();
+    final ext = name.contains('.') ? name.split('.').last.toLowerCase() : '';
+    return lowerMime.startsWith('image/') || _imageExts.contains(ext);
   }
 
-  /// The conversation these uploads belong to — recipient `uid` / group `guid`
-  /// and its kind (`'user'`/`'group'`). Captured on the [UploadFileRequest] when
-  /// it is first created (the first [stage]). Mutable: the composer refreshes
-  /// these from the live conversation right before each stage, and a
-  /// conversation switch calls [clear], which drops the request so the next
-  /// stage re-creates it with the current receiver.
-  String? receiverId;
-  String? receiverType;
+  static bool isAudioType(String mimeType, String name) {
+    final lowerMime = mimeType.toLowerCase();
+    final ext = name.contains('.') ? name.split('.').last.toLowerCase() : '';
+    return ext == 'ogg' ||
+        lowerMime.startsWith('audio/') ||
+        _audioExts.contains(ext);
+  }
 
-  late final _TrayUploadListener _listener;
+  static bool isVideoType(String mimeType, String name) {
+    final lowerMime = mimeType.toLowerCase();
+    final ext = name.contains('.') ? name.split('.').last.toLowerCase() : '';
+    return lowerMime.startsWith('video/') || _videoExts.contains(ext);
+  }
 
-  /// The per-composer upload request (one batch). Created lazily on the first
-  /// [stage] with the then-current receiver; dropped by [clear] / [dispose].
-  UploadFileRequest? _request;
+  /// Classifies a file by MIME type or filename extension.
+  static AttachmentKind classifyKind(String mimeType, String name) {
+    if (isAudioType(mimeType, name)) return AttachmentKind.audio;
+    if (isImageType(mimeType, name)) return AttachmentKind.image;
+    if (isVideoType(mimeType, name)) return AttachmentKind.video;
+    return AttachmentKind.file;
+  }
 
-  /// The effective batch id (from the request). Also used as the sent message's
-  /// grouping id. Null until the first stage.
-  String? _batchId;
-  String? get batchId => _batchId;
+  /// Active [ChatMediaProvider] from [ConvoKit.media]. Null when media is unsupported.
+  ChatMediaProvider? mediaProvider;
+
+  /// Active conversation id bound by the composer.
+  String? conversationId;
+
+  final int _maxFileCount;
+  final int _maxFileSize;
 
   int _tileSeq = 0;
-
+  int _localRejectSeq = 0;
   final List<AttachmentTile> _tiles = [];
+  final Map<String, CancellationToken> _activeTokens = {};
+  final Map<String, String> _failedSendLocalIds = {};
+
   List<AttachmentTile> get tiles => List.unmodifiable(_tiles);
 
   String caption = '';
   bool _disposed = false;
 
-  /// Send is enabled once ≥1 tile is `done`, none are `uploading`, and none
-  /// are in an error state — a failed/rejected attachment must be retried or
-  /// removed before the message can be sent.
+  /// Send is enabled once >=1 tile is `done`, none are `uploading`, and none
+  /// are in an error state.
   bool get canSend =>
       _tiles.any((t) => t.status == AttachmentTileStatus.done) &&
       !_tiles.any((t) => t.status == AttachmentTileStatus.uploading) &&
       !hasErrors;
 
-  /// Max attachments per message, from the app settings cached by the SDK
-  /// (`file.count.max`); the SDK default is 10.
-  int get maxFileCount {
-    try {
-      return CometChatSdkAdapter.getMaxAttachmentCount();
-    } catch (_) {
-      return 10;
-    }
-  }
+  int get maxFileCount => _maxFileCount;
+  int get maxFileSize => _maxFileSize;
 
-  /// Tiles that count against [maxFileCount] — everything except rejected ones
-  /// (mirrors the SDK's own count gate, which excludes rejected/cancelled).
+  /// Tiles that count against [maxFileCount] (excludes rejected tiles).
   int get activeCount =>
       _tiles.where((t) => t.status != AttachmentTileStatus.rejected).length;
 
-  /// How many more attachments can still be staged.
   int get remainingSlots {
     final left = maxFileCount - activeCount;
     return left > 0 ? left : 0;
   }
 
-  /// False once the tray already holds [maxFileCount] attachments.
   bool get canAddMore => remainingSlots > 0;
 
-  /// Staged tiles that failed to upload or were rejected — these stay in the
-  /// tray; tapping (or, on web, hovering) the tile surfaces the reason via a
-  /// snackbar.
   List<AttachmentTile> get errorTiles =>
       _tiles.where((t) => t.hasError).toList();
 
-  /// True while any staged attachment is in an error state.
   bool get hasErrors => errorTiles.isNotEmpty;
 
-  /// Max size per file in bytes (`file.size.max`; SDK default 100 MB).
-  int get maxFileSize {
-    try {
-      return CometChatSdkAdapter.getMaxAttachmentSize();
-    } catch (_) {
-      return 100 * 1024 * 1024;
-    }
-  }
-
-  /// Byte-weighted aggregate [loaded, total] — never average percents.
+  /// Byte-weighted aggregate `[loaded, total]`.
   List<int> get aggregate {
     var loaded = 0, total = 0;
     for (final t in _tiles) {
@@ -188,8 +232,8 @@ class AttachmentTrayController extends ChangeNotifier {
     return [loaded, total];
   }
 
-  /// The attachments to send (done tiles, in order).
-  List<Attachment> get doneAttachments => _tiles
+  /// The uploaded [ChatAttachment]s ready to send, in tile order.
+  List<ChatAttachment> get doneAttachments => _tiles
       .where(
         (t) => t.status == AttachmentTileStatus.done && t.attachment != null,
       )
@@ -203,71 +247,59 @@ class AttachmentTrayController extends ChangeNotifier {
     return null;
   }
 
-  /// Creates the upload request on first use, capturing the current receiver.
-  /// The controller registers itself as the batch's global listener, so every
-  /// per-file event lands here.
-  UploadFileRequest _ensureRequest() {
-    final req = _request ??= CometChatSdkAdapter.createUploadFileRequest(
-      receiverId!,
-      receiverType!,
-    )..addUploadListener(_listener);
-    _batchId = req.getBatchId();
-    return req;
-  }
-
-  /// Stage a batch via the SDK. Accumulates into the same batch (reuses the
-  /// per-composer [UploadFileRequest]). The tile for each file is created
-  /// immediately at 0% under the id this controller supplies; per-file progress
-  /// then arrives through the upload listener.
-  Future<void> stage(List<UploadFile> files) async {
+  /// Stages a batch of files and starts uploading each via [mediaProvider].
+  Future<void> stage(List<StagedUploadFile> files) async {
     if (files.isEmpty) return;
-    // Fail fast when the composer hasn't bound a conversation yet: presigning
-    // without a receiver is rejected by the server once RBAC/SBAC is on, and an
-    // early typed error gives a clear toast instead of an opaque server 4xx
-    // mid-upload (R7).
-    if ((receiverId ?? '').isEmpty || (receiverType ?? '').isEmpty) {
+    if ((conversationId ?? '').isEmpty) {
       throw AttachmentStageException(
-        'No conversation context (receiverId/receiverType) for upload',
+        'No conversation context (conversationId) for upload',
       );
     }
-    ccLog(
-      '🟦 [stage] files=${files.map((f) => "${f.name}|${f.mimeType}|size=${f.size}|path=${f.path}").toList()}',
-    );
+    final provider = mediaProvider;
+    if (provider == null) {
+      throw AttachmentStageException(
+        'Media uploads are not supported by the active ConvoKit backend',
+      );
+    }
 
-    final request = _ensureRequest();
-
-    // Create every tile up front (at 0%) under the id we supply, then hand the
-    // files to the SDK. Because the tile exists before any event fires, a fast
-    // rejection always lands on an already-rendered tile — no buffering needed.
-    final batch = <UploadAttachment>[];
+    final stagedTiles = <AttachmentTile>[];
     for (final f in files) {
+      if (f.size > maxFileSize) {
+        addLimitRejected(
+          f,
+          'File exceeds maximum size of ${(maxFileSize / (1024 * 1024)).round()} MB',
+        );
+        continue;
+      }
+      if (activeCount >= maxFileCount) {
+        addLimitRejected(f, 'Maximum of $maxFileCount attachments reached');
+        continue;
+      }
+
       final id = 'tile_${_tileSeq++}';
-      // Local preview while uploading: the file path where one exists
-      // (mobile/desktop), else a browser object URL over the bytes (web picks/
-      // paste/drop have no path). Revoked when the tile leaves the tray.
-      final isMedia = f.mimeType.startsWith('image/') ||
-          f.mimeType.startsWith('video/') ||
-          f.mimeType.startsWith('audio/');
+      final kind = f.kind;
+      final isMedia =
+          kind == AttachmentKind.image ||
+          kind == AttachmentKind.video ||
+          kind == AttachmentKind.audio;
       final localThumb = (f.path != null && f.path!.isNotEmpty)
           ? f.path
           : (isMedia && f.bytes != null
-              ? platform.objectUrlFromBytes(f.bytes!, f.mimeType)
-              : null);
+                ? platform.objectUrlFromBytes(f.bytes!, f.mimeType)
+                : null);
+
       final tile = AttachmentTile(
         fileId: id,
         name: f.name,
         mimeType: f.mimeType,
         size: f.size,
+        localPath: f.path,
+        bytes: f.bytes,
         thumbUrl: localThumb,
       );
       _tiles.add(tile);
-      batch.add(UploadAttachment(id, f));
+      stagedTiles.add(tile);
 
-      // Extract the duration for video AND audio tiles from the local source
-      // once (fire-and-forget; failure just omits it). Video uses it for the
-      // m:ss chip; audio carries it into the sent message's metadata so the
-      // received bubble can show the duration up front instead of the file
-      // size (ENG-37180).
       if ((tile.isVideo || tile.isAudio) &&
           localThumb != null &&
           localThumb.isNotEmpty) {
@@ -276,41 +308,287 @@ class AttachmentTrayController extends ChangeNotifier {
     }
     _safeNotify();
 
-    // Hand the batch to the SDK. Per-file events arrive on the global listener
-    // (_listener); passing it per-call too is fine — the SDK dedupes by identity.
-    request.uploadAttachments(batch, _listener);
+    await Future.wait(stagedTiles.map((tile) => _uploadTile(tile, provider)));
   }
 
-  int _localRejectSeq = 0;
+  Future<void> _uploadTile(
+    AttachmentTile tile,
+    ChatMediaProvider provider,
+  ) async {
+    final token = CancellationToken();
+    _activeTokens[tile.fileId] = token;
 
-  /// Adds a client-side-rejected tile (over the max file count or size) to the
-  /// tray WITHOUT uploading it: it shows the error state, its [reason] surfaces
-  /// through the composer error bar, and it can be removed like any other tile.
-  /// Never reaches the SDK, so removal just drops it locally.
-  void addLimitRejected(UploadFile file, String reason) {
-    final isMedia = file.mimeType.startsWith('image/') ||
-        file.mimeType.startsWith('video/') ||
-        file.mimeType.startsWith('audio/');
+    final request = (tile.localPath != null && tile.localPath!.isNotEmpty)
+        ? UploadRequest.file(
+            tile.localPath!,
+            kind: tile.kind,
+            mimeType: tile.mimeType,
+            name: tile.name,
+          )
+        : UploadRequest.bytes(
+            tile.bytes!,
+            kind: tile.kind,
+            mimeType: tile.mimeType,
+            name: tile.name,
+          );
+
+    try {
+      final result = await provider.upload(
+        request,
+        cancel: token,
+        onProgress: (UploadProgress progress) {
+          if (_disposed || token.isCancelled) return;
+          final live = _byId(tile.fileId);
+          if (live == null) return;
+          live.loaded = progress.sentBytes;
+          _safeNotify();
+        },
+      );
+
+      _activeTokens.remove(tile.fileId);
+      if (_disposed) return;
+
+      final live = _byId(tile.fileId);
+      if (live == null) return;
+
+      if (token.isCancelled) {
+        _removeTileInternal(tile.fileId);
+        return;
+      }
+
+      result.fold(
+        onSuccess: (UploadedMedia uploaded) {
+          live.status = AttachmentTileStatus.done;
+          live.loaded = live.size;
+          live.errorMessage = null;
+          live.failure = null;
+          live.attachment = ChatAttachment(
+            id: live.fileId,
+            remoteId: uploaded.id,
+            kind: live.kind,
+            localPath: live.localPath,
+            url: uploaded.url,
+            thumbnailUrl: uploaded.thumbnailUrl,
+            state: AttachmentState.uploaded,
+            mimeType: uploaded.mimeType ?? live.mimeType,
+            sizeBytes: uploaded.sizeBytes ?? live.size,
+            name: uploaded.name ?? live.name,
+          );
+          live.thumbUrl ??= uploaded.url;
+          _safeNotify();
+        },
+        onFailure: (ChatError error) {
+          if (error.code == ChatErrorCode.cancelled || token.isCancelled) {
+            _removeTileInternal(tile.fileId);
+            return;
+          }
+          ccLog(
+            '[AttachmentTrayController] Upload failed for ${tile.fileId}: ${error.code} ${error.message}',
+          );
+          live.status = error.code == ChatErrorCode.validation
+              ? AttachmentTileStatus.rejected
+              : AttachmentTileStatus.failed;
+          live.errorMessage = error.message;
+          live.failure = error;
+          _safeNotify();
+        },
+      );
+    } catch (e) {
+      _activeTokens.remove(tile.fileId);
+      if (_disposed) return;
+      final live = _byId(tile.fileId);
+      if (live == null) return;
+      if (token.isCancelled) {
+        _removeTileInternal(tile.fileId);
+        return;
+      }
+      live.status = AttachmentTileStatus.failed;
+      live.errorMessage = e.toString();
+      live.failure = ChatError(ChatErrorCode.network, e.toString());
+      _safeNotify();
+    }
+  }
+
+  /// Adds a client-side-rejected tile (over max count or size) without uploading.
+  void addLimitRejected(StagedUploadFile file, String reason) {
+    final kind = file.kind;
+    final isMedia =
+        kind == AttachmentKind.image ||
+        kind == AttachmentKind.video ||
+        kind == AttachmentKind.audio;
     final localThumb = (file.path != null && file.path!.isNotEmpty)
         ? file.path
         : (isMedia && file.bytes != null
-            ? platform.objectUrlFromBytes(file.bytes!, file.mimeType)
-            : null);
+              ? platform.objectUrlFromBytes(file.bytes!, file.mimeType)
+              : null);
     _tiles.add(
       AttachmentTile(
         fileId: 'local_reject_${_localRejectSeq++}',
         name: file.name,
         mimeType: file.mimeType,
         size: file.size,
+        localPath: file.path,
+        bytes: file.bytes,
         thumbUrl: localThumb,
         status: AttachmentTileStatus.rejected,
         errorMessage: reason,
+        failure: ChatError(ChatErrorCode.validation, reason),
       ),
     );
     _safeNotify();
   }
 
-  /// Releases a tile's blob preview URL, if it holds one (web only).
+  /// Sends all uploaded (`done`) tiles via [MessageCoordinator.sendMediaMessage].
+  ///
+  /// Because each tile's [ChatAttachment] already has
+  /// `state == AttachmentState.uploaded`, [MessageCoordinator.sendMediaMessage]
+  /// sends the message directly without re-uploading. If sending fails for a
+  /// tile, that tile transitions to [AttachmentTileStatus.sendFailed] while
+  /// retaining its uploaded [ChatAttachment] so a retry only re-sends.
+  Future<List<ChatResult<ChatMessage>>> sendAll({
+    required MessageCoordinator coordinator,
+    required String conversationId,
+    required ChatUser sender,
+    ChatMessage? repliedTo,
+  }) async {
+    final sendable = _tiles
+        .where(
+          (t) =>
+              (t.status == AttachmentTileStatus.done ||
+                  t.status == AttachmentTileStatus.sendFailed) &&
+              t.attachment != null,
+        )
+        .toList();
+    if (sendable.isEmpty) return const [];
+
+    final cap = caption.trim();
+    final results = <ChatResult<ChatMessage>>[];
+    final succeededIds = <String>[];
+
+    for (var i = 0; i < sendable.length; i++) {
+      final tile = sendable[i];
+      final isLast = i == sendable.length - 1;
+      final existingLocalId = _failedSendLocalIds[tile.fileId];
+
+      final res = existingLocalId != null
+          ? await coordinator.retryFailed(
+              existingLocalId,
+              conversationId: conversationId,
+            )
+          : await coordinator.sendMediaMessage(
+              conversationId: conversationId,
+              attachment: tile.attachment!,
+              sender: sender,
+              caption: isLast && cap.isNotEmpty ? cap : null,
+              repliedTo: repliedTo,
+              localId: 'tray_${tile.fileId}',
+            );
+
+      results.add(res);
+      res.fold(
+        onSuccess: (_) {
+          _failedSendLocalIds.remove(tile.fileId);
+          succeededIds.add(tile.fileId);
+        },
+        onFailure: (ChatError error) {
+          _failedSendLocalIds[tile.fileId] =
+              existingLocalId ?? 'tray_${tile.fileId}';
+          tile.status = AttachmentTileStatus.sendFailed;
+          tile.errorMessage = error.message;
+          tile.failure = error;
+        },
+      );
+    }
+
+    for (final id in succeededIds) {
+      _removeTileInternal(id, notify: false);
+    }
+    if (_tiles.isEmpty) {
+      caption = '';
+    }
+    _safeNotify();
+    return results;
+  }
+
+  /// Cancels an in-flight upload (deleting the pending tile) or removes a tile.
+  Future<void> cancelOrRemove(String fileId) async {
+    final token = _activeTokens.remove(fileId);
+    token?.cancel();
+    _failedSendLocalIds.remove(fileId);
+    _removeTileInternal(fileId);
+  }
+
+  /// Retries a failed tile:
+  /// - If [AttachmentTileStatus.failed] (upload failed): re-runs [mediaProvider.upload].
+  /// - If [AttachmentTileStatus.sendFailed] (send failed after upload): marks
+  ///   tile back to [AttachmentTileStatus.done] (or immediately re-sends when
+  ///   [coordinator] + [sender] are supplied) without re-uploading.
+  Future<void> retry(
+    String fileId, {
+    MessageCoordinator? coordinator,
+    ChatUser? sender,
+    ChatMessage? repliedTo,
+  }) async {
+    final tile = _byId(fileId);
+    if (tile == null) return;
+    if (fileId.startsWith('local_reject_') ||
+        tile.status == AttachmentTileStatus.rejected) {
+      return;
+    }
+
+    if (tile.status == AttachmentTileStatus.sendFailed &&
+        tile.attachment != null &&
+        tile.attachment!.state == AttachmentState.uploaded) {
+      tile.status = AttachmentTileStatus.done;
+      tile.errorMessage = null;
+      tile.failure = null;
+      _safeNotify();
+      if (coordinator != null &&
+          sender != null &&
+          (conversationId ?? '').isNotEmpty) {
+        await sendAll(
+          coordinator: coordinator,
+          conversationId: conversationId!,
+          sender: sender,
+          repliedTo: repliedTo,
+        );
+      }
+      return;
+    }
+
+    final provider = mediaProvider;
+    if (provider == null) return;
+    tile.loaded = 0;
+    tile.errorMessage = null;
+    tile.failure = null;
+    tile.status = AttachmentTileStatus.uploading;
+    _safeNotify();
+    await _uploadTile(tile, provider);
+  }
+
+  void setCaption(String value) => caption = value;
+
+  /// Cancels all active uploads and clears every tile from the tray.
+  Future<void> clear() async {
+    for (final token in _activeTokens.values) {
+      token.cancel();
+    }
+    _activeTokens.clear();
+    _failedSendLocalIds.clear();
+    _tiles.forEach(_releaseThumb);
+    _tiles.clear();
+    caption = '';
+    _safeNotify();
+  }
+
+  void _removeTileInternal(String fileId, {bool notify = true}) {
+    for (final t in _tiles) {
+      if (t.fileId == fileId) _releaseThumb(t);
+    }
+    _tiles.removeWhere((t) => t.fileId == fileId);
+    if (notify) _safeNotify();
+  }
+
   void _releaseThumb(AttachmentTile tile) {
     final t = tile.thumbUrl;
     if (t != null) platform.revokeObjectUrl(t);
@@ -324,181 +602,6 @@ class AttachmentTrayController extends ChangeNotifier {
     }
   }
 
-  Future<void> cancelOrRemove(String fileId) async {
-    for (final t in _tiles) {
-      if (t.fileId == fileId) _releaseThumb(t);
-    }
-    _tiles.removeWhere((t) => t.fileId == fileId);
-    _safeNotify();
-    // Locally-rejected tiles (over the count/size limit) never reached the SDK.
-    if (!fileId.startsWith('local_reject_')) {
-      _request?.removeAttachment(fileId);
-    }
-  }
-
-  Future<void> retry(String fileId) async {
-    final t = _byId(fileId);
-    if (t == null || _request == null) return;
-    // Over-limit tiles can't be retried — the file is too large / over count.
-    if (fileId.startsWith('local_reject_')) return;
-    t.loaded = 0;
-    t.status = AttachmentTileStatus.uploading;
-    _safeNotify();
-    _request!.retryAttachment(fileId);
-  }
-
-  void setCaption(String value) => caption = value;
-
-  /// Clears the tray and releases the upload batch from SDK memory. The next
-  /// [stage] re-creates the request with the current receiver.
-  Future<void> clear() async {
-    _request?.clearAll();
-    _request = null;
-    _batchId = null;
-    _tiles.forEach(_releaseThumb);
-    _tiles.clear();
-    caption = '';
-    _safeNotify();
-  }
-
-  /// Builds one optimistic [MediaMessage] **per attachment kind** (image → video
-  /// → audio → file, in that order) from the staged (done) attachments.
-  ///
-  /// Every fanned-out message carries the batch contract shared by all UIKits:
-  /// `metadata['batchId']` (so the list groups them — avatar on the first,
-  /// timestamp on the last) plus `batchIndex`/`batchSize` for order-independent
-  /// grouping, a unique `muid` (`{batchId}_{kind}` when multi-kind), and an
-  /// incremented [sentAt] for stable ordering. The [caption] rides on the last
-  /// message only.
-  List<MediaMessage> buildBatchMessages({
-    required String receiverUid,
-    required String receiverType,
-    User? sender,
-  }) {
-    final all = doneAttachments;
-    if (all.isEmpty) return const [];
-
-    // Per-attachment audio duration (ms), keyed by the exact Attachment
-    // instance each done tile carries, so the audio message can stamp it into
-    // metadata for the received bubble to show up front (ENG-37180). Null when
-    // the stage-time probe hasn't finished or failed — the reader tolerates it.
-    final durationOf = Map<Attachment, int?>.identity();
-    for (final t in _tiles) {
-      if (t.status == AttachmentTileStatus.done && t.attachment != null) {
-        durationOf[t.attachment!] = t.durationMillis;
-      }
-    }
-
-    String kindOf(Attachment a) {
-      if (AttachmentUtils.isImage(a)) return 'image';
-      if (AttachmentUtils.isVideo(a)) return 'video';
-      if (AttachmentUtils.isAudio(a)) return 'audio';
-      return 'file';
-    }
-
-    final byKind = <String, List<Attachment>>{
-      'image': [],
-      'video': [],
-      'audio': [],
-      'file': [],
-    };
-    for (final a in all) {
-      byKind[kindOf(a)]!.add(a);
-    }
-    const order = ['image', 'video', 'audio', 'file'];
-    final kinds = order.where((k) => byKind[k]!.isNotEmpty).toList();
-
-    final batchId =
-        _batchId ?? DateTime.now().microsecondsSinceEpoch.toString();
-    final cap = caption.trim();
-    final isBatch = kinds.length > 1;
-    final now = DateTime.now();
-
-    final msgs = <MediaMessage>[];
-    for (var i = 0; i < kinds.length; i++) {
-      final kind = kinds[i];
-      final atts = byKind[kind]!;
-      final isLast = i == kinds.length - 1;
-      final msg = MediaMessage(
-        receiverUid: receiverUid,
-        receiverType: receiverType,
-        type: kind,
-        muid: isBatch ? '${batchId}_$kind' : batchId,
-      );
-      msg.attachments = atts;
-      msg.attachment = atts.first;
-      msg.caption = (isLast && cap.isNotEmpty) ? cap : null;
-      msg.sender = sender;
-      // Stable ordering: image (earliest) … file (latest).
-      msg.sentAt = now.add(Duration(milliseconds: i));
-      final metadata = <String, dynamic>{
-        UploadMetadataKeys.batchId: batchId,
-        'batchIndex': i,
-        'batchSize': kinds.length,
-      };
-      if (kind == 'audio') {
-        // Index-aligned with `atts` (the received message's attachments order)
-        // so each audio row reads its own duration before the file loads.
-        metadata['audioDurationsMs'] = atts.map((a) => durationOf[a]).toList();
-      }
-      msg.metadata = metadata;
-      msgs.add(msg);
-    }
-    return msgs;
-  }
-
-  // ---- Upload event handlers (called by _TrayUploadListener) ----
-
-  void _onProgress(String fileId, int loaded, int total, int percent) {
-    ccLog('⬆️ [prog] $fileId $loaded/$total ($percent%)');
-    final t = _byId(fileId);
-    if (t == null) return;
-    t.loaded = loaded;
-    _safeNotify();
-  }
-
-  void _onFileUploaded(String fileId, Attachment attachment) {
-    ccLog('✅ [uploaded] $fileId url=${attachment.fileUrl}');
-    final t = _byId(fileId);
-    if (t == null) return;
-    t.status = AttachmentTileStatus.done;
-    t.loaded = t.size;
-    t.attachment = attachment;
-    // Keep the instant local-path preview — the freshly-uploaded CDN URL may
-    // not be fetchable yet (signed URL propagation) and needs no network
-    // anyway. Only adopt the remote URL when there is no local source (e.g.
-    // bytes-based web picks).
-    t.thumbUrl ??= attachment.fileUrl;
-    _safeNotify();
-  }
-
-  void _onFileError(String fileId, CometChatException error) {
-    ccLog('🟥 [tray] onFileError $fileId — '
-        'code=${error.code} details=${error.details} msg=${error.message}');
-    final t = _byId(fileId);
-    if (t == null) return;
-    t.status = AttachmentTileStatus.rejected;
-    t.errorMessage = error.message ?? error.details ?? error.code;
-    _safeNotify();
-  }
-
-  void _onFileFailure(String fileId, CometChatException error) {
-    ccLog('🟧 [tray] onFileFailure $fileId — '
-        'code=${error.code} details=${error.details} msg=${error.message}');
-    final t = _byId(fileId);
-    if (t == null) return;
-    t.status = AttachmentTileStatus.failed;
-    t.errorMessage = error.message ?? error.details ?? error.code;
-    _safeNotify();
-  }
-
-  void _onComplete(UploadResult result) {
-    ccLog('🏁 [complete] ok=${result.successful.length} '
-        'rejected=${result.rejected.length} failed=${result.failed}');
-    // Tiles are updated incrementally above; just re-evaluate canSend.
-    _safeNotify();
-  }
-
   void _safeNotify() {
     if (!_disposed) notifyListeners();
   }
@@ -506,41 +609,13 @@ class AttachmentTrayController extends ChangeNotifier {
   @override
   void dispose() {
     _disposed = true;
+    for (final token in _activeTokens.values) {
+      token.cancel();
+    }
+    _activeTokens.clear();
+    _failedSendLocalIds.clear();
     _tiles.forEach(_releaseThumb);
-    // Composer closed / conversation switched mid-stage: abort any in-flight
-    // uploads and release the batch server-side (fire-and-forget — nothing from
-    // the tray survives disposal).
-    _request?.clearAll();
-    _request = null;
+    _tiles.clear();
     super.dispose();
   }
-}
-
-/// Adapts the SDK's [UploadFileListener] to the controller's private handlers.
-/// The controller can't `extends UploadFileListener` itself (it already extends
-/// [ChangeNotifier]), so it registers this forwarder as the batch's global
-/// listener.
-class _TrayUploadListener extends UploadFileListener {
-  _TrayUploadListener(this._c);
-
-  final AttachmentTrayController _c;
-
-  @override
-  void onFileProgress(String fileId, int loaded, int total, int percent) =>
-      _c._onProgress(fileId, loaded, total, percent);
-
-  @override
-  void onFileUploaded(String fileId, Attachment attachment) =>
-      _c._onFileUploaded(fileId, attachment);
-
-  @override
-  void onFileError(String fileId, CometChatException error) =>
-      _c._onFileError(fileId, error);
-
-  @override
-  void onFileFailure(String fileId, CometChatException error) =>
-      _c._onFileFailure(fileId, error);
-
-  @override
-  void onComplete(UploadResult result) => _c._onComplete(result);
 }

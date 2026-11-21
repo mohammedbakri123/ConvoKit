@@ -17,27 +17,26 @@ import 'package:convokit/convokit_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-final _me = User(uid: 'me', name: 'Me');
-final _them = User(uid: 'them', name: 'Them');
+const _me = ChatUser(id: 'me', name: 'Me');
+final _sentAt = DateTime.fromMillisecondsSinceEpoch(1700000000000);
 
 const double _rowHeight = 100;
 const double _viewport = 300;
 
-TextMessage _msg(int id, {User? sender, DateTime? sentAt}) => TextMessage(
-  id: id,
-  text: 'msg $id',
-  sender: sender ?? _them,
-  receiverUid: 'them',
-  type: MessageTypeConstants.text,
-  receiverType: ReceiverTypeConstants.user,
-  sentAt: sentAt ?? DateTime(2024, 1, 1, 12),
+TextMessage _msg(int id, {String? text, DateTime? sentAt, ChatUser? sender}) => TextMessage(
+  id: '$id',
+  localId: 'm_$id',
+  conversationId: 'conv_1',
+  sender: sender ?? _me,
+  createdAt: sentAt ?? _sentAt,
+  text: text ?? 'msg $id',
 );
 
-List<BaseMessage> _msgs(Iterable<int> ids) => [for (final id in ids) _msg(id)];
+List<ChatMessage> _msgs(Iterable<int> ids) => [for (final id in ids) _msg(id)];
 
 Widget _row(
   BuildContext context,
-  BaseMessage m,
+  ChatMessage m,
   int index,
   Animation<double> a,
 ) => KeyedSubtree(
@@ -78,12 +77,12 @@ void main() {
 
   Future<ScrollController> pumpSeeded(
     WidgetTester tester, {
-    required List<BaseMessage> seed,
+    required List<ChatMessage> seed,
     bool reversed = true,
     Future<void> Function()? onLoadNewer,
     bool hasMoreNewer = false,
     LoadMoreBuilder? loadMoreBuilder,
-    int? Function(int)? findMessageIndex,
+    int? Function(String)? findMessageIndex,
     String? loggedInUserId,
     ComposerHeightNotifier? composerHeightNotifier,
     Duration scrollToEndAnimationDuration = const Duration(milliseconds: 250),
@@ -110,7 +109,7 @@ void main() {
         ),
       ),
     );
-    bloc.add(SetMessages(seed, animated: false));
+    bloc.setMessages(seed, animated: false);
     await _drain(tester);
     return controller;
   }
@@ -160,13 +159,13 @@ void main() {
     testWidgets('prefers the host-supplied O(1) lookup over the linear scan', (
       tester,
     ) async {
-      final asked = <int>[];
+      final asked = <String>[];
       await pumpSeeded(
         tester,
         seed: _msgs([1, 2, 3]),
         findMessageIndex: (id) {
           asked.add(id);
-          return id == 2 ? 0 : null;
+          return id == '2' ? 0 : null;
         },
       );
       final index = sliverList(tester).findChildIndexCallback!;
@@ -174,11 +173,11 @@ void main() {
       // The override claims message 2 lives at content index 0, which is
       // visual slot 2 in a reversed list of three.
       expect(index(const ValueKey<String>('2-0-0')), 2);
-      expect(asked, [2]);
+      expect(asked, ['2']);
 
       // When the override declines, the widget falls back to its own scan.
       expect(index(const ValueKey<String>('3-0-0')), 0);
-      expect(asked, [2, 3]);
+      expect(asked, ['2', '3']);
     });
   });
 
@@ -220,7 +219,7 @@ void main() {
       );
       expect(controller.position.maxScrollExtent, 0);
 
-      bloc.add(InsertMessage(_msg(2, sender: _me)));
+      bloc.insertMessage(_msg(2, sender: _me), 1);
       await _drain(tester);
 
       expect(_rowTexts(tester), containsAll(<String>['m1', 'm2']));
@@ -237,7 +236,7 @@ void main() {
     ) async {
       await pumpSeeded(tester, seed: _msgs([1, 3]), reversed: false);
 
-      bloc.add(SetMessages(_msgs([1, 2, 3]), animated: true));
+      bloc.setMessages(_msgs([1, 2, 3]), animated: true);
       await _drain(tester);
 
       expect(_rowTexts(tester).toList(), ['m1', 'm2', 'm3']);
@@ -250,12 +249,12 @@ void main() {
       // Same ids, but message 2 now carries a newer `updatedAt`: the diff
       // reports it as a CHANGE, which the list deliberately ignores (the row
       // is rebuilt by the message-update notifier instead).
-      final edited = <BaseMessage>[
+      final edited = <ChatMessage>[
         _msg(1),
-        _msg(2)..updatedAt = DateTime(2024, 1, 1, 13),
+        _msg(2, text: 'edited'),
         _msg(3),
       ];
-      bloc.add(SetMessages(edited, animated: true));
+      bloc.setMessages(edited, animated: true);
       await _drain(tester);
 
       expect(_rowTexts(tester).toList(), ['m1', 'm2', 'm3']);
@@ -266,7 +265,7 @@ void main() {
     ) async {
       await pumpSeeded(tester, seed: _msgs([1, 2, 3]), reversed: false);
 
-      bloc.add(SetMessages(_msgs([1, 3]), animated: true));
+      bloc.setMessages(_msgs([1, 3]), animated: true);
       await _drain(tester);
 
       expect(_rowTexts(tester).toList(), ['m1', 'm3']);

@@ -1,12 +1,15 @@
+import 'package:convokit/convokit.dart';
+import 'package:convokit/convokit_uikit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:convokit/convokit_uikit.dart';
-import 'login_screen.dart';
+import 'package:sample_app/sample_app_backend.dart';
+
 import 'home_screen.dart';
+import 'login_screen.dart';
 import 'responsive_home_screen.dart';
 
-/// Guard screen — checks for a cached user session and auto-navigates
-/// to HomeScreen or LoginScreen accordingly.
+/// Guard screen — checks for an active offline ConvoKit session and routes
+/// to [HomeScreen]/[ResponsiveHomeScreen] or [LoginScreen].
 class GuardScreen extends StatefulWidget {
   const GuardScreen({super.key});
 
@@ -29,26 +32,11 @@ class _GuardScreenState extends State<GuardScreen> {
   }
 
   Future<void> _checkSession() async {
-    final cachedUser = await ConvoKitUIKit.getLoggedInUser();
-    if (cachedUser != null) {
-      // Re-login to refresh the connection
-      await ConvoKitUIKit.login(
-        cachedUser.uid,
-        // The UI Kit starts call handling itself and calls onSuccess once
-        // it is ready (bounded), so there is nothing to start here.
-        onSuccess: (_) {
-          _shouldGoHome.value = true;
-        },
-        onError: (e) {
-          if (kDebugMode) {
-            debugPrint('Guard: re-login failed: ${e.message}');
-          }
-          _shouldGoHome.value = false;
-        },
-      );
-    } else {
-      _shouldGoHome.value = false;
-    }
+    await SampleAppBackend.instance.ensureInitialized();
+    final ChatUser? user =
+        SampleAppBackend.instance.kit.session.currentUser ??
+        await ConvoKitUIKit.getLoggedInUser();
+    _shouldGoHome.value = user != null;
   }
 
   @override
@@ -57,19 +45,20 @@ class _GuardScreenState extends State<GuardScreen> {
       valueListenable: _shouldGoHome,
       builder: (context, value, _) {
         if (value == null) {
-          // Still checking — show splash
           return Material(
             color: _colorPalette.background1,
             child: Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset(
-                    'assets/cometchat_logo_with_text.png',
-                    color: _colorPalette.textPrimary,
-                    width: 200,
+                  Text(
+                    'ConvoKit',
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      color: _colorPalette.textPrimary,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 24),
                   CircularProgressIndicator(color: _colorPalette.primary),
                 ],
               ),
@@ -77,7 +66,6 @@ class _GuardScreenState extends State<GuardScreen> {
           );
         }
 
-        // Navigate after frame to avoid build-during-build
         WidgetsBinding.instance.addPostFrameCallback((_) {
           final Widget home = kIsWeb
               ? const ResponsiveHomeScreen()

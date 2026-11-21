@@ -31,7 +31,8 @@ class TextInputElement extends BaseInputElement<String> {
     return map;
   }
 
-  factory TextInputElement.fromMap(dynamic map) {
+  factory TextInputElement.fromMap(dynamic rawMap) {
+    final map = rawMap as Map<dynamic, dynamic>;
     return TextInputElement(
       elementType: map[ModelFieldConstants.elementType],
       elementId: map[ModelFieldConstants.elementId],

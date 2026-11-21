@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:convokit/convokit_uikit.dart';
+import 'package:flutter/material.dart';
 
 /// [ConvoKitMessagePreview] is a component that provides a bubble consisting of text
 /// that can be appended to the message composer, message bubble or any other component as desired.
@@ -18,7 +18,7 @@ class ConvoKitMessagePreview extends StatelessWidget {
     this.subtitleWidget,
   });
 
-  /// [messagePreviewTitle] title shown in the preview bar (e.g. sender name or "Edit Message")
+  /// [messagePreviewTitle] title shown in the preview bar (e.g. sender name or "Reply")
   final String messagePreviewTitle;
 
   /// [messagePreviewSubtitle] subtitle shown in the preview bar (message text or type label)
@@ -37,7 +37,7 @@ class ConvoKitMessagePreview extends StatelessWidget {
   final bool hideCloseButton;
 
   /// [message] message object used to show a media type icon for non-text messages
-  final BaseMessage? message;
+  final ChatMessage? message;
 
   /// [stickerUrl] URL of a sticker image to show as a thumbnail in the preview
   final String? stickerUrl;

@@ -31,18 +31,18 @@ class CheckBoxElement extends BaseInputElement<List<String>> {
     return map;
   }
 
-  factory CheckBoxElement.fromMap(dynamic map) {
+  factory CheckBoxElement.fromMap(dynamic rawMap) {
+    final map = rawMap as Map<dynamic, dynamic>;
     return CheckBoxElement(
       elementType: map[ModelFieldConstants.elementType],
       elementId: map[ModelFieldConstants.elementId],
       optional: map[ModelFieldConstants.optional] ?? true,
       label: map[ModelFieldConstants.label],
-      defaultValue: map[ModelFieldConstants.defaultValue]
+      defaultValue: (map[ModelFieldConstants.defaultValue] as List?)
           ?.map<String>((e) => e.toString())
           .toList(),
-      options: (map[ModelFieldConstants.options])
-          .map<OptionElement>((optionMap) => OptionElement.fromMap(optionMap))
-          .toList(),
+      // ignore: avoid_dynamic_calls
+      options: (map[ModelFieldConstants.options].map<OptionElement>((e) => OptionElement.fromMap(e)).toList() as List<OptionElement>),
     );
   }
 

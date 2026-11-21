@@ -22,7 +22,8 @@ class BaseInteractiveElement extends ElementEntity {
     return map;
   }
 
-  factory BaseInteractiveElement.fromMap(dynamic map) {
+  factory BaseInteractiveElement.fromMap(dynamic rawMap) {
+    final map = rawMap as Map<dynamic, dynamic>;
     if (map[ModelFieldConstants.elementType] == UIElementTypeConstants.button) {
       return ButtonElement.fromMap(map);
     } else {

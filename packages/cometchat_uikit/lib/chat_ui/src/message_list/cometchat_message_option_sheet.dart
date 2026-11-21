@@ -43,19 +43,19 @@ class CometchatMessageOptionSheet extends StatefulWidget {
   final List<String>? favoriteReactions;
 
   ///[messageObject] is a parameter used to set the message object
-  final BaseMessage messageObject;
+  final ChatMessage messageObject;
 
   ///[hideReactions] is a parameter used to hide the reactions
   final bool? hideReactions;
 
   ///[onReactionTap] is a callback which gets called when a reaction is pressed
-  final Function(BaseMessage message, String? reaction)? onReactionTap;
+  final Function(ChatMessage message, String? reaction)? onReactionTap;
 
   ///[addReactionIcon] sets custom icon for adding reaction
   final Widget? addReactionIcon;
 
   ///[onAddReactionIconTap] sets custom onTap for adding reaction
-  final Function(BaseMessage)? onAddReactionIconTap;
+  final Function(ChatMessage)? onAddReactionIconTap;
 
   ///[messageOptionStyle] sets the style for the message option bottom sheet
   final ConvoKitMessageOptionSheetStyle? messageOptionStyle;
@@ -329,9 +329,9 @@ Future<ActionItem?> showMessageOptionSheet({
   required final dynamic message,
   final ConvoKitMessageListControllerProtocol? state,
   final ConvoKitMessageListControllerProtocol? controllerProtocol,
-  final Function(BaseMessage message, String? reaction)? onReactionTap,
+  final Function(ChatMessage message, String? reaction)? onReactionTap,
   final Widget? addReactionIcon,
-  final Function(BaseMessage message)? addReactionIconTap,
+  final Function(ChatMessage message)? addReactionIconTap,
   bool hideReactions = false,
   List<String>? favoriteReactions,
   ConvoKitMessageOptionSheetStyle? style,

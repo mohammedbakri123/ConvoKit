@@ -30,11 +30,6 @@ dependencies:
   path_provider: ^2.1.2
   webview_flutter: ^4.13.0
   url_launcher: ^6.3.2
-  # Floor at 5.1.1, the release ringing v2 is built against: it deprecates
-  # the Chat SDK calling APIs the kit no longer uses, and fixes its Android
-  # build on Flutter 3.44 and later.
-  cometchat_sdk: ^5.1.1
-  cometchat_cards: ^1.0.1
   video_player: ^2.10.1
   http: ^1.4.0
   image_picker: ^1.2.1
@@ -53,7 +48,6 @@ dependencies:
   # supports. Every integrator on AGP 8 would break, with an error pointing
   # into .pub-cache and no hint the UI Kit caused it.
   permission_handler: '>=12.0.0 <13.0.0'
-  flutter_bloc: ^9.1.1
   equatable: ^2.0.8
   diffutil_dart: ^5.0.0
   scrollview_observer: ^1.27.0
@@ -67,10 +61,12 @@ dev_dependencies:
       sdk: flutter
   flutter_lints: ^6.0.0
   mocktail: ^1.0.3
-  bloc_test: ^10.0.0
   network_image_mock: ^2.1.1
   glados: ^1.1.7
   alchemist: ^0.14.0
+  path_provider_platform_interface: ^2.1.2
+  video_player_platform_interface: ^6.2.0
+  sqflite_common_ffi: ^2.3.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

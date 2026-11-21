@@ -9,13 +9,20 @@ void main() {
   AttachmentTile tile(String mimeType, String name) =>
       AttachmentTile(fileId: 'f', name: name, mimeType: mimeType, size: 1);
 
-  Attachment attachment(String mimeType, String name) {
-    final ext = name.contains('.') ? name.split('.').last : '';
-    return Attachment('https://example.com/$name', name, ext, mimeType, 1);
+  ChatAttachment attachment(String mimeType, String name) {
+    return ChatAttachment(
+      id: 'att_$name',
+      kind: AttachmentTrayController.classifyKind(mimeType, name),
+      localPath: '/tmp/$name',
+      state: AttachmentState.local,
+      mimeType: mimeType,
+      name: name,
+      sizeBytes: 1,
+    );
   }
 
   /// The kind string the send path stamps (mirrors kindOf in the controller).
-  String sendKind(Attachment a) {
+  String sendKind(ChatAttachment a) {
     if (AttachmentUtils.isImage(a)) return 'image';
     if (AttachmentUtils.isVideo(a)) return 'video';
     if (AttachmentUtils.isAudio(a)) return 'audio';

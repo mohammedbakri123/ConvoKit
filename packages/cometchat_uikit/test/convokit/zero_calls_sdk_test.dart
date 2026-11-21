@@ -134,7 +134,7 @@ void main() {
     });
 
     testWidgets('ConvoKitMessageHeader renders no call buttons or call icons', (tester) async {
-      final user = User(uid: 'u_alice', name: 'Alice', status: 'online');
+      const user = ChatUser(id: 'u_alice', name: 'Alice', presence: UserPresence.online);
 
       await tester.pumpWidget(
         MaterialApp(

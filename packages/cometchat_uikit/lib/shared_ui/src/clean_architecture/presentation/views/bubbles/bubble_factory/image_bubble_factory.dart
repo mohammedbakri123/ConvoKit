@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cometchat_sdk/cometchat_sdk.dart' hide CardMessage;
+import 'package:convokit/src/core/models/models.dart';
 import '../../../../core/constants/enums.dart';
-import '../../../../core/utils/thumbnail_extraction_util.dart';
 import '../../../theme/colors/cometchat_color_palette.dart';
 import '../../../theme/typography/cometchat_typography.dart';
 import '../../../theme/spacing/cometchat_spacing.dart';
@@ -32,18 +31,14 @@ class ImageBubbleFactory extends BubbleFactory<MediaMessage> {
     ConvoKitTypography? typography,
     ConvoKitSpacing? spacing,
   }) {
-    final thumbnailUrl = ThumbnailExtractionUtil.extractFromMetadata(
-      message.metadata,
-    );
-
+    final att = message.attachment;
     return CometChatImageBubble(
-      imageUrl: message.attachment?.fileUrl,
-      thumbnailUrl: thumbnailUrl,
+      imageUrl: att.url ?? att.localPath,
+      thumbnailUrl: att.thumbnailUrl,
       style: style,
       placeholderImage: placeholderImage,
       placeHolderImagePackageName: placeholderImagePackageName,
       onClick: onClick,
-      metadata: message.metadata,
     );
   }
 }

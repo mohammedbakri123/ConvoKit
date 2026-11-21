@@ -15,8 +15,9 @@ import 'package:convokit/convokit_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-final _me = User(uid: 'me', name: 'Me');
-final _them = User(uid: 'them', name: 'Them');
+const _me = ChatUser(id: 'me', name: 'Me');
+const _them = ChatUser(id: 'them', name: 'Them');
+final _sentAt = DateTime(2024, 1, 1, 9);
 
 /// Item height — every row is exactly this tall so scroll offsets in these
 /// tests are arithmetic, not guesswork.
@@ -25,23 +26,22 @@ const double _rowHeight = 100;
 /// Viewport height for the list under test.
 const double _viewport = 300;
 
-TextMessage _msg(int id, {User? sender, DateTime? sentAt}) => TextMessage(
-  id: id,
-  text: 'msg $id',
-  sender: sender ?? _them,
-  receiverUid: 'them',
-  type: MessageTypeConstants.text,
-  receiverType: ReceiverTypeConstants.user,
-  sentAt: sentAt ?? DateTime(2024, 1, 1, 12),
+TextMessage _msg(int id, {String? text, DateTime? sentAt, ChatUser? sender}) => TextMessage(
+  id: '$id',
+  localId: 'm_$id',
+  conversationId: 'conv_1',
+  sender: sender ?? _me,
+  createdAt: sentAt ?? _sentAt,
+  text: text ?? 'msg $id',
 );
 
-List<BaseMessage> _msgs(Iterable<int> ids) => [for (final id in ids) _msg(id)];
+List<ChatMessage> _msgs(Iterable<int> ids) => [for (final id in ids) _msg(id)];
 
 /// Rows are keyed the way the real message list keys them — a composite
 /// `ValueKey<String>` — so [findChildIndexCallback] sees a real key.
 Widget _row(
   BuildContext context,
-  BaseMessage m,
+  ChatMessage m,
   int index,
   Animation<double> a,
 ) {
@@ -115,7 +115,7 @@ void main() {
   /// the real message list takes when its first page lands.
   Future<ScrollController> pumpSeeded(
     WidgetTester tester, {
-    required List<BaseMessage> seed,
+    required List<ChatMessage> seed,
     bool reversed = true,
     Future<void> Function()? onLoadOlder,
     Future<void> Function()? onLoadNewer,
@@ -127,7 +127,7 @@ void main() {
     InitialScrollToEndMode initialScrollToEndMode = InitialScrollToEndMode.jump,
     bool shouldScrollToEndWhenAtBottom = true,
     bool shouldScrollToEndWhenSendingMessage = true,
-    int? Function(int)? findMessageIndex,
+    int? Function(String)? findMessageIndex,
   }) async {
     bloc = newBloc();
     final controller = ScrollController();
@@ -156,7 +156,7 @@ void main() {
         ),
       ),
     );
-    bloc.add(SetMessages(seed, animated: false));
+    bloc.setMessages(seed, animated: false);
     await _drain(tester);
     return controller;
   }
@@ -178,7 +178,7 @@ void main() {
       await tester.pump();
       expect(find.text('nothing yet'), findsOneWidget);
 
-      bloc.add(SetMessages(_msgs([1, 2, 3]), animated: false));
+      bloc.setMessages(_msgs([1, 2, 3]), animated: false);
       await _drain(tester);
 
       expect(find.text('nothing yet'), findsNothing);
@@ -191,17 +191,17 @@ void main() {
       await pumpSeeded(tester, seed: _msgs([1, 2]));
       expect(_rowTexts(tester), isNot(contains('m3')));
 
-      bloc.add(InsertMessage(_msg(3)));
+      bloc.insertMessage(_msg(3), bloc.state.messages.length);
       await _drain(tester);
 
       expect(_rowTexts(tester), contains('m3'));
-      expect(bloc.state.messages.last.id, 3);
+      expect(bloc.state.messages.last.id, '3');
     });
 
     testWidgets('a non-animated insert lands too', (tester) async {
       await pumpSeeded(tester, seed: _msgs([1, 2]));
 
-      bloc.add(InsertMessage(_msg(3), animated: false));
+      bloc.insertMessage(_msg(3), bloc.state.messages.length, animated: false);
       await _drain(tester);
 
       expect(_rowTexts(tester), contains('m3'));
@@ -212,12 +212,12 @@ void main() {
       await pumpSeeded(tester, seed: seed);
       expect(_rowTexts(tester), contains('m2'));
 
-      bloc.add(RemoveMessage(seed[1]));
+      bloc.removeMessage(1);
       await _drain(tester);
 
       expect(_rowTexts(tester), isNot(contains('m2')));
       expect(_rowTexts(tester), containsAll(<String>['m1', 'm3']));
-      expect(bloc.state.messages.map((m) => m.id), <int>[1, 3]);
+      expect(bloc.state.messages.map((m) => m.id), <String>['1', '3']);
     });
 
     testWidgets('update swaps the message in place, keeping the row count', (
@@ -227,8 +227,8 @@ void main() {
       await pumpSeeded(tester, seed: seed);
       final before = _rowTexts(tester).length;
 
-      final edited = _msg(2)..text = 'edited';
-      bloc.add(UpdateMessage(seed[1], edited));
+      final edited = _msg(2, text: 'edited');
+      bloc.updateMessage(edited, 1);
       await _drain(tester);
 
       expect(_rowTexts(tester).length, before, reason: 'no row added/removed');
@@ -238,13 +238,13 @@ void main() {
     testWidgets('insertAll at index 0 prepends older messages', (tester) async {
       await pumpSeeded(tester, seed: _msgs([5, 6]));
 
-      bloc.add(InsertAllMessages(_msgs([3, 4]), index: 0, animated: false));
+      bloc.insertAllMessages(_msgs([3, 4]), 0, animated: false);
       await _drain(tester);
 
-      expect(bloc.state.messages.map((m) => m.id), <int>[3, 4, 5, 6]);
+      expect(bloc.state.messages.map((m) => m.id), <String>['3', '4', '5', '6']);
       expect(_rowTexts(tester), containsAll(<String>['m5', 'm6']));
       expect(
-        await _settleScroll(tester, bloc.scrollToMessage(3)),
+        await _settleScroll(tester, bloc.scrollToMessage('3')),
         isTrue,
         reason: 'the prepended message is addressable in the list',
       );
@@ -255,10 +255,10 @@ void main() {
       (tester) async {
         await pumpSeeded(tester, seed: _msgs([1, 2]));
 
-        bloc.add(InsertAllMessages(_msgs([3, 4]), index: 2, animated: false));
+        bloc.insertAllMessages(_msgs([3, 4]), 2, animated: false);
         await _drain(tester, frames: 24);
 
-        expect(bloc.state.messages.map((m) => m.id), <int>[1, 2, 3, 4]);
+        expect(bloc.state.messages.map((m) => m.id), <String>['1', '2', '3', '4']);
         // The newer-insert path drops opacity to 0 while it rebuilds and
         // restores the anchor; it must always come back to 1.
         expect(
@@ -273,7 +273,7 @@ void main() {
         expect(
           await _settleScroll(
             tester,
-            bloc.scrollToMessage(4, duration: Duration.zero),
+            bloc.scrollToMessage('4', duration: Duration.zero),
           ),
           isTrue,
           reason: 'the appended messages are in the list, just below the fold',
@@ -287,10 +287,10 @@ void main() {
       await pumpSeeded(tester, seed: _msgs([1, 2, 3]));
 
       // Drop 2, append 4 — one remove and one insert through the diff.
-      bloc.add(SetMessages(_msgs([1, 3, 4])));
+      bloc.setMessages(_msgs([1, 3, 4]));
       await _drain(tester, frames: 24);
 
-      expect(bloc.state.messages.map((m) => m.id), <int>[1, 3, 4]);
+      expect(bloc.state.messages.map((m) => m.id), <String>['1', '3', '4']);
       expect(_rowTexts(tester), contains('m4'));
       expect(_rowTexts(tester), isNot(contains('m2')));
     });
@@ -300,7 +300,7 @@ void main() {
     ) async {
       await pumpSeeded(tester, seed: _msgs([1, 2]));
 
-      bloc.add(SetMessages(const [], animated: false));
+      bloc.setMessages(const [], animated: false);
       await _drain(tester);
 
       expect(find.byType(EmptyMessageList), findsOneWidget);
@@ -443,7 +443,7 @@ void main() {
 
       // Three messages arrive from the other side while we read history.
       for (final id in [9, 10, 11]) {
-        bloc.add(InsertMessage(_msg(id, sender: _them)));
+        bloc.insertMessage(_msg(id, sender: _them), bloc.state.messages.length);
         await _drain(tester);
       }
       expect(bloc.state.messages.length, 11);
@@ -586,7 +586,7 @@ void main() {
 
       final ok = await _settleScroll(
         tester,
-        bloc.scrollToMessage(1, duration: Duration.zero),
+        bloc.scrollToMessage('1', duration: Duration.zero),
       );
 
       expect(ok, isTrue);
@@ -602,7 +602,7 @@ void main() {
       tester,
     ) async {
       await pumpSeeded(tester, seed: _msgs([1, 2, 3]));
-      expect(await bloc.scrollToMessage(999), isFalse);
+      expect(await bloc.scrollToMessage('999'), isFalse);
     });
 
     testWidgets('scrollToIndex answers false for an out-of-range index', (
@@ -631,7 +631,7 @@ void main() {
       await tester.pumpWidget(_host(const SizedBox.shrink()));
       await tester.pump();
 
-      expect(await bloc.scrollToMessage(1), isFalse);
+      expect(await bloc.scrollToMessage('1'), isFalse);
       expect(await bloc.scrollToIndex(0), isFalse);
     });
   });
@@ -702,7 +702,7 @@ void main() {
       await _drain(tester);
       expect(controller.offset, greaterThan(0));
 
-      bloc.add(InsertMessage(_msg(9, sender: _me)));
+      bloc.insertMessage(_msg(9, sender: _me), bloc.state.messages.length);
       await _drain(tester);
 
       expect(controller.offset, 0);
@@ -721,7 +721,7 @@ void main() {
         final parked = controller.offset;
         expect(parked, greaterThan(0));
 
-        bloc.add(InsertMessage(_msg(9, sender: _them)));
+        bloc.insertMessage(_msg(9, sender: _them), bloc.state.messages.length);
         await _drain(tester);
 
         expect(
@@ -746,7 +746,7 @@ void main() {
         await _drain(tester);
         final parked = controller.offset;
 
-        bloc.add(InsertMessage(_msg(9, sender: _me)));
+        bloc.insertMessage(_msg(9, sender: _me), bloc.state.messages.length);
         await _drain(tester);
 
         expect(controller.offset, parked);
@@ -760,15 +760,15 @@ void main() {
     ) async {
       await pumpSeeded(tester, seed: _msgs([5, 6]));
 
-      bloc.add(InsertAllMessages(_msgs([2, 3, 4]), index: 0));
+      bloc.insertAllMessages(_msgs([2, 3, 4]), 0);
       await _drain(tester, frames: 24);
 
-      expect(bloc.state.messages.map((m) => m.id), <int>[2, 3, 4, 5, 6]);
+      expect(bloc.state.messages.map((m) => m.id), <String>['2', '3', '4', '5', '6']);
       for (final id in [2, 3, 4]) {
         expect(
           await _settleScroll(
             tester,
-            bloc.scrollToMessage(id, duration: Duration.zero),
+            bloc.scrollToMessage('$id', duration: Duration.zero),
           ),
           isTrue,
           reason: 'message $id was inserted',
@@ -785,10 +785,10 @@ void main() {
         reversed: false,
       );
 
-      bloc.add(InsertAllMessages(_msgs([3, 4, 5]), index: 2));
+      bloc.insertAllMessages(_msgs([3, 4, 5]), 2);
       await _drain(tester, frames: 24);
 
-      expect(bloc.state.messages.map((m) => m.id), <int>[1, 2, 3, 4, 5]);
+      expect(bloc.state.messages.map((m) => m.id), <String>['1', '2', '3', '4', '5']);
       controller.jumpTo(controller.position.maxScrollExtent);
       await _drain(tester);
       expect(_rowTexts(tester), contains('m5'));
@@ -828,7 +828,7 @@ void main() {
       );
       expect(controller.offset, 0);
 
-      bloc.add(InsertMessage(_msg(9, sender: _me)));
+      bloc.insertMessage(_msg(9, sender: _me), bloc.state.messages.length);
       await _drain(tester, frames: 24);
 
       expect(controller.offset, controller.position.maxScrollExtent);
@@ -907,7 +907,7 @@ void main() {
         'sit in an unkeyed RepaintBoundary, which made the lookup dead code.', (
       tester,
     ) async {
-      final asked = <int>[];
+      final asked = <String>[];
       await pumpSeeded(
         tester,
         seed: _msgs([1, 2, 3]),
@@ -918,9 +918,9 @@ void main() {
       );
 
       // Inserts and removals are exactly when a list reuses keyed children.
-      bloc.add(InsertMessage(_msg(4)));
+      bloc.insertMessage(_msg(4), bloc.state.messages.length);
       await _drain(tester);
-      bloc.add(InsertAllMessages(_msgs([0]), index: 0, animated: false));
+      bloc.insertAllMessages(_msgs([0]), 0, animated: false);
       await _drain(tester);
 
       expect(_rowTexts(tester), contains('m4'));

@@ -6,13 +6,12 @@ import '../../../utils/timezone_utils/env.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:cometchat_sdk/cometchat_sdk.dart' hide CardMessage;
 import 'package:intl/intl.dart';
 import '../../../logging/cometchat_log.dart';
 import '../../data/models/interactive_message/scheduler_message.dart'
     show TimeRange, SchedulerMessage;
 import '../../../../convokit_uikit_shared.dart'
-    show Translations, ConvoKitUIKit;
+    show Translations, ConvoKitUIKit, ChatError, ChatErrorCode;
 
 enum TimeFormat { twelveHour, twentyFourHour }
 
@@ -1017,13 +1016,14 @@ class SchedulerUtils {
       List<DateTimeRange>? blockedTime;
       List<DateTimeRange>? availableSlots;
       if (blockedDates.containsKey(day)) {
-        blockedTime = blockedDates[day]!["timings"].cast<DateTimeRange>();
+        blockedTime = (blockedDates[day]!["timings"] as List)
+            .cast<DateTimeRange>();
       }
 
       List<DateTimeRange>? nextDayBlockedTime;
       String day2 = DateFormat('yMd').format(from.add(const Duration(days: 1)));
       if (blockedDates.containsKey(day2)) {
-        nextDayBlockedTime = blockedDates[day2]!["timings"]
+        nextDayBlockedTime = (blockedDates[day2]!["timings"] as List)
             .cast<DateTimeRange>();
       }
 
@@ -1159,7 +1159,7 @@ class SchedulerUtils {
   static Future<Map<String, Map<String, dynamic>>> fetchICSFile(
     String? url,
     String timeZone,
-    Function(CometChatException) onError,
+    Function(ChatError) onError,
   ) async {
     Map<String, Map<String, dynamic>> blockedDates = {};
 
@@ -1173,9 +1173,8 @@ class SchedulerUtils {
           blockedDates = events;
         } else {
           onError(
-            CometChatException(
-              "ERR",
-              "FAILED_TO_LOAD_ICS_FILE",
+            ChatError(
+              ChatErrorCode.network,
               "Failed to load ICS file: ${response.statusCode}",
             ),
           );
@@ -1185,10 +1184,10 @@ class SchedulerUtils {
         }
       } catch (e) {
         onError(
-          CometChatException(
-            "ERR",
-            "UNABLE_TO_PARSE_ICS_FILE",
+          ChatError(
+            ChatErrorCode.unknown,
             "Unable to parse ICS file: $e",
+            cause: e,
           ),
         );
         if (kDebugMode) {
@@ -1197,9 +1196,8 @@ class SchedulerUtils {
       }
     } else {
       onError(
-        CometChatException(
-          "ERR",
-          "INVALID_API_ENDPOINT",
+        const ChatError(
+          ChatErrorCode.validation,
           "the api endpoint is either null of empty",
         ),
       );
@@ -1232,7 +1230,7 @@ class SchedulerUtils {
         if (currentEvent != null) {
           // events.add(Map.from(currentEvent));
           currentEvent = null;
-          blockedDates[day]!['timings'].add(blockedDuration);
+          (blockedDates[day]!['timings'] as List).add(blockedDuration);
           blockedDates[day]!['fullDayOut'] = false;
         }
       } else if (currentEvent != null) {
@@ -1299,7 +1297,7 @@ class SchedulerUtils {
                   59,
                 ),
               );
-              blockedDates[day]!['timings'].add(blockedDuration);
+              (blockedDates[day]!['timings'] as List).add(blockedDuration);
               blockedDates[day]!['fullDayOut'] = false;
               while (difference > 1) {
                 // blockedDuration = TimeRange(from: "", to: "");
@@ -1331,7 +1329,7 @@ class SchedulerUtils {
                     59,
                   ),
                 );
-                blockedDates[day]!['timings'].add(blockedDuration);
+                (blockedDates[day]!['timings'] as List).add(blockedDuration);
                 difference--;
               }
 
@@ -1752,7 +1750,7 @@ class SchedulerUtils {
   ) {
     return {
       "conversationId": message.conversationId,
-      "senderId": message.sender?.uid,
+      "senderId": message.sender?.id,
       "receiver": message.receiverUid,
       "receiverType": message.receiverType,
       "messageCategory": message.category,
@@ -1775,9 +1773,9 @@ class SchedulerUtils {
 
   static bool isScheduleButtonDisabled(SchedulerMessage schedulerMessage) {
     bool isSender =
-        schedulerMessage.sender?.uid == ConvoKitUIKit.loggedInUser?.uid;
+        schedulerMessage.sender?.id == ConvoKitUIKit.loggedInUser?.id;
     bool buttonIsDisabled =
-        isSender && !schedulerMessage.allowSenderInteraction;
+        isSender && !(schedulerMessage.allowSenderInteraction ?? false);
     return buttonIsDisabled;
   }
 

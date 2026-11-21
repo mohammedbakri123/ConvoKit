@@ -1,4 +1,4 @@
-import 'package:convokit/src/adapters/cometchat_sdk_adapter.dart';
+import 'package:convokit/convokit.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:convokit/convokit_uikit.dart';
@@ -34,13 +34,13 @@ class CometChatCreatePoll extends StatefulWidget {
   final String? group;
 
   ///[quotedMessage] message being replied to — its id is sent with the poll creation request
-  final BaseMessage? quotedMessage;
+  final ChatMessage? quotedMessage;
 
   ///[groupObject] group object for context
-  final Group? groupObject;
+  final ChatGroup? groupObject;
 
   ///[userObject] user object for context
-  final User? userObject;
+  final ChatUser? userObject;
 
   ///[defaultAnswers] min no. of default answers and default options cannot be deleted
   final int defaultAnswers;
@@ -719,8 +719,8 @@ class _CometChatCreatePollState extends State<CometChatCreatePoll> {
     body["options"] = nonEmptyAnswers;
     body["receiver"] = receiverUid;
     body["receiverType"] = receiverType;
-    if (widget.quotedMessage != null && widget.quotedMessage!.id > 0) {
-      body["quotedMessageId"] = widget.quotedMessage!.id;
+    if (widget.quotedMessage != null && (widget.quotedMessage!.id ?? widget.quotedMessage!.localId).isNotEmpty) {
+      body["quotedMessageId"] = widget.quotedMessage!.id ?? widget.quotedMessage!.localId;
     }
 
     setState(() {
@@ -729,28 +729,45 @@ class _CometChatCreatePollState extends State<CometChatCreatePoll> {
       _isError = false;
     });
 
-    unawaited(
-      CometChatSdkAdapter.callExtension(
-        ExtensionConstants.polls,
-        "POST",
-        ExtensionUrls.createPoll,
-        body,
-        onSuccess: (Map<String, dynamic> map) {
-          ccLog("Success map $map");
-          setState(() {
-            _isLoading = false;
-          });
-          Navigator.pop(context);
-        },
-        onError: (CometChatException e) {
-          setState(() {
-            _isLoading = false;
-            _isError = true;
-          });
-          ccLog("On Create Exception ${e.code} ${e.message}");
-        },
-      ),
-    );
+    final kit = ConvoKitScope.maybeOf(context);
+    final sender = kit?.session.currentUser;
+    final conversationId = receiverUid;
+    if (kit != null && sender != null && conversationId.isNotEmpty) {
+      final msg = CustomMessage(
+        localId: ConvoKitScope.hubOf(context).coordinator.generateLocalId(),
+        conversationId: conversationId,
+        sender: sender,
+        createdAt: DateTime.now(),
+        sendState: SendState.sending,
+        deliveryState: DeliveryState.none,
+        repliedTo: widget.quotedMessage,
+        kind: ExtensionType.extensionPoll,
+        data: body,
+      );
+      unawaited(
+        kit.messages.sendMessage(msg).then((res) {
+          if (!mounted) return;
+          res.fold(
+            onSuccess: (_) {
+              setState(() => _isLoading = false);
+              Navigator.of(context).maybePop();
+            },
+            onFailure: (err) {
+              setState(() {
+                _isLoading = false;
+                _isError = true;
+              });
+              ccLog("On Create Exception ${err.code} ${err.message}");
+            },
+          );
+        }),
+      );
+    } else {
+      setState(() {
+        _isLoading = false;
+        _isError = true;
+      });
+    }
   }
 }
 
@@ -762,9 +779,9 @@ Future<String?> showCometChatCreatePoll({
   String? uid,
   String? guid,
   String? title,
-  BaseMessage? quotedMessage,
-  Group? groupObject,
-  User? userObject,
+  ChatMessage? quotedMessage,
+  ChatGroup? groupObject,
+  ChatUser? userObject,
 }) {
   return showModalBottomSheet(
     context: context,

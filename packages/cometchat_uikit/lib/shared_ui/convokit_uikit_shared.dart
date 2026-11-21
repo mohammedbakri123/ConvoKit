@@ -53,7 +53,6 @@ export 'src/events/ai_assistant_events/cometchat_ai_assistant_events_listener.da
 export 'src/constants/ai_constants.dart';
 
 // AI models
-export 'src/models/ai/stream_message.dart';
 export 'src/models/ai_option_style.dart';
 
 // AI services
@@ -62,7 +61,7 @@ export 'src/services/cometchat_stream_callback.dart';
 // Export helpers (not duplicated in clean architecture)
 export 'src/cometchat_ui_kit/ui_kit_settings.dart';
 export 'src/cometchat_ui_kit/cometchat_ui_kit_helper.dart';
-export 'src/cometchat_ui_kit/cometchat_ui_kit.dart';
+export '../src/convokit_ui_kit.dart';
 
 // Export models that are not duplicated in clean architecture
 export 'src/models/cometchat_user_option.dart';
@@ -136,15 +135,17 @@ export 'src/clean_architecture/presentation/view_models/cometchat_details_contro
 // Export misc utilities (not duplicated in clean architecture)
 export 'src/misc/utils.dart';
 
-// Re-export cometchat_cards package (card renderer types for action handling)
-export 'package:cometchat_cards/cometchat_cards.dart';
+// Pure-Flutter card renderer fallback (replaces external card renderer)
+export 'src/views/convokit_card_view.dart';
+
+// Unified ConvoKit error & result contracts
+export '../src/contracts/result.dart';
 
 // Export utils that are not duplicated in clean architecture
 export 'src/utils/network_utils.dart';
 export 'src/utils/reply_utils.dart';
 
 // Export events utils (not duplicated in clean architecture)
-export 'src/events/utils/chat_sdk_event_initializer.dart';
 
 // Export extension bubble styles that are not duplicated in clean architecture
 export 'src/models/extension_bubble_styles/cometchat_link_preview_bubble_style.dart';

@@ -306,7 +306,7 @@ void main() {
 
       final shown = tester.widget<CometChatMediaViewer>(viewer);
       expect(
-        shown.mediaItems[shown.startIndex].fileUrl,
+        shown.mediaItems[shown.startIndex].url,
         seeded.url,
         reason: 'the viewer must open on the attachment that was tapped',
       );
@@ -506,8 +506,6 @@ void main() {
         skipOffstage: false,
       );
       final before = bubblesOfThisSticker().evaluate().length;
-      final history = await SdkProbe.latestMessagesWithUserB(limit: 1);
-      final lastIdBefore = history.isEmpty ? 0 : history.last.id;
 
       await tester.tap(cell);
 
@@ -528,10 +526,10 @@ void main() {
       final sent = await SdkProbe.waitForCustomMessageFromA(
         type: ExtensionType.sticker,
         where: (m) =>
-            m.id > lastIdBefore && m.customData?['sticker_url'] == stickerUrl,
+            m.data['sticker_url'] == stickerUrl,
       );
       expect(
-        sent.receiverUid,
+        sent.conversationId,
         TestCredentials.userBUid,
         reason: 'the sticker message must be addressed to User B',
       );

@@ -1,8 +1,8 @@
-import 'package:cometchat_sdk/cometchat_sdk.dart' as cc;
+import 'package:convokit/src/core/models/models.dart';
+import 'package:convokit/src/ui/convo_kit_scope.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../../../../l10n/translations.dart';
-import '../../../../cometchat_ui_kit/cometchat_ui_kit.dart';
 import '../cometchat_text_formatter.dart';
 import '../attributed_text.dart';
 import '../../../data/models/suggestion_list_item.dart';
@@ -53,8 +53,6 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
     super.previousTextEventSink,
     super.user,
     super.group,
-    super.groupMembersRequestBuilder,
-    super.usersRequestBuilder,
     this.mentionsType,
     this.onMentionTap,
     this.visibleIn,
@@ -79,8 +77,8 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
   ///[_requestBuilder] is a dynamic type which is used to store the requestBuilder
   dynamic _requestBuilder;
 
-  ///[onMentionTap] is a Function(String mention, cc.User mentionedUser, {cc.BaseMessage? message}) which is used to handle the mention tap
-  Function(String mention, cc.User mentionedUser, {cc.BaseMessage? message})?
+  ///[onMentionTap] is a Function(String mention, ChatUser mentionedUser, {ChatMessage? message}) which is used to handle the mention tap
+  Function(String mention, ChatUser mentionedUser, {ChatMessage? message})?
   onMentionTap;
 
   ///[mentionsType] is a [MentionsType] object which is used to store the mentions type
@@ -105,7 +103,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
   BuildContext? context;
 
   String mentionTracker = "";
-  Map<String, List<cc.User?>> mentionedUsersMap = {};
+  Map<String, List<ChatUser?>> mentionedUsersMap = {};
   Set<String> mentionCount = {};
   Set<String> mentionAllPositions = {}; // Track @all mention text patterns
 
@@ -123,13 +121,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
     trackingCharacter ??= "@";
     pattern ??= RegExp(RegexConstants.mentionRegexPattern);
 
-    if (mentionsType == MentionsType.users || group == null) {
-      _requestBuilder = usersRequestBuilder ?? cc.UsersRequestBuilder();
-    } else if (group != null) {
-      _requestBuilder =
-          groupMembersRequestBuilder ??
-          cc.GroupMembersRequestBuilder(group!.guid);
-    }
+    // Core UserRepository / GroupRepository fetched via ConvoKitScope.
   }
 
   void updatePreviousText(String text) {
@@ -140,11 +132,11 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
 
   ///[handlePreMessageSend] is a method which is used to handle the pre message send
   ///[context] is a [BuildContext] which is used to build the widget
-  ///[message] is a [cc.BaseMessage] which is used to send the message
+  ///[message] is a [ChatMessage] which is used to send the message
   @override
-  cc.BaseMessage handlePreMessageSend(
+  ChatMessage handlePreMessageSend(
     BuildContext context,
-    cc.BaseMessage message,
+    ChatMessage message,
   ) {
     // Store context for use in other methods
     this.context = context;
@@ -154,9 +146,9 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
     // right field — an unconditional `as TextMessage` crashed when an edited
     // media caption was sent through the formatter pipeline.
     String messagesText;
-    if (message is cc.TextMessage) {
+    if (message is TextMessage) {
       messagesText = message.text;
-    } else if (message is cc.MediaMessage) {
+    } else if (message is MediaMessage) {
       messagesText = message.caption ?? '';
     } else {
       return message;
@@ -179,7 +171,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
       processedMentionTexts.add(mentionText);
 
       bool isAllMention = mentionAllPositions.contains(mentionText);
-      cc.User? mentionedUser;
+      ChatUser? mentionedUser;
 
       if (!isAllMention && mentionedUsersMap.containsKey(mentionText)) {
         final users = mentionedUsersMap[mentionText]!;
@@ -214,14 +206,14 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
     for (var entry in mentionEntries) {
       String mentionText = entry['text'];
       bool isAllMention = entry['isAll'];
-      cc.User? user = entry['user'];
+      ChatUser? user = entry['user'];
 
       String replacement;
       if (isAllMention) {
         final allLabelId = mentionAllLabelId ?? "all";
         replacement = "<@all:$allLabelId>";
       } else {
-        replacement = "<@uid:${user!.uid}>";
+        replacement = "<@uid:${user!.id}>";
       }
 
       // Find all occurrences of this mention text in the message
@@ -251,12 +243,38 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
       );
     }
 
-    if (message is cc.TextMessage) {
-      message.text = messagesText;
-    } else if (message is cc.MediaMessage) {
-      message.caption = messagesText;
+    ChatMessage updatedMessage = message;
+    if (message is TextMessage) {
+      updatedMessage = TextMessage(
+        id: message.id,
+        localId: message.localId,
+        conversationId: message.conversationId,
+        sender: message.sender,
+        createdAt: message.createdAt,
+        serverCreatedAt: message.serverCreatedAt,
+        sendState: message.sendState,
+        deliveryState: message.deliveryState,
+        failure: message.failure,
+        repliedTo: message.repliedTo,
+        text: messagesText,
+      );
+    } else if (message is MediaMessage) {
+      updatedMessage = MediaMessage(
+        id: message.id,
+        localId: message.localId,
+        conversationId: message.conversationId,
+        sender: message.sender,
+        createdAt: message.createdAt,
+        serverCreatedAt: message.serverCreatedAt,
+        sendState: message.sendState,
+        deliveryState: message.deliveryState,
+        failure: message.failure,
+        repliedTo: message.repliedTo,
+        attachment: message.attachment,
+        caption: messagesText,
+      );
     }
-    message.mentionedUsers = getMentionedUsers(messagesText);
+    setMentionedUsersFor(updatedMessage, getMentionedUsers(messagesText));
     mentionedUsersMap.clear();
     mentionCount.clear();
     mentionAllPositions.clear();
@@ -265,7 +283,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
     if (mentionTracker.isNotEmpty) {
       resetMentionsTracker();
     }
-    return message;
+    return updatedMessage;
   }
 
   @override
@@ -273,7 +291,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
     fetchItems(textEditingController: textEditingController);
   }
 
-  List<cc.User> listItems = [];
+  List<ChatUser> listItems = [];
   bool hasMore = true;
 
   ///[initializeFetchRequest] is a method which is used to initialize the fetch request
@@ -284,11 +302,12 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
     TextEditingController textEditingController,
   ) {
     _lastSearchKeyword = searchKeyword;
-    _request =
-        (_requestBuilder
-              ..limit = 10
-              ..searchKeyword = searchKeyword)
-            .build();
+    // ignore: avoid_dynamic_calls
+    _requestBuilder.limit = 10;
+    // ignore: avoid_dynamic_calls
+    _requestBuilder.searchKeyword = searchKeyword;
+    // ignore: avoid_dynamic_calls
+    _request = _requestBuilder.build();
 
     fetchItems(
       firstTimeFetch: true,
@@ -303,8 +322,9 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
     required TextEditingController textEditingController,
     String? searchKeyword,
   }) async {
+    // ignore: avoid_dynamic_calls
     await _request.fetchNext(
-      onSuccess: (users) {
+      onSuccess: (List<ChatUser> users) {
         List<SuggestionListItem> suggestions = [];
         String? currentKeyword = searchKeyword ?? _lastSearchKeyword;
 
@@ -333,7 +353,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
                     : "Notify everyone in this group",
                 avatarHeight: 30,
                 avatarWidth: 30,
-                avatarUrl: group!.icon,
+                avatarUrl: group!.avatarUrl,
                 avatarName: group!.name,
                 onTap: () {
                   try {
@@ -439,14 +459,14 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
 
         if (users.isNotEmpty) {
           suggestions.addAll(
-            (users as List<cc.User>)
+            users
                 .map(
                   (user) => SuggestionListItem(
-                    id: user.uid,
+                    id: user.id,
                     title: user.name,
                     avatarHeight: 30,
                     avatarWidth: 30,
-                    avatarUrl: user.avatar,
+                    avatarUrl: user.avatarUrl,
                     avatarName: user.name,
                     onTap: () {
                       String mention = "@${user.name}";
@@ -498,14 +518,14 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
                             user,
                           );
                         }
-                        if (!mentionCount.contains(user.uid)) {
-                          mentionCount.add(user.uid);
+                        if (!mentionCount.contains(user.id)) {
+                          mentionCount.add(user.id);
                         }
                       } else if (!mentionedUsersMap.containsKey(mention) &&
                           leftMatchesFound + rightMatchesFound > 0) {
                         mentionedUsersMap[mention] = [user];
-                        if (!mentionCount.contains(user.uid)) {
-                          mentionCount.add(user.uid);
+                        if (!mentionCount.contains(user.id)) {
+                          mentionCount.add(user.id);
                         }
 
                         while (mentionedUsersMap[mention]!.length <
@@ -524,8 +544,8 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
                         }
                       } else {
                         mentionedUsersMap[mention] = [user];
-                        if (!mentionCount.contains(user.uid)) {
-                          mentionCount.add(user.uid);
+                        if (!mentionCount.contains(user.id)) {
+                          mentionCount.add(user.id);
                         }
                       }
 
@@ -575,7 +595,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
           }
         }
 
-        hasMore = !users.isEmpty;
+        hasMore = users.isNotEmpty;
       },
       onError: (exception) {
         if (onError != null) {
@@ -592,7 +612,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
   ///[cursorPosition] is an [int] which is used to store the cursor position
   void onMessageEdit(
     TextEditingController textEditingController, {
-    List<cc.User> mentionedUsers = const [],
+    List<ChatUser> mentionedUsers = const [],
   }) {
     if (mentionCount.length == mentionsLimit || listItems.isNotEmpty) {
       ConvoKitUIEvents.hidePanel(composerId, CustomUIPosition.composerTop);
@@ -635,7 +655,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
         // This is a user mention
         String uid = value;
         int index = mentionedUsers.indexWhere(
-          (userElement) => userElement.uid == uid,
+          (userElement) => userElement.id == uid,
         );
 
         if (index != -1) {
@@ -654,7 +674,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
     }
 
     // Sort replacements by position (ascending) to calculate final positions
-    replacements.sort((a, b) => a['start'].compareTo(b['start']));
+    replacements.sort((a, b) => (a['start'] as int).compareTo(b['start'] as int));
 
     int lengthDelta = 0;
 
@@ -685,14 +705,14 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
           mentionedUsersMap[mention] = [null];
         }
       } else if (type == 'user') {
-        cc.User user = replacement['user'];
+        ChatUser user = replacement['user'];
         if (mentionedUsersMap.containsKey(mention)) {
           mentionedUsersMap[mention]!.add(user);
         } else {
           mentionedUsersMap[mention] = [user];
         }
-        if (!mentionCount.contains(user.uid)) {
-          mentionCount.add(user.uid);
+        if (!mentionCount.contains(user.id)) {
+          mentionCount.add(user.id);
         }
       }
 
@@ -703,7 +723,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
 
     // Pass 2: Replace text in reverse order so indices remain valid
     // Sort descending by start position
-    replacements.sort((a, b) => b['start'].compareTo(a['start']));
+    replacements.sort((a, b) => (b['start'] as int).compareTo(a['start'] as int));
 
     for (var replacement in replacements) {
       int start = replacement['start'];
@@ -749,7 +769,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
     String previousText,
   ) {
     // Make a copy of the mentionedUsersMap
-    var mentionedUsersMapCopy = Map<String, List<cc.User?>>.from(
+    var mentionedUsersMapCopy = Map<String, List<ChatUser?>>.from(
       mentionedUsersMap,
     );
 
@@ -766,14 +786,14 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
             match.end == cursorPosition) {
           if (i < users.length) {
             // Remove this specific mention occurrence so it can be re-added/edited
-            final uidToRemove = users[i]?.uid;
+            final uidToRemove = users[i]?.id;
             mentionedUsersMapCopy[mention]!.removeAt(i);
 
             if (uidToRemove != null) {
               // Only decrement count if no other instances of this user exist
               bool userStillMentioned = false;
               mentionedUsersMapCopy.forEach((_, uList) {
-                if (uList.any((u) => u?.uid == uidToRemove)) {
+                if (uList.any((u) => u?.id == uidToRemove)) {
                   userStillMentioned = true;
                 }
               });
@@ -804,7 +824,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
         else if (match.start <= cursorPosition && match.end > cursorPosition) {
           if (i < users.length) {
             // Remove this specific mention occurrence
-            final uidToRemove = users[i]?.uid;
+            final uidToRemove = users[i]?.id;
             mentionedUsersMapCopy[mention]!.removeAt(i);
 
             if (uidToRemove != null) {
@@ -939,7 +959,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
 
       if (extraCharactersStartIndex > -1 && newText.isNotEmpty) {
         String prev = previousText.substring(0, extraCharactersStartIndex);
-        Map<String, List<cc.User?>> mentionedUsersMapCopy = mentionedUsersMap;
+        Map<String, List<ChatUser?>> mentionedUsersMapCopy = mentionedUsersMap;
         mentionedUsersMap.forEach((key, value) {
           RegExp currentPattern = RegExp(key);
           if (currentPattern.hasMatch(newText)) {
@@ -950,7 +970,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
 
             mentionedUsersMapCopy[key]?.insertAll(
               oldMatchesCount,
-              List<cc.User?>.generate(
+              List<ChatUser?>.generate(
                 newMatchesCount,
                 (int index) => null,
                 growable: false,
@@ -1330,13 +1350,13 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
     }
   }
 
-  List<cc.User> getMentionedUsers(String text) {
-    List<cc.User> mentionedUsers = [];
+  List<ChatUser> getMentionedUsers(String text) {
+    List<ChatUser> mentionedUsers = [];
 
-    for (List<cc.User?> users in mentionedUsersMap.values) {
+    for (List<ChatUser?> users in mentionedUsersMap.values) {
       for (var user in users) {
         if (user != null &&
-            mentionedUsers.indexWhere((element) => element.uid == user.uid) ==
+            mentionedUsers.indexWhere((element) => element.id == user.id) ==
                 -1) {
           mentionedUsers.add(user);
         }
@@ -1381,7 +1401,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
         if (!isAllMention && mentionedUsersMap.containsKey(mentionText)) {
           final users = mentionedUsersMap[mentionText]!;
           for (var user in users) {
-            if (user != null && user.uid == ConvoKitUIKit.loggedInUser?.uid) {
+            if (user != null && user.id == ConvoKitScope.maybeOf(context)?.session.currentUser?.id) {
               isLoggedInUser = true;
               break;
             }
@@ -1427,7 +1447,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
     return mergeAttributedText(attributedTexts, existingAttributes ?? []);
   }
 
-  void setMentionedUsers(List<cc.User> mentionedUsers) {
+  void setMentionedUsers(List<ChatUser> mentionedUsers) {
     for (var user in mentionedUsers) {
       String key = "@${user.name}";
 
@@ -1439,10 +1459,10 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
     }
   }
 
-  static String getTextWithMentions(String text, List<cc.User> mentionedUsers) {
+  static String getTextWithMentions(String text, List<ChatUser> mentionedUsers) {
     if (mentionedUsers.isNotEmpty) {
       for (var user in mentionedUsers) {
-        text = text.replaceAll("<@uid:${user.uid}>", "@${user.name}");
+        text = text.replaceAll("<@uid:${user.id}>", "@${user.name}");
       }
     }
     return text;
@@ -1548,9 +1568,19 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
     }
   }
 
-  static String getMentionedUserName(String uid, cc.BaseMessage message) {
-    var mentionedUsers = message.mentionedUsers;
-    int match = mentionedUsers.indexWhere((element) => element.uid == uid);
+  static final Expando<List<ChatUser>> _mentionedUsersExpando =
+      Expando<List<ChatUser>>('convokit_mentioned_users');
+
+  static List<ChatUser> getMentionedUsersFor(ChatMessage message) =>
+      _mentionedUsersExpando[message] ?? const [];
+
+  static void setMentionedUsersFor(ChatMessage message, List<ChatUser> users) {
+    _mentionedUsersExpando[message] = List<ChatUser>.unmodifiable(users);
+  }
+
+  static String getMentionedUserName(String uid, ChatMessage message) {
+    var mentionedUsers = getMentionedUsersFor(message);
+    int match = mentionedUsers.indexWhere((element) => element.id == uid);
 
     return match != -1 ? mentionedUsers[match].name : "";
   }
@@ -1568,7 +1598,8 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
 
     List<AttributedText> attributedTexts = [];
     final matches = pattern!.allMatches(text);
-    List<cc.User> mentionedUsers = message?.mentionedUsers ?? [];
+    final msg = message;
+    List<ChatUser> mentionedUsers = msg != null ? getMentionedUsersFor(msg) : [];
 
     for (var match in matches) {
       int start = match.start;
@@ -1615,14 +1646,14 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
       } else {
         // Handle regular user mention
         int userIndex = mentionedUsers.indexWhere(
-          (element) => element.uid == mentionId,
+          (element) => element.id == mentionId,
         );
         underlyingText = userIndex != -1
             ? "@${mentionedUsers[userIndex].name}"
             : match.group(0) ?? '';
         isLoggedInUser =
             userIndex != -1 &&
-            mentionedUsers[userIndex].uid == ConvoKitUIKit.loggedInUser?.uid;
+            mentionedUsers[userIndex].id == ConvoKitScope.maybeOf(context)?.session.currentUser?.id;
       }
 
       // Only create AttributedText if we should format this mention
@@ -1668,7 +1699,7 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
             onTap: (text) {
               if (mentionType == 'uid') {
                 int userIndex = mentionedUsers.indexWhere(
-                  (element) => element.uid == mentionId,
+                  (element) => element.id == mentionId,
                 );
                 if (userIndex != -1) {
                   if (onMentionTap != null) {
@@ -1767,12 +1798,12 @@ class CometChatMentionsFormatter extends CometChatTextFormatter {
                 // Only decrement count if no other instances of this user exist
                 bool userStillMentioned = false;
                 mentionedUsersMap.forEach((_, uList) {
-                  if (uList.any((u) => u?.uid == removedUser.uid)) {
+                  if (uList.any((u) => u?.id == removedUser.id)) {
                     userStillMentioned = true;
                   }
                 });
                 if (!userStillMentioned) {
-                  mentionCount.remove(removedUser.uid);
+                  mentionCount.remove(removedUser.id);
                 }
               }
             }

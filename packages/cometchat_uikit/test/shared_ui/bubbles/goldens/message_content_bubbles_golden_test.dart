@@ -30,8 +30,8 @@ const _outgoing = BubbleAlignment.right;
 
 final _sentAt = DateTime(2024, 3, 14, 12, 30);
 
-final _me = User(uid: 'golden-me', name: 'Morgan Reyes');
-final _priya = User(uid: 'golden-priya', name: 'Priya Nair');
+final _me = ChatUser(id: 'golden-me', name: 'Morgan Reyes');
+final _priya = ChatUser(id: 'golden-priya', name: 'Priya Nair');
 
 // ---------------------------------------------------------------------------
 // Composition
@@ -82,36 +82,32 @@ void _pair(
 
 MediaMessage _media(
   String type,
-  List<Attachment> attachments, {
+  List<ChatAttachment> attachments, {
   String? caption,
 }) {
-  final message = MediaMessage(
-    receiverUid: _priya.uid,
-    receiverType: ReceiverTypeConstants.user,
-    type: type,
-    muid: 'golden-$type-${attachments.length}',
-    sentAt: _sentAt,
+  return MediaMessage(
+    id: 'golden-$type-${attachments.length}',
+    localId: 'golden-$type-${attachments.length}',
+    conversationId: 'conv_${_priya.id}',
+    sender: _me,
+    createdAt: _sentAt,
+    attachment: attachments.first,
+    caption: caption,
+    metadata: attachments.length != 1 ? {'attachments': attachments} : null,
   );
-  message.attachments = attachments;
-  message.caption = caption;
-  return message;
 }
 
 // `.invalid` never resolves; these URLs are labels, not fetch targets.
-Attachment _file(String name, String ext, String mime, int bytes) =>
-    Attachment('https://files.invalid/$name', name, ext, mime, bytes);
+ChatAttachment _file(String name, String ext, String mime, int bytes) =>
+    ChatAttachment(id: 'att_$name', remoteId: 'rem_$name', kind: AttachmentTrayController.classifyKind(mime, name), url: 'https://files.invalid/$name', state: AttachmentState.uploaded, mimeType: mime, sizeBytes: bytes, name: name);
 
 TextMessage _mentionMessage() => TextMessage(
-  // Short enough to stay on one line: the CI variant paints each paragraph
-  // as one block, so what shows the mention resolved is the block's width —
-  // "Thanks @Priya Nair!" rather than the raw 27-character marker.
+  id: 'golden-mention',
+  localId: 'golden-mention',
+  conversationId: 'conv_${_priya.id}',
   text: 'Thanks <@uid:golden-priya>!',
-  receiverUid: _priya.uid,
-  receiverType: ReceiverTypeConstants.user,
-  type: MessageTypeConstants.text,
   sender: _me,
-  mentionedUsers: [_priya],
-  sentAt: _sentAt,
+  createdAt: _sentAt,
 );
 
 void main() {
@@ -192,15 +188,15 @@ void main() {
         return Builder(
           builder: (context) => MessageTemplateUtils.getDeleteMessageBubble(
             TextMessage(
+              id: 'golden-deleted',
+              localId: 'golden-deleted',
+              conversationId: 'conv_${_priya.id}',
               text: '',
-              receiverUid: _priya.uid,
-              receiverType: ReceiverTypeConstants.user,
-              type: MessageTypeConstants.text,
               sender: alignment == _outgoing ? _me : _priya,
-              deletedAt: _sentAt,
+              createdAt: _sentAt,
             ),
             context,
-            null,
+            alignment,
           ),
         );
       }, height: 90);
@@ -225,6 +221,7 @@ void main() {
         alignment,
       ) {
         final message = _mentionMessage();
+        CometChatMentionsFormatter.setMentionedUsersFor(message, [_priya]);
         return CometChatTextBubble(
           text: message.text,
           alignment: alignment,

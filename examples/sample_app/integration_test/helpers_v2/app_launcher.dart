@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:convokit/convokit_uikit.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sample_app/main.dart';
 import 'package:sample_app/app_credentials.dart';
 
@@ -29,8 +27,6 @@ class AppLauncher {
   static Future<void> launchAndLogin(WidgetTester tester) async {
     // Clear iOS Keychain (flutter_secure_storage) to wipe stale auth tokens
     // from previous test runs. On iOS the Keychain persists across runs.
-    const storage = FlutterSecureStorage();
-    await storage.deleteAll();
 
     await _applyCredentials();
 
@@ -58,8 +54,6 @@ class AppLauncher {
   /// the credentials unblocked, E2E-001 logs in and E2E-002 then never sees a
   /// login form. An explicit logout is what makes the name accurate.
   static Future<void> launchOnly(WidgetTester tester) async {
-    const storage = FlutterSecureStorage();
-    await storage.deleteAll();
 
     await _applyCredentials();
 
@@ -97,15 +91,12 @@ class AppLauncher {
   /// `AppCredentials.loadSavedCredentials` then falls back to the app's own
   /// defaults instead of reading `YOUR_APP_ID` back out of prefs.
   static Future<void> _applyCredentials() async {
-    final prefs = await SharedPreferences.getInstance();
     if (_hasSuppliedCredentials) {
-      await prefs.setString('cc_app_id', TestCredentials.appId);
-      await prefs.setString('cc_region', TestCredentials.region);
-      await prefs.setString('cc_auth_key', TestCredentials.authKey);
-    } else {
-      await prefs.remove('cc_app_id');
-      await prefs.remove('cc_region');
-      await prefs.remove('cc_auth_key');
+      AppCredentials.setCredentials(
+        appId: TestCredentials.appId,
+        region: TestCredentials.region,
+        authKey: TestCredentials.authKey,
+      );
     }
     await AppCredentials.loadSavedCredentials();
   }

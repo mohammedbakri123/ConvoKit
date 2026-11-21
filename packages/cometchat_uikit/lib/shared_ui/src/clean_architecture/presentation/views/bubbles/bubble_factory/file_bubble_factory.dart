@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cometchat_sdk/cometchat_sdk.dart' hide CardMessage;
+import 'package:convokit/src/core/models/models.dart';
 import '../../../../core/constants/enums.dart';
 import '../../../theme/colors/cometchat_color_palette.dart';
 import '../../../theme/typography/cometchat_typography.dart';
@@ -10,13 +10,15 @@ import 'bubble_factory.dart';
 
 /// Factory for creating file message bubbles.
 class FileBubbleFactory extends BubbleFactory<MediaMessage> {
-  /// Icon for the bubble's download button; see
-  /// [CometChatFileBubble.downloadIcon].
   final Icon? downloadIcon;
-
   final CometChatFileBubbleStyle? style;
 
   FileBubbleFactory({this.style, this.downloadIcon});
+
+  String? _extractExtension(String? fileName) {
+    if (fileName == null || !fileName.contains('.')) return null;
+    return fileName.split('.').last;
+  }
 
   @override
   Widget build(
@@ -27,17 +29,17 @@ class FileBubbleFactory extends BubbleFactory<MediaMessage> {
     ConvoKitTypography? typography,
     ConvoKitSpacing? spacing,
   }) {
+    final att = message.attachment;
     return CometChatFileBubble(
-      fileUrl: message.attachment?.fileUrl,
-      title: message.attachment?.fileName,
-      fileMimeType: message.attachment?.fileMimeType,
-      fileExtension: message.attachment?.fileExtension,
-      fileSize: message.attachment?.fileSize,
+      fileUrl: att.url ?? att.localPath,
+      title: att.name,
+      fileMimeType: att.mimeType,
+      fileExtension: _extractExtension(att.name),
+      fileSize: att.sizeBytes,
       style: style,
       alignment: alignment,
-      id: message.id,
-      dateTime: message.sentAt,
-      metadata: message.metadata,
+      id: int.tryParse(message.id ?? ''),
+      dateTime: message.createdAt,
       downloadIcon: downloadIcon,
     );
   }

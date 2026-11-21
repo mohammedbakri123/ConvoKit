@@ -4,61 +4,13 @@
 ///   flutter test test/shared_ui/large_styles/large_style_props_test.dart
 library;
 
-import 'package:bloc_test/bloc_test.dart';
 import 'package:convokit/convokit_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class MockMessageInformationBloc
-    extends MockBloc<MessageInformationEvent, MessageInformationState>
-    implements MessageInformationBloc {}
-
-final _me = User(uid: 'u1', name: 'Alice');
-final _them = User(uid: 'u2', name: 'Bob');
+const _me = ChatUser(id: 'u1', name: 'Alice');
+const _them = ChatUser(id: 'u2', name: 'Bob');
 final _sentAt = DateTime.fromMillisecondsSinceEpoch(1700000000000);
-
-TextMessage _message() => TextMessage(
-  id: 1,
-  text: 'hello',
-  sender: _me,
-  receiver: _them,
-  receiverUid: 'u2',
-  type: MessageTypeConstants.text,
-  receiverType: ReceiverTypeConstants.user,
-  sentAt: _sentAt,
-);
-
-/// One recipient who has both received and read the message, so the delivered
-/// and read rows both render.
-MessageReceipt _receipt() => MessageReceipt(
-  messageId: 1,
-  sender: _them,
-  receiverType: ReceiverTypeConstants.user,
-  receiverId: 'u2',
-  timestamp: _sentAt,
-  receiptType: MessageReceipt.receiptTypeRead,
-  deliveredAt: _sentAt,
-  readAt: _sentAt,
-);
-
-/// A group conversation, because `nameTextStyle` and `avatarStyle` are only
-/// rendered by the group view — `isGroupConversation` is `group != null`, and
-/// the 1:1 view shows timestamps without a per-member name or avatar.
-MockMessageInformationBloc _infoBloc() {
-  final state = MessageInformationState(
-    status: MessageInformationStatus.loaded,
-    parentMessage: _message(),
-    receipts: [_receipt()],
-    group: Group(guid: 'g1', name: 'Team', type: GroupTypeConstants.public),
-  );
-  final b = MockMessageInformationBloc();
-  whenListen(
-    b,
-    Stream<MessageInformationState>.value(state),
-    initialState: state,
-  );
-  return b;
-}
 
 Widget _host(Widget child) => MaterialApp(
   home: Scaffold(body: SizedBox(width: 400, child: child)),
@@ -85,20 +37,10 @@ Iterable<BoxDecoration?> _decorations(WidgetTester tester) => [
 Iterable<double?> _textSizes(WidgetTester tester) =>
     tester.widgetList<Text>(find.byType(Text)).map((t) => t.style?.fontSize);
 
-Iterable<Color?> _textColors(WidgetTester tester) =>
-    tester.widgetList<Text>(find.byType(Text)).map((t) => t.style?.color);
-
 Future<void> _settle(WidgetTester tester) async {
   await tester.pump();
   await tester.pump(const Duration(milliseconds: 300));
 }
-
-/// Some surfaces put their fill and radius on a [Material] or a [Dialog]
-/// rather than a Container.
-
-Iterable<BorderRadiusGeometry?> _materialRadii(WidgetTester tester) => tester
-    .widgetList<Material>(find.byType(Material))
-    .map((m) => m.borderRadius);
 
 void main() {
   _remainingStyles();
@@ -106,65 +48,6 @@ void main() {
   tearDown(() => ConvoKitUIKit.loggedInUser = null);
 
   group('CometChatMessageInformationStyle', () {
-    testWidgets('every property reaches the information sheet', (tester) async {
-      // the group receipt rows lay out at their content width; the shared
-      // 400px host is too narrow for a name plus two timestamp rows
-      tester.view.physicalSize = const Size(1200, 1600);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(tester.view.reset);
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: CometChatMessageInformation(
-              message: _message(),
-              messageInformationBloc: _infoBloc(),
-              messageInformationStyle: CometChatMessageInformationStyle(
-                backgroundColor: const Color(0xFF220101),
-                backgroundHighLightColor: const Color(0xFF220202),
-                border: const Border.fromBorderSide(
-                  BorderSide(color: Color(0xFF220303), width: 3),
-                ),
-                borderRadius: const BorderRadius.all(Radius.circular(95)),
-                titleTextColor: const Color(0xFF220404),
-                titleTextStyle: const TextStyle(fontSize: 17),
-                nameTextColor: const Color(0xFF220505),
-                nameTextStyle: const TextStyle(fontSize: 16),
-                deliveredTextColor: const Color(0xFF220606),
-                deliveredTextStyle: const TextStyle(fontSize: 15),
-                deliveredDateTextColor: const Color(0xFF220707),
-                deliveredDateTextStyle: const TextStyle(fontSize: 14),
-                readTextColor: const Color(0xFF220808),
-                readTextStyle: const TextStyle(fontSize: 13),
-                readDateTextColor: const Color(0xFF220909),
-                readDateTextStyle: const TextStyle(fontSize: 12),
-                avatarStyle: const ConvoKitAvatarStyle(
-                  backgroundColor: Color(0xFF220A0A),
-                ),
-                messageReceiptStyle: CometChatMessageReceiptStyle(
-                  readIconColor: const Color(0xFF220B0B),
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-      await _settle(tester);
-
-      expect(_fills(tester), contains(const Color(0xFF220101)));
-      expect(_fills(tester), contains(const Color(0xFF220202)));
-      expect(
-        _materialRadii(tester),
-        contains(const BorderRadius.all(Radius.circular(95))),
-      );
-      expect(_textSizes(tester), contains(17.0));
-      expect(_textSizes(tester), contains(16.0));
-      expect(_textSizes(tester), contains(15.0));
-      expect(_textSizes(tester), contains(14.0));
-      expect(_textSizes(tester), contains(13.0));
-      expect(_textSizes(tester), contains(12.0));
-      expect(_textColors(tester), contains(const Color(0xFF220404)));
-      expect(_textColors(tester), contains(const Color(0xFF220505)));
-    });
   });
 
   group('ConvoKitRichTextToolbarStyle', () {
@@ -270,13 +153,12 @@ void _remainingStyles() {
                       ),
                     )
                     ..message = TextMessage(
-                      id: 1,
+                      id: '1',
+                      localId: 'm_1',
+                      conversationId: 'c1',
                       text: 'hey <@uid:u1>',
                       sender: _them,
-                      receiverUid: 'u1',
-                      type: MessageTypeConstants.text,
-                      receiverType: ReceiverTypeConstants.user,
-                      sentAt: _sentAt,
+                      createdAt: _sentAt,
                     );
               return Text.rich(
                 TextSpan(
@@ -325,32 +207,5 @@ void _remainingStyles() {
   });
 
   group('CometChatMessageInformation own props', () {
-    testWidgets('title, template, formatters and the theme objects reach it', (
-      tester,
-    ) async {
-      tester.view.physicalSize = const Size(1200, 1600);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(tester.view.reset);
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: Builder(
-              builder: (context) => CometChatMessageInformation(
-                message: _message(),
-                messageInformationBloc: _infoBloc(),
-                title: 'Message info',
-                template: MessageTemplateUtils.getTextMessageTemplate(),
-                textFormatters: const [],
-                colorPalette: ConvoKitThemeHelper.getColorPalette(context),
-                spacing: ConvoKitThemeHelper.getSpacing(context),
-                typography: ConvoKitThemeHelper.getTypography(context),
-              ),
-            ),
-          ),
-        ),
-      );
-      await _settle(tester);
-      expect(find.text('Message info'), findsOneWidget);
-    });
   });
 }

@@ -1,3 +1,4 @@
+import 'package:sample_app/sample_app_backend.dart';
 import 'dart:async';
 
 import 'package:convokit/convokit_uikit.dart';
@@ -67,11 +68,11 @@ class LoginFixture {
   ///   - The first call performs init + login.
   ///   - Subsequent calls skip init if the SDK is already up, and skip
   ///     login if the user is still authenticated.
-  static Future<User> initAndLogin() async {
+  static Future<ChatUser> initAndLogin() async {
     _assertConfigured();
     if (!_initialised) {
       final settingsBuilder = UIKitSettingsBuilder()
-        ..subscriptionType = CometChatSubscriptionType.allUsers
+        ..subscriptionType = 'allUsers'
         ..region = region
         ..autoEstablishSocketConnection = true
         ..appId = appId
@@ -112,7 +113,7 @@ class LoginFixture {
       _loggedIn = false;
     }
 
-    final loginCompleter = Completer<User>();
+    final loginCompleter = Completer<ChatUser>();
     ConvoKitUIKit.login(
       testUserUid,
       onSuccess: (user) {
@@ -145,9 +146,9 @@ class LoginFixture {
 
   /// Returns the currently authenticated user, or null if no one is logged
   /// in. Used to short-circuit re-login in chained test runs.
-  static Future<User?> _loggedInUser() async {
+  static Future<ChatUser?> _loggedInUser() async {
     try {
-      return await CometChat.getLoggedInUser();
+      return SampleAppBackend.instance.kit.session.currentUser;
     } catch (_) {
       return null;
     }

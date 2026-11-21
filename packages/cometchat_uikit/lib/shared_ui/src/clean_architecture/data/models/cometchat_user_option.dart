@@ -1,10 +1,13 @@
 // import 'package:flutter/material.dart';
 //
-// import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
+// import 'package:convokit/src/core/models/models.dart'
+//     show ChatUser, UserPresence, ChatGroup, ChatMember, GroupRole, GroupType,
+//          ChatConversation, ChatConversationType, ChatMessage, SendState,
+//          DeliveryState, ChatAttachment, AttachmentKind, AttachmentState;
 //
 // class CometChatUserOption extends CometChatOptions {
 //   ///[onClick] call function which takes 2 parameters
-//   Function(User user, ConvoKitUsersController controller)? onClick;
+//   Function(ChatUser user, ConvoKitUsersController controller)? onClick;
 //
 //   CometChatUserOption(
 //       {this.onClick,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:cometchat_sdk/cometchat_sdk.dart';
+import 'package:convokit/src/core/models/models.dart'
+    show ChatUser, ChatGroup, ChatMember, ChatConversation, ChatMessage;
 import '../../data/models/cometchat_message_composer_action.dart';
 
 ///[UIConstants] contains properties essential and limited to setting up the ui kit
@@ -12,23 +13,23 @@ class UIConstants {
 
 ///[MessageCategoryConstants] is a utility class that stores String constants of categories of messages
 class MessageCategoryConstants {
-  static const String message = CometChatMessageCategory.message;
-  static const String action = CometChatMessageCategory.action;
-  static const String call = CometChatMessageCategory.call;
-  static const String custom = CometChatMessageCategory.custom;
-  static const String interactive = CometChatMessageCategory.interactive;
-  static const String card = CometChatMessageCategory.categoryCard;
-  static const String agentic = CometChatMessageCategory.categoryAgentic;
+  static const String message = "message";
+  static const String action = "action";
+  static const String call = "call";
+  static const String custom = "custom";
+  static const String interactive = "interactive";
+  static const String card = "card";
+  static const String agentic = "agentic";
 }
 
 ///[MessageTypeConstants] is a utility class that stores String constants of types of messages
 class MessageTypeConstants {
-  static const String image = CometChatMessageType.image;
-  static const String video = CometChatMessageType.video;
-  static const String audio = CometChatMessageType.audio;
-  static const String file = CometChatMessageType.file;
-  static const String text = CometChatMessageType.text;
-  static const String custom = CometChatMessageType.custom;
+  static const String image = "image";
+  static const String video = "video";
+  static const String audio = "audio";
+  static const String file = "file";
+  static const String text = "text";
+  static const String custom = "custom";
   static const String groupActions = "groupMember";
   static const String message = "message";
   static const String takePhoto = "takePhoto";
@@ -42,13 +43,13 @@ class MessageTypeConstants {
   static const String attachVideo = "attachVideo";
 }
 
-///[ReceiverTypeConstants] is a utility class that stores String constants of the types of [AppEntity] that can receive a [BaseMessage]
+///[ReceiverTypeConstants] is a utility class that stores String constants of the types of [AppEntity] that can receive a [ChatMessage]
 class ReceiverTypeConstants {
   static const String user = "user";
   static const String group = "group";
 }
 
-///[MessageOptionConstants] is a utility class that stores String constants of the actions permitted to execute on a particular [BaseMessage]
+///[MessageOptionConstants] is a utility class that stores String constants of the actions permitted to execute on a particular [ChatMessage]
 class MessageOptionConstants {
   static const String editMessage = "editMessage";
   static const String deleteMessage = "deleteMessage";
@@ -73,13 +74,13 @@ class MessageOptionConstants {
   static const String reportMessage = "reportMessage";
 }
 
-///[MetadataConstants] is a utility class that stores String constants to use in the [metadata] property of a [BaseMessage]
+///[MetadataConstants] is a utility class that stores String constants to use in the [metadata] property of a [ChatMessage]
 class MetadataConstants {
   static const String liveReaction = "live_reaction";
   // static const String replyMessage = "reply-message";
 }
 
-///[GroupOptionConstants] is a utility class that stores String constants of the options available in `ConvoKitDetails` if it is being rendered for a [Group]
+///[GroupOptionConstants] is a utility class that stores String constants of the options available in `ConvoKitDetails` if it is being rendered for a [ChatGroup]
 class GroupOptionConstants {
   static const String leave = "leave";
   static const String delete = "delete";
@@ -90,7 +91,7 @@ class GroupOptionConstants {
   static const String videoCall = "videoCall";
 }
 
-///[GroupMemberOptionConstants] is a utility class that stores String constants of the actions permitted to a [GroupMember] to execute on a particular [Group]
+///[GroupMemberOptionConstants] is a utility class that stores String constants of the actions permitted to a [ChatMember] to execute on a particular [ChatGroup]
 class GroupMemberOptionConstants {
   static const String kick = "kick";
   static const String ban = "ban";
@@ -98,7 +99,7 @@ class GroupMemberOptionConstants {
   static const String changeScope = "changeScope";
 }
 
-///[UserOptionConstants] is a utility class that stores String constants of the options available in `ConvoKitDetails` if it is being rendered for a [User]
+///[UserOptionConstants] is a utility class that stores String constants of the options available in `ConvoKitDetails` if it is being rendered for a [ChatUser]
 class UserOptionConstants {
   static const String viewProfile = "viewProfile";
   static const String voiceCall = "voiceCall";
@@ -107,33 +108,33 @@ class UserOptionConstants {
   static const String unblockUser = "unblockUser";
 }
 
-///[GroupTypeConstants] is a utility class that stores String constants of the types of [Group]
+///[GroupTypeConstants] is a utility class that stores String constants of the types of [ChatGroup]
 class GroupTypeConstants {
-  static const String private = CometChatGroupType.private;
-  static const String public = CometChatGroupType.public;
-  static const String password = CometChatGroupType.password;
+  static const String private = "private";
+  static const String public = "public";
+  static const String password = "password";
 }
 
-///[GroupMemberScope] is a utility class that stores String constants of scope of [GroupMember] with respect to a particular [Group]
+///[GroupMemberScope] is a utility class that stores String constants of scope of [ChatMember] with respect to a particular [ChatGroup]
 class GroupMemberScope {
-  static const String admin = CometChatMemberScope.admin;
-  static const String moderator = CometChatMemberScope.moderator;
-  static const String participant = CometChatMemberScope.participant;
+  static const String admin = "admin";
+  static const String moderator = "moderator";
+  static const String participant = "participant";
   static const String owner = "owner";
 }
 
-///[UserStatusConstants] is a utility class that stores String constants of the online/offline status of an [User]
+///[UserStatusConstants] is a utility class that stores String constants of the online/offline status of an [ChatUser]
 class UserStatusConstants {
-  static const String online = CometChatUserStatus.online;
-  static const String offline = CometChatUserStatus.offline;
+  static const String online = "online";
+  static const String offline = "offline";
 }
 
 ///[ReceiptTypeConstants] is a utility class that stores String constants of the various stages of message delivery
 class ReceiptTypeConstants {
-  static const String delivered = CometChatReceiptType.delivered;
-  static const String read = CometChatReceiptType.read;
-  static const String deliveredToAll = CometChatReceiptType.deliveredToAll;
-  static const String readByAll = CometChatReceiptType.readByAll;
+  static const String delivered = "delivered";
+  static const String read = "read";
+  static const String deliveredToAll = "deliveredToAll";
+  static const String readByAll = "readByAll";
 }
 
 ///[DetailsTemplateConstants] is a utility class that stores String constants of the types of [ConvoKitDetailsTemplate]
@@ -150,7 +151,7 @@ class UITabNameConstants {
   static const conversationWithMessages = "conversationWithMessages";
 }
 
-///[ConversationOptionConstants] is a utility class that stores String constants of options available for [Conversation] items
+///[ConversationOptionConstants] is a utility class that stores String constants of options available for [ChatConversation] items
 class ConversationOptionConstants {
   static const delete = "delete";
 }
@@ -178,21 +179,21 @@ typedef OnEmpty = void Function();
 typedef ComposerWidgetBuilder =
     Widget Function(
       BuildContext context,
-      User? user,
-      Group? group,
+      ChatUser? user,
+      ChatGroup? group,
       Map<String, dynamic>? id,
     );
 
 typedef ComposerActionsBuilder =
     List<ConvoKitMessageComposerAction> Function(
       BuildContext context,
-      User? user,
-      Group? group,
+      ChatUser? user,
+      ChatGroup? group,
       Map<String, dynamic>? id,
     );
 
 typedef UserGroupBuilder =
-    Function(BuildContext context, User? user, Group? group);
+    Function(BuildContext context, ChatUser? user, ChatGroup? group);
 
 ///[LiveReactionConstants] is a utility class that stores constant values related to functioning of [TransientMessage]
 class LiveReactionConstants {
@@ -201,8 +202,8 @@ class LiveReactionConstants {
 
 ///[CometChatStartConversationType] is a utility class that stores String constants of the types of [CometChatContacts]
 class CometChatStartConversationType {
-  static const String user = CometChatConversationType.user;
-  static const String group = CometChatConversationType.group;
+  static const String user = "user";
+  static const String group = "group";
 }
 
 class CallTypeConstants {
@@ -240,10 +241,10 @@ class APIRequestTypeConstants {
 }
 
 class InteractionGoalTypeConstants {
-  static const String none = InteractionGoalType.none;
-  static const String allOf = InteractionGoalType.allOf;
-  static const String anyOf = InteractionGoalType.anyOf;
-  static const String anyAction = InteractionGoalType.anyAction;
+  static const String none = "none";
+  static const String allOf = "allOf";
+  static const String anyOf = "anyOf";
+  static const String anyAction = "anyAction";
 }
 
 class ModelFieldConstants {

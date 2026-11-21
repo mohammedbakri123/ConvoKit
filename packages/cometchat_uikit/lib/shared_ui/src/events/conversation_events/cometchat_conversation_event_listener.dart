@@ -4,9 +4,9 @@ import '../../../convokit_uikit_shared.dart';
 mixin ConvoKitConversationEventListener implements UIEventHandler {
   ///[ccConversationDeleted] is used to inform the listeners
   ///when the logged-in user deletes a conversation
-  void ccConversationDeleted(Conversation conversation) {}
+  void ccConversationDeleted(ChatConversation conversation) {}
 
   ///[ccUpdateConversation] is used to inform the listeners
   ///when a conversation is updated (e.g., mark as unread)
-  void ccUpdateConversation(Conversation conversation) {}
+  void ccUpdateConversation(ChatConversation conversation) {}
 }

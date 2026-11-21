@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cometchat_sdk/cometchat_sdk.dart' hide CardMessage;
+import 'package:convokit/src/core/models/models.dart';
 import '../../../../core/constants/enums.dart';
 import '../../../../core/utils/emoji_utils.dart';
 import '../../../theme/colors/cometchat_color_palette.dart';
@@ -12,13 +12,8 @@ import 'bubble_factory.dart';
 
 /// Factory for creating text message bubbles.
 class TextBubbleFactory extends BubbleFactory<TextMessage> {
-  /// Text formatters for styling mentions, links, etc.
   final List<CometChatTextFormatter>? textFormatters;
-
-  /// Style for incoming (left-aligned) text bubbles.
   final CometChatTextBubbleStyle? incomingStyle;
-
-  /// Style for outgoing (right-aligned) text bubbles.
   final CometChatTextBubbleStyle? outgoingStyle;
 
   TextBubbleFactory({
@@ -40,7 +35,6 @@ class TextBubbleFactory extends BubbleFactory<TextMessage> {
         ? outgoingStyle
         : incomingStyle;
 
-    // Detect emoji-only messages for WhatsApp-style scaled rendering
     final count = EmojiUtils.emojiOnlyCount(message.text);
     final emojiCount = (count > 0 && count <= EmojiUtils.maxScaledCount)
         ? count

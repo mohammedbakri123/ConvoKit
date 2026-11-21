@@ -1,7 +1,6 @@
 import '_microphone_visualizer.dart' show MicrophoneVisualizer;
 import "../../../../clean_architecture.dart";
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 ///[CometChatMediaRecorder] is a class that allows users to record audio  messages.
 ///It has a start button to start recording, a stop button to stop recording, a play button to play the recorded message, a pause button to pause the recorded message, a submit button to submit the recorded message and a close button to close the media recorder.
@@ -35,7 +34,7 @@ class CometChatMediaRecorder extends StatefulWidget {
     this.deleteButtonIcon,
     this.stopButtonIcon,
     this.sendButtonIcon,
-    this.mediaRecorderBloc,
+    this.mediaRecorderController,
   });
 
   ///[onSubmit] provides callback to the submit Icon/widget
@@ -70,33 +69,33 @@ class CometChatMediaRecorder extends StatefulWidget {
   ///does not close it on dispose. Mirrors
   ///[ConvoKitConversations.conversationsBloc] — the seam that lets a test
   ///drive the recorder through its states without a live microphone.
-  final MediaRecorderBloc? mediaRecorderBloc;
+  final MediaRecorderController? mediaRecorderController;
 
   @override
   State<CometChatMediaRecorder> createState() => _CometChatMediaRecorderState();
 }
 
 class _CometChatMediaRecorderState extends State<CometChatMediaRecorder> {
-  late MediaRecorderBloc _bloc;
-  bool _isExternalBloc = false;
+  late MediaRecorderController _controller;
+  bool _isExternalController = false;
 
   @override
   void initState() {
     super.initState();
-    if (widget.mediaRecorderBloc != null) {
-      _bloc = widget.mediaRecorderBloc!;
-      _isExternalBloc = true;
+    if (widget.mediaRecorderController != null) {
+      _controller = widget.mediaRecorderController!;
+      _isExternalController = true;
     } else {
-      _bloc = MediaRecorderBloc();
-      _bloc.add(const StartRecordingEvent());
+      _controller = MediaRecorderController();
+      _controller.startRecording();
     }
   }
 
   @override
   void dispose() {
     // an injected bloc belongs to its owner, so only close what we created
-    if (!_isExternalBloc) {
-      _bloc.close();
+    if (!_isExternalController) {
+      _controller.dispose();
     }
     super.dispose();
   }
@@ -121,15 +120,10 @@ class _CometChatMediaRecorderState extends State<CometChatMediaRecorder> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: _bloc,
-      child: BlocBuilder<MediaRecorderBloc, MediaRecorderState>(
-        buildWhen: (previous, current) =>
-            previous.isRecording != current.isRecording ||
-            previous.isCompleted != current.isCompleted ||
-            previous.duration != current.duration ||
-            previous.filePath != current.filePath,
-        builder: (context, state) {
+    return ListenableBuilder(
+      listenable: _controller,
+      builder: (context, _) {
+        final state = _controller.state;
           return Container(
             padding:
                 widget.padding ??
@@ -193,7 +187,6 @@ class _CometChatMediaRecorderState extends State<CometChatMediaRecorder> {
             ),
           );
         },
-      ),
     );
   }
 
@@ -223,9 +216,14 @@ class _CometChatMediaRecorderState extends State<CometChatMediaRecorder> {
                         colorPalette.iconSecondary,
                   ),
               onPressed: () async {
-                _bloc.add(const CancelRecordingEvent());
+                _controller.cancelRecording();
                 if (widget.onClose != null) {
-                  widget.onClose!();
+                  final onClose = widget.onClose;
+                    if (onClose is void Function()) {
+                      onClose();
+                    } else if (onClose != null) {
+                      Function.apply(onClose, const []);
+                    }
                 } else {
                   Navigator.pop(context);
                 }
@@ -485,7 +483,7 @@ class _CometChatMediaRecorderState extends State<CometChatMediaRecorder> {
                 mediaRecorderStyle.stopButtonIconColor ??
                 colorPalette.iconSecondary,
           ),
-      onPressed: () => _bloc.add(const StopRecordingEvent()),
+      onPressed: () => _controller.stopRecording(),
     );
   }
 
@@ -536,7 +534,7 @@ class _CometChatMediaRecorderState extends State<CometChatMediaRecorder> {
                     ? colorPalette.iconSecondary
                     : colorPalette.error),
           ),
-      onPressed: () => _bloc.add(const StartRecordingEvent()),
+      onPressed: () => _controller.startRecording(),
     );
   }
 
@@ -559,7 +557,7 @@ class _CometChatMediaRecorderState extends State<CometChatMediaRecorder> {
             color:
                 mediaRecorderStyle.pauseButtonIconColor ?? colorPalette.error,
           ),
-      onPressed: () => _bloc.add(const PauseRecordingEvent()),
+      onPressed: () => _controller.pauseRecording(),
     );
   }
 }

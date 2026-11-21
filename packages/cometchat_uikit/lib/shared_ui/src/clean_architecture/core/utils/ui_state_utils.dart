@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../convokit_uikit_shared.dart'
-    show User, Group, UIConstants, Translations;
+    show ChatUser, ChatGroup, UIConstants, Translations;
 import '../constants/asset_constants.dart';
 import '../../presentation/theme/theme/cometchat_theme_helper.dart';
 import '../../presentation/theme/colors/cometchat_color_palette.dart';
@@ -25,8 +25,8 @@ class UIStateUtils {
     Color? buttonBackgroundColor,
     BorderSide? buttonBorderSide,
     BorderRadiusGeometry? buttonBorderRadius,
-    User? user,
-    Group? group,
+    ChatUser? user,
+    ChatGroup? group,
   }) {
     return Center(
       child: SingleChildScrollView(

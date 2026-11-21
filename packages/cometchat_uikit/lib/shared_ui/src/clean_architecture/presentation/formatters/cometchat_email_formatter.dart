@@ -38,7 +38,7 @@ class CometChatEmailFormatter extends CometChatTextFormatter {
   }
 
   @override
-  void handlePreMessageSend(BuildContext context, BaseMessage baseMessage) {}
+  void handlePreMessageSend(BuildContext context, ChatMessage baseMessage) {}
 
   @override
   TextStyle getMessageInputTextStyle(BuildContext context) {

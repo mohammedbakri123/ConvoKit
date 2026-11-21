@@ -55,8 +55,7 @@ class ScreenReach {
   static Finder conversationRowForUser(String uid) =>
       find.byWidgetPredicate((w) {
         if (w is! ConvoKitConversationListItem) return false;
-        final peer = w.conversation.conversationWith;
-        return peer is User && peer.uid == uid;
+        return w.conversation.peer?.id == uid;
       });
 
   /// Open the conversation called [name] from the Chats tab, or fail.

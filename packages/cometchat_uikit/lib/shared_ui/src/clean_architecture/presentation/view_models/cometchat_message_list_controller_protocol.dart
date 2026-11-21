@@ -2,20 +2,20 @@ import '../../../../convokit_uikit_shared.dart';
 import 'package:flutter/widgets.dart';
 
 abstract class ConvoKitMessageListControllerProtocol
-    extends CometChatSearchListControllerProtocol<BaseMessage> {
+    extends CometChatSearchListControllerProtocol<ChatMessage> {
   Map<String, CometChatMessageTemplate> getTemplateMap();
   ScrollController getScrollController();
   int? getParentMessageId();
-  Group? getGroup();
-  User? getUser();
+  ChatGroup? getGroup();
+  ChatUser? getUser();
   BuildContext getCurrentContext();
   String getConversationId();
   void initializeHeaderAndFooterView();
-  void addMessage(BaseMessage message);
+  void addMessage(ChatMessage message);
 
-  void updateMessageWithMuid(BaseMessage message);
+  void updateMessageWithMuid(ChatMessage message);
 
-  void deleteMessage(BaseMessage message);
+  void deleteMessage(ChatMessage message);
 
   void updateMessageThreadCount(int parentMessageId);
 }

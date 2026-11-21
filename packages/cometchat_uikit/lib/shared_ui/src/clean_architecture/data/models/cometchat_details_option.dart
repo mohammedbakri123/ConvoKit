@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
+import 'package:convokit/src/core/models/models.dart'
+    show ChatUser, ChatGroup;
 import 'cometchat_base_options.dart';
 import '../../presentation/view_models/cometchat_details_controller_protocol.dart';
 
@@ -20,7 +21,7 @@ import '../../presentation/view_models/cometchat_details_controller_protocol.dar
 ///   ),
 ///   tail: Icon(Icons.arrow_forward),
 ///   height: 50.0,
-///   onClick: (User? user, Group? group, String section, ConvoKitDetailsController state) {
+///   onClick: (ChatUser? user, ChatGroup? group, String section, ConvoKitDetailsController state) {
 ///     // do something on click
 ///   },
 /// );
@@ -38,8 +39,8 @@ class ConvoKitDetailsOption extends CometChatBaseOptions {
 
   ///[onClick] call function which takes 3 parameter , and one of user or group is populated at a time
   Function(
-    User? user,
-    Group? group,
+    ChatUser? user,
+    ChatGroup? group,
     String section,
     ConvoKitDetailsControllerProtocol state,
   )?

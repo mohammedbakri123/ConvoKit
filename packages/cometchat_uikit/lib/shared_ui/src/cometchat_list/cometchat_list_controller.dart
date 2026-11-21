@@ -140,6 +140,7 @@ abstract class CometChatListController<T1, T2> extends ChangeNotifier
     isLoading = true;
     try {
       if (isFetchNext) {
+        // ignore: avoid_dynamic_calls
         await request.fetchNext(
           onSuccess: (List<T1> fetchedList) {
             isFetching = false;
@@ -178,6 +179,7 @@ abstract class CometChatListController<T1, T2> extends ChangeNotifier
           },
         );
       } else {
+        // ignore: avoid_dynamic_calls
         await request.fetchPrevious(
           onSuccess: (List<T1> fetchedList) {
             isFetching = false;

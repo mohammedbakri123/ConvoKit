@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import "package:cometchat_sdk/cometchat_sdk.dart" hide CardMessage;
+import 'package:convokit/src/core/models/models.dart' show ChatMessage;
 import '../../../../convokit_uikit_shared.dart'
     show
         ConvoKitMessageListControllerProtocol,
@@ -17,7 +17,7 @@ import 'action_item.dart';
 ///  messageOptionSheetStyle: ConvoKitMessageOptionSheetStyle(
 ///  backgroundColor: Colors.white,
 ///  ),
-///  onClick: (BaseMessage baseMessage,
+///  onClick: (ChatMessage baseMessage,
 ///      ConvoKitMessageListController state) {}
 ///  )
 /// ```
@@ -42,7 +42,7 @@ class CometChatMessageOption {
   Widget? icon;
 
   ///[onItemClick] of the option
-  Function(BaseMessage message, ConvoKitMessageListControllerProtocol state)?
+  Function(ChatMessage message, ConvoKitMessageListControllerProtocol state)?
   onItemClick;
 
   ///[messageOptionSheetStyle] is a [ConvoKitMessageOptionSheetStyle] that can be used to style message option sheet
@@ -68,7 +68,7 @@ class CometChatMessageOption {
 
   ///[toActionItemFromFunction] takes a function as parameter and converts [CometChatMessageOption] to [ActionItem] with the function `onClick` as onItemClick
   ActionItem toActionItemFromFunction(
-    Function(BaseMessage message, ConvoKitMessageListControllerProtocol state)?
+    Function(ChatMessage message, ConvoKitMessageListControllerProtocol state)?
     passedFunction,
   ) {
     return ActionItem(

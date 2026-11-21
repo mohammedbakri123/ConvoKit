@@ -1,42 +1,42 @@
 import '../../../../convokit_uikit_shared.dart';
 
 mixin ConvoKitConversationsControllerProtocol
-    implements CometChatListProtocol<Conversation> {
-  void updateUserStatus(User user, String status);
+    implements CometChatListProtocol<ChatConversation> {
+  void updateUserStatus(ChatUser user, String status);
 
-  void deleteConversation(Conversation conversation);
+  void deleteConversation(ChatConversation conversation);
 
-  void resetUnreadCount(BaseMessage message);
+  void resetUnreadCount(ChatMessage message);
 
-  void updateLastMessage(BaseMessage message);
+  void updateLastMessage(ChatMessage message);
 
-  void updateGroup(Group group);
+  void updateGroup(ChatGroup group);
 
   void removeGroup(String guid);
 
-  void updateLastMessageOnEdited(BaseMessage message);
+  void updateLastMessageOnEdited(ChatMessage message);
 
   void refreshSingleConversation(
-    BaseMessage message,
+    ChatMessage message,
     bool isActionMessage, {
     bool? remove,
   });
 
   ///Update the conversation with new conversation Object matched according to conversation id ,  if not matched inserted at top
-  void updateConversation(Conversation conversation);
+  void updateConversation(ChatConversation conversation);
 
-  void setReceipts(MessageReceipt receipt);
+  void setReceipts(dynamic receipt);
 
   void setTypingIndicator(
-    TypingIndicator typingIndicator,
+    dynamic typingIndicator,
     bool isTypingStarted,
   );
 
   void deleteConversationFromIndex(int index);
 
-  void playNotificationSound(BaseMessage message);
+  void playNotificationSound(ChatMessage message);
 
-  bool getHideThreadIndicator(Conversation conversation);
+  bool getHideThreadIndicator(ChatConversation conversation);
 
-  bool getHideReceipt(Conversation conversation, bool? disableReadReceipt);
+  bool getHideReceipt(ChatConversation conversation, bool? disableReadReceipt);
 }

@@ -6,7 +6,6 @@ import '../../services/audio_state/domain/repositories/audio_state_repository.da
 import '../../services/audio_state/domain/usecases/audio_state_usecases.dart';
 import '../../services/audio_state/data/repositories/audio_state_repository_impl.dart';
 import '../../services/audio_state/data/datasources/audio_state_remote_datasource.dart';
-import '../../../../../chat_ui/src/conversations/di/conversations_service_locator.dart';
 
 /// Service Locator for clean architecture dependency injection
 
@@ -46,9 +45,6 @@ class SharedUiServiceLocator {
   /// Call this once during app startup
   static Future<void> setup() async {
     final instance = SharedUiServiceLocator();
-
-    // Initialize conversations service locator
-    await ConversationsServiceLocator.instance.setupAsync();
 
     // Initialize data sources
     final messageDataSource = MessageDataSourceImpl();
@@ -159,15 +155,11 @@ class SharedUiServiceLocator {
 
   /// Reset all services (useful for testing)
   static Future<void> reset() async {
-    // Reset conversations service locator
-    await ConversationsServiceLocator.instance.reset();
     // Services can be re-initialized if needed
   }
 
   /// Cleanup resources
   static Future<void> cleanup() async {
-    // Cleanup conversations service locator
-    await ConversationsServiceLocator.instance.reset();
     // Cleanup if needed
   }
 }
