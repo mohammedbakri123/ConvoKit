@@ -698,6 +698,7 @@ class _ConvoKitMessageListState extends State<ConvoKitMessageList> {
       message,
       alignment: bubbleAlignment,
       textStyle: bubbleTextStyle,
+      outgoingTextColor: widget.style?.outgoingTextColor,
       loggedInUserId: myId,
     );
 

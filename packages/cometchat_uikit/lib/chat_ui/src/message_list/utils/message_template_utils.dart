@@ -198,18 +198,24 @@ class MessageTemplateUtils {
     BubbleAlignment alignment = BubbleAlignment.left,
     String? loggedInUserId,
     TextStyle? textStyle,
+    Color? outgoingTextColor,
   }) {
     final colorPalette = ConvoKitThemeHelper.getColorPalette(context);
+    final resolvedTextStyle = textStyle != null
+        ? (alignment == BubbleAlignment.right &&
+                  textStyle.color == null &&
+                  outgoingTextColor != null
+              ? textStyle.copyWith(color: outgoingTextColor)
+              : textStyle)
+        : TextStyle(
+            color: alignment == BubbleAlignment.right
+                ? (outgoingTextColor ?? colorPalette.white)
+                : colorPalette.textPrimary,
+          );
     return switch (message) {
       TextMessage t => Text(
         t.text,
-        style:
-            textStyle ??
-            TextStyle(
-              color: alignment == BubbleAlignment.right
-                  ? colorPalette.white
-                  : colorPalette.textPrimary,
-            ),
+        style: resolvedTextStyle,
       ),
       MediaMessage m => _buildMediaContent(context, m, textStyle),
       CustomMessage c => _buildCustomContent(
@@ -300,6 +306,7 @@ class MessageTemplateUtils {
   /// Returns default [CometChatMessageTemplate]s for text, media, and custom messages.
   static List<CometChatMessageTemplate> getDefaultMessageTemplates({
     String? loggedInUserId,
+    Color? outgoingTextColor,
   }) {
     return [
       CometChatMessageTemplate(
@@ -310,6 +317,7 @@ class MessageTemplateUtils {
           message,
           alignment: alignment,
           loggedInUserId: loggedInUserId,
+          outgoingTextColor: outgoingTextColor,
         ),
       ),
       CometChatMessageTemplate(
@@ -320,6 +328,7 @@ class MessageTemplateUtils {
           message,
           alignment: alignment,
           loggedInUserId: loggedInUserId,
+          outgoingTextColor: outgoingTextColor,
         ),
       ),
       CometChatMessageTemplate(
@@ -330,6 +339,7 @@ class MessageTemplateUtils {
           message,
           alignment: alignment,
           loggedInUserId: loggedInUserId,
+          outgoingTextColor: outgoingTextColor,
         ),
       ),
       CometChatMessageTemplate(
@@ -340,6 +350,7 @@ class MessageTemplateUtils {
           message,
           alignment: alignment,
           loggedInUserId: loggedInUserId,
+          outgoingTextColor: outgoingTextColor,
         ),
       ),
       CometChatMessageTemplate(
@@ -350,6 +361,7 @@ class MessageTemplateUtils {
           message,
           alignment: alignment,
           loggedInUserId: loggedInUserId,
+          outgoingTextColor: outgoingTextColor,
         ),
       ),
       CometChatMessageTemplate(
@@ -360,6 +372,7 @@ class MessageTemplateUtils {
           message,
           alignment: alignment,
           loggedInUserId: loggedInUserId,
+          outgoingTextColor: outgoingTextColor,
         ),
       ),
     ];
@@ -368,7 +381,11 @@ class MessageTemplateUtils {
   /// Alias for [getDefaultMessageTemplates] (zero call/meeting templates).
   static List<CometChatMessageTemplate> getAllMessageTemplates({
     String? loggedInUserId,
-  }) => getDefaultMessageTemplates(loggedInUserId: loggedInUserId);
+    Color? outgoingTextColor,
+  }) => getDefaultMessageTemplates(
+    loggedInUserId: loggedInUserId,
+    outgoingTextColor: outgoingTextColor,
+  );
 
   /// Looks up a default message template by [messageType] and [messageCategory].
   /// Returns `null` for unsupported categories/types such as calls or meetings.
@@ -376,8 +393,12 @@ class MessageTemplateUtils {
     required String messageType,
     required String messageCategory,
     String? loggedInUserId,
+    Color? outgoingTextColor,
   }) {
-    for (final t in getDefaultMessageTemplates(loggedInUserId: loggedInUserId)) {
+    for (final t in getDefaultMessageTemplates(
+      loggedInUserId: loggedInUserId,
+      outgoingTextColor: outgoingTextColor,
+    )) {
       if (t.type == messageType && t.category == messageCategory) {
         return t;
       }
@@ -388,11 +409,16 @@ class MessageTemplateUtils {
   /// Returns the default text message template.
   static CometChatMessageTemplate getTextMessageTemplate({
     String? loggedInUserId,
-  }) => getDefaultMessageTemplates(loggedInUserId: loggedInUserId).first;
+    Color? outgoingTextColor,
+  }) => getDefaultMessageTemplates(
+    loggedInUserId: loggedInUserId,
+    outgoingTextColor: outgoingTextColor,
+  ).first;
 
   /// Returns a default poll custom message template.
   static CometChatMessageTemplate getPollMessageTemplate({
     String? loggedInUserId,
+    Color? outgoingTextColor,
   }) {
     return CometChatMessageTemplate(
       type: ExtensionType.extensionPoll,
@@ -403,6 +429,7 @@ class MessageTemplateUtils {
             message,
             alignment: alignment,
             loggedInUserId: loggedInUserId,
+            outgoingTextColor: outgoingTextColor,
           ),
     );
   }
@@ -442,11 +469,14 @@ class MessageTemplateUtils {
   static Widget getDeleteMessageBubble(
     ChatMessage message,
     BuildContext context,
-    BubbleAlignment alignment,
-  ) {
+    BubbleAlignment alignment, {
+    Color? outgoingTextColor,
+  }) {
     final palette = ConvoKitThemeHelper.getColorPalette(context);
     final isOutgoing = alignment == BubbleAlignment.right;
-    final foreground = isOutgoing ? palette.white : palette.textSecondary;
+    final foreground = isOutgoing
+        ? (outgoingTextColor ?? palette.white)
+        : palette.textSecondary;
     return ConvoKitDeletedBubble(
       style: ConvoKitDeletedBubbleStyle(
         textColor: foreground,

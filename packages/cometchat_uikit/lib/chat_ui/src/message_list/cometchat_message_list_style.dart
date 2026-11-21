@@ -71,6 +71,7 @@ class ConvoKitMessageListStyle
     this.errorStateSubtitleColor,
     this.incomingMessageBubbleStyle,
     this.outgoingMessageBubbleStyle,
+    this.outgoingTextColor,
     this.messageInformationStyle,
     this.messageOptionSheetStyle,
     this.mentionsStyle,
@@ -125,6 +126,10 @@ class ConvoKitMessageListStyle
   ///[outgoingMessageBubbleStyle] defines the style of the outgoing message bubble
   final CometChatOutgoingMessageBubbleStyle? outgoingMessageBubbleStyle;
 
+  ///[outgoingTextColor] defines the text color for outgoing message bubbles.
+  ///When `null`, outgoing messages default to white (`colorPalette.white`).
+  final Color? outgoingTextColor;
+
   ///[messageInformationStyle] is a parameter used to set the style for the message information
   final CometChatMessageInformationStyle? messageInformationStyle;
 
@@ -175,6 +180,7 @@ class ConvoKitMessageListStyle
     Color? errorStateSubtitleColor,
     CometChatOutgoingMessageBubbleStyle? outgoingMessageBubbleStyle,
     CometChatIncomingMessageBubbleStyle? incomingMessageBubbleStyle,
+    Color? outgoingTextColor,
     CometChatMessageInformationStyle? messageInformationStyle,
     ConvoKitMessageOptionSheetStyle? messageOptionSheetStyle,
     CometChatMentionsStyle? mentionsStyle,
@@ -207,6 +213,7 @@ class ConvoKitMessageListStyle
           incomingMessageBubbleStyle ?? this.incomingMessageBubbleStyle,
       outgoingMessageBubbleStyle:
           outgoingMessageBubbleStyle ?? this.outgoingMessageBubbleStyle,
+      outgoingTextColor: outgoingTextColor ?? this.outgoingTextColor,
       messageInformationStyle:
           messageInformationStyle ?? this.messageInformationStyle,
       messageOptionSheetStyle:
@@ -248,6 +255,7 @@ class ConvoKitMessageListStyle
       errorStateSubtitleColor: other.errorStateSubtitleColor,
       incomingMessageBubbleStyle: other.incomingMessageBubbleStyle,
       outgoingMessageBubbleStyle: other.outgoingMessageBubbleStyle,
+      outgoingTextColor: other.outgoingTextColor,
       messageInformationStyle: other.messageInformationStyle,
       messageOptionSheetStyle: other.messageOptionSheetStyle,
       mentionsStyle: other.mentionsStyle,
@@ -326,6 +334,11 @@ class ConvoKitMessageListStyle
       ),
       outgoingMessageBubbleStyle: outgoingMessageBubbleStyle?.lerp(
         other.outgoingMessageBubbleStyle,
+        t,
+      ),
+      outgoingTextColor: Color.lerp(
+        outgoingTextColor,
+        other.outgoingTextColor,
         t,
       ),
       messageInformationStyle: messageInformationStyle?.lerp(
